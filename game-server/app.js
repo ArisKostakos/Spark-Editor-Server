@@ -6,7 +6,7 @@ var routeUtil = require('./app/util/routeUtil');
 var app = pomelo.createApp();
 app.set('name', 'chatofpomelo-websocket');
 
-// app configuration
+// app configuration //supyo//
 app.configure('production|development', 'connector', function(){
 	app.set('connectorConfig',
 		{
