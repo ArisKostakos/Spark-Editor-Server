@@ -34,15 +34,12 @@ handler.enter = function(msg, session, next) {
 	session.bind(uid);
 
 	session.set('uid', uid);
-
-	/*
-	session.set('rid', rid);
-	session.push('rid', function(err) {
+	session.push('uid', function(err) {
 		if(err) {
-			console.error('set rid for session service failed! error is : %j', err.stack);
+			console.error('set uid for session service failed! error is : %j', err.stack);
 		}
 	});
-	*/
+
 
 	//session.on('closed', onUserLeave.bind(null, self.app));
 /*
