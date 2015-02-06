@@ -30,7 +30,7 @@ handler.signup = function(msg, session, next) {
 
 
      console.warn('The key I got was: ' + key);
-    console.warn('The crc32 of it is: ' + crc.crc32(key));
+    console.warn('The crc32 of it is: ' + crc.crc32(key).toString(16));
 
 
     next(null, {
