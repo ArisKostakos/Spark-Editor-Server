@@ -32,6 +32,9 @@ handler.enter = function(msg, session, next) {
 	}
 
 	session.bind(uid);
+
+	session.set('uid', uid);
+
 	/*
 	session.set('rid', rid);
 	session.push('rid', function(err) {
