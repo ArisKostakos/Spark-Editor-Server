@@ -13,3 +13,16 @@ exp.chat = function(session, msg, app, cb) {
 
 	cb(null, res.id);
 };
+
+exp.registration = function(session, msg, app, cb) {
+	var registrationServers = app.getServersByType('registration');
+
+	if(!registrationServers || registrationServers.length === 0) {
+		cb(new Error('can not find registration servers.'));
+		return;
+	}
+
+	var res = dispatcher.dispatch(session.get('uid'), registrationServers);
+
+	cb(null, res.id);
+};

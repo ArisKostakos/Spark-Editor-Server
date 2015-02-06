@@ -4,7 +4,7 @@ var routeUtil = require('./app/util/routeUtil');
  * Init app for client.
  */
 var app = pomelo.createApp();
-app.set('name', 'chatofpomelo-websocket');
+app.set('name', 'Spark Editor Server');
 
 // app configuration //supyo//
 app.configure('production|development', 'connector', function(){
@@ -28,7 +28,8 @@ app.configure('production|development', 'gate', function(){
 // app configure
 app.configure('production|development', function() {
 	// route configures
-	app.route('chat', routeUtil.chat);
+	//app.route('chat', routeUtil.chat);
+	app.route('registration', routeUtil.registration);
 
 	// filter configures
 	app.filter(pomelo.timeout());
