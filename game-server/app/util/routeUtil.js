@@ -22,8 +22,8 @@ exp.registration = function(session, msg, app, cb) {
 		return;
 	}
 
-	//var res = dispatcher.dispatch(session.get('uid'), registrationServers);
-	var res = dispatcher.dispatch("poutsinia", registrationServers);
+	var res = dispatcher.dispatch(session.get('uid'), registrationServers);
+	//var res = dispatcher.dispatch("poutsinia", registrationServers);
 
 	cb(null, res.id);
 };
