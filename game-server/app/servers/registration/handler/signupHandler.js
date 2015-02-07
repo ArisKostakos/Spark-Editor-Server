@@ -1,4 +1,5 @@
 var crc = require('crc');
+var mongoose = require('mongoose');
 
 module.exports = function(app) {
     return new Handler(app);
@@ -21,11 +22,11 @@ var handler = Handler.prototype;
 handler.signup = function(msg, session, next) {
     var self = this;
     var uid = msg.uid;
-   // var fullname = msg.fullname;
-    //var email = msg.email;
+    var fullname = msg.fullname;
+    var email = msg.email;
     var key = msg.key;
-    //var username = msg.username;
-    //var password = msg.password;
+    var username = msg.username;
+    var password = msg.password;
     var sessionService = self.app.get('sessionService');
 
     //KEY VALIDATION
@@ -40,15 +41,8 @@ handler.signup = function(msg, session, next) {
         var key1int = crc.crc32(key1) >>>0;
         var key1crc = key1int.toString(16);
 
-        console.warn("key1: " + key1);
-        console.warn("key2: " + key2);
-        console.warn("key1crc: " + key1crc);
-
         if (key2.toLowerCase()==key1crc.toLowerCase())
-        {
-            console.warn("VALIDATED!!");
             keyValid=true;
-        }
     }
 
 
@@ -56,15 +50,21 @@ handler.signup = function(msg, session, next) {
     if (keyValid)
     {
         console.warn("Key Valid!");
-        next(null, {
-            code: "Key Valid!"
+        mongoose.connect('mongodb://localhost/test');
+        var db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'connection error:'));
+        db.once('open', function (callback) {
+            console.warn("CONNECTED TO MONGOOOOOOOOZEEEEEE!:)!");
         });
     }
     else
     {
         console.warn("Key invalid:(");
-        next(null, {
-            code: "Key invalid:("
-        });
     }
+
+
+
+    next(null, {
+        code: "Sign up complete"
+    });
 };
