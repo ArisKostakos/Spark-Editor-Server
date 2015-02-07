@@ -48,7 +48,7 @@ handler.signup = function(msg, session, next) {
     console.warn("key2: " + key2);
     console.warn("key1crc: " + key1crc);
 
-    if (key1.toLowerCase()==key1crc.toLowerCase())
+    if (key2.toLowerCase()==key1crc.toLowerCase())
     {
         console.warn("VALIDATED!!")
     }
