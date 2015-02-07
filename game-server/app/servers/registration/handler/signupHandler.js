@@ -28,7 +28,7 @@ handler.signup = function(msg, session, next) {
     var username = msg.username;
     var password = msg.password;
     var sessionService = self.app.get('sessionService');
-
+    console.warn("Fullname11: "+ fullname);
     //KEY VALIDATION
     key = key.replace(/-/g, "");
     var keyValid=false;
@@ -63,6 +63,8 @@ handler.signup = function(msg, session, next) {
                 password: String
             });
             var Account = mongoose.model('Account', accountSchema);
+
+            console.warn("Fullname22: "+ fullname);
 
             var newAccount = new Account({ fullname: fullname, email:email, key:key, username:username, password:password });
 
