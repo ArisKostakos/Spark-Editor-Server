@@ -41,7 +41,8 @@ handler.signup = function(msg, session, next) {
 
 
 
-    var key1crc = crc.crc32(key1) >>>0;
+    var key1int = crc.crc32(key1) >>>0;
+    var key1crc = key1int.toString(16);
 
     console.warn("key1: " + key1);
     console.warn("key2: " + key2);
