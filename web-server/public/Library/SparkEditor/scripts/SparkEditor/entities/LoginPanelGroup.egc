@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="name">
+			<Value>Login Panel Group</Value>
+		</_State>
+
+		<_State id="left"><Value>42</Value></_State>
+		<_State id="right"><Value>38</Value></_State>
+		<_State id="top"><Value>52</Value></_State>
+		<_State id="bottom"><Value>49</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Sign Up Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Sign Up Button</Value></_State>
+					<_State id="top"><Value>0</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Sign Up</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+				Display.error("Sign Up Button");
+				Display.error("let's see...: " + Logic.rootGameEntitiesRunning["SparkEditor"].getState('UniqueId'));
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
+				<!-- User Name -->
+				<Entity extends="std.display.Div"><_States>
+					<_State id="name"><Value>UserBox</Value></_State>
+					<_State id="top"><Value>94</Value></_State>
+					<_State id="width"><Value>49</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+				<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+						<_State id="name"><Value>UserImage</Value></_State>
+						<_State id="width"><Value>24</Value></_State>
+						<_State id="height"><Value>24</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="src"><Value>userIcon</Value></_State>
+				</_States></Entity></Entities></Space></Form></Entity>
+				
+				<Entity extends="std.display.Input"><_States>
+					<_State id="name"><Value>User Input</Value></_State>
+					<_State id="top"><Value>94</Value></_State>
+					<_State id="left"><Value>52</Value></_State>
+					<_State id="right"><Value>0</Value></_State>
+					<_State id="height"><Value>47</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="placeholder"><Value>User Name</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>23px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textIndent"><Value>12px</Value></_State>
+				</_States></Entity>
+				
+				<!-- Password -->
+				<Entity extends="std.display.Div"><_States>
+					<_State id="name"><Value>PasswordBox</Value></_State>
+					<_State id="top"><Value>146</Value></_State>
+					<_State id="width"><Value>49</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+				<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+						<_State id="name"><Value>PasswordImage</Value></_State>
+						<_State id="width"><Value>24</Value></_State>
+						<_State id="height"><Value>24</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="src"><Value>passwordIcon</Value></_State>
+				</_States></Entity></Entities></Space></Form></Entity>
+				
+				<Entity extends="std.display.Input"><_States>
+					<_State id="name"><Value>Password Input</Value></_State>
+					<_State id="top"><Value>146</Value></_State>
+					<_State id="left"><Value>52</Value></_State>
+					<_State id="right"><Value>0</Value></_State>
+					<_State id="height"><Value>47</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="placeholder"><Value>Password</Value></_State>
+					<_State id="type"><Value>password</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>23px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textIndent"><Value>12px</Value></_State>
+				</_States></Entity>
+				
+				<!-- Login Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Login Button</Value></_State>
+					<_State id="top"><Value>198</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Log in</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts><Script>Display.error("Log in Button");</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

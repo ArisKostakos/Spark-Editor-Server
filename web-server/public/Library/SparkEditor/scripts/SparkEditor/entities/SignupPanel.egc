@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name">
+			<Value>Signup Panel</Value>
+		</_State>
+
+		<_State id="width">
+			<Value>512</Value>
+		</_State>
+		
+		<_State id="height">
+			<Value>500</Value>
+		</_State>
+		
+		<_State id="horizontalCenter">
+			<Value>0</Value>
+		</_State>
+		
+		<_State id="verticalCenter">
+			<Value>0</Value>
+		</_State>
+		
+		<_State id="backgroundColor">
+			<Value>#21303D</Value>
+		</_State>
+		<!--
+		<_State id="border">
+			<Value>2px solid</Value>
+		</_State>
+		-->
+		<_State id="borderRadius">
+			<Value>12px</Value>
+		</_State>
+		
+		<_State id="boxShadow">
+			<Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value>
+		</_State>
+		
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.entities.SignupPanelGroup"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

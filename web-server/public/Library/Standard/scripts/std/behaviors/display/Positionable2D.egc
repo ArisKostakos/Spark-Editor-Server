@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State>
+			<Id>spaceX</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>spaceY</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>scaleX</Id>
+			<Type>Decimal</Type>
+			<Value>1</Value>
+		</State>
+		
+		<State>
+			<Id>scaleY</Id>
+			<Type>Decimal</Type>
+			<Value>1</Value>
+		</State>
+		
+		<State>
+			<Id>spaceWidth</Id>
+			<Type>Decimal</Type>
+			<Value>50</Value>
+		</State>
+		
+		<State>
+			<Id>spaceHeight</Id>
+			<Type>Decimal</Type>
+			<Value>50</Value>
+		</State>
+		
+		<_State id="coordinateSystem">
+			<Value>2D</Value>
+		</_State>
+	</_States>
+</Entity>

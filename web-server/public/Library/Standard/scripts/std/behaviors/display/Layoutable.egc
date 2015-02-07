@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State>
+			<Id>layoutable</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		
+		<State>
+			<Id>parent</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>layout</Id>
+			<Type>Text</Type>
+			<Value>Basic</Value>
+		</State>
+		
+		<State>
+			<Id>x</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>y</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>width</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>height</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>left</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>right</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>top</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>bottom</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>horizontalCenter</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>verticalCenter</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>paddingLeft</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>paddingRight</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>paddingTop</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>paddingBottom</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>gap</Id>
+			<Type>Decimal</Type>
+			<Value>null</Value>
+		</State>
+
+	</_States>
+</Entity>

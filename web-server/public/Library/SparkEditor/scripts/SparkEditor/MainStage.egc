@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Stage">
+	<_States>
+		<_State id="name">
+			<Value>Main Stage</Value>
+		</_State>
+	</_States>
+					
+	<Form>
+		<Space>
+			<Entities>
+			<!--
+				<Entity extends="SparkEditor.MainStageArea"/>
+				<Entity extends="SparkEditor.views.MainView"/>
+				-->
+				<Entity extends="SparkEditor.views.DomView"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
