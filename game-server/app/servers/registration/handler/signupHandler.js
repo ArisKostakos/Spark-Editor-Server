@@ -50,6 +50,8 @@ handler.signup = function(msg, session, next) {
     if (keyValid)
     {
         console.warn("Key Valid!");
+
+        /*
         mongoose.connect('mongodb://localhost/test');
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
@@ -79,6 +81,7 @@ handler.signup = function(msg, session, next) {
             //Kitten.find({ name: /^Fluff/ }, callback);
 
         });
+        */
     }
     else
     {

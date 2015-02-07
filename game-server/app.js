@@ -6,7 +6,7 @@ var routeUtil = require('./app/util/routeUtil');
 var app = pomelo.createApp();
 app.set('name', 'Spark Editor Server');
 
-// app configuration //supyo//
+// app configuration
 app.configure('production|development', 'connector', function(){
 	app.set('connectorConfig',
 		{
@@ -28,8 +28,10 @@ app.configure('production|development', 'gate', function(){
 // app configure
 app.configure('production|development', function() {
 	// route configures
-	//app.route('chat', routeUtil.chat);
 	app.route('registration', routeUtil.registration);
+	app.route('lobby', routeUtil.lobby);
+	app.route('chat', routeUtil.chat);
+	app.route('editor', routeUtil.editor);
 
 	// filter configures
 	app.filter(pomelo.timeout());

@@ -1,19 +1,6 @@
 var exp = module.exports;
 var dispatcher = require('./dispatcher');
 
-exp.chat = function(session, msg, app, cb) {
-	var chatServers = app.getServersByType('chat');
-
-	if(!chatServers || chatServers.length === 0) {
-		cb(new Error('can not find chat servers.'));
-		return;
-	}
-
-	var res = dispatcher.dispatch(session.get('rid'), chatServers);
-
-	cb(null, res.id);
-};
-
 exp.registration = function(session, msg, app, cb) {
 	var registrationServers = app.getServersByType('registration');
 
@@ -23,6 +10,45 @@ exp.registration = function(session, msg, app, cb) {
 	}
 
 	var res = dispatcher.dispatch(session.get('uid'), registrationServers);
+
+	cb(null, res.id);
+};
+
+exp.lobby = function(session, msg, app, cb) {
+	var lobbyServers = app.getServersByType('lobby');
+
+	if(!lobbyServers || lobbyServers.length === 0) {
+		cb(new Error('can not find lobby servers.'));
+		return;
+	}
+
+	var res = dispatcher.dispatch(session.get('uid'), lobbyServers);
+
+	cb(null, res.id);
+};
+
+exp.chat = function(session, msg, app, cb) {
+	var chatServers = app.getServersByType('chat');
+
+	if(!chatServers || chatServers.length === 0) {
+		cb(new Error('can not find chat servers.'));
+		return;
+	}
+
+	var res = dispatcher.dispatch(session.get('uid'), chatServers);
+
+	cb(null, res.id);
+};
+
+exp.editor = function(session, msg, app, cb) {
+	var editorServers = app.getServersByType('editor');
+
+	if(!editorServers || editorServers.length === 0) {
+		cb(new Error('can not find editor servers.'));
+		return;
+	}
+
+	var res = dispatcher.dispatch(session.get('uid'), editorServers);
 
 	cb(null, res.id);
 };
