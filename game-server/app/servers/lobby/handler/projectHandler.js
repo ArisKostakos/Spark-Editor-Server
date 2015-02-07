@@ -34,7 +34,7 @@ handler.create = function(msg, session, next) {
     //grrr
     //create folders/files
     console.warn("I am displaying the home directory: " + process.env['PWD'] );
-    console.warn(fs.readdirSync(process.env['PWD']+"../web-server/public"));
+    console.warn(fs.readdirSync(process.env['PWD']+"/../web-server/public"));
 
     next(null, {
         code: "Create Project complete"
