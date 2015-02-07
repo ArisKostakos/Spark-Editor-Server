@@ -33,7 +33,8 @@ handler.create = function(msg, session, next) {
     var sessionService = self.app.get('sessionService');
 
     //create folders/files
-    console.warn("I am displaying the home directory: " + process.env);
+    //console.warn("I am displaying the home directory: " + process.env);
+    console.log(process.env);
 
     next(null, {
         code: "Create Project complete"
