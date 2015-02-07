@@ -35,13 +35,26 @@ handler.signup = function(msg, session, next) {
 
     console.warn('Removing dashes and its now: ' + key);
 
-    var key1 = key.substr(0,4);
+    var key1 = key.substr(0,8);
 
-    var key2 = key.substr(4);
+    var key2 = key.substr(8);
 
-    console.warn(key1);
-    console.warn(key2);
-    //var kolos = crc.crc32('GT6UJG6E') >>>0;
+
+
+    var key1crc = crc.crc32(key1) >>>0;
+
+    console.warn("key1: " + key1);
+    console.warn("key2: " + key2);
+    console.warn("key1crc: " + key1crc);
+
+    if (key1.toLowerCase()==key1crc.toLowerCase())
+    {
+        console.warn("VALIDATED!!")
+    }
+    else
+    {
+        console.warn("KEY INVALID :(")
+    }
 
     //console.warn('The crc32 of it is: ' + kolos.toString(16));
 
