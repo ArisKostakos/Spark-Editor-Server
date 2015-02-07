@@ -50,11 +50,11 @@ handler.signup = function(msg, session, next) {
     if (keyValid)
     {
         console.warn("Key Valid!");
-        mongoose.connect('mongodb://localhost/test');
+        mongoose.connect('mongodb://localhost/poutsas');
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
         db.once('open', function (callback) {
-            console.warn("CONNECTED TO MONGOOOOOOOOZEEEEEE!:)!");
+            console.warn("CONNECTED TO MONGOOOOOOOOZEEEEEE POUTSAS!!!!:)!");
         });
     }
     else
