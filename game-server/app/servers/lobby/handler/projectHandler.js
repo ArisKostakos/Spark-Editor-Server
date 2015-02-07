@@ -1,6 +1,7 @@
 var crc = require('crc');
 var mongoose = require('mongoose');
 var fs = require('fs-extra');
+var path = require('path');
 
 module.exports = function(app) {
     return new Handler(app);
