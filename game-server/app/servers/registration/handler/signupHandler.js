@@ -28,39 +28,43 @@ handler.signup = function(msg, session, next) {
     //var password = msg.password;
     var sessionService = self.app.get('sessionService');
 
-
-     console.warn('The key I got was: ' + key);
-
+    //KEY VALIDATION
     key = key.replace(/-/g, "");
+    var keyValid=false;
 
-    console.warn('Removing dashes and its now: ' + key);
-
-    var key1 = key.substr(0,8);
-
-    var key2 = key.substr(8);
-
-
-
-    var key1int = crc.crc32(key1) >>>0;
-    var key1crc = key1int.toString(16);
-
-    console.warn("key1: " + key1);
-    console.warn("key2: " + key2);
-    console.warn("key1crc: " + key1crc);
-
-    if (key2.toLowerCase()==key1crc.toLowerCase())
+    if (key.length==16)
     {
-        console.warn("VALIDATED!!")
+        var key1 = key.substr(0,8);
+        var key2 = key.substr(8);
+
+        var key1int = crc.crc32(key1) >>>0;
+        var key1crc = key1int.toString(16);
+
+        console.warn("key1: " + key1);
+        console.warn("key2: " + key2);
+        console.warn("key1crc: " + key1crc);
+
+        if (key2.toLowerCase()==key1crc.toLowerCase())
+        {
+            console.warn("VALIDATED!!");
+            keyValid=true;
+        }
+    }
+
+
+
+    if (keyValid)
+    {
+        console.warn("Key Valid!");
+        next(null, {
+            code: "Key Valid!"
+        });
     }
     else
     {
-        console.warn("KEY INVALID :(")
+        console.warn("Key invalid:(");
+        next(null, {
+            code: "Key invalid:("
+        });
     }
-
-    //console.warn('The crc32 of it is: ' + kolos.toString(16));
-
-
-    next(null, {
-        code: "KEY GEN STUFFFF"
-    });
 };
