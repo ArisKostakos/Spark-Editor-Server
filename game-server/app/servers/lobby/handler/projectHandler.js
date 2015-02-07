@@ -31,7 +31,7 @@ handler.create = function(msg, session, next) {
     var password = msg.password;
     */
     var sessionService = self.app.get('sessionService');
-
+    //grrr
     //create folders/files
     console.warn("I am displaying the home directory: " + process.env['PWD'] );
     console.warn(fs.readdirSync(process.env['PWD']+"../web-server/public"));
