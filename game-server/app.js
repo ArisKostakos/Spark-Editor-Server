@@ -25,7 +25,9 @@ app.configure('production|development', 'gate', function(){
 			connector : pomelo.connectors.hybridconnector,
 			useProtobuf : true
 		});
+});
 
+app.configure('production|development', 'registration', function(){
 	console.warn("I am calling db");
 	//connect to db
 	database.init();
