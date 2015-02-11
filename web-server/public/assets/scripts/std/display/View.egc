@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<Extends>
+		<Entity extends="std.behaviors.display.Layoutable"/>
+	</Extends>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					for (child in parent.parentEntity.getChildren()) //parent.parent of a View should always be it's space
+					{
+						//Find Scene
+						if (child.getState('name')==me.getState('initSceneName'))
+						{
+							if (child.getState('displayType')=="Scene")
+							{
+								me.setState('scene',child);
+								Console.debug("Display Scene Entity Set Successfuly to View!");
+							}
+							else
+							{
+								Console.warn("Incompatible Scene Entity defined!");
+							}
+						}
+						
+						//Find Camera
+						if (child.getState('name')==me.getState('initCameraName'))
+						{
+							if (child.getState('displayType')=="Camera")
+							{
+								me.setState('camera',child);
+								Console.debug("Display Camera Entity Set Successfuly to View!");
+							}
+							else
+							{
+								Console.warn("Incompatible Camera Entity defined!");
+							}
+						}
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+	
+	<_States>
+		<_State id="displayType">
+			<Value>View</Value>
+		</_State>
+		
+		<State>
+			<Id>initSceneName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>scene</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>initCameraName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>camera</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>active</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>zIndex</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>renderer</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+	</_States>
+</Entity>

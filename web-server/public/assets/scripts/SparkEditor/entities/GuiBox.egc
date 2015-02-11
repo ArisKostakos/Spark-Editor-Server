@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name">
+			<Value>Gui Box</Value>
+		</_State>
+
+		<_State id="width">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="height">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="backgroundColor">
+			<Value>#20AAFF</Value>
+		</_State>
+		<!--
+		<_State id="border">
+			<Value>2px solid</Value>
+		</_State>
+		-->
+		<_State id="borderRadius">
+			<Value>12px</Value>
+		</_State>
+		
+		<_State id="boxShadow">
+			<Value>2px 2px 4px rgba(0, 0, 0, 0.3)</Value>
+		</_State>
+		
+	</_States>
+</Entity>

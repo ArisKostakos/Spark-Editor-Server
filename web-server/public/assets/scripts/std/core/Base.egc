@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<Extends>
+		<Entity extends="std.behaviors.core.Constructor"/>
+	</Extends>
+	
+	<States>
+		<State>
+			<Id>name</Id>
+			<Type>Text</Type>
+			<Value>Untitled</Value>
+		</State>
+	</States>
+	
+	<Form><Space/></Form>
+</Entity>
