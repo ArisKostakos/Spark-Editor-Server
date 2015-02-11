@@ -51,8 +51,7 @@ handler.signup = function(msg, session, next) {
     {
         console.warn("Key Valid!");
 
-        database.registerAccount({});
-        //var newAccount = new Account({ fullname: fullname, email:email, key:key, username:username, password:password });
+        database.registerAccount({ fullname: fullname, email:email, key:key, username:username, password:password });
     }
     else
     {
