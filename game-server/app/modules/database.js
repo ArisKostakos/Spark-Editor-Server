@@ -56,10 +56,10 @@ exp.checkAccount = function(acc, cb)
     Account.find({ key: acc.key }, function (err, accounts) {
         if (err) {cb("error"); return console.error(err);}
         if (accounts.length==0)
-            Account.find({ key: acc.username }, function (err, accounts) {
+            Account.find({ username: acc.username }, function (err, accounts) {
                 if (err) {cb("error"); return console.error(err);}
                 if (accounts.length==0)
-                    Account.find({ key: acc.email }, function (err, accounts) {
+                    Account.find({ email: acc.email }, function (err, accounts) {
                         if (err) {cb("error"); return console.error(err);}
                         if (accounts.length==0)
                             cb("clear");
