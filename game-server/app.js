@@ -35,12 +35,13 @@ app.configure('production|development', function() {
 	app.route('chat', routeUtil.chat);
 	app.route('editor', routeUtil.editor);
 
-	//connect to db
-	db.init();
-
 	// filter configures
 	app.filter(pomelo.timeout());
 });
+
+console.warn("I am calling db");
+//connect to db
+db.init();
 
 // start app
 app.start();

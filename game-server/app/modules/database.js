@@ -13,7 +13,7 @@ var arxidia = "heeloo";
     exp.init = function()
     {
         arxidia="arxidia has been INITIALIZED";
-
+        console.warn("I am being called!");
         mongoose.connect('mongodb://localhost/test');
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
