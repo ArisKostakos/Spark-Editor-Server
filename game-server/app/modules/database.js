@@ -46,11 +46,33 @@ exp.registerAccount = function(acc)
      });
 };
 
+/**
+ * registerAccount
+ * @param {Object} opts
+ * @api public
+ */
+exp.checkAccount = function(acc, cb)
+{
+    var newAccount = new Account(acc);
+
+
+    Account.find({ key: acc.key }, function (err, accounts) {
+        if (err) return console.error(err);
+        console.warn(accounts.length);
+    });
 
 /*
- Account.find(function (err, accounts) {
- if (err) return console.error(err);
- console.warn(accounts);
- });
- */
-//Kitten.find({ name: /^Fluff/ }, callback);
+    Account.find(function (err, accounts) {
+        if (err) return console.error(err);
+        console.warn(accounts);
+    });
+
+
+
+
+    newAccount.save(function (err, newAccount)
+    {
+        if (err) return console.error(err);
+        console.warn("Mongooze: Account saved successfully!");
+    });*/
+};

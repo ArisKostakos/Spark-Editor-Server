@@ -54,8 +54,10 @@ handler.signup = function(msg, session, next) {
         console.warn("Key Valid!");
 
         //Search if key exists, then if user exists, then if email exists
+        database.checkAccount({ fullname: fullname, email:email, key:key, username:username, password:password });
 
-        database.registerAccount({ fullname: fullname, email:email, key:key, username:username, password:password });
+
+        //database.registerAccount({ fullname: fullname, email:email, key:key, username:username, password:password });
 
         outputStr = "success";
     }
