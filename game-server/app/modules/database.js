@@ -35,14 +35,14 @@ exp.init = function()
  * @param {Object} opts
  * @api public
  */
-exp.registerAccount = function(acc)
+exp.registerAccount = function(acc, cb)
 {
      var newAccount = new Account(acc);
 
      newAccount.save(function (err, newAccount)
      {
-         if (err) return console.error(err);
-         console.warn("Mongooze: Account saved successfully!");
+         if (err) {cb("error"); return console.error(err);}
+         cb("success");
      });
 };
 
@@ -53,9 +53,6 @@ exp.registerAccount = function(acc)
  */
 exp.checkAccount = function(acc, cb)
 {
-    var newAccount = new Account(acc);
-
-
     Account.find({ key: acc.key }, function (err, accounts) {
         if (err) {cb("error"); return console.error(err);}
         if (accounts.length==0)
