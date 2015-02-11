@@ -6,12 +6,19 @@ var mongoose = require('mongoose');
 var exp = module.exports;
 
 var arxidia = "heeloo";
+
+var initialized = false;
+
     /**
      * Init Db
      * @api public
      */
     exp.init = function()
     {
+        if (initialized==true) return;
+
+        initialized=true;
+
         arxidia="arxidia has been INITIALIZED";
         console.warn("I am being called!");
         mongoose.connect('mongodb://localhost/test');
