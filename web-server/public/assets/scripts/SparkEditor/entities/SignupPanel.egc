@@ -245,7 +245,6 @@
 				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
 				if (projectEntity.getState('Connected')==true)
 				{
-					Display.log("Sign Up Button");
 					var strAlpha = parent.getState('alphaInput').getState('text');
 					var strName = parent.getState('nameInput').getState('text');
 					var strEmail = parent.getState('emailInput').getState('text');
@@ -352,9 +351,25 @@
 							parent.getState('loginPanel').getState('outputText').setState('text','Registration successful.');
 							parent.getState('loginPanel').setState('display','inline');
 						}
+						else if (data.code=="email")
+						{
+							me.getState('outputText').setState('text', 'This E-mail is already being used.');
+						}
+						else if (data.code=="username")
+						{
+							me.getState('outputText').setState('text', 'This Username is taken.');
+						}
+						else if (data.code=="key")
+						{
+							me.getState('outputText').setState('text', 'This Alpha Key has already been used.');
+						}
 						else if (data.code=="keyinvalid")
 						{
 							me.getState('outputText').setState('text', 'The Alpha Key entered is invalid.');
+						}
+						else if (data.code=="error")
+						{
+							me.getState('outputText').setState('text', 'An unknown error occured.');
 						}
 					}
 				</Script>
