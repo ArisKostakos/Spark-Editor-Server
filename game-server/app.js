@@ -1,6 +1,6 @@
 var pomelo = require('pomelo');
 var routeUtil = require('./app/util/routeUtil');
-var db = require('./app/modules/database');
+var database = require('./app/modules/database');
 
 /**
  * Init app for client.
@@ -41,7 +41,7 @@ app.configure('production|development', function() {
 
 console.warn("I am calling db");
 //connect to db
-db.init();
+database.init();
 
 // start app
 app.start();

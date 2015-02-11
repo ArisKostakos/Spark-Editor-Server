@@ -1,5 +1,5 @@
 var crc = require('crc');
-var db = require('../../../modules/database');
+var database = require('../../../modules/database');
 
 module.exports = function(app) {
     return new Handler(app);
@@ -51,7 +51,7 @@ handler.signup = function(msg, session, next) {
     {
         console.warn("Key Valid!");
 
-        db.registerAccount({});
+        database.registerAccount({});
         //var newAccount = new Account({ fullname: fullname, email:email, key:key, username:username, password:password });
     }
     else
