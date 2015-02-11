@@ -11,6 +11,12 @@ var Handler = function(app) {
 
 var handler = Handler.prototype;
 
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
 /**
  * New client entry registration server.
  *
@@ -39,7 +45,7 @@ handler.signup = function(msg, session, next) {
         var key2 = key.substr(8);
 
         var key1int = crc.crc32(key1) >>>0;
-        var key1crc = key1int.toString(16);
+        var key1crc = pad(key1int.toString(16),8);
 
         console.warn("Comparing calculated: " + key2.toLowerCase() + ", with given: " + key1crc.toLowerCase());
 
