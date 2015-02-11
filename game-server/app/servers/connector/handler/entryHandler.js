@@ -52,7 +52,7 @@ handler.enter = function(msg, session, next) {
 	*/
 
 	next(null, {
-		code: "all good BIATCH"
+		code: "Connected to the Cloud"
 	});
 };
 

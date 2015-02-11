@@ -49,7 +49,7 @@ handler.signup = function(msg, session, next) {
 
     if (keyValid)
     {
-        console.warn("Key Valid!");
+        console.warn("Key Valid for: " + fullname + ", " + email);
         var acc = { fullname: fullname, email:email, key:key, username:username, password:password };
 
         //Search if key exists, then if user exists, then if email exists
@@ -65,7 +65,7 @@ handler.signup = function(msg, session, next) {
     }
     else
     {
-        console.warn("Key invalid:(");
+        console.warn("Key invalid for: " + fullname + ", " + email);
         next(null, {code: "keyinvalid"});
     }
 };
