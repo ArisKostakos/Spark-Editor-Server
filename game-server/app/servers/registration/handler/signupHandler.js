@@ -47,7 +47,7 @@ handler.signup = function(msg, session, next) {
         var key1int = crc.crc32(key1) >>>0;
         var key1crc = pad(key1int.toString(16),8);
 
-        console.warn("Comparing calculated: " + key2.toLowerCase() + ", with given: " + key1crc.toLowerCase());
+        //console.warn("Comparing calculated: " + key2.toLowerCase() + ", with given: " + key1crc.toLowerCase());
 
         if (key2.toLowerCase()==key1crc.toLowerCase())
             keyValid=true;
