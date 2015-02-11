@@ -70,3 +70,20 @@ exp.checkAccount = function(acc, cb)
         else cb("key");
     });
 };
+
+
+/**
+ * registerAccount
+ * @param {Object} opts
+ * @api public
+ */
+exp.accessAccount = function(acc, cb)
+{
+    Account.find({ username: acc.username, password: acc.password }, function (err, accounts) {
+        if (err) {cb("error"); return console.error(err);}
+        if (accounts.length==0)
+            cb("nomatch");
+        else
+            cb("match",accounts[0]);
+    });
+};
