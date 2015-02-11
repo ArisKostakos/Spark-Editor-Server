@@ -1,5 +1,5 @@
 var crc = require('crc');
-var mongoose = require('mongoose');
+var db = require('../modules/database');
 
 module.exports = function(app) {
     return new Handler(app);
@@ -51,37 +51,8 @@ handler.signup = function(msg, session, next) {
     {
         console.warn("Key Valid!");
 
-        /*
-        mongoose.connect('mongodb://localhost/test');
-        var db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'connection error:'));
-        db.once('open', function (callback) {
-            console.warn("CONNECTED TO MONGOOOOOOOOZEEEEEE POUTSAS!!!!:)!");
-            var accountSchema = mongoose.Schema({
-                fullname: String,
-                email: String,
-                key: String,
-                username: String,
-                password: String
-            });
-            var Account = mongoose.model('Account', accountSchema);
-
-            var newAccount = new Account({ fullname: fullname, email:email, key:key, username:username, password:password });
-
-            newAccount.save(function (err, newAccount) {
-                if (err) return console.error(err);
-                console.warn("Mongooze: Account saved successfully!");
-            });
-
-            Account.find(function (err, accounts) {
-                if (err) return console.error(err);
-                console.warn(accounts);
-            });
-
-            //Kitten.find({ name: /^Fluff/ }, callback);
-
-        });
-        */
+        db.registerAccount({});
+        //var newAccount = new Account({ fullname: fullname, email:email, key:key, username:username, password:password });
     }
     else
     {

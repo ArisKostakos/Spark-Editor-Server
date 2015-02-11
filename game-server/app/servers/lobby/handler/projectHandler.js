@@ -32,13 +32,12 @@ handler.create = function(msg, session, next) {
     var password = msg.password;
     */
     var sessionService = self.app.get('sessionService');
-    //grrr
+
     //create folders/files
-    console.warn("I am displaying the home directory: " + process.env['PWD'] );
-    console.warn(fs.readdirSync(process.env['PWD']+"/../web-server/public"));
-    console.warn("Normalize 1: " + path.normalize(process.env['PWD']+"/../web-server/public"));
+    //console.warn(fs.readdirSync(process.env['PWD']+"/../web-server/public"));
+
     console.warn("resolve 1: " + path.resolve("../web-server/public"));
-    console.warn("resolve 2: " + path.resolve("/../web-server/public"));
+
 
     next(null, {
         code: "Create Project complete"

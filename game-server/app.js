@@ -1,5 +1,7 @@
 var pomelo = require('pomelo');
 var routeUtil = require('./app/util/routeUtil');
+var db = require('./app/modules/database');
+
 /**
  * Init app for client.
  */
@@ -36,6 +38,9 @@ app.configure('production|development', function() {
 	// filter configures
 	app.filter(pomelo.timeout());
 });
+
+//connect to db
+db.init();
 
 // start app
 app.start();
