@@ -54,7 +54,7 @@ handler.signup = function(msg, session, next) {
         //Search if key exists, then if user exists, then if email exists
         database.checkAccount({ fullname: fullname, email:email, key:key, username:username, password:password },
         function (code) {
-            var outputStr;
+            var outputStr=code;
             next(null, {code: outputStr});
         });
 
