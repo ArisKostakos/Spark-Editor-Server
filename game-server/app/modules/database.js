@@ -22,7 +22,7 @@ var Account = mongoose.model('Account', accountSchema);
  */
 exp.init = function()
 {
-    mongoose.connect('mongodb://localhost/test');
+    mongoose.connect('mongodb://localhost/alpha');
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function (callback)
     {
