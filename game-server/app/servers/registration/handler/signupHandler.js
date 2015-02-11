@@ -29,8 +29,6 @@ handler.signup = function(msg, session, next) {
     var password = msg.password;
     var sessionService = self.app.get('sessionService');
 
-    var outputStr;
-
     //KEY VALIDATION
     key = key.replace(/-/g, "");
     var keyValid=false;
@@ -54,22 +52,19 @@ handler.signup = function(msg, session, next) {
         console.warn("Key Valid!");
 
         //Search if key exists, then if user exists, then if email exists
-        database.checkAccount({ fullname: fullname, email:email, key:key, username:username, password:password });
+        database.checkAccount({ fullname: fullname, email:email, key:key, username:username, password:password },
+        function (code) {
+            var outputStr;
+            next(null, {code: outputStr});
+        });
 
 
         //database.registerAccount({ fullname: fullname, email:email, key:key, username:username, password:password });
 
-        outputStr = "success";
     }
     else
     {
         console.warn("Key invalid:(");
-        outputStr = "keyinvalid";
+        next(null, {code: "keyinvalid"});
     }
-
-
-
-    next(null, {
-        code: outputStr
-    });
 };
