@@ -1,5 +1,5 @@
 var crc = require('crc');
-var db = require('../modules/database');
+var db = require('../../../modules/database');
 
 module.exports = function(app) {
     return new Handler(app);
