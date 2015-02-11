@@ -28,7 +28,6 @@ app.configure('production|development', 'gate', function(){
 });
 
 app.configure('production|development', 'registration', function(){
-	console.warn("I am calling db");
 	//connect to db
 	database.init();
 });
