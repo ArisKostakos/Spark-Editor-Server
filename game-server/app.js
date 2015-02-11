@@ -25,6 +25,10 @@ app.configure('production|development', 'gate', function(){
 			connector : pomelo.connectors.hybridconnector,
 			useProtobuf : true
 		});
+
+	console.warn("I am calling db");
+	//connect to db
+	database.init();
 });
 
 // app configure
@@ -39,9 +43,6 @@ app.configure('production|development', function() {
 	app.filter(pomelo.timeout());
 });
 
-console.warn("I am calling db");
-//connect to db
-database.init();
 
 // start app
 app.start();
