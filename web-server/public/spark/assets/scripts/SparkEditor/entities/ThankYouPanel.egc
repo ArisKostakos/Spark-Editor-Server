@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Thank You Panel</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="width"><Value>512</Value></_State>
+		<_State id="height"><Value>220</Value></_State>
+		<_State id="gap"><Value>40</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<_State id="horizontalCenter"><Value>0</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
+		<_State id="paddingLeft"><Value>20</Value></_State>
+		<_State id="paddingRight"><Value>20</Value></_State>
+		<_State id="paddingTop"><Value>18</Value></_State>
+		<_State id="paddingBottom"><Value>20</Value></_State>
+		<_State id="backgroundColor"><Value>#21303D</Value></_State>
+		<_State id="borderRadius"><Value>12px</Value></_State>
+		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Thank you Text 1</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="text"><Value>Thank you for registering!</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>22px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States></Entity>
+				
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Thank you Text 2</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="text"><Value>Keep an eye on this spot for upcoming changes.</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>18px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States></Entity>
+				
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Thank you Text 3</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="text"><Value>Welcome to the Alpha!</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>20px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+</Entity>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.StageArea">
+	<_States>
+		<_State id="name">
+			<Value>Main Stage Area</Value>
+		</_State>
+		
+		<_State id="width">
+			<Value>50%</Value>
+		</_State>
+		
+		<_State id="height">
+			<Value>190</Value>
+		</_State>
+		
+		<_State id="left">
+			<Value>70</Value>
+		</_State>
+		
+		<_State id="top">
+			<Value>260</Value>
+		</_State>
+	</_States>
+</Entity>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Login Panel</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="verticalAlign"><Value>top</Value></_State>
+		<_State id="width"><Value>512</Value></_State>
+		<_State id="height"><Value>377</Value></_State>
+		<_State id="gap"><Value>3</Value></_State>
+		<_State id="display"><Value>inline</Value></_State>
+		<_State id="horizontalCenter"><Value>0</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
+		<_State id="paddingLeft"><Value>42</Value></_State>
+		<_State id="paddingRight"><Value>38</Value></_State>
+		<_State id="paddingTop"><Value>52</Value></_State>
+		<_State id="paddingBottom"><Value>49</Value></_State>
+		<_State id="backgroundColor"><Value>#21303D</Value></_State>
+		<_State id="borderRadius"><Value>12px</Value></_State>
+		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+		
+		<State><Id>userInput</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>passwordInput</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>outputText</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Sign Up Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Sign Up Button</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Sign Up</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+				parent.setState('display','none');
+				parent.parentEntity.getState('signupPanel').getState('nameInput').setState('text','');
+				parent.parentEntity.getState('signupPanel').getState('emailInput').setState('text','');
+				parent.parentEntity.getState('signupPanel').getState('alphaInput').setState('text','');
+				parent.parentEntity.getState('signupPanel').getState('userInput').setState('text','');
+				parent.parentEntity.getState('signupPanel').getState('passInput').setState('text','');
+				parent.parentEntity.getState('signupPanel').getState('vpassInput').setState('text','');
+				parent.parentEntity.getState('signupPanel').getState('outputText').setState('text','');
+				parent.parentEntity.getState('signupPanel').setState('display','inline');
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>39</Value></_State></_States></Entity>
+				
+				<!-- User Name -->
+				<Entity extends="std.display.HGroup"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+						<Entity extends="std.display.Div"><_States>
+							<_State id="name"><Value>UserBox</Value></_State>
+							<_State id="width"><Value>49</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+						<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+								<_State id="name"><Value>UserImage</Value></_State>
+								<_State id="width"><Value>24</Value></_State>
+								<_State id="height"><Value>26</Value></_State>
+								<_State id="horizontalCenter"><Value>0</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="src"><Value>userIcon</Value></_State>
+						</_States></Entity></Entities></Space></Form></Entity>
+						
+						<Entity extends="std.display.Input"><_States>
+							<_State id="name"><Value>User Input</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>47</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="placeholder"><Value>User Name</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>23px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="textIndent"><Value>12px</Value></_State>
+						</_States></Entity>
+				</Entities></Space></Form></Entity>
+				
+				<!-- Password -->
+				<Entity extends="std.display.HGroup"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+					<Entity extends="std.display.Div"><_States>
+						<_State id="name"><Value>PasswordBox</Value></_State>
+						<_State id="width"><Value>49</Value></_State>
+						<_State id="height"><Value>49</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+					<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+							<_State id="name"><Value>PasswordImage</Value></_State>
+							<_State id="width"><Value>17</Value></_State>
+							<_State id="height"><Value>23</Value></_State>
+							<_State id="horizontalCenter"><Value>0</Value></_State>
+							<_State id="verticalCenter"><Value>0</Value></_State>
+							<_State id="src"><Value>passwordIcon</Value></_State>
+					</_States></Entity></Entities></Space></Form></Entity>
+					
+					<Entity extends="std.display.Input"><_States>
+						<_State id="name"><Value>Password Input</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>47</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<_State id="placeholder"><Value>Password</Value></_State>
+						<_State id="type"><Value>password</Value></_State>
+						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+						<_State id="fontSize"><Value>23px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textIndent"><Value>12px</Value></_State>
+					</_States></Entity>
+				</Entities></Space></Form></Entity>
+				
+				<!-- Login Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Login Button</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Log in</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+				if (projectEntity.getState('Connected')==true)
+				{
+					var strUser =parent.getState('userInput').getState('text');
+					var strPass =parent.getState('passwordInput').getState('text');
+					
+					if (strUser.length>0 && strUser!='Undefined' &&
+						strPass.length>0 && strPass!='Undefined')
+					{
+						parent.getState('outputText').setState('text', 'Please wait...');
+						
+						Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																			username: strUser, 
+																			password: strPass}, "Log In Request");
+					}
+					else
+					{
+						parent.getState('outputText').setState('text', 'Please fill in every field.');
+					}
+						
+				}
+				else
+				{
+					parent.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+				}
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>20</Value></_State></_States></Entity>
+				
+				<!-- Output Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Output Text</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>22px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					for (child in me.getChildren())
+					{
+						if (child.getState('name')=='Output Text')
+									me.setState('outputText',child);
+								
+						for (grandchild in child.getChildren())
+							if (grandchild.getState('name')=='User Input')
+								me.setState('userInput',grandchild);
+							else if (grandchild.getState('name')=='Password Input')
+								me.setState('passwordInput',grandchild);
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("Log In Request")!=null)
+					{
+						var data = Comms.getRequestData("Log In Request");
+						
+						if (data.code=="match")
+						{
+							me.setState('display','none');
+							
+							parent.getState('thankyouPanel').setState('display','inline');
+						}
+						else if (data.code=="nomatch")
+						{
+							//Display.error("Log In Panel: Unknown UserName/Password!");
+							me.getState('outputText').setState('text', 'Username or Password not valid!');
+						}
+						else if (data.code=="error")
+						{
+							//Display.error("Log In Panel: Unknown Error");
+							me.getState('outputText').setState('text', 'An unknown error occured.');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

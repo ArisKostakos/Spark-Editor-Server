@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="name">
+			<Value>Little Box</Value>
+		</_State>
+		
+		<_State id="2DMeshFillRectForm">
+			<Value>Yellow</Value>
+		</_State>
+		
+		<_State id="spaceX">
+			<Value>110</Value>
+		</_State>
+		
+		<_State id="spaceY">
+			<Value>0</Value>
+		</_State>
+		
+		<_State id="spaceWidth">
+			<Value>40</Value>
+		</_State>
+		
+		<_State id="spaceHeight">
+			<Value>100</Value>
+		</_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>Yellow</Id>
+				<Type>Integer</Type>
+				<Value>0xffff00</Value>
+			</State>
+		</_States>
+	</_Form>
+</Entity>

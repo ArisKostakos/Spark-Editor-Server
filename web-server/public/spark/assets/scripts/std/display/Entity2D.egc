@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<Extends>
+		<Entity extends="std.behaviors.display.Positionable2D"/>
+	</Extends>
+	
+	<_States>
+		<_State id="displayType">
+			<Value>Entity</Value>
+		</_State>
+	</_States>
+</Entity>

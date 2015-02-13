@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Display.error("Start Connecting to stuff...");
+					me.setState('UniqueId', "Connection" + Std.random(999999));
+					Comms.connectTo("104.154.55.28","3014", "gateServer");
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkConnected</Event>
+			<Scripts>
+				<Script>
+					Display.error("CONNECTED TO: " + Comms.connectedServerName);
+					
+					if (Comms.connectedServerName=="gateServer")
+					{
+						Comms.request('gate.gateHandler.queryEntry', { uid: me.getState('UniqueId') }, "getConnectorAddress");
+					}
+					else if (Comms.connectedServerName=="connectorServer")
+					{
+						Comms.request('connector.entryHandler.enter', { uid: me.getState('UniqueId') }, "greetConnector");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					Display.error("Received Request...");
+					
+					/*This is terrible.. if two request events are raised simutaneously, this will collapse
+					if i do if else, then the first one will be triggered twice
+					if i do if, if, if then all of them will be executed twice
+					i can't remove the request from the Comms array either, cause more than one entities might be connected to the
+					same request and need it...*/
+					
+					//Implementation below now assumes two request events will never be raised simutaneously (which is very wrong..)
+					if (Comms.getRequestData("getConnectorAddress")!=null)
+					{
+						Display.error("Request Received Identified: getConnectorAddress");
+						var data = Comms.getRequestData("getConnectorAddress");
+						
+						Comms.disconnect();
+						
+						if (data.code == 2001) 
+						{
+							Display.error("Pomelo: Received error code 2001! Aborting connection.");
+							return;
+						}
+						
+						if (data.host == '127.0.0.1') 
+							data.host = "104.154.55.28";
+
+						Comms.connectTo(data.host, data.port, "connectorServer");
+					}
+					else if (Comms.getRequestData("greetConnector")!=null)
+					{
+						Display.error("Request Received Identified: greetConnector");
+						var data = Comms.getRequestData("greetConnector");
+						Display.error("Data received: " + data.code);
+						
+						me.setState('Connected',true);
+					}
+					else if (Comms.getRequestData("Sign Up Request")!=null)
+					{
+						Display.error("Request Received Identified: Sign Up Request");
+						var data = Comms.getRequestData("Sign Up Request");
+						Display.error("Data received: " + data.code);
+						
+						//Comms.request("lobby.projectHandler.create", { uid: me.getState('UniqueId') }, "Create Project");
+					}
+					else if (Comms.getRequestData("Log In Request")!=null)
+					{
+						Display.error("Request Received Identified: Log In Request");
+						var data = Comms.getRequestData("Log In Request");
+						Display.error("Data received: " + data.code);
+						
+						//Comms.request("lobby.projectHandler.create", { uid: me.getState('UniqueId') }, "Create Project");
+					}
+					else
+					{
+						Display.error("Request Could NOT be identified:-(");
+					}
+					
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Scripts>
+				<Script>
+					Display.error("Received Server Event...");
+					
+					
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		
+	</_Triggers>
+	
+	<_States>
+		
+		<State>
+			<Id>UniqueId</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		<State>
+			<Id>Connected</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+	</_States>
+	
+
+	
+</Entity>
