@@ -36,19 +36,21 @@ handler.create = function(msg, session, next) {
     var publicPath = path.resolve("../web-server/public");
     console.warn("resolve: " + publicPath);
 
-    var projectDir = crc.crc32(username) >>>0;
-    projectDir = pad(projectDir.toString(16),8);
-    projectDir = projectDir.toUpperCase();
+    var assetsPath = publicPath + '/assets';
 
-    var dir = publicPath + '/Library/' + projectDir;
-    fs.ensureDir(dir, function(err) {
-        console.log(err); // => null
-        var l_code = err!=null?err:"projectCreated";
+    var userPath = assetsPath + '/' + username;
 
-        next(null, {
-            code: l_code
-        });
-    })
+    var projectName = username + '_project';
+
+    ensureDirSync(userPath + '/scripts/' + projectName);
+    ensureDirSync(userPath + '/images/' + projectName);
+    ensureDirSync(userPath + '/sounds/' + projectName);
+    ensureDirSync(userPath + '/models/' + projectName);
+    ensureDirSync(userPath + '/projects/' + projectName);
+
+    next(null, {
+        code: "projectCreated"
+    });
 };
 
 function pad(num, size) {
