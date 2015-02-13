@@ -1,5 +1,3 @@
-var crc = require('crc');
-var mongoose = require('mongoose');
 var fs = require('fs-extra');
 var path = require('path');
 
@@ -42,11 +40,11 @@ handler.create = function(msg, session, next) {
 
     var projectName = username + '_project';
 
-    ensureDirSync(userPath + '/scripts/' + projectName);
-    ensureDirSync(userPath + '/images/' + projectName);
-    ensureDirSync(userPath + '/sounds/' + projectName);
-    ensureDirSync(userPath + '/models/' + projectName);
-    ensureDirSync(userPath + '/projects/' + projectName);
+    fs.ensureDirSync(userPath + '/scripts/' + projectName);
+    fs.ensureDirSync(userPath + '/images/' + projectName);
+    fs.ensureDirSync(userPath + '/sounds/' + projectName);
+    fs.ensureDirSync(userPath + '/models/' + projectName);
+    fs.ensureDirSync(userPath + '/projects/' + projectName);
 
     next(null, {
         code: "projectCreated"
