@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Entity2D">
-	<Extends>
-		<Entity extends="std.behaviors.display.Layoutable"/>
-	</Extends>
-</Entity>

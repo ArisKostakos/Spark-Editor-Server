@@ -40,7 +40,7 @@ handler.create = function(msg, session, next) {
     projectDir = pad(projectDir.toString(16),8);
     projectDir = projectDir.toUpperCase();
 
-    var dir = publicPath + '/' + projectDir;
+    var dir = publicPath + '/Library/' + projectDir;
     fs.ensureDir(dir, function(err) {
         console.log(err); // => null
         var l_code = err!=null?err:"projectCreated";

@@ -16,6 +16,69 @@ var accountSchema = mongoose.Schema({
 });
 var Account = mongoose.model('Account', accountSchema);
 
+//maybe.. in accounts u have a library array
+//and then a library schema where u define if the etire library can be made public
+//or define access, default options when u upload smth, etc?
+//hm hm hm maybe too much hassle
+//i think so..
+
+var projectSchema = mongoose.Schema({
+    projectname: String,
+    title: String,
+    owner: String,
+    //password,group permission stuff
+
+    //very tricky stuff.. how to import 1
+    //thing for an external 'library'
+    //or everything from external library
+    //and just have it show on the editor's
+    //library for that project
+    //high level stuff
+    //libraries: Array  //of libraryName Strings
+
+    //how about..
+    includes: Array //of include which is
+
+    //include
+    //owner    //optional filter or * for all
+    //type      //optional filter or * for all
+    //libraryName   //optional filter or * for all
+    //subDir    //optional filter or * for all
+    //filename  //optional filter or * for all
+
+    //so do a include Query in Assets and display what you
+    //found
+    //regular expressions should be allowed to...
+    //solved beatch!
+});
+var Project = mongoose.model('Project', projectSchema);
+
+
+
+
+var assetSchema = mongoose.Schema({
+    owner: String,
+    type: String,
+
+    libraryName: String,  //std
+    subDir: String,  //core
+
+    filename: String,
+
+    filesize: String, //in bytes
+
+    assetname: String, //title of asset, disabled for script types
+        //later, maybe u unify this. so scripts also take custom ids
+        //and in lionML you write extends="carMovement" but meh..
+
+    //password: String,
+    //team
+
+    public: Boolean //and if its private, also do the one below
+    //access: Array // an array of usernames Strings
+});
+var Asset = mongoose.model('Asset', assetSchema);
+
 /**
  * Init Db
  * @api public
