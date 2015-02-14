@@ -46,7 +46,8 @@ handler.load = function(msg, session, next) {
 
     console.warn("RECEIVED FILE: " + filedata);
 
-    var buffer = toBuffer(filedata);
+    var buffer = new Buffer(filedata, 'base64');
+    //var buffer = toBuffer(filedata);
 
     var publicPath = path.resolve("../web-server/public");
     var assetsPath = publicPath + '/assets';
