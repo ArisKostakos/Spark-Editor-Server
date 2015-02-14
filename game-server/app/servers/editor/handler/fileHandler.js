@@ -50,7 +50,7 @@ handler.load = function(msg, session, next) {
     filedata = filedata.slice(startIndex+1);
 
 
-    console.warn("RECEIVED FILE: " + filedata);
+    //console.warn("RECEIVED FILE: " + filedata);
 
     var buffer = new Buffer(filedata, 'base64');
     //var buffer = toBuffer(filedata);
