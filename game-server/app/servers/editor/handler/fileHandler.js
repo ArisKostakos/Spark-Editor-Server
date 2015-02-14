@@ -11,6 +11,17 @@ var Handler = function(app) {
 
 var handler = Handler.prototype;
 
+function toBuffer(ab) {
+    console.warn("ab.byteLength: " + ab.byteLength);
+    var buffer = new Buffer(ab.byteLength);
+    var view = new Uint8Array(ab);
+    for (var i = 0; i < buffer.length; ++i) {
+        buffer[i] = view[i];
+    }
+    return buffer;
+}
+
+
 /**
  * New client entry registration server.
  *
@@ -33,9 +44,9 @@ handler.load = function(msg, session, next) {
 
     var sessionService = self.app.get('sessionService');
 
-    //console.warn("RECEIVED FILE: " + filedata);
+    console.warn("RECEIVED FILE: " + filedata);
 
-    var buffer = new Buffer( new Uint8Array(filedata) );
+    var buffer = toBuffer(filedata);
 
     var publicPath = path.resolve("../web-server/public");
     var assetsPath = publicPath + '/assets';
