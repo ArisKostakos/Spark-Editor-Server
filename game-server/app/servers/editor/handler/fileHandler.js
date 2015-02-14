@@ -18,7 +18,7 @@ var handler = Handler.prototype;
  * @param  {Function} next    next stemp callback
  * @return {Void}
  */
-handler.whatevs = function(msg, session, next) {
+handler.load = function(msg, session, next) {
     var self = this;
     /*
      var uid = msg.uid;
@@ -28,11 +28,13 @@ handler.whatevs = function(msg, session, next) {
      var username = msg.username;
      var password = msg.password;
      */
+    var filedata = msg.filedata;
+
     var sessionService = self.app.get('sessionService');
 
-
+    console.warn("RECEIVED FILE: " + filedata);
 
     next(null, {
-        code: "whatevs complete"
+        code: "Got it!"
     });
 };
