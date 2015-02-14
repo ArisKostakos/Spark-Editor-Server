@@ -74,16 +74,24 @@
 						Display.error("Request Received Identified: Sign Up Request");
 						var data = Comms.getRequestData("Sign Up Request");
 						Display.error("Data received: " + data.code);
-						
-						//Comms.request("lobby.projectHandler.create", { uid: me.getState('UniqueId') }, "Create Project");
 					}
 					else if (Comms.getRequestData("Log In Request")!=null)
 					{
 						Display.error("Request Received Identified: Log In Request");
 						var data = Comms.getRequestData("Log In Request");
 						Display.error("Data received: " + data.code);
-						
-						//Comms.request("lobby.projectHandler.create", { uid: me.getState('UniqueId') }, "Create Project");
+					}
+					else if (Comms.getRequestData("Create Project Request")!=null)
+					{
+						Display.error("Request Received Identified: Create Project Request");
+						var data = Comms.getRequestData("Create Project Request");
+						Display.error("Data received: " + data.code);
+					}
+					else if (Comms.getRequestData("File Send Request")!=null)
+					{
+						Display.error("Request Received Identified: File Send Request");
+						var data = Comms.getRequestData("File Send Request");
+						Display.error("Data received: " + data.code);
 					}
 					else
 					{

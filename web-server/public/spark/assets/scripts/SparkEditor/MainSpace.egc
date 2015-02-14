@@ -14,13 +14,14 @@
 		<Space>
 			<Entities>
 				<Entity extends="SparkEditor.MainStage"/>
-				<!--
-				<Entity extends="SparkEditor.scenes.MainScene"/>-->
+				
+				<Entity extends="SparkEditor.scenes.MainScene"/>
+				
 				<Entity extends="SparkEditor.scenes.DomScene"/>
-				<!--
+				
 				<Entity extends="SparkEditor.scenes.EditorLeftBarScene"/>
 				<Entity extends="SparkEditor.scenes.EditorTopBarScene"/>
-				-->
+				
 				<Entity extends="SparkEditor.cameras.DummyCamera"/>
 			</Entities>
 		</Space>

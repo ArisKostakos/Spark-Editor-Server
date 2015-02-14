@@ -76,6 +76,7 @@
 						
 						<Entity extends="std.display.Input"><_States>
 							<_State id="name"><Value>User Input</Value></_State>
+							<!--<_State id="text"><Value>aris</Value></_State>-->
 							<_State id="width"><Value>100%</Value></_State>
 							<_State id="height"><Value>47</Value></_State>
 							<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -108,6 +109,7 @@
 					
 					<Entity extends="std.display.Input"><_States>
 						<_State id="name"><Value>Password Input</Value></_State>
+						<!--<_State id="text"><Value>r0diof</Value></_State>-->
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>47</Value></_State>
 						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -211,9 +213,10 @@
 						
 						if (data.code=="match")
 						{
-							me.setState('display','none');
+							var strUser = me.getState('userInput').getState('text');
 							
-							parent.getState('thankyouPanel').setState('display','inline');
+							me.getState('outputText').setState('text', 'Logged in. Entering default project...');
+							Comms.request("lobby.projectHandler.create", { 	 username: strUser }, "Create Project Request");
 						}
 						else if (data.code=="nomatch")
 						{
@@ -224,6 +227,21 @@
 						{
 							//Display.error("Log In Panel: Unknown Error");
 							me.getState('outputText').setState('text', 'An unknown error occured.');
+						}
+					}
+					else if (Comms.getRequestData("Create Project Request")!=null)
+					{
+						var data = Comms.getRequestData("Create Project Request");
+						
+						if (data.code=="projectCreated")
+						{
+							Logic.getEntityByName('Dom View').setState('visible',false);
+							Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
+							Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
+						}
+						else
+						{
+							me.getState('outputText').setState('text', 'Error creating project.');
 						}
 					}
 				</Script>

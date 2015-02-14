@@ -45,6 +45,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/VGroup.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/HGroup.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Div.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/FileInput.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Input.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Image.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Button.egc</Asset>
@@ -78,12 +79,11 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainProject.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainSpace.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStage.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStageArea.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/DummyCamera.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBox.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GuiBox.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/BlueButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScene.egc</Asset>
@@ -92,7 +92,6 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorLeftBar.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/SignupPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/ThankYouPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorTopBarPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLeftBarPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackgroundImage.egc</Asset>
@@ -107,6 +106,12 @@
 			<Asset type="image" subtype="2D" location="local" id="verifypassIcon" bytes='35672' forceLoadAsData='true'>verifypassIcon.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="alphakeyIcon" bytes='35672' forceLoadAsData='true'>alphakeyIcon.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="emailIcon" bytes='35672' forceLoadAsData='true'>emailIcon.png</Asset>
+			
+			<Asset type="image" subtype="2D" location="local" id="editor_export" bytes='35672' forceLoadAsData='true'>editor/topbar/export.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_play" bytes='35672' forceLoadAsData='true'>editor/topbar/play.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_publish" bytes='35672' forceLoadAsData='true'>editor/topbar/publish.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_save" bytes='35672' forceLoadAsData='true'>editor/topbar/save.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_share" bytes='35672' forceLoadAsData='true'>editor/topbar/share.png</Asset>
 		</Module>
 	</Assets>
 	

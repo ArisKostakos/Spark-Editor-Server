@@ -8,7 +8,6 @@
 		
 		<State><Id>signupPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>loginPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>thankyouPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<Form>
@@ -17,7 +16,6 @@
 				<Entity extends="SparkEditor.entities.LoginBackgroundImage"/>
 				<Entity extends="SparkEditor.entities.SignupPanel"/>
 				<Entity extends="SparkEditor.entities.LoginPanel"/>
-				<Entity extends="SparkEditor.entities.ThankYouPanel"/>
 			</Entities>
 		</Space>
 	</Form>
@@ -31,8 +29,6 @@
 							me.setState('loginPanel',child);
 						else if (child.getState('name')=='Signup Panel')
 							me.setState('signupPanel',child);
-						else if (child.getState('name')=='Thank You Panel')
-							me.setState('thankyouPanel',child);
 				</Script>
 			</_Scripts>
 		</_Action>

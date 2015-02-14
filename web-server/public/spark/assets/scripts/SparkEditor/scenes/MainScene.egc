@@ -20,7 +20,7 @@
 					<Form>
 						<Space>
 							<Entities>
-								<Entity extends="SparkEditor.entities.LittleBox"/>
+								<!--<Entity extends="SparkEditor.entities.LittleBox"/>-->
 							</Entities>
 						</Space>
 					</Form>

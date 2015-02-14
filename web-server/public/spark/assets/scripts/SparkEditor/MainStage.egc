@@ -4,31 +4,88 @@
 		<_State id="name">
 			<Value>Main Stage</Value>
 		</_State>
+		
+		
+		<_State id="layout">
+			<Value>Basic</Value>
+		</_State>
 	</_States>
 					
 	<Form>
 		<Space>
 			<Entities>
-			<!--
-				<Entity extends="SparkEditor.MainStageArea"/>
-				<Entity extends="SparkEditor.views.MainView"/>
-			-->
-				
-				
-				
-				
+				<!-- full screen DOM for effects, drag and drop, etc ?? -->
 				<!--full screen DOM for login, lobby, etc-->
 				<Entity extends="SparkEditor.views.DomView"/>
-				<!--EDITOR STUFF-->
-				<!--top bar-->
-				<!--<Entity extends="SparkEditor.views.EditorTopBar"/>-->
-				<!--left bar-->
-				<!--<Entity extends="SparkEditor.views.EditorLeftBar"/>-->
-				<!--bottom bar (chat) -->
-				<!-- stageArea for PLAY area (will contain a lot of canvas views) -->
-					<!-- game views -->
 				
-				<!-- full screen DOM for effects, drag and drop, etc ?? -->
+				<!--EDITOR STUFF-->
+				
+				<!--Editor Area-->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>Editor Area</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!--top bar View-->
+				<Entity extends="SparkEditor.views.EditorTopBar">
+					<_States>
+						<_State id="parent"><Value>Editor Area</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--Workspace Area-->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>Workspace Area</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="layout"><Value>Horizontal</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+						<_State id="parent"><Value>Editor Area</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!--left bar View-->
+				<Entity extends="SparkEditor.views.EditorLeftBar">
+					<_States>
+						<_State id="parent"><Value>Workspace Area</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--ProjectStage Area-->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>ProjectStage Area</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="parent"><Value>Workspace Area</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						
+					</Entities></Space></Form>
+				</Entity>
+				
+	
+				<Entity extends="SparkEditor.views.MainView">
+					<_States>
+						<_State id="parent"><Value>ProjectStage Area</Value></_State>
+					</_States>
+				</Entity>
+
+				<!--bottom bar (chat) -->
+				
 			</Entities>
 		</Space>
 	</Form>

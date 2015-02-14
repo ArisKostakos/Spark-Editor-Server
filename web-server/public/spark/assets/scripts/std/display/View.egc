@@ -89,5 +89,11 @@
 			<Type>Text</Type>
 			<Value>Implicit</Value>
 		</State>
+		
+		<State>
+			<Id>visible</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
 	</_States>
 </Entity>

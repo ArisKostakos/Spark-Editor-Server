@@ -29,6 +29,10 @@
 			<Value>100%</Value>
 		</_State>
 		
+		<_State id="visible">
+			<Value>false</Value>
+		</_State>
+		
 		<_State id="renderer">
 			<Value>NativeControls</Value>
 		</_State>

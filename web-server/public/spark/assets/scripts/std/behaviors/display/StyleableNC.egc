@@ -56,6 +56,12 @@
 		</State>
 		
 		<State>
+			<Id>textVerticalAlign</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
 			<Id>textIndent</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
@@ -65,6 +71,12 @@
 			<Id>visibility</Id>
 			<Type>Text</Type>
 			<Value>visible</Value>
+		</State>
+		
+		<State>
+			<Id>opacity</Id>
+			<Type>Text</Type>
+			<Value>1</Value>
 		</State>
 		
 		<State>
