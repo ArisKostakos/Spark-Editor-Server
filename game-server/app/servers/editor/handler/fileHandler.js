@@ -43,8 +43,12 @@ handler.load = function(msg, session, next) {
     var filedata = msg.filedata;
 
     var sessionService = self.app.get('sessionService');
-    filedata = filedata.slice(filedata.indexOf(','));
-//sd
+
+    var startIndex = filedata.indexOf(',');
+
+    if (startIndex!=-1)
+    filedata = filedata.slice(startIndex+1);
+
 
     console.warn("RECEIVED FILE: " + filedata);
 
