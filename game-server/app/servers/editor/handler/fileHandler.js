@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var fs = require('fs-extra');
+var path = require('path');
 
 module.exports = function(app) {
     return new Handler(app);
@@ -32,9 +33,21 @@ handler.load = function(msg, session, next) {
 
     var sessionService = self.app.get('sessionService');
 
-    console.warn("RECEIVED FILE: " + filedata);
+    //console.warn("RECEIVED FILE: " + filedata);
 
-    next(null, {
-        code: "Got it!"
+    var buffer = new Buffer( new Uint8Array(filedata) );
+
+    var publicPath = path.resolve("../web-server/public");
+    var assetsPath = publicPath + '/assets';
+
+    fs.writeFile(assetsPath+"/test", buffer, function(err) {
+        if(err) {
+            console.warn(err);
+        } else {
+            console.warn("The file was saved!");
+            next(null, {
+                code: "Got it, Stored it!"
+            });
+        }
     });
 };
