@@ -44,7 +44,7 @@ handler.load = function(msg, session, next) {
 
     var sessionService = self.app.get('sessionService');
     filedata = filedata.slice(filedata.indexOf(','));
-
+//sd
 
     console.warn("RECEIVED FILE: " + filedata);
 
