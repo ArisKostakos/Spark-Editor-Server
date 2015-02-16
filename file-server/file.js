@@ -26,8 +26,7 @@ server.on('connection', function(client){
         //
         // Send progress back
         stream.on('data', function(data){
-            console.warn("SENDING PROGRESS BACK: data.length ["+ data.length + "] and meta.size [" + meta.size + "] and rx ["+ data.length / meta.size + "]");
-            stream.write({rx: data.length / meta.size, length: data.length});
+            stream.write({length: data.length});
         });
     });
 });
