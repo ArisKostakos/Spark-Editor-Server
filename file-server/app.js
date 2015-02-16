@@ -7,6 +7,7 @@ var fs = require('fs-extra');
 var path = require('path');
 
 
+console.warn("File Server listening on: 3001");
 
 var server = BinaryServer({port: 3001});
 
