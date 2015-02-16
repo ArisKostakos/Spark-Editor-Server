@@ -16,13 +16,17 @@ var server = BinaryServer({port: 3001});
 
 server.on('connection', function(client){
     console.warn("Somebody connected, yeahhh");
+
     client.on('stream', function(stream, meta){
+        //
+        console.warn("FILE SEND REQUEST RECEIVED: Name ["+ meta.name + "] and size [" + meta.size + "]");
         //
         var file = fs.createWriteStream(assetsPath + '/' + meta.name);
         stream.pipe(file);
         //
         // Send progress back
         stream.on('data', function(data){
+            console.warn("SENDING PROGRESS BACK: data.length ["+ data.length + "] and meta.size [" + meta.size + "] and rx ["+ data.length / meta.size + "]");
             stream.write({rx: data.length / meta.size});
         });
     });
