@@ -13,52 +13,66 @@ var accountSchema = mongoose.Schema({
     key: String,
     username: String,
     password: String
+    //team
 });
 var Account = mongoose.model('Account', accountSchema);
-
-//maybe.. in accounts u have a library array
-//and then a library schema where u define if the etire library can be made public
-//or define access, default options when u upload smth, etc?
-//hm hm hm maybe too much hassle
-//i think so..
 
 var projectSchema = mongoose.Schema({
     projectname: String,
     title: String,
     owner: String,
-    //password,group permission stuff
 
-    //very tricky stuff.. how to import 1
-    //thing for an external 'library'
-    //or everything from external library
-    //and just have it show on the editor's
-    //library for that project
-    //high level stuff
-    //libraries: Array  //of libraryName Strings
+    //permission stuff (run, read, write)
 
-    //how about..
-    includes: Array //of include which is
-
+    //so the project doesn't know about assets.. just components..
+    //skc asset? whatever..
+    components: Array, //is this a query? no this is a tree.. library isn't a tree.. this is though...
+    //that's why in library we can have just a behavior there.. as a root.. cant do that here
+    library: Array //of include which is a query on Components, like this. regular expressions should be allowed to...
     //include
     //owner    //optional filter or * for all
     //type      //optional filter or * for all
     //libraryName   //optional filter or * for all
     //subDir    //optional filter or * for all
     //filename  //optional filter or * for all
-
-    //so do a include Query in Assets and display what you
-    //found
-    //regular expressions should be allowed to...
-    //solved beatch!
 });
 var Project = mongoose.model('Project', projectSchema);
 
 
+var componentSchema = mongoose.Schema({
+    owner: String,
+    type: String, //Object, Material, Behavior, Light, ...
+    subType: String, //2D, 3D, Input, Movement, ...
+
+    libraryName: String,  //an account has libraries. no library with same name
+
+    componentname: String, //a library has components. no component with the same name, inside a library
+
+    //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
+    public: Boolean, //and if its private, also do the one below
+    access: Array, // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
+
+
+    assets: Array, //of Assets
+    //mainasset???
+    thumbnail:String, //default ("Implicit") which takes it from type instead
+
+    //an object can have object children
+    children: Array, //of Components
+    parent: Component, //or null
+
+    //an object will have allowed childrenTypes and/or allowed parentTypes
+    parentTypes: Array, //of String Component allowed types/subtypes of this form [type:subtype]
+    childrenTypes: Array, //of String Component allowed types/subtypes of this form [type:subtype]
+
+    ready: Boolean //??
+});
+var Component = mongoose.model('Component', componentSchema);
 
 
 var assetSchema = mongoose.Schema({
     owner: String,
-    type: String,
+    type: String,   //image, script, sound, video, data, ...
 
     libraryName: String,  //std
     subDir: String,  //core
@@ -71,11 +85,12 @@ var assetSchema = mongoose.Schema({
         //later, maybe u unify this. so scripts also take custom ids
         //and in lionML you write extends="carMovement" but meh..
 
-    //password: String,
-    //team
 
-    public: Boolean //and if its private, also do the one below
-    //access: Array // an array of usernames Strings
+    //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
+    public: Boolean, //and if its private, also do the one below
+    access: Array, // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
+
+    ready: Boolean
 });
 var Asset = mongoose.model('Asset', assetSchema);
 
