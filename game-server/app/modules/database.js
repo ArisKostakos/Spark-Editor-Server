@@ -59,7 +59,7 @@ var componentSchema = mongoose.Schema({
 
     //an object can have object children
     children: Array, //of Components
-    parent: Component, //or null
+    parent: String, //Component, //or null
 
     //an object will have allowed childrenTypes and/or allowed parentTypes
     parentTypes: Array, //of String Component allowed types/subtypes of this form [type:subtype]
