@@ -2,7 +2,8 @@
 # /etc/init.d/startSpark.sh
 #
 
-sudo sh
+
+
 echo "Starting Spark Server..."
 cd /home/Aris/SparkEditorServer
 cd file-server
