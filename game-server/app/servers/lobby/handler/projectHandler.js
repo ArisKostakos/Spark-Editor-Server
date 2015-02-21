@@ -47,6 +47,10 @@ handler.create = function(msg, session, next) {
     fs.ensureDirSync(userPath + '/models/' + projectName);
     fs.ensureDirSync(userPath + '/projects/' + projectName);
 
+    var user = session.get('user');
+
+    console.warn("The Fullname of the connected user is: " + user.fullname);
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     var prj = { projectname: fullname, title:email, owner:key, runPublic:username, runAccess:password,
                 readPublic: yyyy, readAccess:fffff, writePublic:fffff, writeAccess:fffff, components:fffff,

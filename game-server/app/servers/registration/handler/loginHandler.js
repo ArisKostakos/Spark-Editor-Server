@@ -30,7 +30,14 @@ handler.login = function(msg, session, next) {
         function (code, user) {
             if (code=="match")
             {
-                //create online user, bluh bluh
+                session.bind(user);
+
+                session.set('user', user);
+                session.push('user', function(err) {
+                    if(err) {
+                        console.error('set user for session service failed! error is : %j', err.stack);
+                    }
+                });
             }
 
             next(null, {code: code});
