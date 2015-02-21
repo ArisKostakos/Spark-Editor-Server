@@ -12,16 +12,6 @@ var Handler = function(app) {
 
 var handler = Handler.prototype;
 
-function toBuffer(ab) {
-    console.warn("ab.byteLength: " + ab.byteLength);
-    var buffer = new Buffer(ab.byteLength);
-    var view = new Uint8Array(ab);
-    for (var i = 0; i < buffer.length; ++i) {
-        buffer[i] = view[i];
-    }
-    return buffer;
-}
-
 
 /**
  * New client entry registration server.
@@ -33,32 +23,12 @@ function toBuffer(ab) {
  */
 handler.load = function(msg, session, next) {
     var self = this;
-    /*
-     var uid = msg.uid;
-     var fullname = msg.fullname;
-     var email = msg.email;
-     var key = msg.key;
-     var username = msg.username;
-     var password = msg.password;
-     */
-    var filedata = msg.filedata;
+
+    //var filedata = msg.filedata;
 
     var sessionService = self.app.get('sessionService');
 
-    var startIndex = filedata.indexOf(',');
-
-    if (startIndex!=-1)
-    filedata = filedata.slice(startIndex+1);
-
-
-    //console.warn("RECEIVED FILE: " + filedata);
-
-    var buffer = new Buffer(filedata, 'base64');
-    //var buffer = toBuffer(filedata);
-
-    var publicPath = path.resolve("../web-server/public");
-    var assetsPath = publicPath + '/assets';
-
+/*
     fs.writeFile(assetsPath+"/test", buffer, function(err) {
         if(err) {
             console.warn(err);
@@ -68,5 +38,14 @@ handler.load = function(msg, session, next) {
                 code: "Got it, Stored it!"
             });
         }
+    });*/
+
+    var user = session.get('user');
+    var project = session.get('project');
+    console.warn("The Fullname of the connected user is: " + user.fullname);
+    console.warn("The User is connected to the Project: " + project.title);
+
+    next(null, {
+        code: "hi"
     });
 };

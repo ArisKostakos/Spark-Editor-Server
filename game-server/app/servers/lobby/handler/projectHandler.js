@@ -36,16 +36,9 @@ handler.create = function(msg, session, next) {
             {
                 //EXISTS. ACCESS IT
                 console.warn("Project Exists: "+ project.projectname);
-                console.warn("Project's Owner: "+ project.owner.username);
-                //Bind it to session
-                session.bind(project);
 
-                session.set('project', project);
-                session.push('project', function(err) {
-                    if(err) {
-                        console.error('set user for session service failed! error is : %j', err.stack);
-                    }
-                });
+                //Bind it to session
+                bindProject(session, project);
 
                 //Return
                 next(null, {code: "success"});
@@ -62,31 +55,37 @@ handler.create = function(msg, session, next) {
                 database.createProject(prj,
                     function (code,project_created) {
                         if (code=="success") {
-                            console.warn("Project Created: " + project_created.projectname);
-                            console.warn("Project's Owner: " + project_created.owner.username);
+                            //Bind it to session
+                            bindProject(session, project_created);
+
+                            //Create directories
+                            createProjectDirectories(project_created.projectname,project_created.owner.username);
                         }
                         next(null, {code: code});
                     });
             }
         });
+};
 
-
-/*
-
-    var publicPath = path.resolve("../web-server/public");
-    console.warn("resolve: " + publicPath);
-
-    var assetsPath = publicPath + '/assets';
-
-    var userPath = assetsPath + '/' + username;
-
-    var projectName = username + '_project';
+function createProjectDirectories(userName, projectName)
+{
+    var userPath = path.resolve("../web-server/public") + '/assets/' + userName;
 
     fs.ensureDirSync(userPath + '/scripts/' + projectName);
     fs.ensureDirSync(userPath + '/images/' + projectName);
     fs.ensureDirSync(userPath + '/sounds/' + projectName);
     fs.ensureDirSync(userPath + '/models/' + projectName);
     fs.ensureDirSync(userPath + '/projects/' + projectName);
-*/
-};
+}
 
+function bindProject(session, project)
+{
+    session.bind(project);
+
+    session.set('project', project);
+    session.push('project', function(err) {
+        if(err) {
+            console.error('set project for session service failed! error is : %j', err.stack);
+        }
+    });
+}
