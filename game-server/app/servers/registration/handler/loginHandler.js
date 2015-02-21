@@ -26,8 +26,8 @@ handler.login = function(msg, session, next) {
     var sessionService = self.app.get('sessionService');
 
 
-    database.accessAccount({username:username, password:password},
-        function (code, account) {
+    database.accessUser({username:username, password:password},
+        function (code, user) {
             if (code=="match")
             {
                 //create online user, bluh bluh

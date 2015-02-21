@@ -7,7 +7,7 @@ var exp = module.exports;
 
 var db = mongoose.connection;
 
-var accountSchema = mongoose.Schema({
+var userSchema = mongoose.Schema({
     fullname: String,
     email: String,
     key: String,
@@ -15,7 +15,7 @@ var accountSchema = mongoose.Schema({
     password: String
     //team
 });
-var Account = mongoose.model('Account', accountSchema);
+var User = mongoose.model('User', userSchema);
 
 var projectSchema = mongoose.Schema({
     projectname: String,
@@ -109,15 +109,15 @@ exp.init = function()
 };
 
 /**
- * registerAccount
+ * registerUser
  * @param {Object} opts
  * @api public
  */
-exp.registerAccount = function(acc, cb)
+exp.registerUser = function(usr, cb)
 {
-     var newAccount = new Account(acc);
+     var newUser = new User(usr);
 
-     newAccount.save(function (err, newAccount)
+    newUser.save(function (err, newUser)
      {
          if (err) {cb("error"); return console.error(err);}
          cb("success");
@@ -125,21 +125,21 @@ exp.registerAccount = function(acc, cb)
 };
 
 /**
- * registerAccount
+ * checkUser
  * @param {Object} opts
  * @api public
  */
-exp.checkAccount = function(acc, cb)
+exp.checkUser = function(usr, cb)
 {
-    Account.find({ key: acc.key }, function (err, accounts) {
+    User.find({ key: usr.key }, function (err, users) {
         if (err) {cb("error"); return console.error(err);}
-        if (accounts.length==0)
-            Account.find({ username: acc.username }, function (err, accounts) {
+        if (users.length==0)
+            User.find({ username: usr.username }, function (err, users) {
                 if (err) {cb("error"); return console.error(err);}
-                if (accounts.length==0)
-                    Account.find({ email: acc.email }, function (err, accounts) {
+                if (users.length==0)
+                    User.find({ email: usr.email }, function (err, users) {
                         if (err) {cb("error"); return console.error(err);}
-                        if (accounts.length==0)
+                        if (users.length==0)
                             cb("clear");
                         else cb("email");
                     });
@@ -151,17 +151,17 @@ exp.checkAccount = function(acc, cb)
 
 
 /**
- * registerAccount
+ * accessUser
  * @param {Object} opts
  * @api public
  */
-exp.accessAccount = function(acc, cb)
+exp.accessUser = function(usr, cb)
 {
-    Account.find({ username: acc.username, password: acc.password }, function (err, accounts) {
+    User.find({ username: usr.username, password: usr.password }, function (err, users) {
         if (err) {cb("error"); return console.error(err);}
-        if (accounts.length==0)
+        if (users.length==0)
             cb("nomatch");
         else
-            cb("match",accounts[0]);
+            cb("match",users[0]);
     });
 };

@@ -58,13 +58,13 @@ handler.signup = function(msg, session, next) {
     if (keyValid)
     {
         console.warn("Key Valid for: " + fullname + ", " + email);
-        var acc = { fullname: fullname, email:email, key:key, username:username, password:password };
+        var usr = { fullname: fullname, email:email, key:key, username:username, password:password };
 
         //Search if key exists, then if user exists, then if email exists
-        database.checkAccount(acc,
+        database.checkUser(usr,
         function (code) {
             if (code=="clear")
-                database.registerAccount(acc,
+                database.registerUser(usr,
                     function (code) {
                         next(null, {code: code});
                     });
