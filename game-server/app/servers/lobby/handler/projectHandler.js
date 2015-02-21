@@ -35,7 +35,7 @@ handler.create = function(msg, session, next) {
             if (code=="match")
             {
                 //EXISTS. ACCESS IT
-                Console.warn("Project Exists: "+ project.projectname);
+                console.warn("Project Exists: "+ project.projectname);
 
                 //Bind it to session
                 session.bind(project);
@@ -48,12 +48,12 @@ handler.create = function(msg, session, next) {
                 });
 
                 //Return
-                next(null, {code: "projectAccessed"});
+                next(null, {code: "success"});
             }
             else
             {
                 //DOESNT EXIST. CREATE IT
-                Console.warn("Project does not exist yet!")
+                console.warn("Project does not exist yet!")
 
                 var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user, runPublic:true, runAccess:[user],
                     readPublic: true, readAccess:[user], writePublic:true, writeAccess:[user], components:[],
