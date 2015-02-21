@@ -23,14 +23,51 @@ var handler = Handler.prototype;
 handler.create = function(msg, session, next) {
     var self = this;
 
-    //var uid = msg.uid;
-    //var fullname = msg.fullname;
-    //var email = msg.email;
-    //var key = msg.key;
-    var username = msg.username;
-    //var password = msg.password;
-
     var sessionService = self.app.get('sessionService');
+
+    var user = session.get('user');
+    console.warn("The Fullname of the connected user is: " + user.fullname);
+
+    var defaultProjectName = user.username+"_alphaProject";
+
+    database.existsProject(defaultProjectName,
+        function (code, project) {
+            if (code=="match")
+            {
+                //EXISTS. ACCESS IT
+                Console.warn("Project Exists: "+ project.projectname);
+
+                //Bind it to session
+                session.bind(project);
+
+                session.set('project', project);
+                session.push('project', function(err) {
+                    if(err) {
+                        console.error('set user for session service failed! error is : %j', err.stack);
+                    }
+                });
+
+                //Return
+                next(null, {code: "projectAccessed"});
+            }
+            else
+            {
+                //DOESNT EXIST. CREATE IT
+                Console.warn("Project does not exist yet!")
+
+                var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user, runPublic:true, runAccess:[user],
+                    readPublic: true, readAccess:[user], writePublic:true, writeAccess:[user], components:[],
+                    library:user.username+"_alphaProject_mainLib"};
+
+                database.createProject(prj,
+                    function (code) {
+                        next(null, {code: code});
+                    });
+            }
+        });
+
+
+/*
 
     var publicPath = path.resolve("../web-server/public");
     console.warn("resolve: " + publicPath);
@@ -46,34 +83,6 @@ handler.create = function(msg, session, next) {
     fs.ensureDirSync(userPath + '/sounds/' + projectName);
     fs.ensureDirSync(userPath + '/models/' + projectName);
     fs.ensureDirSync(userPath + '/projects/' + projectName);
-
-    var user = session.get('user');
-
-    console.warn("The Fullname of the connected user is: " + user.fullname);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    var prj = { projectname: fullname, title:email, owner:key, runPublic:username, runAccess:password,
-                readPublic: yyyy, readAccess:fffff, writePublic:fffff, writeAccess:fffff, components:fffff,
-                library:ffff};
-
-    database.checkProject(prj,
-        function (code) {
-            if (code=="clear")
-                database.createProject(prj,
-                    function (code) {
-                        next(null, {code: code});
-                    });
-            else next(null, {code: code});
-        });
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-/*
-    next(null, {
-        code: "projectCreated"
-    });*/
+*/
 };
 
-function pad(num, size) {
-    var s = num+"";
-    while (s.length < size) s = "0" + s;
-    return s;
-}
