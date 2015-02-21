@@ -134,7 +134,7 @@ exp.createProject = function(prj, cb) {
         if (err) {cb("error"); return console.error(err);}
 
         //SUCCESS
-        project_created.populate('owner').populate('runAccess')
+        Project.findOne({ projectname: project_created.projectname }).populate('owner').populate('runAccess')
                         .populate('readAccess').populate('writeAccess').exec(function (err, project_populated) {
             if (err) {cb("error"); return console.error(err);}
             cb("success",project_populated);
