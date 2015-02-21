@@ -132,7 +132,14 @@ exp.createProject = function(prj, cb) {
     var newProject = new Project(prj);
     newProject.save(function (err, project_created) {
         if (err) {cb("error"); return console.error(err);}
-        cb("success",project_created);});
+
+        //SUCCESS
+        project_created.populate('owner').populate('runAccess')
+                        .populate('readAccess').populate('writeAccess').exec(function (err, project_populated) {
+            if (err) {cb("error"); return console.error(err);}
+            cb("success",project_populated);
+        });
+    });
 };
 
 exp.createComponent = function(cmp, cb) {
