@@ -36,7 +36,7 @@ handler.create = function(msg, session, next) {
             {
                 //EXISTS. ACCESS IT
                 console.warn("Project Exists: "+ project.projectname);
-
+                console.warn("Project's Owner: "+ project.owner.username);
                 //Bind it to session
                 session.bind(project);
 
@@ -55,12 +55,14 @@ handler.create = function(msg, session, next) {
                 //DOESNT EXIST. CREATE IT
                 console.warn("Project does not exist yet!")
 
-                var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user, runPublic:true, runAccess:[user],
-                    readPublic: true, readAccess:[user], writePublic:true, writeAccess:[user], components:[],
+                var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
+                    readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
                     library:user.username+"_alphaProject_mainLib"};
 
                 database.createProject(prj,
                     function (code) {
+                        console.warn("Project Created: "+ project.projectname);
+                        console.warn("Project's Owner: "+ project.owner.username);
                         next(null, {code: code});
                     });
             }
