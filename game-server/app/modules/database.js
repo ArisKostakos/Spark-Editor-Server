@@ -157,13 +157,16 @@ exp.createAsset = function(ast, cb) {
 };
 
 exp.existsProject = function(projectname, cb) {
-    Project.find({ projectname: projectname }, function (err, projects) {
-        if (err) {cb("error"); return console.error(err);}
 
-        if (projects.length==0)
-            cb("nomatch");
-        else
-            cb("match",projects[0]);
+
+    Project.findOne({ projectname: projectname }).populate('owner').populate('runAccess')
+        .populate('readAccess').populate('writeAccess').exec(function (err, projectFound) {
+            if (err) {cb("error"); return console.error(err);}
+
+            if (projectFound)
+                cb("match",projectFound);
+            else
+                cb("nomatch");
     });
 };
 
