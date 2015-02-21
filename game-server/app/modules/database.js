@@ -28,7 +28,8 @@ User = mongoose.model('User', userSchema);
 var projectSchema = mongoose.Schema({
     projectname: String,
     title: String,
-    owner: User,
+    owner: {type: Schema.ObjectId, ref: 'User'},
+
 
     //permission stuff (run, read, write)
     runPublic: Boolean,
@@ -55,7 +56,7 @@ Project = mongoose.model('Project', projectSchema);
 
 
 var componentSchema = mongoose.Schema({
-    owner: User,
+    owner: {type: Schema.ObjectId, ref: 'User'},
     type: String, //Object, Material, Behavior, Light, ...
     subType: String, //2D, 3D, Input, Movement, ...
 
@@ -69,12 +70,12 @@ var componentSchema = mongoose.Schema({
 
 
     assets: [Asset], //of Assets
-    mainAsset: Asset,
+    mainAsset: {type: Schema.ObjectId, ref: 'Asset'},
     thumbnail:String, //default ("Implicit") which takes it from type instead
 
     //an object can have object children
     children: [Component], //of Components
-    parent: Component, //Component, //or null
+    parent: {type: Schema.ObjectId, ref: 'Component'}, //Component, //or null
 
     //an object will have allowed childrenTypes and/or allowed parentTypes
     parentTypes: [String], //of String Component allowed types/subtypes of this form [type:subtype]
@@ -87,7 +88,7 @@ Component = mongoose.model('Component', componentSchema);
 
 
 var assetSchema = mongoose.Schema({
-    owner: User,
+    owner: {type: Schema.ObjectId, ref: 'User'},
     type: String,   //image, script, sound, video, data, ...
 
     libraryName: String,  //std
