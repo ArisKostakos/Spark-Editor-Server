@@ -4,6 +4,7 @@
 sudo sh
 echo "Starting Spark Server..."
 cd /home/Aris/SparkEditorServer
+git pull
 cd file-server
 node file &
 cd ..

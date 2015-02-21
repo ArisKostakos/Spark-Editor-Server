@@ -1,17 +1,12 @@
 /**
  * Created by Aris on 2/11/2015.
  */
-var mongoose = require('mongoose');
+var mongoose = require('mongoose') , Schema = mongoose.Schema;
+
 
 var exp = module.exports;
 
 var db = mongoose.connection;
-
-var User;
-var Project;
-var Component;
-var Asset;
-
 
 
 var userSchema = mongoose.Schema({
@@ -22,26 +17,26 @@ var userSchema = mongoose.Schema({
     password: String
     //team
 });
-User = mongoose.model('User', userSchema);
+var User = mongoose.model('User', userSchema);
 
 
 var projectSchema = mongoose.Schema({
     projectname: String,
     title: String,
-    owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    owner: {type: Schema.Types.ObjectId, ref: 'User'},
 
 
     //permission stuff (run, read, write)
     runPublic: Boolean,
-    runAccess: [User],
+    runAccess: [{type: Schema.Types.ObjectId, ref: 'User'}],
     readPublic: Boolean,
-    readAccess: [User],
+    readAccess: [{type: Schema.Types.ObjectId, ref: 'User'}],
     writePublic: Boolean,
-    writeAccess: [User],
+    writeAccess: [{type: Schema.Types.ObjectId, ref: 'User'}],
 
     //so the project doesn't know about assets.. just components..
     //skc asset? whatever..
-    components: [Component], //is this a query? no this is a tree.. library isn't a tree.. this is though...
+    components: [{type: Schema.Types.ObjectId, ref: 'Component'}], //is this a query? no this is a tree.. library isn't a tree.. this is though...
     //that's why in library we can have just a behavior there.. as a root.. cant do that here
     library: [String] //of include which is a query on Components, like this. regular expressions should be allowed to...
     //include
@@ -51,12 +46,12 @@ var projectSchema = mongoose.Schema({
     //subDir    //optional filter or * for all
     //filename  //optional filter or * for all
 });
-Project = mongoose.model('Project', projectSchema);
+var Project = mongoose.model('Project', projectSchema);
 
 
 
 var componentSchema = mongoose.Schema({
-    owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    owner: {type: Schema.Types.ObjectId, ref: 'User'},
     type: String, //Object, Material, Behavior, Light, ...
     subType: String, //2D, 3D, Input, Movement, ...
 
@@ -66,16 +61,16 @@ var componentSchema = mongoose.Schema({
 
     //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
     public: Boolean, //and if its private, also do the one below
-    access: [User], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
+    access: [{type: Schema.Types.ObjectId, ref: 'User'}], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
 
 
-    assets: [Asset], //of Assets
-    mainAsset: {type: mongoose.Schema.ObjectId, ref: 'Asset'},
+    assets: [{type: Schema.Types.ObjectId, ref: 'Asset'}], //of Assets
+    mainAsset: {type: Schema.Types.ObjectId, ref: 'Asset'},
     thumbnail:String, //default ("Implicit") which takes it from type instead
 
     //an object can have object children
-    children: [Component], //of Components
-    parent: {type: mongoose.Schema.ObjectId, ref: 'Component'}, //Component, //or null
+    children: [{type: Schema.Types.ObjectId, ref: 'Component'}], //of Components
+    parent: {type: Schema.Types.ObjectId, ref: 'Component'}, //Component, //or null
 
     //an object will have allowed childrenTypes and/or allowed parentTypes
     parentTypes: [String], //of String Component allowed types/subtypes of this form [type:subtype]
@@ -83,12 +78,12 @@ var componentSchema = mongoose.Schema({
 
     ready: Boolean //??
 });
-Component = mongoose.model('Component', componentSchema);
+var Component = mongoose.model('Component', componentSchema);
 
 
 
 var assetSchema = mongoose.Schema({
-    owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    owner: {type: Schema.Types.ObjectId, ref: 'User'},
     type: String,   //image, script, sound, video, data, ...
 
     libraryName: String,  //std
@@ -105,11 +100,11 @@ var assetSchema = mongoose.Schema({
 
     //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
     public: Boolean, //and if its private, also do the one below
-    access: [User], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
+    access: [{type: Schema.Types.ObjectId, ref: 'User'}], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
 
     ready: Boolean
 });
-Asset = mongoose.model('Asset', assetSchema);
+var Asset = mongoose.model('Asset', assetSchema);
 
 /**
  * Init Db

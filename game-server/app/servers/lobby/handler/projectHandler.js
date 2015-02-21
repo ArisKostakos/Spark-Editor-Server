@@ -47,9 +47,25 @@ handler.create = function(msg, session, next) {
     fs.ensureDirSync(userPath + '/models/' + projectName);
     fs.ensureDirSync(userPath + '/projects/' + projectName);
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    var prj = { projectname: fullname, title:email, owner:key, runPublic:username, runAccess:password,
+                readPublic: yyyy, readAccess:fffff, writePublic:fffff, writeAccess:fffff, components:fffff,
+                library:ffff};
+
+    database.checkProject(prj,
+        function (code) {
+            if (code=="clear")
+                database.createProject(prj,
+                    function (code) {
+                        next(null, {code: code});
+                    });
+            else next(null, {code: code});
+        });
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+/*
     next(null, {
         code: "projectCreated"
-    });
+    });*/
 };
 
 function pad(num, size) {
