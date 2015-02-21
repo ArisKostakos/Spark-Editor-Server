@@ -60,9 +60,11 @@ handler.create = function(msg, session, next) {
                     library:user.username+"_alphaProject_mainLib"};
 
                 database.createProject(prj,
-                    function (code) {
-                        console.warn("Project Created: "+ project.projectname);
-                        console.warn("Project's Owner: "+ project.owner.username);
+                    function (code,project_created) {
+                        if (code=="success") {
+                            console.warn("Project Created: " + project_created.projectname);
+                            console.warn("Project's Owner: " + project_created.owner.username);
+                        }
                         next(null, {code: code});
                     });
             }

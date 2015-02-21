@@ -123,30 +123,30 @@ exp.init = function()
 
 exp.createUser = function(usr, cb) {
     var newUser = new User(usr);
-    newUser.save(function (err, newUser) {
+    newUser.save(function (err, user_created) {
          if (err) {cb("error"); return console.error(err);}
-         cb("success");});
+         cb("success",user_created);});
 };
 
 exp.createProject = function(prj, cb) {
     var newProject = new Project(prj);
-    newProject.save(function (err, newProject) {
+    newProject.save(function (err, project_created) {
         if (err) {cb("error"); return console.error(err);}
-        cb("success");});
+        cb("success",project_created);});
 };
 
 exp.createComponent = function(cmp, cb) {
     var newComponent = new Component(cmp);
-    newComponent.save(function (err, newComponent) {
+    newComponent.save(function (err, component_created) {
         if (err) {cb("error"); return console.error(err);}
-        cb("success");});
+        cb("success",component_created);});
 };
 
 exp.createAsset = function(ast, cb) {
     var newAsset = new Asset(ast);
-    newAsset.save(function (err, newAsset) {
+    newAsset.save(function (err, asset_created) {
         if (err) {cb("error"); return console.error(err);}
-        cb("success");});
+        cb("success",asset_created);});
 };
 
 exp.existsProject = function(projectname, cb) {
