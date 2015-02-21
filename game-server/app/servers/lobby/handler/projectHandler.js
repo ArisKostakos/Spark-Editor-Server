@@ -1,5 +1,6 @@
 var fs = require('fs-extra');
 var path = require('path');
+var database = require('../../../modules/database');
 
 module.exports = function(app) {
     return new Handler(app);

@@ -64,7 +64,7 @@ handler.signup = function(msg, session, next) {
         database.checkUser(usr,
         function (code) {
             if (code=="clear")
-                database.registerUser(usr,
+                database.createUser(usr,
                     function (code) {
                         next(null, {code: code});
                     });

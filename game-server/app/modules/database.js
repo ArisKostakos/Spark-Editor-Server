@@ -7,6 +7,13 @@ var exp = module.exports;
 
 var db = mongoose.connection;
 
+var User;
+var Project;
+var Component;
+var Asset;
+
+
+
 var userSchema = mongoose.Schema({
     fullname: String,
     email: String,
@@ -15,20 +22,27 @@ var userSchema = mongoose.Schema({
     password: String
     //team
 });
-var User = mongoose.model('User', userSchema);
+User = mongoose.model('User', userSchema);
+
 
 var projectSchema = mongoose.Schema({
     projectname: String,
     title: String,
-    owner: String,
+    owner: User,
 
     //permission stuff (run, read, write)
+    runPublic: Boolean,
+    runAccess: [User],
+    readPublic: Boolean,
+    readAccess: [User],
+    writePublic: Boolean,
+    writeAccess: [User],
 
     //so the project doesn't know about assets.. just components..
     //skc asset? whatever..
-    components: Array, //is this a query? no this is a tree.. library isn't a tree.. this is though...
+    components: [Component], //is this a query? no this is a tree.. library isn't a tree.. this is though...
     //that's why in library we can have just a behavior there.. as a root.. cant do that here
-    library: Array //of include which is a query on Components, like this. regular expressions should be allowed to...
+    library: [String] //of include which is a query on Components, like this. regular expressions should be allowed to...
     //include
     //owner    //optional filter or * for all
     //type      //optional filter or * for all
@@ -36,42 +50,44 @@ var projectSchema = mongoose.Schema({
     //subDir    //optional filter or * for all
     //filename  //optional filter or * for all
 });
-var Project = mongoose.model('Project', projectSchema);
+Project = mongoose.model('Project', projectSchema);
+
 
 
 var componentSchema = mongoose.Schema({
-    owner: String,
+    owner: User,
     type: String, //Object, Material, Behavior, Light, ...
     subType: String, //2D, 3D, Input, Movement, ...
 
-    libraryName: String,  //an account has libraries. no library with same name
+    libraryName: String,  //a user has libraries. no library with same name
 
     componentname: String, //a library has components. no component with the same name, inside a library
 
     //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
     public: Boolean, //and if its private, also do the one below
-    access: Array, // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
+    access: [User], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
 
 
-    assets: Array, //of Assets
-    //mainasset???
+    assets: [Asset], //of Assets
+    mainAsset: Asset,
     thumbnail:String, //default ("Implicit") which takes it from type instead
 
     //an object can have object children
-    children: Array, //of Components
-    parent: String, //Component, //or null
+    children: [Component], //of Components
+    parent: Component, //Component, //or null
 
     //an object will have allowed childrenTypes and/or allowed parentTypes
-    parentTypes: Array, //of String Component allowed types/subtypes of this form [type:subtype]
-    childrenTypes: Array, //of String Component allowed types/subtypes of this form [type:subtype]
+    parentTypes: [String], //of String Component allowed types/subtypes of this form [type:subtype]
+    childrenTypes: [String], //of String Component allowed types/subtypes of this form [type:subtype]
 
     ready: Boolean //??
 });
-var Component = mongoose.model('Component', componentSchema);
+Component = mongoose.model('Component', componentSchema);
+
 
 
 var assetSchema = mongoose.Schema({
-    owner: String,
+    owner: User,
     type: String,   //image, script, sound, video, data, ...
 
     libraryName: String,  //std
@@ -88,11 +104,11 @@ var assetSchema = mongoose.Schema({
 
     //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
     public: Boolean, //and if its private, also do the one below
-    access: Array, // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
+    access: [User], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
 
     ready: Boolean
 });
-var Asset = mongoose.model('Asset', assetSchema);
+Asset = mongoose.model('Asset', assetSchema);
 
 /**
  * Init Db
@@ -104,24 +120,37 @@ exp.init = function()
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function (callback)
     {
-        //console.warn("Mongooze Online:)");
+        console.warn("Mongooze Online:)");
     });
 };
 
-/**
- * registerUser
- * @param {Object} opts
- * @api public
- */
-exp.registerUser = function(usr, cb)
-{
-     var newUser = new User(usr);
 
-    newUser.save(function (err, newUser)
-     {
+exp.createUser = function(usr, cb) {
+    var newUser = new User(usr);
+    newUser.save(function (err, newUser) {
          if (err) {cb("error"); return console.error(err);}
-         cb("success");
-     });
+         cb("success");});
+};
+
+exp.createProject = function(prj, cb) {
+    var newProject = new Project(prj);
+    newProject.save(function (err, newProject) {
+        if (err) {cb("error"); return console.error(err);}
+        cb("success");});
+};
+
+exp.createComponent = function(cmp, cb) {
+    var newComponent = new Component(cmp);
+    newComponent.save(function (err, newComponent) {
+        if (err) {cb("error"); return console.error(err);}
+        cb("success");});
+};
+
+exp.createAsset = function(ast, cb) {
+    var newAsset = new Asset(ast);
+    newAsset.save(function (err, newAsset) {
+        if (err) {cb("error"); return console.error(err);}
+        cb("success");});
 };
 
 /**
