@@ -53,60 +53,11 @@
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Input Group -->
-				<Entity extends="std.display.Div"><_States>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>49</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
-					</_States><Form><Space><Entities>
-					
-					<!-- Input Appearance -->
-					<Entity extends="std.display.Text"><_States>
-						<_State id="name"><Value>Upload</Value></_State>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="text"><Value>Upload</Value></_State>
-						<_State id="border"><Value>0px</Value></_State>
-						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-						<_State id="fontSize"><Value>30px</Value></_State>
-						<_State id="height"><Value>30</Value></_State>
-						<_State id="fontColor"><Value>white</Value></_State>
-						<_State id="textAlign"><Value>center</Value></_State>
-						<_State id="verticalCenter"><Value>0</Value></_State>
-					</_States></Entity>
-					
-					<!-- Real Input -->
-					<Entity extends="std.display.FileInput"><_States>
-						<_State id="name"><Value>Upload</Value></_State>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="height"><Value>100%</Value></_State>
-						<_State id="type"><Value>file</Value></_State>
-						<_State id="opacity"><Value>0</Value></_State>
-					</_States>
-					<_Triggers><Trigger><Event>MouseRightClicked</Event><Scripts>
-					<Script>
-					if (me.getState('loadedFiles')==null) 
-					{
-						Display.error("shit..");
-					}
-					else
-					{
-						if (me.getState('loadedFiles').length==0)
-						{
-							Display.error("crap..");
-						}
-						else
-						{
-							Display.error(me.getState('loadedFiles')[0]);
-							
-							Comms.request("editor.fileHandler.load", { 	filedata: me.getState('loadedFiles')[0]}, "File Send Request");
-						}
-					}
-					</Script>
-					</Scripts></Trigger></_Triggers></Entity>
-					
-					
-				</Entities></Space></Form></Entity>
+				<!-- Project -->
+				<Entity extends="SparkEditor.entities.EditorProjectPanel"></Entity>
 				
+				<!-- Library -->
+				<Entity extends="SparkEditor.entities.EditorLibraryPanel"></Entity>
 			</Entities>
 		</Space>
 	</Form>

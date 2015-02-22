@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Editor Library Audio Panel</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<!-- Constructor -->
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//me.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = Logic.getEntityByName('EditorLibraryShapes');
+					//me.startAction("SelectCategory");
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<!-- SelectCategory -->
+		<Action>
+			<Id>SelectSubCategory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					/*
+					var oldSelected = me.getState('selectedCategoryObject');
+					var newSelected = me.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value;
+					
+					if (oldSelected!=newSelected)
+					{
+						if (oldSelected!=null)
+							oldSelected.startAction("Unselected");
+						
+						if (newSelected!=null)
+							newSelected.startAction("Selected");
+							
+						me.setState('selectedCategoryObject', newSelected);
+					}
+					*/
+					me.stopAction("SelectSubCategory");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>selectionRequest</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="text"><Value>Audio Panel</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

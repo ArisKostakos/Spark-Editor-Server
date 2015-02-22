@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<State><Id>buttonText</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>imageWidth</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>imageHeight</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>textfontSize</Id><Type>Text</Type><Value>13</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Image -->
+				<Entity extends="std.display.Image"><_States>
+					<_State id="left"><Value>11</Value></_State>
+					<_State id="verticalCenter"><Value>-1</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('src',parent.getState('imageName'));
+					me.setState('width',parent.getState('imageWidth'));
+					me.setState('height',parent.getState('imageHeight'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>70%</Value></_State>
+					<_State id="left"><Value>29</Value></_State>
+					<_State id="verticalCenter"><Value>-2</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>left</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('buttonText'));
+					me.setState('height',parent.getState('textfontSize'));
+					me.setState('fontSize',parent.getState('textfontSize')+'px');
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+					/*
+					var myContainer = parent.parentEntity;
+					
+					myContainer.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = me;
+					myContainer.startAction("SelectCategory");
+					*/
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Selected -->
+		<Action>
+			<Id>Selected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					/*
+					me.getState('textObject').setState('fontColor',me.getState('selectedTextColor'));
+					me.getState('imageObject').setState('src', me.getState('imageName')+me.getState('selectedImageSuffix'));
+					me.stopAction("Selected");
+					*/
+				</Script>
+			</Scripts>
+		</Action>
+
+		<!-- Unselected -->
+		<Action>
+			<Id>Unselected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					/*
+					me.getState('textObject').setState('fontColor',me.getState('normalTextColor'));
+					me.getState('imageObject').setState('src', me.getState('imageName'));
+					me.stopAction("Unselected");
+					*/
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

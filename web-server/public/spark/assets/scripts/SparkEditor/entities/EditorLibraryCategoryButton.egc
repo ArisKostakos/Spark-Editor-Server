@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>4</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>
+		<_State id="border"><Value>0px</Value></_State>
+		<State><Id>buttonText</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>normalTextColor</Id><Type>Text</Type><Value>white</Value></State>
+		<State><Id>selectedTextColor</Id><Type>Text</Type><Value>red</Value></State>
+		<State><Id>selectedImageSuffix</Id><Type>Text</Type><Value>_selected</Value></State>
+		<State><Id>imageWidth</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>imageHeight</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>textObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+				<!-- Image -->
+				<Entity extends="std.display.Image"><_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState('imageObject',me);
+					me.setState('src',parent.getState('imageName'));
+					me.setState('width',parent.getState('imageWidth'));
+					me.setState('height',parent.getState('imageHeight'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>15</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState('textObject',me);
+					me.setState('text',parent.getState('buttonText'));
+					me.setState('fontColor',parent.getState('normalTextColor'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+					var myContainer = parent.parentEntity;
+					
+					myContainer.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = me;
+					myContainer.startAction("SelectCategory");
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Selected -->
+		<Action>
+			<Id>Selected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.getState('textObject').setState('fontColor',me.getState('selectedTextColor'));
+					me.getState('imageObject').setState('src', me.getState('imageName')+me.getState('selectedImageSuffix'));
+					me.stopAction("Selected");
+				</Script>
+			</Scripts>
+		</Action>
+
+		<!-- Unselected -->
+		<Action>
+			<Id>Unselected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.getState('textObject').setState('fontColor',me.getState('normalTextColor'));
+					me.getState('imageObject').setState('src', me.getState('imageName'));
+					me.stopAction("Unselected");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

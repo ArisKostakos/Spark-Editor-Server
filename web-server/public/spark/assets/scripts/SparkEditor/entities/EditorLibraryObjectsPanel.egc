@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Editor Library Objects Panel</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<!-- Constructor -->
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//me.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = Logic.getEntityByName('EditorLibraryShapes');
+					//me.startAction("SelectCategory");
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<!-- SelectCategory -->
+		<Action>
+			<Id>SelectSubCategory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					/*
+					var oldSelected = me.getState('selectedCategoryObject');
+					var newSelected = me.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value;
+					
+					if (oldSelected!=newSelected)
+					{
+						if (oldSelected!=null)
+							oldSelected.startAction("Unselected");
+						
+						if (newSelected!=null)
+							newSelected.startAction("Selected");
+							
+						me.setState('selectedCategoryObject', newSelected);
+					}
+					*/
+					me.stopAction("SelectSubCategory");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>selectionRequest</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- List -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="gap"><Value>0</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<!--<_State id="height"><Value>100%</Value></_State>-->
+					</_States>
+					<Form><Space><Entities>
+						<!-- 2D -->
+						<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryButton"><_States>
+							<_State id="name"><Value>Library Object 2D</Value></_State>
+							<_State id="buttonText"><Value>2D</Value></_State>
+							<_State id="imageName"><Value>libsubcat_shapes_2d</Value></_State>
+							<_State id="selectedColor"><Value>rgb(227,112,135)</Value></_State>
+							<_State id="selected"><Value>true</Value></_State>
+							<_State id="imageWidth"><Value>12</Value></_State>
+							<_State id="imageHeight"><Value>12</Value></_State>
+						</_States></Entity>
+						
+						
+						<!-- 2D List -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="name"><Value>LibraryObjects2DContainer</Value></_State>
+								<_State id="gap"><Value>0</Value></_State>
+								<_State id="width"><Value>100%</Value></_State>
+								<!--<_State id="height"><Value>100%</Value></_State>-->
+							</_States>
+							<Form><Space><Entities>
+								<!-- First Item -->
+								<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryItem"><_States>
+									<_State id="name"><Value>arkanoidPaddle</Value></_State>
+									<_State id="buttonText"><Value>arkanoidPaddle</Value></_State>
+									<_State id="imageName"><Value>editor_save</Value></_State>
+									<!--<_State id="selectedColor"><Value>rgb(148,194,43)</Value></_State>-->
+									<_State id="imageWidth"><Value>12</Value></_State>
+									<_State id="imageHeight"><Value>12</Value></_State>
+								</_States></Entity>
+							</Entities></Space></Form>
+						</Entity>
+						
+						<!-- 3D -->
+						<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryButton"><_States>
+							<_State id="name"><Value>Library Object 3D</Value></_State>
+							<_State id="buttonText"><Value>3D</Value></_State>
+							<_State id="imageName"><Value>libsubcat_shapes_3d</Value></_State>
+							<!--<_State id="selectedColor"><Value>rgb(148,194,43)</Value></_State>-->
+							<_State id="imageWidth"><Value>13</Value></_State>
+							<_State id="imageHeight"><Value>14</Value></_State>
+						</_States></Entity>
+						
+						<!-- Import Assets -->
+						<Entity extends="SparkEditor.entities.EditorAssetImport"><_States>
+							<_State id="name"><Value>Library Object Import</Value></_State>
+							<_State id="buttonText"><Value>Import</Value></_State>
+							<_State id="imageName"><Value>libsubcat_import_mikro</Value></_State>
+							<_State id="imageWidth"><Value>9</Value></_State>
+							<_State id="imageHeight"><Value>14</Value></_State>
+						</_States></Entity>
+						
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

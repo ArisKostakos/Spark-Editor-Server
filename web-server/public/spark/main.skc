@@ -84,6 +84,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBox.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/BlueButton.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GreyButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScene.egc</Asset>
@@ -93,7 +94,28 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/SignupPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorTopBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarFileSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarEditSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarPropertiesSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarRunSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarSeparator.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLeftBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanelContainer.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanelContainer.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryCategoryButton.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryButton.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItem.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorIconTextHorizontalButton.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryShapesPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryObjectsPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryBehaviorsPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryLightsPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryTexturesPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySkiesPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryAudioPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorAssetImport.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackgroundImage.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Networking.egc</Asset>
 		</Module>
@@ -107,11 +129,45 @@
 			<Asset type="image" subtype="2D" location="local" id="alphakeyIcon" bytes='35672' forceLoadAsData='true'>alphakeyIcon.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="emailIcon" bytes='35672' forceLoadAsData='true'>emailIcon.png</Asset>
 			
+			<!-- Top Bar, Edit -->
+			<Asset type="image" subtype="2D" location="local" id="editor_undo" bytes='35672' forceLoadAsData='true'>editor/topbar/undo.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_redo" bytes='35672' forceLoadAsData='true'>editor/topbar/redo.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_cut" bytes='35672' forceLoadAsData='true'>editor/topbar/cut.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_copy" bytes='35672' forceLoadAsData='true'>editor/topbar/copy.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_paste" bytes='35672' forceLoadAsData='true'>editor/topbar/paste.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_delete" bytes='35672' forceLoadAsData='true'>editor/topbar/delete.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_lock" bytes='35672' forceLoadAsData='true'>editor/topbar/lock.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_group" bytes='35672' forceLoadAsData='true'>editor/topbar/group.png</Asset>
+			
+			<!-- Top Bar, Run -->
 			<Asset type="image" subtype="2D" location="local" id="editor_export" bytes='35672' forceLoadAsData='true'>editor/topbar/export.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_play" bytes='35672' forceLoadAsData='true'>editor/topbar/play.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_publish" bytes='35672' forceLoadAsData='true'>editor/topbar/publish.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_save" bytes='35672' forceLoadAsData='true'>editor/topbar/save.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_share" bytes='35672' forceLoadAsData='true'>editor/topbar/share.png</Asset>
+			
+			<!-- Left Bar, Library, Categories (normal) -->
+			<Asset type="image" subtype="2D" location="local" id="libcat_shapes" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/shape.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_objects" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/object.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_behaviors" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/behaviors.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_lights" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/lights.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_textures" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/textures.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_skies" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/skies.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_audio" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio.png</Asset>
+			
+			<!-- Left Bar, Library, Categories (selected) -->
+			<Asset type="image" subtype="2D" location="local" id="libcat_shapes_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/shape_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_objects_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/object_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_behaviors_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/behaviors_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_lights_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/lights_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_textures_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/textures_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_skies_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/skies_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>
+			
+			<!-- Left Bar, Library, Misc -->
+			<Asset type="image" subtype="2D" location="local" id="libsubcat_import_mikro" bytes='35672' forceLoadAsData='true'>editor/leftbar/import_mikro.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
 		</Module>
 	</Assets>
 	

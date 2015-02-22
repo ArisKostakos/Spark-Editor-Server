@@ -6,13 +6,16 @@
 				<Script>
 					Display.error("Start Connecting to stuff...");
 					me.setState('UniqueId', "Connection" + Std.random(999999));
+					
 					Comms.connectTo("104.154.55.28","3014", "gateServer");
+					Comms.file_connectTo("104.154.55.28", "3001", "fileServer");
 				</Script>
 			</_Scripts>
 		</_Action>
 	</_Actions>
 	
 	<_Triggers>
+		<!-- Networking -->
 		<Trigger>
 			<Event>NetworkConnected</Event>
 			<Scripts>
@@ -113,6 +116,50 @@
 			</Scripts>
 		</Trigger>
 		
+		
+		<!-- File Transfer -->
+		<Trigger>
+			<Event>FileTransferConnected</Event>
+			<Scripts>
+				<Script>
+					Display.error("FILE SERVER CONNECTED TO: " + Comms.file_connectedServerName);
+					
+					if (Comms.file_connectedServerName=="fileServer")
+					{
+						Display.error("Received File Server CONNECTED Event...");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Scripts>
+				<Script>
+					//Display.error("Received File Transfer Request...");
+					
+					/*This is terrible.. if two request events are raised simutaneously, this will collapse
+					if i do if else, then the first one will be triggered twice
+					if i do if, if, if then all of them will be executed twice
+					i can't remove the request from the Comms array either, cause more than one entities might be connected to the
+					same request and need it...*/
+					
+					//Implementation below now assumes two request events will never be raised simutaneously (which is very wrong..)
+					if (Comms.file_getSendFileRequestData("sendTestFile")!=null)
+					{
+						//Display.error("File Request Received Identified: sendTestFile");
+						var data = Comms.file_getSendFileRequestData("sendTestFile");
+						
+						//Display.error("File Transfer Progress: " + data.progress + "%");
+						Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
+					}
+					else
+					{
+						Display.error("File Transfer Request Could NOT be identified:-(");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
 		
 	</_Triggers>
 	
