@@ -75,7 +75,9 @@ function createProjectDirectories(libraryName, userName)
     fs.ensureDirSync(userPath + '/images/' + libraryName);
     fs.ensureDirSync(userPath + '/sounds/' + libraryName);
     fs.ensureDirSync(userPath + '/models/' + libraryName);
+    fs.ensureDirSync(userPath + '/data/' + libraryName);
     fs.ensureDirSync(userPath + '/projects/' + libraryName);
+    fs.ensureDirSync(userPath + '/thumbnails/' + libraryName);
     fs.ensureDirSync(userPath + '/incoming');
 }
 

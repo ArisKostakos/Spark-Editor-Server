@@ -1,6 +1,7 @@
 var fs = require('fs-extra');
 var path = require('path');
 var database = require('../../../modules/database');
+var lwip = require('lwip'); //move me to new server for image manipulations..
 
 module.exports = function(app) {
     return new Handler(app);
@@ -38,7 +39,7 @@ handler.createObject2D = function(msg, session, next) {
     var fileName = msg.fileName;
     //fileSize
     var fileSize = msg.fileSize;
-    //SubDir (doesn't work yet!!!)
+    //SubDir (doesn't work yet. fix it when u use it, also EnsureDir to create it!!! for thumbnail too)
     var subDir = msg.subDir;
 
     //User Path
@@ -46,16 +47,23 @@ handler.createObject2D = function(msg, session, next) {
     fs.ensureDirSync(userPath);
 
     //Move real asset
-    fs.move(userPath + '/incoming/' + fileName, userPath + '/images/' + libraryName + subDir + '/' + fileName, function(err) {
+    var assetUrl = userPath + '/images/' + libraryName + subDir + '/' + fileName;
+    var thumbnailUrl = userPath + '/thumbnails/' + libraryName + subDir + '/' + fileName;
+    fs.move(userPath + '/incoming/' + fileName, assetUrl, function(err) {
         if (err) {next(null, {code: "error"}); return console.error(err)}
 
         //create thumbnail
-        //..
-        next(null, {code: "success"});
+        createThumbnail(assetUrl, thumbnailUrl, 16, function(err){
+            if (err) {next(null, {code: "error"}); return console.error(err)}
+
+            //Copy an Image egc
+            //..
+            next(null, {code: "success"});
+        });
     })
 
 
-    //Copy an Image egc
+
 
     //Create imageAssetDb
 
@@ -67,3 +75,23 @@ handler.createObject2D = function(msg, session, next) {
 
 
 };
+
+function createThumbnail(srcImageUrl, targetUrl, size, cb)
+{
+    // obtain an image object:
+    lwip.open(srcImageUrl, function(err, image){
+        if (err) {cb(err); return;}
+
+        // define a batch of manipulations and save to disk
+        image.batch()
+            .resize(size)
+            .writeFile(targetUrl, function(err){
+                if (err) {cb(err); return;}
+
+                // done.
+                cb();
+            });
+
+    });
+}
+
