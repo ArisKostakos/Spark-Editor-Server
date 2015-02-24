@@ -50,7 +50,7 @@ handler.create = function(msg, session, next) {
 
                 var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
                     readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
-                    library:user.username+"_alphaProject_mainLib"};
+                    library: [user.username+"_alphaProject"]};
 
                 database.createProject(prj,
                     function (code,project_created) {
@@ -67,15 +67,16 @@ handler.create = function(msg, session, next) {
         });
 };
 
-function createProjectDirectories(userName, projectName)
+function createProjectDirectories(libraryName, userName)
 {
     var userPath = path.resolve("../web-server/public") + '/assets/' + userName;
 
-    fs.ensureDirSync(userPath + '/scripts/' + projectName);
-    fs.ensureDirSync(userPath + '/images/' + projectName);
-    fs.ensureDirSync(userPath + '/sounds/' + projectName);
-    fs.ensureDirSync(userPath + '/models/' + projectName);
-    fs.ensureDirSync(userPath + '/projects/' + projectName);
+    fs.ensureDirSync(userPath + '/scripts/' + libraryName);
+    fs.ensureDirSync(userPath + '/images/' + libraryName);
+    fs.ensureDirSync(userPath + '/sounds/' + libraryName);
+    fs.ensureDirSync(userPath + '/models/' + libraryName);
+    fs.ensureDirSync(userPath + '/projects/' + libraryName);
+    fs.ensureDirSync(userPath + '/incoming');
 }
 
 function bindProject(session, project)
