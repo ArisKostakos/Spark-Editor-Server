@@ -21,31 +21,49 @@ var handler = Handler.prototype;
  * @param  {Function} next    next stemp callback
  * @return {Void}
  */
-handler.load = function(msg, session, next) {
+handler.createObject2D = function(msg, session, next) {
     var self = this;
-
-    //var filedata = msg.filedata;
-
     var sessionService = self.app.get('sessionService');
-
-/*
-    fs.writeFile(assetsPath+"/test", buffer, function(err) {
-        if(err) {
-            console.warn(err);
-        } else {
-            console.warn("The file was saved!");
-            next(null, {
-                code: "Got it, Stored it!"
-            });
-        }
-    });*/
 
     var user = session.get('user');
     var project = session.get('project');
-    console.warn("The Fullname of the connected user is: " + user.fullname);
-    console.warn("The User is connected to the Project: " + project.title);
 
-    next(null, {
-        code: "hi"
-    });
+    //componentName (it can be different than uploaded asset name)
+    var componentName = msg.componentName;
+    //libraryName (because it can be different than project name)
+    var libraryName = msg.libraryName;
+    //assetName (because it can be different than file name)
+    var assetName = msg.assetName;
+    //fileName
+    var fileName = msg.fileName;
+    //fileSize
+    var fileSize = msg.fileSize;
+    //SubDir (doesn't work yet!!!)
+    var subDir = msg.subDir;
+
+    //User Path
+    var userPath = path.resolve("../web-server/public") + '/assets/' + user.username;
+    fs.ensureDirSync(userPath);
+
+    //Move real asset
+    fs.move(userPath + '/incoming/' + fileName, userPath + '/images/' + libraryName + subDir + '/' + fileName, function(err) {
+        if (err) {next(null, {code: "error"}); return console.error(err)}
+
+        //create thumbnail
+        //..
+        next(null, {code: "success"});
+    })
+
+
+    //Copy an Image egc
+
+    //Create imageAssetDb
+
+    //Create egcAssetDb
+
+    //CreateComponentDb
+
+    //send success signal
+
+
 };
