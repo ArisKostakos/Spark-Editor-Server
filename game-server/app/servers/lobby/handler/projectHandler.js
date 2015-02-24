@@ -28,7 +28,7 @@ handler.create = function(msg, session, next) {
     var user = session.get('user');
     console.warn("The Fullname of the connected user is: " + user.fullname);
 
-    var defaultProjectName = user.username+"_alphaProject";
+    var defaultProjectName = "alphaProject";
 
     database.existsProject(defaultProjectName,
         function (code, project) {
@@ -48,9 +48,9 @@ handler.create = function(msg, session, next) {
                 //DOESNT EXIST. CREATE IT
                 console.warn("Project does not exist yet!")
 
-                var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
+                var prj = { projectname: "alphaProject", title: "Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
                     readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
-                    library: [user.username+"_alphaProject", "std"]};//projectname:alphaproject, library,make them queries
+                    library: ["alphaProject", "std"]};//projectname:alphaproject, owner:user._id,  make them queries
 
                 database.createProject(prj,
                     function (code,project_created) {
@@ -61,7 +61,7 @@ handler.create = function(msg, session, next) {
                             //Create directories
                             createProjectDirectories(project_created.projectname,project_created.owner.username);
                         }
-                        next(null, {code: code});
+                        next(null, {code: code, project: project_created});
                     });
             }
         });

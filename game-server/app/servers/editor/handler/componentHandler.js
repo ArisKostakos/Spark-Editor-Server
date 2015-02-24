@@ -60,29 +60,44 @@ handler.createObject2D = function(msg, session, next) {
             if (err) {next(null, {code: "error"}); return console.error(err)}
 
             //Copy/Create an Image egc
-            var gameEntityUrl = userPath + '/scripts/' + libraryName + subDir + '/' + fileName.slice(0, -3) + 'egc';
+            var gameEntityName = fileName.slice(0, -3) + 'egc'
+            var gameEntityUrl = userPath + '/scripts/' + libraryName + subDir + '/' + gameEntityName;
             fs.copy(assetPath + '/tempFactory/template_object2d.egc', gameEntityUrl, function(err) {
                 if (err) {next(null, {code: "error"}); return console.error(err)}
 
                 //Create imageAssetDb
-                //..
-                next(null, {code: "success"});
-            })
+                var astImage = { owner:user._id, type: 'images', libraryName: libraryName, subDir: subDir,
+                    filename: fileName, filesize: fileSize, assetname: assetName, public: true, access: [user._id], ready: true};
+                database.createAsset(astImage, function (code,asset_created) {
+                    if (code=="error") {next(null, {code: "error"}); return;}
+
+                    astImage = asset_created;
+
+                    //Create egcAssetDb
+                    var astEgc = { owner:user._id, type: 'scripts', libraryName: libraryName, subDir: subDir,
+                        filename: gameEntityName, filesize: fileSize, assetname: gameEntityName, public: true, access: [user._id], ready: true};
+                    database.createAsset(astEgc, function (code,asset_created) {
+                        if (code=="error") {next(null, {code: "error"}); return;}
+
+                        astEgc = asset_created;
+
+                        //CreateComponentDb
+                        var compnt = { owner:user._id, type: 'Object', subType: '2D', libraryName: libraryName, componentname: componentName,
+                            public: true, access: [user._id], assets: [astEgc._id, astImage._id], mainAsset: astEgc._id, thumbnail: thumbnailUrl,
+                            children: [], /*parent: xcp._id,*/ parentTypes: [], childrenTypes: [], ready: true};
+                        database.createComponent(compnt, function (code,component_created) {
+                            if (code=="error") {next(null, {code: "error"}); return;}
+
+                            compnt = component_created;
+
+                            //send success signal
+                            next(null, {code: "success"});
+                        });
+                    });
+                });
+            });
         });
-    })
-
-
-
-
-
-
-    //Create egcAssetDb
-
-    //CreateComponentDb
-
-    //send success signal
-
-
+    });
 };
 
 function createThumbnail(srcImageUrl, targetUrl, size, cb)
