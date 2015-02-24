@@ -57,7 +57,7 @@ handler.createObject2D = function(msg, session, next) {
             if (err) {next(null, {code: "error"}); return console.error(err)}
 
             //Copy an Image egc
-            //..
+            //....
             next(null, {code: "success"});
         });
     })
