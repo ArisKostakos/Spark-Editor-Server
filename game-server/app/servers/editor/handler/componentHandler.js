@@ -42,8 +42,11 @@ handler.createObject2D = function(msg, session, next) {
     //SubDir (doesn't work yet. fix it when u use it, also EnsureDir to create it!!! for thumbnail too)
     var subDir = msg.subDir;
 
+    //Asset Path
+    var assetPath = path.resolve("../web-server/public") + '/assets';
+
     //User Path
-    var userPath = path.resolve("../web-server/public") + '/assets/' + user.username;
+    var userPath = assetPath + '/' + user.username;
     fs.ensureDirSync(userPath);
 
     //Move real asset
@@ -56,16 +59,22 @@ handler.createObject2D = function(msg, session, next) {
         createThumbnail(assetUrl, thumbnailUrl, 16, function(err){
             if (err) {next(null, {code: "error"}); return console.error(err)}
 
-            //Copy an Image egc
-            //....
-            next(null, {code: "success"});
+            //Copy/Create an Image egc
+            var gameEntityUrl = userPath + '/scripts/' + libraryName + subDir + '/' + fileName.slice(0, -3) + 'egc';
+            fs.copy(assetPath + '/tempFactory/template_object2d.egc', gameEntityUrl, function(err) {
+                if (err) {next(null, {code: "error"}); return console.error(err)}
+
+                //Create imageAssetDb
+                //..
+                next(null, {code: "success"});
+            })
         });
     })
 
 
 
 
-    //Create imageAssetDb
+
 
     //Create egcAssetDb
 

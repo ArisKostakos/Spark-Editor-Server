@@ -50,7 +50,7 @@ handler.create = function(msg, session, next) {
 
                 var prj = { projectname: user.username+"_alphaProject", title:user.username + " Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
                     readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
-                    library: [user.username+"_alphaProject"]};
+                    library: [user.username+"_alphaProject", "std"]};//projectname:alphaproject, library,make them queries
 
                 database.createProject(prj,
                     function (code,project_created) {
