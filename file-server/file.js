@@ -19,7 +19,7 @@ server.on('connection', function(client){
 
     client.on('stream', function(stream, meta){
         //
-        console.warn("FILE SEND REQUEST RECEIVED: Name ["+ meta.name + "] and size [" + meta.size + "]");
+        console.warn("FILE SEND REQUEST RECEIVED: Name ["+ meta.name + "] and size [" + meta.size + "] for user [" + meta.user + "]");
         //
         var file = fs.createWriteStream(assetsPath + '/' + meta.name);
         stream.pipe(file);
