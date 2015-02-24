@@ -146,6 +146,9 @@ exp.createComponent = function(cmp, cb) {
     var newComponent = new Component(cmp);
     newComponent.save(function (err, component_created) {
         if (err) {cb("error"); return console.error(err);}
+
+        //SUCCESS
+        //findone
         cb("success",component_created);});
 };
 
