@@ -133,10 +133,11 @@ exp.createProject = function(prj, cb) {
     newProject.save(function (err, project_created) {
         if (err) {cb("error"); return console.error(err);}
 
-        //SUCCESS
+        //BETTER QUERY NEEDED HERE! and do i really need to populate at creation? :/
         Project.findOne({ projectname: project_created.projectname }).populate('owner').populate('runAccess')
                         .populate('readAccess').populate('writeAccess').exec(function (err, project_populated) {
             if (err) {cb("error"); return console.error(err);}
+
             cb("success",project_populated);
         });
     });
@@ -147,9 +148,14 @@ exp.createComponent = function(cmp, cb) {
     newComponent.save(function (err, component_created) {
         if (err) {cb("error"); return console.error(err);}
 
-        //SUCCESS
-        //findone
-        cb("success",component_created);});
+        //BETTER QUERY NEEDED HERE! and do i really need to populate at creation? :/
+        Component.findOne({ componentname: component_created.componentname }).populate('owner').populate('access')
+            .populate('assets').populate('mainAsset').populate('children').populate('parent').exec(function (err, component_populated) {
+                if (err) {cb("error"); return console.error(err);}
+
+                cb("success",component_populated);
+            });
+    });
 };
 
 exp.createAsset = function(ast, cb) {

@@ -91,7 +91,7 @@ handler.createObject2D = function(msg, session, next) {
                             compnt = component_created;
 
                             //send success signal
-                            next(null, {code: "success"});
+                            next(null, {code: "success", component: compnt});
                         });
                     });
                 });
