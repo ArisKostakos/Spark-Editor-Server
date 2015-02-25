@@ -166,8 +166,6 @@ exp.createAsset = function(ast, cb) {
 };
 
 exp.existsProject = function(projectname, cb) {
-
-
     Project.findOne({ projectname: projectname }).populate('owner').populate('runAccess')
         .populate('readAccess').populate('writeAccess').exec(function (err, projectFound) {
             if (err) {cb("error"); return console.error(err);}

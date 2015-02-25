@@ -41,7 +41,7 @@ handler.create = function(msg, session, next) {
                 bindProject(session, project);
 
                 //Return
-                next(null, {code: "success"});
+                next(null, {code: "success", project: project});
             }
             else
             {
