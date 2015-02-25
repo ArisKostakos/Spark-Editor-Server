@@ -4,31 +4,21 @@
 		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>22</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(82,107,125)</Value></_State>
-		<_State id="border"><Value>1px solid rgb(49,66,81)</Value></_State>
 		<_State id="textfontSize"><Value>10</Value></_State>
+		<_State id="isAssetItem"><Value>true</Value></_State>
 		
+		<!--
 		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>selectedColor</Id><Type>Text</Type><Value>white</Value></State>
-
+		-->
+		
 	</_States>
 	
 	<_Form>
 		<_Space>
 			<_Entities>
 				<!-- Selected -->
-				<Entity extends="std.display.Div"><_States>
-					<_State id="left"><Value>0</Value></_State>
-					<_State id="width"><Value>6</Value></_State>
-					<_State id="top"><Value>0</Value></_State>
-					<_State id="bottom"><Value>2</Value></_State>
-					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
-					me.setState('backgroundColor',parent.getState('selectedColor'));
-					
-					if (parent.getState('selected')==true)
-						me.setState('display','inline');
-					else
-						me.setState('display','none');
-				</Script></_Scripts></_Action></_Actions></Entity>
+				
 			</_Entities>
 		</_Space>
 	</_Form>

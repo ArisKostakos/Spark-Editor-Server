@@ -84,5 +84,23 @@
 			<Type>Text</Type>
 			<Value>inline</Value>
 		</State>
+		
+		<State>
+			<Id>cursor</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>overflow</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>white-space</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
 	</_States>
 </Entity>

@@ -98,7 +98,7 @@
 					}
 					else
 					{
-						Display.error("Request Could NOT be identified:-(");
+						//Display.error("Request Could NOT be identified:-(");
 					}
 					
 				</Script>
@@ -155,7 +155,7 @@
 					}
 					else
 					{
-						Display.error("File Transfer Request Could NOT be identified:-(");
+						//Display.error("File Transfer Request Could NOT be identified:-(");
 					}
 				</Script>
 			</Scripts>
@@ -164,19 +164,28 @@
 	</_Triggers>
 	
 	<_States>
-		
 		<State>
 			<Id>UniqueId</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
+		
+		<State>
+			<Id>username</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>projectname</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
 		<State>
 			<Id>Connected</Id>
 			<Type>Boolean</Type>
 			<Value>false</Value>
 		</State>
 	</_States>
-	
-
-	
 </Entity>

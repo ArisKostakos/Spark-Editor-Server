@@ -20,5 +20,8 @@
 			<Value>true</Value>
 		</_State>
 		
+		<_State id="cursor">
+			<Value>pointer</Value>
+		</_State>
 	</_States>
 </Entity>

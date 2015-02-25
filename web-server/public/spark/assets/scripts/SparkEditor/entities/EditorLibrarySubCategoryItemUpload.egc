@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryItem">
+	<_States>
+		<State><Id>fileSize</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>progressBar</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Selected -->
+				<Entity extends="std.display.Div"><_States>
+					<_State id="width"><Value>6</Value></_State>
+					<_State id="height"><Value>0%</Value></_State>
+					<_State id="bottom"><Value>0</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(0,255,0)</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('progressBar',me);
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData(me.getState('name'))!=null)
+					{
+						//Display.error("File Request Received Identified: " + me.getState('name'));
+						var data = Comms.file_getSendFileRequestData(me.getState('name'));
+						
+						//Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
+						
+						me.getState('progressBar').setState('height',data.progressPercent+'%');
+						
+						if (data.progress==1)
+						{
+							//Until we have a component loader window, library name will always be project name
+							var libraryName = Logic.getEntityByName('Spark Editor').getState('projectname');
+							
+							//Until we have a component loader window, component name will always be uploaded file name
+							var componentName = me.getState('name');
+							
+							//Until we have a component loader window, subDir is always ""
+							var subDir = "";
+							
+							//fileName
+							var fileName = me.getState('name');
+							
+							//fileSize
+							var fileSize = me.getState('fileSize');
+							
+							////Until we have a component loader window, assetName is always fileName
+							var assetName = me.getState('name');  //this is actually itemTitle, when i receive it..
+							
+							Comms.request("editor.componentHandler.createObject2D", {componentName: componentName, libraryName:libraryName, assetName:assetName, fileName:fileName, fileSize:fileSize, subDir:subDir}, me.getState('name'));
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData(me.getState('name'))!=null)
+					{
+						Display.error("Request Received Identified: " + me.getState('name'));
+						var data = Comms.getRequestData(me.getState('name'));
+						
+						if (data.code=="success")
+						{
+							var thumbUrl = data.component.thumbnail;
+							Display.error("Success creating component. Thumbnail url: " + thumbUrl);
+
+							thumbUrl = thumbUrl.substr(thumbUrl.indexOf('assets/'));
+							Display.error("Success creating component. Thumbnail url for client: " + thumbUrl);
+							
+							//for now, just change the icon here
+							
+							//Image
+							var objImage = me.getState('obj_image');
+							
+							objImage.setState('src',thumbUrl);
+							objImage.setState('width','14');
+							objImage.setState('height','14');
+							objImage.setState('opacity','1');
+							
+							//Text
+							var objText = me.getState('obj_text');
+							objText.setState('opacity','1');
+							
+							//Progress Bar
+							var objProgressBar = me.getState('progressBar');
+							objProgressBar.setState('opacity','0');
+						}
+						else
+						{
+							Display.error("Error creating component.");
+							//remove uploading item here (me) or something..
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	
+</Entity>

@@ -30,6 +30,7 @@
 							<_State id="border"><Value>0px</Value></_State>
 							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
 							<_State id="fontSize"><Value>22px</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
 							<_State id="height"><Value>22</Value></_State>
 							<_State id="fontColor"><Value>white</Value></_State>
 							<_State id="verticalCenter"><Value>0</Value></_State>

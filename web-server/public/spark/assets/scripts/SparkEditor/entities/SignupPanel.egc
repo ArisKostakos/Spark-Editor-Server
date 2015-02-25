@@ -235,6 +235,8 @@
 					<_State id="height"><Value>49</Value></_State>
 					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
 					<_State id="border"><Value>0px</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
 					<_State id="text"><Value>Sign up</Value></_State>
 					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
 					<_State id="fontSize"><Value>30px</Value></_State>

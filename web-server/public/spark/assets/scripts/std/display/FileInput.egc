@@ -18,6 +18,12 @@
 			<Value>null</Value>
 		</State>
 		
+		<State>
+			<Id>accept</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
 		<_State id="NCmeshType">
 			<Value>Input</Value>
 		</_State>

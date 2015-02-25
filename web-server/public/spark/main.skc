@@ -107,6 +107,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryCategoryButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItem.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItemUpload.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorIconTextHorizontalButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryShapesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryObjectsPanel.egc</Asset>
