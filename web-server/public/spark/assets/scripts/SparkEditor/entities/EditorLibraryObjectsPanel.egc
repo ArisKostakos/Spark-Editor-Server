@@ -58,7 +58,7 @@
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItem');
 						myNewItem.setState('name',components[i].componentname);
 						myNewItem.setState('buttonText',components[i].componentname);
-						myNewItem.setState('imageName',components[i].thumbnail);
+						myNewItem.setState('imageName',components[i].thumbnail.substr(components[i].thumbnail.indexOf('assets/'));
 						myNewItem.setState('imageWidth',"14");
 						myNewItem.setState('imageHeight',"14");
 						container2d.addChild(myNewItem);
