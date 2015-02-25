@@ -100,6 +100,36 @@ handler.createObject2D = function(msg, session, next) {
     });
 };
 
+
+/**
+ * New client entry registration server.
+ *
+ * @param  {Object}   msg     request message
+ * @param  {Object}   session current session object
+ * @param  {Function} next    next stemp callback
+ * @return {Void}
+ */
+handler.get = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    var user = session.get('user');
+    var project = session.get('project');
+
+    var queryArray = msg.queryArray;
+
+    //for now, just check the first
+    var queryFirst = queryArray[0];
+
+    database.getComponents(queryFirst, function (code,components) {
+        if (code=="error") {next(null, {code: "error"}); return;}
+
+        //send success signal
+        next(null, {code: "success", components: components});
+    });
+};
+
+
 function createThumbnail(srcImageUrl, targetUrl, size, cb)
 {
     // obtain an image object:

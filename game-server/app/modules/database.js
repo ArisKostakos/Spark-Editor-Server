@@ -218,3 +218,20 @@ exp.accessUser = function(usr, cb)
             cb("match",users[0]);
     });
 };
+
+
+/**
+ * accessUser
+ * @param {Object} opts
+ * @api public
+ */
+exp.getComponents = function(query, cb)
+{
+    //var componentsFound =[];
+
+    Component.find(query, function (err, components) {
+        if (err) {cb("error"); return console.error(err);}
+
+        cb("success", components);
+    });
+};
