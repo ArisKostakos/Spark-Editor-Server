@@ -78,7 +78,7 @@
 						
 						<Entity extends="std.display.Input"><_States>
 							<_State id="name"><Value>User Input</Value></_State>
-							<_State id="text"><Value>aris</Value></_State>
+							<!--<_State id="text"><Value>aris</Value></_State>-->
 							<_State id="width"><Value>100%</Value></_State>
 							<_State id="height"><Value>47</Value></_State>
 							<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -111,7 +111,7 @@
 					
 					<Entity extends="std.display.Input"><_States>
 						<_State id="name"><Value>Password Input</Value></_State>
-						<_State id="text"><Value>r0diof</Value></_State>
+						<!--<_State id="text"><Value>r0diof</Value></_State>-->
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>47</Value></_State>
 						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
