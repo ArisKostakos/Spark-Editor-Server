@@ -43,6 +43,36 @@
 				<State><Id>itemSize</Id><Type>Integer</Type><Value>0</Value></State>
 			</States>
 		</Action>
+		
+		<Action>
+			<Id>AddItemNoUpload</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var container2d = Logic.getEntityByName('LibraryObjects2DContainer');
+					var components = me.getAction('AddItemNoUpload').getState('items');
+					
+					var i = 0;
+					while (components.length>i)
+					{
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItem');
+						myNewItem.setState('name',components[i].componentname);
+						myNewItem.setState('buttonText',components[i].componentname);
+						myNewItem.setState('imageName',components[i].thumbnail);
+						myNewItem.setState('imageWidth',"14");
+						myNewItem.setState('imageHeight',"14");
+						container2d.addChild(myNewItem);
+						
+						i+=1;
+					}
+					
+					me.stopAction("AddItemNoUpload");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 	</_Actions>
 	
 	<Form>
