@@ -38,7 +38,7 @@ var projectSchema = mongoose.Schema({
     //skc asset? whatever..
     components: [{type: Schema.Types.ObjectId, ref: 'Component'}], //is this a query? no this is a tree.. library isn't a tree.. this is though...
     //that's why in library we can have just a behavior there.. as a root.. cant do that here
-    library: [String] //of include which is a query on Components, like this. regular expressions should be allowed to...
+    library: [Schema.Types.Mixed] //of include which is a query on Components, like this. regular expressions should be allowed to...
     //include
     //owner    //optional filter or * for all
     //type      //optional filter or * for all
@@ -133,8 +133,8 @@ exp.createProject = function(prj, cb) {
     newProject.save(function (err, project_created) {
         if (err) {cb("error"); return console.error(err);}
 
-        //BETTER QUERY NEEDED HERE! and do i really need to populate at creation? :/
-        Project.findOne({ projectname: project_created.projectname }).populate('owner').populate('runAccess')
+        //do i really need to populate at creation? :/
+        Project.findOne({ projectname: project_created.projectname, owner: project_created.owner }).populate('owner').populate('runAccess')
                         .populate('readAccess').populate('writeAccess').exec(function (err, project_populated) {
             if (err) {cb("error"); return console.error(err);}
 
@@ -148,8 +148,8 @@ exp.createComponent = function(cmp, cb) {
     newComponent.save(function (err, component_created) {
         if (err) {cb("error"); return console.error(err);}
 
-        //BETTER QUERY NEEDED HERE! and do i really need to populate at creation? :/
-        Component.findOne({ componentname: component_created.componentname }).populate('owner').populate('access')
+        //do i really need to populate at creation? :/ do they keep populated in the db or just the returned??
+        Component.findOne({owner: component_created.owner, type: component_created.type , subType: component_created.subType , libraryName: component_created.libraryName, componentname: component_created.componentname }).populate('owner').populate('access')
             .populate('assets').populate('mainAsset').populate('children').populate('parent').exec(function (err, component_populated) {
                 if (err) {cb("error"); return console.error(err);}
 
@@ -165,8 +165,8 @@ exp.createAsset = function(ast, cb) {
         cb("success",asset_created);});
 };
 
-exp.existsProject = function(projectname, cb) {
-    Project.findOne({ projectname: projectname }).populate('owner').populate('runAccess')
+exp.existsProject = function(projectquery, cb) {
+    Project.findOne(projectquery).populate('owner').populate('runAccess')
         .populate('readAccess').populate('writeAccess').exec(function (err, projectFound) {
             if (err) {cb("error"); return console.error(err);}
 

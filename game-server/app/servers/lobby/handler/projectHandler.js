@@ -28,9 +28,7 @@ handler.create = function(msg, session, next) {
     var user = session.get('user');
     console.warn("The Fullname of the connected user is: " + user.fullname);
 
-    var defaultProjectName = "alphaProject";
-
-    database.existsProject(defaultProjectName,
+    database.existsProject({ projectname: "alphaProject", owner: user._id },
         function (code, project) {
             if (code=="match")
             {
@@ -50,7 +48,7 @@ handler.create = function(msg, session, next) {
 
                 var prj = { projectname: "alphaProject", title: "Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
                     readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
-                    library: ["alphaProject", "std"]};//projectname:alphaproject, owner:user._id,  make them queries
+                    library: [{owner:user._id, libraryName: "alphaProject"}, {libraryName: "std"}]};//fix the std query (spark owner)
 
                 database.createProject(prj,
                     function (code,project_created) {
