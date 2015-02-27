@@ -36,16 +36,21 @@
 					
 					Assets.successSignal.connect(function () {
 						Display.error("assets loaded!! LOL!!!!");
-						//Assets.getFile("config")
+						//Assets.getFile("texture")
+						var myNewImage2D = Logic.gameFactory.createGameEntity('script');
+						
+						
 					}).once();
 					
 
 					var textureUrl = "../assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
-		
+					var egcUrl = "../assets/" + username + "/scripts/" + component.libraryName + "/" + component.componentname.substr(0,component.componentname.length-3) + 'egc';
+					
 					Assets.initiateBatch();
-					Display.error("Initiate load with url: " + textureUrl);
-					Assets.addFile(textureUrl, "texture");
-					//Assets.addFile(_getSkcUrl(), "config");
+					//Display.error("Initiate texture load with url: " + textureUrl);
+					//Display.error("Initiate egc load with url: " + egcUrl);
+					Assets.addFile(textureUrl, "editor");
+					Assets.addFile(egcUrl, "script.egc");
 					Assets.loadBatch();
 					
 					/*
