@@ -7,6 +7,8 @@
 		<_State id="textfontSize"><Value>10</Value></_State>
 		<_State id="isAssetItem"><Value>true</Value></_State>
 		
+		<State><Id>component</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
 		<!--
 		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>selectedColor</Id><Type>Text</Type><Value>white</Value></State>
@@ -27,7 +29,26 @@
 		<Trigger>
 			<Event>MouseLeftClicked</Event>
 			<Scripts>
-				<Script>/*
+				<Script>
+					//Hacking away...
+					var username = Logic.getEntityByName('Spark Editor').getState('username');
+					var component = me.getState('component');
+					
+					Assets.successSignal.connect(function () {
+						Display.error("assets loaded!! LOL!!!!");
+						//Assets.getFile("config")
+					}).once();
+					
+
+					var textureUrl = "../assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
+		
+					Assets.initiateBatch();
+					Display.error("Initiate load with url: " + textureUrl);
+					Assets.addFile(textureUrl, "texture");
+					//Assets.addFile(_getSkcUrl(), "config");
+					Assets.loadBatch();
+					
+					/*
 					var myContainer = parent.parentEntity;
 					
 					myContainer.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = me;

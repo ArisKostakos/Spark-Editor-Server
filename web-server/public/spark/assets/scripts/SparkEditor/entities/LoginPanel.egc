@@ -78,7 +78,6 @@
 						
 						<Entity extends="std.display.Input"><_States>
 							<_State id="name"><Value>User Input</Value></_State>
-							<!--<_State id="text"><Value>aris</Value></_State>-->
 							<_State id="width"><Value>100%</Value></_State>
 							<_State id="height"><Value>47</Value></_State>
 							<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -111,7 +110,6 @@
 					
 					<Entity extends="std.display.Input"><_States>
 						<_State id="name"><Value>Password Input</Value></_State>
-						<!--<_State id="text"><Value>r0diof</Value></_State>-->
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>47</Value></_State>
 						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -171,8 +169,54 @@
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 				
+				<!-- Login Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Aris Login Button</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>20</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(255, 174, 94)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Aris Quick Login (ignore)</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+				if (projectEntity.getState('Connected')==true)
+				{
+					var strUser = 'aris';
+					var strPass = 'r0diof';
+					
+					if (strUser.length>0 && strUser!='Undefined' &&
+						strPass.length>0 && strPass!='Undefined')
+					{
+						parent.getState('outputText').setState('text', 'Please wait...');
+						
+						Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																			username: strUser, 
+																			password: strPass}, "Log In Request");
+																			
+						Logic.getEntityByName('Spark Editor').setState('username',strUser);
+					}
+					else
+					{
+						parent.getState('outputText').setState('text', 'Please fill in every field.');
+					}
+						
+				}
+				else
+				{
+					parent.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+				}
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
 				<!-- Spacer -->
-				<Entity extends="std.display.Group"><_States><_State id="height"><Value>20</Value></_State></_States></Entity>
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>10</Value></_State></_States></Entity>
 				
 				<!-- Output Text -->
 				<Entity extends="std.display.Text"><_States>

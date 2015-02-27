@@ -61,7 +61,10 @@
 						myNewItem.setState('imageName',components[i].thumbnail.substr(components[i].thumbnail.indexOf('assets/')));
 						myNewItem.setState('imageWidth',"14");
 						myNewItem.setState('imageHeight',"14");
+						myNewItem.setState('component',components[i]);
 						container2d.addChild(myNewItem);
+						Display.error('component #' + i + ':');
+						Display.error(components[i].assets);
 						
 						i+=1;
 					}

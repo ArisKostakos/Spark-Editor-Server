@@ -96,6 +96,9 @@
 							//Progress Bar
 							var objProgressBar = me.getState('progressBar');
 							objProgressBar.setState('opacity','0');
+							
+							//Set Component
+							me.setState('component',data.component);
 						}
 						else
 						{
