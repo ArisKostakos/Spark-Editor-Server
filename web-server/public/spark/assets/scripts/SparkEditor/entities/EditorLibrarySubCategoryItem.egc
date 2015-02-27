@@ -34,11 +34,14 @@
 					var username = Logic.getEntityByName('Spark Editor').getState('username');
 					var component = me.getState('component');
 					
+					var mainScene = Logic.getEntityByName('Main Scene');
+					
 					Assets.successSignal.connect(function () {
 						Display.error("assets loaded!! LOL!!!!");
 						//Assets.getFile("texture")
 						var myNewImage2D = Logic.gameFactory.createGameEntity('script');
 						
+						mainScene.addChild(myNewImage2D);
 						
 					}).once();
 					
