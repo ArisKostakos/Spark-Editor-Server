@@ -28,4 +28,15 @@
 			</Entities>
 		</Space>
 	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseEntered</Event>
+			<Scripts>
+				<Script>
+					Display.error("MouseEntered!");
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
 </Entity>
