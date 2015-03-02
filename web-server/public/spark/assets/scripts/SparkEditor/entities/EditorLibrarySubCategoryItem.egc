@@ -34,7 +34,7 @@
 					var username = Logic.getEntityByName('Spark Editor').getState('username');
 					var component = me.getState('component');
 					
-					var mainScene = Logic.getEntityByName('Main Scene');
+					var mainScene = Logic.getEntityByName('Main Scene 2D');
 					
 					Assets.successSignal.connect(function () {
 						Display.error("assets loaded!! LOL!!!!");

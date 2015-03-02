@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.display.FillRect2D">
+	<Extends>
+		<Entity extends="std.behaviors.display.Layoutable"/>
+	</Extends>
+	
 	<_States>
 		<_State id="name">
 			<Value>Little Box</Value>
 		</_State>
 		
 		<_State id="2DMeshFillRectForm">
-			<Value>Yellow</Value>
+			<Value>Background</Value>
 		</_State>
 		
-		<_State id="spaceX">
-			<Value>110</Value>
+		<_State id="width">
+			<Value>100%</Value>
 		</_State>
 		
-		<_State id="spaceY">
-			<Value>0</Value>
-		</_State>
-		
-		<_State id="spaceWidth">
-			<Value>40</Value>
-		</_State>
-		
-		<_State id="spaceHeight">
-			<Value>100</Value>
+		<_State id="height">
+			<Value>100%</Value>
 		</_State>
 	</_States>
 	
 	<_Form>
 		<_States>
 			<State>
-				<Id>Yellow</Id>
+				<Id>Background</Id>
 				<Type>Integer</Type>
-				<Value>0xffff00</Value>
+				<Value>0x425466</Value>
+			</State>
+			<State>
+				<Id>Random</Id>
+				<Type>Integer</Type>
+				<Value>0x928405</Value>
 			</State>
 		</_States>
 	</_Form>

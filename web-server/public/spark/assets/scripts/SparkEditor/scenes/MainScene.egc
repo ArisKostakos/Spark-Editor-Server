@@ -20,23 +20,29 @@
 					<Form>
 						<Space>
 							<Entities>
-								<!--<Entity extends="SparkEditor.entities.LittleBox"/>-->
+								<Entity extends="SparkEditor.entities.LittleBox">
+									<_States>
+										<_State id="touchable">
+											<Value>true</Value>
+										</_State>
+									</_States>
+									<_Triggers>
+										<Trigger>
+											<Event>MouseEntered</Event>
+											<Scripts>
+												<Script>
+													Display.error("MouseEntered!");
+												</Script>
+											</Scripts>
+										</Trigger>
+									</_Triggers>
+								</Entity>
 							</Entities>
 						</Space>
 					</Form>
+
 				</Entity>
 			</Entities>
 		</Space>
 	</Form>
-	
-	<_Triggers>
-		<Trigger>
-			<Event>MouseEntered</Event>
-			<Scripts>
-				<Script>
-					Display.error("MouseEntered!");
-				</Script>
-			</Scripts>
-		</Trigger>
-	</_Triggers>
 </Entity>

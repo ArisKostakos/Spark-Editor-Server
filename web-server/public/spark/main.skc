@@ -56,6 +56,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Layer2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/LayerScreen2D.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable2D.egc</Asset>
@@ -80,9 +81,15 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainSpace.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStage.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/DummyCamera.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene2DBack.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2DBack.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBox.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBoxNoLayout.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/Ball.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/BlueButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GreyButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>

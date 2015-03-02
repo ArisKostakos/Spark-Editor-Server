@@ -78,7 +78,19 @@
 				</Entity>
 				
 	
-				<Entity extends="SparkEditor.views.MainView">
+				<Entity extends="SparkEditor.views.MainView2DBack">
+					<_States>
+						<_State id="parent"><Value>ProjectStage Area</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="SparkEditor.views.MainView3D">
+					<_States>
+						<_State id="parent"><Value>ProjectStage Area</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="SparkEditor.views.MainView2D">
 					<_States>
 						<_State id="parent"><Value>ProjectStage Area</Value></_State>
 					</_States>
