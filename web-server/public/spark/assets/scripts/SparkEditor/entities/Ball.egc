@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Entity3D">
+
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('rotateMe');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>rotateMe</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('scaleX',me.getState('scaleX')+1);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+	
+	<_States>
+		<_State id="name">
+			<Value>Ball</Value>
+		</_State>
+		
+		<_State id="spaceX">
+			<Value>600</Value>
+		</_State>
+		
+		<_State id="spaceY">
+			<Value>0</Value>
+		</_State>
+		
+		<_State id="spaceZ">
+			<Value>400</Value>
+		</_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>ModelUrl</Id>
+				<Type>Text</Type>
+				<Value>BallModel</Value>
+			</State>
+		</_States>
+	</_Form>
+
+</Entity>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Main Scene 2D</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
+					<_States>
+						<_State id="spaceX"><Value>235</Value></_State>
+						<_State id="spaceY"><Value>120</Value></_State>
+						<_State id="spaceWidth"><Value>200</Value></_State>
+						<_State id="spaceHeight"><Value>200</Value></_State>
+						<_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
+					</_States>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
