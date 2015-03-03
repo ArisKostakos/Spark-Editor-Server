@@ -18,7 +18,7 @@
 					Display.error("hii adding item...");
 					
 					var container2d = Logic.getEntityByName('LibraryObjects2DContainer');
-					
+
 					var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItemUpload');
 					myNewItem.setState('name',me.getAction('AddItem').getState('itemName'));
 					myNewItem.setState('buttonText',me.getAction('AddItem').getState('itemTitle'));

@@ -95,6 +95,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSprite.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DomView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorTopBar.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorLeftBar.egc</Asset>

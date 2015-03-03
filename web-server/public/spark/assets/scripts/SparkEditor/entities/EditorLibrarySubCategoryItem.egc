@@ -39,9 +39,12 @@
 					Assets.successSignal.connect(function () {
 						Display.error("assets loaded!! LOL!!!!");
 						//Assets.getFile("texture")
-						var myNewImage2D = Logic.gameFactory.createGameEntity('script');
 						
-						mainScene.addChild(myNewImage2D);
+						var myNewImage2D = Logic.gameFactory.createGameEntityExtended('script','SparkEditor.entities.LevelEditor2DSprite');
+
+						//var myNewImage2D = Logic.gameFactory.createGameEntity('script');
+						
+						//mainScene.addChild(myNewImage2D);
 						
 					}).once();
 					

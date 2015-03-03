@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="*">
+	<_States>
+
+	</_States>
+	
+	<_Form>
+		<_States>
+
+		</_States>
+	</_Form>
+</Entity>
