@@ -47,7 +47,7 @@
 						//mainScene.addChild(myNewImage2D);
 						
 					}).once();
-					
+					//grrr
 
 					var textureUrl = "../assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
 					var egcUrl = "../assets/" + username + "/scripts/" + component.libraryName + "/" + component.componentname.substr(0,component.componentname.length-3) + 'egc';
