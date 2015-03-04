@@ -10,6 +10,7 @@
 	<Form>
 		<Space>
 			<Entities>
+			<!--
 				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
 					<_States>
 						<_State id="spaceX"><Value>235</Value></_State>
@@ -19,6 +20,7 @@
 						<_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
 					</_States>
 				</Entity>
+			-->
 			</Entities>
 		</Space>
 	</Form>

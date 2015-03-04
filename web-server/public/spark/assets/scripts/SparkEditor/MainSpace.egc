@@ -17,7 +17,7 @@
 				<Entity extends="SparkEditor.MainStage"/>
 				
 				<!-- Scenes -->
-				<Entity extends="SparkEditor.scenes.MainScene2DBack"/>
+				<Entity extends="SparkEditor.scenes.LevelEditor2DScene"/>
 				<Entity extends="SparkEditor.scenes.MainScene3D"/>
 				<Entity extends="SparkEditor.scenes.MainScene2D"/>
 				<Entity extends="SparkEditor.scenes.DomScene"/>

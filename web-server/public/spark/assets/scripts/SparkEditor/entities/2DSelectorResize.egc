@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="name">
+			<Value>Selector Resize Control</Value>
+		</_State>
+		
+		<_State id="2DMeshFillRectForm">
+			<Value>color1</Value>
+		</_State>
+		
+		<_State id="spaceWidth"><Value>20</Value></_State>
+		<_State id="spaceHeight"><Value>20</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="visible"><Value>false</Value></_State>
+
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>color1</Id>
+				<Type>Integer</Type>
+				<Value>0x000000</Value>
+			</State>
+		</_States>
+		
+		<_Space>
+			<_Entities>
+				<!-- Decorative -->
+				<Entity extends="std.display.FillRect2D">
+					<_States><_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
+						<_State id="spaceWidth"><Value>18</Value></_State>
+						<_State id="spaceHeight"><Value>18</Value></_State>
+						<_State id="spaceX"><Value>1</Value></_State>
+						<_State id="spaceY"><Value>1</Value></_State></_States>
+					<_Form><_States><State><Id>color1</Id><Type>Integer</Type><Value>0xFFFFFF</Value></State></_States></_Form>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+					Display.error("resize clicked");
+					parent.parentEntity.stopAction('Drag');
+					me.startAction('DragResize');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	
+	<_Actions>
+		<!-- DragResize -->
+		<Action>
+			<Id>DragResize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Input.pointer.isDown())
+					{
+						//Scale Width
+						var realWidth = parent.parentEntity.getState('boundsRect').width * parent.parentEntity.getState('scaleX');
+						parent.parentEntity.setState('scaleX',(realWidth+Input.pointer.distX())/parent.parentEntity.getState('boundsRect').width);
+						
+						//Scale Height
+						var realHeight = parent.parentEntity.getState('boundsRect').height * parent.parentEntity.getState('scaleY');
+						parent.parentEntity.setState('scaleY',(realHeight+Input.pointer.distY())/parent.parentEntity.getState('boundsRect').height);
+					}
+					else
+					{
+						me.stopAction("DragResize");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

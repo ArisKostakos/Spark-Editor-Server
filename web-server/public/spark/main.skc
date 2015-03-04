@@ -81,14 +81,17 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainSpace.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStage.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/DummyCamera.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene2DBack.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2DBack.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/LevelEditor2DScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/LevelEditor2DView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBox.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBoxNoLayout.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSelector.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/2DSelectorOverlay.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/2DSelectorResize.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/Ball.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/BlueButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GreyButton.egc</Asset>

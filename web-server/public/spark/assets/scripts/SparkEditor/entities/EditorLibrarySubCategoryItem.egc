@@ -34,29 +34,28 @@
 					var username = Logic.getEntityByName('Spark Editor').getState('username');
 					var component = me.getState('component');
 					
-					var mainScene = Logic.getEntityByName('Main Scene 2D');
+					var componentNameClean = component.componentname.substr(0,component.componentname.length-4);
+					
+					var mainScene = Logic.getEntityByName('Level Editor 2D Scene');
 					
 					Assets.successSignal.connect(function () {
-						Display.error("assets loaded!! LOL!!!!");
-						//Assets.getFile("texture")
+						Display.error("assets loaded!");
 						
-						var myNewImage2D = Logic.gameFactory.createGameEntityExtended('script','SparkEditor.entities.LevelEditor2DSprite');
-
-						//var myNewImage2D = Logic.gameFactory.createGameEntity('script');
-						
-						//mainScene.addChild(myNewImage2D);
+						var myNewImage2D = Logic.gameFactory.createGameEntityExtended(componentNameClean,'SparkEditor.entities.LevelEditor2DSprite');
+						myNewImage2D.setState('componentName',componentNameClean);
+						mainScene.addChild(myNewImage2D);
 						
 					}).once();
-					//grrr
-
-					var textureUrl = "../assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
-					var egcUrl = "../assets/" + username + "/scripts/" + component.libraryName + "/" + component.componentname.substr(0,component.componentname.length-3) + 'egc';
+					
+					//REPLACE 'temp' with '..'
+					var textureUrl = "'..'/assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
+					var egcUrl = "'..'/assets/" + username + "/scripts/" + component.libraryName + "/" + componentNameClean + '.egc';
 					
 					Assets.initiateBatch();
 					//Display.error("Initiate texture load with url: " + textureUrl);
 					//Display.error("Initiate egc load with url: " + egcUrl);
 					Assets.addFile(textureUrl, "editor");
-					Assets.addFile(egcUrl, "script.egc");
+					Assets.addFile(egcUrl, componentNameClean + ".egc");
 					Assets.loadBatch();
 					
 					/*

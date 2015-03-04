@@ -78,24 +78,24 @@
 				</Entity>
 				
 	
-				<Entity extends="SparkEditor.views.MainView2DBack">
+				<Entity extends="SparkEditor.views.LevelEditor2DView">
 					<_States>
 						<_State id="parent"><Value>ProjectStage Area</Value></_State>
 					</_States>
 				</Entity>
-				
+	<!--
 				<Entity extends="SparkEditor.views.MainView3D">
 					<_States>
 						<_State id="parent"><Value>ProjectStage Area</Value></_State>
 					</_States>
 				</Entity>
-				
+	
 				<Entity extends="SparkEditor.views.MainView2D">
 					<_States>
 						<_State id="parent"><Value>ProjectStage Area</Value></_State>
 					</_States>
 				</Entity>
-
+	-->
 				<!--bottom bar (chat) -->
 				
 			</Entities>

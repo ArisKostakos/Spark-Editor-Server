@@ -20,29 +20,14 @@
 					<Form>
 						<Space>
 							<Entities>
-								<Entity extends="SparkEditor.entities.LittleBox">
-									<_States>
-										<_State id="touchable">
-											<Value>true</Value>
-										</_State>
-									</_States>
-									<_Triggers>
-										<Trigger>
-											<Event>MouseEntered</Event>
-											<Scripts>
-												<Script>
-													Display.error("MouseEntered!");
-												</Script>
-											</Scripts>
-										</Trigger>
-									</_Triggers>
-								</Entity>
+								<Entity extends="SparkEditor.entities.LittleBox"/>
 							</Entities>
 						</Space>
 					</Form>
 
 				</Entity>
 				
+				<!--
 				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
 					<_States>
 						<_State id="spaceX"><Value>500</Value></_State>
@@ -52,6 +37,7 @@
 						<_State id="2DMeshFillRectForm"><Value>color2</Value></_State>
 					</_States>
 				</Entity>
+			-->
 			</Entities>
 		</Space>
 	</Form>
