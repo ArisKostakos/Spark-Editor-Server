@@ -22,13 +22,16 @@ var handler = Handler.prototype;
  */
 handler.create = function(msg, session, next) {
     var self = this;
-
     var sessionService = self.app.get('sessionService');
-
+    var projectName = msg.projectName;
+    var projectTitle = msg.projectTitle;
     var user = session.get('user');
-    console.warn("The Fullname of the connected user is: " + user.fullname);
 
-    database.existsProject({ projectname: "alphaProject", owner: user._id },
+    console.warn("The Fullname of the connected user is: " + user.fullname);
+    console.warn("The projectName is: " + projectName);
+    console.warn("The projectTitle is: " + projectTitle);
+
+    database.existsProject({ projectname: projectName, owner: user._id },
         function (code, project) {
             if (code=="match")
             {
@@ -46,9 +49,9 @@ handler.create = function(msg, session, next) {
                 //DOESNT EXIST. CREATE IT
                 console.warn("Project does not exist yet!")
 
-                var prj = { projectname: "alphaProject", title: "Alpha Project", owner:user._id, runPublic:true, runAccess:[user._id],
+                var prj = { projectname: projectName, title: projectTitle, owner:user._id, runPublic:true, runAccess:[user._id],
                     readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
-                    library: [{owner:user._id, libraryName: "alphaProject"}, {libraryName: "std"}]};//fix the std query (spark owner)
+                    library: [{owner:user._id, libraryName: projectName}, {libraryName: "std"}]};//fix the std query (spark owner)
 
                 database.createProject(prj,
                     function (code,project_created) {

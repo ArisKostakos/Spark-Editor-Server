@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Client>
+	<Project>
+		<Name>Alpha Project</Name>
+		<Version>0.01</Version>
+		<ExecuteAtLaunch>
+			<ExecuteModule>AlphaProject</ExecuteModule>
+		</ExecuteAtLaunch>
+   </Project>
+
+	<Sliced>
+		<Sound>tools.spark.sliced.services.std.sound.core.Sound</Sound>
+		<Logic>tools.spark.sliced.services.std.logic.core.Logic</Logic>
+		<Input>tools.spark.sliced.services.std.input.core.Input</Input>
+		<Comms>tools.spark.sliced.services.std.comms.core.Comms</Comms>
+		<Event>tools.spark.sliced.services.std.event.core.Event</Event>
+		<Display>tools.spark.sliced.services.std.display.core.Display</Display>
+	</Sliced>
+	
+	<Paths>
+		<Path location="local" type="script">assets/scripts/</Path>
+		<Path location="local" type="image">assets/images/</Path>
+		<Path location="local" type="model">assets/models/</Path>
+		<Path location="local" type="sound">assets/sounds/</Path>
+	</Paths>
+	
+	<Assets>
+		<Module id="StandardLibrary">
+			<Asset type="script" location="local" bytes='35672'>std/core/Base.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/core/Project.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>std/display/Base.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Space.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Stage.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/StageArea.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/View.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Scene2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Scene3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Camera2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Camera3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Entity2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Entity3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Gui2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Group.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/VGroup.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/HGroup.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Div.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/FileInput.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Input.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Image.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Button.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Text.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Button2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Spriter2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Layer2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/LayerScreen2D.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Layoutable.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Renderable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Renderable3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/NativeComponent.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/StyleableNC.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/input/KeyboardInput.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/input/KeyboardInputHorizontal.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/movement/InputMove.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/movement/InputMoveHorizontal.egc</Asset>
+		</Module>
+
+		<Module id="AlphaProject" executeEntity="AlphaProject.MainProject">
+			<Requires>
+				<RequiresModule>StandardLibrary</RequiresModule>
+			</Requires>
+			<Asset type="script" location="local" bytes='35672'>AlphaProject/MainProject.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>AlphaProject/MainSpace.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>AlphaProject/MainStage.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>AlphaProject/scenes/MainScene2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>AlphaProject/views/MainView2D.egc</Asset>
+		</Module>
+	</Assets>
+	
+</Client>

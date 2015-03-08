@@ -264,7 +264,7 @@
 						if (data.code=="match")
 						{
 							me.getState('outputText').setState('text', 'Logged in. Entering default project...');
-							Comms.request("lobby.projectHandler.create", {}, "Create Project Request");
+							Comms.request("lobby.projectHandler.create", {projectName: "std", projectTitle: "Standard"}, "Create Project Request");
 						}
 						else if (data.code=="nomatch")
 						{
