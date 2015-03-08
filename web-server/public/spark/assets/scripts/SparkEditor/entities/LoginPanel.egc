@@ -169,7 +169,7 @@
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 				
-				<!-- Login Button -->
+				<!-- Aris Login Button -->
 				<Entity extends="std.display.Button"><_States>
 					<_State id="name"><Value>Aris Login Button</Value></_State>
 					<_State id="width"><Value>100%</Value></_State>
@@ -188,8 +188,10 @@
 				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
 				if (projectEntity.getState('Connected')==true)
 				{
-					var strUser = 'aris';
-					var strPass = 'r0diof';
+					//var strUser = 'aris';
+					//var strPass = 'r0diof';
+					var strUser = 'spark';
+					var strPass = '12qw!@QW ';
 					
 					if (strUser.length>0 && strUser!='Undefined' &&
 						strPass.length>0 && strPass!='Undefined')
@@ -264,7 +266,15 @@
 						if (data.code=="match")
 						{
 							me.getState('outputText').setState('text', 'Logged in. Entering default project...');
-							Comms.request("lobby.projectHandler.create", {projectName: "std", projectTitle: "Standard"}, "Create Project Request");
+							
+							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
+							{
+								Comms.request("lobby.projectHandler.create", {projectName: "std", projectTitle: "Standard"}, "Create Project Request");
+							}
+							else
+							{
+								Comms.request("lobby.projectHandler.create", {projectName: "alphaProject", projectTitle: "Alpha Project"}, "Create Project Request");
+							}
 						}
 						else if (data.code=="nomatch")
 						{
