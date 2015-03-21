@@ -47,19 +47,18 @@ handler.signup = function(msg, session, next) {
     }
     else
     {
-        firstname = fullname.substr(0,nameSeparationIndex-1);
+        firstname = fullname.substr(0,nameSeparationIndex);
         lastname = fullname.substr(nameSeparationIndex+1);
     }
 
 
-    console.warn("First name: " + firstname);
-    console.warn("Last name: " + lastname);
+    console.warn("First name:" + firstname);
+    console.warn("Last name:" + lastname);
 
 
     //VALIDATE USERNAME
     username = username.toLowerCase();
-    var isUsernameValid = username.search(/^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-z0-9._]+(?<![_.])$/);
-                                                                                         // no _ or . at the end
+    var isUsernameValid = username.search(/^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$/);
                                                                               //allowed characters
                                                                  //no __ or _. or ._ or .. inside
                                                          //no _ or . at the beginning
