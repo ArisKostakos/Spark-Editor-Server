@@ -155,7 +155,7 @@ exp.checkUser = function(p_username, p_email, p_key, cb) {
     User.find({ key: p_key }, function (err, users) {
         if (err) {cb("error"); return console.error(err);}
         if (users.length==0)
-            User.find({ username: p_username }, function (err, users) {
+            User.find({ name: p_username }, function (err, users) {
                 if (err) {cb("error"); return console.error(err);}
                 if (users.length==0)
                     User.find({ email: p_email }, function (err, users) {
