@@ -48,6 +48,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/FileInput.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Input.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Image.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/CodeEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Button.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Text.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
@@ -79,7 +80,9 @@
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainProject.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainSpace.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainSpacePr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStage.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStagePr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/DummyCamera.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/LevelEditor2DScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/LevelEditor2DView.egc</Asset>
@@ -98,19 +101,28 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScenePr.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScenePr.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorCodeScenePr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSprite.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DomView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorTopBar.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorLeftBar.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorTopBarPr.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorLeftBarPr.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorCodePr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/SignupPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorTopBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorTopBarPanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarFileSection.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarEditSection.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarPropertiesSection.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarRunSection.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarSeparator.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLeftBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLeftBarPanelPr.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorCodePanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanelContainer.egc</Asset>

@@ -294,9 +294,10 @@
 						if (data.code=="success")
 						{
 							Logic.getEntityByName('Spark Editor').setState('projectname',data.project.projectname);
-							
+
 							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
 							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+
 						
 							//query library components
 							Comms.request("editor.componentHandler.get", {queryArray: data.project.library}, "Get Components");
@@ -312,16 +313,29 @@
 						
 						if (data.code=="success")
 						{
-							//Fill Library with components
-							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
+							var programmingMode = Logic.getEntityByName('Spark Editor').getState('programmingMode');
 							
-							objectsPanel.getAction('AddItemNoUpload').setState('items', data.components);
-							objectsPanel.startAction('AddItemNoUpload');
+							if (programmingMode)
+							{
+								//enter project
+								Logic.getEntityByName('Dom View').setState('visible',false);
+								Logic.getEntityByName('Editor Top Bar View Pr').setState('visible',true);
+								Logic.getEntityByName('Editor Left Bar View Pr').setState('visible',true);
+								Logic.getEntityByName('Editor Code View Pr').setState('visible',true);
+							}
+							else
+							{
+								//Fill Library with components
+								var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
+								
+								objectsPanel.getAction('AddItemNoUpload').setState('items', data.components);
+								objectsPanel.startAction('AddItemNoUpload');
 
-							//enter project
-							Logic.getEntityByName('Dom View').setState('visible',false);
-							Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
-							Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
+								//enter project
+								Logic.getEntityByName('Dom View').setState('visible',false);
+								Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
+								Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
+							}
 						}
 						else
 						{

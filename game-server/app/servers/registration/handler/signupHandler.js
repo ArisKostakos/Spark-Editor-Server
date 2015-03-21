@@ -35,6 +35,43 @@ handler.signup = function(msg, session, next) {
     var password = msg.password;
     var sessionService = self.app.get('sessionService');
 
+    //SPLIT FULLNAME TO FIRST NAME AND LAST NAME
+    var nameSeparationIndex = fullname.indexOf(' ');
+    var firstname;
+    var lastname;
+
+    if (nameSeparationIndex==-1)
+    {
+        firstname = fullname;
+        lastname = "";
+    }
+    else
+    {
+        firstname = fullname.substr(0,nameSeparationIndex-1);
+        lastname = fullname.substr(nameSeparationIndex+1);
+    }
+
+
+    console.warn("First name: " + firstname);
+    console.warn("Last name: " + lastname);
+
+
+    //VALIDATE USERNAME
+    username = username.toLowerCase();
+    var isUsernameValid = username.search(/^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-z0-9._]+(?<![_.])$/);
+                                                                                         // no _ or . at the end
+                                                                              //allowed characters
+                                                                 //no __ or _. or ._ or .. inside
+                                                         //no _ or . at the beginning
+                                             //username is 6-20 characters long
+    if (isUsernameValid==-1)
+    {
+        console.warn("Username Invalid: " + username);
+        next(null, {code: "usernameinvalid"});
+        return;
+    }
+
+
     //KEY VALIDATION
     key = key.replace(/-/g, "");
     var keyValid=false;
@@ -58,16 +95,36 @@ handler.signup = function(msg, session, next) {
     if (keyValid)
     {
         console.warn("Key Valid for: " + fullname + ", " + email);
-        var usr = { fullname: fullname, email:email, key:key, username:username, password:password };
 
         //Search if key exists, then if user exists, then if email exists
-        database.checkUser(usr,
+        database.checkUser(username, email, key,
         function (code) {
-            if (code=="clear")
-                database.createUser(usr,
-                    function (code) {
-                        next(null, {code: code});
+            if (code=="clear") {
+                var raw_User = { firstName: firstname, lastName: lastname, email: email, key: key, name: username, password: password };
+
+                //Create User
+                database.create(database.User, raw_User,
+                    function (err, objCreated_User) {
+                        if (err) {next(null, {code: "error"}); return console.error(err);}
+
+                        //Create Developer
+                        var raw_Developer = { isTeam: false, user: objCreated_User._id, tags: [] };
+                        database.create(database.Developer, raw_Developer,
+                            function (err, objCreated_Developer) {
+                                if (err) {next(null, {code: "error"}); return console.error(err);}
+
+                                //Update User
+                                objCreated_User.developerReference= objCreated_Developer._id;
+
+                                objCreated_User.save(function (err) {
+                                    if (err) {next(null, {code: "error"}); return console.error(err);}
+
+                                    //Done!
+                                    next(null, {code: "success"});
+                                });
+                            });
                     });
+            }
             else next(null, {code: code});
         });
     }

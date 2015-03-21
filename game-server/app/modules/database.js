@@ -1,115 +1,135 @@
 /**
  * Created by Aris on 2/11/2015.
  */
+
+// INIT //
 var mongoose = require('mongoose') , Schema = mongoose.Schema;
-
-
 var exp = module.exports;
-
 var db = mongoose.connection;
 
 
+
+// DB OBJECTS //
+
+//User
 var userSchema = mongoose.Schema({
-    fullname: String,
+    name: String,       //unique, cannot be renamed
+    firstName: String,
+    lastName: String,
     email: String,
     key: String,
-    username: String,
-    password: String
-    //team
+    password: String,
+    developerReference: {type: Schema.Types.ObjectId, ref: 'Developer'}
 });
 var User = mongoose.model('User', userSchema);
+exp.User = User;
 
-
-var projectSchema = mongoose.Schema({
-    projectname: String,
+//Team
+var teamSchema = mongoose.Schema({
+    name: String,       //unique, cannot be renamed
     title: String,
-    owner: {type: Schema.Types.ObjectId, ref: 'User'},
+    users: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    developerReference: {type: Schema.Types.ObjectId, ref: 'Developer'}
+});
+var Team = mongoose.model('Team', teamSchema);
+exp.Team = Team;
 
+//Developer
+var developerSchema = mongoose.Schema({
+    isTeam: Boolean,
+    user: {type: Schema.Types.ObjectId, ref: 'User'},
+    team: {type: Schema.Types.ObjectId, ref: 'Team'},
+    tags: [String]
+});
+var Developer = mongoose.model('Developer', developerSchema);
+exp.Developer = Developer;
 
-    //permission stuff (run, read, write)
-    runPublic: Boolean,
-    runAccess: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    readPublic: Boolean,
-    readAccess: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    writePublic: Boolean,
-    writeAccess: [{type: Schema.Types.ObjectId, ref: 'User'}],
-
-    //so the project doesn't know about assets.. just components..
-    //skc asset? whatever..
-    components: [{type: Schema.Types.ObjectId, ref: 'Component'}], //is this a query? no this is a tree.. library isn't a tree.. this is though...
-    //that's why in library we can have just a behavior there.. as a root.. cant do that here
-    library: [Schema.Types.Mixed] //of include which is a query on Components, like this. regular expressions should be allowed to...
-    //include
-    //owner    //optional filter or * for all
-    //type      //optional filter or * for all
-    //libraryName   //optional filter or * for all
-    //subDir    //optional filter or * for all
-    //filename  //optional filter or * for all
+//Project
+var projectSchema = mongoose.Schema({
+    name: String,  //unique in user scope, cannot be renamed
+    version: String,
+    title: String,
+    fork: {type: Schema.Types.ObjectId, ref: 'Project'},
+    owner: {type: Schema.Types.ObjectId, ref: 'Developer'},
+    sliced: {type: Schema.Types.ObjectId, ref: 'Sliced'},
+    modules: [{type: Schema.Types.ObjectId, ref: 'Module'}],
+    moduleMain: {type: Schema.Types.ObjectId, ref: 'Module'},
+    tags: [String],	//template tag
+    includes: [{type: Schema.Types.ObjectId, ref: 'IncludeQuery'}],
+    accessControl: {type: Schema.Types.ObjectId, ref: 'AccessControl'}
 });
 var Project = mongoose.model('Project', projectSchema);
+exp.Project = Project;
 
-
-
-var componentSchema = mongoose.Schema({
-    owner: {type: Schema.Types.ObjectId, ref: 'User'},
-    type: String, //Object, Material, Behavior, Light, ...
-    subType: String, //2D, 3D, Input, Movement, ...
-
-    libraryName: String,  //a user has libraries. no library with same name
-
-    componentname: String, //a library has components. no component with the same name, inside a library
-
-    //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
-    public: Boolean, //and if its private, also do the one below
-    access: [{type: Schema.Types.ObjectId, ref: 'User'}], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
-
-
-    assets: [{type: Schema.Types.ObjectId, ref: 'Asset'}], //of Assets
-    mainAsset: {type: Schema.Types.ObjectId, ref: 'Asset'},
-    thumbnail:String, //default ("Implicit") which takes it from type instead
-
-    //an object can have object children
-    children: [{type: Schema.Types.ObjectId, ref: 'Component'}], //of Components
-    parent: {type: Schema.Types.ObjectId, ref: 'Component'}, //Component, //or null
-
-    //an object will have allowed childrenTypes and/or allowed parentTypes
-    parentTypes: [String], //of String Component allowed types/subtypes of this form [type:subtype]
-    childrenTypes: [String], //of String Component allowed types/subtypes of this form [type:subtype]
-
-    ready: Boolean //??
+//Module
+var moduleSchema = mongoose.Schema({
+    name: String,   //unique in project scope
+    requires: [{type: Schema.Types.ObjectId, ref: 'Module'}],
+    assets: [{type: Schema.Types.ObjectId, ref: 'Asset'}],
+    executeEntity: {type: Schema.Types.ObjectId, ref: 'Asset'},
+    tags: [String] //possible tags: level, character, weaponsystem, ..
 });
-var Component = mongoose.model('Component', componentSchema);
+var Module = mongoose.model('Module', moduleSchema);
+exp.Module = Module;
 
+//IncludeQuery
+var includeQuerySchema = mongoose.Schema({
+    tags: [String], //(for beginer editor, eventsheet editor, brick editor, programming, everything)
+    queryHidden: String,
+    queryVisible: String
+});
+var IncludeQuery = mongoose.model('IncludeQuery', includeQuerySchema);
+exp.IncludeQuery = IncludeQuery;
 
-
+//Asset
 var assetSchema = mongoose.Schema({
-    owner: {type: Schema.Types.ObjectId, ref: 'User'},
-    type: String,   //image, script, sound, video, data, ...
-
-    libraryName: String,  //std
-    subDir: String,  //core
-
-    filename: String,
-
-    filesize: String, //in bytes
-
-    assetname: String, //title of asset, disabled for script types
-        //later, maybe u unify this. so scripts also take custom ids
-        //and in lionML you write extends="carMovement" but meh..
-
-
-    //this is both for read access.. no one without project access can write to it, just use it or fork it (project access?)
-    public: Boolean, //and if its private, also do the one below
-    access: [{type: Schema.Types.ObjectId, ref: 'User'}], // an array of usernames Strings (or team strings), or Accounts and Teams, doih..
-
-    ready: Boolean
+    fork: {type: Schema.Types.ObjectId, ref: 'Asset'},
+    owner: {type: Schema.Types.ObjectId, ref: 'Developer'},		//use for uid & to find Url
+    type: String,			    //use for uid & to find Url
+    dir: String,				//use for uid & to find Url
+    fileName: String,		    //use for uid & to find Url
+    fileExtension: String,	    //use for uid & to find Url
+    title: String,
+    fileSize: Number,
+    tags: [String], //here as a tag we can include the projectname that I was initially uploaded for
+    accessControl: {type: Schema.Types.ObjectId, ref: 'AccessControl'},
+    assetDependancies: [{type: Schema.Types.ObjectId, ref: 'Asset'}] //egc classes and asset grouping
 });
 var Asset = mongoose.model('Asset', assetSchema);
+exp.Asset = Asset;
 
-/**
- * Init Db
- * @api public
- */
+//AccessControl
+var accessControlSchema = mongoose.Schema({
+    viewPublic: Boolean,
+    viewAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
+    usePublic: Boolean,
+    useAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
+    readPublic: Boolean,
+    readAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
+    forkPublic: Boolean,
+    forkAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
+    writePublic: Boolean,
+    writeAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}]
+});
+var AccessControl = mongoose.model('AccessControl', accessControlSchema);
+exp.AccessControl = AccessControl;
+
+//Sliced
+var slicedSchema = mongoose.Schema({
+    soundService: String,
+    logicService: String,
+    inputService: String,
+    commsService: String,
+    eventService: String,
+    displayService: String
+});
+var Sliced = mongoose.model('Sliced', slicedSchema);
+exp.Sliced = Sliced;
+
+
+// METHODS //
+
+//Init
 exp.init = function()
 {
     mongoose.connect('mongodb://localhost/alpha');
@@ -120,6 +140,38 @@ exp.init = function()
     });
 };
 
+//Create Object
+exp.create = function(classname, raw_object, cb) {
+    var newObject = new classname(raw_object);
+
+    newObject.save(function (err, object_saved) {
+        cb(err, object_saved);
+    });
+};
+
+
+
+exp.checkUser = function(p_username, p_email, p_key, cb) {
+    User.find({ key: p_key }, function (err, users) {
+        if (err) {cb("error"); return console.error(err);}
+        if (users.length==0)
+            User.find({ username: p_username }, function (err, users) {
+                if (err) {cb("error"); return console.error(err);}
+                if (users.length==0)
+                    User.find({ email: p_email }, function (err, users) {
+                        if (err) {cb("error"); return console.error(err);}
+                        if (users.length==0)
+                            cb("clear");
+                        else cb("email");
+                    });
+                else cb("username");
+            });
+        else cb("key");
+    });
+};
+
+
+/*
 
 exp.createUser = function(usr, cb) {
     var newUser = new User(usr);
@@ -177,30 +229,7 @@ exp.existsProject = function(projectquery, cb) {
     });
 };
 
-/**
- * checkUser
- * @param {Object} opts
- * @api public
- */
-exp.checkUser = function(usr, cb)
-{
-    User.find({ key: usr.key }, function (err, users) {
-        if (err) {cb("error"); return console.error(err);}
-        if (users.length==0)
-            User.find({ username: usr.username }, function (err, users) {
-                if (err) {cb("error"); return console.error(err);}
-                if (users.length==0)
-                    User.find({ email: usr.email }, function (err, users) {
-                        if (err) {cb("error"); return console.error(err);}
-                        if (users.length==0)
-                            cb("clear");
-                        else cb("email");
-                    });
-                else cb("username");
-            });
-        else cb("key");
-    });
-};
+*/
 
 
 /**
@@ -208,6 +237,7 @@ exp.checkUser = function(usr, cb)
  * @param {Object} opts
  * @api public
  */
+/*
 exp.accessUser = function(usr, cb)
 {
     User.find({ username: usr.username, password: usr.password }, function (err, users) {
@@ -218,13 +248,14 @@ exp.accessUser = function(usr, cb)
             cb("match",users[0]);
     });
 };
-
+*/
 
 /**
  * accessUser
  * @param {Object} opts
  * @api public
  */
+/*
 exp.getComponents = function(query, cb)
 {
     //var componentsFound =[];
@@ -235,3 +266,4 @@ exp.getComponents = function(query, cb)
         cb("success", components);
     });
 };
+*/

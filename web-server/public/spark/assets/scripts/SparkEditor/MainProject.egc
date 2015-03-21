@@ -12,12 +12,15 @@
 		<_State id="initSpaceName">
 			<Value>Main Space</Value>
 		</_State>
+		
+		<State><Id>programmingMode</Id><Type>Boolean</Type><Value>true</Value></State>
 	</_States>
 	
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="SparkEditor.MainSpace"/>
+				<!--<Entity extends="SparkEditor.MainSpace"/>-->
+				<Entity extends="SparkEditor.MainSpacePr"/>
 			</Entities>
 		</Space>
 	</Form>
