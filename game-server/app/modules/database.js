@@ -152,15 +152,15 @@ exp.create = function(classname, raw_object, cb) {
 
 
 exp.checkUser = function(p_username, p_email, p_key, cb) {
-    User.find({ key: p_key }, function (err, users) {
+    User.findOne({ key: p_key }, function (err, user) {
         if (err) {cb("error"); return console.error(err);}
-        if (users.length==0)
-            User.find({ name: p_username }, function (err, users) {
+        if (!user)
+            User.findOne({name: new RegExp('^'+p_username+'$', "i")}, function (err, user) {
                 if (err) {cb("error"); return console.error(err);}
-                if (users.length==0)
-                    User.find({ email: p_email }, function (err, users) {
+                if (!user)
+                    User.findOne({ email: p_email }, function (err, user) {
                         if (err) {cb("error"); return console.error(err);}
-                        if (users.length==0)
+                        if (!user)
                             cb("clear");
                         else cb("email");
                     });

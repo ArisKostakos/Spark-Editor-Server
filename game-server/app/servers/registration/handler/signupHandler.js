@@ -57,12 +57,11 @@ handler.signup = function(msg, session, next) {
 
 
     //VALIDATE USERNAME
-    username = username.toLowerCase();
-    var isUsernameValid = username.search(/^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$/);
+    var isUsernameValid = username.search(/^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$/);
                                                                               //allowed characters
                                                                  //no __ or _. or ._ or .. inside
                                                          //no _ or . at the beginning
-                                             //username is 6-20 characters long
+                                             //username is 4-20 characters long
     if (isUsernameValid==-1)
     {
         console.warn("Username Invalid: " + username);
