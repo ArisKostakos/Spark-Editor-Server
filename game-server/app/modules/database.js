@@ -171,15 +171,20 @@ exp.checkUser = function(p_username, p_email, p_key, cb) {
 };
 
 
-/*
-
-exp.createUser = function(usr, cb) {
-    var newUser = new User(usr);
-    newUser.save(function (err, user_created) {
-         if (err) {cb("error"); return console.error(err);}
-         cb("success",user_created);});
+exp.accessUser = function(username, password, cb)
+{
+    User.findOne({ name: new RegExp('^'+username+'$', "i"), password: password }, function (err, user) {
+        if (err) {cb("error"); return console.error(err);}
+        if (!user)
+            cb("nomatch");
+        else
+            cb("match",user);
+    });
 };
 
+
+
+/*
 exp.createProject = function(prj, cb) {
     var newProject = new Project(prj);
     newProject.save(function (err, project_created) {
@@ -232,29 +237,6 @@ exp.existsProject = function(projectquery, cb) {
 */
 
 
-/**
- * accessUser
- * @param {Object} opts
- * @api public
- */
-/*
-exp.accessUser = function(usr, cb)
-{
-    User.find({ username: usr.username, password: usr.password }, function (err, users) {
-        if (err) {cb("error"); return console.error(err);}
-        if (users.length==0)
-            cb("nomatch");
-        else
-            cb("match",users[0]);
-    });
-};
-*/
-
-/**
- * accessUser
- * @param {Object} opts
- * @api public
- */
 /*
 exp.getComponents = function(query, cb)
 {

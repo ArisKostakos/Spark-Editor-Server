@@ -26,7 +26,7 @@ handler.login = function(msg, session, next) {
     var sessionService = self.app.get('sessionService');
 
 
-    database.accessUser({username:username, password:password},
+    database.accessUser(username, password,
         function (code, user) {
             if (code=="match")
             {
