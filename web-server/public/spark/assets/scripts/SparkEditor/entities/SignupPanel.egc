@@ -369,6 +369,10 @@
 						{
 							me.getState('outputText').setState('text', 'The Alpha Key entered is invalid.');
 						}
+						else if (data.code=="usernameinvalid")
+						{
+							me.getState('outputText').setState('text', 'The Username has invalid characters.');
+						}
 						else if (data.code=="error")
 						{
 							me.getState('outputText').setState('text', 'An unknown error occured.');

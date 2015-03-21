@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Editor Code Scene Pr</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.entities.EditorCodePanelPr"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

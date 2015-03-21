@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Stage">
+	<_States>
+		<_State id="name">
+			<Value>Main Stage Pr</Value>
+		</_State>
+		
+		
+		<_State id="layout">
+			<Value>Basic</Value>
+		</_State>
+	</_States>
+					
+	<Form>
+		<Space>
+			<Entities>
+				<!-- full screen DOM for effects, drag and drop, etc ?? -->
+				<!--full screen DOM for login, lobby, etc-->
+				<Entity extends="SparkEditor.views.DomView"/>
+				
+				<!--EDITOR STUFF-->
+				
+				<!--Editor Area-->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>Editor Area Pr</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						
+					</Entities></Space></Form>
+				</Entity>
+				
+					<!--top bar View-->
+					<Entity extends="SparkEditor.views.EditorTopBarPr">
+						<_States>
+							<_State id="parent"><Value>Editor Area Pr</Value></_State>
+						</_States>
+					</Entity>
+					
+					<!--Workspace Area-->
+					<Entity extends="std.display.StageArea">
+						<_States>
+							<_State id="name"><Value>Workspace Area Pr</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>100%</Value></_State>
+							<_State id="layout"><Value>Horizontal</Value></_State>
+							<_State id="gap"><Value>0</Value></_State>
+							<_State id="parent"><Value>Editor Area Pr</Value></_State>
+						</_States>
+						<Form><Space><Entities>
+							
+						</Entities></Space></Form>
+					</Entity>
+				
+						<!--left bar View-->
+						<Entity extends="SparkEditor.views.EditorLeftBarPr">
+							<_States>
+								<_State id="parent"><Value>Workspace Area Pr</Value></_State>
+							</_States>
+						</Entity>
+				
+						<!--ProjectStage Area-->
+						<Entity extends="std.display.StageArea">
+							<_States>
+								<_State id="name"><Value>ProjectStage Area Pr</Value></_State>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="layout"><Value>Basic</Value></_State>
+								<_State id="parent"><Value>Workspace Area Pr</Value></_State>
+							</_States>
+							<Form><Space><Entities>
+								
+							</Entities></Space></Form>
+						</Entity>
+				
+	
+							<Entity extends="SparkEditor.views.EditorCodePr">
+								<_States>
+									<_State id="parent"><Value>ProjectStage Area Pr</Value></_State>
+								</_States>
+							</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

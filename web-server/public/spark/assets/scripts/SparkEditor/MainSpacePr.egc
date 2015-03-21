@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Space">
+	<_States>
+		<_State id="name">
+			<Value>Main Space</Value>
+		</_State>
+		
+		<_State id="initStageName">
+			<Value>Main Stage Pr</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Stage -->
+				<Entity extends="SparkEditor.MainStagePr"/>
+				
+				<!-- Scenes -->
+				<Entity extends="SparkEditor.scenes.DomScene"/>
+				
+				<Entity extends="SparkEditor.scenes.EditorLeftBarScenePr"/>
+				<Entity extends="SparkEditor.scenes.EditorTopBarScenePr"/>
+				<Entity extends="SparkEditor.scenes.EditorCodeScenePr"/>
+				
+				<!-- Cameras -->
+				<Entity extends="SparkEditor.cameras.DummyCamera"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
