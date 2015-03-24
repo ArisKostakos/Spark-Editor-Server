@@ -12,14 +12,34 @@ var Handler = function(app) {
 
 var handler = Handler.prototype;
 
-/**
- * New client entry registration server.
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next stemp callback
- * @return {Void}
- */
+handler.listUserProjects = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+    var user = session.get('user');
+    var developer = session.get('developer');
+
+    console.warn("The Fullname of the connected user is: " + user.firstName + ' ' + user.lastName);
+    console.warn("The connected developer id is: " + developer._id);
+
+    //Find Projects
+    database.find(database.Project, {owner:developer._id},
+        function (err, objects_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", projects: objects_found});
+        }
+    );
+};
+
+
+
+
+
 handler.create = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
@@ -27,7 +47,7 @@ handler.create = function(msg, session, next) {
     var projectTitle = msg.projectTitle;
     var user = session.get('user');
 
-    console.warn("The Fullname of the connected user is: " + user.fullname);
+    console.warn("The Fullname of the connected user is: " + user.firstName + ' ' + user.lastName);
     console.warn("The projectName is: " + projectName);
     console.warn("The projectTitle is: " + projectTitle);
 

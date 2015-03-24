@@ -144,9 +144,12 @@ exp.init = function()
 exp.create = function(classname, raw_object, cb) {
     var newObject = new classname(raw_object);
 
-    newObject.save(function (err, object_saved) {
-        cb(err, object_saved);
-    });
+    newObject.save(cb);
+};
+
+//Generic Find
+exp.find = function(classname, raw_object_query, cb) {
+    classname.find(raw_object_query, cb);
 };
 
 
@@ -178,7 +181,18 @@ exp.accessUser = function(username, password, cb)
         if (!user)
             cb("nomatch");
         else
-            cb("match",user);
+        {
+            Developer.findOne({user: user._id}, function (err, developer) {
+                if (err) {
+                    cb("error");
+                    return console.error(err);
+                }
+                if (!developer)
+                    cb("error");
+                else
+                    cb("match", user, developer);
+            });
+        }
     });
 };
 

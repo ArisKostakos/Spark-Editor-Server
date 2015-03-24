@@ -27,16 +27,21 @@ handler.login = function(msg, session, next) {
 
 
     database.accessUser(username, password,
-        function (code, user) {
+        function (code, user, developer) {
             if (code=="match")
             {
+                //Bind User
                 session.bind(user);
-
                 session.set('user', user);
                 session.push('user', function(err) {
-                    if(err) {
-                        console.error('set user for session service failed! error is : %j', err.stack);
-                    }
+                    if(err) console.error('set user for session service failed! error is : %j', err.stack);
+                });
+
+                //Bind Developer
+                session.bind(developer);
+                session.set('developer', developer);
+                session.push('developer', function(err) {
+                    if(err) console.error('set developer for session service failed! error is : %j', err.stack);
                 });
             }
 

@@ -14,90 +14,232 @@
 	<Form>
 		<Space>
 			<Entities>
-				<!-- full screen DOM for effects, drag and drop, etc ?? -->
-				<!--full screen DOM for login, lobby, etc-->
-				<Entity extends="SparkEditor.views.DomView"/>
+				<!-- StageArea: Full -->
+				<!-- StageArea: FullVgroup -->
+					<!-- StageArea: TitleBar -->
+					<!-- StageArea: NoTitleHgroup -->
+						<!-- StageArea: MainAndGadgetVgroup -->
+							<!-- StageArea: Main -->
+								<!-- StageArea: MainHGroup -->
+									<!-- StageArea: MainLeftBar -->
+									<!-- StageArea: MainEditArea -->
+							<!-- StageArea: BottomGadgetBar -->
+						<!-- StageArea: RightGadgetBar -->
+						
 				
-				<!--EDITOR STUFF-->
-				
-				<!--Editor Area-->
+				<!-- StageArea: Full -->
 				<Entity extends="std.display.StageArea">
 					<_States>
-						<_State id="name"><Value>Editor Area</Value></_State>
+						<_State id="name"><Value>Full</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
-						<_State id="layout"><Value>Vertical</Value></_State>
 						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: FullVgroup -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>FullVgroup</Value></_State>
+						<_State id="parent"><Value>Full</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: TitleBar -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>TitleBar</Value></_State>
+						<_State id="parent"><Value>FullVgroup</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>56</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: NoTitleHgroup -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>NoTitleHgroup</Value></_State>
+						<_State id="parent"><Value>FullVgroup</Value></_State>
+						<_State id="layout"><Value>Horizontal</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: MainAndGadgetVgroup -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>MainAndGadgetVgroup</Value></_State>
+						<_State id="parent"><Value>NoTitleHgroup</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+					
+					
+				<!-- StageArea: Main -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>Main</Value></_State>
+						<_State id="parent"><Value>MainAndGadgetVgroup</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: MainHGroup -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>MainHGroup</Value></_State>
+						<_State id="parent"><Value>Main</Value></_State>
+						<_State id="layout"><Value>Horizontal</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: MainLeftBar -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>MainLeftBar</Value></_State>
+						<_State id="parent"><Value>MainHGroup</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="width"><Value>221</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: MainEditArea -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>MainEditArea</Value></_State>
+						<_State id="parent"><Value>MainHGroup</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: BottomGadgetBar -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>BottomGadgetBar</Value></_State>
+						<_State id="parent"><Value>MainAndGadgetVgroup</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>25</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- StageArea: RightGadgetBar -->
+				<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>RightGadgetBar</Value></_State>
+						<_State id="parent"><Value>NoTitleHgroup</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="width"><Value>25</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				</Entity>
+
+
+				<!-- StageArea: Full -->
+				<!-- StageArea: FullVgroup -->
+					<!-- StageArea: TitleBar -->
+					<!-- StageArea: NoTitleHgroup -->
+						<!-- StageArea: MainAndGadgetVgroup -->
+							<!-- StageArea: Main -->
+								<!-- StageArea: MainHGroup -->
+									<!-- StageArea: MainLeftBar -->
+									<!-- StageArea: MainEditArea -->
+							<!-- StageArea: BottomGadgetBar -->
+						<!-- StageArea: RightGadgetBar -->
+				
+				
+				
+				<!--Log in View-->
+				<Entity extends="SparkEditor.views.DomView">
+					<_States>
+						<_State id="parent"><Value>Full</Value></_State>
+					</_States>
+				</Entity>
+			
+				<!--Tester View-->
+				<!--<Entity extends="SparkEditor.views.ViewTester">
+					<_States>
+						<_State id="parent"><Value>Main</Value></_State>
+					</_States>
+				</Entity>-->
+				
+
+				
+				
+				<!--top bar View-->
+				<!--<Entity extends="SparkEditor.views.EditorTopBar">
+					<_States>
+						<_State id="parent"><Value>Editor Area</Value></_State>
+					</_States>
+				</Entity>-->
+					
+
+				
+				<!--left bar View-->
+				<!--<Entity extends="SparkEditor.views.EditorLeftBar">
+					<_States>
+						<_State id="parent"><Value>Workspace Area</Value></_State>
+					</_States>
+				</Entity>-->
+				
+				<!--ProjectStage Area-->
+				<!--<Entity extends="std.display.StageArea">
+					<_States>
+						<_State id="name"><Value>ProjectStage Area</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="layout"><Value>Basic</Value></_State>
+						<_State id="parent"><Value>Workspace Area</Value></_State>
 					</_States>
 					<Form><Space><Entities>
 						
 					</Entities></Space></Form>
-				</Entity>
-				
-					<!--top bar View-->
-					<Entity extends="SparkEditor.views.EditorTopBar">
-						<_States>
-							<_State id="parent"><Value>Editor Area</Value></_State>
-						</_States>
-					</Entity>
-					
-					<!--Workspace Area-->
-					<Entity extends="std.display.StageArea">
-						<_States>
-							<_State id="name"><Value>Workspace Area</Value></_State>
-							<_State id="width"><Value>100%</Value></_State>
-							<_State id="height"><Value>100%</Value></_State>
-							<_State id="layout"><Value>Horizontal</Value></_State>
-							<_State id="gap"><Value>0</Value></_State>
-							<_State id="parent"><Value>Editor Area</Value></_State>
-						</_States>
-						<Form><Space><Entities>
-							
-						</Entities></Space></Form>
-					</Entity>
-				
-						<!--left bar View-->
-						<Entity extends="SparkEditor.views.EditorLeftBar">
-							<_States>
-								<_State id="parent"><Value>Workspace Area</Value></_State>
-							</_States>
-						</Entity>
-				
-						<!--ProjectStage Area-->
-						<Entity extends="std.display.StageArea">
-							<_States>
-								<_State id="name"><Value>ProjectStage Area</Value></_State>
-								<_State id="width"><Value>100%</Value></_State>
-								<_State id="height"><Value>100%</Value></_State>
-								<_State id="layout"><Value>Basic</Value></_State>
-								<_State id="parent"><Value>Workspace Area</Value></_State>
-							</_States>
-							<Form><Space><Entities>
-								
-							</Entities></Space></Form>
-						</Entity>
+				</Entity>-->
 				
 	
-							<Entity extends="SparkEditor.views.LevelEditor2DView">
-								<_States>
-									<_State id="parent"><Value>ProjectStage Area</Value></_State>
-								</_States>
-							</Entity>
-							<!--
-							<Entity extends="SparkEditor.views.MainView3D">
-								<_States>
-									<_State id="parent"><Value>ProjectStage Area</Value></_State>
-								</_States>
-							</Entity>
-				
-							<Entity extends="SparkEditor.views.MainView2D">
-								<_States>
-									<_State id="parent"><Value>ProjectStage Area</Value></_State>
-								</_States>
-							</Entity>
-							-->
-				<!--bottom bar (chat) -->
-				
+				<!--<Entity extends="SparkEditor.views.LevelEditor2DView">
+					<_States>
+						<_State id="parent"><Value>ProjectStage Area</Value></_State>
+					</_States>
+				</Entity>-->
+				<!--
+				<Entity extends="SparkEditor.views.MainView3D">
+					<_States>
+						<_State id="parent"><Value>ProjectStage Area</Value></_State>
+					</_States>
+				</Entity>
+	
+				<Entity extends="SparkEditor.views.MainView2D">
+					<_States>
+						<_State id="parent"><Value>ProjectStage Area</Value></_State>
+					</_States>
+				</Entity>
+				-->
 			</Entities>
 		</Space>
 	</Form>

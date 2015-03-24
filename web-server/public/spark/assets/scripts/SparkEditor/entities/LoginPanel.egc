@@ -188,10 +188,10 @@
 				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
 				if (projectEntity.getState('Connected')==true)
 				{
-					//var strUser = 'aris';
-					//var strPass = 'r0diof';
-					var strUser = 'spark';
-					var strPass = '12qw!@QW ';
+					var strUser = 'aris';
+					var strPass = 'r0diof';
+					//var strUser = 'spark';
+					//var strPass = '12qw!@QW ';
 					
 					if (strUser.length>0 && strUser!='Undefined' &&
 						strPass.length>0 && strPass!='Undefined')
@@ -265,8 +265,12 @@
 						
 						if (data.code=="match")
 						{
-							me.getState('outputText').setState('text', 'Logged in. Entering default project...');
+							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
+							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
 							
+							
+							
+							return;
 							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
 							{
 								Comms.request("lobby.projectHandler.create", {projectName: "std", projectTitle: "Standard"}, "Create Project Request");
@@ -313,33 +317,34 @@
 						
 						if (data.code=="success")
 						{
-							var programmingMode = Logic.getEntityByName('Spark Editor').getState('programmingMode');
+							//Fill Library with components
+							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
 							
-							if (programmingMode)
-							{
-								//enter project
-								Logic.getEntityByName('Dom View').setState('visible',false);
-								Logic.getEntityByName('Editor Top Bar View Pr').setState('visible',true);
-								Logic.getEntityByName('Editor Left Bar View Pr').setState('visible',true);
-								Logic.getEntityByName('Editor Code View Pr').setState('visible',true);
-							}
-							else
-							{
-								//Fill Library with components
-								var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
-								
-								objectsPanel.getAction('AddItemNoUpload').setState('items', data.components);
-								objectsPanel.startAction('AddItemNoUpload');
+							objectsPanel.getAction('AddItemNoUpload').setState('items', data.components);
+							objectsPanel.startAction('AddItemNoUpload');
 
-								//enter project
-								Logic.getEntityByName('Dom View').setState('visible',false);
-								Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
-								Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
-							}
+							//enter project
+							Logic.getEntityByName('Dom View').setState('visible',false);
+							Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
+							Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
 						}
 						else
 						{
 							me.getState('outputText').setState('text', 'Error getting components.');
+						}
+					}
+					else if (Comms.getRequestData("Request All My Projects")!=null)
+					{
+						var data = Comms.getRequestData("Request All My Projects");
+						
+						if (data.code=="success")
+						{
+							me.getState('outputText').setState('text', 'Success requesting all my projects!');
+							Display.error("Data projects received: " + data.projects);
+						}
+						else
+						{
+							me.getState('outputText').setState('text', 'Error requesting all my projects.');
 						}
 					}
 				</Script>
