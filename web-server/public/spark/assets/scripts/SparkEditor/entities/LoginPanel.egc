@@ -169,53 +169,103 @@
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 				
-				<!-- Aris Login Button -->
-				<Entity extends="std.display.Button"><_States>
-					<_State id="name"><Value>Aris Login Button</Value></_State>
+				<!-- Quick Logins -->
+				<Entity extends="std.display.HGroup"><_States>
 					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>20</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="textVerticalAlign"><Value>middle</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(255, 174, 94)</Value></_State>
-					<_State id="border"><Value>0px</Value></_State>
-					<_State id="text"><Value>Aris Quick Login (ignore)</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>15px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
-				<Script>
-				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
-				if (projectEntity.getState('Connected')==true)
-				{
-					var strUser = 'aris';
-					var strPass = 'r0diof';
-					//var strUser = 'spark';
-					//var strPass = '12qw!@QW ';
+					<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
 					
-					if (strUser.length>0 && strUser!='Undefined' &&
-						strPass.length>0 && strPass!='Undefined')
-					{
-						parent.getState('outputText').setState('text', 'Please wait...');
+						<!-- Spark Login Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Spark Login Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>20</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(200, 174, 194)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="text"><Value>Spark Quick Login (ignore)</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>15px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<Script>
+						var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+						if (projectEntity.getState('Connected')==true)
+						{
+							var strUser = 'spark';
+							var strPass = '12qw!@QW ';
+							
+							if (strUser.length>0 && strUser!='Undefined' &&
+								strPass.length>0 && strPass!='Undefined')
+							{
+								parent.parentEntity.getState('outputText').setState('text', 'Please wait...');
+								
+								Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																					username: strUser, 
+																					password: strPass}, "Log In Request");
+																					
+								Logic.getEntityByName('Spark Editor').setState('username',strUser);
+							}
+							else
+							{
+								parent.parentEntity.getState('outputText').setState('text', 'Please fill in every field.');
+							}
+								
+						}
+						else
+						{
+							parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+						}
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
 						
-						Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
-																			username: strUser, 
-																			password: strPass}, "Log In Request");
-																			
-						Logic.getEntityByName('Spark Editor').setState('username',strUser);
-					}
-					else
-					{
-						parent.getState('outputText').setState('text', 'Please fill in every field.');
-					}
-						
-				}
-				else
-				{
-					parent.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
-				}
-				</Script>
-				</Scripts></Trigger></_Triggers></Entity>
+						<!-- Aris Login Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Aris Login Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>20</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(255, 174, 94)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="text"><Value>Aris Quick Login (ignore)</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>15px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<Script>
+						var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+						if (projectEntity.getState('Connected')==true)
+						{
+							var strUser = 'aris';
+							var strPass = 'r0diof';
+							
+							if (strUser.length>0 && strUser!='Undefined' &&
+								strPass.length>0 && strPass!='Undefined')
+							{
+								parent.parentEntity.getState('outputText').setState('text', 'Please wait...');
+								
+								Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																					username: strUser, 
+																					password: strPass}, "Log In Request");
+																					
+								Logic.getEntityByName('Spark Editor').setState('username',strUser);
+							}
+							else
+							{
+								parent.parentEntity.getState('outputText').setState('text', 'Please fill in every field.');
+							}
+								
+						}
+						else
+						{
+							parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+						}
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+				</Entities></Space></Form></Entity>
 				
 				<!-- Spacer -->
 				<Entity extends="std.display.Group"><_States><_State id="height"><Value>10</Value></_State></_States></Entity>
@@ -267,18 +317,6 @@
 						{
 							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
 							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
-							
-							
-							
-							return;
-							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
-							{
-								Comms.request("lobby.projectHandler.create", {projectName: "std", projectTitle: "Standard"}, "Create Project Request");
-							}
-							else
-							{
-								Comms.request("lobby.projectHandler.create", {projectName: "alphaProject", projectTitle: "Alpha Project"}, "Create Project Request");
-							}
 						}
 						else if (data.code=="nomatch")
 						{
@@ -291,7 +329,7 @@
 							me.getState('outputText').setState('text', 'An unknown error occured.');
 						}
 					}
-					else if (Comms.getRequestData("Create Project Request")!=null)
+					/*else if (Comms.getRequestData("Create Project Request")!=null)
 					{
 						var data = Comms.getRequestData("Create Project Request");
 						
@@ -332,7 +370,7 @@
 						{
 							me.getState('outputText').setState('text', 'Error getting components.');
 						}
-					}
+					}*/
 					else if (Comms.getRequestData("Request All My Projects")!=null)
 					{
 						var data = Comms.getRequestData("Request All My Projects");
