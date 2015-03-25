@@ -181,22 +181,28 @@
 					</_States>
 				</Entity>
 			
+				<!--Dashboard View-->
+				<Entity extends="SparkEditor.views.DashboardView">
+					<_States>
+						<_State id="parent"><Value>Main</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--Top Bar View-->
+				<Entity extends="SparkEditor.views.EditorTopBar">
+					<_States>
+						<_State id="parent"><Value>TitleBar</Value></_State>
+					</_States>
+				</Entity>
+				
+				
 				<!--Tester View-->
 				<!--<Entity extends="SparkEditor.views.ViewTester">
 					<_States>
 						<_State id="parent"><Value>Main</Value></_State>
 					</_States>
 				</Entity>-->
-				
-
-				
-				
-				<!--top bar View-->
-				<!--<Entity extends="SparkEditor.views.EditorTopBar">
-					<_States>
-						<_State id="parent"><Value>Editor Area</Value></_State>
-					</_States>
-				</Entity>-->
+			
 					
 
 				

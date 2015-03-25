@@ -299,8 +299,8 @@
 						{
 							Logic.getEntityByName('Spark Editor').setState('projectname',data.project.projectname);
 
-							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
-							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+							//Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
+							//Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
 
 						
 							//query library components
@@ -341,6 +341,12 @@
 						{
 							me.getState('outputText').setState('text', 'Success requesting all my projects!');
 							Display.error("Data projects received: " + data.projects);
+							
+							//enter lobby
+							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
+							Logic.getEntityByName('Dom View').setState('visible',false);
+							Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
+							Logic.getEntityByName('Dashboard View').setState('visible',true);
 						}
 						else
 						{

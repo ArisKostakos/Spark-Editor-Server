@@ -44,13 +44,55 @@ handler.create = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
     var projectName = msg.projectName;
-    var projectTitle = msg.projectTitle;
+    //var projectTitle = msg.projectTitle;
     var user = session.get('user');
+    var developer = session.get('developer');
 
     console.warn("The Fullname of the connected user is: " + user.firstName + ' ' + user.lastName);
     console.warn("The projectName is: " + projectName);
-    console.warn("The projectTitle is: " + projectTitle);
+   // console.warn("The projectTitle is: " + projectTitle);
 
+
+    //Does A project with that name already exist for this developer?
+    database.findOne(database.Project, {name: projectName, owner: developer._id},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            if (object_found)
+                next(null, {code: "exists"});
+            else
+            {
+                var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, modules: [], tags: [], includes: [], accessControl: []};
+
+                //Create Project
+                database.create(database.Project, raw_Project,
+                    function (err, objCreated_Project) {
+                        //Handle Error
+                        if (err) {
+                            next(null, {code: "error"});
+                            return console.error(err);
+                        }
+
+                        //Handle Success
+
+                        //Create directories
+                        createProjectDirectories(objCreated_Project.name, user.name);
+
+                        next(null, {code: "success", project: objCreated_Project});
+                    }
+                );
+            }
+        }
+    );
+};
+
+
+/*
     database.existsProject({ projectname: projectName, owner: user._id },
         function (code, project) {
             if (code=="match")
@@ -86,7 +128,8 @@ handler.create = function(msg, session, next) {
                     });
             }
         });
-};
+        */
+
 
 function createProjectDirectories(libraryName, userName)
 {

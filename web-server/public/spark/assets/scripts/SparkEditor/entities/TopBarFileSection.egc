@@ -28,7 +28,7 @@
 					<_State id="name"><Value>Top Bar Project Text</Value></_State>
 					<_State id="width"><Value>100%</Value></_State>
 					<_State id="height"><Value>15</Value></_State>
-					<_State id="text"><Value>Project: whatever</Value></_State>
+					<_State id="text"><Value>Project:</Value></_State>
 					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
 					<_State id="fontSize"><Value>13px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>

@@ -29,6 +29,7 @@ var teamSchema = mongoose.Schema({
     name: String,       //unique, cannot be renamed
     title: String,
     users: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}], //special tags, like can a user in a team create projects on behalf of the team, rename the team, etc
     developerReference: {type: Schema.Types.ObjectId, ref: 'Developer'}
 });
 var Team = mongoose.model('Team', teamSchema);
@@ -56,7 +57,7 @@ var projectSchema = mongoose.Schema({
     moduleMain: {type: Schema.Types.ObjectId, ref: 'Module'},
     tags: [String],	//template tag
     includes: [{type: Schema.Types.ObjectId, ref: 'IncludeQuery'}],
-    accessControl: {type: Schema.Types.ObjectId, ref: 'AccessControl'}
+    accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}]
 });
 var Project = mongoose.model('Project', projectSchema);
 exp.Project = Project;
@@ -76,7 +77,8 @@ exp.Module = Module;
 var includeQuerySchema = mongoose.Schema({
     tags: [String], //(for beginer editor, eventsheet editor, brick editor, programming, everything)
     queryHidden: String,
-    queryVisible: String
+    queryVisible: String,
+    projectReference: {type: Schema.Types.ObjectId, ref: 'Project'} //to query the includes externally
 });
 var IncludeQuery = mongoose.model('IncludeQuery', includeQuerySchema);
 exp.IncludeQuery = IncludeQuery;
@@ -92,27 +94,22 @@ var assetSchema = mongoose.Schema({
     title: String,
     fileSize: Number,
     tags: [String], //here as a tag we can include the projectname that I was initially uploaded for
-    accessControl: {type: Schema.Types.ObjectId, ref: 'AccessControl'},
+    accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}],
     assetDependancies: [{type: Schema.Types.ObjectId, ref: 'Asset'}] //egc classes and asset grouping
 });
 var Asset = mongoose.model('Asset', assetSchema);
 exp.Asset = Asset;
 
-//AccessControl
-var accessControlSchema = mongoose.Schema({
-    viewPublic: Boolean,
-    viewAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
-    usePublic: Boolean,
-    useAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
-    readPublic: Boolean,
-    readAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
-    forkPublic: Boolean,
-    forkAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
-    writePublic: Boolean,
-    writeAccess: [{type: Schema.Types.ObjectId, ref: 'Developer'}]
+//AccessEntry
+var accessEntrySchema = mongoose.Schema({
+    actionTag: String, //action tags: view, use, read, fork, write, readPM, readForum, readGit, writePM, writeForum, writeGit, ...
+    public: Boolean,
+    private: [{type: Schema.Types.ObjectId, ref: 'Developer'}],
+    password: String,
+    sourceReference: {type: Schema.Types.ObjectId} //no ref cause it can be either Project, Asset, or Team
 });
-var AccessControl = mongoose.model('AccessControl', accessControlSchema);
-exp.AccessControl = AccessControl;
+var AccessEntry = mongoose.model('AccessEntry', accessEntrySchema);
+exp.AccessEntry = AccessEntry;
 
 //Sliced
 var slicedSchema = mongoose.Schema({
@@ -152,6 +149,10 @@ exp.find = function(classname, raw_object_query, cb) {
     classname.find(raw_object_query, cb);
 };
 
+//Generic Find One
+exp.findOne = function(classname, raw_object_query, cb) {
+    classname.findOne(raw_object_query, cb);
+};
 
 
 exp.checkUser = function(p_username, p_email, p_key, cb) {
