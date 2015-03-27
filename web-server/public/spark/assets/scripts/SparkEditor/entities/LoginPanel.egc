@@ -380,6 +380,12 @@
 							me.getState('outputText').setState('text', 'Success requesting all my projects!');
 							Display.error("Data projects received: " + data.projects);
 							
+							//Fill Dashboard View with projects
+							var dashboardScene = Logic.getEntityByName('Dashboard Scene');
+							
+							dashboardScene.getAction('AddProjects').setState('items', data.projects);
+							dashboardScene.startAction('AddProjects');
+							
 							//enter lobby
 							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
 							Logic.getEntityByName('Dom View').setState('visible',false);

@@ -161,12 +161,12 @@
 
 
 				<!-- StageArea: Full -->
-				<!-- StageArea: FullVgroup -->
+				<!-- StageArea: Full-Vgroup -->
 					<!-- StageArea: TitleBar -->
-					<!-- StageArea: NoTitleHgroup -->
-						<!-- StageArea: MainAndGadgetVgroup -->
+					<!-- StageArea: NoTitle-Hgroup -->
+						<!-- StageArea: MainAndGadget-Vgroup -->
 							<!-- StageArea: Main -->
-								<!-- StageArea: MainHGroup -->
+								<!-- StageArea: Main-HGroup -->
 									<!-- StageArea: MainLeftBar -->
 									<!-- StageArea: MainEditArea -->
 							<!-- StageArea: BottomGadgetBar -->
@@ -183,6 +183,13 @@
 			
 				<!--Dashboard View-->
 				<Entity extends="SparkEditor.views.DashboardView">
+					<_States>
+						<_State id="parent"><Value>Main</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--ProgrammerEditor View-->
+				<Entity extends="SparkEditor.views.ProgrammerEditorView">
 					<_States>
 						<_State id="parent"><Value>Main</Value></_State>
 					</_States>

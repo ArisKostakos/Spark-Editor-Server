@@ -85,14 +85,16 @@ exp.IncludeQuery = IncludeQuery;
 
 //Asset
 var assetSchema = mongoose.Schema({
+    name: String,  //unique in user->type scope, cannot be renamed  (it is auto-completed to dir+fileName, replacing /'s with .'s)
     fork: {type: Schema.Types.ObjectId, ref: 'Asset'},
-    owner: {type: Schema.Types.ObjectId, ref: 'Developer'},		//use for uid & to find Url
-    type: String,			    //use for uid & to find Url
-    dir: String,				//use for uid & to find Url
-    fileName: String,		    //use for uid & to find Url
-    fileExtension: String,	    //use for uid & to find Url
+    owner: {type: Schema.Types.ObjectId, ref: 'Developer'},		//use to find Url,  use with name to find uid
+    type: String,			    //use to find Url,  use with name to find uid
+    dir: String,				//use to find Url
+    fileName: String,		    //use to find Url
+    fileExtension: String,	    //use to find Url
     title: String,
     fileSize: Number,
+    componentType: String,     //EventSheet Entry, Behavior, Spriter, stuff like that.. or null or "" if the asset is not a component (a component asset has a structure that the editor will expect from that type)
     tags: [String], //here as a tag we can include the projectname that I was initially uploaded for
     accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}],
     assetDependancies: [{type: Schema.Types.ObjectId, ref: 'Asset'}] //egc classes and asset grouping

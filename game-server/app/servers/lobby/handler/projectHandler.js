@@ -37,9 +37,6 @@ handler.listUserProjects = function(msg, session, next) {
 };
 
 
-
-
-
 handler.create = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
@@ -91,44 +88,42 @@ handler.create = function(msg, session, next) {
     );
 };
 
+//todo: to connect to a project, user/team name is required as well. now it only connects to owner projects
+handler.connect = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+    var projectName = msg.projectName;
+    var user = session.get('user');
+    var developer = session.get('developer');
 
-/*
-    database.existsProject({ projectname: projectName, owner: user._id },
-        function (code, project) {
-            if (code=="match")
-            {
-                //EXISTS. ACCESS IT
-                console.warn("Project Exists: "+ project.projectname);
+    console.warn("The Fullname of the connected user is: " + user.firstName + ' ' + user.lastName);
+    console.warn("The projectName to connect is: " + projectName);
+    // console.warn("The projectTitle is: " + projectTitle);
 
+
+    //Does A project with that name already exist for this developer?
+    database.findOne(database.Project, {name: projectName, owner: developer._id},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            if (object_found) {
                 //Bind it to session
-                bindProject(session, project);
+                bindProject(session, object_found);
 
-                //Return
-                next(null, {code: "success", project: project});
+                //return project? hm
+                next(null, {code: "success"});
             }
-            else
-            {
-                //DOESNT EXIST. CREATE IT
-                console.warn("Project does not exist yet!")
-
-                var prj = { projectname: projectName, title: projectTitle, owner:user._id, runPublic:true, runAccess:[user._id],
-                    readPublic: true, readAccess:[user._id], writePublic:true, writeAccess:[user._id], components:[],
-                    library: [{owner:user._id, libraryName: projectName}, {libraryName: "std"}]};//fix the std query (spark owner)
-
-                database.createProject(prj,
-                    function (code,project_created) {
-                        if (code=="success") {
-                            //Bind it to session
-                            bindProject(session, project_created);
-
-                            //Create directories
-                            createProjectDirectories(project_created.projectname,project_created.owner.username);
-                        }
-                        next(null, {code: code, project: project_created});
-                    });
+            else {
+                next(null, {code: "notfound"});
             }
-        });
-        */
+        }
+    );
+};
 
 
 function createProjectDirectories(libraryName, userName)

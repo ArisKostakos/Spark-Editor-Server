@@ -25,6 +25,7 @@
 				<Entity extends="SparkEditor.scenes.EditorTopBarScene"/>
 				
 				<Entity extends="SparkEditor.scenes.DashboardScene"/>
+				<Entity extends="SparkEditor.scenes.ProgrammerEditorScene"/>
 				<Entity extends="SparkEditor.scenes.SceneTester"/>
 				
 				<!-- Cameras -->
