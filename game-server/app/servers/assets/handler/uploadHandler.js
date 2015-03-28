@@ -72,8 +72,25 @@ handler.rawUpload = function(msg, session, next) {
     fs.readFile(assetSource, 'utf8', function (err, data) {
         if (err) {next(null, {code: "error"}); return console.error(err)}
 
+        var result = data.match(/extends ?\= ?(["'])(?:(?=(\\?))\2.)*?\1/g);
+        var found = [];
 
-        console.log(data);
+        for (var i=0; i<result.length; i++) {
+            var captured = result[i];
+
+            if (captured.indexOf("'")!=-1)
+            {
+                found.push(captured.substring(captured.indexOf("'")+1,captured.lastIndexOf("'")));
+            }
+            else if (captured.indexOf('"')!=-1)
+            {
+                found.push(captured.substring(captured.indexOf('"')+1,captured.lastIndexOf('"')));
+            }
+        }
+
+        for (var i=0; i<found.length; i++) {
+            console.log(found[i]);
+        }
 
         //send success signal
         next(null, {code: "success"});
