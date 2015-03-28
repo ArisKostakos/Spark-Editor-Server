@@ -27,7 +27,7 @@ app.configure('production|development', 'gate', function(){
 		});
 });
 
-app.configure('production|development', 'registration|lobby|editor', function(){
+app.configure('production|development', 'registration|lobby|editor|assets', function(){
 	//connect to db
 	database.init();
 });
@@ -39,6 +39,7 @@ app.configure('production|development', function() {
 	app.route('lobby', routeUtil.lobby);
 	app.route('chat', routeUtil.chat);
 	app.route('editor', routeUtil.editor);
+	app.route('assets', routeUtil.assets);
 
 	// filter configures
 	app.filter(pomelo.timeout());

@@ -52,3 +52,16 @@ exp.editor = function(session, msg, app, cb) {
 
 	cb(null, res.id);
 };
+
+exp.assets = function(session, msg, app, cb) {
+	var assetsServers = app.getServersByType('assets');
+
+	if(!assetsServers || assetsServers.length === 0) {
+		cb(new Error('can not find assets servers.'));
+		return;
+	}
+
+	var res = dispatcher.dispatch(session.get('uid'), assetsServers);
+
+	cb(null, res.id);
+};

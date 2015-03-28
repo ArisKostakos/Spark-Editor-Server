@@ -25,6 +25,11 @@
           {"id":"editor-server-2", "host":"127.0.0.1", "port":6081},
           {"id":"editor-server-3", "host":"127.0.0.1", "port":6082}
         ],
+        "assets":[
+          {"id":"assets-server-1", "host":"127.0.0.1", "port":6090},
+          {"id":"assets-server-2", "host":"127.0.0.1", "port":6091},
+          {"id":"assets-server-3", "host":"127.0.0.1", "port":6092}
+        ],
         "gate":[
           {"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 3014, "frontend": true}
         ]
@@ -54,6 +59,11 @@
           {"id":"editor-server-1", "host":"127.0.0.1", "port":6080},
           {"id":"editor-server-2", "host":"127.0.0.1", "port":6081},
           {"id":"editor-server-3", "host":"127.0.0.1", "port":6082}
+        ],
+        "assets":[
+          {"id":"assets-server-1", "host":"127.0.0.1", "port":6090},
+          {"id":"assets-server-2", "host":"127.0.0.1", "port":6091},
+          {"id":"assets-server-3", "host":"127.0.0.1", "port":6092}
         ],
         "gate":[
              {"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 3014, "frontend": true}

@@ -48,6 +48,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/FileInput.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Input.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Image.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/TreeView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/CodeEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Button.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Text.egc</Asset>
@@ -88,6 +89,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndValue.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndValueSmall.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndInput.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBox.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LittleBoxNoLayout.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSelector.egc</Asset>
@@ -120,6 +124,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarRunSection.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarSeparator.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLeftBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetUploaderPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetPropertiesPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetExplorerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorCodePanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanel.egc</Asset>

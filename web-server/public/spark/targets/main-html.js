@@ -11163,13 +11163,20 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 			this._instances.set(p_view2_5D,v4);
 			v4;
 			break;
-		default:
-			tools_spark_framework_Console.error("Unrecognised NCMeshType input. Creating a Div By Default.");
+		case "Tree":
 			var v5;
 			var _this5 = js_Browser.get_document();
 			v5 = _this5.createElement("div");
 			this._instances.set(p_view2_5D,v5);
 			v5;
+			break;
+		default:
+			tools_spark_framework_Console.error("Unrecognised NCMeshType input. Creating a Div By Default.");
+			var v6;
+			var _this6 = js_Browser.get_document();
+			v6 = _this6.createElement("div");
+			this._instances.set(p_view2_5D,v6);
+			v6;
 		}
 		this._instances.get(p_view2_5D).style.position = "absolute";
 		return tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype.createInstance.call(this,p_view2_5D);
@@ -11297,6 +11304,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		case "Ace":
 			this._updateAceProperties(p_view2_5D);
 			break;
+		case "Tree":
+			this._updateTreeProperties(p_view2_5D);
+			break;
 		case "Undefined":
 			tools_spark_framework_Console.warn("Undefined NCmeshType value");
 			break;
@@ -11324,6 +11334,33 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		editor.setTheme("ace/theme/monokai");
 		editor.getSession().setMode("ace/mode/javascript");
 		editor.setValue("lalalal; var skata ole");
+	}
+	,_updateTreeProperties: function(p_view2_5D) {
+		var l_instance = this._instances.get(p_view2_5D);
+		l_instance.id = "tree";
+		
+			$('#tree').jstree( { 'core' : {
+				'themes': {
+					'name': 'default-dark',
+					'dots': true,
+					'icons': true
+				},
+				'data' : [
+				   'Simple root node',
+				   {
+					 'text' : 'Root node 2',
+					 'state' : {
+					   'opened' : true,
+					   'selected' : true
+					 },
+					 'children' : [
+					   { 'text' : 'Child 1' },
+					   'Child 2'
+					 ]
+				  }
+				]
+			} });
+		;
 	}
 	,_updateTouchable: function(p_touchableFlag,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
