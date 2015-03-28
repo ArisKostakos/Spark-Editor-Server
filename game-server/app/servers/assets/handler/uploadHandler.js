@@ -69,11 +69,14 @@ handler.rawUpload = function(msg, session, next) {
     var assetTarget = userPath + '/' + type + '/' + project.name + '/' + dir + '/' + fileName;
 
     //Read File
-    fs.readFile(assetSource, function (err, data) {
+    fs.readFile(assetSource, 'utf8', function (err, data) {
         if (err) {next(null, {code: "error"}); return console.error(err)}
 
 
         console.log(data);
+
+        //send success signal
+        next(null, {code: "success"});
     });
 
     return;
