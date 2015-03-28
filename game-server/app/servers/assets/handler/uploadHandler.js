@@ -59,7 +59,7 @@ handler.rawUpload = function(msg, session, next) {
     var assetPath = path.resolve("../web-server/public") + '/assets';
 
     //User Path
-    var userPath = assetPath + '/' + user.username;
+    var userPath = assetPath + '/' + user.name;
     fs.ensureDirSync(userPath);
 
     //Asset Source Path
