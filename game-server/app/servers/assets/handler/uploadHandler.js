@@ -94,61 +94,48 @@ handler.rawUpload = function(msg, session, next) {
             console.log(found[i]);
         }
 
-        //send success signal
-        next(null, {code: "success"});
-    });
-
-    return;
-
-    //Move real asset
-    fs.move(assetSource, assetTarget, function(err) {
-        if (err) {next(null, {code: "error"}); return console.error(err)}
-
-        //create thumbnail
-        createThumbnail(assetTarget, thumbnailUrl, 16, function(err){
-            if (err) {next(null, {code: "error"}); return console.error(err)}
-
-            //Copy/Create an Image egc
-            var gameEntityName = fileName.slice(0, -3) + 'egc'
-            var gameEntityUrl = userPath + '/scripts/' + libraryName + subDir + '/' + gameEntityName;
-            fs.copy(assetPath + '/tempFactory/template_object2d.egc', gameEntityUrl, function(err) {
-                if (err) {next(null, {code: "error"}); return console.error(err)}
-
-                //Create imageAssetDb
-                var astImage = { owner:user._id, type: 'images', libraryName: libraryName, subDir: subDir,
-                    filename: fileName, filesize: fileSize, assetname: assetName, public: true, access: [user._id], ready: true};
-                database.createAsset(astImage, function (code,asset_created) {
-                    if (code=="error") {next(null, {code: "error"}); return;}
-
-                    astImage = asset_created;
-
-                    //Create egcAssetDb
-                    var astEgc = { owner:user._id, type: 'scripts', libraryName: libraryName, subDir: subDir,
-                        filename: gameEntityName, filesize: fileSize, assetname: gameEntityName, public: true, access: [user._id], ready: true};
-                    database.createAsset(astEgc, function (code,asset_created) {
-                        if (code=="error") {next(null, {code: "error"}); return;}
-
-                        astEgc = asset_created;
-
-                        //CreateComponentDb
-                        var compnt = { owner:user._id, type: 'Object', subType: '2D', libraryName: libraryName, componentname: componentName,
-                            public: true, access: [user._id], assets: [astEgc._id, astImage._id], mainAsset: astEgc._id, thumbnail: thumbnailUrl,
-                            children: [], /*parent: xcp._id,*/ parentTypes: [], childrenTypes: [], ready: true};
-                        database.createComponent(compnt, function (code,component_created) {
-                            if (code=="error") {next(null, {code: "error"}); return;}
-
-                            compnt = component_created;
-
-                            //send success signal
-                            next(null, {code: "success", component: compnt});
-                        });
-                    });
-                });
-            });
-        });
+        getDependancies(found, 0, [], msg, session, next);
     });
 };
 
+
+function getDependancies(darray, index, dependancies, msg, session, next)
+{
+    if (index<darray.length)
+    {
+        database.findOne(database.Asset, {owner: session.get('developer')._id, type: msg.type, name: darray[index]},
+            function (err, object_found) {
+                //Handle Error
+                if (err) {
+                    next(null, {code: "error"});
+                    return console.error(err);
+                }
+
+                //Handle Success
+                if (object_found)
+                {
+                    console.warn('Adding Dependancy: '+ object_found.name);
+                    dependancies.push(object_found._id);
+                    getDependancies(darray, index+1, dependancies, msg, session, next);
+                }
+                else
+                {
+                    //dependancy not found. exiting...
+                    next(null, {code: "dMissing", dependancyName: darray[index]});
+                }
+            }
+        );
+    }
+    else
+    {
+        createAsset(dependancies, msg, session, next);
+    }
+}
+
+function createAsset(dependancies, msg, session, next)
+{
+    next(null, {code: "success"});
+}
 
 /**
  * New client entry registration server.
