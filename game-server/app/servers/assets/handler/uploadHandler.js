@@ -34,22 +34,26 @@ handler.rawUpload = function(msg, session, next) {
     console.warn("The connected developer id is: " + developer._id);
     console.warn("The projectname of the connected user is: " + project.name);
 
-    //send success signal
-    next(null, {code: "success"});
-
-    return;
-    //componentName (it can be different than uploaded asset name)
-    var componentName = msg.componentName;
-    //libraryName (because it can be different than project name)
-    var libraryName = msg.libraryName;
-    //assetName (because it can be different than file name)
-    var assetName = msg.assetName;
     //fileName
     var fileName = msg.fileName;
+
     //fileSize
     var fileSize = msg.fileSize;
-    //SubDir (doesn't work yet. fix it when u use it, also EnsureDir to create it!!! for thumbnail too)
-    var subDir = msg.subDir;
+
+    //assetTitle
+    var assetTitle = msg.assetTitle;
+
+    //dir
+    var dir = msg.dir;
+
+    //type
+    var type = msg.type;
+
+    //componentType
+    var componentType = msg.componentType;
+
+    //tags
+    var tags = msg.tags;
 
     //Asset Path
     var assetPath = path.resolve("../web-server/public") + '/assets';
@@ -58,14 +62,28 @@ handler.rawUpload = function(msg, session, next) {
     var userPath = assetPath + '/' + user.username;
     fs.ensureDirSync(userPath);
 
+    //Asset Source Path
+    var assetSource = userPath + '/incoming/' + fileName;
+
+    //Asset Target Path
+    var assetTarget = userPath + '/' + type + '/' + project.name + '/' + dir + '/' + fileName;
+
+    //Read File
+    fs.readFile(assetSource, function (err, data) {
+        if (err) {next(null, {code: "error"}); return console.error(err)}
+
+
+        console.log(data);
+    });
+
+    return;
+
     //Move real asset
-    var assetUrl = userPath + '/images/' + libraryName + subDir + '/' + fileName;
-    var thumbnailUrl = userPath + '/thumbnails/' + libraryName + subDir + '/' + fileName;
-    fs.move(userPath + '/incoming/' + fileName, assetUrl, function(err) {
+    fs.move(assetSource, assetTarget, function(err) {
         if (err) {next(null, {code: "error"}); return console.error(err)}
 
         //create thumbnail
-        createThumbnail(assetUrl, thumbnailUrl, 16, function(err){
+        createThumbnail(assetTarget, thumbnailUrl, 16, function(err){
             if (err) {next(null, {code: "error"}); return console.error(err)}
 
             //Copy/Create an Image egc
