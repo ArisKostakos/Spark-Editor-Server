@@ -80,11 +80,13 @@ handler.rawUpload = function(msg, session, next) {
 
             if (captured.indexOf("'")!=-1)
             {
-                found.push(captured.substring(captured.indexOf("'")+1,captured.lastIndexOf("'")));
+                captured=captured.substring(captured.indexOf("'")+1,captured.lastIndexOf("'"));
+                if (found.indexOf(captured)==-1) found.push(captured);
             }
             else if (captured.indexOf('"')!=-1)
             {
-                found.push(captured.substring(captured.indexOf('"')+1,captured.lastIndexOf('"')));
+                captured=captured.substring(captured.indexOf('"')+1,captured.lastIndexOf('"'));
+                if (found.indexOf(captured)==-1) found.push(captured);
             }
         }
 
