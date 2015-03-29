@@ -130,19 +130,19 @@
 						var tree = me.getState('treeObject');
 						tree.jstree( { types : {
 									  default : {
-										icon : "/assets/images/treeIcons/folder.png"
+										icon : "assets/images/treeIcons/folder.png"
 									  },
 									  file : {
-										icon : "/assets/images/treeIcons/file.png"
+										icon : "assets/images/treeIcons/file.png"
 									  },
 									  folder : {
-										icon : "/assets/images/treeIcons/folder.png"
+										icon : "assets/images/treeIcons/folder.png"
 									  },
 									  type : {
-										icon : "/assets/images/treeIcons/type.png"
+										icon : "assets/images/treeIcons/type.png"
 									  },
 									  user : {
-										icon : "/assets/images/treeIcons/user.png"
+										icon : "assets/images/treeIcons/user.png"
 									  }
 									},
 								plugins : [ "types" ],
