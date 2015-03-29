@@ -75,20 +75,21 @@ handler.rawUpload = function(msg, session, next) {
         var result = data.match(/extends ?\= ?(["'])(?:(?=(\\?))\2.)*?\1/g);
         var found = [];
 
-        for (var i=0; i<result.length; i++) {
-            var captured = result[i];
+        if (result)
+            for (var i=0; i<result.length; i++) {
+                var captured = result[i];
 
-            if (captured.indexOf("'")!=-1)
-            {
-                captured=captured.substring(captured.indexOf("'")+1,captured.lastIndexOf("'"));
-                if (found.indexOf(captured)==-1) found.push(captured);
+                if (captured.indexOf("'")!=-1)
+                {
+                    captured=captured.substring(captured.indexOf("'")+1,captured.lastIndexOf("'"));
+                    if (found.indexOf(captured)==-1) found.push(captured);
+                }
+                else if (captured.indexOf('"')!=-1)
+                {
+                    captured=captured.substring(captured.indexOf('"')+1,captured.lastIndexOf('"'));
+                    if (found.indexOf(captured)==-1) found.push(captured);
+                }
             }
-            else if (captured.indexOf('"')!=-1)
-            {
-                captured=captured.substring(captured.indexOf('"')+1,captured.lastIndexOf('"'));
-                if (found.indexOf(captured)==-1) found.push(captured);
-            }
-        }
 
         for (var i=0; i<found.length; i++) {
             console.log(found[i]);
