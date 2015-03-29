@@ -32,7 +32,7 @@ handler.getPopulated = function(msg, session, next) {
 
 
     //Find Assets
-    database.findAndPopulate(database.Asset, {owner: developer._id}, "fork owner accessControl assetDependancies",
+    database.findAndPopulate(database.Asset, {owner: developer._id}, "fork owner accessControl assetDependancies owner.user",
         function (err, objects_found) {
             //Handle Error
             if (err) {

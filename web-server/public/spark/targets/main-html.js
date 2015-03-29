@@ -11338,29 +11338,8 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 	,_updateTreeProperties: function(p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
 		l_instance.id = "tree";
-		
-			$('#tree').jstree( { 'core' : {
-				'themes': {
-					'name': 'default-dark',
-					'dots': true,
-					'icons': true
-				},
-				'data' : [
-				   'Simple root node',
-				   {
-					 'text' : 'Root node 2',
-					 'state' : {
-					   'opened' : true,
-					   'selected' : true
-					 },
-					 'children' : [
-					   { 'text' : 'Child 1' },
-					   'Child 2'
-					 ]
-				  }
-				]
-			} });
-		;
+		var tree = $("#tree");
+		this.gameEntity.setState("treeObject",tree);
 	}
 	,_updateTouchable: function(p_touchableFlag,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
