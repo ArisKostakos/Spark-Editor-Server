@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="horizontalAlign"><Value>left</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>49</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(33,148,61)</Value></_State>
+		
+		<State><Id>projectName</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>project</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Project Name -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>60%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>35px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('projectName'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Project Login Beginner Editor Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="width"><Value>20%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(255, 174, 94)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Beginner Editor</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+					//..
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
+				<!-- Project Login Programmer Editor Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="width"><Value>20%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(155, 74, 34)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Programmer Editor</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+					//Log In...
+					Logic.getEntityByName('Dashboard Output Text').setState('text', 'Connecting to Project: ' + parent.getState('project').name);
+					Comms.request("lobby.projectHandler.connect", {projectName: parent.getState('project').name}, "Connect To Project Request");
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("Connect To Project Request")!=null)
+					{
+						var data = Comms.getRequestData("Connect To Project Request");
+						
+						if (data.code=="success")
+						{
+							Logic.getEntityByName('Spark Editor').setState('projectname',me.getState('project').name);
+							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+
+							
+							Logic.getEntityByName('Dashboard Output Text').setState('text', '');
+							
+							Logic.getEntityByName('Dashboard View').setState('visible',false);
+							Logic.getEntityByName('Programmer Editor View').setState('visible',true);
+							
+							Logic.getEntityByName('Asset Explorer').startAction('requestAssets');
+							//Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+						}
+						else if (data.code=="notfound")
+						{
+							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Project not found!');
+						}
+						else
+						{
+							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Error connecting to project.');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Programmer Editor Scene</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="gap"><Value>0</Value></_State></_States><Form><Space><Entities>
+						<!-- Asset Uploader -->
+						<Entity extends="SparkEditor.entities.AssetUploaderPanel">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>100</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Hgroup -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>100%</Value></_State>
+							<_State id="gap"><Value>0</Value></_State></_States><Form><Space><Entities>
+								<!-- Asset Explorer -->
+								<Entity extends="SparkEditor.entities.AssetExplorerPanel">
+									<_States>
+										<_State id="width"><Value>350</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- Vgroup -->
+								<Entity extends="std.display.VGroup"><_States>
+									<_State id="width"><Value>100%</Value></_State>
+									<_State id="height"><Value>100%</Value></_State>
+									<_State id="gap"><Value>0</Value></_State></_States><Form><Space><Entities>
+									
+									<!-- Asset Properties -->
+									<Entity extends="SparkEditor.entities.AssetPropertiesPanel">
+										<_States>
+											<_State id="width"><Value>100%</Value></_State>
+											<_State id="height"><Value>75</Value></_State>
+										</_States>
+									</Entity>
+								
+									<!-- Asset Code/Image -->
+									<Entity extends="SparkEditor.entities.EditorCodePanelPr">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+									</_States>
+								</Entity>
+								
+								</Entities></Space></Form></Entity>
+						</Entities></Space></Form></Entity>
+				</Entities></Space></Form></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_Actions>
+
+	</_Actions>
+</Entity>

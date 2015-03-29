@@ -16,4 +16,45 @@
 		</_State>
 
 	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>showAsset</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var asset = me.getAction('showAsset').getState('asset');
+				
+					var ace = me.getState('aceObject');
+					
+					ace.resize();
+					
+					//if (currentScriptUrl!=null) saveCurrentScript();
+					
+					//url=url.substr(1);
+					
+					var url = "/../assets/spark/script/std/core/Base.egc";
+					
+					var xmlhttp;
+					var text;
+					xmlhttp = new XMLHttpRequest();
+					
+					//xmlhttp.open('GET', url +"?" + new Date().getTime(), false);
+					xmlhttp.open('GET', url , false);
+					xmlhttp.send();
+					text = xmlhttp.responseText;
+
+					ace.setValue(text);
+					
+					//currentScriptUrl=url;
+
+					
+					me.stopAction("showAsset");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
 </Entity>

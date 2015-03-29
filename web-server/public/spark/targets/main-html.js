@@ -11331,9 +11331,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		var l_instance = this._instances.get(p_view2_5D);
 		l_instance.id = "editor";
 		var editor = ace.edit("editor");
-		editor.setTheme("ace/theme/monokai");
-		editor.getSession().setMode("ace/mode/javascript");
-		editor.setValue("lalalal; var skata ole");
+		editor.setTheme("ace/theme/idle_fingers");
+		editor.getSession().setMode("ace/mode/xml");
+		this.gameEntity.setState("aceObject",editor);
 	}
 	,_updateTreeProperties: function(p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
@@ -19214,6 +19214,7 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 		this._interpreter.variables.set("Std",Std);
 		this._interpreter.variables.set("String",String);
 		this._interpreter.variables.set("Assets",tools_spark_framework_Assets);
+		this._interpreter.variables.set("XMLHttpRequest",XMLHttpRequest);
 	}
 	,run: function(hashId,parameters) {
 		var program = this._get(hashId);
@@ -19229,6 +19230,7 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 		this._interpreter.variables.set("Std",Std);
 		this._interpreter.variables.set("String",String);
 		this._interpreter.variables.set("Assets",tools_spark_framework_Assets);
+		this._interpreter.variables.set("XMLHttpRequest",XMLHttpRequest);
 		var $it0 = parameters.keys();
 		while( $it0.hasNext() ) {
 			var varName = $it0.next();

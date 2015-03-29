@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+				
+	<_States>
+		<_State id="name"><Value>Asset Properties</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(87,87,104)</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="verticalAlign"><Value>middle</Value></_State>
+					<_State id="paddingBottom"><Value>2</Value></_State>
+					<_State id="gap"><Value>6</Value></_State></_States><Form><Space><Entities>
+					
+						<!-- AssetName Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_assetname</Value></_State>
+								<_State id="label"><Value>AssetName:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Developer Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_developer</Value></_State>
+								<_State id="label"><Value>Developer:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Type Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_type</Value></_State>
+								<_State id="label"><Value>Type:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Dir Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_dir</Value></_State>
+								<_State id="label"><Value>Dir:</Value></_State>
+							</_States>
+						</Entity>
+				</Entities></Space></Form></Entity>
+				
+				<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="verticalAlign"><Value>middle</Value></_State>
+					<_State id="paddingBottom"><Value>2</Value></_State>
+					<_State id="gap"><Value>6</Value></_State></_States><Form><Space><Entities>
+					
+						<!-- FileName Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_filename</Value></_State>
+								<_State id="label"><Value>FileName:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Extension Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_ext</Value></_State>
+								<_State id="label"><Value>Extension:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- FileSize Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_filesize</Value></_State>
+								<_State id="label"><Value>FileSize:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- ComponentType Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_component</Value></_State>
+								<_State id="label"><Value>Component:</Value></_State>
+							</_States>
+						</Entity>
+				</Entities></Space></Form></Entity>
+				
+				<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="verticalAlign"><Value>middle</Value></_State>
+					<_State id="paddingBottom"><Value>2</Value></_State>
+					<_State id="gap"><Value>6</Value></_State></_States><Form><Space><Entities>
+					
+						<!-- Tags Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_tags</Value></_State>
+								<_State id="label"><Value>Tags:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Dependancies Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_assetDep</Value></_State>
+								<_State id="label"><Value>Dependancies:</Value></_State>
+							</_States>
+						</Entity>
+				</Entities></Space></Form></Entity>
+				
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<Action>
+			<Id>showAsset</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var asset = me.getAction('showAsset').getState('asset');
+				
+					//AP_assetname
+					Logic.getEntityByName('AP_assetname').getState('value').setState('text',asset.name);
+					
+					//AP_developer
+					Logic.getEntityByName('AP_developer').getState('value').setState('text',asset.owner.user.name);
+					
+					//AP_type
+					Logic.getEntityByName('AP_type').getState('value').setState('text',asset.type);
+					
+					//AP_dir
+					Logic.getEntityByName('AP_dir').getState('value').setState('text',asset.dir);
+					
+					//AP_filename
+					Logic.getEntityByName('AP_filename').getState('value').setState('text',asset.fileName);
+					
+					//AP_ext
+					Logic.getEntityByName('AP_ext').getState('value').setState('text',asset.fileExtension);
+					
+					//AP_filesize
+					Logic.getEntityByName('AP_filesize').getState('value').setState('text',asset.fileSize + ' bytes');
+					
+					//AP_component
+					Logic.getEntityByName('AP_component').getState('value').setState('text',asset.componentType);
+					
+					//AP_tags
+					Logic.getEntityByName('AP_tags').getState('value').setState('text',asset.tags.toString());
+					
+					//AP_assetDep
+					var depNames = "";
+					var i = 0;
+					while (asset.assetDependancies.length>i)
+					{
+						depNames += ", " + asset.assetDependancies[i].fileName;
+						i+=1;
+					}
+						
+					Logic.getEntityByName('AP_assetDep').getState('value').setState('text',depNames.substr(2));
+					
+					me.stopAction("showAsset");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

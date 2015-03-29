@@ -7,14 +7,13 @@
 	
 	<_States>
 		<_State id="NCmeshType">
-			<Value>Ace</Value>
+			<Value>Tree</Value>
 		</_State>
 		
 		<State>
-			<Id>aceObject</Id>
+			<Id>treeObject</Id>
 			<Type>Dynamic</Type>
 			<Value>null</Value>
 		</State>
-		
 	</_States>
 </Entity>
