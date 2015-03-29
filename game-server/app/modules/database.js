@@ -4,6 +4,7 @@
 
 // INIT //
 var mongoose = require('mongoose') , Schema = mongoose.Schema;
+var deepPopulate = require('mongoose-deep-populate');
 var exp = module.exports;
 var db = mongoose.connection;
 
@@ -21,6 +22,7 @@ var userSchema = mongoose.Schema({
     password: String,
     developerReference: {type: Schema.Types.ObjectId, ref: 'Developer'}
 });
+userSchema.plugin(deepPopulate, {});
 var User = mongoose.model('User', userSchema);
 exp.User = User;
 
@@ -32,6 +34,7 @@ var teamSchema = mongoose.Schema({
     accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}], //special tags, like can a user in a team create projects on behalf of the team, rename the team, etc
     developerReference: {type: Schema.Types.ObjectId, ref: 'Developer'}
 });
+teamSchema.plugin(deepPopulate, {});
 var Team = mongoose.model('Team', teamSchema);
 exp.Team = Team;
 
@@ -42,6 +45,7 @@ var developerSchema = mongoose.Schema({
     team: {type: Schema.Types.ObjectId, ref: 'Team'},
     tags: [String]
 });
+developerSchema.plugin(deepPopulate, {});
 var Developer = mongoose.model('Developer', developerSchema);
 exp.Developer = Developer;
 
@@ -59,6 +63,7 @@ var projectSchema = mongoose.Schema({
     includes: [{type: Schema.Types.ObjectId, ref: 'IncludeQuery'}],
     accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}]
 });
+projectSchema.plugin(deepPopulate, {});
 var Project = mongoose.model('Project', projectSchema);
 exp.Project = Project;
 
@@ -70,6 +75,7 @@ var moduleSchema = mongoose.Schema({
     executeEntity: {type: Schema.Types.ObjectId, ref: 'Asset'},
     tags: [String] //possible tags: level, character, weaponsystem, ..
 });
+moduleSchema.plugin(deepPopulate, {});
 var Module = mongoose.model('Module', moduleSchema);
 exp.Module = Module;
 
@@ -80,6 +86,7 @@ var includeQuerySchema = mongoose.Schema({
     queryVisible: String,
     projectReference: {type: Schema.Types.ObjectId, ref: 'Project'} //to query the includes externally
 });
+includeQuerySchema.plugin(deepPopulate, {});
 var IncludeQuery = mongoose.model('IncludeQuery', includeQuerySchema);
 exp.IncludeQuery = IncludeQuery;
 
@@ -99,6 +106,7 @@ var assetSchema = mongoose.Schema({
     accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}],
     assetDependancies: [{type: Schema.Types.ObjectId, ref: 'Asset'}] //egc classes and asset grouping
 });
+assetSchema.plugin(deepPopulate, {});
 var Asset = mongoose.model('Asset', assetSchema);
 exp.Asset = Asset;
 
@@ -110,6 +118,7 @@ var accessEntrySchema = mongoose.Schema({
     password: String,
     sourceReference: {type: Schema.Types.ObjectId} //no ref cause it can be either Project, Asset, or Team
 });
+accessEntrySchema.plugin(deepPopulate, {});
 var AccessEntry = mongoose.model('AccessEntry', accessEntrySchema);
 exp.AccessEntry = AccessEntry;
 
@@ -122,6 +131,7 @@ var slicedSchema = mongoose.Schema({
     eventService: String,
     displayService: String
 });
+slicedSchema.plugin(deepPopulate, {});
 var Sliced = mongoose.model('Sliced', slicedSchema);
 exp.Sliced = Sliced;
 
@@ -156,6 +166,13 @@ exp.findAndPopulate = function(classname, raw_object_query, populate, cb) {
     classname.find(raw_object_query).populate(populate).exec(cb);
 };
 
+//Generic Find And DeepPopulate
+exp.findAndDeepPopulate = function(classname, raw_object_query, populate, cb) {
+    classname.find(raw_object_query).deepPopulate(populate).exec(cb);
+};
+
+
+
 //Generic Find One
 exp.findOne = function(classname, raw_object_query, cb) {
     classname.findOne(raw_object_query, cb);
@@ -164,6 +181,11 @@ exp.findOne = function(classname, raw_object_query, cb) {
 //Generic Find One And Populate
 exp.findOneAndPopulate = function(classname, raw_object_query, populate, cb) {
     classname.findOne(raw_object_query).populate(populate).exec(cb);
+};
+
+//Generic Find One And DeepPopulate
+exp.findOneAndDeepPopulate = function(classname, raw_object_query, populate, cb) {
+    classname.findOne(raw_object_query).deepPopulate(populate).exec(cb);
 };
 
 exp.checkUser = function(p_username, p_email, p_key, cb) {
