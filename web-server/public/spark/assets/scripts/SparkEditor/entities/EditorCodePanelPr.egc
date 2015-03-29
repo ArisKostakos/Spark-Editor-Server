@@ -33,7 +33,7 @@
 					
 					//url=url.substr(1);
 					
-					var url = "/../assets/spark/script/std/core/Base.egc";
+					var url = "/assets/spark/script/std/core/Base.egc";
 					
 					var xmlhttp;
 					var text;
