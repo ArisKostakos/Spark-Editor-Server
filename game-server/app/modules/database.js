@@ -151,11 +151,20 @@ exp.find = function(classname, raw_object_query, cb) {
     classname.find(raw_object_query, cb);
 };
 
+//Generic Find And Populate
+exp.findAndPopulate = function(classname, raw_object_query, populate, cb) {
+    classname.find(raw_object_query).populate(populate).exec(cb);
+};
+
 //Generic Find One
 exp.findOne = function(classname, raw_object_query, cb) {
     classname.findOne(raw_object_query, cb);
 };
 
+//Generic Find One And Populate
+exp.findOneAndPopulate = function(classname, raw_object_query, populate, cb) {
+    classname.findOne(raw_object_query).populate(populate).exec(cb);
+};
 
 exp.checkUser = function(p_username, p_email, p_key, cb) {
     User.findOne({ key: p_key }, function (err, user) {
@@ -200,7 +209,6 @@ exp.accessUser = function(username, password, cb)
 };
 
 
-
 /*
 exp.createProject = function(prj, cb) {
     var newProject = new Project(prj);
@@ -217,52 +225,6 @@ exp.createProject = function(prj, cb) {
     });
 };
 
-exp.createComponent = function(cmp, cb) {
-    var newComponent = new Component(cmp);
-    newComponent.save(function (err, component_created) {
-        if (err) {cb("error"); return console.error(err);}
-
-        //do i really need to populate at creation? :/ do they keep populated in the db or just the returned??
-        Component.findOne({owner: component_created.owner, type: component_created.type , subType: component_created.subType , libraryName: component_created.libraryName, componentname: component_created.componentname }).populate('owner').populate('access')
-            .populate('assets').populate('mainAsset').populate('children').populate('parent').exec(function (err, component_populated) {
-                if (err) {cb("error"); return console.error(err);}
-
-                cb("success",component_populated);
-            });
-    });
-};
-
-exp.createAsset = function(ast, cb) {
-    var newAsset = new Asset(ast);
-    newAsset.save(function (err, asset_created) {
-        if (err) {cb("error"); return console.error(err);}
-        cb("success",asset_created);});
-};
-
-exp.existsProject = function(projectquery, cb) {
-    Project.findOne(projectquery).populate('owner').populate('runAccess')
-        .populate('readAccess').populate('writeAccess').exec(function (err, projectFound) {
-            if (err) {cb("error"); return console.error(err);}
-
-            if (projectFound)
-                cb("match",projectFound);
-            else
-                cb("nomatch");
-    });
-};
 
 */
 
-
-/*
-exp.getComponents = function(query, cb)
-{
-    //var componentsFound =[];
-
-    Component.find(query, function (err, components) {
-        if (err) {cb("error"); return console.error(err);}
-
-        cb("success", components);
-    });
-};
-*/
