@@ -20,6 +20,7 @@
 		</_State>
 		
 		<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>isTreeLoaded</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Triggers>
@@ -128,7 +129,11 @@
 						}
 						
 						var tree = me.getState('treeObject');
-						tree.jstree( { types : {
+						
+						
+						if (me.getState('isTreeLoaded')==false)
+						{
+							tree.jstree( { types : {
 									  default : {
 										icon : "assets/images/treeIcons/folder.png"
 									  },
@@ -151,29 +156,29 @@
 									name: 'default',
 									dots: true,
 									icons: true
-								},
-								data : treeData
+								}
 							} });
 							
-						
-						
-						
-
+							tree.on("changed.jstree", function (e, data) {
+							var parentNode = tree.jstree(true).get_node(data.selected);
+							 if (parentNode.id.substr(0,1)=='a')
+							 {
+								var astId = parentNode.id.substr(1);
+								
+								Logic.getEntityByName('Asset Properties').getAction('showAsset').setState('asset',assets[astId]);
+								Logic.getEntityByName('Asset Properties').startAction('showAsset');
+								
+								Logic.getEntityByName('Code Editor').getAction('showAsset').setState('asset',assets[astId]);
+								Logic.getEntityByName('Code Editor').startAction('showAsset');
+							 }
+							  
+							});
 							
-						tree.on("changed.jstree", function (e, data) {
-						var parentNode = tree.jstree(true).get_node(data.selected);
-						 if (parentNode.id.substr(0,1)=='a')
-						 {
-							var astId = parentNode.id.substr(1);
-							
-							Logic.getEntityByName('Asset Properties').getAction('showAsset').setState('asset',assets[astId]);
-							Logic.getEntityByName('Asset Properties').startAction('showAsset');
-							
-							Logic.getEntityByName('Code Editor').getAction('showAsset').setState('asset',assets[astId]);
-							Logic.getEntityByName('Code Editor').startAction('showAsset');
-						 }
-						  
-						});
+							me.setState('isTreeLoaded',true);
+						}
+						
+						 tree.jstree(true).settings.core.data = treeData;
+						 tree.jstree(true).refresh();
 					}
 					
 					me.stopAction("displayAssets");
