@@ -119,7 +119,7 @@
 				<Script>
 					
 					var file = Logic.getEntityByName('Asset Uploader').getState('file');
-				
+					Display.error('compppppppp:' + Logic.getEntityByName('AU_component').getState('value').getState('text'));
 					if (file==null)
 					{
 						Logic.getEntityByName('AU_output').getState('value').setState('text','No File Selected');

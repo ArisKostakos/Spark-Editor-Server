@@ -131,9 +131,22 @@ function createAsset(dependancies, msg, session, next)
 
     //componentType
     var componentType = msg.componentType;
+    var componentTypeFinal;
+    if (componentType=='Undefined' || componentType.length==0)
+        componentTypeFinal=null;
+    else
+        componentTypeFinal=componentType;
 
     //tags
     var tags = msg.tags;
+    var tagsFinal;
+    if (tags=='Undefined' || tags.length==0)
+        tagsFinal=[project.name];
+    else
+    {
+        tagsFinal = tags.split(' ');
+        tagsFinal.unshift(project.name);
+    }
 
     //Asset Path
     var assetPath = path.resolve("../web-server/public") + '/assets';
@@ -193,7 +206,7 @@ function createAsset(dependancies, msg, session, next)
                             return console.error(err);
                         }
 
-                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetName, fileSize: fileSize, tags: [project.name], accessControl: [], assetDependancies: dependancies};
+                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetName, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
 
                     //Create Asset
                     database.create(database.Asset, raw_Asset,
