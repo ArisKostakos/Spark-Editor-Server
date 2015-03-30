@@ -101,7 +101,7 @@
 						var i = 0;
 						while (assets.length>i)
 						{
-							Display.error('asset #' + i + ':' + assets[i].owner.user.name);
+							//Display.error('asset #' + i + ':' + assets[i].owner.user.name);
 							
 							var userNode = ensureTreeNode(treeData, assets[i].owner.user.name, "user", "no");
 
@@ -160,8 +160,6 @@
 							} });
 							
 							tree.on("changed.jstree", function (e, data) {
-								Display.error("changed e: " + e);
-								Display.error("changed data.selected: " + data.selected);
 								if (data.selected.length!=0)
 								{
 									
