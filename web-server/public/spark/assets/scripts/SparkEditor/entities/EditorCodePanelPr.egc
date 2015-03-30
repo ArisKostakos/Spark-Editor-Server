@@ -46,7 +46,7 @@
 					xmlhttp.send();
 					text = xmlhttp.responseText;
 
-					ace.setValue(text, 1);
+					ace.setValue(text, -1);
 					
 					//currentScriptUrl=url;
 

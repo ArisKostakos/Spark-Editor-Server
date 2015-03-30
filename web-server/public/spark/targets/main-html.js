@@ -11331,7 +11331,7 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		var l_instance = this._instances.get(p_view2_5D);
 		l_instance.id = "editor";
 		var editor = ace.edit("editor");
-		editor.setTheme("ace/theme/xcode");
+		editor.setTheme("ace/theme/monokai");
 		editor.getSession().setMode("ace/mode/xml");
 		this.gameEntity.setState("aceObject",editor);
 	}
