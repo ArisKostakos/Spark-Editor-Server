@@ -29,6 +29,7 @@
 					
 					ace.resize();
 					ace.setReadOnly(true);
+					ace.setShowPrintMargin(false);
 					//if (currentScriptUrl!=null) saveCurrentScript();
 					
 					//url=url.substr(1);
@@ -45,7 +46,7 @@
 					xmlhttp.send();
 					text = xmlhttp.responseText;
 
-					ace.setValue(text);
+					ace.setValue(text, 1);
 					
 					//currentScriptUrl=url;
 
