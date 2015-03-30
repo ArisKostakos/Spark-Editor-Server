@@ -160,18 +160,23 @@
 							} });
 							
 							tree.on("changed.jstree", function (e, data) {
-							var parentNode = tree.jstree(true).get_node(data.selected);
-							 if (parentNode.id.substr(0,1)=='a')
-							 {
-								var astId = parentNode.id.substr(1);
-								
-								Logic.getEntityByName('Asset Properties').getAction('showAsset').setState('asset',assets[astId]);
-								Logic.getEntityByName('Asset Properties').startAction('showAsset');
-								
-								Logic.getEntityByName('Code Editor').getAction('showAsset').setState('asset',assets[astId]);
-								Logic.getEntityByName('Code Editor').startAction('showAsset');
-							 }
-							  
+								Display.error("changed e: " + e);
+								Display.error("changed data.selected: " + data.selected);
+								if (data.selected.length!=0)
+								{
+									
+									 var parentNode = tree.jstree(true).get_node(data.selected);
+									 if (parentNode.id.substr(0,1)=='a')
+									 {
+										var astId = parentNode.id.substr(1);
+										
+										Logic.getEntityByName('Asset Properties').getAction('showAsset').setState('asset',assets[astId]);
+										Logic.getEntityByName('Asset Properties').startAction('showAsset');
+										
+										Logic.getEntityByName('Code Editor').getAction('showAsset').setState('asset',assets[astId]);
+										Logic.getEntityByName('Code Editor').startAction('showAsset');
+									 }
+								}
 							});
 							
 							me.setState('isTreeLoaded',true);
