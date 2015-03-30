@@ -28,12 +28,13 @@
 					var ace = me.getState('aceObject');
 					
 					ace.resize();
-					
+					ace.setReadOnly(true);
 					//if (currentScriptUrl!=null) saveCurrentScript();
 					
 					//url=url.substr(1);
 					
-					var url = "/assets/spark/script/std/core/Base.egc";
+					//var url = "/assets/spark/script/std/core/Base.egc";
+					var url = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 					
 					var xmlhttp;
 					var text;
