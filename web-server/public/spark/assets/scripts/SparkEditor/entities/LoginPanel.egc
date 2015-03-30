@@ -175,7 +175,7 @@
 					<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
 					
 						<!-- Spark Login Button -->
-						<Entity extends="std.display.Button"><_States>
+						<!--<Entity extends="std.display.Button"><_States>
 							<_State id="name"><Value>Spark Login Button</Value></_State>
 							<_State id="width"><Value>100%</Value></_State>
 							<_State id="height"><Value>20</Value></_State>
@@ -218,7 +218,7 @@
 							parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
 						}
 						</Script>
-						</Scripts></Trigger></_Triggers></Entity>
+						</Scripts></Trigger></_Triggers></Entity>-->
 						
 						<!-- Aris Login Button -->
 						<Entity extends="std.display.Button"><_States>
