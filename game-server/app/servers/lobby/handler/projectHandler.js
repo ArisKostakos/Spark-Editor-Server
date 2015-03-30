@@ -41,7 +41,7 @@ handler.create = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
     var projectName = msg.projectName;
-    //var projectTitle = msg.projectTitle;
+    var tags = msg.tags;
     var user = session.get('user');
     var developer = session.get('developer');
 
@@ -64,7 +64,7 @@ handler.create = function(msg, session, next) {
                 next(null, {code: "exists"});
             else
             {
-                var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, modules: [], tags: [], includes: [], accessControl: []};
+                var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, modules: [], tags: tags, includes: [], accessControl: []};
 
                 //Create Project
                 database.create(database.Project, raw_Project,
