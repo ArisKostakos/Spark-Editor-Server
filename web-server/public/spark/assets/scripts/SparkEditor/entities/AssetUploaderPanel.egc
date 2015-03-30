@@ -264,7 +264,7 @@
 							Logic.getEntityByName('AU_type').getState('value').setState('text','');
 							
 							//Update Asset Explorer Panel
-							//..
+							Logic.getEntityByName('Asset Explorer').startAction('requestAssets');
 						}
 						else if (data.code=="dMissing")
 						{
