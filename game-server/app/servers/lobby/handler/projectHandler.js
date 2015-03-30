@@ -130,13 +130,13 @@ function createProjectDirectories(libraryName, userName)
 {
     var userPath = path.resolve("../web-server/public") + '/assets/' + userName;
 
-    fs.ensureDirSync(userPath + '/scripts/' + libraryName);
-    fs.ensureDirSync(userPath + '/images/' + libraryName);
-    fs.ensureDirSync(userPath + '/sounds/' + libraryName);
-    fs.ensureDirSync(userPath + '/models/' + libraryName);
+    fs.ensureDirSync(userPath + '/script/' + libraryName);
+    fs.ensureDirSync(userPath + '/image/' + libraryName);
+    fs.ensureDirSync(userPath + '/sound/' + libraryName);
+    fs.ensureDirSync(userPath + '/model/' + libraryName);
     fs.ensureDirSync(userPath + '/data/' + libraryName);
-    fs.ensureDirSync(userPath + '/projects/' + libraryName);
-    fs.ensureDirSync(userPath + '/thumbnails/' + libraryName);
+    fs.ensureDirSync(userPath + '/project/' + libraryName);
+    fs.ensureDirSync(userPath + '/thumbnail/' + libraryName);
     fs.ensureDirSync(userPath + '/incoming');
 }
 
