@@ -7,8 +7,10 @@
 					Display.error("Start Connecting to stuff...");
 					me.setState('UniqueId', "Connection" + Std.random(999999));
 					
-					Comms.connectTo("104.154.55.28","3014", "gateServer");
-					Comms.file_connectTo("104.154.55.28", "3001", "fileServer");
+					//old: 104.154.55.28
+					//new: 130.211.172.86
+					Comms.connectTo("130.211.172.86","3014", "gateServer");
+					Comms.file_connectTo("130.211.172.86", "3001", "fileServer");
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -60,7 +62,7 @@
 						}
 						
 						if (data.host == '127.0.0.1') 
-							data.host = "104.154.55.28";
+							data.host = "130.211.172.86";
 
 						Comms.connectTo(data.host, data.port, "connectorServer");
 					}
