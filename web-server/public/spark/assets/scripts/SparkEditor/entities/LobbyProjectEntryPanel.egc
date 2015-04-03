@@ -64,7 +64,7 @@
 				<Script>
 					//Log In...
 					Logic.getEntityByName('Dashboard Output Text').setState('text', 'Connecting to Project: ' + parent.getState('project').name);
-					Comms.request("lobby.projectHandler.connect", {projectName: parent.getState('project').name}, "Connect To Project Request");
+					Comms.request("lobby.projectHandler.connect", {projectName: parent.getState('project').name}, "Connect To " + parent.getState('project').name);
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 			</Entities>
@@ -76,9 +76,9 @@
 			<Event>NetworkRequest</Event>
 			<Scripts>
 				<Script>
-					if (Comms.getRequestData("Connect To Project Request")!=null)
+					if (Comms.getRequestData("Connect To " + me.getState('project').name)!=null)
 					{
-						var data = Comms.getRequestData("Connect To Project Request");
+						var data = Comms.getRequestData("Connect To " + me.getState('project').name);
 						
 						if (data.code=="success")
 						{

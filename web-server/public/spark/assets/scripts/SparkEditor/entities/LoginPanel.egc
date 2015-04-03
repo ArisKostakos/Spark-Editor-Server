@@ -22,6 +22,7 @@
 		<State><Id>userInput</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>passwordInput</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>outputText</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>defaultProject</Id><Type>Text</Type><Value>alphaProject</Value></State>
 	</_States>
 	
 	<Form>
@@ -315,8 +316,16 @@
 						
 						if (data.code=="match")
 						{
-							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
-							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
+							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
+							{
+								me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
+								Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
+							}
+							else
+							{
+								me.getState('outputText').setState('text', 'Logged in. Accessing Project...');
+								Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
+							}
 						}
 						else if (data.code=="nomatch")
 						{
@@ -327,6 +336,36 @@
 						{
 							//Display.error("Log In Panel: Unknown Error");
 							me.getState('outputText').setState('text', 'An unknown error occured.');
+						}
+					}
+					else if (Comms.getRequestData("Access Default Project Request")!=null)
+					{
+						var data = Comms.getRequestData("Access Default Project Request");
+						
+						if (data.code=="success")
+						{
+							me.getState('outputText').setState('text', "Project found. Connecting...");
+						
+							//Connect to it
+							Logic.getEntityByName('Spark Editor').setState('projectname',me.getState('defaultProject'));
+							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+
+							//enter project
+							Logic.getEntityByName('Dom View').setState('visible',false);
+							Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
+							Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
+						}
+						else if (data.code=="notfound")
+						{
+							//Fork Blank
+							me.getState('outputText').setState('text', "Project does't exist. Creating...");
+							
+							//me.getState('defaultProject')
+							//..
+						}
+						else
+						{
+							me.getState('outputText').setState('text', 'Error connecting to project.');
 						}
 					}
 					/*else if (Comms.getRequestData("Create Project Request")!=null)
