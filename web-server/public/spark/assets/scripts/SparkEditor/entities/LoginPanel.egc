@@ -23,6 +23,7 @@
 		<State><Id>passwordInput</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>outputText</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>defaultProject</Id><Type>Text</Type><Value>alphaProject</Value></State>
+		<State><Id>defaultForkTemplate</Id><Type>Text</Type><Value>blank</Value></State>
 	</_States>
 	
 	<Form>
@@ -264,12 +265,27 @@
 							//Fork Blank
 							me.getState('outputText').setState('text', "Project does't exist. Creating...");
 							
-							//me.getState('defaultProject')
-							//..
+							Comms.request("lobby.projectHandler.fork", {projectName: me.getState('defaultProject'), forkProjectName: me.getState('defaultForkTemplate')}, "Fork Project Request");
 						}
 						else
 						{
 							me.getState('outputText').setState('text', 'Error connecting to project.');
+						}
+					}
+					else if (Comms.getRequestData("Fork Project Request")!=null)
+					{
+						var data = Comms.getRequestData("Fork Project Request");
+						
+						if (data.code=="success")
+						{
+							me.getState('outputText').setState('text', "Project forked. Connecting...");
+						
+							//Connect to it
+							//..
+						}
+						else
+						{
+							me.getState('outputText').setState('text', 'Error forking project.');
 						}
 					}
 					/*else if (Comms.getRequestData("Create Project Request")!=null)

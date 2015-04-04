@@ -36,8 +36,26 @@ handler.listUserProjects = function(msg, session, next) {
     );
 };
 
-//fork
 
+handler.fork = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+    var projectName = msg.projectName;
+    var forkedProjectName = msg.forkedProjectName;
+    var user = session.get('user');
+    var developer = session.get('developer');
+
+    //create new project (mark it forks blank, not a template, copy paste some blank stuff)
+   // for all spark assetsDB with tag: blank
+        //create new assetDB for each assetDB (mark as fork, etc)
+        //copy assetFile to /user location
+    //for all spark assetsDB created
+        //for each assetDependancyDB
+            //do query to change the id to point to the same asset but with different owner
+
+    //return project? hm
+    next(null, {code: "success"});
+}
 
 handler.create = function(msg, session, next) {
     var self = this;
