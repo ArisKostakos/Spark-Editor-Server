@@ -265,7 +265,7 @@
 							//Fork Blank
 							me.getState('outputText').setState('text', "Project does't exist. Creating...");
 							
-							Comms.request("lobby.projectHandler.fork", {projectName: me.getState('defaultProject'), forkProjectName: me.getState('defaultForkTemplate')}, "Fork Project Request");
+							Comms.request("lobby.projectHandler.fork", {projectName: me.getState('defaultProject'), forkedProjectName: me.getState('defaultForkTemplate')}, "Fork Project Request");
 						}
 						else
 						{

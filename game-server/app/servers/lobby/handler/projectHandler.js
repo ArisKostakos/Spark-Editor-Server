@@ -45,15 +45,103 @@ handler.fork = function(msg, session, next) {
     var user = session.get('user');
     var developer = session.get('developer');
 
-    //create new project (mark it forks blank, not a template, copy paste some blank stuff)
-   // for all spark assetsDB with tag: blank
-        //create new assetDB for each assetDB (mark as fork, etc)
-        //copy assetFile to /user location
+    //get forked Project
+
+    //get user spark
+    database.findOne(database.User, {name: 'spark'},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            if (object_found) {
+                var sparkDeveloperId = object_found.developerReference;
+
+                //Get Template
+                database.findOne(database.Project, {name: forkedProjectName, owner: sparkDeveloperId},
+                    function (err, object_found) {
+                        //Handle Error
+                        if (err) {
+                            next(null, {code: "error"});
+                            return console.error(err);
+                        }
+
+                        //Handle Success
+                        if (object_found) {
+                            var templateProject = object_found;
+/*
+                            //create new project (mark it forks blank, not a template, copy paste some blank stuff)
+                            var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: [], accessControl: []};
+
+                            //Create Project
+                            database.create(database.Project, raw_Project,
+                                function (err, objCreated_Project) {
+                                    //Handle Error
+                                    if (err) {
+                                        next(null, {code: "error"});
+                                        return console.error(err);
+                                    }
+
+                                    //Handle Success
+
+                                    //Create directories
+                                    createProjectDirectories(objCreated_Project.name, user.name);
+*/
+                                    // for all spark assetsDB with tag: blank
+                                    database.find(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name},
+                                        function (err, objects_found) {
+                                            //Handle Error
+                                            if (err) {
+                                                next(null, {code: "error"});
+                                                return console.error(err);
+                                            }
+
+                                            //Handle Success
+                                            for (var i=0; i<objects_found.length; i++) {
+                                                console.log('Found: ' + objects_found[i].name);
+                                            }
+                                            //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
+                                            //copy assetFile to /user location
+                                        }
+                                    );
+ /*                               }
+                            );
+                            */
+                        }
+                        else {
+                            next(null, {code: "error"});    //notfound
+                        }
+                    }
+                );
+            }
+            else {
+                next(null, {code: "error"});    //notfound
+            }
+        }
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //for all spark assetsDB created
         //for each assetDependancyDB
             //do query to change the id to point to the same asset but with different owner
 
-    //return project? hm
+    //success
     next(null, {code: "success"});
 }
 
