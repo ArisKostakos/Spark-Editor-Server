@@ -140,7 +140,7 @@ handler.fork = function(msg, session, next) {
 function forkAssets(assets, index, cb) {
     if (index<assets.length)
     {
-        console.log('Found Recursively: ' + objects_found[index].name);
+        console.log('Found Recursively: ' + assets[index].name);
         //copy assetFile to /user location
         //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
 
