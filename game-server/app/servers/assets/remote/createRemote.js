@@ -17,10 +17,10 @@ remote.copy = function(asset, user, developer, cb) {
 	//Asset Path
 	var assetPath = path.resolve("../web-server/public") + '/assets';
 
-	var assetSource = assetPath + '/' + asset.owner.user.name + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+	var assetSource = assetPath + '/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
-	fs.ensureDirSync(assetPath + '/' + user.name + '/' + asset.dir);
-	var assetTarget = assetPath + '/' + user.name + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+	fs.ensureDirSync(assetPath + '/' + user.name + '/' + asset.type + '/' + asset.dir);
+	var assetTarget = assetPath + '/' + user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
 	console.log('Found Recursively Rpc: ' + asset.name);
 	console.log('assetSource: ' + assetSource);
