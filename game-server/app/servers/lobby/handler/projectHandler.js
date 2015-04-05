@@ -91,7 +91,7 @@ handler.fork = function(msg, session, next) {
                                     createProjectDirectories(objCreated_Project.name, user.name);
 
                                     // for all spark assetsDB with tag: blank
-                                    database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user",
+                                    database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
                                         function (err, objects_found) {
                                             //Handle Error
                                             if (err) {
@@ -108,14 +108,20 @@ handler.fork = function(msg, session, next) {
                                                         return console.error(err);
                                                     }
 
+                                                    //Handle Success
+                                                    forkAssetDependancies(self, session, objects_found,0,
+                                                        function (err) {
+                                                            //Handle Error
+                                                            if (err) {
+                                                                next(null, {code: "error"});
+                                                                return console.error(err);
+                                                            }
 
 
-                                                    //for all spark assetsDB created
-                                                    //for each assetDependancyDB
-                                                    //do query to change the id to point to the same asset but with different owner
-
-                                                    //success
-                                                    next(null, {code: "success"});
+                                                            //success
+                                                            next(null, {code: "success"});
+                                                        }
+                                                    );
                                                 }
                                             );
                                         }
@@ -154,6 +160,83 @@ function forkAssets(self, session, assets, index, cb) {
     else
     {
         cb(null);
+    }
+}
+
+function forkAssetDependancies(self, session, assets, index, cb) {
+    if (index<assets.length)
+    {
+        var asset = assets[index];
+
+        //query forked asset
+        database.findOne(database.Asset, {owner: session.get('developer')._id, type: asset.type, name: asset.name},
+            function (err, object_found) {
+                //Handle Error
+                if (err) {cb(err); return;}
+
+                //Handle Success
+                if (object_found) {
+
+                    //for each dependancy
+                    forkAssetDependanciesDeep(self, session, object_found, asset.assetDependancies,0,
+                        function (err) {
+                            //Handle Error
+                            if (err) {cb(err); return;}
+
+                            //Next
+                            forkAssetDependancies(self, session, assets, index+1, cb);
+                        }
+                    );
+                }
+                else {
+                    cb("notfound");
+                    return;
+                }
+            }
+        );
+    }
+    else
+    {
+        cb(null);
+    }
+}
+
+function forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index, cb) {
+    if (index < assetDependancies.length) {
+        var assetDependancy = assetDependancies[index];
+
+        //query forked dependancy
+        database.findOne(database.Asset, {owner: session.get('developer')._id, type: assetDependancy.type, name: assetDependancy.name},
+            function (err, object_found) {
+                //Handle Error
+                if (err) {cb(err); return;}
+
+                //Handle Success
+                if (object_found) {
+
+                    //add to dependancies
+                    forkedAsset.assetDependancies.push(object_found._id);
+
+                    //Next
+                    forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index+1, cb);
+                }
+                else {
+                    cb("notfound");
+                    return;
+                }
+            }
+        );
+    }
+    else
+    {
+        forkedAsset.markModified('assetDependancies');
+        forkedAsset.save(function (err) {
+            //Handle Error
+            if (err) {cb(err); return;}
+
+            //Success
+            cb(null);
+        });
     }
 }
 
