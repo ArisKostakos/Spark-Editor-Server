@@ -13,13 +13,13 @@ var Remote = function(app) {
 
 var remote = Remote.prototype;
 
-remote.copy = function(asset, session, cb) {
+remote.copy = function(asset, username, cb) {
 	cb(null);
 	return;
 
 
-	var user = session.get('user');
-	var developer = session.get('developer');
+	//var user = session.get('user');
+	//var developer = session.get('developer');
 
 	//Asset Path
 	var assetPath = path.resolve("../web-server/public") + '/assets';

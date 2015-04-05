@@ -140,7 +140,7 @@ function forkAssets(self, session, assets, index, cb) {
     if (index<assets.length)
     {
         //put user into channel
-        self.app.rpc.assets.createRemote.copy(session, assets[index], session, function(err){
+        self.app.rpc.assets.createRemote.copy(session, assets[index], session.get('user').name, function(err){
             //Handle Error
             if (err) {
                 cb(err);
