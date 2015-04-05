@@ -13,30 +13,45 @@ var Remote = function(app) {
 
 var remote = Remote.prototype;
 
-remote.copy = function(asset, username, cb) {
-	//copy assetFile to /user location
+remote.copy = function(asset, session, cb) {
+	var user = session.get('user');
+	var developer = session.get('developer');
 
 	//Asset Path
 	var assetPath = path.resolve("../web-server/public") + '/assets';
 
 	var assetSource = assetPath + '/' + asset.owner.user.name + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
-	var assetTarget = assetPath + '/' + username + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+	fs.ensureDirSync(assetPath + '/' + user.name + '/' + asset.dir);
+	var assetTarget = assetPath + '/' + user.name + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
 	console.log('Found Recursively Rpc: ' + asset.name);
 	console.log('assetSource: ' + assetSource);
 	console.log('assetTarget: ' + assetTarget);
 
-	/*
-	//Move Asset File
+
+	//copy assetFile to /user location
 	fs.copy(assetSource, assetTarget, function(err) {
+		//Handle Error
 		if (err) {
 			cb(err);
 			return;
 		}
-*/
 
-		//create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
-		cb(null);
-	//});
+		//create new assetDB for each assetDB (mark as fork)
+		var raw_Asset = {name: asset.name, fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: [asset.tags[0]], accessControl: [], assetDependancies: []};
+
+		//Create Asset
+		database.create(database.Asset, raw_Asset,
+			function (err, objCreated_Asset) {
+				//Handle Error
+				if (err) {
+					cb(err);
+					return;
+				}
+
+				//Send Success Signal
+				cb(null);
+			});
+	});
 };

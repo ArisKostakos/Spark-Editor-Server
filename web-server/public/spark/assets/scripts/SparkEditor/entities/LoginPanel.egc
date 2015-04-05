@@ -22,7 +22,7 @@
 		<State><Id>userInput</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>passwordInput</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>outputText</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>defaultProject</Id><Type>Text</Type><Value>alphaProject</Value></State>
+		<State><Id>defaultProject</Id><Type>Text</Type><Value>blank</Value></State>
 		<State><Id>defaultForkTemplate</Id><Type>Text</Type><Value>blank</Value></State>
 	</_States>
 	
@@ -146,10 +146,10 @@
 				{
 					var strUser =parent.getState('userInput').getState('text');
 					var strPass =parent.getState('passwordInput').getState('text');
-					strUser = 'aris';
-					strPass = 'r0diof';
-					strUser = 'spark';
-					strPass = '12qw!@QW ';
+					//strUser = 'aris';
+					//strPass = 'r0diof';
+					//strUser = 'spark';
+					//strPass = '12qw!@QW ';
 					
 					if (strUser.length>0 && strUser!='Undefined' &&
 						strPass.length>0 && strPass!='Undefined')

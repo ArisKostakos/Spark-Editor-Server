@@ -72,7 +72,7 @@ handler.fork = function(msg, session, next) {
                         //Handle Success
                         if (object_found) {
                             var templateProject = object_found;
-/*
+
                             //create new project (mark it forks blank, not a template, copy paste some blank stuff)
                             var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: [], accessControl: []};
 
@@ -89,7 +89,7 @@ handler.fork = function(msg, session, next) {
 
                                     //Create directories
                                     createProjectDirectories(objCreated_Project.name, user.name);
-*/
+
                                     // for all spark assetsDB with tag: blank
                                     database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user",
                                         function (err, objects_found) {
@@ -120,9 +120,8 @@ handler.fork = function(msg, session, next) {
                                             );
                                         }
                                     );
- /*                               }
+                                }
                             );
-                            */
                         }
                         else {
                             next(null, {code: "error"});    //notfound
@@ -141,7 +140,7 @@ function forkAssets(self, session, assets, index, cb) {
     if (index<assets.length)
     {
         //put user into channel
-        self.app.rpc.assets.createRemote.copy(session, assets[index], session.get('user').name, function(err){
+        self.app.rpc.assets.createRemote.copy(session, assets[index], session, function(err){
             //Handle Error
             if (err) {
                 cb(err);
