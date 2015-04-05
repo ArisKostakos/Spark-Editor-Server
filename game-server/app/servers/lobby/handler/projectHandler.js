@@ -100,7 +100,7 @@ handler.fork = function(msg, session, next) {
                                             }
 
                                             //Handle Success
-                                            forkAssets(objects_found,0,
+                                            forkAssets(self, objects_found,0,
                                                 function (err) {
                                                     //Handle Error
                                                     if (err) {
@@ -137,15 +137,24 @@ handler.fork = function(msg, session, next) {
     );
 }
 
-function forkAssets(assets, index, cb) {
+function forkAssets(self, assets, index, cb) {
     if (index<assets.length)
     {
-        console.log('Found Recursively: ' + assets[index].name);
-        //copy assetFile to /user location
-        //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
+        //put user into channel
+        self.app.rpc.assets.createRemote.copy(assets[index], function(err){
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
 
-        //Next
-        forkAssets(assets, index+1, cb);
+
+            //copy assetFile to /user location
+            //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
+
+            //Next
+            forkAssets(self, assets, index+1, cb);
+        });
     }
     else
     {
