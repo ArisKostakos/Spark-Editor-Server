@@ -137,6 +137,9 @@ handler.fork = function(msg, session, next) {
 }
 
 function forkAssets(self, session, assets, index, cb) {
+    cb(null);
+    return;
+
     if (index<assets.length)
     {
         //put user into channel
