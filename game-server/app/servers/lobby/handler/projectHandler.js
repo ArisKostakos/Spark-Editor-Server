@@ -100,7 +100,7 @@ handler.fork = function(msg, session, next) {
                                             }
 
                                             //Handle Success
-                                            forkAssets(self, objects_found,0,
+                                            forkAssets(self, session, objects_found,0,
                                                 function (err) {
                                                     //Handle Error
                                                     if (err) {
@@ -137,11 +137,11 @@ handler.fork = function(msg, session, next) {
     );
 }
 
-function forkAssets(self, assets, index, cb) {
+function forkAssets(self, session, assets, index, cb) {
     if (index<assets.length)
     {
         //put user into channel
-        self.app.rpc.assets.createRemote.copy(assets[index], function(err){
+        self.app.rpc.assets.createRemote.copy(session, assets[index], function(err){
             //Handle Error
             if (err) {
                 cb(err);
@@ -153,7 +153,7 @@ function forkAssets(self, assets, index, cb) {
             //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
 
             //Next
-            forkAssets(self, assets, index+1, cb);
+            forkAssets(self, session, assets, index+1, cb);
         });
     }
     else

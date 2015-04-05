@@ -1,14 +1,14 @@
 module.exports = function(app) {
-	return new CreateRemote(app);
+	return new Remote(app);
 };
 
-var CreateRemote = function(app) {
+var Remote = function(app) {
 	this.app = app;
-	this.channelService = app.get('channelService');
 };
 
+var remote = Remote.prototype;
 
-CreateRemote.prototype.copy = function(asset, cb) {
+remote.copy = function(asset, cb) {
 
 	console.log('Found Recursively Rpc: ' + asset.name);
 	cb(null);
