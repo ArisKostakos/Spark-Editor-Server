@@ -25,8 +25,8 @@ remote.copy = function(asset, user, developer, cb) {
 	console.log('Found Recursively Rpc: ' + asset.name);
 	console.log('assetSource: ' + assetSource);
 	console.log('assetTarget: ' + assetTarget);
-	cb(null);
-/*
+
+
 	//copy assetFile to /user location
 	fs.copy(assetSource, assetTarget, function(err) {
 		//Handle Error
@@ -50,5 +50,5 @@ remote.copy = function(asset, user, developer, cb) {
 				//Send Success Signal
 				cb(null);
 			});
-	});*/
+	});
 };
