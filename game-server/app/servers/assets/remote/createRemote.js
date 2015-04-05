@@ -14,6 +14,10 @@ var Remote = function(app) {
 var remote = Remote.prototype;
 
 remote.copy = function(asset, session, cb) {
+	cb(null);
+	return;
+
+
 	var user = session.get('user');
 	var developer = session.get('developer');
 
