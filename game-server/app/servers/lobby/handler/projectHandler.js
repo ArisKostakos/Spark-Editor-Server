@@ -100,11 +100,24 @@ handler.fork = function(msg, session, next) {
                                             }
 
                                             //Handle Success
-                                            for (var i=0; i<objects_found.length; i++) {
-                                                console.log('Found: ' + objects_found[i].name);
-                                            }
-                                            //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
-                                            //copy assetFile to /user location
+                                            forkAssets(objects_found,0,
+                                                function (err) {
+                                                    //Handle Error
+                                                    if (err) {
+                                                        next(null, {code: "error"});
+                                                        return console.error(err);
+                                                    }
+
+
+
+                                                    //for all spark assetsDB created
+                                                    //for each assetDependancyDB
+                                                    //do query to change the id to point to the same asset but with different owner
+
+                                                    //success
+                                                    next(null, {code: "success"});
+                                                }
+                                            );
                                         }
                                     );
  /*                               }
@@ -122,27 +135,22 @@ handler.fork = function(msg, session, next) {
             }
         }
     );
+}
 
+function forkAssets(assets, index, cb) {
+    if (index<assets.length)
+    {
+        console.log('Found Recursively: ' + objects_found[index].name);
+        //copy assetFile to /user location
+        //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //for all spark assetsDB created
-        //for each assetDependancyDB
-            //do query to change the id to point to the same asset but with different owner
-
-    //success
-    next(null, {code: "success"});
+        //Next
+        forkAssets(assets, index+1, cb);
+    }
+    else
+    {
+        cb(null);
+    }
 }
 
 handler.create = function(msg, session, next) {
