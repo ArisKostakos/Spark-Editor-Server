@@ -214,18 +214,18 @@ function forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies
                 if (err) {cb(err); return;}
 
                 //Handle Success
-                if (object_found) {
+                var dependancyToAdd;
 
-                    //add to dependancies
-                    forkedAsset.assetDependancies.push(object_found._id);
+                if (object_found)
+                    dependancyToAdd = object_found;
+                else
+                    dependancyToAdd = assetDependancy;
 
-                    //Next
-                    forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index+1, cb);
-                }
-                else {
-                    cb("asset dependancy not found");
-                    return;
-                }
+                //add to dependancies
+                forkedAsset.assetDependancies.push(dependancyToAdd._id);
+
+                //Next
+                forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index+1, cb);
             }
         );
     }
