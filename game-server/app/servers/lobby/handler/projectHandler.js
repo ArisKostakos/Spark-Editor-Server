@@ -91,7 +91,7 @@ handler.fork = function(msg, session, next) {
                                     createProjectDirectories(objCreated_Project.name, user.name);
 */
                                     // for all spark assetsDB with tag: blank
-                                    database.find(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name},
+                                    database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user",
                                         function (err, objects_found) {
                                             //Handle Error
                                             if (err) {
@@ -141,16 +141,12 @@ function forkAssets(self, session, assets, index, cb) {
     if (index<assets.length)
     {
         //put user into channel
-        self.app.rpc.assets.createRemote.copy(session, assets[index], function(err){
+        self.app.rpc.assets.createRemote.copy(session, assets[index], session.get('user').name, function(err){
             //Handle Error
             if (err) {
                 cb(err);
                 return;
             }
-
-
-            //copy assetFile to /user location
-            //create new assetDB for each assetDB (mark as fork, tag as projectname?, etc)
 
             //Next
             forkAssets(self, session, assets, index+1, cb);
