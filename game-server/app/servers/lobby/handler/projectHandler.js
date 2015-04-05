@@ -169,7 +169,7 @@ function forkAssetDependancies(self, session, assets, index, cb) {
         var asset = assets[index];
 
         //query forked asset
-        console.warn('1: ' + {owner: session.get('developer')._id, type: asset.type, name: asset.name});
+        console.warn('1: owner: ' + session.get('developer')._id + ', type: ' + asset.type + ', name: ' + asset.name);
         database.findOne(database.Asset, {owner: session.get('developer')._id, type: asset.type, name: asset.name},
             function (err, object_found) {
                 //Handle Error
@@ -190,7 +190,7 @@ function forkAssetDependancies(self, session, assets, index, cb) {
                     );
                 }
                 else {
-                    cb("notfound");
+                    cb("asset not found");
                     return;
                 }
             }
@@ -207,7 +207,7 @@ function forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies
         var assetDependancy = assetDependancies[index];
 
         //query forked dependancy
-        console.warn('2: ' + {owner: session.get('developer')._id, type: assetDependancy.type, name: assetDependancy.name});
+        console.warn('2: owner: ' + session.get('developer')._id + ', type: ' + assetDependancy.type + ', name: ' + assetDependancy.name);
         database.findOne(database.Asset, {owner: session.get('developer')._id, type: assetDependancy.type, name: assetDependancy.name},
             function (err, object_found) {
                 //Handle Error
@@ -223,7 +223,7 @@ function forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies
                     forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index+1, cb);
                 }
                 else {
-                    cb("notfound");
+                    cb("asset dependancy not found");
                     return;
                 }
             }
