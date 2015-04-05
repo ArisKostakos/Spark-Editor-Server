@@ -21,7 +21,7 @@ remote.copy = function(asset, username, cb) {
 
 	var assetSource = assetPath + '/' + asset.owner.user.name + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
-	var assetTarget = assetPath + '/' + username + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+	var assetTarget = assetPath + '/' + username + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
 	console.log('Found Recursively Rpc: ' + asset.name);
 	console.log('assetSource: ' + assetSource);
