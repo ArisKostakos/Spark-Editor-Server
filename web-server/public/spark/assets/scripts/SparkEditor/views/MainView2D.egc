@@ -50,7 +50,7 @@
 						//Instantiate
 						var myScene = Logic.gameFactory.createGameEntity('blank.scenes.MainScene');
 						//myNewImage2D.setState('componentName',componentNameClean);
-						mainScene.addChild(myNewImage2D);
+						//mainScene.addChild(myNewImage2D);
 						
 						//Move it to active space so it runs
 						
@@ -61,7 +61,7 @@
 					}).once();
 					
 					Assets.initiateBatch();
-					Assets.addFile('/assets/test123/script/blank/scenes/MainScene.egc', 'blank.scenes.MainScene.egc');
+					Assets.addFile('/assets/test123/script/blank/scenes/MainScene.egc', 'blank/scenes/MainScene.egc');
 					Assets.loadBatch();
 
 					//Stop Action
