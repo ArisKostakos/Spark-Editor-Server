@@ -45,19 +45,14 @@
 					//http://130.211.172.86/assets/test123/script/blank/scenes/MainScene.egc
 					//name 
 					Assets.successSignal.connect(function () {
-						Display.error("scene loaded!");
-						
 						//Instantiate
 						var myScene = Logic.gameFactory.createGameEntity('blank.scenes.MainScene');
-						//myNewImage2D.setState('componentName',componentNameClean);
-						//mainScene.addChild(myNewImage2D);
 						
 						//Move it to active space so it runs
+						Logic.getEntityByName('Main Space').addChild(myScene);
 						
 						//Assign it to Scene
 						Logic.getEntityByName('Main View 2D').setState('scene',myScene);
-						
-						
 					}).once();
 					
 					Assets.initiateBatch();
