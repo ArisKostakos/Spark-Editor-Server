@@ -19221,6 +19221,8 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 		this._interpreter.variables.set("Std",Std);
 		this._interpreter.variables.set("String",String);
 		this._interpreter.variables.set("Assets",tools_spark_framework_Assets);
+		this._interpreter.variables.set("Xml",Xml);
+		this._interpreter.variables.set("StringTools",StringTools);
 		this._interpreter.variables.set("XMLHttpRequest",XMLHttpRequest);
 	}
 	,run: function(hashId,parameters) {
@@ -19237,6 +19239,8 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 		this._interpreter.variables.set("Std",Std);
 		this._interpreter.variables.set("String",String);
 		this._interpreter.variables.set("Assets",tools_spark_framework_Assets);
+		this._interpreter.variables.set("Xml",Xml);
+		this._interpreter.variables.set("StringTools",StringTools);
 		this._interpreter.variables.set("XMLHttpRequest",XMLHttpRequest);
 		var $it0 = parameters.keys();
 		while( $it0.hasNext() ) {
