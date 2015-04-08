@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.editors.Editor">
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//me.startAction('rotateMe');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+	</_Actions>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_States>
+		
+	</_States>
+</Entity>

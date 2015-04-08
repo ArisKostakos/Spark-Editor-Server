@@ -30,6 +30,9 @@
 				
 				<!-- Cameras -->
 				<Entity extends="SparkEditor.cameras.DummyCamera"/>
+				
+				<!-- Editors -->
+				<Entity extends="SparkEditor.entities.editors.2dSceneEditor"/>
 			</Entities>
 		</Space>
 	</Form>

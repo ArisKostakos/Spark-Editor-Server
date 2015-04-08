@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//me.startAction('rotateMe');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>GetAsset</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Get Url
+					var userName = me.getState('assetUserName');
+					var type = me.getState('assetType');
+					var assetName = me.getState('assetName');
+					var fileId = StringTools.replace(assetName,".","/") + ".egc";
+					
+					me.setState('fileId', fileId);
+					me.setState('fileUrl', '/assets/' + userName + '/' + type + '/' + fileId);
+
+					//Event Listener
+					Assets.successSignal.connect(function () {
+						me.setState('fileXml',Xml.parse(Assets.getFile(me.getState('fileId')).toString()));
+						me.startAction('AssetLoaded');
+					}).once();
+					
+					Assets.initiateBatch();
+					Assets.addFile(me.getState('fileUrl'), me.getState('fileId'));
+					Assets.loadBatch();
+
+					//Stop Action
+					me.stopAction("GetAsset");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>AssetLoaded</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Override me...
+					me.stopAction("AssetLoaded");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_States>
+		<!-- To get an asset, you need user+type+name -->
+		<State>
+			<Id>assetUserName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		<State>
+			<Id>assetType</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		<State>
+			<Id>assetName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		<State>
+			<Id>fileId</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		<State>
+			<Id>fileUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		<State>
+			<Id>fileXml</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+</Entity>

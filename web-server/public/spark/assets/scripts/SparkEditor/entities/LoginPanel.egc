@@ -272,7 +272,11 @@
 							
 							//Try some init stuff
 							Display.error("Doing INIT stuff!");
-							Logic.getEntityByName('Main View 2D').startAction('LoadScene');
+							var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+							sceneEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
+							sceneEditor.setState('assetType','script');
+							sceneEditor.setState('assetName','blank.scenes.MainScene');
+							sceneEditor.startAction('GetAsset');
 						}
 						else if (data.code=="notfound")
 						{

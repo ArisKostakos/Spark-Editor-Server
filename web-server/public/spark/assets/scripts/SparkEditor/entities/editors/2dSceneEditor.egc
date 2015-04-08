@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.editors.SceneEditor">
+	<_Actions>
+		<_Action id="AssetLoaded">
+			<_Scripts>
+				<Script>
+					Display.error('2D SCENE EDITOR: ASSET LOADED!');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+	</_Actions>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_States>
+		<_State id="name"><Value>2d Scene Editor</Value></_State>
+	</_States>
+</Entity>
