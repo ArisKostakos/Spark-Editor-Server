@@ -4,7 +4,7 @@
 		<_Action id="AssetLoaded">
 			<_Scripts>
 				<Script>
-					Display.error('2D SCENE EDITOR: ASSET LOADED!');
+					Display.error('2D SCENE EDITOR: ASSET LOADED: ' + me.getState('fileXml').toString());
 				</Script>
 			</_Scripts>
 		</_Action>
