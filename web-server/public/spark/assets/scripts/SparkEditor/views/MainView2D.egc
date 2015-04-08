@@ -38,9 +38,33 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					
+					//Hacking Away...
 					Display.error("Loading Scene...");
-					//Logic.getEntityByName('Main View 2D').setState('scene',Logic.getEntityByName('Main Scene 2D'));
+					
+					//Load this
+					//http://130.211.172.86/assets/test123/script/blank/scenes/MainScene.egc
+					//name 
+					Assets.successSignal.connect(function () {
+						Display.error("scene loaded!");
+						
+						//Instantiate
+						var myScene = Logic.gameFactory.createGameEntity('blank.scenes.MainScene');
+						//myNewImage2D.setState('componentName',componentNameClean);
+						mainScene.addChild(myNewImage2D);
+						
+						//Move it to active space so it runs
+						
+						//Assign it to Scene
+						Logic.getEntityByName('Main View 2D').setState('scene',myScene);
+						
+						
+					}).once();
+					
+					Assets.initiateBatch();
+					Assets.addFile('/assets/test123/script/blank/scenes/MainScene.egc', 'blank.scenes.MainScene.egc');
+					Assets.loadBatch();
+
+					//Stop Action
 					me.stopAction("LoadScene");
 				</Script>
 			</Scripts>
