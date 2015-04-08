@@ -16,7 +16,7 @@
 							if (child.getState('displayType')=="Scene")
 							{
 								me.setState('scene',child);
-								Console.debug("Display Scene Entity Set Successfuly to View!");
+								//Console.debug("Display Scene Entity Set Successfuly to View!");
 							}
 							else
 							{
@@ -30,7 +30,7 @@
 							if (child.getState('displayType')=="Camera")
 							{
 								me.setState('camera',child);
-								Console.debug("Display Camera Entity Set Successfuly to View!");
+								//Console.debug("Display Camera Entity Set Successfuly to View!");
 							}
 							else
 							{

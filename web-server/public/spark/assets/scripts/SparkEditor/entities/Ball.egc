@@ -5,7 +5,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					me.startAction('rotateMe');
+					//me.startAction('rotateMe');
 				</Script>
 			</_Scripts>
 		</_Action>

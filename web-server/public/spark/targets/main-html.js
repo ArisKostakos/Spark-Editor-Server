@@ -11837,6 +11837,10 @@ tools_spark_framework_flambe2_$5D_FlambeView2_$5D.prototype = $extend(tools_spar
 			this._updateCurrentView();
 			return null;
 		}
+		if(this.scene != null) {
+			this.scene = null;
+			this._disposeCurrentScene();
+		}
 		this.scene = p_value;
 		this._instanceScene = js_Boot.__cast(this.scene.createInstance(this) , flambe_Entity);
 		this._updateCurrentView();
@@ -11852,6 +11856,7 @@ tools_spark_framework_flambe2_$5D_FlambeView2_$5D.prototype = $extend(tools_spar
 	}
 	,_disposeCurrentScene: function() {
 		this._instanceScene = null;
+		this._instanceView.disposeChildren();
 	}
 	,setPosSize: function(p_x,p_y,p_width,p_height,p_view) {
 		var l_viewSprite;
@@ -14395,7 +14400,7 @@ tools_spark_sliced_services_std_display_renderers_core_library_AFlambe2_$5DRende
 		}
 	}
 	,updateState: function(p_objectEntity,p_state) {
-		if(this._objects.get(p_objectEntity) != null) this._objectManager.updateState(this._objects.get(p_objectEntity),p_objectEntity,p_state);
+		if(this._objects.get(p_objectEntity) != null) this._objectManager.updateState(this._objects.get(p_objectEntity),p_objectEntity,p_state); else if(this._views.get(p_objectEntity) != null) this._viewManager.updateState(this._views.get(p_objectEntity),p_objectEntity,p_state);
 	}
 	,__class__: tools_spark_sliced_services_std_display_renderers_core_library_AFlambe2_$5DRenderer
 });

@@ -10,7 +10,7 @@
 		</_State>
 		
 		<_State id="initSceneName">
-			<Value>Main Scene 2D</Value>
+			<Value>Dummy Scene 2D</Value>
 		</_State>
 		
 		<_State id="initCameraName">
@@ -30,4 +30,23 @@
 		</_State>
 		
 	</_States>
+	
+	<!-- for now, here we put responsible functions for loading scene from server. move us elsewhere.. -->
+	<_Actions>
+		<Action>
+			<Id>LoadScene</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					
+					Display.error("Loading Scene...");
+					//Logic.getEntityByName('Main View 2D').setState('scene',Logic.getEntityByName('Main Scene 2D'));
+					me.stopAction("LoadScene");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>entity</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
 </Entity>
