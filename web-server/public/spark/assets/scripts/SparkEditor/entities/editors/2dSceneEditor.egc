@@ -5,6 +5,15 @@
 			<_Scripts>
 				<Script>
 					Display.error('2D SCENE EDITOR: ASSET LOADED: ' + me.getState('fileXml').toString());
+						
+					//Instantiate
+					var myScene = Logic.gameFactory.createGameEntity(me.getState('assetName'));
+					
+					//Move it to active space so it runs
+					Logic.getEntityByName('Main Space').addChild(myScene);
+					
+					//Assign it to Scene
+					Logic.getEntityByName('Main View 2D').setState('scene',myScene);
 				</Script>
 			</_Scripts>
 		</_Action>
