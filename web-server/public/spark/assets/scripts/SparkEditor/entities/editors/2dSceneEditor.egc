@@ -4,11 +4,11 @@
 		<_Action id="AssetLoaded">
 			<_Scripts>
 				<Script>
-					Display.error('2D SCENE EDITOR: ASSET LOADED: ' + me.getState('fileXml').toString());
+					Display.error('2D SCENE EDITOR: ASSET LOADED: ' + me.getState('fileXml').firstElement().toString());
 						
 					//Instantiate
 					var myScene = Logic.gameFactory.createGameEntityByXml(null, me.getState('fileXml').firstElement());
-					Display.error('done');
+					Display.error('done2');
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(myScene);
 					
