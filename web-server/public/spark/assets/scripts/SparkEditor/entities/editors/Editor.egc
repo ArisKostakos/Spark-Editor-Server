@@ -26,6 +26,7 @@
 					//Event Listener
 					Assets.successSignal.connect(function () {
 						me.setState('fileXml',Xml.parse(Assets.getFile(me.getState('fileId')).toString()));
+						
 						me.startAction('AssetLoaded');
 					}).once();
 					
