@@ -4,6 +4,10 @@
 		<_Action id="AssetLoaded">
 			<_Scripts>
 				<Script>
+					if (me.getState('fileXml').firstElement().elementsNamed('Form').hasNext())
+					{
+						me.getState('fileXml').firstElement().removeChild(p_gameNode.elementsNamed('Form').next());
+					}
 					Display.error('2D SCENE EDITOR: ASSET LOADED: ' + me.getState('fileXml').firstElement().toString());
 						
 					//Instantiate
