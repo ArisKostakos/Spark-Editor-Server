@@ -18218,6 +18218,9 @@ tools_spark_sliced_services_std_logic_gde_core_GameFactory.prototype = {
 		l_extendGameNode.set("extends",p_gameClassName);
 		return this.createGameEntity(null,l_extendGameNode);
 	}
+	,createGameEntityByXml: function(p_gameClassNode) {
+		return this.createGameEntity(null,p_gameClassNode);
+	}
 	,createGameEntity: function(p_gameClassName,p_gameClassNode) {
 		var l_gameNode = this._gameClassParser.getGameNode(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY,p_gameClassName,p_gameClassNode);
 		if(l_gameNode != null) {

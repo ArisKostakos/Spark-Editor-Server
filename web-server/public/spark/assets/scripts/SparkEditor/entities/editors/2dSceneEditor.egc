@@ -7,8 +7,8 @@
 					Display.error('2D SCENE EDITOR: ASSET LOADED: ' + me.getState('fileXml').toString());
 						
 					//Instantiate
-					var myScene = Logic.gameFactory.createGameEntity(null, me.getState('fileXml'));
-					
+					var myScene = Logic.gameFactory.createGameEntityByXml(null, me.getState('fileXml'));
+					Display.error('done');
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(myScene);
 					
