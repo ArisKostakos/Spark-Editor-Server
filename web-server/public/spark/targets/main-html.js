@@ -17901,22 +17901,13 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 	}
 	,getGameNode: function(p_expectedGameType,p_gameClassName,p_gameClassNode) {
 		var l_gameClassNode;
-		tools_spark_framework_Console.warn("So... WHAT IS GOING ON...????");
 		if(p_gameClassName != null && p_gameClassNode != null) {
-			tools_spark_framework_Console.warn("1");
 			tools_spark_framework_Console.warn("Both a game class name and a game class node have been specified to create a game class. Using game class node...");
 			l_gameClassNode = p_gameClassNode;
 		} else if(p_gameClassName != null) {
-			tools_spark_framework_Console.warn("2");
 			l_gameClassNode = this._parseEmbeddedStringAsset(this._getClassUrl(p_gameClassName,this._xmlGameTypeToFileExtension.get(p_expectedGameType)));
 			if(l_gameClassNode != null) l_gameClassNode = l_gameClassNode.firstElement();
-		} else if(p_gameClassNode != null) {
-			tools_spark_framework_Console.warn("3");
-			l_gameClassNode = p_gameClassNode;
-		} else {
-			tools_spark_framework_Console.warn("4");
-			l_gameClassNode = Xml.createElement(this._xmlGameTypeToNodeName.get(p_expectedGameType));
-		}
+		} else if(p_gameClassNode != null) l_gameClassNode = p_gameClassNode; else l_gameClassNode = Xml.createElement(this._xmlGameTypeToNodeName.get(p_expectedGameType));
 		if(l_gameClassNode != null) {
 			if(l_gameClassNode.get_nodeName() != this._xmlGameTypeToNodeName.get(p_expectedGameType)) {
 				tools_spark_framework_Console.error("Expected " + this._xmlGameTypeToNodeName.get(p_expectedGameType) + ", got " + l_gameClassNode.get_nodeName());
