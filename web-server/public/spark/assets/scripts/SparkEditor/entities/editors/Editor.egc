@@ -25,8 +25,8 @@
 
 					//Event Listener
 					Assets.successSignal.connect(function () {
-						me.setState('fileXml',Xml.parse(Assets.getFile(me.getState('fileId')).toString()));
-						
+						me.setState('xmlPure',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
+						me.setState('xmlEdit',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
 						me.startAction('AssetLoaded');
 					}).once();
 					
@@ -84,7 +84,17 @@
 			<Value>Undefined</Value>
 		</State>
 		<State>
-			<Id>fileXml</Id>
+			<Id>xmlPure</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		<State>
+			<Id>xmlEdit</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		<State>
+			<Id>target</Id>
 			<Type>Dynamic</Type>
 			<Value>null</Value>
 		</State>

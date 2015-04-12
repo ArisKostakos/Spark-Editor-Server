@@ -73,6 +73,93 @@ handler.rawUpload = function(msg, session, next) {
     });
 };
 
+handler.updateAssetFile = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //user
+    var user = session.get('user');
+
+    //assetUserName
+    var assetUserName = msg.assetUserName;
+
+    //assetType
+    var assetType = msg.assetType;
+
+    //assetName
+    var assetName = msg.assetName;
+
+    //incomingFileName
+    var incomingFileName = msg.incomingFileName;
+
+    //Get User's Developer Id
+    database.findOne(database.User, {name: assetUserName},
+        function (err, user_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            if (user_found)
+            {
+                database.findOne(database.Asset, {owner: user_found.developerReference, type: assetType, name: assetName},
+                    function (err, asset_found) {
+                        //Handle Error
+                        if (err) {
+                            next(null, {code: "error"});
+                            return console.error(err);
+                        }
+
+                        //Handle Success
+                        if (asset_found)
+                        {
+                            //Should check for dependancies here
+                            //..
+
+                            //asset urls
+
+                            //Asset Path
+                            var assetPath = path.resolve("../web-server/public") + '/assets';
+
+                            //User Path
+                            var userPath = assetPath + '/' + user.name;
+
+                            //Asset Source Path
+                            var assetSource = userPath + '/incoming/' + incomingFileName;
+
+                            //Asset Target Path
+                            var assetTarget = assetPath + '/' + assetUserName + '/' + asset_found.type + '/' + asset_found.dir + '/' + asset_found.fileName + '.' + asset_found.fileExtension;
+                            console.error("Moving File: " + assetSource + ", to: " + assetTarget);
+
+                            //Replace assetFile
+                            fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
+                                if (err) {
+                                    next(null, {code: "error"});
+                                    return console.error(err);
+                                }
+
+                                //Handle Success
+                                next(null, {code: "success"});
+                            });
+                        }
+                        else
+                        {
+                            //asset not found. exiting...
+                            next(null, {code: "error"});
+                        }
+                    }
+                );
+            }
+            else
+            {
+                //user not found. exiting...
+                next(null, {code: "error"});
+            }
+        }
+    );
+}
 
 function getDependancies(darray, index, dependancies, msg, session, next)
 {

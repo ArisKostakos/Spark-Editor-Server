@@ -18,7 +18,10 @@
 					<_State id="imageWidth"><Value>15</Value></_State>
 					<_State id="imageHeight"><Value>15</Value></_State>
 					<_State id="imageHorCenter"><Value>0</Value></_State>
-				</_States></Entity>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Logic.getEntityByName('2d Scene Editor').startAction('Save');
+				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Play -->
 				<Entity extends="SparkEditor.entities.BlueButton"><_States>

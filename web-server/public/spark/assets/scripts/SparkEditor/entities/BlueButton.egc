@@ -13,16 +13,33 @@
 		<State><Id>imageVerCenter</Id><Type>Decimal</Type><Value>0</Value></State>
 	</_States>
 	
+	<Actions>
+		<Action>
+			<Id>ButtonClicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("ButtonClicked");
+				</Script>
+			</Scripts>
+		</Action>
+	</Actions>
+	
 	<Form>
 		<Space>
 			<Entities>
 				<!-- Circle -->
-				<Entity extends="std.display.Div"><_States>
+				<Entity extends="std.display.Button"><_States>
 					<_State id="borderRadius"><Value>50%</Value></_State>
 					<_State id="backgroundColor"><Value>rgb(0,160,227)</Value></_State>
 					<_State id="width"><Value>28</Value></_State>
 					<_State id="height"><Value>28</Value></_State>
-					</_States><Form><Space><Entities>
+					</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+					<Script>
+						parent.startAction('ButtonClicked');
+					</Script>
+					</Scripts></Trigger></_Triggers>
+					<Form><Space><Entities>
 						<!-- Circle Image -->
 						<Entity extends="std.display.Image"><_Actions><_Action id="Constructor"><_Scripts><Script>
 							me.setState('src',parent.parentEntity.getState('imageName'));

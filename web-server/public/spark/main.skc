@@ -150,6 +150,11 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/Editor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/SceneEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/2dSceneEditor.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Scene2DEdit.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Sprite2DEdit.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Sprite2DEditSelector.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Sprite2DEditSelectorOverlay.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Sprite2DEditSelectorResize.egc</Asset>
 		</Module>
 		
 		<Module id="DoNotLoad">
