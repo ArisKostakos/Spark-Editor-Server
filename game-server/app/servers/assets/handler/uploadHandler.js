@@ -115,7 +115,13 @@ handler.updateAssetFile = function(msg, session, next) {
                         //Handle Success
                         if (asset_found)
                         {
+                            //Check if user is allowed to write to this asset, goes here?
+                            //..
+
                             //Should check for dependancies here
+                            //..
+
+                            //should also update asset fileSize
                             //..
 
                             //asset urls

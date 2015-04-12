@@ -158,8 +158,9 @@
 					var finalString = sceneFileXml.toString();
 					Display.error("sceneXml: " + finalString);
 					
+					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 					
-					Comms.file_sendFileRequest(finalString, {name: "whatever", size: finalString.length, user: me.getState('assetUserName')} , "whatever");
+					Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
 				</Script>
 			</Scripts>
 		</Action>
@@ -171,9 +172,9 @@
 			<Event>FileTransferRequest</Event>
 			<Scripts>
 				<Script>
-					if (Comms.file_getSendFileRequestData("whatever")!=null)
+					if (Comms.file_getSendFileRequestData("updatedAsset")!=null)
 					{
-						var data = Comms.file_getSendFileRequestData("whatever");
+						var data = Comms.file_getSendFileRequestData("updatedAsset");
 						
 						Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
 						
@@ -181,7 +182,41 @@
 						{
 							Display.error("FILE: " + 'File Uploaded!');
 							
-							//Comms.request("assets.uploadHandler.rawUpload", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: dir, type: type, componentType: componentType, tags: tags}, me.getState('file').name);
+							//assetUserName
+							var assetUserName = me.getState('assetUserName');
+
+							//assetType
+							var assetType = me.getState('assetType');
+
+							//assetName
+							var assetName = me.getState('assetName');
+
+							//incomingFileName
+							var incomingFileName = "updatedAsset";
+	
+	
+							Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: assetUserName, assetType:assetType, assetName:assetName, incomingFileName:incomingFileName}, "updatedAsset");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("updatedAsset")!=null)
+					{
+						var data = Comms.getRequestData("updatedAsset");
+						
+						if (data.code=="success")
+						{
+							Display.error('Updated Asset fucking success!');
+						}
+						else
+						{
+							Display.error('Updated Asset error!');
 						}
 					}
 				</Script>
