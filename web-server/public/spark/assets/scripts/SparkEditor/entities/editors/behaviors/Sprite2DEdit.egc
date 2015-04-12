@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<_State id="touchable"><Value>true</Value></_State>
+		
+		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+					if (Input.keyboard.isKeyDown(Key.Alt))
+					{
+						me.startAction('Clone');
+					}
+					else
+					{
+						var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+						leveleditor2d.getAction('EntityClicked').setState('entity',me);
+						leveleditor2d.startAction('EntityClicked');
+						me.startAction('Drag');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Select -->
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('selector')==null)
+					{
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.behaviors.Sprite2DEditSelector');
+						myNewItem.setState('selectRect', me.getState('boundsRect'));
+
+						me.addChild(myNewItem);
+						me.setState('selector',myNewItem);
+					}
+					else
+					{
+						me.getState('selector').startAction('show');
+					}
+					
+					me.stopAction("Select");
+				</Script>
+			</Scripts>
+		</Action>
+
+		<!-- Deselect -->
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('selector')!=null)
+					{
+						me.getState('selector').startAction('hide');
+					}
+					
+					
+					me.stopAction("Deselect");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Drag -->
+		<Action>
+			<Id>Drag</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Input.pointer.isDown())
+					{
+						me.setState('spaceX',me.getState('spaceX')+Input.pointer.distX());
+						me.setState('spaceY',me.getState('spaceY')+Input.pointer.distY());
+					}
+					else
+					{
+						//We will need this function...
+						function firstElementNamed(p_xmlNode, p_elementName)
+						{
+							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+							{
+								return p_xmlNode.elementsNamed(p_elementName).next();
+							}
+							else
+							{
+								return null;
+							}
+						}
+						
+						//Save changes to xmlData
+						var xmlData = me.getState("xmlData");
+						Display.error(xmlData);
+						var entityXml = xmlData.elementsNamed('Entity').next();
+						
+						//if no [_States], create it
+						var statesXml = firstElementNamed(entityXml,'_States');
+						if (statesXml==null)
+						{
+							statesXml = Xml.createElement('_States');
+							entityXml.addChild(statesXml);
+						}
+						
+						var states = statesXml.elementsNamed('_State');
+						//for each [_state] in [_states]
+						while (states.hasNext())
+						{
+							var stateChildXml = states.next();
+
+							if (stateChildXml.get("id")=="spaceX")
+							{
+								//Remove previous Value Node
+								var stateValueXml = firstElementNamed(stateChildXml,'Value');
+								stateChildXml.removeChild(stateValueXml);
+								
+								//Create New Value Node, correct its value
+								stateValueXml = Xml.createElement('Value');
+								stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX'))));
+								stateChildXml.addChild(stateValueXml);
+								Display.error("spaceX: " + stateValueXml.firstChild().toString());
+							}
+							else if (stateChildXml.get("id")=="spaceY")
+							{
+								//Remove previous Value Node
+								var stateValueXml = firstElementNamed(stateChildXml,'Value');
+								stateChildXml.removeChild(stateValueXml);
+								
+								//Create New Value Node, correct its value
+								stateValueXml = Xml.createElement('Value');
+								stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY'))));
+								stateChildXml.addChild(stateValueXml);
+								Display.error("spaceY: " + stateValueXml.firstChild().toString());
+							}
+						}
+						
+						
+						me.stopAction("Drag");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Clone -->
+		<Action>
+			<Id>Clone</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var mainScene = Logic.getEntityByName('Level Editor 2D Scene');
+					var componentName = me.getState('componentName');
+
+					var myNewImage2D = Logic.gameFactory.createGameEntityExtended(componentName,'SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+					myNewImage2D.setState('componentName',componentName);
+					myNewImage2D.setState('spaceX',me.getState('spaceX'));
+					myNewImage2D.setState('spaceY',me.getState('spaceY'));
+					myNewImage2D.setState('scaleX',me.getState('scaleX'));
+					myNewImage2D.setState('scaleY',me.getState('scaleY'));
+					mainScene.addChild(myNewImage2D);
+						
+					//Select and start dragging the new Entity
+					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					leveleditor2d.getAction('EntityClicked').setState('entity',myNewImage2D);
+					leveleditor2d.startAction('EntityClicked');
+					myNewImage2D.startAction('Drag');
+						
+					me.stopAction("Clone");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

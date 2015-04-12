@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<State><Id>overlay</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>resizeControl</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>selectRect</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Overlay -->
+				<Entity extends="SparkEditor.entities.editors.behaviors.Sprite2DEditSelectorOverlay">
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('overlay', me);
+
+						me.setState('spaceWidth', parent.getState('selectRect').width);
+						me.setState('spaceHeight', parent.getState('selectRect').height);
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+				
+				<!-- Resize Control -->
+				<Entity extends="SparkEditor.entities.editors.behaviors.Sprite2DEditSelectorResize">
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('resizeControl', me);
+						
+						
+						me.setState('visible', true);
+						
+						me.setState('spaceX', parent.getState('selectRect').width-10);
+						me.setState('spaceY', parent.getState('selectRect').height-10);
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Actions>
+		<!-- show -->
+		<Action>
+			<Id>show</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.getState('overlay').setState('visible',true);
+					me.getState('resizeControl').setState('visible',true);
+					
+					me.stopAction("show");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- hide -->
+		<Action>
+			<Id>hide</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.getState('overlay').setState('visible',false);
+					me.getState('resizeControl').setState('visible',false);
+					
+					me.stopAction("hide");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
