@@ -13,22 +13,6 @@
 					me.stopAction("RequestProjectDbAssets");
 					
 					Comms.request("assets.requestHandler.getProjectAssets", {}, "Project Assets Request");
-					
-					/*
-					//temp scene stuff
-					var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-					sceneEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
-					sceneEditor.setState('assetType','script');
-					sceneEditor.setState('assetName','blank.scenes.MainScene');
-					sceneEditor.startAction('GetAsset');
-					*/
-					
-					
-					//enter project gui
-					Logic.getEntityByName('Dom View').setState('visible',false);
-
-					Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
-					Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
 				</Script>
 			</Scripts>
 		</Action>
@@ -48,24 +32,61 @@
 						{
 							Display.error('Requesting Project Assets success!');
 							
+							//Get Username
+							var userName = me.getState('assetUserName');
+							
+							//Initiate Load
+							Assets.initiateBatch();
+							
 							var i = 0;
 							while (data.assets.length>i)
-							{/*
-								var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItem');
-								myNewItem.setState('name',components[i].componentname);
-								myNewItem.setState('buttonText',components[i].componentname);
-								myNewItem.setState('imageName',components[i].thumbnail.substr(components[i].thumbnail.indexOf('assets/')));
-								myNewItem.setState('imageWidth',"14");
-								myNewItem.setState('imageHeight',"14");
-								myNewItem.setState('component',components[i]);
-								container2d.addChild(myNewItem);
-								Display.error('component #' + i + ':');
-								Display.error(components[i].assets);
-								*/
+							{
+								//Get AssetDb
+								var asset = data.assets[i];
+								
+								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+								
+								
+								//If Asset is Script
+								if (asset.type=="script")
+								{
+									var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								}
+								else if (asset.type=="image")
+								{
+									var assetId = asset.name;
+								}
+
+								Assets.addFile(assetUrl, assetId);
+								
 								
 								Display.error(data.assets[i].name);
 								i+=1;
 							}
+							
+							//Event Listener
+							Assets.successSignal.connect(function () {
+							
+								//temp scene stuff
+								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+								sceneEditor.setState('assetUserName', userName);
+								sceneEditor.setState('assetType','script');
+								sceneEditor.setState('assetName','blank.scenes.MainScene');
+								sceneEditor.startAction('GetAsset');
+							
+								//enter project gui
+								Logic.getEntityByName('Dom View').setState('visible',false);
+
+								Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
+								Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
+							
+								//me.setState('xmlPure',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
+								//me.setState('xmlEdit',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
+								//me.startAction('AssetLoaded');
+							}).once();
+							
+							//Load
+							Assets.loadBatch();
 						}
 						else
 						{

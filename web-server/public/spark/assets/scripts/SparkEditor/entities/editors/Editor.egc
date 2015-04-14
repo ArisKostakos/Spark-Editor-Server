@@ -14,6 +14,9 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					//Stop Action
+					me.stopAction("GetAsset");
+					
 					//Get Url
 					var userName = me.getState('assetUserName');
 					var type = me.getState('assetType');
@@ -23,19 +26,9 @@
 					me.setState('fileId', fileId);
 					me.setState('fileUrl', '/assets/' + userName + '/' + type + '/' + fileId);
 
-					//Event Listener
-					Assets.successSignal.connect(function () {
-						me.setState('xmlPure',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
-						me.setState('xmlEdit',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
-						me.startAction('AssetLoaded');
-					}).once();
-					
-					Assets.initiateBatch();
-					Assets.addFile(me.getState('fileUrl'), me.getState('fileId'));
-					Assets.loadBatch();
-
-					//Stop Action
-					me.stopAction("GetAsset");
+					me.setState('xmlPure',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
+					me.setState('xmlEdit',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
+					me.startAction('AssetLoaded');
 				</Script>
 			</Scripts>
 		</Action>

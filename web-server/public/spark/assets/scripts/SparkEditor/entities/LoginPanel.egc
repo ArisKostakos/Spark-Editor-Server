@@ -267,6 +267,7 @@
 							//Try some init stuff
 							Display.error("Doing INIT stuff!");
 							var projectEditor = Logic.getEntityByName('Project Editor');
+							projectEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
 							projectEditor.startAction('RequestProjectDbAssets');
 						}
 						else if (data.code=="notfound")
