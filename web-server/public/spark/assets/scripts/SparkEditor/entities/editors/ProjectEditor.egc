@@ -44,7 +44,7 @@
 								//Get AssetDb
 								var asset = data.assets[i];
 								
-								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								
 								
 								//If Asset is Script
