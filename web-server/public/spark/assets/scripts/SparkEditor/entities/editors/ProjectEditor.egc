@@ -69,7 +69,7 @@
 									//Is it uploaded to be used for Spriter?
 									//..
 									
-									assetId = 'image_' + asset.fileName;
+									assetId = 'image_' + asset.name;
 								}
 
 								Assets.addFile(assetUrl, assetId);

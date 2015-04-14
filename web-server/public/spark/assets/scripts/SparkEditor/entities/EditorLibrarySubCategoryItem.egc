@@ -41,24 +41,24 @@
 					var stateXml = Xml.createElement('_State');
 					stateXml.set('id', '2DMeshImageForm');
 					var stateValueXml = Xml.createElement('Value');
-					stateValueXml.addChild(Xml.parse('Image'));
+					stateValueXml.addChild(Xml.parse('ImageUrl'));
 					
 					var formXml = Xml.createElement('_Form');
 					var formStatesXml = Xml.createElement('_States');
 					var formStateXml = Xml.createElement('State');
 					var formStateIdXml = Xml.createElement('Id');
-					formStateIdXml.addChild(Xml.parse('Image'));
+					formStateIdXml.addChild(Xml.parse('ImageUrl'));
 					var formStateTypeXml = Xml.createElement('Type');
 					formStateTypeXml.addChild(Xml.parse('Text'));
 					var formStateValueXml = Xml.createElement('Value');
-					formStateValueXml.addChild(Xml.parse('lala'));
+					formStateValueXml.addChild(Xml.parse('image_' + asset.name));
 					
 					entityXml.addChild(statesXml);
 						//statesXml.addChild(stateXml);
 							stateXml.addChild(stateValueXml);
 					entityXml.addChild(formXml);
 						formXml.addChild(formStatesXml);
-							//formStatesXml.addChild(formStateXml);
+							formStatesXml.addChild(formStateXml);
 								formStateXml.addChild(formStateIdXml);
 								formStateXml.addChild(formStateTypeXml);
 								formStateXml.addChild(formStateValueXml);
