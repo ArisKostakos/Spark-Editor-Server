@@ -54,7 +54,7 @@
 					formStateValueXml.addChild(Xml.parse('lala'));
 					
 					entityXml.addChild(statesXml);
-						statesXml.addChild(stateXml);
+						//statesXml.addChild(stateXml);
 							stateXml.addChild(stateValueXml);
 					entityXml.addChild(formXml);
 						formXml.addChild(formStatesXml);
