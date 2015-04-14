@@ -37,15 +37,6 @@
 						
 						if (data.progress==1)
 						{
-							//Until we have a component loader window, library name will always be project name
-							var libraryName = Logic.getEntityByName('Spark Editor').getState('projectname');
-							
-							//Until we have a component loader window, component name will always be uploaded file name
-							var componentName = me.getState('name');
-							
-							//Until we have a component loader window, subDir is always ""
-							var subDir = "";
-							
 							//fileName
 							var fileName = me.getState('name');
 							
@@ -53,9 +44,9 @@
 							var fileSize = me.getState('fileSize');
 							
 							////Until we have a component loader window, assetName is always fileName
-							var assetName = me.getState('name');  //this is actually itemTitle, when i receive it..
+							var assetTitle = me.getState('name');  //this is actually itemTitle, when i receive it..
 							
-							Comms.request("editor.componentHandler.createObject2D", {componentName: componentName, libraryName:libraryName, assetName:assetName, fileName:fileName, fileSize:fileSize, subDir:subDir}, me.getState('name'));
+							Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: 'image', componentType: '', tags: 'sprite 2d'}, me.getState('file').name);
 						}
 					}
 				</Script>
@@ -73,6 +64,8 @@
 						
 						if (data.code=="success")
 						{
+							Display.error("Success creating asset: " + data.asset.name);
+						/*
 							var thumbUrl = data.component.thumbnail;
 							Display.error("Success creating component. Thumbnail url: " + thumbUrl);
 
@@ -99,10 +92,11 @@
 							
 							//Set Component
 							me.setState('component',data.component);
+							*/
 						}
 						else
 						{
-							Display.error("Error creating component.");
+							Display.error("Error uploading asset.");
 							//remove uploading item here (me) or something..
 						}
 					}

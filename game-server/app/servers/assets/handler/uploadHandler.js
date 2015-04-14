@@ -14,14 +14,6 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 
-/**
- * New client entry registration server.
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next stemp callback
- * @return {Void}
- */
 handler.rawUpload = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
@@ -69,9 +61,239 @@ handler.rawUpload = function(msg, session, next) {
             console.log(found[i]);
         }
 
-        getDependancies(found, 0, [], msg, session, next);
+        getDependancies(found, 0, [], msg, session, function (err, data) {
+                if (err) {
+                    next(null, data);
+                    return console.error(err);
+                }
+
+                //Handle Success
+                next(null, {code: data.code, assetName: data.asset.name});
+            }
+        );
     });
 };
+
+
+handler.uploadAsset = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    if (msg.type=='image')
+    {
+        createAsset([], msg, session, function (err, data) {
+            if (err) {
+                next(null, data);
+                return console.error(err);
+            }
+
+            //Handle Success
+            var user = session.get('user');
+
+            //Asset Path
+            var assetPath = path.resolve("../web-server/public") + '/assets';
+
+            //User Path
+            var userPath = assetPath + '/' + user.name;
+
+            //Source Url
+            var assetUrl = userPath + '/' + data.asset.type + '/' + data.asset.dir + '/' + data.asset.fileName +  '.' + data.asset.fileExtension;
+
+            //Target Url
+            fs.ensureDirSync(userPath + '/' + 'thumbnail' + '/' + data.asset.dir);
+            var thumbnailUrl = userPath + '/' + 'thumbnail' + '/' + data.asset.dir + '/' + data.asset.fileName +  '.' + data.asset.fileExtension;
+
+            //create thumbnail
+            createThumbnail(assetUrl, thumbnailUrl, 16, function(err) {
+                if (err) {
+                    next(null, {code: "error"});
+                    return console.error(err);
+                }
+
+                //Handle Success
+                next(null, {code: data.code, asset: data.asset});
+            });
+        });
+    }
+    //
+    //..
+
+};
+
+
+function getDependancies(darray, index, dependancies, msg, session, cb)
+{
+    if (index<darray.length)
+    {
+        database.findOne(database.Asset, {owner: session.get('developer')._id, type: msg.type, name: darray[index]},
+            function (err, object_found) {
+                //Handle Error
+                if (err) {
+                    cb(err, {code: "error"});
+                    return;
+                }
+
+                //Handle Success
+                if (object_found)
+                {
+                    console.warn('Adding Dependancy: '+ object_found.name);
+                    dependancies.push(object_found._id);
+                    getDependancies(darray, index+1, dependancies, msg, session, cb);
+                }
+                else
+                {
+                    //dependancy not found. exiting...
+                    cb("dMissing", {code: "dMissing", dependancyName: darray[index]});
+                }
+            }
+        );
+    }
+    else
+    {
+        createAsset(dependancies, msg, session, cb);
+    }
+}
+
+function createAsset(dependancies, msg, session, cb)
+{
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //fileName
+    var fileName = msg.fileName;
+
+    //fileSize
+    var fileSize = msg.fileSize;
+
+    //assetTitle
+    var assetTitle = msg.assetTitle;
+
+    //dir
+    var dir = msg.dir;
+
+    //type
+    var type = msg.type;
+
+    //componentType
+    var componentType = msg.componentType;
+    var componentTypeFinal;
+    if (componentType=='Undefined' || componentType.length==0)
+        componentTypeFinal=null;
+    else
+        componentTypeFinal=componentType;
+
+    //tags
+    var tags = msg.tags;
+    var tagsFinal;
+    if (tags=='Undefined' || tags.length==0)
+        tagsFinal=[project.name];
+    else
+    {
+        tagsFinal = tags.split(' ');
+        tagsFinal.unshift(project.name);
+    }
+
+    //Asset Path
+    var assetPath = path.resolve("../web-server/public") + '/assets';
+
+    //User Path
+    var userPath = assetPath + '/' + user.name;
+
+    //get rawName
+    var rawName = fileName.substring(0,fileName.lastIndexOf("."));
+
+    //get rawExtension
+    var rawExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
+
+    //get nameDir
+    if (dir.length==0)
+        var nameDir = project.name;
+    else
+        var nameDir = project.name + '.' + dir.replace(/[/\\]/g, '.');
+
+    //get finalDir
+    if (dir.length==0)
+        var finalDir = project.name;
+    else
+        var finalDir = project.name + '/' + dir.replace(/[/\\]/g, '/');
+
+    //get asset name
+    var assetName = nameDir + '.' + rawName;
+
+    //Asset Source Path
+    var assetSource = userPath + '/incoming/' + fileName;
+
+    //Asset Target Path
+    fs.ensureDirSync(userPath + '/' + type + '/' + finalDir);
+    var assetTarget = userPath + '/' + type + '/' + finalDir + '/' + fileName;
+
+    //Already exists?
+    database.findOne(database.Asset, {owner: developer._id, type: type, name: assetName},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                cb(err, {code: "error"});
+                return;
+            }
+
+            //Handle Success
+            if (object_found)
+            {
+                //If already exists, exit
+                cb("exists", {code: "exists", assetName: object_found.name});
+            }
+            else
+            {
+                //Move Asset File
+                fs.move(assetSource, assetTarget, function(err) {
+                        if (err) {
+                            cb(err, {code: "error"});
+                            return;
+                        }
+
+                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetName, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
+
+                    //Create Asset
+                    database.create(database.Asset, raw_Asset,
+                        function (err, objCreated_Asset) {
+                            //Handle Error
+                            if (err) {
+                                cb(err, {code: "error"});
+                                return;
+                            }
+
+                            //Send Success Signal
+                            cb(null, {code: "success", asset:objCreated_Asset});
+                        });
+                    }
+                );
+            }
+        }
+    );
+}
+
+
+function createThumbnail(srcImageUrl, targetUrl, size, cb)
+{
+    // obtain an image object:
+    lwip.open(srcImageUrl, function(err, image){
+        if (err) {cb(err); return;}
+
+        // define a batch of manipulations and save to disk
+        image.batch()
+            .resize(size)
+            .writeFile(targetUrl, function(err){
+                if (err) {cb(err); return;}
+
+                // done.
+                cb();
+            });
+
+    });
+}
+
 
 handler.updateAssetFile = function(msg, session, next) {
     var self = this;
@@ -166,177 +388,3 @@ handler.updateAssetFile = function(msg, session, next) {
         }
     );
 }
-
-function getDependancies(darray, index, dependancies, msg, session, next)
-{
-    if (index<darray.length)
-    {
-        database.findOne(database.Asset, {owner: session.get('developer')._id, type: msg.type, name: darray[index]},
-            function (err, object_found) {
-                //Handle Error
-                if (err) {
-                    next(null, {code: "error"});
-                    return console.error(err);
-                }
-
-                //Handle Success
-                if (object_found)
-                {
-                    console.warn('Adding Dependancy: '+ object_found.name);
-                    dependancies.push(object_found._id);
-                    getDependancies(darray, index+1, dependancies, msg, session, next);
-                }
-                else
-                {
-                    //dependancy not found. exiting...
-                    next(null, {code: "dMissing", dependancyName: darray[index]});
-                }
-            }
-        );
-    }
-    else
-    {
-        createAsset(dependancies, msg, session, next);
-    }
-}
-
-function createAsset(dependancies, msg, session, next)
-{
-    //Session bindings
-    var user = session.get('user');
-    var developer = session.get('developer');
-    var project = session.get('project');
-
-    //fileName
-    var fileName = msg.fileName;
-
-    //fileSize
-    var fileSize = msg.fileSize;
-
-    //assetTitle
-    var assetTitle = msg.assetTitle;
-
-    //dir
-    var dir = msg.dir;
-
-    //type
-    var type = msg.type;
-
-    //componentType
-    var componentType = msg.componentType;
-    var componentTypeFinal;
-    if (componentType=='Undefined' || componentType.length==0)
-        componentTypeFinal=null;
-    else
-        componentTypeFinal=componentType;
-
-    //tags
-    var tags = msg.tags;
-    var tagsFinal;
-    if (tags=='Undefined' || tags.length==0)
-        tagsFinal=[project.name];
-    else
-    {
-        tagsFinal = tags.split(' ');
-        tagsFinal.unshift(project.name);
-    }
-
-    //Asset Path
-    var assetPath = path.resolve("../web-server/public") + '/assets';
-
-    //User Path
-    var userPath = assetPath + '/' + user.name;
-
-    //get rawName
-    var rawName = fileName.substring(0,fileName.lastIndexOf("."));
-
-    //get rawExtension
-    var rawExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
-
-    //get nameDir
-    if (dir.length==0)
-        var nameDir = project.name;
-    else
-        var nameDir = project.name + '.' + dir.replace(/[/\\]/g, '.');
-
-    //get finalDir
-    if (dir.length==0)
-        var finalDir = project.name;
-    else
-        var finalDir = project.name + '/' + dir.replace(/[/\\]/g, '/');
-
-    //get asset name
-    var assetName = nameDir + '.' + rawName;
-
-    //Asset Source Path
-    var assetSource = userPath + '/incoming/' + fileName;
-
-    //Asset Target Path
-    fs.ensureDirSync(userPath + '/' + type + '/' + finalDir);
-    var assetTarget = userPath + '/' + type + '/' + finalDir + '/' + fileName;
-
-    //Already exists?
-    database.findOne(database.Asset, {owner: developer._id, type: type, name: assetName},
-        function (err, object_found) {
-            //Handle Error
-            if (err) {
-                next(null, {code: "error"});
-                return console.error(err);
-            }
-
-            //Handle Success
-            if (object_found)
-            {
-                //If already exists, exit
-                next(null, {code: "exists", assetName: object_found.name});
-            }
-            else
-            {
-                //Move Asset File
-                fs.move(assetSource, assetTarget, function(err) {
-                        if (err) {
-                            next(null, {code: "error"});
-                            return console.error(err);
-                        }
-
-                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetName, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
-
-                    //Create Asset
-                    database.create(database.Asset, raw_Asset,
-                        function (err, objCreated_Asset) {
-                            //Handle Error
-                            if (err) {
-                                next(null, {code: "error"});
-                                return console.error(err);
-                            }
-
-                            //Send Success Signal
-                            next(null, {code: "success", assetName: objCreated_Asset.name});
-                        });
-                    }
-                );
-            }
-        }
-    );
-}
-
-
-function createThumbnail(srcImageUrl, targetUrl, size, cb)
-{
-    // obtain an image object:
-    lwip.open(srcImageUrl, function(err, image){
-        if (err) {cb(err); return;}
-
-        // define a batch of manipulations and save to disk
-        image.batch()
-            .resize(size)
-            .writeFile(targetUrl, function(err){
-                if (err) {cb(err); return;}
-
-                // done.
-                cb();
-            });
-
-    });
-}
-

@@ -56,6 +56,13 @@
 								}
 								else if (asset.type=="image")
 								{
+									//Check second tag
+									
+									//Is it uploaded to be used as a Sprite?
+									//..
+									//Is it uploaded to be used for Spriter?
+									//..
+									
 									assetId = asset.name;
 								}
 
