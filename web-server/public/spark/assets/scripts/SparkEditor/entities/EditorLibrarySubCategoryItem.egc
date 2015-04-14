@@ -31,22 +31,44 @@
 			<Scripts>
 				<Script>
 					//Hacking away...
-					var username = Logic.getEntityByName('Spark Editor').getState('username');
-					var component = me.getState('component');
+					var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					var asset = me.getState('component');
 					
-					var componentNameClean = component.componentname.substr(0,component.componentname.length-4);
+					var entityXml = Xml.createElement('Entity');
+					entityXml.set('extends' , 'std.display.Image2D');
 					
-					var mainScene = Logic.getEntityByName('Level Editor 2D Scene');
+					var statesXml = Xml.createElement('_States');
+					var stateXml = Xml.createElement('_State');
+					stateXml.set('id', '2DMeshImageForm');
+					var stateValueXml = Xml.createElement('Value');
+					stateValueXml.addChild(Xml.parse('Image'));
 					
-					Assets.successSignal.connect(function () {
-						Display.error("assets loaded!");
+					var formXml = Xml.createElement('_Form');
+					var formStatesXml = Xml.createElement('_States');
+					var formStateXml = Xml.createElement('State');
+					var formStateIdXml = Xml.createElement('Id');
+					formStateIdXml.addChild(Xml.parse('Image'));
+					var formStateTypeXml = Xml.createElement('Type');
+					formStateTypeXml.addChild(Xml.parse('Text'));
+					var formStateValueXml = Xml.createElement('Value');
+					formStateValueXml.addChild(Xml.parse(asset.name));
+					
+					entityXml.addChild(statesXml);
+						statesXml.addChild(stateXml);
+							stateXml.addChild(stateValueXml);
+					entityXml.addChild(formXml);
+						formXml.addChild(formStatesXml);
+							formStatesXml.addChild(formStateXml);
+								formStateXml.addChild(formStateIdXml);
+								formStateXml.addChild(formStateTypeXml);
+								formStateXml.addChild(formStateValueXml);
+					
+					var pureXml = Xml.parse(entityXml.toString());
+					Display.error("SPRITE XML: " + entityXml);
 						
-						var myNewImage2D = Logic.gameFactory.createGameEntityExtended(componentNameClean,'SparkEditor.entities.LevelEditor2DSprite');
-						myNewImage2D.setState('componentName',componentNameClean);
-						mainScene.addChild(myNewImage2D);
-						
-					}).once();
-					
+					var childEntity = Logic.gameFactory.createGameEntityByXml(pureXml);
+					scene.addChild(childEntity);
+					/*
 					//REPLACE ' temp ' with ' .. '
 					var textureUrl = "../assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
 					var egcUrl = "../assets/" + username + "/scripts/" + component.libraryName + "/" + componentNameClean + '.egc';
@@ -57,7 +79,7 @@
 					Assets.addFile(textureUrl, "editor");
 					Assets.addFile(egcUrl, componentNameClean + ".egc");
 					Assets.loadBatch();
-					
+					*/
 					/*
 					var myContainer = parent.parentEntity;
 					
