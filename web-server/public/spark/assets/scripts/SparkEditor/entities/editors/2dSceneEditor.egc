@@ -206,8 +206,10 @@
 					
 					//Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
 					
+					var sceneBakedXml = Xml.parse(sceneXml.toString()).firstElement(); //bake it?
+					
 					//Instantiate
-					var editScene = Logic.gameFactory.createGameEntityByXml(sceneXml);
+					var editScene = Logic.gameFactory.createGameEntityByXml(sceneBakedXml);
 					
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(editScene);
