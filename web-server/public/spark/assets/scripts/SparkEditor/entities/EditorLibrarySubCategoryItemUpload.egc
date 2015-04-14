@@ -31,7 +31,7 @@
 						//Display.error("File Request Received Identified: " + me.getState('name'));
 						var data = Comms.file_getSendFileRequestData(me.getState('name'));
 						
-						//Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
+						Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
 						
 						me.getState('progressBar').setState('height',data.progressPercent+'%');
 						
@@ -46,7 +46,7 @@
 							////Until we have a component loader window, assetName is always fileName
 							var assetTitle = me.getState('name');  //this is actually itemTitle, when i receive it..
 							
-							Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: 'image', componentType: '', tags: 'sprite 2d'}, me.getState('file').name);
+							Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: 'image', componentType: '', tags: 'sprite 2d'}, me.getState('name'));
 						}
 					}
 				</Script>
