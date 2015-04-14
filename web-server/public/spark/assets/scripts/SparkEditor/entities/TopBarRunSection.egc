@@ -39,8 +39,9 @@
 						imageObject.setState('src',"editor_stop");
 						imageObject.setState('width',"11");
 						imageObject.setState('height',"11");
-						imageObject.setState('horizontalCenter',0);
+						imageObject.setState('horizontalCenter',-1);
 						imageObject.setState('verticalCenter',0);
+						Logic.getEntityByName('2d Scene Editor').startAction('Run');
 					}
 					else
 					{
@@ -49,8 +50,8 @@
 						imageObject.setState('height',"15");
 						imageObject.setState('horizontalCenter',1);
 						imageObject.setState('verticalCenter',0);
+						Logic.getEntityByName('2d Scene Editor').startAction('Stop');
 					}
-					//Logic.getEntityByName('2d Scene Editor').startAction('Save');
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Spacer -->

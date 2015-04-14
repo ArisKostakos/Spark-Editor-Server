@@ -165,6 +165,72 @@
 			</Scripts>
 		</Action>
 		
+		<Action>
+			<Id>Run</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Run");
+					Display.error("RUNNING");
+					//Create Save File Xml
+					//var sceneFileXml = Xml.createDocument();
+					
+					//Get Scene
+					var scene = me.getState('target');
+					
+					//Add Scene's Xml to Doc
+					var sceneXml = Xml.parse(scene.getState('xmlData').toString()).firstElement(); //clone it
+					//sceneFileXml.addChild(sceneXml);
+					
+					//Create [Form.Space.Entities]
+					var formXml = Xml.createElement('Form');
+					sceneXml.addChild(formXml);
+					var spaceXml = Xml.createElement('Space');
+					formXml.addChild(spaceXml);
+					var entitiesXml = Xml.createElement('Entities');
+					spaceXml.addChild(entitiesXml);
+					
+					//For Scene's Children
+					for (child in scene.getChildren())
+					{
+						if (child.getState('name')!='SceneBackground')
+						{
+							entitiesXml.addChild(child.getState('xmlData'));
+						}
+					}
+					
+					//var finalString = sceneFileXml.toString();
+					//Display.error("sceneXml: " + finalString);
+					
+					//var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+					
+					//Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
+					
+					//Instantiate
+					var editScene = Logic.gameFactory.createGameEntityByXml(sceneXml);
+					
+					//Move it to active space so it runs
+					Logic.getEntityByName('Main Space').addChild(editScene);
+					
+					//Assign it to view
+					Logic.getEntityByName('Main View 2D').setState('scene',editScene);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Stop</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Stop");
+					
+					Display.error("STOPPING");
+					//set scene2dEdit to view
+					//destroy instantiated scene above
+				</Script>
+			</Scripts>
+		</Action>
 	</_Actions>
 	
 	<_Triggers>
