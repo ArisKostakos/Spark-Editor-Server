@@ -41,7 +41,7 @@
 			<Event>KeyPressed_Space</Event>
 			<Scripts>
 				<Script>
-					if (me.getState('selected')
+					if (me.getState('selected'))
 					{
 						Display.error("Adding Physics to: " + me.getState('name'));
 					}
