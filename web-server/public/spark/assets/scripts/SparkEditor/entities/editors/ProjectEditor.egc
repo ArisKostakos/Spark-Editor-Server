@@ -46,15 +46,17 @@
 								
 								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								
+								Display.error("assetUrl: " + assetUrl);
+								var assetId;
 								
 								//If Asset is Script
 								if (asset.type=="script")
 								{
-									var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								}
 								else if (asset.type=="image")
 								{
-									var assetId = asset.name;
+									assetId = asset.name;
 								}
 
 								Assets.addFile(assetUrl, assetId);
