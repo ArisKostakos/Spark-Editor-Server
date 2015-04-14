@@ -180,6 +180,7 @@
 			<!-- Top Bar, Run -->
 			<Asset type="image" subtype="2D" location="local" id="editor_export" bytes='35672' forceLoadAsData='true'>editor/topbar/export.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_play" bytes='35672' forceLoadAsData='true'>editor/topbar/play.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="editor_stop" bytes='35672' forceLoadAsData='true'>editor/topbar/stop.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_publish" bytes='35672' forceLoadAsData='true'>editor/topbar/publish.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_save" bytes='35672' forceLoadAsData='true'>editor/topbar/save.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_share" bytes='35672' forceLoadAsData='true'>editor/topbar/share.png</Asset>

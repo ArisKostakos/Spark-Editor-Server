@@ -11,6 +11,7 @@
 		<State><Id>imageHeight</Id><Type>Text</Type><Value>20</Value></State>
 		<State><Id>imageHorCenter</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>imageVerCenter</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<Actions>
@@ -47,6 +48,8 @@
 							me.setState('height',parent.parentEntity.getState('imageHeight'));
 							me.setState('horizontalCenter',parent.parentEntity.getState('imageHorCenter'));
 							me.setState('verticalCenter',parent.parentEntity.getState('imageVerCenter'));
+							
+							parent.parentEntity.setState('imageObject', me);
 						</Script></_Scripts></_Action></_Actions></Entity>
 					</Entities></Space></Form>
 				</Entity>
