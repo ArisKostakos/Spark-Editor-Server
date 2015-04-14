@@ -64,9 +64,9 @@
 								formStateXml.addChild(formStateValueXml);
 					
 					var pureXml = Xml.parse(entityXml.toString());
-					Display.error("SPRITE XML: " + entityXml);
+					Display.error("SPRITE XML: " + pureXml);
 						
-					var childEntity = Logic.gameFactory.createGameEntityByXml(pureXml);
+					var childEntity = Logic.gameFactory.createGameEntityByXml(entityXml);
 					scene.addChild(childEntity);
 					/*
 					//REPLACE ' temp ' with ' .. '
