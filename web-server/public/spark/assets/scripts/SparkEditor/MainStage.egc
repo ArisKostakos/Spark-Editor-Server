@@ -235,6 +235,12 @@
 					</_States>
 				</Entity>
 				
+				<Entity extends="SparkEditor.views.MainView2DRun">
+					<_States>
+						<_State id="parent"><Value>MainEditArea</Value></_State>
+					</_States>
+				</Entity>
+				
 			</Entities>
 		</Space>
 	</Form>

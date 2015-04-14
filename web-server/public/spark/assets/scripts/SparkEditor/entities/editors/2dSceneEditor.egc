@@ -217,7 +217,11 @@
 					Logic.getEntityByName('Main Space').addChild(editScene);
 					
 					//Assign it to view
-					Logic.getEntityByName('Main View 2D').setState('scene',editScene);
+					Logic.getEntityByName('Main View 2D Run').setState('scene',editScene);
+					Logic.getEntityByName('Main View 2D Run').setState('visible',true);
+					
+					//Hide Edit View
+					Logic.getEntityByName('Main View 2D').setState('visible',false);
 				</Script>
 			</Scripts>
 		</Action>
@@ -232,7 +236,11 @@
 					Display.error("STOPPING");
 					
 					//set scene2dEdit to view
-					Logic.getEntityByName('Main View 2D').setState('scene',me.getState('target'));
+					Logic.getEntityByName('Main View 2D').setState('visible',true);
+					
+					//Hide Run View
+					Logic.getEntityByName('Main View 2D Run').setState('visible',false);
+					
 					return;
 					//destroy instantiated scene above
 					//todo: more things than removing it from space is obviously required!

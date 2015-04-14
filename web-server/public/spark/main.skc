@@ -87,6 +87,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/LevelEditor2DView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DummyScene2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2DRun.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndValue.egc</Asset>

@@ -2,7 +2,7 @@
 <Entity extends="std.display.View">
 	<_States>
 		<_State id="name">
-			<Value>Main View 2D</Value>
+			<Value>Main View 2D Run</Value>
 		</_State>
 		
 		<_State id="zIndex">
@@ -29,5 +29,8 @@
 			<Value>2D</Value>
 		</_State>
 		
+		<_State id="visible">
+			<Value>false</Value>
+		</_State>
 	</_States>
 </Entity>
