@@ -211,6 +211,8 @@
 					//Instantiate
 					var editScene = Logic.gameFactory.createGameEntityByXml(sceneBakedXml);
 					
+					me.setState('sceneRun',editScene);
+					
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(editScene);
 					
@@ -228,8 +230,20 @@
 					me.stopAction("Stop");
 					
 					Display.error("STOPPING");
+					
 					//set scene2dEdit to view
+					Logic.getEntityByName('Main View 2D').setState('scene',me.getState('target'));
+					
 					//destroy instantiated scene above
+					//todo: more things than removing it from space is obviously required!
+					if (Logic.getEntityByName('Main Space').getChildren().remove(me.getState('sceneRun'))==true)
+					{
+						Display.error("scene successfully removed!");
+					}
+					else
+					{
+						Display.error("scene NOT removed!");
+					}
 				</Script>
 			</Scripts>
 		</Action>
