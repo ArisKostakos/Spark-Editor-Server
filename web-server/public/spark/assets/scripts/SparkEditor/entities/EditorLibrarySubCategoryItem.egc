@@ -54,11 +54,11 @@
 					formStateValueXml.addChild(Xml.parse('image_' + asset.name));
 					
 					entityXml.addChild(statesXml);
-						//statesXml.addChild(stateXml);
+						statesXml.addChild(stateXml);
 							stateXml.addChild(stateValueXml);
 					entityXml.addChild(formXml);
 						formXml.addChild(formStatesXml);
-							//formStatesXml.addChild(formStateXml);
+							formStatesXml.addChild(formStateXml);
 								formStateXml.addChild(formStateIdXml);
 								formStateXml.addChild(formStateTypeXml);
 								formStateXml.addChild(formStateValueXml);
