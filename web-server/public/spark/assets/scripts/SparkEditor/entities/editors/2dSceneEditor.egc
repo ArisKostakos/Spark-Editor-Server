@@ -233,7 +233,7 @@
 					
 					//set scene2dEdit to view
 					Logic.getEntityByName('Main View 2D').setState('scene',me.getState('target'));
-					
+					return;
 					//destroy instantiated scene above
 					//todo: more things than removing it from space is obviously required!
 					if (Logic.getEntityByName('Main Space').getChildren().remove(me.getState('sceneRun'))==true)
