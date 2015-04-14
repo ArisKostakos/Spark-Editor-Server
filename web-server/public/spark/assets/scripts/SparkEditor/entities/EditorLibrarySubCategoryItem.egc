@@ -79,7 +79,7 @@
 								formStateXml.addChild(formStateTypeXml);
 								formStateXml.addChild(formStateValueXml);
 					
-					var pureXml = Xml.parse(entityXml.toString()).firstElement();
+					var pureXml = Xml.parse(entityXml.toString());
 					
 					Display.error("SPRITE XML: " + pureXml);
 						
@@ -93,8 +93,8 @@
 					childExtendsXml.addChild(sceneEditXml);
 					
 					//instantiate, add to scene
-					var finalXml = Xml.parse(entityXml.toString()).firstElement();
-					var childEntity = Logic.gameFactory.createGameEntityByXml(finalXml);
+					var finalXml = Xml.parse(entityXml.toString());
+					var childEntity = Logic.gameFactory.createGameEntityByXml(finalXml.firstElement());
 					scene.addChild(childEntity);
 					
 					//give it snapshot xml
