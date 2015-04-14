@@ -60,7 +60,7 @@ handler.createObject2D = function(msg, session, next) {
             if (err) {next(null, {code: "error"}); return console.error(err)}
 
             //Copy/Create an Image egc
-            var gameEntityName = fileName.slice(0, -3) + 'egc'
+            var gameEntityName = fileName.slice(0, -3) + 'egc';
             var gameEntityUrl = userPath + '/scripts/' + libraryName + subDir + '/' + gameEntityName;
             fs.copy(assetPath + '/tempFactory/template_object2d.egc', gameEntityUrl, function(err) {
                 if (err) {next(null, {code: "error"}); return console.error(err)}

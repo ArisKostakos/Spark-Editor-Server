@@ -12,15 +12,6 @@ var Handler = function(app) {
 
 var handler = Handler.prototype;
 
-
-/**
- * New client entry registration server.
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next stemp callback
- * @return {Void}
- */
 handler.getPopulated = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
@@ -48,3 +39,29 @@ handler.getPopulated = function(msg, session, next) {
 
 };
 
+//temp load everything
+handler.getProjectAssets = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+
+    //Find Assets
+    database.find(database.Asset, {owner: developer._id, 'tags.0': project.name},
+        function (err, objects_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", assets: objects_found});
+        }
+    );
+
+};
