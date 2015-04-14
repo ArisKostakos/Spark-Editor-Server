@@ -63,23 +63,29 @@
 								formStateXml.addChild(formStateTypeXml);
 								formStateXml.addChild(formStateValueXml);
 					
-					var pureXml = Xml.parse(entityXml.toString());
-					Display.error("SPRITE XML: " + pureXml.firstElement());
-						
-					var childEntity = Logic.gameFactory.createGameEntityByXml(pureXml.firstElement());
-					scene.addChild(childEntity);
-					/*
-					//REPLACE ' temp ' with ' .. '
-					var textureUrl = "../assets/" + username + "/images/" + component.libraryName + "/" + component.componentname;
-					var egcUrl = "../assets/" + username + "/scripts/" + component.libraryName + "/" + componentNameClean + '.egc';
+					var pureXml = Xml.parse(entityXml.toString()).firstElement();
 					
-					Assets.initiateBatch();
-					//Display.error("Initiate texture load with url: " + textureUrl);
-					//Display.error("Initiate egc load with url: " + egcUrl);
-					Assets.addFile(textureUrl, "editor");
-					Assets.addFile(egcUrl, componentNameClean + ".egc");
-					Assets.loadBatch();
-					*/
+					Display.error("SPRITE XML: " + pureXml);
+						
+						
+					var childExtendsXml = Xml.createElement('Extends');
+					entityXml.insertChild(childExtendsXml,0);
+
+					//add [entity] Sprite2DEdit in [extends]
+					var sceneEditXml = Xml.createElement('Entity');
+					sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+					childExtendsXml.addChild(sceneEditXml);
+					
+					//instantiate, add to scene
+					var finalXml = Xml.parse(entityXml.toString()).firstElement();
+					var childEntity = Logic.gameFactory.createGameEntityByXml(finalXml);
+					scene.addChild(childEntity);
+					
+					//give it snapshot xml
+					childEntity.setState('xmlData',pureXml);
+
+
+					
 					/*
 					var myContainer = parent.parentEntity;
 					
