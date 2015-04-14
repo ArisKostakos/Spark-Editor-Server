@@ -11812,13 +11812,13 @@ tools_spark_framework_flambe2_$5D_FlambeView2_$5D.prototype = $extend(tools_spar
 		var l_viewSprite = new flambe_display_Sprite();
 		l_viewSprite.blendMode = flambe_display_BlendMode.Copy;
 		this._instanceView.add(l_viewSprite);
-		flambe_System.root.addChild(this._instanceView);
+		if(this.gameEntity.getState("visible")) flambe_System.root.addChild(this._instanceView);
 	}
 	,render: function() {
 		if(this.gameEntity.getState("visible")) flambe_display_Sprite.render(this._instanceView,this._flambeGraphics);
 	}
 	,setVisible: function(p_value) {
-		tools_spark_framework_Console.error("VISIBILITY FOR VIEWWWWWWWWWW: " + Std.string(p_value));
+		if(p_value) flambe_System.root.addChild(this._instanceView); else flambe_System.root.removeChild(this._instanceView);
 	}
 	,set_camera: function(p_value) {
 		if(this.camera == p_value) return this.camera;
