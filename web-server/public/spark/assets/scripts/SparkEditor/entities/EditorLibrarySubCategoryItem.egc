@@ -51,7 +51,7 @@
 					var formStateTypeXml = Xml.createElement('Type');
 					formStateTypeXml.addChild(Xml.parse('Text'));
 					var formStateValueXml = Xml.createElement('Value');
-					formStateValueXml.addChild(Xml.parse('image_' + asset.fileName));
+					formStateValueXml.addChild(Xml.parse('lala'));
 					
 					entityXml.addChild(statesXml);
 						statesXml.addChild(stateXml);
