@@ -43,7 +43,7 @@
 				<Script>
 					if (me.getState('selected')
 					{
-						Display.error("Adding Physics to: " + me.getState('name');
+						Display.error("Adding Physics to: " + me.getState('name'));
 					}
 				</Script>
 			</Scripts>
