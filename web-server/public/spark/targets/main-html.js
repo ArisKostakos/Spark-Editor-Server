@@ -11817,6 +11817,9 @@ tools_spark_framework_flambe2_$5D_FlambeView2_$5D.prototype = $extend(tools_spar
 	,render: function() {
 		if(this.gameEntity.getState("visible")) flambe_display_Sprite.render(this._instanceView,this._flambeGraphics);
 	}
+	,setVisible: function(p_value) {
+		tools_spark_framework_Console.error("VISIBILITY FOR VIEWWWWWWWWWW: " + Std.string(p_value));
+	}
 	,set_camera: function(p_value) {
 		if(this.camera == p_value) return this.camera;
 		if(p_value == null) {
@@ -14118,6 +14121,9 @@ tools_spark_sliced_services_std_display_managers_core_Flambe2_$5DViewManager.pro
 		case "camera":
 			var l_cameraEntity = p_gameEntity.getState(p_state);
 			l_view2_5D.set_camera(this._renderer.createCamera(l_cameraEntity));
+			break;
+		case "visible":
+			l_view2_5D.setVisible(p_gameEntity.getState(p_state));
 			break;
 		}
 	}
