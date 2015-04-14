@@ -43,6 +43,18 @@
 					var stateValueXml = Xml.createElement('Value');
 					stateValueXml.addChild(Xml.parse('ImageUrl'));
 					
+					//StateX
+					var stateX_Xml = Xml.createElement('_State');
+					stateX_Xml.set('id', 'spaceX');
+					var stateX_ValueXml = Xml.createElement('Value');
+					stateX_ValueXml.addChild(Xml.parse('0'));
+					
+					//StateY
+					var stateY_Xml = Xml.createElement('_State');
+					stateY_Xml.set('id', 'spaceY');
+					var stateY_ValueXml = Xml.createElement('Value');
+					stateY_ValueXml.addChild(Xml.parse('0'));
+					
 					var formXml = Xml.createElement('_Form');
 					var formStatesXml = Xml.createElement('_States');
 					var formStateXml = Xml.createElement('State');
@@ -56,6 +68,10 @@
 					entityXml.addChild(statesXml);
 						statesXml.addChild(stateXml);
 							stateXml.addChild(stateValueXml);
+						statesXml.addChild(stateX_Xml);
+							stateX_Xml.addChild(stateX_ValueXml);
+						statesXml.addChild(stateY_Xml);
+							stateY_Xml.addChild(stateY_ValueXml);
 					entityXml.addChild(formXml);
 						formXml.addChild(formStatesXml);
 							formStatesXml.addChild(formStateXml);
