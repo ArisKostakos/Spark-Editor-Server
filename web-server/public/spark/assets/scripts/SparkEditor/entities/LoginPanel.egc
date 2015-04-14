@@ -264,19 +264,10 @@
 							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
 							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
 
-							//enter project
-							Logic.getEntityByName('Dom View').setState('visible',false);
-
-							Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
-							Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
-							
 							//Try some init stuff
 							Display.error("Doing INIT stuff!");
-							var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-							sceneEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
-							sceneEditor.setState('assetType','script');
-							sceneEditor.setState('assetName','blank.scenes.MainScene');
-							sceneEditor.startAction('GetAsset');
+							var projectEditor = Logic.getEntityByName('Project Editor');
+							projectEditor.startAction('RequestProjectDbAssets');
 						}
 						else if (data.code=="notfound")
 						{
