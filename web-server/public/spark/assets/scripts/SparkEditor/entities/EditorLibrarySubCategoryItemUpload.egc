@@ -31,7 +31,7 @@
 						//Display.error("File Request Received Identified: " + me.getState('name'));
 						var data = Comms.file_getSendFileRequestData(me.getState('name'));
 						
-						Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
+						//Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
 						
 						me.getState('progressBar').setState('height',data.progressPercent+'%');
 						

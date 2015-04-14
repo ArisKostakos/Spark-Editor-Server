@@ -35,6 +35,8 @@
 							//Get Username
 							var userName = me.getState('assetUserName');
 							
+							var spritesFound = [];
+							
 							//Initiate Load
 							Assets.initiateBatch();
 							
@@ -57,7 +59,11 @@
 								else if (asset.type=="image")
 								{
 									//Check second tag
-									
+									if (asset.tags[1]=='sprite')
+									{
+										Display.error("!!!! IMAGE FOUND!!!!");
+										spritesFound.push(asset);
+									}
 									//Is it uploaded to be used as a Sprite?
 									//..
 									//Is it uploaded to be used for Spriter?
@@ -72,6 +78,12 @@
 								Display.error(data.assets[i].name);
 								i+=1;
 							}
+							
+							//Fill Library with Sprites
+							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
+							
+							objectsPanel.getAction('AddItemNoUpload').setState('items', spritesFound);
+							objectsPanel.startAction('AddItemNoUpload');
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {

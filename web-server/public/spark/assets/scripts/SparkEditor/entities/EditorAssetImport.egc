@@ -43,7 +43,7 @@
 						var file = me.getState('files')[0];
 						var username = Logic.getEntityByName('Spark Editor').getState('username');
 						
-						Display.error('file selected: ' + file.name + ", of size: " + file.size + "for user: " + username);
+						Display.error('file selected: ' + file.name + ", of size: " + file.size + ", for user: " + username);
 						
 						Comms.file_sendFileRequest(file, {name: file.name, size: file.size, user: username} , file.name);
 						

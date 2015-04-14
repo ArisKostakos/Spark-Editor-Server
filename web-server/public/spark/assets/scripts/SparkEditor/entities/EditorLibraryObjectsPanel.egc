@@ -52,19 +52,21 @@
 					var container2d = Logic.getEntityByName('LibraryObjects2DContainer');
 					var components = me.getAction('AddItemNoUpload').getState('items');
 					
+					var username = Logic.getEntityByName('Spark Editor').getState('username');
 					var i = 0;
 					while (components.length>i)
 					{
+						var asset = components[i];
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItem');
-						myNewItem.setState('name',components[i].componentname);
-						myNewItem.setState('buttonText',components[i].componentname);
-						myNewItem.setState('imageName',components[i].thumbnail.substr(components[i].thumbnail.indexOf('assets/')));
+						myNewItem.setState('name',asset.fileName);
+						myNewItem.setState('buttonText',asset.fileName);
+						myNewItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
 						myNewItem.setState('imageWidth',"14");
 						myNewItem.setState('imageHeight',"14");
-						myNewItem.setState('component',components[i]);
+						myNewItem.setState('component',asset);
 						container2d.addChild(myNewItem);
-						Display.error('component #' + i + ':');
-						Display.error(components[i].assets);
+						Display.error('component #' + i + ':' + asset.fileName);
+						//Display.error(components[i].assets);
 						
 						i+=1;
 					}
