@@ -11815,7 +11815,7 @@ tools_spark_framework_flambe2_$5D_FlambeView2_$5D.prototype = $extend(tools_spar
 		flambe_System.root.addChild(this._instanceView);
 	}
 	,render: function() {
-		flambe_display_Sprite.render(this._instanceView,this._flambeGraphics);
+		if(this.gameEntity.getState("visible")) flambe_display_Sprite.render(this._instanceView,this._flambeGraphics);
 	}
 	,set_camera: function(p_value) {
 		if(this.camera == p_value) return this.camera;
