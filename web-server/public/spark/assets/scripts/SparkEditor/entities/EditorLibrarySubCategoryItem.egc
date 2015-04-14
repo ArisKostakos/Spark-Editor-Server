@@ -58,7 +58,7 @@
 							stateXml.addChild(stateValueXml);
 					entityXml.addChild(formXml);
 						formXml.addChild(formStatesXml);
-							formStatesXml.addChild(formStateXml);
+							//formStatesXml.addChild(formStateXml);
 								formStateXml.addChild(formStateIdXml);
 								formStateXml.addChild(formStateTypeXml);
 								formStateXml.addChild(formStateValueXml);
