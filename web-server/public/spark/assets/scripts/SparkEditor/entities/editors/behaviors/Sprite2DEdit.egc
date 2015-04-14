@@ -6,6 +6,7 @@
 		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Form>
@@ -35,6 +36,18 @@
 				</Script>
 			</Scripts>
 		</Trigger>
+		
+		<Trigger>
+			<Event>KeyPressed_Space</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected')
+					{
+						Display.error("Adding Physics to: " + me.getState('name');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
@@ -57,6 +70,7 @@
 						me.getState('selector').startAction('show');
 					}
 					
+					me.setState('selected',true);
 					me.stopAction("Select");
 				</Script>
 			</Scripts>
@@ -73,7 +87,7 @@
 						me.getState('selector').startAction('hide');
 					}
 					
-					
+					me.setState('selected',false);
 					me.stopAction("Deselect");
 				</Script>
 			</Scripts>
