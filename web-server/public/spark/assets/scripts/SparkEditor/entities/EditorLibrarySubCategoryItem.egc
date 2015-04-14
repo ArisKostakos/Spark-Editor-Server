@@ -87,6 +87,7 @@
 
 					
 					/*
+					//grr
 					var myContainer = parent.parentEntity;
 					
 					myContainer.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = me;
