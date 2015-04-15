@@ -15257,7 +15257,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 					var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
 					var body;
 					if(this.gameEntity.getState("physicsType") == "Static") body = new nape_phys_Body(nape_phys_BodyType.get_STATIC()); else body = new nape_phys_Body();
-					body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(l_mesh.getNaturalWidth(),l_mesh.getNaturalHeight()),nape_phys_Material.wood()));
+					body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(l_mesh.getNaturalWidth() * l_mesh.scaleX.get__(),l_mesh.getNaturalHeight() * l_mesh.scaleY.get__()),nape_phys_Material.wood()));
 					body.set_position(new nape_geom_Vec2(l_mesh.x.get__(),l_mesh.y.get__()));
 					body.set_space(((function($this) {
 						var $r;
