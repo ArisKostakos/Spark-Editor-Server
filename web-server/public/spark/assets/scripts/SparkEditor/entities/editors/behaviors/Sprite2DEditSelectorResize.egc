@@ -141,11 +141,11 @@
 						
 						if (scaleXFound==false)
 						{
-							states.addChild(Xml.parse('&#060;_State id="scaleX">&#060;Value>' + Std.string(ent.getState('scaleX')) + '&#060;/Value>&#060;/_State>'));
+							statesXml.addChild(Xml.parse('&#060;_State id="scaleX">&#060;Value>' + Std.string(ent.getState('scaleX')) + '&#060;/Value>&#060;/_State>'));
 						}
 						if (scaleYFound==false)
 						{
-							states.addChild(Xml.parse('&#060;_State id="scaleY">&#060;Value>' + Std.string(ent.getState('scaleY')) + '&#060;/Value>&#060;/_State>'));
+							statesXml.addChild(Xml.parse('&#060;_State id="scaleY">&#060;Value>' + Std.string(ent.getState('scaleY')) + '&#060;/Value>&#060;/_State>'));
 						}
 						
 						me.stopAction("DragResize");
