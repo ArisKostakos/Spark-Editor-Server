@@ -81,7 +81,7 @@
 		</Trigger>
 		
 		<Trigger>
-			<Event>KeyPressed_Enter</Event>
+			<Event>KeyPressed_S</Event>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
