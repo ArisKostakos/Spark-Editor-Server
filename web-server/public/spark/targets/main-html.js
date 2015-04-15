@@ -11016,15 +11016,6 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 	,get_rotation: function() {
 		return this.zpp_inner.rot;
 	}
-	,set_rotation: function(rotation) {
-		this.zpp_inner.immutable_midstep("Body::rotation");
-		if(this.get_rotation() != rotation) {
-			this.zpp_inner.rot = rotation;
-			this.zpp_inner.invalidate_rot();
-			this.zpp_inner.wake();
-		}
-		return this.get_rotation();
-	}
 	,toString: function() {
 		return (this.zpp_inner.world?"(space::world":"(" + (this.isDynamic()?"dynamic":this.isStatic()?"static":"kinematic")) + ")#" + this.get_id();
 	}
@@ -15251,9 +15242,8 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 				if(this.parentScene != null) {
 					var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
 					var body = new nape_phys_Body();
-					body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(64,64),nape_phys_Material.wood()));
-					body.set_position(new nape_geom_Vec2(0,0));
-					body.set_rotation(Math.random() * 2 * 3.141592653589793);
+					body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(l_mesh.getNaturalWidth(),l_mesh.getNaturalHeight()),nape_phys_Material.wood()));
+					body.set_position(new nape_geom_Vec2(l_mesh.x.get__(),l_mesh.y.get__()));
 					body.set_space(((function($this) {
 						var $r;
 						var component = l_sceneInstance.getComponent("SpaceComponent_6");
