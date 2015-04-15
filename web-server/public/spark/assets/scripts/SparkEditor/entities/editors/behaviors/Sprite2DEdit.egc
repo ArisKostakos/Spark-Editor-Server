@@ -69,7 +69,7 @@
 						
 						
 						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.parse('<Entity extends="SparkEditor.behaviors.PhysicsEntity"><_States><_State id="physicsType"><Value>Dynamic</Value></_State></_States></Entity>');
+						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Dynamic&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>');
 						//=Xml.createElement('Entity');
 						//physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
 						childExtendsXml.addChild(physicsEntityXml);
@@ -112,7 +112,7 @@
 						
 						
 						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.parse('<Entity extends="SparkEditor.behaviors.PhysicsEntity"><_States><_State id="physicsType"><Value>Static</Value></_State></_States></Entity>');
+						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Static&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>');
 						
 						Display.error("Adding Static Physics to: " + pureXml);
 					}
