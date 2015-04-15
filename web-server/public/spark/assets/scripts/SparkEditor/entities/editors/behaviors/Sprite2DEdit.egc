@@ -59,7 +59,7 @@
 						
 						var pureXml = me.getState('xmlData');
 						
-						//	if no <extends> in its xml, create it
+						//	if no [extends] in its xml, create it
 						var childExtendsXml = firstElementNamed(pureXml,'Extends');
 						if (childExtendsXml==null)
 						{
@@ -68,7 +68,7 @@
 						}
 						
 						
-						//  add <behavior entity> in extends
+						//  add [behavior entity] in extends
 						var physicsEntityXml = Xml.createElement('Entity');
 						physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
 						childExtendsXml.addChild(physicsEntityXml);
