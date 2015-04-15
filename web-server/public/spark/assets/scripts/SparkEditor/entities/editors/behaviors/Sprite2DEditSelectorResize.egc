@@ -27,15 +27,15 @@
 		
 		<_Space>
 			<_Entities>
-				<!-- Decorative -->
+				<!-- Decorative 
 				<Entity extends="std.display.FillRect2D">
 					<_States><_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
 						<_State id="spaceWidth"><Value>18</Value></_State>
 						<_State id="spaceHeight"><Value>18</Value></_State>
-						<_State id="spaceX"><Value>1</Value></_State>
-						<_State id="spaceY"><Value>1</Value></_State></_States>
+						<_State id="spaceX"><Value>9</Value></_State>
+						<_State id="spaceY"><Value>9</Value></_State></_States>
 					<_Form><_States><State><Id>color1</Id><Type>Integer</Type><Value>0xFFFFFF</Value></State></_States></_Form>
-				</Entity>
+				</Entity>-->
 			</_Entities>
 		</_Space>
 	</_Form>
