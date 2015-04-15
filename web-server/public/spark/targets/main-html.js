@@ -11545,27 +11545,30 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var v7 = $bind(this,this._updateOpacity);
 		this._updateStateFunctions.set("opacity",v7);
 		v7;
-		var v8 = $bind(this,this._updateSpaceWidth);
-		this._updateStateFunctions.set("spaceWidth",v8);
+		var v8 = $bind(this,this._updatePhysics);
+		this._updateStateFunctions.set("physicsEntity",v8);
 		v8;
-		var v9 = $bind(this,this._updateSpaceHeight);
-		this._updateStateFunctions.set("spaceHeight",v9);
+		var v9 = $bind(this,this._updateSpaceWidth);
+		this._updateStateFunctions.set("spaceWidth",v9);
 		v9;
-		var v10 = $bind(this,this._update2DMeshImageForm);
-		this._updateStateFunctions.set("2DMeshImageForm",v10);
+		var v10 = $bind(this,this._updateSpaceHeight);
+		this._updateStateFunctions.set("spaceHeight",v10);
 		v10;
-		var v11 = $bind(this,this._update2DMeshSpriterForm);
-		this._updateStateFunctions.set("2DMeshSpriterForm",v11);
+		var v11 = $bind(this,this._update2DMeshImageForm);
+		this._updateStateFunctions.set("2DMeshImageForm",v11);
 		v11;
-		var v12 = $bind(this,this._update2DMeshFillRectForm);
-		this._updateStateFunctions.set("2DMeshFillRectForm",v12);
+		var v12 = $bind(this,this._update2DMeshSpriterForm);
+		this._updateStateFunctions.set("2DMeshSpriterForm",v12);
 		v12;
-		var v13 = $bind(this,this._update2DMeshSpriteForm);
-		this._updateStateFunctions.set("2DMeshSpriteForm",v13);
+		var v13 = $bind(this,this._update2DMeshFillRectForm);
+		this._updateStateFunctions.set("2DMeshFillRectForm",v13);
 		v13;
-		var v14 = $bind(this,this._update2DMeshSpriterAnimForm);
-		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v14);
+		var v14 = $bind(this,this._update2DMeshSpriteForm);
+		this._updateStateFunctions.set("2DMeshSpriteForm",v14);
 		v14;
+		var v15 = $bind(this,this._update2DMeshSpriterAnimForm);
+		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v15);
+		v15;
 	}
 	,createInstance: function(p_view2_5D) {
 		var v = new flambe_Entity();
@@ -11588,6 +11591,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		this._updateState("touchable",p_view2_5D);
 		this._updateState("visible",p_view2_5D);
 		this._updateState("opacity",p_view2_5D);
+		this._updateState("physicsEntity",p_view2_5D);
 		if(this.gameEntity.getState("layoutable") == true) this._updateLayoutGroup(p_view2_5D);
 		var _g = 0;
 		var _g1 = this.children;
@@ -11715,6 +11719,12 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 	,_updateOpacity: function(p_opacity,p_view2_5D) {
 		var l_mesh = this._instancesMesh.get(p_view2_5D);
 		if(l_mesh != null) l_mesh.setAlpha(p_opacity);
+	}
+	,_updatePhysics: function(p_physicsFlag,p_view2_5D) {
+		var l_mesh = this._instancesMesh.get(p_view2_5D);
+		if(l_mesh != null) {
+			if(p_physicsFlag) tools_spark_framework_Console.error("UPDATING PHYSICS ENTITY: " + Std.string(this.gameEntity.getState("name")));
+		}
 	}
 	,_updateTouchable: function(p_touchableFlag,p_view2_5D) {
 		var l_mesh = this._instancesMesh.get(p_view2_5D);

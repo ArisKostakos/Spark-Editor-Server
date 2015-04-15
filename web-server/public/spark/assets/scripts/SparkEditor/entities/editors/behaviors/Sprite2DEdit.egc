@@ -43,7 +43,35 @@
 				<Script>
 					if (me.getState('selected'))
 					{
+						function firstElementNamed(p_xmlNode, p_elementName)
+						{
+							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+							{
+								return p_xmlNode.elementsNamed(p_elementName).next();
+							}
+							else
+							{
+								return null;
+							}
+						}
+					
 						Display.error("Adding Physics to: " + me.getState('name'));
+						
+						var pureXml = me.getState('xmlData');
+						
+						//	if no <extends> in its xml, create it
+						var childExtendsXml = firstElementNamed(pureXml,'Extends');
+						if (childExtendsXml==null)
+						{
+							childExtendsXml = Xml.createElement('Extends');
+							pureXml.insertChild(childExtendsXml,0);
+						}
+						
+						
+						//  add <behavior entity> in extends
+						var physicsEntityXml = Xml.createElement('Entity');
+						physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
+						childExtendsXml.addChild(physicsEntityXml);
 					}
 				</Script>
 			</Scripts>
