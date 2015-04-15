@@ -1580,6 +1580,11 @@ flambe_display_Sprite.prototype = $extend(flambe_Component.prototype,{
 		}
 		return this._localMatrix;
 	}
+	,centerAnchor: function() {
+		this.anchorX.set__(this.getNaturalWidth() / 2);
+		this.anchorY.set__(this.getNaturalHeight() / 2);
+		return this;
+	}
 	,setAlpha: function(alpha) {
 		this.alpha.set__(alpha);
 		return this;
@@ -15240,6 +15245,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			if(p_physicsFlag) {
 				tools_spark_framework_Console.error("UPDATING PHYSICS ENTITY: " + Std.string(this.gameEntity.getState("name")) + ": " + Std.string(this.gameEntity.getState("physicsType")));
 				if(this.parentScene != null) {
+					l_mesh.centerAnchor();
 					var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
 					var body;
 					if(this.gameEntity.getState("physicsType") == "Static") body = new nape_phys_Body(nape_phys_BodyType.get_STATIC()); else body = new nape_phys_Body();
