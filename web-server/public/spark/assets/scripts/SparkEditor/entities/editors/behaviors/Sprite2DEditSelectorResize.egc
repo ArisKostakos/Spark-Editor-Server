@@ -74,6 +74,80 @@
 					}
 					else
 					{
+						//We will need this function...
+						function firstElementNamed(p_xmlNode, p_elementName)
+						{
+							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+							{
+								return p_xmlNode.elementsNamed(p_elementName).next();
+							}
+							else
+							{
+								return null;
+							}
+						}
+						
+						var ent = parent.parentEntity;
+						
+						//Save changes to xmlData
+						var xmlData = ent.getState("xmlData");
+						Display.error(xmlData);
+						var entityXml = xmlData.elementsNamed('Entity').next();
+						
+						//if no [_States], create it
+						var statesXml = firstElementNamed(entityXml,'_States');
+						if (statesXml==null)
+						{
+							statesXml = Xml.createElement('_States');
+							entityXml.addChild(statesXml);
+						}
+						
+						var scaleXFound = false;
+						var scaleYFound = false;
+						
+						var states = statesXml.elementsNamed('_State');
+						//for each [_state] in [_states]
+						while (states.hasNext())
+						{
+							var stateChildXml = states.next();
+
+							if (stateChildXml.get("id")=="scaleX")
+							{
+								//Remove previous Value Node
+								var stateValueXml = firstElementNamed(stateChildXml,'Value');
+								stateChildXml.removeChild(stateValueXml);
+								
+								//Create New Value Node, correct its value
+								stateValueXml = Xml.createElement('Value');
+								stateValueXml.addChild(Xml.parse(Std.string(ent.getState('scaleX'))));
+								stateChildXml.addChild(stateValueXml);
+								Display.error("scaleX: " + stateValueXml.firstChild().toString());
+								scaleXFound=true;
+							}
+							else if (stateChildXml.get("id")=="scaleY")
+							{
+								//Remove previous Value Node
+								var stateValueXml = firstElementNamed(stateChildXml,'Value');
+								stateChildXml.removeChild(stateValueXml);
+								
+								//Create New Value Node, correct its value
+								stateValueXml = Xml.createElement('Value');
+								stateValueXml.addChild(Xml.parse(Std.string(ent.getState('scaleY'))));
+								stateChildXml.addChild(stateValueXml);
+								Display.error("scaleY: " + stateValueXml.firstChild().toString());
+								scaleYFound=true;
+							}
+						}
+						
+						if (scaleXFound==false)
+						{
+							states.addChild(Xml.parse('&#060;_State id="scaleX">&#060;Value>' + Std.string(ent.getState('scaleX')) + '&#060;/Value>&#060;/_State>'));
+						}
+						if (scaleYFound==false)
+						{
+							states.addChild(Xml.parse('&#060;_State id="scaleY">&#060;Value>' + Std.string(ent.getState('scaleY')) + '&#060;/Value>&#060;/_State>'));
+						}
+						
 						me.stopAction("DragResize");
 					}
 				</Script>

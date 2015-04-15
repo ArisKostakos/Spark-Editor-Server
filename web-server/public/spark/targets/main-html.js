@@ -15063,30 +15063,33 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var v7 = $bind(this,this._updateOpacity);
 		this._updateStateFunctions.set("opacity",v7);
 		v7;
-		var v8 = $bind(this,this._updatePhysics);
-		this._updateStateFunctions.set("physicsEntity",v8);
+		var v8 = $bind(this,this._centerAnchor);
+		this._updateStateFunctions.set("centerAnchor",v8);
 		v8;
-		var v9 = $bind(this,this._updateSpaceWidth);
-		this._updateStateFunctions.set("spaceWidth",v9);
+		var v9 = $bind(this,this._updatePhysics);
+		this._updateStateFunctions.set("physicsEntity",v9);
 		v9;
-		var v10 = $bind(this,this._updateSpaceHeight);
-		this._updateStateFunctions.set("spaceHeight",v10);
+		var v10 = $bind(this,this._updateSpaceWidth);
+		this._updateStateFunctions.set("spaceWidth",v10);
 		v10;
-		var v11 = $bind(this,this._update2DMeshImageForm);
-		this._updateStateFunctions.set("2DMeshImageForm",v11);
+		var v11 = $bind(this,this._updateSpaceHeight);
+		this._updateStateFunctions.set("spaceHeight",v11);
 		v11;
-		var v12 = $bind(this,this._update2DMeshSpriterForm);
-		this._updateStateFunctions.set("2DMeshSpriterForm",v12);
+		var v12 = $bind(this,this._update2DMeshImageForm);
+		this._updateStateFunctions.set("2DMeshImageForm",v12);
 		v12;
-		var v13 = $bind(this,this._update2DMeshFillRectForm);
-		this._updateStateFunctions.set("2DMeshFillRectForm",v13);
+		var v13 = $bind(this,this._update2DMeshSpriterForm);
+		this._updateStateFunctions.set("2DMeshSpriterForm",v13);
 		v13;
-		var v14 = $bind(this,this._update2DMeshSpriteForm);
-		this._updateStateFunctions.set("2DMeshSpriteForm",v14);
+		var v14 = $bind(this,this._update2DMeshFillRectForm);
+		this._updateStateFunctions.set("2DMeshFillRectForm",v14);
 		v14;
-		var v15 = $bind(this,this._update2DMeshSpriterAnimForm);
-		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v15);
+		var v15 = $bind(this,this._update2DMeshSpriteForm);
+		this._updateStateFunctions.set("2DMeshSpriteForm",v15);
 		v15;
+		var v16 = $bind(this,this._update2DMeshSpriterAnimForm);
+		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v16);
+		v16;
 	}
 	,createInstance: function(p_view2_5D) {
 		var v = new flambe_Entity();
@@ -15109,6 +15112,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		this._updateState("touchable",p_view2_5D);
 		this._updateState("visible",p_view2_5D);
 		this._updateState("opacity",p_view2_5D);
+		this._updateState("centerAnchor",p_view2_5D);
 		this._updateState("physicsEntity",p_view2_5D);
 		if(this.gameEntity.getState("layoutable") == true) this._updateLayoutGroup(p_view2_5D);
 		var _g = 0;
@@ -15238,6 +15242,11 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var l_mesh = this._instancesMesh.get(p_view2_5D);
 		if(l_mesh != null) l_mesh.setAlpha(p_opacity);
 	}
+	,_centerAnchor: function(p_centerAnchorFlag,p_view2_5D) {
+		var l_instance = this._instances.get(p_view2_5D);
+		var l_mesh = this._instancesMesh.get(p_view2_5D);
+		if(l_mesh != null) l_mesh.centerAnchor();
+	}
 	,_updatePhysics: function(p_physicsFlag,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
 		var l_mesh = this._instancesMesh.get(p_view2_5D);
@@ -15245,7 +15254,6 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			if(p_physicsFlag) {
 				tools_spark_framework_Console.error("UPDATING PHYSICS ENTITY: " + Std.string(this.gameEntity.getState("name")) + ": " + Std.string(this.gameEntity.getState("physicsType")));
 				if(this.parentScene != null) {
-					l_mesh.centerAnchor();
 					var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
 					var body;
 					if(this.gameEntity.getState("physicsType") == "Static") body = new nape_phys_Body(nape_phys_BodyType.get_STATIC()); else body = new nape_phys_Body();
