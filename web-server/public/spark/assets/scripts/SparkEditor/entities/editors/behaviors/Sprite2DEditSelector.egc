@@ -20,7 +20,7 @@
 					</Script></_Scripts></_Action></_Actions>
 				</Entity>
 				
-				<!-- Resize Control -->
+				<!-- Resize Control 
 				<Entity extends="SparkEditor.entities.editors.behaviors.Sprite2DEditSelectorResize">
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
 						parent.setState('resizeControl', me);
@@ -31,7 +31,7 @@
 						me.setState('spaceX', parent.getState('selectRect').width-10);
 						me.setState('spaceY', parent.getState('selectRect').height-10);
 					</Script></_Scripts></_Action></_Actions>
-				</Entity>
+				</Entity>-->
 			</_Entities>
 		</_Space>
 	</_Form>
