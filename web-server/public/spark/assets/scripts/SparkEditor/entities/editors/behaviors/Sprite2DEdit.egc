@@ -72,6 +72,8 @@
 						var physicsEntityXml = Xml.createElement('Entity');
 						physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
 						childExtendsXml.addChild(physicsEntityXml);
+						
+						Display.error("Adding Physics to: " + pureXml);
 					}
 				</Script>
 			</Scripts>
