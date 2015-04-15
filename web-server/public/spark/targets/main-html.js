@@ -15238,7 +15238,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var l_mesh = this._instancesMesh.get(p_view2_5D);
 		if(l_mesh != null) {
 			if(p_physicsFlag) {
-				tools_spark_framework_Console.error("UPDATING PHYSICS ENTITY: " + Std.string(this.gameEntity.getState("name")));
+				tools_spark_framework_Console.error("UPDATING PHYSICS ENTITY: " + Std.string(this.gameEntity.getState("name")) + ": " + Std.string(this.gameEntity.getState("physicsType")));
 				if(this.parentScene != null) {
 					var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
 					var body = new nape_phys_Body();

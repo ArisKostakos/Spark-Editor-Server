@@ -69,11 +69,52 @@
 						
 						
 						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.createElement('Entity');
-						physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
+						var physicsEntityXml = Xml.parse('<Entity extends="SparkEditor.behaviors.PhysicsEntity"><_States><_State id="physicsType"><Value>Dynamic</Value></_State></_States></Entity>');
+						//=Xml.createElement('Entity');
+						//physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
 						childExtendsXml.addChild(physicsEntityXml);
 						
 						Display.error("Adding Physics to: " + pureXml);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>KeyPressed_Enter</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						function firstElementNamed(p_xmlNode, p_elementName)
+						{
+							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+							{
+								return p_xmlNode.elementsNamed(p_elementName).next();
+							}
+							else
+							{
+								return null;
+							}
+						}
+					
+						Display.error("Adding Static Physics to: " + me.getState('name'));
+						
+						var pureXml = me.getState('xmlData').firstElement();
+						
+						//	if no [extends] in its xml, create it
+						var childExtendsXml = firstElementNamed(pureXml,'Extends');
+						if (childExtendsXml==null)
+						{
+							childExtendsXml = Xml.createElement('Extends');
+							pureXml.insertChild(childExtendsXml,0);
+						}
+						
+						
+						//  add [behavior entity] in extends
+						var physicsEntityXml = Xml.parse('<Entity extends="SparkEditor.behaviors.PhysicsEntity"><_States><_State id="physicsType"><Value>Static</Value></_State></_States></Entity>');
+						
+						Display.error("Adding Static Physics to: " + pureXml);
 					}
 				</Script>
 			</Scripts>

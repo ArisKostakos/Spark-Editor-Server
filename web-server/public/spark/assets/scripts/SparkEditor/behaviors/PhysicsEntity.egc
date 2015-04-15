@@ -6,5 +6,10 @@
 			<Type>Boolean</Type>
 			<Value>true</Value>
 		</State>
+		<State>
+			<Id>physicsType</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
 	</_States>
 </Entity>
