@@ -1580,11 +1580,6 @@ flambe_display_Sprite.prototype = $extend(flambe_Component.prototype,{
 		}
 		return this._localMatrix;
 	}
-	,centerAnchor: function() {
-		this.anchorX.set__(this.getNaturalWidth() / 2);
-		this.anchorY.set__(this.getNaturalHeight() / 2);
-		return this;
-	}
 	,setAlpha: function(alpha) {
 		this.alpha.set__(alpha);
 		return this;
@@ -14516,6 +14511,9 @@ tools_spark_framework_space2_$5D_core_AInstantiable2_$5D.prototype = $extend(too
 		this._updateStateFunctions = new haxe_ds_StringMap();
 		this.groupInstances = new haxe_ds_ObjectMap();
 	}
+	,getInstance: function(p_view2_5D) {
+		return this._instances.get(p_view2_5D);
+	}
 	,_updateState: function(p_state,p_view2_5D) {
 		this.updateState(p_state,p_view2_5D);
 	}
@@ -14572,6 +14570,9 @@ var tools_spark_framework_space2_$5D_interfaces_IEntity2_$5D = function() { };
 $hxClasses["tools.spark.framework.space2_5D.interfaces.IEntity2_5D"] = tools_spark_framework_space2_$5D_interfaces_IEntity2_$5D;
 tools_spark_framework_space2_$5D_interfaces_IEntity2_$5D.__name__ = true;
 tools_spark_framework_space2_$5D_interfaces_IEntity2_$5D.__interfaces__ = [tools_spark_framework_space2_$5D_interfaces_IInstantiable2_$5D];
+tools_spark_framework_space2_$5D_interfaces_IEntity2_$5D.prototype = {
+	__class__: tools_spark_framework_space2_$5D_interfaces_IEntity2_$5D
+};
 var tools_spark_framework_space2_$5D_core_AEntity2_$5D = function(p_gameEntity) {
 	tools_spark_framework_space2_$5D_core_AInstantiable2_$5D.call(this,p_gameEntity);
 };
@@ -14898,6 +14899,7 @@ tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype = $extend(tools_spar
 	}
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
 		if(p_childEntity.gameEntity.getState("layoutable") == true) p_view2_5D.group.children.push(p_childEntity.groupInstances.get(p_view2_5D));
+		p_childEntity.parentScene = this;
 	}
 	,__class__: tools_spark_framework_space2_$5D_core_AScene2_$5D
 });
@@ -15246,16 +15248,20 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		if(l_mesh != null) {
 			if(p_physicsFlag) {
 				tools_spark_framework_Console.error("UPDATING PHYSICS ENTITY: " + Std.string(this.gameEntity.getState("name")));
-				var spaceComponent = new tools_spark_framework_flambe2_$5D_components_SpaceComponent();
-				l_instance.add(spaceComponent);
-				var body = new nape_phys_Body();
-				body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(64,64),nape_phys_Material.wood()));
-				body.set_position(new nape_geom_Vec2(0,0));
-				body.set_rotation(Math.random() * 2 * 3.141592653589793);
-				body.set_space(spaceComponent.space);
-				var childEntity = new flambe_Entity().add(new tools_spark_framework_flambe2_$5D_components_BodyComponent(body));
-				childEntity.add(new flambe_display_FillSprite(65280,64,64).centerAnchor());
-				l_instance.addChild(childEntity);
+				if(this.parentScene != null) {
+					var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
+					var body = new nape_phys_Body();
+					body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(64,64),nape_phys_Material.wood()));
+					body.set_position(new nape_geom_Vec2(0,0));
+					body.set_rotation(Math.random() * 2 * 3.141592653589793);
+					body.set_space(((function($this) {
+						var $r;
+						var component = l_sceneInstance.getComponent("SpaceComponent_6");
+						$r = component;
+						return $r;
+					}(this))).space);
+					l_instance.add(new tools_spark_framework_flambe2_$5D_components_BodyComponent(body));
+				}
 			}
 		}
 	}
@@ -15319,6 +15325,9 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.__name__ = true;
 tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.__super__ = tools_spark_framework_space2_$5D_core_AScene2_$5D;
 tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype,{
 	_initFlambeScene2_5D: function() {
+		var v = $bind(this,this._updatePhysics);
+		this._updateStateFunctions.set("physicsEntity",v);
+		v;
 	}
 	,createInstance: function(p_view2_5D) {
 		var v = new flambe_Entity();
@@ -15327,6 +15336,7 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 		return tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype.createInstance.call(this,p_view2_5D);
 	}
 	,update: function(p_view2_5D) {
+		this._updateState("physicsEntity",p_view2_5D);
 		var _g = 0;
 		var _g1 = this.children;
 		while(_g < _g1.length) {
@@ -15334,6 +15344,12 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 			++_g;
 			f_childEntity.update(p_view2_5D);
 		}
+	}
+	,_updatePhysics: function(p_physicsFlag,p_view2_5D) {
+		var l_instance = this._instances.get(p_view2_5D);
+		tools_spark_framework_Console.error("UPDATING PHYSICS SCENE: " + Std.string(this.gameEntity.getState("name")));
+		var spaceComponent = new tools_spark_framework_flambe2_$5D_components_SpaceComponent();
+		l_instance.add(spaceComponent);
 	}
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
 		this._instances.get(p_view2_5D).addChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , flambe_Entity));
