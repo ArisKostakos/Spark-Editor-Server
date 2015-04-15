@@ -57,7 +57,7 @@
 					
 						Display.error("Adding Physics to: " + me.getState('name'));
 						
-						var pureXml = me.getState('xmlData');
+						var pureXml = me.getState('xmlData').firstElement();
 						
 						//	if no [extends] in its xml, create it
 						var childExtendsXml = firstElementNamed(pureXml,'Extends');
