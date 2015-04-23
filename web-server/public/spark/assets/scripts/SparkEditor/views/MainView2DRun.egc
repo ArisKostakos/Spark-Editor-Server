@@ -21,8 +21,12 @@
 			<Value>100%</Value>
 		</_State>
 		
-		<_State id="height">
-			<Value>100%</Value>
+		<_State id="top">
+			<Value>25</Value>
+		</_State>
+		
+		<_State id="bottom">
+			<Value>0</Value>
 		</_State>
 		
 		<_State id="renderer">

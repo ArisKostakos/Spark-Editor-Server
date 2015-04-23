@@ -20,8 +20,12 @@
 				<!--<Entity extends="SparkEditor.scenes.LevelEditor2DScene"/>
 				<Entity extends="SparkEditor.scenes.MainScene3D"/>-->
 				<Entity extends="SparkEditor.scenes.DummyScene2D"/>
+				<Entity extends="SparkEditor.scenes.EditorLeftScene"/>
+				<Entity extends="SparkEditor.scenes.EditorRightScene"/>
+				<Entity extends="SparkEditor.scenes.EditorBottomScene"/>
+				<Entity extends="SparkEditor.scenes.EditorViewportScene"/>
 				<Entity extends="SparkEditor.scenes.DomScene"/>
-				<Entity extends="SparkEditor.scenes.EditorLeftBarScene"/>
+				<!--<Entity extends="SparkEditor.scenes.EditorLeftBarScene"/>-->
 				<Entity extends="SparkEditor.scenes.EditorTopBarScene"/>
 				
 				<Entity extends="SparkEditor.scenes.DashboardScene"/>

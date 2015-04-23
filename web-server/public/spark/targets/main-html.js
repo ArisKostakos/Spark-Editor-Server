@@ -1212,7 +1212,7 @@ flambe_SpeedAdjuster.__name__ = true;
 flambe_SpeedAdjuster.__super__ = flambe_Component;
 flambe_SpeedAdjuster.prototype = $extend(flambe_Component.prototype,{
 	get_name: function() {
-		return "SpeedAdjuster_5";
+		return "SpeedAdjuster_7";
 	}
 	,onUpdate: function(dt) {
 		if(this._realDt > 0) {
@@ -1487,7 +1487,7 @@ flambe_display_Sprite.render = function(entity,g) {
 		sprite.draw(g);
 	}
 	var director;
-	var component1 = entity.getComponent("Director_3");
+	var component1 = entity.getComponent("Director_5");
 	director = component1;
 	if(director != null) {
 		var scenes = director.occludedScenes;
@@ -1531,7 +1531,7 @@ flambe_display_Sprite.getBoundsImpl = function(entity,matrix,result) {
 		}
 	}
 	var director;
-	var component1 = entity.getComponent("Director_3");
+	var component1 = entity.getComponent("Director_5");
 	director = component1;
 	if(director != null) {
 		var scenes = director.occludedScenes;
@@ -3496,7 +3496,7 @@ $hxClasses["flambe.platform.MainLoop"] = flambe_platform_MainLoop;
 flambe_platform_MainLoop.__name__ = true;
 flambe_platform_MainLoop.updateEntity = function(entity,dt) {
 	var speed;
-	var component = entity.getComponent("SpeedAdjuster_5");
+	var component = entity.getComponent("SpeedAdjuster_7");
 	speed = component;
 	if(speed != null) {
 		speed._realDt = dt;
@@ -5211,7 +5211,7 @@ flambe_scene_Director.__name__ = true;
 flambe_scene_Director.__super__ = flambe_Component;
 flambe_scene_Director.prototype = $extend(flambe_Component.prototype,{
 	get_name: function() {
-		return "Director_3";
+		return "Director_5";
 	}
 	,onAdded: function() {
 		this.owner.addChild(this._root);
@@ -5238,7 +5238,7 @@ flambe_scene_Director.prototype = $extend(flambe_Component.prototype,{
 	}
 	,show: function(scene) {
 		var events;
-		var component = scene.getComponent("Scene_4");
+		var component = scene.getComponent("Scene_6");
 		events = component;
 		if(events != null) events.shown.emit();
 	}
@@ -5247,7 +5247,7 @@ flambe_scene_Director.prototype = $extend(flambe_Component.prototype,{
 		while(ii > 0) {
 			var scene = this.scenes[--ii];
 			var comp;
-			var component = scene.getComponent("Scene_4");
+			var component = scene.getComponent("Scene_6");
 			comp = component;
 			if(comp == null || comp.opaque) break;
 		}
@@ -5283,7 +5283,7 @@ flambe_scene_Scene.__name__ = true;
 flambe_scene_Scene.__super__ = flambe_Component;
 flambe_scene_Scene.prototype = $extend(flambe_Component.prototype,{
 	get_name: function() {
-		return "Scene_4";
+		return "Scene_6";
 	}
 	,__class__: flambe_scene_Scene
 });
@@ -14484,6 +14484,9 @@ tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.prototype = $extend(
 	addChild: function(p_entity2_5D) {
 		this.children.push(p_entity2_5D);
 	}
+	,removeChild: function(p_entity2_5D) {
+		HxOverrides.remove(this.children,p_entity2_5D);
+	}
 	,__class__: tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D
 });
 var tools_spark_framework_space2_$5D_interfaces_IInstantiable2_$5D = function() { };
@@ -14549,6 +14552,8 @@ tools_spark_framework_space2_$5D_core_AInstantiable2_$5D.prototype = $extend(too
 	}
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
 	}
+	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
+	}
 	,update: function(p_view2_5D) {
 	}
 	,addChild: function(p_entity2_5D) {
@@ -14558,6 +14563,14 @@ tools_spark_framework_space2_$5D_core_AInstantiable2_$5D.prototype = $extend(too
 			var f_view = $it0.next();
 			this._createChildOfInstance(p_entity2_5D,f_view);
 			p_entity2_5D.update(f_view);
+		}
+	}
+	,removeChild: function(p_entity2_5D) {
+		tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.prototype.removeChild.call(this,p_entity2_5D);
+		var $it0 = this._instances.keys();
+		while( $it0.hasNext() ) {
+			var f_view = $it0.next();
+			this._removeChildOfInstance(p_entity2_5D,f_view);
 		}
 	}
 	,__class__: tools_spark_framework_space2_$5D_core_AInstantiable2_$5D
@@ -14587,6 +14600,12 @@ tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype = $extend(tools_spa
 	}
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
 		if(p_childEntity.gameEntity.getState("layoutable") == true) this.groupInstances.get(p_view2_5D).children.push(p_childEntity.groupInstances.get(p_view2_5D));
+	}
+	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
+		if(p_childEntity.gameEntity.getState("layoutable") == true) {
+			var x = p_childEntity.groupInstances.get(p_view2_5D);
+			HxOverrides.remove(this.groupInstances.get(p_view2_5D).children,x);
+		}
 	}
 	,__class__: tools_spark_framework_space2_$5D_core_AEntity2_$5D
 });
@@ -14638,6 +14657,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		var v12 = $bind(this,this._updateHeight);
 		this._updateStateFunctions.set("height",v12);
 		v12;
+		var v13 = $bind(this,this._updateBackgroundColor);
+		this._updateStateFunctions.set("backgroundColor",v13);
+		v13;
 	}
 	,createInstance: function(p_view2_5D) {
 		var _g = this.gameEntity.getState("NCmeshType");
@@ -14702,6 +14724,10 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		this._instances.get(p_view2_5D).appendChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , Element));
 		tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
+	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
+		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , Element));
+		tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype._removeChildOfInstance.call(this,p_childEntity,p_view2_5D);
+	}
 	,update: function(p_view2_5D) {
 		this._updateState("NCmeshType",p_view2_5D);
 		if(this.gameEntity.getState("NCstyleable") == true) {
@@ -14712,6 +14738,7 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 			this._updateState("fontSize",p_view2_5D);
 			this._updateState("fontColor",p_view2_5D);
 			this._updateState("overflow",p_view2_5D);
+			this._updateState("backgroundColor",p_view2_5D);
 		}
 		this._updateState("touchable",p_view2_5D);
 		if(this.gameEntity.getState("text") != null) this._updateState("text",p_view2_5D);
@@ -14734,7 +14761,6 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		}
 	}
 	,_updateNCstyleable: function(p_NCstyleable,p_view2_5D) {
-		if(this.gameEntity.getState("backgroundColor") != null && this.gameEntity.getState("backgroundColor") != "Undefined") this._instances.get(p_view2_5D).style.backgroundColor = this.gameEntity.getState("backgroundColor");
 		if(this.gameEntity.getState("border") != null && this.gameEntity.getState("border") != "Undefined") this._instances.get(p_view2_5D).style.border = this.gameEntity.getState("border");
 		if(this.gameEntity.getState("borderRadius") != null && this.gameEntity.getState("borderRadius") != "Undefined") this._instances.get(p_view2_5D).style.borderRadius = this.gameEntity.getState("borderRadius");
 		if(this.gameEntity.getState("boxShadow") != null && this.gameEntity.getState("boxShadow") != "Undefined") this._instances.get(p_view2_5D).style.boxShadow = this.gameEntity.getState("boxShadow");
@@ -14784,6 +14810,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 	}
 	,_updateOpacity: function(p_opacity,p_view2_5D) {
 		this._instances.get(p_view2_5D).style.opacity = p_opacity;
+	}
+	,_updateBackgroundColor: function(p_backgroundColor,p_view2_5D) {
+		if(p_backgroundColor != "Undefined") this._instances.get(p_view2_5D).style.backgroundColor = p_backgroundColor;
 	}
 	,_updateDisplay: function(p_display,p_view2_5D) {
 		this._instances.get(p_view2_5D).style.display = p_display;
@@ -15261,7 +15290,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 					body.set_position(new nape_geom_Vec2(l_mesh.x.get__(),l_mesh.y.get__()));
 					body.set_space(((function($this) {
 						var $r;
-						var component = l_sceneInstance.getComponent("SpaceComponent_6");
+						var component = l_sceneInstance.getComponent("SpaceComponent_3");
 						$r = component;
 						return $r;
 					}(this))).space);
@@ -15443,7 +15472,7 @@ tools_spark_framework_flambe2_$5D_components_BodyComponent.__name__ = true;
 tools_spark_framework_flambe2_$5D_components_BodyComponent.__super__ = flambe_Component;
 tools_spark_framework_flambe2_$5D_components_BodyComponent.prototype = $extend(flambe_Component.prototype,{
 	get_name: function() {
-		return "BodyComponent_7";
+		return "BodyComponent_4";
 	}
 	,onUpdate: function(dt) {
 		var pos = this._body.get_position();
@@ -15470,7 +15499,7 @@ tools_spark_framework_flambe2_$5D_components_SpaceComponent.__name__ = true;
 tools_spark_framework_flambe2_$5D_components_SpaceComponent.__super__ = flambe_Component;
 tools_spark_framework_flambe2_$5D_components_SpaceComponent.prototype = $extend(flambe_Component.prototype,{
 	get_name: function() {
-		return "SpaceComponent_6";
+		return "SpaceComponent_3";
 	}
 	,onUpdate: function(dt) {
 		this.space.step(dt);
@@ -17208,6 +17237,8 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 		true;
 		this._renderStateNames.set("overflow",true);
 		true;
+		this._renderStateNames.set("backgroundColor",true);
+		true;
 		this._renderStateNames.set("spaceX",true);
 		true;
 		this._renderStateNames.set("spaceY",true);
@@ -17298,9 +17329,37 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 					}
 				}
 				break;
-			case 3:
+			case 2:
 				var _g31 = f_bufferEntry.source.getState("displayType");
 				switch(_g31) {
+				case "Space":
+					tools_spark_framework_Console.warn("removing something from a space");
+					break;
+				case "Stage":
+					tools_spark_framework_Console.warn("removing something from a stage");
+					break;
+				case "StageArea":
+					tools_spark_framework_Console.warn("removing something from a stageArea");
+					break;
+				case "View":
+					tools_spark_framework_Console.warn("removing something from a view");
+					var $it2 = this.platformRendererSet.iterator();
+					while( $it2.hasNext() ) {
+						var renderer2 = $it2.next();
+						tools_spark_framework_Console.warn("removing something from a view, renderer logic");
+					}
+					break;
+				default:
+					var $it3 = this.platformRendererSet.iterator();
+					while( $it3.hasNext() ) {
+						var renderer3 = $it3.next();
+						renderer3.removeChild(f_bufferEntry.source,f_bufferEntry.target);
+					}
+				}
+				break;
+			case 3:
+				var _g32 = f_bufferEntry.source.getState("displayType");
+				switch(_g32) {
 				case "Space":
 					this._activeReferenceMediator.spaceReferenceManager.updateState(this._activeReferenceMediator.getActiveSpaceReference(f_bufferEntry.source),f_bufferEntry.source,f_bufferEntry.field);
 					break;
@@ -17312,17 +17371,17 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 					break;
 				case "View":
 					this._activeReferenceMediator.viewReferenceManager.updateState(this._activeReferenceMediator.getActiveViewReference(f_bufferEntry.source),f_bufferEntry.source,f_bufferEntry.field);
-					var $it2 = this.platformRendererSet.iterator();
-					while( $it2.hasNext() ) {
-						var renderer2 = $it2.next();
-						renderer2.updateState(f_bufferEntry.source,f_bufferEntry.field);
+					var $it4 = this.platformRendererSet.iterator();
+					while( $it4.hasNext() ) {
+						var renderer4 = $it4.next();
+						renderer4.updateState(f_bufferEntry.source,f_bufferEntry.field);
 					}
 					break;
 				default:
-					var $it3 = this.platformRendererSet.iterator();
-					while( $it3.hasNext() ) {
-						var renderer3 = $it3.next();
-						renderer3.updateState(f_bufferEntry.source,f_bufferEntry.field);
+					var $it5 = this.platformRendererSet.iterator();
+					while( $it5.hasNext() ) {
+						var renderer5 = $it5.next();
+						renderer5.updateState(f_bufferEntry.source,f_bufferEntry.field);
 					}
 				}
 				break;
@@ -17336,6 +17395,9 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 	,addDisplayObjectChild: function(p_gameEntityParent,p_gameEntityChild) {
 		if(p_gameEntityParent.getState("displayType") != null && p_gameEntityChild.getState("displayType") != null) this._addChild(p_gameEntityParent,p_gameEntityChild);
 	}
+	,removeDisplayObjectChild: function(p_gameEntityParent,p_gameEntityChild) {
+		if(p_gameEntityParent.getState("displayType") != null && p_gameEntityChild.getState("displayType") != null) this._removeChild(p_gameEntityParent,p_gameEntityChild);
+	}
 	,updateDisplayObjectState: function(p_gameEntity,p_state) {
 		if(p_gameEntity.getState("displayType") != null && this._renderStateNames.get(p_state) == true) this._updateState(p_gameEntity,p_state);
 	}
@@ -17344,6 +17406,9 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 	}
 	,_addChild: function(p_gameEntityParent,p_gameEntityChild) {
 		this._dataBuffer.addEntry(tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED,p_gameEntityParent,p_gameEntityChild);
+	}
+	,_removeChild: function(p_gameEntityParent,p_gameEntityChild) {
+		this._dataBuffer.addEntry(tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED,p_gameEntityParent,p_gameEntityChild);
 	}
 	,_updateState: function(p_gameEntity,p_state) {
 		this._dataBuffer.addEntry(tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE,p_gameEntity,null,p_state);
@@ -17545,6 +17610,11 @@ tools_spark_sliced_services_std_display_managers_core_DomObjectManager.prototype
 		var l_entity2_5D;
 		l_entity2_5D = js_Boot.__cast(p_objectParent , tools_spark_framework_dom2_$5D_DomEntity2_$5D);
 		if(p_objectChild != null) l_entity2_5D.addChild(p_objectChild);
+	}
+	,removeFrom: function(p_objectChild,p_objectParent) {
+		var l_entity2_5D;
+		l_entity2_5D = js_Boot.__cast(p_objectParent , tools_spark_framework_dom2_$5D_DomEntity2_$5D);
+		if(p_objectChild != null) l_entity2_5D.removeChild(p_objectChild);
 	}
 	,__class__: tools_spark_sliced_services_std_display_managers_core_DomObjectManager
 };
@@ -18012,6 +18082,8 @@ tools_spark_sliced_services_std_display_renderers_core_library_AFlambe2_$5DRende
 			tools_spark_framework_Console.warn("AFlambe2_5DRenderer: Unhandled add child request: " + Std.string(p_parentEntity.getState("displayType")));
 		}
 	}
+	,removeChild: function(p_parentEntity,p_childEntity) {
+	}
 	,updateState: function(p_objectEntity,p_state) {
 		if(this._objects.get(p_objectEntity) != null) this._objectManager.updateState(this._objects.get(p_objectEntity),p_objectEntity,p_state); else if(this._views.get(p_objectEntity) != null) this._viewManager.updateState(this._views.get(p_objectEntity),p_objectEntity,p_state);
 	}
@@ -18040,6 +18112,8 @@ tools_spark_sliced_services_std_display_renderers_core_library_ANativeControls2_
 		return null;
 	}
 	,addChild: function(p_parentEntity,p_childEntity) {
+	}
+	,removeChild: function(p_parentEntity,p_childEntity) {
 	}
 	,updateState: function(p_objectEntity,p_state) {
 	}
@@ -18133,6 +18207,19 @@ tools_spark_sliced_services_std_display_renderers_core_platform_html_NativeContr
 			break;
 		case "Entity":
 			if(this._objects.get(p_parentEntity) != null) this._objectManager.addTo(this.createObject(p_childEntity),this._objects.get(p_parentEntity));
+			break;
+		default:
+			tools_spark_framework_Console.warn("NativeControlsHtmlRenderer: Unhandled add child request: " + Std.string(p_parentEntity.getState("displayType")));
+		}
+	}
+	,removeChild: function(p_parentEntity,p_childEntity) {
+		var _g = p_parentEntity.getState("displayType");
+		switch(_g) {
+		case "Scene":
+			if(this._scenes.get(p_parentEntity) != null) tools_spark_framework_Console.warn("NC RENDERER: REMOVING A CHILD FROM A SCENE NOT YET IMPLEMENTED");
+			break;
+		case "Entity":
+			if(this._objects.get(p_parentEntity) != null) this._objectManager.removeFrom(this.createObject(p_childEntity),this._objects.get(p_parentEntity));
 			break;
 		default:
 			tools_spark_framework_Console.warn("NativeControlsHtmlRenderer: Unhandled add child request: " + Std.string(p_parentEntity.getState("displayType")));
@@ -21800,6 +21887,11 @@ tools_spark_sliced_services_std_logic_gde_core_GameEntity.prototype = $extend(to
 		this.get_children().push(p_gameEntity);
 		p_gameEntity.parentEntity = this;
 		tools_spark_sliced_core_Sliced.display.addDisplayObjectChild(this,p_gameEntity);
+	}
+	,removeChild: function(p_gameEntity) {
+		var _this = this.get_children();
+		HxOverrides.remove(_this,p_gameEntity);
+		tools_spark_sliced_core_Sliced.display.removeDisplayObjectChild(this,p_gameEntity);
 	}
 	,getChildren: function() {
 		return this.get_children();

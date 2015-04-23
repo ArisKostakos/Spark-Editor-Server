@@ -80,10 +80,12 @@
 							}
 							
 							//Fill Library with Sprites
+							
 							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
 							
 							objectsPanel.getAction('AddItemNoUpload').setState('items', spritesFound);
 							objectsPanel.startAction('AddItemNoUpload');
+							
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
@@ -98,8 +100,11 @@
 								//enter project gui
 								Logic.getEntityByName('Dom View').setState('visible',false);
 
-								Logic.getEntityByName('Editor Top Bar View').setState('visible',true);
-								Logic.getEntityByName('Editor Left Bar View').setState('visible',true);
+								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
+								Logic.getEntityByName('Editor Left View').setState('visible',true);
+								Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+								Logic.getEntityByName('Editor Right View').setState('visible',true);
+								Logic.getEntityByName('Editor Viewport View').setState('visible',true);
 							
 								//me.setState('xmlPure',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
 								//me.setState('xmlEdit',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());

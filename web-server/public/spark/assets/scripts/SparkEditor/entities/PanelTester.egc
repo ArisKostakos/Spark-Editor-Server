@@ -22,7 +22,7 @@
 		</_State>
 		
 		<_State id="backgroundColor">
-			<Value>rgb(255,0,0)</Value>
+			<Value>rgb(167,225,221)</Value>
 		</_State>
 	</_States>
 </Entity>

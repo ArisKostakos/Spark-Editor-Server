@@ -69,7 +69,7 @@
 						
 						
 						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Dynamic&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>');
+						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Dynamic&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>').firstElement();
 						//=Xml.createElement('Entity');
 						//physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
 						childExtendsXml.addChild(physicsEntityXml);
@@ -112,7 +112,7 @@
 						
 						
 						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Static&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>');
+						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Static&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>').firstElement();
 						//=Xml.createElement('Entity');
 						//physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
 						childExtendsXml.addChild(physicsEntityXml);
@@ -143,6 +143,12 @@
 					{
 						me.getState('selector').startAction('show');
 					}
+					
+					var propertiesWindow = Logic.getEntityByName('Properties Window');
+					
+					//set thing to update
+					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
+					propertiesWindow.startAction('Update');
 					
 					me.setState('selected',true);
 					me.stopAction("Select");
@@ -195,7 +201,7 @@
 						
 						//Save changes to xmlData
 						var xmlData = me.getState("xmlData");
-						Display.error(xmlData);
+						//Display.error(xmlData);
 						var entityXml = xmlData.elementsNamed('Entity').next();
 						
 						//if no [_States], create it
