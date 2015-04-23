@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.TabWindow">
+	<_States>
+		<_State id="name"><Value>Properties Window</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="paddingLeft"><Value>1</Value></_State>
+		<_State id="paddingRight"><Value>1</Value></_State>
+		<_State id="paddingTop"><Value>1</Value></_State>
+		<_State id="paddingBottom"><Value>1</Value></_State>
+		<_State id="gap"><Value>1</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Div"/>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+					
+					
+					me.stopAction("Update");
+
+					//solution to html5 bug
+					var childrenArray = [];
+					
+					for (child in me.getChildren())
+					{
+						childrenArray.push(child);
+					}
+					
+					for (child in childrenArray)
+					{
+						me.removeChild(child);
+					}
+					
+					var xmlData = me.getAction('Update').getState('xmlData').firstElement();
+					
+					//EXTENDS
+					var extendsXml = firstElementNamed(xmlData,'Extends');
+					if (extendsXml!=null)
+					{
+						var entities = extendsXml.elementsNamed('Entity');
+						//for each [entity] in [extends]
+						while (entities.hasNext())
+						{
+							var entityChildXml = entities.next();
+							
+							var categoryObject = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.properties.Category');
+							categoryObject.setState('entityXml',entityChildXml);
+							me.addChild(categoryObject);
+							
+							var statesXml = firstElementNamed(entityChildXml,'_States');
+							if (statesXml!=null)
+							{
+								var states = statesXml.elementsNamed('_State');
+								//for each [_state] in [_states]
+								while (states.hasNext())
+								{
+									var stateChildXml = states.next();
+
+									var stateObject = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.properties.State');
+									stateObject.setState('stateXml',stateChildXml);
+									me.addChild(stateObject);
+								}
+							}
+						}
+					}
+					
+					//MAIN
+					var categoryObject = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.properties.Category');
+					categoryObject.setState('entityXml',xmlData);
+					me.addChild(categoryObject);
+							
+					var statesXml = firstElementNamed(xmlData,'_States');
+
+					var states = statesXml.elementsNamed('_State');
+					for (stateChildXml in states)
+					{
+						var stateObject = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.properties.State');
+						stateObject.setState('stateXml',stateChildXml);
+						me.addChild(stateObject);
+					}
+					
+					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

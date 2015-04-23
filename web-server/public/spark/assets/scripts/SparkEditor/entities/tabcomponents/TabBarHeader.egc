@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<State><Id>caption</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>fontSize</Id><Type>Text</Type><Value>15px</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Output Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="verticalCenter"><Value>0</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('caption'));
+					me.setState('fontSize',parent.getState('fontSize'));
+					me.setState('height',parent.getState('fontSize'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<!-- on click -->
+	</_Actions>
+	
+	<_Triggers>
+		<!-- on click -->
+	</_Triggers>
+</Entity>

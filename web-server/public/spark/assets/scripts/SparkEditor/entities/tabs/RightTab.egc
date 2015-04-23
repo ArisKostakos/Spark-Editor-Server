@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.ToolTabControl">
+	<_States>
+		<_State id="name"><Value>Right Tab</Value></_State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Initialize');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Initialize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var bar = me.getState('bar');
+					var container = me.getState('container');
+					
+					if (bar!=null && container!=null)
+					{
+						//Properties
+						var propertiesHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
+						propertiesHeader.setState('caption','Properties');
+						propertiesHeader.setState('fontSize','25px');
+						propertiesHeader.setState('backgroundColor','rgb(76,143,165)');
+						bar.addChild(propertiesHeader);
+
+						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.PropertiesWindow'));
+
+						
+						me.stopAction('Initialize');
+					}
+					else
+					{
+						Display.error("null.. will try later..");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

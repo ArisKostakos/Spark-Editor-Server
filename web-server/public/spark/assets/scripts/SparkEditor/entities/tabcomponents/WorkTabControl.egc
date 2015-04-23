@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.TabControl">
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.entities.tabcomponents.WorkTabBar"/>
+				<Entity extends="SparkEditor.entities.tabcomponents.TabContainer"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

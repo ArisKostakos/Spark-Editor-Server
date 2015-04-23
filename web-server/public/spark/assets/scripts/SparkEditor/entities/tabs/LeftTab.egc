@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.ToolTabControl">
+	<_States>
+		<_State id="name"><Value>Left Tab</Value></_State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Initialize');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Initialize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var bar = me.getState('bar');
+					var container = me.getState('container');
+					
+					if (bar!=null && container!=null)
+					{
+						//Project
+						var projectHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
+						projectHeader.setState('caption','Project');
+						projectHeader.setState('fontSize','23px');
+						projectHeader.setState('backgroundColor','rgb(237,50,88)');
+						bar.addChild(projectHeader);
+						
+						//Library
+						var libraryHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
+						libraryHeader.setState('caption','Library');
+						libraryHeader.setState('fontSize','23px');
+						libraryHeader.setState('backgroundColor','rgb(56,192,182)');
+						bar.addChild(libraryHeader);
+
+						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ProjectWindow'));
+						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.LibraryWindow'));
+						
+						me.stopAction('Initialize');
+					}
+					else
+					{
+						Display.error("null.. will try later..");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

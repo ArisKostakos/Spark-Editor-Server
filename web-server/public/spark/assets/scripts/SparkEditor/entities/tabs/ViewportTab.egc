@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.WorkTabControl">
+	<_States>
+		<_State id="name"><Value>Viewport Tab</Value></_State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Initialize');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Initialize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var bar = me.getState('bar');
+					var container = me.getState('container');
+					
+					if (bar!=null && container!=null)
+					{
+						bar.setState('backgroundColor','rgb(41,59,77)');
+					
+						//Scene Editor Header
+						var sceneEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
+						sceneEditorHeader.setState('caption','Scene');
+						sceneEditorHeader.setState('fontSize','17px');
+						sceneEditorHeader.setState('backgroundColor','rgb(76,143,165)');
+						bar.addChild(sceneEditorHeader);
+
+						//Event Editor Header
+						var eventEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
+						eventEditorHeader.setState('caption','Events');
+						eventEditorHeader.setState('fontSize','17px');
+						eventEditorHeader.setState('backgroundColor','rgb(46,113,135)');
+						bar.addChild(eventEditorHeader);
+						
+						
+						//container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.PropertiesWindow'));
+
+						
+						me.stopAction('Initialize');
+					}
+					else
+					{
+						Display.error("null.. will try later..");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
