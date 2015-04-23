@@ -147,11 +147,11 @@
 								i+=1;
 							}
 							
-							//Fill Library with Sprites
+							//Fill Library with Behaviors
 							
-							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
+							var objectsPanel = Logic.getEntityByName('Editor Library Behaviors Panel');
 							
-							objectsPanel.getAction('AddItemNoUpload').setState('items', spritesFound);
+							objectsPanel.getAction('AddItemNoUpload').setState('items', behaviorsFound);
 							objectsPanel.startAction('AddItemNoUpload');
 							
 							
