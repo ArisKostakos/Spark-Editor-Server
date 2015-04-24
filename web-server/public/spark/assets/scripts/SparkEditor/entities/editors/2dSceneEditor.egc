@@ -159,7 +159,7 @@
 					Display.error("sceneXml: " + finalString);
 					
 					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
-					
+					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
 					Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
 				</Script>
 			</Scripts>
@@ -303,10 +303,12 @@
 						if (data.code=="success")
 						{
 							Display.error('Updated Asset fucking success!');
+							Logic.getEntityByName('Editor Output').setState('text','Project Saved Successfully!');
 						}
 						else
 						{
 							Display.error('Updated Asset error!');
+							Logic.getEntityByName('Editor Output').setState('text','Error Saving Project :(');
 						}
 					}
 				</Script>

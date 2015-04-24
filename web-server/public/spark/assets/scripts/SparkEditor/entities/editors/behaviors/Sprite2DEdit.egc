@@ -22,16 +22,57 @@
 			<Event>MouseLeftClicked</Event>
 			<Scripts>
 				<Script>
-					if (Input.keyboard.isKeyDown(Key.Alt))
+					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					leveleditor2d.getAction('EntityClicked').setState('entity',me);
+					leveleditor2d.startAction('EntityClicked');
+					me.startAction('Drag');
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_W</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
 					{
+						me.getAction('Clone').setState('dir','up');
 						me.startAction('Clone');
 					}
-					else
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_S</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
 					{
-						var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
-						leveleditor2d.getAction('EntityClicked').setState('entity',me);
-						leveleditor2d.startAction('EntityClicked');
-						me.startAction('Drag');
+						me.getAction('Clone').setState('dir','down');
+						me.startAction('Clone');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_A</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction('Clone').setState('dir','left');
+						me.startAction('Clone');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_D</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction('Clone').setState('dir','right');
+						me.startAction('Clone');
 					}
 				</Script>
 			</Scripts>
@@ -93,6 +134,11 @@
 					childExtendsXml.addChild(physicsEntityXml);
 					
 					Display.error("Adding Behavior to: " + pureXml);
+					
+					//set thing to update
+					var propertiesWindow = Logic.getEntityByName('Properties Window');
+					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
+					propertiesWindow.startAction('Update');
 				</Script>
 			</Scripts>
 			<_States>
@@ -111,7 +157,7 @@
 					{
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.behaviors.Sprite2DEditSelector');
 						myNewItem.setState('selectRect', me.getState('boundsRect'));
-
+						
 						me.addChild(myNewItem);
 						me.setState('selector',myNewItem);
 					}
@@ -120,9 +166,8 @@
 						me.getState('selector').startAction('show');
 					}
 					
-					var propertiesWindow = Logic.getEntityByName('Properties Window');
-					
 					//set thing to update
+					var propertiesWindow = Logic.getEntityByName('Properties Window');
 					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
 					propertiesWindow.startAction('Update');
 					
@@ -233,26 +278,126 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					var mainScene = Logic.getEntityByName('Level Editor 2D Scene');
-					var componentName = me.getState('componentName');
-
-					var myNewImage2D = Logic.gameFactory.createGameEntityExtended(componentName,'SparkEditor.entities.editors.behaviors.Sprite2DEdit');
-					myNewImage2D.setState('componentName',componentName);
-					myNewImage2D.setState('spaceX',me.getState('spaceX'));
-					myNewImage2D.setState('spaceY',me.getState('spaceY'));
-					myNewImage2D.setState('scaleX',me.getState('scaleX'));
-					myNewImage2D.setState('scaleY',me.getState('scaleY'));
-					mainScene.addChild(myNewImage2D);
-						
-					//Select and start dragging the new Entity
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
-					leveleditor2d.getAction('EntityClicked').setState('entity',myNewImage2D);
-					leveleditor2d.startAction('EntityClicked');
-					myNewImage2D.startAction('Drag');
-						
+					//We will need this function...
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+					
 					me.stopAction("Clone");
+
+					var dir = me.getAction('Clone').getState('dir');
+					
+					var entityChildXml = Xml.parse(me.getState('xmlData').toString()).firstElement();
+					
+					var shiftX=0;
+					var shiftY=0;
+					
+					//Change Position
+					
+					//Scale Width
+					var realWidth = me.getState('boundsRect').width * me.getState('scaleX');
+					var realHeight = me.getState('boundsRect').height * me.getState('scaleY');
+						
+					if (dir=='left') shiftX-=realWidth;
+					else if (dir=='right') shiftX+=realWidth;
+					else if (dir=='up') shiftY-=realHeight;
+					else if (dir=='down') shiftY+=realHeight;
+					
+					//if no [_States], create it
+					var statesXml = firstElementNamed(entityChildXml,'_States');
+					if (statesXml==null)
+					{
+						statesXml = Xml.createElement('_States');
+						entityXml.addChild(statesXml);
+					}
+					
+					var states = statesXml.elementsNamed('_State');
+					//for each [_state] in [_states]
+					while (states.hasNext())
+					{
+						var stateChildXml = states.next();
+
+						if (stateChildXml.get("id")=="spaceX")
+						{
+							//Remove previous Value Node
+							var stateValueXml = firstElementNamed(stateChildXml,'Value');
+
+							stateValueXml.removeChild(stateValueXml.firstChild());
+							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX')+shiftX)).firstChild());
+
+							Display.error("new spaceX: " + stateValueXml.firstChild().toString());
+						}
+						else if (stateChildXml.get("id")=="spaceY")
+						{
+							//Remove previous Value Node
+							var stateValueXml = firstElementNamed(stateChildXml,'Value');
+
+							stateValueXml.removeChild(stateValueXml.firstChild());
+							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY')+shiftY)).firstChild());
+
+							Display.error("new spaceY: " + stateValueXml.firstChild().toString());
+						}
+					}
+					
+					
+					
+					
+					Display.error("Found child: " + entityChildXml.get('extends'));
+					//take snapshot
+					var pureChildXml = Xml.parse(entityChildXml.toString());
+					Display.error("Displaying Child: " + pureChildXml.toString());
+					
+					//Remove [extends]
+					var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
+					if (childExtendsXml!=null)
+						entityChildXml.removeChild(childExtendsXml);
+						
+					//if no [extends], create it
+					//var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
+					//if (childExtendsXml==null)
+					//{
+						childExtendsXml = Xml.createElement('Extends');
+						entityChildXml.insertChild(childExtendsXml,0);
+					//}
+					
+					
+					//add [entity] Sprite2DEdit in [extends]
+					var sceneEditXml = Xml.createElement('Entity');
+					sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+					childExtendsXml.addChild(sceneEditXml);
+					
+					//instantiate, add to scene
+					var editScene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					
+					var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
+					editScene.addChild(childEntity);
+					
+					//give it snapshot xml
+					childEntity.setState('xmlData',pureChildXml);
+					
+					/*
+					me.startAction('Deselect');
+					
+					childEntity.setState('boundsRect',me.getState('boundsRect'));
+					childEntity.startAction('Select');
+					*/
+
+					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					leveleditor2d.getAction('EntityClicked').setState('entity',childEntity);
+					leveleditor2d.startAction('EntityClicked');
 				</Script>
 			</Scripts>
+			<_States>
+				<State><Id>dir</Id><Type>Text</Type><Value>none</Value></State>
+			</_States>
 		</Action>
 	</_Actions>
 </Entity>

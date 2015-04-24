@@ -11018,6 +11018,14 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 		this.get_position().set(position);
 		return this.get_position();
 	}
+	,get_velocity: function() {
+		if(this.zpp_inner.wrap_vel == null) this.zpp_inner.setupVelocity();
+		return this.zpp_inner.wrap_vel;
+	}
+	,set_velocity: function(velocity) {
+		this.get_velocity().set(velocity);
+		return this.get_velocity();
+	}
 	,get_rotation: function() {
 		return this.zpp_inner.rot;
 	}
@@ -15406,6 +15414,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 						}
 						body.get_shapes().add(l_shape);
 						body.set_position(new nape_geom_Vec2(l_mesh.x.get__(),l_mesh.y.get__()));
+						if(this.gameEntity.getState("physicsType") != "Static") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("initialForceX"),this.gameEntity.getState("initialForceY")));
 						body.set_space(((function($this) {
 							var $r;
 							var component = l_sceneInstance.getComponent("SpaceComponent_3");
@@ -29316,6 +29325,7 @@ var zpp_$nape_phys_ZPP_$Body = function() {
 	this.kinvelx = 0.0;
 	this.forcey = 0.0;
 	this.forcex = 0.0;
+	this.wrap_vel = null;
 	this.vely = 0.0;
 	this.velx = 0.0;
 	this.wrap_pos = null;
@@ -29528,12 +29538,29 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 		this.wrap_pos.zpp_inner.x = this.posx;
 		this.wrap_pos.zpp_inner.y = this.posy;
 	}
+	,vel_invalidate: function(vel) {
+		this.velx = vel.x;
+		this.vely = vel.y;
+		this.invalidate_wake();
+	}
+	,vel_validate: function() {
+		this.wrap_vel.zpp_inner.x = this.velx;
+		this.wrap_vel.zpp_inner.y = this.vely;
+	}
 	,setupPosition: function() {
 		this.wrap_pos = nape_geom_Vec2.get(this.posx,this.posy);
 		this.wrap_pos.zpp_inner._inuse = true;
 		if(this.world) this.wrap_pos.zpp_inner._immutable = true; else {
 			this.wrap_pos.zpp_inner._invalidate = $bind(this,this.pos_invalidate);
 			this.wrap_pos.zpp_inner._validate = $bind(this,this.pos_validate);
+		}
+	}
+	,setupVelocity: function() {
+		this.wrap_vel = nape_geom_Vec2.get(this.velx,this.vely);
+		this.wrap_vel.zpp_inner._inuse = true;
+		if(this.world) this.wrap_vel.zpp_inner._immutable = true; else {
+			this.wrap_vel.zpp_inner._invalidate = $bind(this,this.vel_invalidate);
+			this.wrap_vel.zpp_inner._validate = $bind(this,this.vel_validate);
 		}
 	}
 	,invalidate_rot: function() {
@@ -29646,6 +29673,9 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 			}
 			if(exist) this.invalidate_inertia();
 		}
+	}
+	,invalidate_wake: function() {
+		this.wake();
 	}
 	,validate_aabb: function() {
 		if(this.zip_aabb) {

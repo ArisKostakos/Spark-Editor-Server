@@ -11,7 +11,17 @@
 	<Form>
 		<Space>
 			<Entities>
-				
+				<!-- Label Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Editor Output</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>14</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="text"><Value>Pre-Alpha Release</Value></_State>
+				</_States></Entity>
 			</Entities>
 		</Space>
 	</Form>

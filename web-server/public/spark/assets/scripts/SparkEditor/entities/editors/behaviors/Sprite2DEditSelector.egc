@@ -17,7 +17,7 @@
 						
 						me.setState('spaceWidth', parent.getState('selectRect').width);
 						me.setState('spaceHeight', parent.getState('selectRect').height);
-						
+
 						me.setState('spaceX', me.getState('spaceWidth')/4);
 						me.setState('spaceY', me.getState('spaceHeight')/4);
 					</Script></_Scripts></_Action></_Actions>
