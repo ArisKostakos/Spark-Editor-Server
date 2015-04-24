@@ -71,25 +71,48 @@
 							//for now, just change the icon here
 							var username = Logic.getEntityByName('Spark Editor').getState('username');
 							
-							//Image
-							var objImage = me.getState('obj_image');
+							//Load the actual Image Asset on Flambe
+							Assets.initiateBatch();
 							
-							objImage.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
-							objImage.setState('width','14');
-							objImage.setState('height','14');
-							objImage.setState('opacity','1');
+	
+							var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 							
-							//Text
-							var objText = me.getState('obj_text');
-							objText.setState('opacity','1');
+							var assetId;
 							
-							//Progress Bar
-							var objProgressBar = me.getState('progressBar');
-							objProgressBar.setState('opacity','0');
+							//If Asset is Image
+							if (asset.type=="image")
+							{
+								assetId = 'image_' + asset.name;
+							}
+
+							Assets.addFile(assetUrl, assetId);
 							
-							//Set Component
-							me.setState('component',asset);
+							//Event Listener
+							Assets.successSignal.connect(function () {
 							
+								//Image
+								var objImage = me.getState('obj_image');
+								
+								objImage.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+								objImage.setState('width','14');
+								objImage.setState('height','14');
+								objImage.setState('opacity','1');
+								
+								//Text
+								var objText = me.getState('obj_text');
+								objText.setState('opacity','1');
+								
+								//Progress Bar
+								var objProgressBar = me.getState('progressBar');
+								objProgressBar.setState('opacity','0');
+								
+								//Set Component
+								me.setState('component',asset);
+								
+							}).once();
+							
+							//Load
+							Assets.loadBatch();
 						}
 						else
 						{
