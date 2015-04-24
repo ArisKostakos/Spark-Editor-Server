@@ -75,7 +75,7 @@
 							Assets.initiateBatch();
 							
 	
-							var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							var assetUrl = '/assets/' + username + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 							
 							var assetId;
 							
