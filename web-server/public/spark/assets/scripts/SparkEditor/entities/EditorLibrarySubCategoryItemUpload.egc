@@ -64,7 +64,9 @@
 						
 						if (data.code=="success")
 						{
-							Display.error("Success creating asset: " + data.asset.name);
+							var asset = data.asset;
+							
+							Display.error("Success creating asset: " + asset.name);
 						
 							//for now, just change the icon here
 							var username = Logic.getEntityByName('Spark Editor').getState('username');
@@ -86,7 +88,7 @@
 							objProgressBar.setState('opacity','0');
 							
 							//Set Component
-							me.setState('component',data.asset);
+							me.setState('component',asset);
 							
 						}
 						else
