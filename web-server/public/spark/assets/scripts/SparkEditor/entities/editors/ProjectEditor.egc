@@ -154,13 +154,14 @@
 							objectsPanel.getAction('AddItemNoUpload').setState('items', behaviorsFound);
 							objectsPanel.startAction('AddItemNoUpload');
 							
+							var assetUserName = me.getState('assetUserName');
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
 
 								//temp scene stuff
 								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-								sceneEditor.setState('assetUserName', me.getState('assetUserName'));
+								sceneEditor.setState('assetUserName', assetUserName);
 								sceneEditor.setState('assetType','script');
 								sceneEditor.setState('assetName','blank.scenes.MainScene');
 								sceneEditor.startAction('GetAsset');
