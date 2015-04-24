@@ -15000,6 +15000,12 @@ tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype = $extend(tools_spar
 		if(p_childEntity.gameEntity.getState("layoutable") == true) p_view2_5D.group.children.push(p_childEntity.groupInstances.get(p_view2_5D));
 		p_childEntity.parentScene = this;
 	}
+	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
+		if(p_childEntity.gameEntity.getState("layoutable") == true) {
+			var x = p_childEntity.groupInstances.get(p_view2_5D);
+			HxOverrides.remove(p_view2_5D.group.children,x);
+		}
+	}
 	,__class__: tools_spark_framework_space2_$5D_core_AScene2_$5D
 });
 var tools_spark_framework_dom2_$5D_DomScene2_$5D = function(p_gameEntity) {
@@ -15503,6 +15509,10 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
 		this._instances.get(p_view2_5D).addChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , flambe_Entity));
 		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
+	}
+	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
+		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , flambe_Entity));
+		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._removeChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_FlambeScene2_$5D
 });
@@ -17883,6 +17893,11 @@ tools_spark_sliced_services_std_display_managers_core_Flambe2_$5DSceneManager.pr
 		l_scene2_5D = js_Boot.__cast(p_objectParent , tools_spark_framework_flambe2_$5D_FlambeScene2_$5D);
 		if(p_objectChild != null) l_scene2_5D.addChild(p_objectChild);
 	}
+	,removeFrom: function(p_objectChild,p_objectParent) {
+		var l_scene2_5D;
+		l_scene2_5D = js_Boot.__cast(p_objectParent , tools_spark_framework_flambe2_$5D_FlambeScene2_$5D);
+		if(p_objectChild != null) l_scene2_5D.removeChild(p_objectChild);
+	}
 	,__class__: tools_spark_sliced_services_std_display_managers_core_Flambe2_$5DSceneManager
 };
 var tools_spark_sliced_services_std_display_managers_core_Flambe2_$5DViewManager = function(p_renderer,p_flambeGraphics) {
@@ -18198,6 +18213,17 @@ tools_spark_sliced_services_std_display_renderers_core_library_AFlambe2_$5DRende
 		}
 	}
 	,removeChild: function(p_parentEntity,p_childEntity) {
+		var _g = p_parentEntity.getState("displayType");
+		switch(_g) {
+		case "Scene":
+			if(this._scenes.get(p_parentEntity) != null) this._sceneManager.removeFrom(this._objects.get(p_childEntity),this._scenes.get(p_parentEntity));
+			break;
+		case "Entity":
+			if(this._objects.get(p_parentEntity) != null) tools_spark_framework_Console.warn("FLAMBE RENDERER: REMOVING A CHILD FROM AN OBJECT NOT YET IMPLEMENTED");
+			break;
+		default:
+			tools_spark_framework_Console.warn("AFlambe2_5DRenderer: Unhandled remove child request: " + Std.string(p_parentEntity.getState("displayType")));
+		}
 	}
 	,updateState: function(p_objectEntity,p_state) {
 		if(this._objects.get(p_objectEntity) != null) this._objectManager.updateState(this._objects.get(p_objectEntity),p_objectEntity,p_state); else if(this._views.get(p_objectEntity) != null) this._viewManager.updateState(this._views.get(p_objectEntity),p_objectEntity,p_state);

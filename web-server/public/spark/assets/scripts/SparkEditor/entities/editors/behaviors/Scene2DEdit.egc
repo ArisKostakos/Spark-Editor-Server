@@ -181,6 +181,63 @@
 				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</_States>
 		</Action>
+		
+		<!-- CleanScene -->
+		<Action>
+			<Id>CleanScene</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("CleanScene");
+					
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+				
+					
+					var pureXml = me.getState('xmlData');
+					
+					//	destroy extends
+					var childExtendsXml = firstElementNamed(pureXml,'Extends');
+					if (childExtendsXml!=null)
+					{
+						pureXml.removeChild(childExtendsXml);
+					}
+					
+					//Remove Children
+					
+					//Get Scene
+					var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					
+					//solution to html5 bug
+					var sceneChildren = [];
+					for (child in scene.getChildren())
+						sceneChildren.push(child);
+					
+					//For Scene's Children
+					for (child in sceneChildren)
+					{
+						if (child.getState('name')!='SceneBackground')
+						{
+							Display.error('removing child...');
+							scene.removeChild(child);
+						}
+					}
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>behaviorXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</Action>
 	</_Actions>
 	
 	<_Triggers>

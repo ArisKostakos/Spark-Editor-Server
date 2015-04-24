@@ -1,10 +1,10 @@
-<Entity extends="std.display.Scene2D">
+<Entity extends="std.display.Scene2D"><Extends><Entity extends="alpha.behaviors.ScenePhysics"><_States><_State id="physicsScene"><Value>true</Value></_State><_State id="gravityX"><Value>0</Value></_State><_State id="gravityY"><Value>200</Value></_State></_States></Entity></Extends>
 
 	<_States>
 		<_State id="name">
-			<Value>Main Scene 2D</Value>
+			<Value>Main Scene</Value>
 		</_State>
 	</_States>
 	
 	
-<Form><Space><Entities></Entities></Space></Form></Entity>
+<Form><Space><Entities><Entity extends="std.display.Image2D"><Extends><Entity extends="alpha.behaviors.Dynamic"><_States><_State id="physicsEntity"><Value>true</Value></_State><_State id="physicsType"><Value>Dynamic</Value></_State><_State id="physicsShape"><Value>Circle</Value></_State><_State id="physicsMaterial"><Value>Wood</Value></_State><_State id="initialForceX"><Value>0</Value></_State><_State id="initialForceY"><Value>0</Value></_State></_States></Entity></Extends><_States><_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State><_State id="spaceX"><Value>116</Value></_State><_State id="spaceY"><Value>105</Value></_State></_States><_Form><_States><State><Id>ImageUrl</Id><Type>Text</Type><Value>image_blank.box_front</Value></State></_States></_Form></Entity></Entities></Space></Form></Entity>

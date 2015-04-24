@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Div">
+<Entity extends="std.display.Button">
 	<_States>
 		<_State id="borderRadius"><Value>50%</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(87,92,102)</Value></_State>
@@ -27,4 +27,27 @@
 			</Entities>
 		</Space>
 	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+					me.startAction('ButtonClicked');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<Action>
+			<Id>ButtonClicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("ButtonClicked");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
 </Entity>
