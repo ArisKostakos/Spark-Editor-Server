@@ -359,7 +359,7 @@ handler.updateAssetFile = function(msg, session, next) {
 
                             //Asset Target Path
                             var assetTarget = assetPath + '/' + assetUserName + '/' + asset_found.type + '/' + asset_found.dir + '/' + asset_found.fileName + '.' + asset_found.fileExtension;
-                            //console.warn("Moving File: " + assetSource + ", to: " + assetTarget);
+                            console.warn("Moving File: " + assetSource + ", to: " + assetTarget);
 
                             //Replace assetFile
                             fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
