@@ -65,19 +65,14 @@
 						if (data.code=="success")
 						{
 							Display.error("Success creating asset: " + data.asset.name);
-						/*
-							var thumbUrl = data.component.thumbnail;
-							Display.error("Success creating component. Thumbnail url: " + thumbUrl);
-
-							thumbUrl = thumbUrl.substr(thumbUrl.indexOf('assets/'));
-							Display.error("Success creating component. Thumbnail url for client: " + thumbUrl);
-							
+						
 							//for now, just change the icon here
+							var username = Logic.getEntityByName('Spark Editor').getState('username');
 							
 							//Image
 							var objImage = me.getState('obj_image');
 							
-							objImage.setState('src',thumbUrl);
+							objImage.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
 							objImage.setState('width','14');
 							objImage.setState('height','14');
 							objImage.setState('opacity','1');
@@ -91,8 +86,8 @@
 							objProgressBar.setState('opacity','0');
 							
 							//Set Component
-							me.setState('component',data.component);
-							*/
+							me.setState('component',data.asset);
+							
 						}
 						else
 						{

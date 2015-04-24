@@ -53,7 +53,7 @@
 						me.removeChild(child);
 					}
 					
-					var xmlData = me.getAction('Update').getState('xmlData').firstElement();
+					var xmlData = me.getAction('Update').getState('xmlData');
 					
 					//EXTENDS
 					var extendsXml = firstElementNamed(xmlData,'Extends');

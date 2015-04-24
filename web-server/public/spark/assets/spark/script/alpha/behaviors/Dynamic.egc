@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State>
+			<Id>physicsEntity</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		<State>
+			<Id>physicsType</Id>
+			<Type>Text</Type>
+			<Value>Dynamic</Value>
+		</State>
+		<State><!--export-->
+			<Id>physicsShape</Id>
+			<Type>Text</Type>
+			<Value>Circle</Value>
+		</State>
+		<State><!--export-->
+			<Id>physicsMaterial</Id>
+			<Type>Text</Type>
+			<Value>Wood</Value>
+		</State>
+		<State><!--export-->
+			<Id>initialForceX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State><!--export-->
+			<Id>initialForceY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+	</_States>
+</Entity>

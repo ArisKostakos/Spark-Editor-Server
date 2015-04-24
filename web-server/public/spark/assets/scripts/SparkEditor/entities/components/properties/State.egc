@@ -36,7 +36,35 @@
 					<_State id="fontSize"><Value>12px</Value></_State>
 					<_State id="fontColor"><Value>black</Value></_State>
 					<_State id="textIndent"><Value>2px</Value></_State>
-				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+				</_States>
+				<_Triggers>
+					<Trigger>
+						<Event>Changed</Event>
+						<Scripts>
+							<Script>
+								Display.error('Input Changed: ' + me.getState('text'));
+								
+								function firstElementNamed(p_xmlNode, p_elementName)
+								{
+									if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+									{
+										return p_xmlNode.elementsNamed(p_elementName).next();
+									}
+									else
+									{
+										return null;
+									}
+								}
+								
+								var stateValueXml = firstElementNamed(parent.getState('stateXml'),'Value');
+							
+								stateValueXml.removeChild(stateValueXml.firstChild());
+								stateValueXml.addChild(Xml.parse(me.getState('text')));
+							</Script>
+						</Scripts>
+					</Trigger>
+				</_Triggers>
+				<_Actions><_Action id="Constructor"><_Scripts><Script>
 					function firstElementNamed(p_xmlNode, p_elementName)
 					{
 						if (p_xmlNode.elementsNamed(p_elementName).hasNext())

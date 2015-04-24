@@ -36,95 +36,71 @@
 				</Script>
 			</Scripts>
 		</Trigger>
-		
-		<Trigger>
-			<Event>KeyPressed_Space</Event>
-			<Scripts>
-				<Script>
-					if (me.getState('selected'))
-					{
-						function firstElementNamed(p_xmlNode, p_elementName)
-						{
-							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-							{
-								return p_xmlNode.elementsNamed(p_elementName).next();
-							}
-							else
-							{
-								return null;
-							}
-						}
-					
-						Display.error("Adding Physics to: " + me.getState('name'));
-						
-						var pureXml = me.getState('xmlData').firstElement();
-						
-						//	if no [extends] in its xml, create it
-						var childExtendsXml = firstElementNamed(pureXml,'Extends');
-						if (childExtendsXml==null)
-						{
-							childExtendsXml = Xml.createElement('Extends');
-							pureXml.insertChild(childExtendsXml,0);
-						}
-						
-						
-						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Dynamic&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>').firstElement();
-						//=Xml.createElement('Entity');
-						//physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
-						childExtendsXml.addChild(physicsEntityXml);
-						
-						Display.error("Adding Physics to: " + pureXml);
-					}
-				</Script>
-			</Scripts>
-		</Trigger>
-		
-		<Trigger>
-			<Event>KeyPressed_S</Event>
-			<Scripts>
-				<Script>
-					if (me.getState('selected'))
-					{
-						function firstElementNamed(p_xmlNode, p_elementName)
-						{
-							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-							{
-								return p_xmlNode.elementsNamed(p_elementName).next();
-							}
-							else
-							{
-								return null;
-							}
-						}
-					
-						Display.error("Adding Static Physics to: " + me.getState('name'));
-						
-						var pureXml = me.getState('xmlData').firstElement();
-						
-						//	if no [extends] in its xml, create it
-						var childExtendsXml = firstElementNamed(pureXml,'Extends');
-						if (childExtendsXml==null)
-						{
-							childExtendsXml = Xml.createElement('Extends');
-							pureXml.insertChild(childExtendsXml,0);
-						}
-						
-						
-						//  add [behavior entity] in extends
-						var physicsEntityXml = Xml.parse('&#060;Entity extends="SparkEditor.behaviors.PhysicsEntity">&#060;_States>&#060;_State id="physicsType">&#060;Value>Static&#060;/Value>&#060;/_State>&#060;/_States>&#060;/Entity>').firstElement();
-						//=Xml.createElement('Entity');
-						//physicsEntityXml.set('extends','SparkEditor.behaviors.PhysicsEntity');
-						childExtendsXml.addChild(physicsEntityXml);
-						
-						Display.error("Adding Physics to: " + pureXml);
-					}
-				</Script>
-			</Scripts>
-		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
+		<!-- AddBehavior -->
+		<Action>
+			<Id>AddBehavior</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("AddBehavior");
+					
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+				
+					var behaviorXml = me.getAction('AddBehavior').getState('behaviorXml');
+					var asset = me.getAction('AddBehavior').getState('asset');
+				
+					Display.error("Adding Behavior to: " + me.getState('name') + ' called: ' + behaviorXml);
+					
+					var pureXml = me.getState('xmlData').firstElement();
+					
+					//	if no [extends] in its xml, create it
+					var childExtendsXml = firstElementNamed(pureXml,'Extends');
+					if (childExtendsXml==null)
+					{
+						childExtendsXml = Xml.createElement('Extends');
+						pureXml.insertChild(childExtendsXml,0);
+					}
+					
+					
+					var extendsXmlString = '&#060;Entity extends="' + asset.name + '">&#060;_States>';
+					
+					var states = firstElementNamed(behaviorXml,'_States');
+					
+					for (state in states.elementsNamed('State'))
+					{
+						var id = firstElementNamed(state,'Id');
+						var value = firstElementNamed(state,'Value');
+						
+						extendsXmlString+='&#060;_State id="' + id.firstChild().toString() + '">&#060;Value>' + value.firstChild().toString() + '&#060;/Value>&#060;/_State>';
+					}
+					extendsXmlString+='&#060;/_States>&#060;/Entity>';
+					
+					//  add [behavior entity] in extends
+					var physicsEntityXml = Xml.parse(extendsXmlString).firstElement();
+					childExtendsXml.addChild(physicsEntityXml);
+					
+					Display.error("Adding Behavior to: " + pureXml);
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>behaviorXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</Action>
+		
 		<!-- Select -->
 		<Action>
 			<Id>Select</Id>
@@ -147,7 +123,7 @@
 					var propertiesWindow = Logic.getEntityByName('Properties Window');
 					
 					//set thing to update
-					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
+					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
 					propertiesWindow.startAction('Update');
 					
 					me.setState('selected',true);

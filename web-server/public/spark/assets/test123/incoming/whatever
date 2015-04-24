@@ -1,0 +1,24 @@
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Main Scene 2D</Value>
+		</_State>
+	</_States>
+	
+	
+<Form><Space><Entities><Entity extends="std.display.FillRect2D">
+					<Extends>
+						<Entity extends="std.behaviors.input.KeyboardInput"/>
+						<Entity extends="std.behaviors.movement.InputMove"/>
+					</Extends>
+					<_States>
+						<_State id="name"><Value>purple dinky</Value></_State>
+						<_State id="spaceX"><Value>142</Value></_State>
+						<_State id="spaceY"><Value>255</Value></_State>
+						<_State id="spaceWidth"><Value>200</Value></_State>
+						<_State id="spaceHeight"><Value>200</Value></_State>
+						<_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
+					</_States>
+					<_Form><_States><State><Id>color1</Id><Type>Integer</Type><Value>0xC034F8</Value></State></_States></_Form>
+				</Entity></Entities></Space></Form></Entity>
