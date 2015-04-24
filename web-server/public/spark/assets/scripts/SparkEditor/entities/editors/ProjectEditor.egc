@@ -157,10 +157,10 @@
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
-							
+
 								//temp scene stuff
 								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-								sceneEditor.setState('assetUserName', userName);
+								sceneEditor.setState('assetUserName', me.getState('assetUserName'));
 								sceneEditor.setState('assetType','script');
 								sceneEditor.setState('assetName','blank.scenes.MainScene');
 								sceneEditor.startAction('GetAsset');
