@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="SparkEditor.entities.tabcomponents.TabBar">
 	<_States>
-		<_State id="height"><Value>50</Value></_State>
+		<_State id="height"><Value>34</Value></_State>
 	</_States>
 </Entity>
