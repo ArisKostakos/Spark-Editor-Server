@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.VGroup">
+
+	<_States>
+		<_State id="name"><Value>Event Collection Edit</Value></_State>
+		<State><Id>selectedEntities</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Div"
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>60</Value></_State>
+						<_State id="backgroundColor"><Value>red</Value></_State>
+					</_States>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					return;
+					me.setState('selectedEntities', []);
+					//set thing to update
+					var propertiesWindow = Logic.getEntityByName('Properties Window');
+					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
+					propertiesWindow.startAction('Update');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>EntityClicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Deselect old selected entities
+					var selectedEntities = me.getState('selectedEntities');
+					var entityClicked = me.getAction('EntityClicked').getState('entity');
+					
+					//Do not continue if only one entity is selected, and its the one we just clicked
+					if (selectedEntities.length==1)
+					{
+						if (selectedEntities[0]==entityClicked)
+							return;
+					}
+					
+					//Deselect everything
+					var i = 0;
+					while (selectedEntities.length>i)
+					{
+						var selectedEntity = selectedEntities[i];
+						selectedEntity.startAction('Deselect');
+						
+						i+=1;
+					}
+				
+					//Select new clicked one
+					if (entityClicked!=null)
+					{
+						//Remember Selected Entity
+						me.setState('selectedEntities', [entityClicked]);
+
+						entityClicked.startAction('Select');
+					}
+					else
+					{
+						me.setState('selectedEntities', []);
+						Display.error("SOOO:: " + me.getState('xmlData'));
+						
+						//set thing to update
+						var propertiesWindow = Logic.getEntityByName('Properties Window');
+						propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
+						propertiesWindow.startAction('Update');
+					}
+					
+					
+					me.stopAction("EntityClicked");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>entity</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- AddBehavior -->
+		<Action>
+			<Id>AddBehavior</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("AddBehavior");
+					
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+				
+					var behaviorXml = me.getAction('AddBehavior').getState('behaviorXml');
+					var asset = me.getAction('AddBehavior').getState('asset');
+				
+					Display.error("Adding Behavior to: " + me.getState('name') + ' called: ' + behaviorXml);
+					
+					var pureXml = me.getState('xmlData');
+					
+					//	if no [extends] in its xml, create it
+					var childExtendsXml = firstElementNamed(pureXml,'Extends');
+					if (childExtendsXml==null)
+					{
+						childExtendsXml = Xml.createElement('Extends');
+						pureXml.insertChild(childExtendsXml,0);
+					}
+					
+					
+					var extendsXmlString = '&#060;Entity extends="' + asset.name + '">&#060;_States>';
+					
+					var states = firstElementNamed(behaviorXml,'_States');
+					
+					for (state in states.elementsNamed('State'))
+					{
+						var id = firstElementNamed(state,'Id');
+						var value = firstElementNamed(state,'Value');
+						
+						extendsXmlString+='&#060;_State id="' + id.firstChild().toString() + '">&#060;Value>' + value.firstChild().toString() + '&#060;/Value>&#060;/_State>';
+					}
+					extendsXmlString+='&#060;/_States>&#060;/Entity>';
+					
+					//  add [behavior entity] in extends
+					var physicsEntityXml = Xml.parse(extendsXmlString).firstElement();
+					childExtendsXml.addChild(physicsEntityXml);
+					
+					Display.error("Adding Behavior to: " + pureXml);
+					
+					//set thing to update
+					var propertiesWindow = Logic.getEntityByName('Properties Window');
+					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
+					propertiesWindow.startAction('Update');
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>behaviorXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</Action>
+		
+		<!-- CleanScene -->
+		<Action>
+			<Id>CleanScene</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("CleanScene");
+					
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+				
+					
+					var pureXml = me.getState('xmlData');
+					
+					//	destroy extends
+					var childExtendsXml = firstElementNamed(pureXml,'Extends');
+					if (childExtendsXml!=null)
+					{
+						pureXml.removeChild(childExtendsXml);
+					}
+					
+					//Remove Children
+					
+					//Get Scene
+					var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					
+					//solution to html5 bug
+					var sceneChildren = [];
+					for (child in scene.getChildren())
+						sceneChildren.push(child);
+					
+					//For Scene's Children
+					for (child in sceneChildren)
+					{
+						if (child.getState('name')!='SceneBackground')
+						{
+							Display.error('removing child...');
+							scene.removeChild(child);
+						}
+					}
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>behaviorXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		
+	</_Triggers>
+</Entity>

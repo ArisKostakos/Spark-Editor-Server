@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="SparkEditor.entities.editors.SceneEditor">
+<Entity extends="SparkEditor.entities.editors.Editor">
 	<_Actions>
 		<_Action id="AssetLoaded">
 			<_Scripts>
@@ -19,8 +19,19 @@
 					//PURE XML
 					var pureXml = me.getState('xmlPure');
 					Display.error("EVENT SHEET EDITOR: " + pureXml.toString());
-					return;
 					
+					//create an eventcollectionedit
+					var eventCollectionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventCollectionEdit');
+					
+					
+					//add it as child to eventWindow
+					Logic.getEntityByName('Events Window').addChild(eventCollectionEdit);
+					
+					
+					
+					
+					
+					return;
 					//remove Form
 					var formXml = firstElementNamed(pureXml,'Form');
 					if (formXml!=null)
