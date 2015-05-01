@@ -101,7 +101,7 @@
 						var i = 0;
 						while (assets.length>i)
 						{
-							//Display.error('asset #' + i + ':' + assets[i].owner.user.name);
+							//Display.error('asset #' + i + ',name: ' + assets[i].name);
 							
 							var userNode = ensureTreeNode(treeData, assets[i].owner.user.name, "user", "no");
 

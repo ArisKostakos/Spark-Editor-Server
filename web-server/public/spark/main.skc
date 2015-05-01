@@ -77,8 +77,6 @@
 			<Asset type="script" location="local" bytes='35672'>std/ace/Event.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/ace/Condition.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/ace/Action.egc</Asset>
-			
-			<Asset type="script" location="local" bytes='35672'>std/ace/EventSheetTest.egc</Asset>
 		</Module>
 
 		<Module id="SparkEditor" executeEntity="SparkEditor.MainProject">
@@ -97,6 +95,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2DRun.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/MainScene3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView3D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EventSheetTest.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/TabControl.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/WorkTabControl.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/ToolTabControl.egc</Asset>

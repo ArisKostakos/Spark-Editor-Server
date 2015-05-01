@@ -34,7 +34,7 @@
 					</Scripts></Trigger></_Triggers>
 				</Entity>
 				
-				<Entity extends="std.ace.EventSheetTest"/>
+				<Entity extends="SparkEditor.entities.EventSheetTest"/>
 			</Entities>
 		</Space>
 	</Form>

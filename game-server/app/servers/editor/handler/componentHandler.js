@@ -52,7 +52,7 @@ handler.createObject2D = function(msg, session, next) {
     //Move real asset
     var assetUrl = userPath + '/images/' + libraryName + subDir + '/' + fileName;
     var thumbnailUrl = userPath + '/thumbnails/' + libraryName + subDir + '/' + fileName;
-    fs.move(userPath + '/incoming/' + fileName, assetUrl, function(err) {
+    fs.move(userPath + '/incoming/' + fileName, assetUrl, {clobber:true}, function(err) {
         if (err) {next(null, {code: "error"}); return console.error(err)}
 
         //create thumbnail

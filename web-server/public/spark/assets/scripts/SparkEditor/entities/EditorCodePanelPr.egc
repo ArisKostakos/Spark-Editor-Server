@@ -28,7 +28,7 @@
 					var ace = me.getState('aceObject');
 					
 					ace.resize();
-					ace.setReadOnly(true);
+					ace.setReadOnly(false);
 					ace.setShowPrintMargin(false);
 					//if (currentScriptUrl!=null) saveCurrentScript();
 					

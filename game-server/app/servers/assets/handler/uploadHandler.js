@@ -247,7 +247,7 @@ function createAsset(dependancies, msg, session, cb)
             else
             {
                 //Move Asset File
-                fs.move(assetSource, assetTarget, function(err) {
+                fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
                         if (err) {
                             cb(err, {code: "error"});
                             return;
