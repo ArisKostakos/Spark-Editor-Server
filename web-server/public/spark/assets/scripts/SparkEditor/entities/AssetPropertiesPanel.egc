@@ -142,7 +142,7 @@
 				</_States>
 				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
 				<Script>
-					Display.error("UPDATING ASSET");
+					Display.error(Logic.getEntityByName('Code Editor').getState('aceObject').getValue());
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 			</Entities>
