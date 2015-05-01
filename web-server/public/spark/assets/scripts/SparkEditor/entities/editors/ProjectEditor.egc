@@ -165,6 +165,13 @@
 								sceneEditor.setState('assetType','script');
 								sceneEditor.setState('assetName','blank.scenes.MainScene');
 								sceneEditor.startAction('GetAsset');
+								
+								//temp eventsheet stuff
+								var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+								eventsheetEditor.setState('assetUserName', assetUserName);
+								eventsheetEditor.setState('assetType','script');
+								eventsheetEditor.setState('assetName','blank.events.MainEventSheet');
+								eventsheetEditor.startAction('GetAsset');
 							
 								//enter project gui
 								Logic.getEntityByName('Dom View').setState('visible',false);

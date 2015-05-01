@@ -38,6 +38,7 @@
 				<!-- Editors -->
 				<Entity extends="SparkEditor.entities.editors.ProjectEditor"/>
 				<Entity extends="SparkEditor.entities.editors.2dSceneEditor"/>
+				<Entity extends="SparkEditor.entities.editors.EventCollectionEditor"/>
 			</Entities>
 		</Space>
 	</Form>

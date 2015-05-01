@@ -187,6 +187,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/ProjectEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/SceneEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/2dSceneEditor.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/EventCollectionEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Scene2DEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Sprite2DEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/behaviors/Sprite2DEditSelector.egc</Asset>
