@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.editors.SceneEditor">
+	<_Actions>
+		<_Action id="AssetLoaded">
+			<_Scripts>
+				<Script>
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+					
+					//PURE XML
+					var pureXml = me.getState('xmlPure');
+					Display.error("EVENT SHEET EDITOR: " + pureXml.toString());
+					return;
+					
+					//remove Form
+					var formXml = firstElementNamed(pureXml,'Form');
+					if (formXml!=null)
+						pureXml.removeChild(formXml);
+						
+					//EDIT XML
+					var editXml = me.getState('xmlEdit');
+					
+					//remove Form
+					formXml = firstElementNamed(editXml,'Form');
+					if (formXml!=null)
+						editXml.removeChild(formXml);
+						
+					//remove _States
+					var statesXml = firstElementNamed(editXml,'_States');
+					if (statesXml!=null)
+						editXml.removeChild(statesXml);
+					
+					//if no [extends], create it
+					var extendsXml = firstElementNamed(editXml,'Extends');
+					if (extendsXml==null)
+					{
+						extendsXml = Xml.createElement('Extends');
+						editXml.insertChild(extendsXml,0);
+					}
+					
+					//add [entity] Scene2DEdit in [extends]
+					var sceneEditXml = Xml.createElement('Entity');
+					sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Scene2DEdit');
+					extendsXml.addChild(sceneEditXml);
+					
+					//Instantiate
+					var editScene = Logic.gameFactory.createGameEntityByXml(editXml);
+					me.setState('target',editScene);
+					
+					//give it snapshot xml
+					editScene.setState('xmlData',pureXml);
+					
+					//check for [form.space.entities]
+					if (formXml!=null)
+					{
+						var formSpaceXml = firstElementNamed(formXml,'Space');
+						if (formSpaceXml!=null)
+						{
+							var formSpaceEntitiesXml = firstElementNamed(formSpaceXml,'Entities');
+							if (formSpaceEntitiesXml!=null)
+							{
+								var entities = formSpaceEntitiesXml.elementsNamed('Entity');
+								//for each [entity] in [form.space.entities]
+								while (entities.hasNext())
+								{
+									var entityChildXml = entities.next();
+									//Display.error("Found child: " + entityChildXml.get('extends'));
+									//take snapshot
+									var pureChildXml = Xml.parse(entityChildXml.toString());
+									//Display.error("Displaying Child: " + pureChildXml.toString());
+									
+									//Remove [extends]
+									var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
+									if (childExtendsXml!=null)
+										entityChildXml.removeChild(childExtendsXml);
+										
+									//if no [extends], create it
+									//var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
+									//if (childExtendsXml==null)
+									//{
+										childExtendsXml = Xml.createElement('Extends');
+										entityChildXml.insertChild(childExtendsXml,0);
+									//}
+									
+									
+									//add [entity] Sprite2DEdit in [extends]
+									var sceneEditXml = Xml.createElement('Entity');
+									sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+									childExtendsXml.addChild(sceneEditXml);
+									
+									//instantiate, add to scene
+									var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
+									editScene.addChild(childEntity);
+									
+									//give it snapshot xml
+									childEntity.setState('xmlData',pureChildXml);
+								}
+							}
+						}
+					}
+
+						
+					//Move it to active space so it runs
+					Logic.getEntityByName('Main Space').addChild(editScene);
+					
+					//Assign it to view
+					Logic.getEntityByName('Main View 2D').setState('scene',editScene);
+					
+					
+					//Display.error('PURE: ' + pureXml.toString());
+					//Display.error('EDIT: ' + editXml.toString());
+					//Display.error('FORM: ' + formXml.toString());
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Save</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Save");
+					
+					//Create Save File Xml
+					var sceneFileXml = Xml.createDocument();
+					
+					//Get Scene
+					var scene = me.getState('target');
+					
+					//Add Scene's Xml to Doc
+					var sceneXml = Xml.parse(scene.getState('xmlData').toString()).firstElement(); //clone it
+					sceneFileXml.addChild(sceneXml);
+					
+					//Create [Form.Space.Entities]
+					var formXml = Xml.createElement('Form');
+					sceneXml.addChild(formXml);
+					var spaceXml = Xml.createElement('Space');
+					formXml.addChild(spaceXml);
+					var entitiesXml = Xml.createElement('Entities');
+					spaceXml.addChild(entitiesXml);
+					
+					//For Scene's Children
+					for (child in scene.getChildren())
+					{
+						if (child.getState('name')!='SceneBackground')
+						{
+							entitiesXml.addChild(child.getState('xmlData'));
+						}
+					}
+					
+					var finalString = sceneFileXml.toString();
+					Display.error("sceneXml: " + finalString);
+					
+					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+					Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Run</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Run");
+					Display.error("RUNNING");
+					//Create Save File Xml
+					//var sceneFileXml = Xml.createDocument();
+					
+					//Get Scene
+					var scene = me.getState('target');
+					
+					//Add Scene's Xml to Doc
+					var sceneXml = Xml.parse(scene.getState('xmlData').toString()).firstElement(); //clone it
+					//sceneFileXml.addChild(sceneXml);
+					
+					//Create [Form.Space.Entities]
+					var formXml = Xml.createElement('Form');
+					sceneXml.addChild(formXml);
+					var spaceXml = Xml.createElement('Space');
+					formXml.addChild(spaceXml);
+					var entitiesXml = Xml.createElement('Entities');
+					spaceXml.addChild(entitiesXml);
+					
+					//For Scene's Children
+					for (child in scene.getChildren())
+					{
+						if (child.getState('name')!='SceneBackground')
+						{
+							entitiesXml.addChild(child.getState('xmlData'));
+						}
+					}
+					
+					//var finalString = sceneFileXml.toString();
+					//Display.error("sceneXml: " + finalString);
+					
+					//var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+					
+					//Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
+					
+					var sceneBakedXml = Xml.parse(sceneXml.toString()).firstElement(); //bake it?
+					
+					//Instantiate
+					var editScene = Logic.gameFactory.createGameEntityByXml(sceneBakedXml);
+					
+					me.setState('sceneRun',editScene);
+					
+					//Move it to active space so it runs
+					Logic.getEntityByName('Main Space').addChild(editScene);
+					
+					//Assign it to view
+					Logic.getEntityByName('Main View 2D Run').setState('scene',editScene);
+					Logic.getEntityByName('Main View 2D Run').setState('visible',true);
+					
+					//Hide Edit View
+					Logic.getEntityByName('Main View 2D').setState('visible',false);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Stop</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Stop");
+					
+					Display.error("STOPPING");
+					
+					//set scene2dEdit to view
+					Logic.getEntityByName('Main View 2D').setState('visible',true);
+					
+					//Hide Run View
+					Logic.getEntityByName('Main View 2D Run').setState('visible',false);
+					
+					return;
+					//destroy instantiated scene above
+					//todo: more things than removing it from space is obviously required!
+					if (Logic.getEntityByName('Main Space').getChildren().remove(me.getState('sceneRun'))==true)
+					{
+						Display.error("scene successfully removed!");
+					}
+					else
+					{
+						Display.error("scene NOT removed!");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData("updatedAsset")!=null)
+					{
+						var data = Comms.file_getSendFileRequestData("updatedAsset");
+						
+						Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+						
+						if (data.progress==1)
+						{
+							Display.error("FILE: " + 'File Uploaded!');
+							
+							//assetUserName
+							var assetUserName = me.getState('assetUserName');
+
+							//assetType
+							var assetType = me.getState('assetType');
+
+							//assetName
+							var assetName = me.getState('assetName');
+
+							//incomingFileName
+							var incomingFileName = "updatedAsset";
+	
+	
+							Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: assetUserName, assetType:assetType, assetName:assetName, incomingFileName:incomingFileName}, "updatedAsset");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("updatedAsset")!=null)
+					{
+						var data = Comms.getRequestData("updatedAsset");
+						
+						if (data.code=="success")
+						{
+							Display.error('Updated Asset fucking success!');
+							Logic.getEntityByName('Editor Output').setState('text','Project Saved Successfully!');
+						}
+						else
+						{
+							Display.error('Updated Asset error!');
+							Logic.getEntityByName('Editor Output').setState('text','Error Saving Project :(');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_States>
+		<_State id="name"><Value>Event Collection Editor</Value></_State>
+	</_States>
+</Entity>
