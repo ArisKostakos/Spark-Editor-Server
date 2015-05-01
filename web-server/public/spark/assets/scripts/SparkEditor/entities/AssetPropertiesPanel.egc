@@ -142,7 +142,11 @@
 				</_States>
 				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
 				<Script>
-					Display.error(Logic.getEntityByName('Code Editor').getState('aceObject').getValue());
+					var updatedString = Logic.getEntityByName('Code Editor').getState('aceObject').getValue();
+					
+					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+					Logic.getEntityByName('AU_output').getState('value').setState('text','Updating Asset...');
+					Comms.file_sendFileRequest(updatedString, {name: "updatedAsset", size: updatedString.length, user: connectedUserName} , "updatedAssetPr");
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 			</Entities>
@@ -203,4 +207,65 @@
 			</States>
 		</Action>
 	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData("updatedAssetPr")!=null)
+					{
+						var data = Comms.file_getSendFileRequestData("updatedAssetPr");
+						
+						Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+						
+						if (data.progress==1)
+						{
+							Display.error("FILE: " + 'File Uploaded!');
+							
+							var asset = me.getAction('showAsset').getState('asset');
+							
+							//assetUserName
+							var assetUserName = asset.owner.user.name;
+
+							//assetType
+							var assetType = asset.type;
+
+							//assetName
+							var assetName = asset.name;
+
+							//incomingFileName
+							var incomingFileName = "updatedAsset";
+	
+	
+							Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: assetUserName, assetType:assetType, assetName:assetName, incomingFileName:incomingFileName}, "updatedAssetPr");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("updatedAssetPr")!=null)
+					{
+						var data = Comms.getRequestData("updatedAssetPr");
+						
+						if (data.code=="success")
+						{
+							Display.error('Updated Asset fucking success!');
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Asset Updated Successfully!');
+						}
+						else
+						{
+							Display.error('Updated Asset error!');
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Error Updating Asset :(');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
 </Entity>
