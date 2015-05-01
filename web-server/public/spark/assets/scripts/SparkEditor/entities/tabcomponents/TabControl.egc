@@ -6,5 +6,61 @@
 		<_State id="gap"><Value>0</Value></_State>
 		<State><Id>bar</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>container</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>activeWindow</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>SelectWindow</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('SelectWindow');
+					
+					var activeWindow = me.getState('activeWindow');
+					var windowName = me.getAction('SelectWindow').getState('windowName');
+					
+					if (me.getState('name')=='Viewport Tab')
+					{
+						var view = Logic.getEntityByName('Editor Viewport View');
+						
+						if (windowName=="Scene")
+						{
+							Display.error('Changing To Scene');
+
+							view.setState('height','25');
+						}
+						else if (windowName=="Events")
+						{
+							Display.error('Changing To Events');
+
+							view.setState('height','100%');
+						}
+					}
+					
+					//Crappy Window Selection
+					if (activeWindow!=null)
+					{
+						activeWindow.setState('display','none');
+						me.getState('container').removeChild(activeWindow);
+					}
+				
+					//really crappy..
+					var window = Logic.getEntityByName(windowName + ' Window');
+					if (window!=null)
+					{
+						window.setState('display','inline');
+						me.getState('container').addChild(window);
+					}
+					
+					me.setState('activeWindow',window);
+					
+					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>windowName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</_States>
+		</Action>
+	</_Actions>
 </Entity>

@@ -39,9 +39,15 @@
 						eventEditorHeader.setState('backgroundColor','rgb(46,113,135)');
 						bar.addChild(eventEditorHeader);
 						
+						//Create it, don't add it
+						Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.EventsWindow');
 						
-						//container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.PropertiesWindow'));
-
+						
+						//container.addChild();
+						
+						
+						me.getAction('SelectWindow').setState('windowName','Scene');
+						me.startAction('SelectWindow');
 						
 						me.stopAction('Initialize');
 					}

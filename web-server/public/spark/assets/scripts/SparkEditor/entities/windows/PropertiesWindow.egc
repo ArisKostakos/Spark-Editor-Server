@@ -9,6 +9,7 @@
 		<_State id="paddingTop"><Value>1</Value></_State>
 		<_State id="paddingBottom"><Value>1</Value></_State>
 		<_State id="gap"><Value>1</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
 	</_States>
 	
 	<Form>

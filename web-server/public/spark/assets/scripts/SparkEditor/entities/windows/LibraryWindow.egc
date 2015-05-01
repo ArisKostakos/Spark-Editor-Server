@@ -3,6 +3,7 @@
 	<_States>
 		<_State id="name"><Value>Library Window</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
 	</_States>
 	
 	<Form>

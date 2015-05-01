@@ -72,6 +72,13 @@
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/input/KeyboardInputHorizontal.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/movement/InputMove.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/movement/InputMoveHorizontal.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>std/ace/EventCollection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/ace/Event.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/ace/Condition.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/ace/Action.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>std/ace/EventSheetTest.egc</Asset>
 		</Module>
 
 		<Module id="SparkEditor" executeEntity="SparkEditor.MainProject">
@@ -108,8 +115,8 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/ProjectWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/LibraryWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/PropertiesWindow.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/SceneEditorWindow.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/EventSheetWindow.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/SceneWindow.egc</Asset>-->
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/EventsWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/properties/Category.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/properties/State.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndValue.egc</Asset>

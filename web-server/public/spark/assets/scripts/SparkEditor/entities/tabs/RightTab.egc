@@ -32,6 +32,8 @@
 
 						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.PropertiesWindow'));
 
+						me.getAction('SelectWindow').setState('windowName','Properties');
+						me.startAction('SelectWindow');
 						
 						me.stopAction('Initialize');
 					}

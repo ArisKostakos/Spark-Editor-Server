@@ -40,6 +40,9 @@
 						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ProjectWindow'));
 						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.LibraryWindow'));
 						
+						me.getAction('SelectWindow').setState('windowName','Library');
+						me.startAction('SelectWindow');
+						
 						me.stopAction('Initialize');
 					}
 					else

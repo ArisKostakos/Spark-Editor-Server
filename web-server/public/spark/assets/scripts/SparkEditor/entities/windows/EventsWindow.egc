@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.TabWindow">
+	<_States>
+		<_State id="name"><Value>Events Window</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Text"><_States>
+					<_State id="text"><Value>Event Sheet</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>22px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States></Entity>
+				
+				<Entity extends="std.display.Button"><_States>
+					<_State id="borderRadius"><Value>50%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(0,160,227)</Value></_State>
+					<_State id="width"><Value>28</Value></_State>
+					<_State id="height"><Value>28</Value></_State>
+					</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+					<Script>
+						Display.error('clicked');
+						var obj = Logic.getEntityByName('Condition');
+						obj.forceAction('Triggered');
+					</Script>
+					</Scripts></Trigger></_Triggers>
+				</Entity>
+				
+				<Entity extends="std.ace.EventSheetTest"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Div">
+<Entity extends="std.display.Button">
 	<_States>
 		<State><Id>caption</Id><Type>Text</Type><Value>Untitled</Value></State>
 		<State><Id>fontSize</Id><Type>Text</Type><Value>15px</Value></State>
@@ -29,6 +29,15 @@
 	</_Actions>
 	
 	<_Triggers>
-		<!-- on click -->
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+					//Display.error('clicked tab: ' + me.getState('caption') + ' for: ' + parent.parentEntity.getState('name'));
+					parent.parentEntity.getAction('SelectWindow').setState('windowName',me.getState('caption'));
+					parent.parentEntity.startAction('SelectWindow');
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 </Entity>
