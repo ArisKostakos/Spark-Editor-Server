@@ -10,7 +10,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="std.display.Div"
+				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>60</Value></_State>
