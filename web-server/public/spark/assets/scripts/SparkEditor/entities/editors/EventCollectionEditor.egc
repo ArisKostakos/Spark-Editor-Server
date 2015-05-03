@@ -97,7 +97,7 @@
 									
 									//add it as child to eventWindow
 									eventSheetEdit.addChild(eventEdit);
-									//eventEdit.startAction('CreateNewXml');
+									eventEdit.startAction('CreateNewXml');
 								}
 								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 							}
