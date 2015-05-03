@@ -88,20 +88,20 @@
 									//give it snapshot xml
 									childEntity.setState('xmlData',pureChildXml);*/
 									
-									/*
+									
 									//Get Event Sheet EDIT
-									var eventSheetEdit = Logic.getEntityByName('Event Collection Edit');
+									//var eventSheetEdit = Logic.getEntityByName('Event Collection Edit');
 									
 									
 									//create an eventedit
 									var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');
 									
 									//add it as child to eventWindow
-									eventSheetEdit.addChild(eventEdit);
+									eventCollectionEdit.addChild(eventEdit);
 									eventEdit.startAction('CreateNewXml');
-									*/
+									Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 								}
-								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+								
 							}
 						}
 					}
