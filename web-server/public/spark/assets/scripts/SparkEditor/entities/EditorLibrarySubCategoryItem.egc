@@ -61,6 +61,14 @@
 						entityXml.set('extends' , 'std.display.Image2D');
 						
 						var statesXml = Xml.createElement('_States');
+						
+						//State Name
+						var stateName_Xml = Xml.createElement('_State');
+						stateName_Xml.set('id', 'name');
+						var stateName_ValueXml = Xml.createElement('Value');
+						stateName_ValueXml.addChild(Xml.parse('Unnamed'));
+						
+						//2d mesh image form
 						var stateXml = Xml.createElement('_State');
 						stateXml.set('id', '2DMeshImageForm');
 						var stateValueXml = Xml.createElement('Value');
@@ -89,6 +97,8 @@
 						formStateValueXml.addChild(Xml.parse('image_' + asset.name));
 						
 						entityXml.addChild(statesXml);
+							statesXml.addChild(stateName_Xml);
+								stateName_Xml.addChild(stateName_ValueXml);
 							statesXml.addChild(stateXml);
 								stateXml.addChild(stateValueXml);
 							statesXml.addChild(stateX_Xml);
