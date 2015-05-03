@@ -2,6 +2,7 @@
 <Entity extends="std.core.Base">
 	<_States>
 		<_State id="name"><Value>Action</Value></_State>
+		<State><Id>parameter</Id><Type>Text</Type><Value>Undefined</Value></State>
 	</_States>
 	
 	<_Triggers>
@@ -17,7 +18,7 @@
 					me.stopAction('Run');
 					
 
-					Display.error("Action Run Happened");
+					//Display.error("Action Run Happened");
 
 				</Script>
 			</Scripts>

@@ -2,6 +2,7 @@
 <Entity extends="std.core.Base">
 	<_States>
 		<_State id="name"><Value>Condition</Value></_State>
+		<State><Id>parameter</Id><Type>Text</Type><Value>Undefined</Value></State>
 	</_States>
 	
 	<_Triggers>
@@ -35,7 +36,7 @@
 					//me.stopAction('Triggered');
 					
 					
-					Display.error("Condition Triggered Happened");
+					//Display.error("Condition Triggered Happened");
 					parent.setState('conditionsTriggered',parent.getState('conditionsTriggered')+1);
 					parent.forceAction('CheckConditions');
 				</Script>

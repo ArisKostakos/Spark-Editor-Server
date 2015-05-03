@@ -181,7 +181,6 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorAssetImport.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackgroundImage.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Networking.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/PhysicsEntity.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/Editor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/ProjectEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/SceneEditor.egc</Asset>

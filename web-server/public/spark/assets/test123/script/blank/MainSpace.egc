@@ -15,6 +15,7 @@
 			<Entities>
 				<Entity extends="blank.MainStage"/>
 				<Entity extends="blank.scenes.MainScene"/>
+				<Entity extends="blank.events.MainEventSheet"/>
 				<Entity extends="blank.cameras.MainCamera"/>
 			</Entities>
 		</Space>

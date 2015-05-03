@@ -22,12 +22,12 @@
 					{
 						if (child.getState('name')=='Condition')
 						{
-							Display.error('Condition found');
+							//Display.error('Condition found');
 							me.getState('conditions').push(child);
 						}
 						else if (child.getState('name')=='Action')
 						{
-							Display.error('Action found');
+							//Display.error('Action found');
 							me.getState('actions').push(child);
 						}
 					}
@@ -43,7 +43,7 @@
 			<Scripts>
 				<Script>
 					//me.stopAction('CheckConditions');
-					Display.error("Check Conditions Happened: "+ me.getState('conditionsTriggered') + ', ' + me.getState('conditions').length);
+					//Display.error("Check Conditions Happened: "+ me.getState('conditionsTriggered') + ', ' + me.getState('conditions').length);
 					
 					//If this Action has been called at least once, check if all behaviors have been triggered
 					if (me.getState('conditionsTriggered')==me.getState('conditions').length)

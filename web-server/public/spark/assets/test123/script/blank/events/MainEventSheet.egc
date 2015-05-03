@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Scene2D">
-
+<Entity extends="std.ace.EventCollection">
 	<_States>
-		<_State id="name">
-			<Value>Main Scene</Value>
-		</_State>
+
 	</_States>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_Actions>
+		
+	</_Actions>
 	
 	<Form>
 		<Space>
 			<Entities>
-
+				
 			</Entities>
 		</Space>
 	</Form>

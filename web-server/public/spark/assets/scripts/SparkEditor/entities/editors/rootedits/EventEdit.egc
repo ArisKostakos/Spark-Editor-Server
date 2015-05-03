@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.display.Div">
 	<_States>
-		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="name"><Value>Event</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="border"><Value>1px dashed black</Value></_State>
+		<_State id="borderRadius"><Value>5px</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<!--<_State id="backgroundColor"><Value>rgb(0,160,227)</Value></_State>-->
+		<State><Id>conditionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>actionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 		
 		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
@@ -12,74 +19,155 @@
 	<_Form>
 		<_Space>
 			<_Entities>
+				<!-- Conditions -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Conditions Container -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								Display.error("conditions container constructor");
+								parent.parentEntity.setState('conditionsContainer',me);
+								
+								//create an conditionEdit
+								var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+								
+								//add it as child to me
+								me.addChild(conditionEdit);
+								conditionEdit.startAction('CreateNewXml');
+								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						
+						<!-- Add New Condition -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="borderRadius"><Value>8px</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(100,160,227)</Value></_State>
+							<_State id="width"><Value>120</Value></_State>
+							<_State id="height"><Value>14</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>12px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="text"><Value>Add New Condition</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+							<Script>
+								//create an conditionEdit
+								var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+								
+								//add it as child to me
+								parent.parentEntity.getState('conditionsContainer').addChild(conditionEdit);
+								conditionEdit.startAction('CreateNewXml');
+								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
 				
+				<!-- Actions -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Actions Container -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								Display.error("actions container constructor");
+								parent.parentEntity.setState('actionsContainer',me);
+								
+								//create an actionEdit
+								var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+								
+								//add it as child to me
+								me.addChild(actionEdit);
+								actionEdit.startAction('CreateNewXml');
+								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						
+						<!-- Add New Action -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="borderRadius"><Value>8px</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(180,160,57)</Value></_State>
+							<_State id="width"><Value>120</Value></_State>
+							<_State id="height"><Value>14</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>12px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="text"><Value>Add New Action</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+							<Script>
+								//create an actionEdit
+								var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+								
+								//add it as child to me
+								parent.parentEntity.getState('actionsContainer').addChild(actionEdit);
+								actionEdit.startAction('CreateNewXml');
+								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
 			</_Entities>
 		</_Space>
 	</_Form>
 	
 	<_Triggers>
-		<Trigger>
-			<Event>MouseLeftClicked</Event>
-			<Scripts>
-				<Script>
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
-					leveleditor2d.getAction('EntityClicked').setState('entity',me);
-					leveleditor2d.startAction('EntityClicked');
-					me.startAction('Drag');
-				</Script>
-			</Scripts>
-		</Trigger>
-		<Trigger>
-			<Event>KeyPressed_W</Event>
-			<Scripts>
-				<Script>
-					if (me.getState('selected'))
-					{
-						me.getAction('Clone').setState('dir','up');
-						me.startAction('Clone');
-					}
-				</Script>
-			</Scripts>
-		</Trigger>
-		<Trigger>
-			<Event>KeyPressed_S</Event>
-			<Scripts>
-				<Script>
-					if (me.getState('selected'))
-					{
-						me.getAction('Clone').setState('dir','down');
-						me.startAction('Clone');
-					}
-				</Script>
-			</Scripts>
-		</Trigger>
-		<Trigger>
-			<Event>KeyPressed_A</Event>
-			<Scripts>
-				<Script>
-					if (me.getState('selected'))
-					{
-						me.getAction('Clone').setState('dir','left');
-						me.startAction('Clone');
-					}
-				</Script>
-			</Scripts>
-		</Trigger>
-		<Trigger>
-			<Event>KeyPressed_D</Event>
-			<Scripts>
-				<Script>
-					if (me.getState('selected'))
-					{
-						me.getAction('Clone').setState('dir','right');
-						me.startAction('Clone');
-					}
-				</Script>
-			</Scripts>
-		</Trigger>
+		
 	</_Triggers>
 	
 	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					return;
+					Display.error('conditions container: ' + me.getState('conditionsContainer'));
+					Display.error('actions container: ' + me.getState('actionsContainer'));
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<!-- CreateNewXml -->
+		<Action>
+			<Id>CreateNewXml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("CreateNewXml");
+
+					//Create new entity Xml
+					var entityXml = Xml.createElement('Entity');
+					entityXml.set('extends','std.ace.Event');
+					/*
+					//Create [Form.Space.Entities]
+					var formXml = Xml.createElement('Form');
+					entityXml.addChild(formXml);
+					var spaceXml = Xml.createElement('Space');
+					formXml.addChild(spaceXml);
+					var entitiesXml = Xml.createElement('Entities');
+					spaceXml.addChild(entitiesXml);
+					*/
+					me.setState('xmlData',entityXml);
+					
+					Display.error('xml data created fine!');
+				</Script>
+			</Scripts>
+		</Action>
+
+		
+		
 		<!-- AddBehavior -->
 		<Action>
 			<Id>AddBehavior</Id>
