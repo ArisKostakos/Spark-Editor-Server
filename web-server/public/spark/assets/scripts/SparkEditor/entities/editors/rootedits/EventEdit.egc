@@ -33,14 +33,6 @@
 							<_Actions><_Action id="Constructor"><_Scripts><Script>
 								Display.error("conditions container constructor");
 								parent.parentEntity.setState('conditionsContainer',me);
-								
-								//create an conditionEdit
-								var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
-								
-								//add it as child to me
-								me.addChild(conditionEdit);
-								conditionEdit.startAction('CreateNewXml');
-								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 							</Script></_Scripts></_Action></_Actions>
 						</Entity>
 						
@@ -84,14 +76,6 @@
 							<_Actions><_Action id="Constructor"><_Scripts><Script>
 								Display.error("actions container constructor");
 								parent.parentEntity.setState('actionsContainer',me);
-								
-								//create an actionEdit
-								var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
-								
-								//add it as child to me
-								me.addChild(actionEdit);
-								actionEdit.startAction('CreateNewXml');
-								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 							</Script></_Scripts></_Action></_Actions>
 						</Entity>
 						
@@ -145,28 +129,117 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.stopAction("CreateNewXml");
+					if (me.getState('conditionsContainer')!=null && me.getState('actionsContainer')!=null)
+					{
+						me.stopAction("CreateNewXml");
+						
+						//Create new entity Xml
+						var entityXml = Xml.createElement('Entity');
+						entityXml.set('extends','std.ace.Event');
 
-					//Create new entity Xml
-					var entityXml = Xml.createElement('Entity');
-					entityXml.set('extends','std.ace.Event');
-					/*
-					//Create [Form.Space.Entities]
-					var formXml = Xml.createElement('Form');
-					entityXml.addChild(formXml);
-					var spaceXml = Xml.createElement('Space');
-					formXml.addChild(spaceXml);
-					var entitiesXml = Xml.createElement('Entities');
-					spaceXml.addChild(entitiesXml);
-					*/
-					me.setState('xmlData',entityXml);
-					
-					Display.error('xml data created fine!');
+						me.setState('xmlData',entityXml);
+						
+						//create an conditionEdit
+						var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+						
+						//add it as child to conditions
+						me.getState('conditionsContainer').addChild(conditionEdit);
+						conditionEdit.startAction('CreateNewXml');
+
+							
+						//create an actionEdit
+						var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+						
+						//add it as child to actions
+						me.getState('actionsContainer').addChild(actionEdit);
+						actionEdit.startAction('CreateNewXml');
+						
+						
+						Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					}
 				</Script>
 			</Scripts>
 		</Action>
 
-		
+		<!-- ImportXml -->
+		<Action>
+			<Id>ImportXml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('conditionsContainer')!=null && me.getState('actionsContainer')!=null)
+					{
+						me.stopAction("ImportXml");
+						
+						function firstElementNamed(p_xmlNode, p_elementName)
+						{
+							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+							{
+								return p_xmlNode.elementsNamed(p_elementName).next();
+							}
+							else
+							{
+								return null;
+							}
+						}
+						
+						//Create new entity Xml
+						var entityXml = me.getAction('ImportXml').getState('importedXml');
+						me.setState('xmlData',entityXml);
+						
+						//remove Form
+						var formXml = firstElementNamed(entityXml,'Form');
+						if (formXml!=null)
+						{
+							entityXml.removeChild(formXml);
+						
+							var formSpaceXml = firstElementNamed(formXml,'Space');
+							if (formSpaceXml!=null)
+							{
+								var formSpaceEntitiesXml = firstElementNamed(formSpaceXml,'Entities');
+								if (formSpaceEntitiesXml!=null)
+								{
+									var entities = formSpaceEntitiesXml.elementsNamed('Entity');
+									//for each [entity] in [form.space.entities]
+									while (entities.hasNext())
+									{
+										var entityChildXml = entities.next();
+										
+										if (entityChildXml.get('extends')=='std.ace.Condition')
+										{
+											Display.error("XML IMPORT: FOUND CONDITION");
+											//create an conditionEdit
+											var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+											
+											//add it as child to conditions
+											me.getState('conditionsContainer').addChild(conditionEdit);
+											conditionEdit.getAction('ImportXml').setState('importedXml',entityChildXml);
+											conditionEdit.startAction('ImportXml');
+										}
+										else if (entityChildXml.get('extends')=='std.ace.Action')
+										{
+											Display.error("XML IMPORT: FOUND ACTION");
+											//create an actionEdit
+											var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+											
+											//add it as child to actions
+											me.getState('actionsContainer').addChild(actionEdit);
+											actionEdit.getAction('ImportXml').setState('importedXml',entityChildXml);
+											actionEdit.startAction('ImportXml');
+										}
+									}
+									Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+								}
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importedXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+
 		
 		<!-- AddBehavior -->
 		<Action>

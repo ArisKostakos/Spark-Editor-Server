@@ -57,51 +57,17 @@
 								while (entities.hasNext())
 								{
 									var entityChildXml = entities.next();
-									//Display.error("Found child: " + entityChildXml.get('extends'));
-									//take snapshot
-									var pureChildXml = Xml.parse(entityChildXml.toString());
-									//Display.error("Displaying Child: " + pureChildXml.toString());
-									/*
-									//Remove [extends]
-									var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
-									if (childExtendsXml!=null)
-										entityChildXml.removeChild(childExtendsXml);
-										
-									//if no [extends], create it
-									//var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
-									//if (childExtendsXml==null)
-									//{
-										childExtendsXml = Xml.createElement('Extends');
-										entityChildXml.insertChild(childExtendsXml,0);
-									//}
-									
-									
-									//add [entity] Sprite2DEdit in [extends]
-									var sceneEditXml = Xml.createElement('Entity');
-									sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
-									childExtendsXml.addChild(sceneEditXml);
-									
-									//instantiate, add to scene
-									var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
-									editScene.addChild(childEntity);
-									
-									//give it snapshot xml
-									childEntity.setState('xmlData',pureChildXml);*/
-									
-									
-									//Get Event Sheet EDIT
-									//var eventSheetEdit = Logic.getEntityByName('Event Collection Edit');
-									
-									
+
 									//create an eventedit
 									var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');
 									
 									//add it as child to eventWindow
 									eventCollectionEdit.addChild(eventEdit);
-									eventEdit.startAction('CreateNewXml');
-									Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+									eventEdit.getAction('ImportXml').setState('importedXml',entityChildXml);
+									eventEdit.startAction('ImportXml');
+									
 								}
-								
+								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 							}
 						}
 					}

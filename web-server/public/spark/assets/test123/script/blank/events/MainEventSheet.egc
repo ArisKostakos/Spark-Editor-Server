@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.ace.EventCollection">
 	<_States>
 
@@ -12,11 +11,5 @@
 		
 	</_Actions>
 	
-	<Form>
-		<Space>
-			<Entities>
-				
-			</Entities>
-		</Space>
-	</Form>
-</Entity>
+	
+<Form><Space><Entities><Entity extends="std.ace.Event"><Form><Space><Entities><Entity extends="std.ace.Condition"><_Actions><_Action id="Update"><_Scripts><Script>if (true) me.forceAction('Triggered');</Script></_Scripts></_Action></_Actions><_States><_State id="parameter"><Value>true</Value></_State></_States></Entity><Entity extends="std.ace.Action"><_Actions><_Action id="Run"><_Scripts><Script>Display.error("Hello World!");</Script></_Scripts></_Action></_Actions><_States><_State id="parameter"><Value>Display.error("Hello World!")</Value></_State></_States></Entity></Entities></Space></Form></Entity></Entities></Space></Form></Entity>
