@@ -198,6 +198,20 @@
 				<Script>
 					me.stopAction("CleanScene");
 					
+					var selectedEntities = me.getState('selectedEntities');
+					
+					//Get Scene
+					var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					
+					if (selectedEntities.length==1)
+					{
+						scene.removeChild(selectedEntities[0]);
+					}
+					
+					
+					
+					
+					return;
 					function firstElementNamed(p_xmlNode, p_elementName)
 					{
 						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
