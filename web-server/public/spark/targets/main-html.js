@@ -15439,6 +15439,9 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 						case "Wood":
 							l_material = nape_phys_Material.wood();
 							break;
+						case "Ellastic":
+							l_material = new nape_phys_Material(1,0,0,1,0);
+							break;
 						default:
 							l_material = nape_phys_Material.wood();
 						}
