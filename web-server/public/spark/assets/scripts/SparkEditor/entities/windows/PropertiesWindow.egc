@@ -68,6 +68,7 @@
 							
 							var categoryObject = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.properties.Category');
 							categoryObject.setState('entityXml',entityChildXml);
+							categoryObject.setState('parentXml',extendsXml);
 							me.addChild(categoryObject);
 							
 							var statesXml = firstElementNamed(entityChildXml,'_States');
