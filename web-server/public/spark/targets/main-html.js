@@ -10703,9 +10703,25 @@ nape_geom_Vec2.prototype = {
 		this.zpp_inner.validate();
 		return this.zpp_inner.x;
 	}
+	,set_x: function(x) {
+		this.zpp_inner.immutable();
+		if(this.get_x() != x) {
+			this.zpp_inner.x = x;
+			this.zpp_inner.invalidate();
+		}
+		return this.get_x();
+	}
 	,get_y: function() {
 		this.zpp_inner.validate();
 		return this.zpp_inner.y;
+	}
+	,set_y: function(y) {
+		this.zpp_inner.immutable();
+		if(this.get_y() != y) {
+			this.zpp_inner.y = y;
+			this.zpp_inner.invalidate();
+		}
+		return this.get_y();
 	}
 	,set: function(vector) {
 		this.zpp_inner.immutable();
@@ -15200,33 +15216,39 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var v7 = $bind(this,this._updateOpacity);
 		this._updateStateFunctions.set("opacity",v7);
 		v7;
-		var v8 = $bind(this,this._centerAnchor);
-		this._updateStateFunctions.set("centerAnchor",v8);
+		var v8 = $bind(this,this._updateVelocityX);
+		this._updateStateFunctions.set("velocityX",v8);
 		v8;
-		var v9 = $bind(this,this._updatePhysics);
-		this._updateStateFunctions.set("physicsEntity",v9);
+		var v9 = $bind(this,this._updateVelocityY);
+		this._updateStateFunctions.set("velocityY",v9);
 		v9;
-		var v10 = $bind(this,this._updateSpaceWidth);
-		this._updateStateFunctions.set("spaceWidth",v10);
+		var v10 = $bind(this,this._centerAnchor);
+		this._updateStateFunctions.set("centerAnchor",v10);
 		v10;
-		var v11 = $bind(this,this._updateSpaceHeight);
-		this._updateStateFunctions.set("spaceHeight",v11);
+		var v11 = $bind(this,this._updatePhysics);
+		this._updateStateFunctions.set("physicsEntity",v11);
 		v11;
-		var v12 = $bind(this,this._update2DMeshImageForm);
-		this._updateStateFunctions.set("2DMeshImageForm",v12);
+		var v12 = $bind(this,this._updateSpaceWidth);
+		this._updateStateFunctions.set("spaceWidth",v12);
 		v12;
-		var v13 = $bind(this,this._update2DMeshSpriterForm);
-		this._updateStateFunctions.set("2DMeshSpriterForm",v13);
+		var v13 = $bind(this,this._updateSpaceHeight);
+		this._updateStateFunctions.set("spaceHeight",v13);
 		v13;
-		var v14 = $bind(this,this._update2DMeshFillRectForm);
-		this._updateStateFunctions.set("2DMeshFillRectForm",v14);
+		var v14 = $bind(this,this._update2DMeshImageForm);
+		this._updateStateFunctions.set("2DMeshImageForm",v14);
 		v14;
-		var v15 = $bind(this,this._update2DMeshSpriteForm);
-		this._updateStateFunctions.set("2DMeshSpriteForm",v15);
+		var v15 = $bind(this,this._update2DMeshSpriterForm);
+		this._updateStateFunctions.set("2DMeshSpriterForm",v15);
 		v15;
-		var v16 = $bind(this,this._update2DMeshSpriterAnimForm);
-		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v16);
+		var v16 = $bind(this,this._update2DMeshFillRectForm);
+		this._updateStateFunctions.set("2DMeshFillRectForm",v16);
 		v16;
+		var v17 = $bind(this,this._update2DMeshSpriteForm);
+		this._updateStateFunctions.set("2DMeshSpriteForm",v17);
+		v17;
+		var v18 = $bind(this,this._update2DMeshSpriterAnimForm);
+		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v18);
+		v18;
 	}
 	,createInstance: function(p_view2_5D) {
 		var v = new flambe_Entity();
@@ -15393,8 +15415,9 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 				if(this.parentScene != null) {
 					if(this.parentScene.gameEntity.getState("physicsScene")) {
 						var l_sceneInstance = this.parentScene.getInstance(p_view2_5D);
-						var body;
-						if(this.gameEntity.getState("physicsType") == "Static") body = new nape_phys_Body(nape_phys_BodyType.get_STATIC()); else body = new nape_phys_Body();
+						var bodyType;
+						if(this.gameEntity.getState("physicsType") == "Static") bodyType = nape_phys_BodyType.get_STATIC(); else if(this.gameEntity.getState("physicsType") == "Kinematic") bodyType = nape_phys_BodyType.get_KINEMATIC(); else if(this.gameEntity.getState("physicsType") == "Dynamic") bodyType = nape_phys_BodyType.get_DYNAMIC(); else bodyType = nape_phys_BodyType.get_STATIC();
+						var body = new nape_phys_Body(bodyType);
 						var l_material;
 						var _g = this.gameEntity.getState("physicsMaterial");
 						switch(_g) {
@@ -15434,7 +15457,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 						}
 						body.get_shapes().add(l_shape);
 						body.set_position(new nape_geom_Vec2(l_mesh.x.get__(),l_mesh.y.get__()));
-						if(this.gameEntity.getState("physicsType") != "Static") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("initialForceX"),this.gameEntity.getState("initialForceY")));
+						if(this.gameEntity.getState("physicsType") == "Dynamic") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("initialForceX"),this.gameEntity.getState("initialForceY"))); else if(this.gameEntity.getState("physicsType") == "Kinematic") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("velocityX"),this.gameEntity.getState("velocityY")));
 						body.set_space(((function($this) {
 							var $r;
 							var component = l_sceneInstance.getComponent("SpaceComponent_3");
@@ -15446,6 +15469,26 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 				}
 			}
 		}
+	}
+	,_updateVelocityX: function(p_newVel,p_view2_5D) {
+		var l_instance = this._instances.get(p_view2_5D);
+		var body = ((function($this) {
+			var $r;
+			var component = l_instance.getComponent("BodyComponent_4");
+			$r = component;
+			return $r;
+		}(this))).body;
+		body.get_velocity().set_x(p_newVel);
+	}
+	,_updateVelocityY: function(p_newVel,p_view2_5D) {
+		var l_instance = this._instances.get(p_view2_5D);
+		var body = ((function($this) {
+			var $r;
+			var component = l_instance.getComponent("BodyComponent_4");
+			$r = component;
+			return $r;
+		}(this))).body;
+		body.get_velocity().set_y(p_newVel);
 	}
 	,_updateTouchable: function(p_touchableFlag,p_view2_5D) {
 		var l_mesh = this._instancesMesh.get(p_view2_5D);
@@ -15617,9 +15660,9 @@ tools_spark_framework_flambe2_$5D_FlambeView2_$5D.prototype = $extend(tools_spar
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_FlambeView2_$5D
 });
-var tools_spark_framework_flambe2_$5D_components_BodyComponent = function(body) {
+var tools_spark_framework_flambe2_$5D_components_BodyComponent = function(p_body) {
 	flambe_Component.call(this);
-	this._body = body;
+	this.body = p_body;
 };
 $hxClasses["tools.spark.framework.flambe2_5D.components.BodyComponent"] = tools_spark_framework_flambe2_$5D_components_BodyComponent;
 tools_spark_framework_flambe2_$5D_components_BodyComponent.__name__ = true;
@@ -15629,18 +15672,18 @@ tools_spark_framework_flambe2_$5D_components_BodyComponent.prototype = $extend(f
 		return "BodyComponent_4";
 	}
 	,onUpdate: function(dt) {
-		var pos = this._body.get_position();
+		var pos = this.body.get_position();
 		if(pos.get_y() > flambe_System.get_stage().get_height() + 100) this.owner.dispose(); else {
 			var sprite;
 			var component = this.owner.getComponent("Sprite_2");
 			sprite = component;
 			sprite.x.set__(pos.get_x());
 			sprite.y.set__(pos.get_y());
-			sprite.rotation.set__(flambe_math_FMath.toDegrees(this._body.get_rotation()));
+			sprite.rotation.set__(flambe_math_FMath.toDegrees(this.body.get_rotation()));
 		}
 	}
 	,onRemoved: function() {
-		this._body.set_space(null);
+		this.body.set_space(null);
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_components_BodyComponent
 });
@@ -17404,6 +17447,10 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 		this._renderStateNames.set("scaleY",true);
 		true;
 		this._renderStateNames.set("scaleZ",true);
+		true;
+		this._renderStateNames.set("velocityX",true);
+		true;
+		this._renderStateNames.set("velocityY",true);
 		true;
 		this._renderStateNames.set("spaceWidth",true);
 		true;
