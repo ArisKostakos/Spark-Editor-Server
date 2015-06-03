@@ -50,6 +50,12 @@
 		</State>
 		
 		<State>
+			<Id>fontWeight</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
 			<Id>textAlign</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>

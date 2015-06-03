@@ -10,7 +10,10 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="SparkEditor.entities.EditorTopBarPanel"/>
+				<Entity extends="SparkEditor.entities.EditorTopBarPanel">
+					<_States><_State id="display"><Value>none</Value></_State></_States>
+				</Entity>
+				<Entity extends="SparkEditor.entities.navigationBar.LobbyModePanel"/>
 			</Entities>
 		</Space>
 	</Form>

@@ -151,6 +151,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorViewportView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/SignupPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/LobbyModePanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorTopBarPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarFileSection.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarEditSection.egc</Asset>
@@ -209,6 +210,7 @@
 			<Asset type="image" subtype="2D" location="local" id="codeIcon" bytes='35672' forceLoadAsData='true'>codeIcon.png</Asset>
 			
 			<!-- Top Bar, Edit -->
+			<Asset type="image" subtype="2D" location="local" id="editor_unknownUser" bytes='35672' forceLoadAsData='true'>editor/topbar/unknownUser.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_undo" bytes='35672' forceLoadAsData='true'>editor/topbar/undo.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_redo" bytes='35672' forceLoadAsData='true'>editor/topbar/redo.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_cut" bytes='35672' forceLoadAsData='true'>editor/topbar/cut.png</Asset>

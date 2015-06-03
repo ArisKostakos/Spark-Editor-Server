@@ -14743,18 +14743,21 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		var v9 = $bind(this,this._updateFontSize);
 		this._updateStateFunctions.set("fontSize",v9);
 		v9;
-		var v10 = $bind(this,this._updateOverflow);
-		this._updateStateFunctions.set("overflow",v10);
+		var v10 = $bind(this,this._updateFontWeight);
+		this._updateStateFunctions.set("fontWeight",v10);
 		v10;
-		var v11 = $bind(this,this._updateWidth);
-		this._updateStateFunctions.set("width",v11);
+		var v11 = $bind(this,this._updateOverflow);
+		this._updateStateFunctions.set("overflow",v11);
 		v11;
-		var v12 = $bind(this,this._updateHeight);
-		this._updateStateFunctions.set("height",v12);
+		var v12 = $bind(this,this._updateWidth);
+		this._updateStateFunctions.set("width",v12);
 		v12;
-		var v13 = $bind(this,this._updateBackgroundColor);
-		this._updateStateFunctions.set("backgroundColor",v13);
+		var v13 = $bind(this,this._updateHeight);
+		this._updateStateFunctions.set("height",v13);
 		v13;
+		var v14 = $bind(this,this._updateBackgroundColor);
+		this._updateStateFunctions.set("backgroundColor",v14);
+		v14;
 	}
 	,createInstance: function(p_view2_5D) {
 		var _g = this.gameEntity.getState("NCmeshType");
@@ -14831,6 +14834,7 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 			this._updateState("opacity",p_view2_5D);
 			this._updateState("display",p_view2_5D);
 			this._updateState("fontSize",p_view2_5D);
+			this._updateState("fontWeight",p_view2_5D);
 			this._updateState("fontColor",p_view2_5D);
 			this._updateState("overflow",p_view2_5D);
 			this._updateState("backgroundColor",p_view2_5D);
@@ -14896,6 +14900,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 	}
 	,_updateFontSize: function(p_fontSize,p_view2_5D) {
 		if(p_fontSize != "Undefined") this._instances.get(p_view2_5D).style.fontSize = p_fontSize;
+	}
+	,_updateFontWeight: function(p_fontWeight,p_view2_5D) {
+		if(p_fontWeight != "Undefined") this._instances.get(p_view2_5D).style.fontWeight = p_fontWeight;
 	}
 	,_updateFontColor: function(p_fontColor,p_view2_5D) {
 		if(p_fontColor != "Undefined") this._instances.get(p_view2_5D).style.color = p_fontColor;
@@ -17430,6 +17437,8 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 		this._renderStateNames.set("text",true);
 		true;
 		this._renderStateNames.set("fontSize",true);
+		true;
+		this._renderStateNames.set("fontWeight",true);
 		true;
 		this._renderStateNames.set("fontColor",true);
 		true;
