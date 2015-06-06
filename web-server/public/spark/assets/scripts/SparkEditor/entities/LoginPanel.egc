@@ -148,10 +148,10 @@
 					var strPass =parent.getState('passwordInput').getState('text');
 					//strUser = 'aris';
 					//strPass = 'r0diof';
-					//strUser = 'test123';
-					//strPass = 'lala123';
-					strUser = 'spark';
-					strPass = '12qw!@QW ';
+					strUser = 'test123';
+					strPass = 'lala123';
+					//strUser = 'spark';
+					//strPass = '12qw!@QW ';
 					
 					
 					if (strUser.length>0 && strUser!='Undefined' &&
