@@ -106,6 +106,7 @@
 					<_State id="width"><Value>100%</Value></_State>
 					<_State id="height"><Value>100%</Value></_State>
 					<_State id="verticalAlign"><Value>top</Value></_State>
+					<_State id="paddingTop"><Value>2</Value></_State>
 					<_State id="paddingBottom"><Value>2</Value></_State>
 					<_State id="gap"><Value>6</Value></_State></_States><Form><Space><Entities>
 					
