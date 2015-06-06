@@ -193,7 +193,7 @@
 					var i = 0;
 					while (asset.assetDependancies.length>i)
 					{
-						depNames += ", " + asset.assetDependancies[i].fileName;
+						depNames += ", " + asset.assetDependancies[i].name; //asset.assetDependancies[i].fileName;
 						i+=1;
 					}
 						
