@@ -41,9 +41,15 @@ handler.fork = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
     var projectName = msg.projectName;
+    var projectTitle = msg.projectTitle;
     var forkedProjectName = msg.forkedProjectName;
     var user = session.get('user');
     var developer = session.get('developer');
+
+    console.warn('1: projectName: ' + projectName + ', projectTitle: ' + projectTitle + ', forkedProjectName: ' + forkedProjectName);
+    //success
+    next(null, {code: "success"});
+    return;
 
     //get forked Project
 

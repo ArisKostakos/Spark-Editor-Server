@@ -19,6 +19,9 @@ EReg.prototype = {
 		this.r.s = s;
 		return this.r.m != null;
 	}
+	,replace: function(s,by) {
+		return s.replace(this.r,by);
+	}
 	,__class__: EReg
 };
 var HxOverrides = function() { };
@@ -19949,6 +19952,10 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 			this._gameEntitiesByName.set(key,p_entity);
 		}
 	}
+	,replace: function(p_source,p_regex,p_regexParameters,p_replaceWith) {
+		var l_regEx = new EReg(p_regex,p_regexParameters);
+		return l_regEx.replace(p_source,p_replaceWith);
+	}
 	,__class__: tools_spark_sliced_services_std_logic_core_Logic
 });
 var tools_spark_sliced_services_std_logic_gde_interfaces_IGameBase = function() { };
@@ -23543,6 +23550,7 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 		this._interpreter.variables.set("Xml",Xml);
 		this._interpreter.variables.set("Fast",haxe_xml_Fast);
 		this._interpreter.variables.set("StringTools",StringTools);
+		this._interpreter.variables.set("EReg",EReg);
 		this._interpreter.variables.set("XMLHttpRequest",XMLHttpRequest);
 	}
 	,run: function(hashId,parameters) {
@@ -23562,6 +23570,7 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 		this._interpreter.variables.set("Xml",Xml);
 		this._interpreter.variables.set("Fast",haxe_xml_Fast);
 		this._interpreter.variables.set("StringTools",StringTools);
+		this._interpreter.variables.set("EReg",EReg);
 		this._interpreter.variables.set("XMLHttpRequest",XMLHttpRequest);
 		var $it0 = parameters.keys();
 		while( $it0.hasNext() ) {

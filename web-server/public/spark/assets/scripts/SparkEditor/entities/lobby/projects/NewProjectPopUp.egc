@@ -5,6 +5,7 @@
 		<_State id="backgroundColor"><Value>#21303D</Value></_State>
 		<_State id="borderRadius"><Value>12px</Value></_State>
 		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+		<State><Id>newProjectName</Id><Type>Text</Type><Value>Untitled</Value></State>
 	</_States>
 	
 	<Form>
@@ -58,7 +59,7 @@
 								<!-- Name Input-->
 								<Entity extends="std.display.Input">
 									<_States>
-										<_State id="name"><Value>Project Name</Value></_State>
+										<_State id="name"><Value>Create New: Project Name Field</Value></_State>
 										<_State id="width"><Value>100%</Value></_State>
 										<_State id="height"><Value>47</Value></_State>
 										<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -227,6 +228,7 @@
 												<!-- Create Button -->
 												<Entity extends="std.display.Button">
 													<_States>
+														<_State id="name"><Value>Create New: Create Project Button</Value></_State>
 														<_State id="width"><Value>100%</Value></_State>
 														<_State id="height"><Value>100%</Value></_State>
 														<_State id="textAlign"><Value>center</Value></_State>
@@ -241,6 +243,26 @@
 													<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
 													<Script>
 														Display.warn("Create Project");
+														if (me.getState('text')!="Create") return;
+														
+														var projectName = Logic.getEntityByName('Create New: Project Name Field').getState('text');
+														projectName = Logic.replace(projectName,' ','g','_');
+														projectName = Logic.replace(projectName,'[^a-zA-Z0-9_]','g','');
+														projectName = projectName.toLowerCase();
+														
+														if (3>projectName.length || projectName=='undefined' || projectName.length>40)
+														{
+															Display.error("Project Name is less than 3 characters or more than 40");
+														}
+														else
+														{
+															Display.error("I'm sending this: " + projectName);
+															me.setState('text',"Please Wait...");
+															
+															Logic.getEntityByName('New Project Pop Up').setState('newProjectName',projectName);
+															
+															Comms.request("lobby.projectHandler.connect", {projectName: projectName}, "Check if Project Exists");
+														}
 													</Script>
 													</Scripts></Trigger></_Triggers>
 												</Entity>
@@ -284,6 +306,54 @@
 	</_Actions>
 	
 	<_Triggers>
-		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("Check if Project Exists")!=null)
+					{
+						var data = Comms.getRequestData("Check if Project Exists");
+						
+						if (data.code=="success")
+						{
+							Display.error('PROJECT ALREADY EXIIIIIIIIIIIISTS!!!');
+							Logic.getEntityByName('Create New: Create Project Button').setState('text',"Create");
+						}
+						else if (data.code=="notfound")
+						{
+							var newProjectName = Logic.getEntityByName('New Project Pop Up').getState('newProjectName');
+							var newProjectTitle = Logic.getEntityByName('Create New: Project Name Field').getState('text');
+							var forkTemplateName = "Platform";
+							Display.error('PROJECT DOES NOT EXIIIIIIIIIIST: ' + newProjectName);
+
+							//Fork Platform
+							Comms.request("lobby.projectHandler.fork", {projectName: newProjectName, projectTitle: newProjectTitle, forkedProjectName: forkTemplateName}, "Create New Project Template");
+						}
+						else
+						{
+							me.getState('outputText').setState('text', 'Error connecting to project.');
+						}
+					}
+					else if (Comms.getRequestData("Create New Project Template")!=null)
+					{
+						var data = Comms.getRequestData("Create New Project Template");
+						
+						if (data.code=="success")
+						{
+							//me.getState('outputText').setState('text', "Project forked. Connecting...");
+							Display.error('Project forked. Connecting...');
+						
+							//Connect to it
+							//Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
+						}
+						else
+						{
+							Display.error('Error forking project.');
+							//me.getState('outputText').setState('text', 'Error forking project.');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 </Entity>
