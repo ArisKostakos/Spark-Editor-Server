@@ -46,10 +46,6 @@ handler.fork = function(msg, session, next) {
     var user = session.get('user');
     var developer = session.get('developer');
 
-    console.warn('1: projectName: ' + projectName + ', projectTitle: ' + projectTitle + ', forkedProjectName: ' + forkedProjectName);
-    //success
-    next(null, {code: "success"});
-    return;
 
     //get forked Project
 
@@ -79,8 +75,8 @@ handler.fork = function(msg, session, next) {
                         if (object_found) {
                             var templateProject = object_found;
 
-                            //create new project (mark it forks blank, not a template, copy paste some blank stuff)
-                            var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: [], accessControl: []};
+                            //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
+                            var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: [], accessControl: []};
 
                             //Create Project
                             database.create(database.Project, raw_Project,
