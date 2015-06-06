@@ -228,16 +228,8 @@
 						
 						if (data.code=="match")
 						{
-							//if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
-							//{
-								me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
-								Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
-							//}
-							//else
-							//{
-							//	me.getState('outputText').setState('text', 'Logged in. Accessing Project...');
-							//	Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
-							//}
+							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
+							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
 						}
 						else if (data.code=="nomatch")
 						{
@@ -248,54 +240,6 @@
 						{
 							//Display.error("Log In Panel: Unknown Error");
 							me.getState('outputText').setState('text', 'An unknown error occured.');
-						}
-					}
-					else if (Comms.getRequestData("Access Default Project Request")!=null)
-					{
-						var data = Comms.getRequestData("Access Default Project Request");
-						
-						if (data.code=="success")
-						{
-							
-							me.getState('outputText').setState('text', "Project found. Connecting...");
-							
-							//Connect to it
-							Logic.getEntityByName('Spark Editor').setState('projectname',me.getState('defaultProject'));
-							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
-							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
-
-							//Try some init stuff
-							Display.error("Doing INIT stuff!");
-							var projectEditor = Logic.getEntityByName('Project Editor');
-							projectEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
-							projectEditor.startAction('RequestProjectDbAssets');
-						}
-						else if (data.code=="notfound")
-						{
-							//Fork Blank
-							me.getState('outputText').setState('text', "Project does't exist. Creating...");
-							
-							Comms.request("lobby.projectHandler.fork", {projectName: me.getState('defaultProject'), forkedProjectName: me.getState('defaultForkTemplate')}, "Fork Project Request");
-						}
-						else
-						{
-							me.getState('outputText').setState('text', 'Error connecting to project.');
-						}
-					}
-					else if (Comms.getRequestData("Fork Project Request")!=null)
-					{
-						var data = Comms.getRequestData("Fork Project Request");
-						
-						if (data.code=="success")
-						{
-							me.getState('outputText').setState('text', "Project forked. Connecting...");
-						
-							//Connect to it
-							Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
-						}
-						else
-						{
-							me.getState('outputText').setState('text', 'Error forking project.');
 						}
 					}
 					/*else if (Comms.getRequestData("Create Project Request")!=null)

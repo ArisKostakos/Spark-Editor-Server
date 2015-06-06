@@ -20,6 +20,12 @@
 			<Scripts>
 				<Script>
 					me.stopAction("ButtonClicked");
+					
+					if (me.getState('project')!=null)
+					{
+						Logic.getEntityByName('Spark Editor').setState('projectname',project.name);
+						Comms.request("lobby.projectHandler.connect", {projectName: project.name}, "Lobby: Open Project");
+					}
 				</Script>
 			</Scripts>
 		</Action>

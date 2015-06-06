@@ -174,7 +174,7 @@
 								eventsheetEditor.startAction('GetAsset');
 							
 								//enter project gui
-								Logic.getEntityByName('Dom View').setState('visible',false);
+								Logic.getEntityByName('Dashboard View').setState('visible',false);
 
 								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
 								Logic.getEntityByName('Editor Left View').setState('visible',true);
