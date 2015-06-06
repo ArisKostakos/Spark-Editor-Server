@@ -27,28 +27,48 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 	console.log('assetTarget: ' + assetTarget);
 
 
-	//copy assetFile to /user location
-	fs.copy(assetSource, assetTarget, function(err) {
+	fs.readFile(assetSource, 'utf8', function (err, data) {
 		//Handle Error
 		if (err) {
 			cb(err);
 			return;
 		}
 
-		//create new assetDB for each assetDB (mark as fork)
-		var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: [newProjectName], accessControl: [], assetDependancies: []};
+		//Success
+		var result = data.replace(new RegExp(oldProjectName+'.',"g"), newProjectName+'.');
 
-		//Create Asset
-		database.create(database.Asset, raw_Asset,
-			function (err, objCreated_Asset) {
+		fs.writeFile(assetSource, result, 'utf8', function (err) {
+			//Handle Error
+			if (err) {
+				cb(err);
+				return;
+			}
+
+			//Success
+			//copy assetFile to /user location
+			fs.copy(assetSource, assetTarget, function(err) {
 				//Handle Error
 				if (err) {
 					cb(err);
 					return;
 				}
 
-				//Send Success Signal
-				cb(null);
+				//create new assetDB for each assetDB (mark as fork)
+				var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: [newProjectName], accessControl: [], assetDependancies: []};
+
+				//Create Asset
+				database.create(database.Asset, raw_Asset,
+				function (err, objCreated_Asset) {
+					//Handle Error
+					if (err) {
+						cb(err);
+						return;
+					}
+
+					//Send Success Signal
+					cb(null);
+				});
 			});
+		});
 	});
 };
