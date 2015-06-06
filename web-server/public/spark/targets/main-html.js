@@ -14758,6 +14758,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		var v14 = $bind(this,this._updateBackgroundColor);
 		this._updateStateFunctions.set("backgroundColor",v14);
 		v14;
+		var v15 = $bind(this,this._updateBorder);
+		this._updateStateFunctions.set("border",v15);
+		v15;
 	}
 	,createInstance: function(p_view2_5D) {
 		var _g = this.gameEntity.getState("NCmeshType");
@@ -14838,6 +14841,7 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 			this._updateState("fontColor",p_view2_5D);
 			this._updateState("overflow",p_view2_5D);
 			this._updateState("backgroundColor",p_view2_5D);
+			this._updateState("border",p_view2_5D);
 		}
 		this._updateState("touchable",p_view2_5D);
 		if(this.gameEntity.getState("text") != null) this._updateState("text",p_view2_5D);
@@ -14860,7 +14864,6 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		}
 	}
 	,_updateNCstyleable: function(p_NCstyleable,p_view2_5D) {
-		if(this.gameEntity.getState("border") != null && this.gameEntity.getState("border") != "Undefined") this._instances.get(p_view2_5D).style.border = this.gameEntity.getState("border");
 		if(this.gameEntity.getState("borderRadius") != null && this.gameEntity.getState("borderRadius") != "Undefined") this._instances.get(p_view2_5D).style.borderRadius = this.gameEntity.getState("borderRadius");
 		if(this.gameEntity.getState("boxShadow") != null && this.gameEntity.getState("boxShadow") != "Undefined") this._instances.get(p_view2_5D).style.boxShadow = this.gameEntity.getState("boxShadow");
 		if(this.gameEntity.getState("fontFamily") != null && this.gameEntity.getState("fontFamily") != "Undefined") this._instances.get(p_view2_5D).style.fontFamily = this.gameEntity.getState("fontFamily");
@@ -14915,6 +14918,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 	}
 	,_updateBackgroundColor: function(p_backgroundColor,p_view2_5D) {
 		if(p_backgroundColor != "Undefined") this._instances.get(p_view2_5D).style.backgroundColor = p_backgroundColor;
+	}
+	,_updateBorder: function(p_border,p_view2_5D) {
+		if(p_border != "Undefined") this._instances.get(p_view2_5D).style.border = p_border;
 	}
 	,_updateDisplay: function(p_display,p_view2_5D) {
 		this._instances.get(p_view2_5D).style.display = p_display;
@@ -16064,6 +16070,10 @@ tools_spark_framework_layout_containers_Group.prototype = {
 	_init: function() {
 		this.children = new Array();
 		this.x = this.y = this.width = this.height = 0;
+		this.visibleStartX = this.visibleStartY = 0;
+		this.visibleStartIndex = this.visibleEndIndex = this.numElementsCached = -1;
+		this.tileWidthCached = this.tileHeightCached = null;
+		this.rowCount = this.columnCount = -1;
 	}
 	,update: function() {
 		this.updateState("layout");
@@ -16084,21 +16094,33 @@ tools_spark_framework_layout_containers_Group.prototype = {
 				this.updateState("paddingRight");
 				this.updateState("paddingTop");
 				this.updateState("paddingBottom");
-				this.updateState("gap");
 				this.updateState("horizontalAlign");
 				this.updateState("verticalAlign");
-				if(this.layout.layoutType == "Horizontal") {
+				if(this.layout.layoutType == "Horizontal" || this.layout.layoutType == "Vertical") this.updateState("gap");
+				if(this.layout.layoutType == "Horizontal" || this.layout.layoutType == "Tile") {
 					this.updateState("columnWidth");
 					this.updateState("requestedColumnCount");
+				}
+				if(this.layout.layoutType == "Horizontal") {
 					this.updateState("requestedMaxColumnCount");
 					this.updateState("requestedMinColumnCount");
 					this.updateState("variableColumnWidth");
-				} else if(this.layout.layoutType == "Vertical") {
+				}
+				if(this.layout.layoutType == "Vertical" || this.layout.layoutType == "Tile") {
 					this.updateState("rowHeight");
 					this.updateState("requestedRowCount");
+				}
+				if(this.layout.layoutType == "Vertical") {
 					this.updateState("requestedMaxRowCount");
 					this.updateState("requestedMinRowCount");
 					this.updateState("variableRowHeight");
+				}
+				if(this.layout.layoutType == "Tile") {
+					this.updateState("horizontalGap");
+					this.updateState("verticalGap");
+					this.updateState("rowAlign");
+					this.updateState("columnAlign");
+					this.updateState("orientation");
 				}
 			}
 		}
@@ -16165,7 +16187,8 @@ tools_spark_framework_layout_containers_Group.prototype = {
 			if(s_verAlignStr == "top") this.verticalAlign = tools_spark_framework_layout_interfaces_EVerticalAlign.TOP; else if(s_verAlignStr == "middle") this.verticalAlign = tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE; else if(s_verAlignStr == "bottom") this.verticalAlign = tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM; else if(s_verAlignStr == "justify") this.verticalAlign = tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY; else if(s_verAlignStr == "contentJustify") this.verticalAlign = tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY;
 			break;
 		case "columnWidth":
-			this.columnWidth = this.layoutableEntity.getState(p_state);
+			var s_columnWidth = this.layoutableEntity.getState(p_state);
+			if(s_columnWidth == "calculated") this.columnWidth = this.explicitColumnWidth = null; else this.columnWidth = this.explicitColumnWidth = Std.parseFloat(s_columnWidth);
 			break;
 		case "requestedColumnCount":
 			this.requestedColumnCount = this.layoutableEntity.getState(p_state);
@@ -16180,7 +16203,8 @@ tools_spark_framework_layout_containers_Group.prototype = {
 			this.variableColumnWidth = this.layoutableEntity.getState(p_state);
 			break;
 		case "rowHeight":
-			this.rowHeight = this.layoutableEntity.getState(p_state);
+			var s_rowHeight = this.layoutableEntity.getState(p_state);
+			if(s_rowHeight == "calculated") this.rowHeight = this.explicitRowHeight = null; else this.rowHeight = this.explicitRowHeight = Std.parseFloat(s_rowHeight);
 			break;
 		case "requestedRowCount":
 			this.requestedRowCount = this.layoutableEntity.getState(p_state);
@@ -16194,6 +16218,24 @@ tools_spark_framework_layout_containers_Group.prototype = {
 		case "variableRowHeight":
 			this.variableRowHeight = this.layoutableEntity.getState(p_state);
 			break;
+		case "horizontalGap":
+			this.horizontalGap = this.explicitHorizontalGap = this.layoutableEntity.getState(p_state);
+			break;
+		case "verticalGap":
+			this.verticalGap = this.explicitVerticalGap = this.layoutableEntity.getState(p_state);
+			break;
+		case "rowAlign":
+			var s_rowAlignStr = this.layoutableEntity.getState(p_state);
+			if(s_rowAlignStr == "top") this.rowAlign = tools_spark_framework_layout_interfaces_ERowAlign.TOP; else if(s_rowAlignStr == "justifyUsingHeight") this.rowAlign = tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT; else if(s_rowAlignStr == "justifyUsingGap") this.rowAlign = tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP;
+			break;
+		case "columnAlign":
+			var s_columnAlignStr = this.layoutableEntity.getState(p_state);
+			if(s_columnAlignStr == "left") this.columnAlign = tools_spark_framework_layout_interfaces_EColumnAlign.LEFT; else if(s_columnAlignStr == "justifyUsingWidth") this.columnAlign = tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH; else if(s_columnAlignStr == "justifyUsingGap") this.columnAlign = tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP;
+			break;
+		case "orientation":
+			var s_orientationStr = this.layoutableEntity.getState(p_state);
+			if(s_orientationStr == "rows") this.orientation = tools_spark_framework_layout_interfaces_ETileOrientation.ROWS; else if(s_orientationStr == "columns") this.orientation = tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS;
+			break;
 		}
 	}
 	,_updateLayout: function(p_stateValue) {
@@ -16203,6 +16245,8 @@ tools_spark_framework_layout_containers_Group.prototype = {
 			if(this.layout == null) this.set_layout(new tools_spark_framework_layout_layouts_HorizontalLayout()); else if(this.layout.layoutType != p_stateValue) this.set_layout(new tools_spark_framework_layout_layouts_HorizontalLayout());
 		} else if(p_stateValue == "Vertical") {
 			if(this.layout == null) this.set_layout(new tools_spark_framework_layout_layouts_VerticalLayout()); else if(this.layout.layoutType != p_stateValue) this.set_layout(new tools_spark_framework_layout_layouts_VerticalLayout());
+		} else if(p_stateValue == "Tile") {
+			if(this.layout == null) this.set_layout(new tools_spark_framework_layout_layouts_TileLayout()); else if(this.layout.layoutType != p_stateValue) this.set_layout(new tools_spark_framework_layout_layouts_TileLayout());
 		}
 		this.layout.set_target(this);
 	}
@@ -16327,6 +16371,16 @@ tools_spark_framework_layout_helpers_SizesAndLimit.__name__ = true;
 tools_spark_framework_layout_helpers_SizesAndLimit.prototype = {
 	__class__: tools_spark_framework_layout_helpers_SizesAndLimit
 };
+var tools_spark_framework_layout_interfaces_EColumnAlign = $hxClasses["tools.spark.framework.layout.interfaces.EColumnAlign"] = { __ename__ : true, __constructs__ : ["JUSTIFY_USING_GAP","JUSTIFY_USING_WIDTH","LEFT"] };
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP = ["JUSTIFY_USING_GAP",0];
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP.toString = $estr;
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH = ["JUSTIFY_USING_WIDTH",1];
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH.toString = $estr;
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
+tools_spark_framework_layout_interfaces_EColumnAlign.LEFT = ["LEFT",2];
+tools_spark_framework_layout_interfaces_EColumnAlign.LEFT.toString = $estr;
+tools_spark_framework_layout_interfaces_EColumnAlign.LEFT.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 var tools_spark_framework_layout_interfaces_EHorizontalAlign = $hxClasses["tools.spark.framework.layout.interfaces.EHorizontalAlign"] = { __ename__ : true, __constructs__ : ["LEFT","CENTER","RIGHT","JUSTIFY","CONTENT_JUSTIFY"] };
 tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT = ["LEFT",0];
 tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT.toString = $estr;
@@ -16343,6 +16397,23 @@ tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY.__enum__ = tool
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY = ["CONTENT_JUSTIFY",4];
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
+var tools_spark_framework_layout_interfaces_ERowAlign = $hxClasses["tools.spark.framework.layout.interfaces.ERowAlign"] = { __ename__ : true, __constructs__ : ["JUSTIFY_USING_GAP","JUSTIFY_USING_HEIGHT","TOP"] };
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP = ["JUSTIFY_USING_GAP",0];
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP.toString = $estr;
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT = ["JUSTIFY_USING_HEIGHT",1];
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT.toString = $estr;
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
+tools_spark_framework_layout_interfaces_ERowAlign.TOP = ["TOP",2];
+tools_spark_framework_layout_interfaces_ERowAlign.TOP.toString = $estr;
+tools_spark_framework_layout_interfaces_ERowAlign.TOP.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
+var tools_spark_framework_layout_interfaces_ETileOrientation = $hxClasses["tools.spark.framework.layout.interfaces.ETileOrientation"] = { __ename__ : true, __constructs__ : ["COLUMNS","ROWS"] };
+tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS = ["COLUMNS",0];
+tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS.toString = $estr;
+tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS.__enum__ = tools_spark_framework_layout_interfaces_ETileOrientation;
+tools_spark_framework_layout_interfaces_ETileOrientation.ROWS = ["ROWS",1];
+tools_spark_framework_layout_interfaces_ETileOrientation.ROWS.toString = $estr;
+tools_spark_framework_layout_interfaces_ETileOrientation.ROWS.__enum__ = tools_spark_framework_layout_interfaces_ETileOrientation;
 var tools_spark_framework_layout_interfaces_EVerticalAlign = $hxClasses["tools.spark.framework.layout.interfaces.EVerticalAlign"] = { __ename__ : true, __constructs__ : ["TOP","MIDDLE","BOTTOM","JUSTIFY","CONTENT_JUSTIFY"] };
 tools_spark_framework_layout_interfaces_EVerticalAlign.TOP = ["TOP",0];
 tools_spark_framework_layout_interfaces_EVerticalAlign.TOP.toString = $estr;
@@ -16540,7 +16611,7 @@ tools_spark_framework_layout_layouts_HorizontalLayout.prototype = $extend(tools_
 		var l_newHeight;
 		var l_layoutElement;
 		var l_cw;
-		if(this.target.variableColumnWidth) l_cw = 0; else l_cw = Math.ceil(Std.parseFloat(this.target.columnWidth));
+		if(this.target.variableColumnWidth) l_cw = 0; else l_cw = Math.ceil(this.target.columnWidth);
 		var l_totalCount = this.target.children.length;
 		var _g = 0;
 		var _g1 = this.target.children;
@@ -16593,7 +16664,7 @@ tools_spark_framework_layout_layouts_HorizontalLayout.prototype = $extend(tools_
 		var l_minWidth = 0;
 		var l_fixedColumnWidth = null;
 		if(!this.target.variableColumnWidth) {
-			if(this.target.columnWidth == "calculated") l_fixedColumnWidth = this.get_typicalLayoutElement().get_preferredWidth(); else l_fixedColumnWidth = Std.parseFloat(this.target.columnWidth);
+			if(this.target.columnWidth == null) l_fixedColumnWidth = this.get_typicalLayoutElement().get_preferredWidth(); else l_fixedColumnWidth = this.target.columnWidth;
 		}
 		var l_columnsToMeasure = this._getColumsToMeasure(l_numElementsInLayout);
 		var _g = 0;
@@ -16698,6 +16769,297 @@ tools_spark_framework_layout_layouts_HorizontalLayout.prototype = $extend(tools_
 	}
 	,__class__: tools_spark_framework_layout_layouts_HorizontalLayout
 });
+var tools_spark_framework_layout_layouts_TileLayout = function() {
+	tools_spark_framework_layout_layouts_ALayoutBase.call(this);
+	this.layoutType = "Tile";
+};
+$hxClasses["tools.spark.framework.layout.layouts.TileLayout"] = tools_spark_framework_layout_layouts_TileLayout;
+tools_spark_framework_layout_layouts_TileLayout.__name__ = true;
+tools_spark_framework_layout_layouts_TileLayout.__super__ = tools_spark_framework_layout_layouts_ALayoutBase;
+tools_spark_framework_layout_layouts_TileLayout.prototype = $extend(tools_spark_framework_layout_layouts_ALayoutBase.prototype,{
+	_closerToSquare: function(p_colCount1,p_rowCount1,p_colCount2,p_rowCount2) {
+		var l_difference1 = Math.abs(p_colCount1 * (this.target.columnWidth + this.target.horizontalGap) - this.target.horizontalGap - p_rowCount1 * (this.target.rowHeight + this.target.verticalGap) + this.target.verticalGap);
+		var l_difference2 = Math.abs(p_colCount2 * (this.target.columnWidth + this.target.horizontalGap) - this.target.horizontalGap - p_rowCount2 * (this.target.rowHeight + this.target.verticalGap) + this.target.verticalGap);
+		return l_difference1 < l_difference2 || l_difference1 == l_difference2 && p_rowCount1 <= p_rowCount2;
+	}
+	,_calculateColumnAndRowCount: function(p_width,p_height,p_elementCount) {
+		this.target.columnCount = this.target.rowCount = -1;
+		if(p_width <= 0) p_width = null;
+		if(p_height <= 0) p_height = null;
+		if(-1 != this.target.requestedColumnCount || -1 != this.target.requestedRowCount) {
+			if(-1 != this.target.requestedRowCount) this.target.rowCount = Std["int"](Math.max(1,this.target.requestedRowCount));
+			if(-1 != this.target.requestedColumnCount) this.target.columnCount = Std["int"](Math.max(1,this.target.requestedColumnCount));
+		} else if(p_width != null && (this.target.orientation == tools_spark_framework_layout_interfaces_ETileOrientation.ROWS || p_height == null)) {
+			if(this.target.columnWidth + this.target.explicitHorizontalGap > 0) this.target.columnCount = Std["int"](Math.max(1,Math.floor((p_width + this.target.explicitHorizontalGap) / (this.target.columnWidth + this.target.explicitHorizontalGap)))); else this.target.columnCount = 1;
+		} else if(p_height != null && (this.target.orientation == tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS || p_width == null)) {
+			if(this.target.rowHeight + this.target.explicitVerticalGap > 0) this.target.rowCount = Std["int"](Math.max(1,Math.floor((p_height + this.target.explicitVerticalGap) / (this.target.rowHeight + this.target.explicitVerticalGap)))); else this.target.rowCount = 1;
+		} else {
+			var l_hGap = this.target.explicitHorizontalGap;
+			var l_vGap = this.target.explicitVerticalGap;
+			var l_a = Math.max(0,this.target.rowHeight + l_vGap);
+			var l_b = l_hGap - l_vGap;
+			var l_c = -p_elementCount * (this.target.columnWidth + l_hGap);
+			var l_d = l_b * l_b - 4 * l_a * l_c;
+			l_d = Math.sqrt(l_d);
+			var l_rowCount;
+			if(l_a != 0) l_rowCount = (l_b + l_d) / (2 * l_a); else l_rowCount = p_elementCount;
+			var l_row1 = Std["int"](Math.max(1,Math.floor(l_rowCount)));
+			var l_col1 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_row1)));
+			l_row1 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_col1)));
+			var l_row2 = Std["int"](Math.max(1,Math.ceil(l_rowCount)));
+			var l_col2 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_row2)));
+			l_row2 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_col2)));
+			var l_col3 = Std["int"](Math.max(1,Math.floor(p_elementCount / l_rowCount)));
+			var l_row3 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_col3)));
+			l_col3 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_row3)));
+			var l_col4 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_rowCount)));
+			var l_row4 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_col4)));
+			l_col4 = Std["int"](Math.max(1,Math.ceil(p_elementCount / l_row4)));
+			if(this._closerToSquare(l_col3,l_row3,l_col1,l_row1)) {
+				l_col1 = l_col3;
+				l_row1 = l_row3;
+			}
+			if(this._closerToSquare(l_col4,l_row4,l_col2,l_row2)) {
+				l_col2 = l_col4;
+				l_row2 = l_row4;
+			}
+			if(this._closerToSquare(l_col1,l_row1,l_col2,l_row2)) {
+				this.target.columnCount = l_col1;
+				this.target.rowCount = l_row1;
+			} else {
+				this.target.columnCount = l_col2;
+				this.target.rowCount = l_row2;
+			}
+		}
+		if(-1 == this.target.rowCount) this.target.rowCount = Std["int"](Math.max(1,Math.ceil(p_elementCount / this.target.columnCount)));
+		if(-1 == this.target.columnCount) this.target.columnCount = Std["int"](Math.max(1,Math.ceil(p_elementCount / this.target.rowCount)));
+	}
+	,_justifyByGapSize: function(p_totalSize,p_elementSize,p_gap,p_elementCount) {
+		if(p_elementSize + p_gap <= 0) return p_gap;
+		var l_visibleCount = Std["int"](Math.min(p_elementCount,Math.floor((p_totalSize + p_gap) / (p_elementSize + p_gap))));
+		if(l_visibleCount < 1) return p_gap;
+		if(l_visibleCount == 1) if(p_elementCount > 1) return Math.max(p_gap,p_totalSize - p_elementSize); else return p_gap;
+		return (p_totalSize - l_visibleCount * p_elementSize) / (l_visibleCount - 1);
+	}
+	,_justifyByElementSize: function(p_totalSize,p_elementSize,p_gap,p_elementCount) {
+		var l_elementAndGapSize = p_elementSize + p_gap;
+		var l_visibleCount = 0;
+		if(l_elementAndGapSize == 0) l_visibleCount = p_elementCount; else l_visibleCount = Std["int"](Math.min(p_elementCount,Math.floor((p_totalSize + p_gap) / l_elementAndGapSize)));
+		if(l_visibleCount < 1) return p_elementSize;
+		return (p_totalSize - (l_visibleCount - 1) * p_gap) / l_visibleCount;
+	}
+	,_calculateElementCount: function() {
+		if(-1 != this.target.numElementsCached) return this.target.numElementsCached;
+		this.target.numElementsCached = this.target.children.length;
+		var _g = 0;
+		var _g1 = this.target.children;
+		while(_g < _g1.length) {
+			var f_child = _g1[_g];
+			++_g;
+			if(f_child == null || f_child.includeInLayout == false) this.target.numElementsCached--;
+		}
+		return this.target.numElementsCached;
+	}
+	,_calculateTileSize: function() {
+		this.target.columnWidth = this.target.tileWidthCached;
+		this.target.rowHeight = this.target.tileHeightCached;
+		if(this.target.columnWidth != null && this.target.rowHeight != null) return;
+		this.target.columnWidth = this.target.tileWidthCached = this.target.explicitColumnWidth;
+		this.target.rowHeight = this.target.tileHeightCached = this.target.explicitRowHeight;
+		if(this.target.columnWidth != null && this.target.rowHeight != null) return;
+		var l_columnWidth = 0;
+		var l_rowHeight = 0;
+		this.target.numElementsCached = this.target.children.length;
+		var _g = 0;
+		var _g1 = this.target.children;
+		while(_g < _g1.length) {
+			var f_child = _g1[_g];
+			++_g;
+			if(f_child == null || f_child.includeInLayout == false) {
+				this.target.numElementsCached--;
+				continue;
+			}
+			if(this.target.columnWidth == null) l_columnWidth = Math.max(l_columnWidth,f_child.get_preferredWidth());
+			if(this.target.rowHeight == null) l_rowHeight = Math.max(l_rowHeight,f_child.get_preferredHeight());
+		}
+		if(this.target.columnWidth == null) this.target.columnWidth = this.target.tileWidthCached = l_columnWidth;
+		if(this.target.rowHeight == null) this.target.rowHeight = this.target.tileHeightCached = l_rowHeight;
+	}
+	,_updateActualValues: function(p_width,p_height) {
+		var l_widthMinusPadding = p_width - this.target.paddingLeft - this.target.paddingRight;
+		var l_heightMinusPadding = p_height - this.target.paddingTop - this.target.paddingBottom;
+		this._calculateTileSize();
+		var l_elementCount = this._calculateElementCount();
+		this._calculateColumnAndRowCount(l_widthMinusPadding,l_heightMinusPadding,l_elementCount);
+		this.target.horizontalGap = this.target.explicitHorizontalGap;
+		this.target.verticalGap = this.target.explicitVerticalGap;
+		if(this.target.width != null) {
+			var _g = this.target.columnAlign;
+			switch(Type.enumIndex(_g)) {
+			case 0:
+				this.target.horizontalGap = this._justifyByGapSize(l_widthMinusPadding,this.target.columnWidth,this.target.horizontalGap,this.target.columnCount);
+				break;
+			case 1:
+				this.target.columnWidth = this._justifyByElementSize(l_widthMinusPadding,this.target.columnWidth,this.target.horizontalGap,this.target.columnCount);
+				break;
+			default:
+			}
+		}
+		if(this.target.height != null) {
+			var _g1 = this.target.rowAlign;
+			switch(Type.enumIndex(_g1)) {
+			case 0:
+				this.target.verticalGap = this._justifyByGapSize(l_heightMinusPadding,this.target.rowHeight,this.target.verticalGap,this.target.rowCount);
+				break;
+			case 1:
+				this.target.rowHeight = this._justifyByElementSize(l_heightMinusPadding,this.target.rowHeight,this.target.verticalGap,this.target.rowCount);
+				break;
+			default:
+			}
+		}
+		if(-1 != this.target.requestedColumnCount && -1 != this.target.requestedRowCount) {
+			if(this.target.orientation == tools_spark_framework_layout_interfaces_ETileOrientation.ROWS) this.target.rowCount = Std["int"](Math.max(1,Math.ceil(l_elementCount / Math.max(1,this.target.requestedColumnCount)))); else this.target.columnCount = Std["int"](Math.max(1,Math.ceil(l_elementCount / Math.max(1,this.target.requestedRowCount))));
+		}
+	}
+	,_calculateDisplayParameters: function(p_unscaledWidth,p_unscaledHeight) {
+		this._updateActualValues(p_unscaledWidth,p_unscaledHeight);
+		var l_eltCount = this.target.children.length;
+		this.target.visibleStartX = this.target.paddingLeft;
+		this.target.visibleStartY = this.target.paddingTop;
+		this.target.visibleStartIndex = 0;
+		this.target.visibleEndIndex = l_eltCount - 1;
+	}
+	,_sizeAndPositionElement: function(p_element,p_cellX,p_cellY,p_cellWidth,p_cellHeight) {
+		var l_childWidth = null;
+		var l_childHeight = null;
+		if(this.target.horizontalAlign == tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY) l_childWidth = p_cellWidth; else if(p_element.percentWidth != null) l_childWidth = Math.round(p_cellWidth * p_element.percentWidth * 0.01); else l_childWidth = p_element.get_preferredWidth();
+		if(this.target.verticalAlign == tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY) l_childHeight = p_cellHeight; else if(p_element.percentHeight != null) l_childHeight = Math.round(p_cellHeight * p_element.percentHeight * 0.01); else l_childHeight = p_element.get_preferredHeight();
+		var l_maxChildWidth = Math.min(p_element.get_preferredMaxWidth(),p_cellWidth);
+		var l_maxChildHeight = Math.min(p_element.get_preferredMaxHeight(),p_cellHeight);
+		l_childWidth = Math.max(p_element.get_preferredMinWidth(),Math.min(l_maxChildWidth,l_childWidth));
+		l_childHeight = Math.max(p_element.get_preferredMinHeight(),Math.min(l_maxChildHeight,l_childHeight));
+		p_element.setActualSize(l_childWidth,l_childHeight);
+		var l_x = p_cellX;
+		var _g = this.target.horizontalAlign;
+		switch(Type.enumIndex(_g)) {
+		case 2:
+			l_x += p_cellWidth - p_element.width;
+			break;
+		case 1:
+			l_x = p_cellX + Math.floor((p_cellWidth - p_element.width) / 2);
+			break;
+		default:
+		}
+		var l_y = p_cellY;
+		var _g1 = this.target.verticalAlign;
+		switch(Type.enumIndex(_g1)) {
+		case 2:
+			l_y += p_cellHeight - p_element.height;
+			break;
+		case 1:
+			l_y += Math.floor((p_cellHeight - p_element.height) / 2);
+			break;
+		default:
+		}
+		p_element.x = l_x;
+		p_element.y = l_y;
+	}
+	,measure: function() {
+		var l_savedColumnCount = this.target.columnCount;
+		var l_savedRowCount = this.target.rowCount;
+		var l_savedHorizontalGap = this.target.horizontalGap;
+		var l_savedVerticalGap = this.target.verticalGap;
+		var l_savedColumnWidth = this.target.columnWidth;
+		var l_savedRowHeight = this.target.rowHeight;
+		this._updateActualValues(this.target.explicitWidth,this.target.explicitHeight);
+		var l_columnCount;
+		if(this.target.requestedColumnCount != -1) l_columnCount = Std["int"](Math.max(1,this.target.requestedColumnCount)); else l_columnCount = this.target.columnCount;
+		var l_rowCount;
+		if(this.target.requestedRowCount != -1) l_rowCount = Std["int"](Math.max(1,this.target.requestedRowCount)); else l_rowCount = this.target.rowCount;
+		var l_measuredWidth = 0;
+		var l_measuredMinWidth = 0;
+		var l_measuredHeight = 0;
+		var l_measuredMinHeight = 0;
+		if(l_columnCount > 0) {
+			l_measuredWidth = Math.ceil(l_columnCount * (this.target.columnWidth + this.target.horizontalGap) - this.target.horizontalGap);
+			l_measuredMinWidth = Math.ceil(this.target.columnCount * (this.target.columnWidth + this.target.horizontalGap) - this.target.horizontalGap);
+		}
+		if(l_rowCount > 0) {
+			l_measuredHeight = Math.ceil(l_rowCount * (this.target.rowHeight + this.target.verticalGap) - this.target.verticalGap);
+			l_measuredMinHeight = Math.ceil(this.target.rowCount * (this.target.rowHeight + this.target.verticalGap) - this.target.verticalGap);
+		}
+		this.target.numElementsCached = -1;
+		var l_hPadding = this.target.paddingLeft + this.target.paddingRight;
+		var l_vPadding = this.target.paddingTop + this.target.paddingBottom;
+		this.target.measuredWidth = l_measuredWidth + l_hPadding;
+		this.target.measuredMinWidth = l_measuredMinWidth + l_hPadding;
+		this.target.measuredHeight = l_measuredHeight + l_vPadding;
+		this.target.measuredMinHeight = l_measuredMinHeight + l_vPadding;
+		this.target.measuredMaxWidth = 999999;
+		this.target.measuredMaxHeight = 999999;
+		this.target.columnCount = l_savedColumnCount;
+		this.target.rowCount = l_savedRowCount;
+		this.target.horizontalGap = l_savedHorizontalGap;
+		this.target.verticalGap = l_savedVerticalGap;
+		this.target.columnWidth = l_savedColumnWidth;
+		this.target.rowHeight = l_savedRowHeight;
+	}
+	,updateDisplayList: function(p_unscaledWidth,p_unscaledHeight) {
+		this._calculateDisplayParameters(Std["int"](p_unscaledWidth),Std["int"](p_unscaledHeight));
+		var l_xPos = this.target.visibleStartX;
+		var l_yPos = this.target.visibleStartY;
+		var l_xMajorDelta;
+		var l_yMajorDelta;
+		var l_xMinorDelta;
+		var l_yMinorDelta;
+		var l_counter = 0;
+		var l_counterLimit;
+		if(this.target.orientation == tools_spark_framework_layout_interfaces_ETileOrientation.ROWS) {
+			l_counterLimit = this.target.columnCount;
+			l_xMajorDelta = this.target.columnWidth + this.target.horizontalGap;
+			l_xMinorDelta = 0;
+			l_yMajorDelta = 0;
+			l_yMinorDelta = this.target.rowHeight + this.target.verticalGap;
+		} else {
+			l_counterLimit = this.target.rowCount;
+			l_xMajorDelta = 0;
+			l_xMinorDelta = this.target.columnWidth + this.target.horizontalGap;
+			l_yMajorDelta = this.target.rowHeight + this.target.verticalGap;
+			l_yMinorDelta = 0;
+		}
+		var _g = 0;
+		var _g1 = this.target.children;
+		while(_g < _g1.length) {
+			var f_el = _g1[_g];
+			++_g;
+			if(f_el == null || f_el.includeInLayout == false) continue;
+			var l_cellX = Math.round(l_xPos);
+			var l_cellY = Math.round(l_yPos);
+			var l_cellWidth = Math.round(l_xPos + this.target.columnWidth) - l_cellX;
+			var l_cellHeight = Math.round(l_yPos + this.target.rowHeight) - l_cellY;
+			this._sizeAndPositionElement(f_el,l_cellX,l_cellY,l_cellWidth,l_cellHeight);
+			l_xPos += l_xMajorDelta;
+			l_yPos += l_yMajorDelta;
+			if(++l_counter >= l_counterLimit) {
+				l_counter = 0;
+				if(this.target.orientation == tools_spark_framework_layout_interfaces_ETileOrientation.ROWS) {
+					l_xPos = this.target.paddingLeft;
+					l_yPos += l_yMinorDelta;
+				} else {
+					l_xPos += l_xMinorDelta;
+					l_yPos = this.target.paddingTop;
+				}
+			}
+		}
+		var l_hPadding = this.target.paddingLeft + this.target.paddingRight;
+		var l_vPadding = this.target.paddingTop + this.target.paddingBottom;
+		this.target.width = Math.ceil(p_unscaledWidth);
+		this.target.height = Math.ceil(p_unscaledHeight);
+		this.target.tileWidthCached = this.target.tileHeightCached = null;
+		this.target.numElementsCached = -1;
+	}
+	,__class__: tools_spark_framework_layout_layouts_TileLayout
+});
 var tools_spark_framework_layout_layouts_VerticalLayout = function() {
 	tools_spark_framework_layout_layouts_ALayoutBase.call(this);
 	this.layoutType = "Vertical";
@@ -16752,7 +17114,7 @@ tools_spark_framework_layout_layouts_VerticalLayout.prototype = $extend(tools_sp
 		var l_childInfo;
 		var l_layoutElement;
 		var l_rh;
-		if(this.target.variableRowHeight) l_rh = 0; else l_rh = Math.ceil(Std.parseFloat(this.target.rowHeight));
+		if(this.target.variableRowHeight) l_rh = 0; else l_rh = Math.ceil(this.target.rowHeight);
 		var l_totalCount = this.target.children.length;
 		var _g = 0;
 		var _g1 = this.target.children;
@@ -16805,7 +17167,7 @@ tools_spark_framework_layout_layouts_VerticalLayout.prototype = $extend(tools_sp
 		var l_minWidth = 0;
 		var l_fixedRowHeight = null;
 		if(!this.target.variableRowHeight) {
-			if(this.target.rowHeight == "calculated") l_fixedRowHeight = this.get_typicalLayoutElement().get_preferredHeight(); else l_fixedRowHeight = Std.parseFloat(this.target.rowHeight);
+			if(this.target.rowHeight == null) l_fixedRowHeight = this.get_typicalLayoutElement().get_preferredHeight(); else l_fixedRowHeight = this.target.rowHeight;
 		}
 		var l_rowsToMeasure = this._getRowsToMeasure(l_numElementsInLayout);
 		var _g = 0;
@@ -17447,6 +17809,8 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 		this._renderStateNames.set("overflow",true);
 		true;
 		this._renderStateNames.set("backgroundColor",true);
+		true;
+		this._renderStateNames.set("border",true);
 		true;
 		this._renderStateNames.set("spaceX",true);
 		true;

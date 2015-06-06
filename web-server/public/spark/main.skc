@@ -197,6 +197,10 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/EventEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ConditionEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ActionEdit.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/ProjectTile.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/TemplateTile.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/NewProjectPopUp.egc</Asset>
 		</Module>
 		
 		<Module id="DoNotLoad">
@@ -250,6 +254,17 @@
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_import_mikro" bytes='35672' forceLoadAsData='true'>editor/leftbar/import_mikro.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
+			
+			<!-- Lobby, Projects -->
+			<Asset type="image" subtype="2D" location="local" id="lobbyProject_NewProject" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/NewProject.png</Asset>
+			
+			<!-- Lobby, Projects, Template Thumbnails -->
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Platform" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTilePlatform.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Racing" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileRacing.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Tower" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileTower.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Flappy" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileFlappy.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Breakout" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileBreakout.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Match3" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileMatch3.png</Asset>
 		</Module>
 	</Assets>
 	

@@ -85,7 +85,7 @@
 			<Value>true</Value>
 		</State>
 		
-		<!-- Horizontal/Vertical -->
+		<!-- Horizontal/Vertical/Tile -->
 		<State>
 			<Id>paddingLeft</Id>
 			<Type>Decimal</Type>
@@ -107,11 +107,6 @@
 			<Value>0</Value>
 		</State>
 		<State>
-			<Id>gap</Id>
-			<Type>Decimal</Type>
-			<Value>6</Value>
-		</State>
-		<State>
 			<Id>horizontalAlign</Id>
 			<Type>Text</Type>
 			<Value>left</Value>
@@ -122,7 +117,14 @@
 			<Value>top</Value>
 		</State>
 		
-		<!-- Horizontal -->
+		<!-- Horizontal/Vertical -->
+		<State>
+			<Id>gap</Id>
+			<Type>Decimal</Type>
+			<Value>6</Value>
+		</State>
+		
+		<!-- Horizontal/Tile -->
 		<State>
 			<Id>columnWidth</Id>
 			<Type>Text</Type>
@@ -133,6 +135,8 @@
 			<Type>Integer</Type>
 			<Value>-1</Value>
 		</State>
+		
+		<!-- Horizontal -->
 		<State>
 			<Id>requestedMaxColumnCount</Id>
 			<Type>Integer</Type>
@@ -149,7 +153,7 @@
 			<Value>true</Value>
 		</State>
 		
-		<!-- Vertical -->
+		<!-- Vertical/Tile -->
 		<State>
 			<Id>rowHeight</Id>
 			<Type>Text</Type>
@@ -160,6 +164,8 @@
 			<Type>Integer</Type>
 			<Value>-1</Value>
 		</State>
+		
+		<!-- Vertical -->
 		<State>
 			<Id>requestedMaxRowCount</Id>
 			<Type>Integer</Type>
@@ -174,6 +180,33 @@
 			<Id>variableRowHeight</Id>
 			<Type>Boolean</Type>
 			<Value>true</Value>
+		</State>
+		
+		<!-- Tile -->
+		<State>
+			<Id>horizontalGap</Id>
+			<Type>Decimal</Type>
+			<Value>6</Value>
+		</State>
+		<State>
+			<Id>verticalGap</Id>
+			<Type>Decimal</Type>
+			<Value>6</Value>
+		</State>
+		<State>
+			<Id>rowAlign</Id>
+			<Type>Text</Type>
+			<Value>top</Value>
+		</State>
+		<State>
+			<Id>columnAlign</Id>
+			<Type>Text</Type>
+			<Value>left</Value>
+		</State>
+		<State>
+			<Id>orientation</Id>
+			<Type>Text</Type>
+			<Value>rows</Value>
 		</State>
 	</_States>
 </Entity>

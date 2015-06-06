@@ -150,8 +150,8 @@
 					//strPass = 'r0diof';
 					//strUser = 'test123';
 					//strPass = 'lala123';
-					//strUser = 'spark';
-					//strPass = '12qw!@QW ';
+					strUser = 'spark';
+					strPass = '12qw!@QW ';
 					
 					
 					if (strUser.length>0 && strUser!='Undefined' &&
@@ -228,16 +228,16 @@
 						
 						if (data.code=="match")
 						{
-							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
-							{
+							//if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
+							//{
 								me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
 								Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
-							}
-							else
-							{
-								me.getState('outputText').setState('text', 'Logged in. Accessing Project...');
-								Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
-							}
+							//}
+							//else
+							//{
+							//	me.getState('outputText').setState('text', 'Logged in. Accessing Project...');
+							//	Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
+							//}
 						}
 						else if (data.code=="nomatch")
 						{
