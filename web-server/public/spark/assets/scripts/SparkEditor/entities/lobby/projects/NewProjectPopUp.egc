@@ -321,7 +321,7 @@
 						}
 						else if (data.code=="notfound")
 						{
-							var newProjectName = Logic.getEntityByName('New Project Pop Up').getState('newProjectName');
+							var newProjectName = me.getState('newProjectName');
 							var newProjectTitle = Logic.getEntityByName('Create New: Project Name Field').getState('text');
 							var forkTemplateName = "Platform";
 							Display.error('PROJECT DOES NOT EXIIIIIIIIIIST: ' + newProjectName);
@@ -343,8 +343,11 @@
 							//me.getState('outputText').setState('text', "Project forked. Connecting...");
 							Display.error('Project forked. Connecting...');
 						
+							var newProjectName = me.getState('newProjectName');
+							
 							//Connect to it
-							//Comms.request("lobby.projectHandler.connect", {projectName: me.getState('defaultProject')}, "Access Default Project Request");
+							Logic.getEntityByName('Spark Editor').setState('projectname',newProjectName);
+							Comms.request("lobby.projectHandler.connect", {projectName: newProjectName}, "Lobby: Open Project");
 						}
 						else
 						{

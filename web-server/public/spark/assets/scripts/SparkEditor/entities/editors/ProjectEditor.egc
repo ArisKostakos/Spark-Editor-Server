@@ -159,7 +159,7 @@
 							//Event Listener
 							Assets.successSignal.connect(function () {
 								var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
-								Display.error('HEY CHECK THIS YOOOOOOOOOOOOOOOO!!!!: ' + assetUserName);
+
 								//temp scene stuff
 								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
 								sceneEditor.setState('assetUserName', assetUserName);
