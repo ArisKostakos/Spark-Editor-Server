@@ -23,8 +23,8 @@
 					
 					if (me.getState('project')!=null)
 					{
-						Logic.getEntityByName('Spark Editor').setState('projectname',project.name);
-						Comms.request("lobby.projectHandler.connect", {projectName: project.name}, "Lobby: Open Project");
+						Logic.getEntityByName('Spark Editor').setState('projectname',me.getState('project').name);
+						Comms.request("lobby.projectHandler.connect", {projectName: me.getState('project').name}, "Lobby: Open Project");
 					}
 				</Script>
 			</Scripts>
