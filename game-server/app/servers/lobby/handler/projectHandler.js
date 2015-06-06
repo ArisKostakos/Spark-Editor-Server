@@ -102,7 +102,7 @@ handler.fork = function(msg, session, next) {
                                             }
 
                                             //Handle Success
-                                            forkAssets(self, session, objects_found,0,
+                                            forkAssets(self, msg, session, objects_found,0,
                                                 function (err) {
                                                     //Handle Error
                                                     if (err) {
@@ -111,7 +111,7 @@ handler.fork = function(msg, session, next) {
                                                     }
 
                                                     //Handle Success
-                                                    forkAssetDependancies(self, session, objects_found,0,
+                                                    forkAssetDependancies(self, msg, session, objects_found,0,
                                                         function (err) {
                                                             //Handle Error
                                                             if (err) {
@@ -144,11 +144,11 @@ handler.fork = function(msg, session, next) {
     );
 }
 
-function forkAssets(self, session, assets, index, cb) {
+function forkAssets(self, msg, session, assets, index, cb) {
     if (index<assets.length)
     {
         //put user into channel
-        self.app.rpc.assets.createRemote.copy(session, assets[index], session.get('user'), session.get('developer'), function(err){
+        self.app.rpc.assets.createRemote.copy(session, assets[index], msg.forkedProjectName, session.get('user'), session.get('developer'), msg.projectName, function(err){
             //Handle Error
             if (err) {
                 cb(err);
@@ -156,7 +156,7 @@ function forkAssets(self, session, assets, index, cb) {
             }
 
             //Next
-            forkAssets(self, session, assets, index+1, cb);
+            forkAssets(self, msg, session, assets, index+1, cb);
         });
     }
     else
@@ -165,14 +165,14 @@ function forkAssets(self, session, assets, index, cb) {
     }
 }
 
-function forkAssetDependancies(self, session, assets, index, cb) {
+function forkAssetDependancies(self, msg, session, assets, index, cb) {
     if (index<assets.length)
     {
         var asset = assets[index];
 
         //query forked asset
         console.warn('1: owner: ' + session.get('developer')._id + ', type: ' + asset.type + ', name: ' + asset.name);
-        database.findOne(database.Asset, {owner: session.get('developer')._id, type: asset.type, name: asset.name},
+        database.findOne(database.Asset, {owner: session.get('developer')._id, type: asset.type, name: asset.name.replace(msg.forkedProjectName,msg.projectName)},
             function (err, object_found) {
                 //Handle Error
                 if (err) {cb(err); return;}
@@ -181,13 +181,13 @@ function forkAssetDependancies(self, session, assets, index, cb) {
                 if (object_found) {
 
                     //for each dependancy
-                    forkAssetDependanciesDeep(self, session, object_found, asset.assetDependancies,0,
+                    forkAssetDependanciesDeep(self, msg, session, object_found, asset.assetDependancies,0,
                         function (err) {
                             //Handle Error
                             if (err) {cb(err); return;}
 
                             //Next
-                            forkAssetDependancies(self, session, assets, index+1, cb);
+                            forkAssetDependancies(self, msg, session, assets, index+1, cb);
                         }
                     );
                 }
@@ -204,13 +204,13 @@ function forkAssetDependancies(self, session, assets, index, cb) {
     }
 }
 
-function forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index, cb) {
+function forkAssetDependanciesDeep(self, msg, session, forkedAsset, assetDependancies, index, cb) {
     if (index < assetDependancies.length) {
         var assetDependancy = assetDependancies[index];
 
         //query forked dependancy
         console.warn('2: owner: ' + session.get('developer')._id + ', type: ' + assetDependancy.type + ', name: ' + assetDependancy.name);
-        database.findOne(database.Asset, {owner: session.get('developer')._id, type: assetDependancy.type, name: assetDependancy.name},
+        database.findOne(database.Asset, {owner: session.get('developer')._id, type: assetDependancy.type, name: assetDependancy.name.replace(msg.forkedProjectName,msg.projectName)},
             function (err, object_found) {
                 //Handle Error
                 if (err) {cb(err); return;}
@@ -227,7 +227,7 @@ function forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies
                 forkedAsset.assetDependancies.push(dependancyToAdd._id);
 
                 //Next
-                forkAssetDependanciesDeep(self, session, forkedAsset, assetDependancies, index+1, cb);
+                forkAssetDependanciesDeep(self, msg, session, forkedAsset, assetDependancies, index+1, cb);
             }
         );
     }

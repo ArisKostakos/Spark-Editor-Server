@@ -13,14 +13,14 @@ var Remote = function(app) {
 
 var remote = Remote.prototype;
 
-remote.copy = function(asset, user, developer, cb) {
+remote.copy = function(asset, oldProjectName, user, developer, newProjectName, cb) {
 	//Asset Path
 	var assetPath = path.resolve("../web-server/public") + '/assets';
 
 	var assetSource = assetPath + '/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
-	fs.ensureDirSync(assetPath + '/' + user.name + '/' + asset.type + '/' + asset.dir);
-	var assetTarget = assetPath + '/' + user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+	fs.ensureDirSync(assetPath + '/' + user.name + '/' + asset.type + '/' + asset.dir.replace(oldProjectName,newProjectName));
+	var assetTarget = assetPath + '/' + user.name + '/' + asset.type + '/' + asset.dir.replace(oldProjectName,newProjectName) + '/' + asset.fileName + '.' + asset.fileExtension;
 
 	console.log('Found Recursively Rpc: ' + asset.name);
 	console.log('assetSource: ' + assetSource);
@@ -36,7 +36,7 @@ remote.copy = function(asset, user, developer, cb) {
 		}
 
 		//create new assetDB for each assetDB (mark as fork)
-		var raw_Asset = {name: asset.name, fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: [asset.tags[0]], accessControl: [], assetDependancies: []};
+		var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: [newProjectName], accessControl: [], assetDependancies: []};
 
 		//Create Asset
 		database.create(database.Asset, raw_Asset,
