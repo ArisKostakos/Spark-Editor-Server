@@ -24,11 +24,13 @@
 					if (bar!=null && container!=null)
 					{
 						//Project
+						/*
 						var projectHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
 						projectHeader.setState('caption','Project');
 						projectHeader.setState('fontSize','23px');
 						projectHeader.setState('backgroundColor','rgb(237,50,88)');
 						bar.addChild(projectHeader);
+						*/
 						
 						//Library
 						var libraryHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
@@ -37,7 +39,7 @@
 						libraryHeader.setState('backgroundColor','rgb(56,192,182)');
 						bar.addChild(libraryHeader);
 
-						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ProjectWindow'));
+						//container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ProjectWindow'));
 						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.LibraryWindow'));
 						
 						me.getAction('SelectWindow').setState('windowName','Library');

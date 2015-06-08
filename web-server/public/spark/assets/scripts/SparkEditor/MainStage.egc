@@ -51,7 +51,7 @@
 				<!-- StageArea: NavigationBar -->
 				<Entity extends="std.display.StageArea"><_States><_State id="layout"><Value>Basic</Value></_State>
 					<_State id="name"><Value>NavigationBar</Value></_State><_State id="parent"><Value>Main_Vgroup</Value></_State>
-					<_State id="width"><Value>100%</Value></_State><_State id="height"><Value>80</Value></_State></_States><!--56-->
+					<_State id="width"><Value>100%</Value></_State><_State id="height"><Value>80</Value></_State></_States><!--56,74-->
 				</Entity>
 				<!--Navigation Bar View-->
 				<Entity extends="SparkEditor.views.NavigationBarView"><_States><_State id="parent"><Value>NavigationBar</Value></_State></_States></Entity>
@@ -105,7 +105,7 @@
 					<_State id="width"><Value>100%</Value></_State><_State id="height"><Value>100%</Value></_State></_States>
 				</Entity>
 				<!--Editor Viewport View-->
-				<Entity extends="SparkEditor.views.EditorViewportView"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>
+				<!--<Entity extends="SparkEditor.views.EditorViewportView"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>-->
 				
 				<Entity extends="SparkEditor.views.MainView2D"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>
 				<Entity extends="SparkEditor.views.MainView2DRun"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>

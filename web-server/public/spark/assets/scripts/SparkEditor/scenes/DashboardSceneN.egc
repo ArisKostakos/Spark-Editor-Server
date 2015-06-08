@@ -94,36 +94,29 @@
 			<Event>NetworkRequest</Event>
 			<Scripts>
 				<Script>
-					if (Comms.getRequestData("Create Project Request")!=null)
+					if (Comms.getRequestData("Lobby: Open Project")!=null)
 					{
-						var data = Comms.getRequestData("Create Project Request");
+						var data = Comms.getRequestData("Lobby: Open Project");
 						
 						if (data.code=="success")
 						{
-							//Logic.getEntityByName('Spark Editor').setState('projectname',data.project.projectname);
+							Display.error("Project found. Connecting...");
+							
+							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
 
-							//Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
-							//Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
-
-						
-							//query library components
-							//Comms.request("editor.componentHandler.get", {queryArray: data.project.library}, "Get Components");
-							
-							return;
-							
-							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Project created!');
-							
-							//Add new project
-							me.getAction('AddProjects').setState('items', [data.project]);
-							me.startAction('AddProjects');
+							//Try some init stuff
+							Display.error("Doing INIT stuff!");
+							var projectEditor = Logic.getEntityByName('Project Editor');
+							projectEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
+							projectEditor.startAction('RequestProjectDbAssets');
 						}
-						else if (data.code=="exists")
+						else if (data.code=="notfound")
 						{
-							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Project name already exists.');
+							Display.error("Project does't exist.");
 						}
 						else
 						{
-							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Error creating project.');
+							Display.error('Error connecting to project.');
 						}
 					}
 				</Script>
@@ -137,27 +130,18 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					return;
-					
-					
 					var projectsContainer = Logic.getEntityByName('Lobby Projects Container');
 					var projects = me.getAction('AddProjects').getState('items');
 					
 					var i = 0;
 					while (projects.length>i)
 					{
-						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.LobbyProjectEntryPanel');
-						var templateSuffix='';
-						
-						if (projects[i].tags.length!=0)
-							if (projects[i].tags[0]=='template')
-								templateSuffix='Template: ';
-								
-						myNewItem.setState('projectName',templateSuffix+projects[i].name);
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.lobby.projects.ProjectTile');
+
+						myNewItem.setState('projectName',projects[i].title);
+						myNewItem.setState('imageName','lobbyProjectTemplate_Platform');
 						myNewItem.setState('project',projects[i]);
 						projectsContainer.addChild(myNewItem);
-						//Display.error('component #' + i + ':');
-						//Display.error(projects[i].assets);
 						
 						i+=1;
 					}

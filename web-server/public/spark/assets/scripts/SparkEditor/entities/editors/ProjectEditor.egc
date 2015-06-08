@@ -181,8 +181,8 @@
 
 								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
 								Logic.getEntityByName('Editor Left View').setState('visible',true);
-								Logic.getEntityByName('Editor Bottom View').setState('visible',true);
-								Logic.getEntityByName('Editor Right View').setState('visible',true);
+								//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+								//Logic.getEntityByName('Editor Right View').setState('visible',true);
 								Logic.getEntityByName('Editor Viewport View').setState('visible',true);
 							}).once();
 							

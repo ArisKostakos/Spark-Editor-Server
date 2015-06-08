@@ -105,8 +105,8 @@
 				<Entity extends="std.display.VGroup">
 					<_States>
 						<_State id="name"><Value>Editor Library Panel Categories</Value></_State>
-						<_State id="gap"><Value>3</Value></_State>
-						<_State id="width"><Value>41%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State><!--3-->
+						<_State id="width"><Value>85</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
 					</_States>
 					<Form><Space><Entities>
@@ -187,7 +187,7 @@
 				<Entity extends="std.display.Group">
 					<_States>
 						<_State id="name"><Value>Editor Library Panel SubCategories</Value></_State>
-						<_State id="width"><Value>59%</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
 					</_States>
 					<Form><Space><Entities>

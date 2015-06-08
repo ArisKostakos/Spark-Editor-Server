@@ -26,24 +26,28 @@
 						bar.setState('backgroundColor','rgb(41,59,77)');
 					
 						//Scene Editor Header
+						/*
 						var sceneEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
 						sceneEditorHeader.setState('caption','Scene');
 						sceneEditorHeader.setState('fontSize','17px');
 						sceneEditorHeader.setState('backgroundColor','rgb(76,143,165)');
 						bar.addChild(sceneEditorHeader);
-
+						*/
+						
 						//Event Editor Header
+						/*
 						var eventEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
 						eventEditorHeader.setState('caption','Events');
 						eventEditorHeader.setState('fontSize','17px');
 						eventEditorHeader.setState('backgroundColor','rgb(46,113,135)');
 						bar.addChild(eventEditorHeader);
 						
+						
 						//Create it, don't add it
 						Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.EventsWindow');
+						*/
 						
-						
-						//container.addChild();
+						////container.addChild();
 						
 						
 						me.getAction('SelectWindow').setState('windowName','Scene');

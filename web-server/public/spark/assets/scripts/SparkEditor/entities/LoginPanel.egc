@@ -212,6 +212,21 @@
 							else if (grandchild.getState('name')=='Password Input')
 								me.setState('passwordInput',grandchild);
 					}
+					return;
+								//enter project gui
+								Logic.getEntityByName('Dom View').setState('visible',false);
+
+								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
+								Logic.getEntityByName('Editor Left View').setState('visible',true);
+								//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+								//Logic.getEntityByName('Editor Right View').setState('visible',true);
+								//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+								
+								
+								
+								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
+								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
+								Logic.getEntityByName('NavigationBar').setState('height','74');
 				</Script>
 			</_Scripts>
 		</_Action>
