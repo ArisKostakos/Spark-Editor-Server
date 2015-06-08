@@ -86,12 +86,12 @@
 							}
 							
 							//Fill Library with Sprites
-							/*
+							
 							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
 							
 							objectsPanel.getAction('AddItemNoUpload').setState('items', spritesFound);
 							objectsPanel.startAction('AddItemNoUpload');
-							*/
+							
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
@@ -168,12 +168,12 @@
 							}
 							
 							//Fill Library with Behaviors
-							/*
+							
 							var objectsPanel = Logic.getEntityByName('Editor Library Behaviors Panel');
 							
 							objectsPanel.getAction('AddItemNoUpload').setState('items', behaviorsFound);
 							objectsPanel.startAction('AddItemNoUpload');
-							*/
+							
 							var assetUserName = me.getState('assetUserName');
 							
 							//Event Listener
@@ -196,14 +196,15 @@
 								eventsheetEditor.startAction('GetAsset');
 								*/
 								
+								
 								//enter project gui
-								Logic.getEntityByName('Dom View').setState('visible',false);
+								Logic.getEntityByName('Dashboard View').setState('visible',false);
 
-								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
+								//Logic.getEntityByName('Navigation Bar View').setState('visible',true);
 								Logic.getEntityByName('Editor Left View').setState('visible',true);
-								//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
-								//Logic.getEntityByName('Editor Right View').setState('visible',true);
-								//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+								////Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+								////Logic.getEntityByName('Editor Right View').setState('visible',true);
+								////Logic.getEntityByName('Editor Viewport View').setState('visible',true);
 								
 								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
 								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
