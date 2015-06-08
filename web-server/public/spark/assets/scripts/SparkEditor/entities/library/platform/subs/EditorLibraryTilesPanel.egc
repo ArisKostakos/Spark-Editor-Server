@@ -25,6 +25,10 @@
 						var asset = components[i];
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.platform.EditorLibraryItemNoName');
 						myNewItem.setState('asset',asset);
+						
+						var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						
+						myNewItem.setState('src',assetUrl);
 						container2d.addChild(myNewItem);
 						Display.error('asset #' + i + ':' + asset.fileName);
 						//Display.error(components[i].assets);
@@ -32,6 +36,7 @@
 						i+=1;
 					}
 					
+					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 					me.stopAction("AddItem");
 				</Script>
 			</Scripts>

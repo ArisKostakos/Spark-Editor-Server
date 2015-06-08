@@ -15,8 +15,6 @@
 				<Script>
 					me.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = Logic.getEntityByName('EditorLibraryTiles');
 					me.startAction("SelectCategory");
-					
-					
 				</Script>
 			</_Scripts>
 		</_Action>
