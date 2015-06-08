@@ -164,21 +164,21 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetExplorerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorCodePanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanel.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanel.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanelContainer.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanelContainer.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanelContainer.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryCategoryButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItem.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItemUpload.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorIconTextHorizontalButton.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryShapesPanel.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryShapesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryObjectsPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryBehaviorsPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryLightsPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryTexturesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySkiesPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryAudioPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryAudioPanel.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorAssetImport.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackgroundImage.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Networking.egc</Asset>
@@ -201,6 +201,11 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/ProjectTile.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/TemplateTile.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/NewProjectPopUp.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryCategories.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryItemNoName.egc</Asset>
 		</Module>
 		
 		<Module id="DoNotLoad">

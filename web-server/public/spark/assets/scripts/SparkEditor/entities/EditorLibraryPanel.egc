@@ -10,10 +10,10 @@
 		<Space>
 			<Entities>
 				<!-- Container -->
-				<Entity extends="SparkEditor.entities.EditorLibraryPanelContainer"><_States>
+				<Entity extends="SparkEditor.entities.library.platform.EditorLibraryCategories"><_States>
 					<_State id="paddingTop"><Value>41</Value></_State>
 				</_States></Entity>
-				
+
 				<!-- Heading -->
 					<Entity extends="std.display.Div"><_States>
 						<_State id="width"><Value>100%</Value></_State>

@@ -38,6 +38,7 @@
 					<_State id="height"><Value>15</Value></_State>
 					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
 					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
 					<_State id="textAlign"><Value>center</Value></_State>
 					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
 					parent.setState('textObject',me);

@@ -86,12 +86,12 @@
 							}
 							
 							//Fill Library with Sprites
-							
+							/*
 							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
 							
 							objectsPanel.getAction('AddItemNoUpload').setState('items', spritesFound);
 							objectsPanel.startAction('AddItemNoUpload');
-							
+							*/
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
@@ -167,12 +167,12 @@
 								i+=1;
 							}
 							
-							//Fill Library with Behaviors
+							//Fill Library with Tiles
 							
-							var objectsPanel = Logic.getEntityByName('Editor Library Behaviors Panel');
+							var tilesPanel = Logic.getEntityByName('Editor Library Tiles Panel');
 							
-							objectsPanel.getAction('AddItemNoUpload').setState('items', behaviorsFound);
-							objectsPanel.startAction('AddItemNoUpload');
+							tilesPanel.getAction('AddItem').setState('items', behaviorsFound);
+							tilesPanel.startAction('AddItem');
 							
 							var assetUserName = me.getState('assetUserName');
 							

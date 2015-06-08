@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Editor Library Tiles Panel</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>AddItem</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var container2d = Logic.getEntityByName('LibraryTilesContainer');
+					var components = me.getAction('AddItem').getState('items');
+					
+					var username = Logic.getEntityByName('Spark Editor').getState('username');
+					var i = 0;
+					while (components.length>i)
+					{
+						var asset = components[i];
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.platform.EditorLibraryItemNoName');
+						myNewItem.setState('asset',asset);
+						container2d.addChild(myNewItem);
+						Display.error('asset #' + i + ':' + asset.fileName);
+						//Display.error(components[i].assets);
+						
+						i+=1;
+					}
+					
+					me.stopAction("AddItem");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- List -->
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="name"><Value>LibraryTilesContainer</Value></_State>
+						<_State id="layout"><Value>Tile</Value></_State>
+						<_State id="horizontalAlign"><Value>justify</Value></_State>
+						<_State id="verticalAlign"><Value>justify</Value></_State>
+						<_State id="requestedColumnCount"><Value>3</Value></_State>
+						<_State id="horizontalGap"><Value>6</Value></_State>
+						<_State id="verticalGap"><Value>6</Value></_State>
+						<_State id="paddingLeft"><Value>6</Value></_State>
+						<_State id="paddingRight"><Value>6</Value></_State>
+						<_State id="paddingTop"><Value>6</Value></_State>
+						<_State id="paddingBottom"><Value>6</Value></_State>
+					</_States>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
