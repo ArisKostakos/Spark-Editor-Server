@@ -59,7 +59,13 @@
 								else if (asset.type=="image")
 								{
 									//Check second tag
+									/*
 									if (asset.tags[1]=='sprite')
+									{
+										Display.error("!!!! IMAGE FOUND!!!!");
+										spritesFound.push(asset);
+									}*/
+									if (asset.componentType=='Tile')
 									{
 										Display.error("!!!! IMAGE FOUND!!!!");
 										spritesFound.push(asset);
@@ -89,7 +95,7 @@
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
-								Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'alpha'}, "Alpha Project Assets Request");
+								Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
 							}).once();
 							
 							//Load
@@ -139,6 +145,20 @@
 										behaviorsFound.push(asset);
 									}
 								}
+								else if (asset.type=="image")
+								{
+									if (asset.componentType=='Tile')
+									{
+										Display.error("!!!! TILE FOUND!!!!");
+										behaviorsFound.push(asset);
+									}
+									//Is it uploaded to be used as a Sprite?
+									//..
+									//Is it uploaded to be used for Spriter?
+									//..
+									
+									assetId = 'image_' + asset.name;
+								}
 
 								Assets.addFile(assetUrl, assetId);
 								
@@ -177,13 +197,18 @@
 								*/
 								
 								//enter project gui
-								Logic.getEntityByName('Dashboard View').setState('visible',false);
+								Logic.getEntityByName('Dom View').setState('visible',false);
 
 								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
 								Logic.getEntityByName('Editor Left View').setState('visible',true);
 								//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
 								//Logic.getEntityByName('Editor Right View').setState('visible',true);
-								Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+								//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+								
+								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
+								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
+								Logic.getEntityByName('NavigationBar').setState('height','74');
+								
 							}).once();
 							
 							//Load

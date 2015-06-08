@@ -222,8 +222,6 @@
 								//Logic.getEntityByName('Editor Right View').setState('visible',true);
 								//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
 								
-								
-								
 								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
 								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
 								Logic.getEntityByName('NavigationBar').setState('height','74');
