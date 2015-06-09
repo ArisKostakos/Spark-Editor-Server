@@ -203,6 +203,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/NewProjectPopUp.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryCategories.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryItemNoName.egc</Asset>

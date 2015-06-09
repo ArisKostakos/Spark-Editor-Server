@@ -117,7 +117,8 @@
 							//Get Username
 							var userName = 'spark';
 							
-							var behaviorsFound = [];
+							var tilesFound = [];
+							var spriterActorsFound = [];
 							
 							//Initiate Load
 							Assets.initiateBatch();
@@ -142,20 +143,24 @@
 									if (asset.componentType=='Behavior')
 									{
 										Display.error("!!!! BEHAVIOR FOUND!!!!");
-										behaviorsFound.push(asset);
+										//behaviorsFound.push(asset);
 									}
 								}
 								else if (asset.type=="image")
 								{
-									if (asset.componentType=='SpriterImage')
+									if (asset.componentType=='Tile')
 									{
-										Display.error("!!!! TILE FOUND!!!!");
-										behaviorsFound.push(asset);
+										Display.error("!!!! Tile FOUND!!!!");
+										tilesFound.push(asset);
 									}
-									//Is it uploaded to be used as a Sprite?
-									//..
-									//Is it uploaded to be used for Spriter?
-									//..
+									else if (asset.componentType=='Actor')
+									{
+										if (asset.tags[1]=='SpriterMain')
+										{
+											Display.error("!!!! SpriterMain FOUND!!!!");
+											spriterActorsFound.push(asset);
+										}
+									}
 									
 									assetId = 'image_' + asset.name;
 								}
@@ -168,9 +173,12 @@
 							}
 							
 							//Fill Library with Tiles
-							
 							var tilesPanel = Logic.getEntityByName('Editor Library Tiles Panel');
+							tilesPanel.getAction('AddItem').setState('items', behaviorsFound);
+							tilesPanel.startAction('AddItem');
 							
+							//Fill Players with Actors
+							var tilesPanel = Logic.getEntityByName('Editor Library Tiles Panel');
 							tilesPanel.getAction('AddItem').setState('items', behaviorsFound);
 							tilesPanel.startAction('AddItem');
 							

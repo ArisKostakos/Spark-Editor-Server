@@ -56,12 +56,12 @@
 			<Scripts>
 				<Script>
 					var selected = me.getState('selectedCategoryObject');
-					/*
-					if (Logic.getEntityByName('EditorLibraryShapes') == selected)
-						Logic.getEntityByName('Editor Library Shapes Panel').setState('display','inline');
-					else
-						Logic.getEntityByName('Editor Library Shapes Panel').setState('display','none');
 					
+					if (Logic.getEntityByName('EditorLibraryPlayer') == selected)
+						Logic.getEntityByName('Editor Library Player Panel').setState('display','inline');
+					else
+						Logic.getEntityByName('Editor Library Player Panel').setState('display','none');
+					/*
 					if (Logic.getEntityByName('EditorLibraryObjects') == selected)
 						Logic.getEntityByName('Editor Library Objects Panel').setState('display','inline');
 					else
@@ -201,7 +201,7 @@
 					</_States>
 					<Form><Space><Entities>
 						<!-- Player -->
-						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
+						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryPlayerPanel"/>
 						<!-- Enemies -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
 						<!-- Tiles -->
