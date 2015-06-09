@@ -147,7 +147,7 @@
 								}
 								else if (asset.type=="image")
 								{
-									if (asset.componentType=='Tile')
+									if (asset.componentType=='SpriterImage')
 									{
 										Display.error("!!!! TILE FOUND!!!!");
 										behaviorsFound.push(asset);
