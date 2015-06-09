@@ -10,7 +10,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				
+				<Entity extends="SpriterTest.entities.Spriter"/>
 			</Entities>
 		</Space>
 	</Form>

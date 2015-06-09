@@ -10,7 +10,6 @@
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Background -->
 				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
@@ -20,71 +19,117 @@
 				</Entity>
 				
 				<!-- My Projects -->
-				<Entity extends="std.display.Group">
-					<_States>
-						<_State id="name"><Value>Lobby Projects Container</Value></_State>
-						<_State id="layout"><Value>Tile</Value></_State>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="height"><Value>100%</Value></_State>
-						<_State id="horizontalAlign"><Value>justify</Value></_State>
-						<_State id="verticalAlign"><Value>justify</Value></_State>
-						<_State id="paddingLeft"><Value>30</Value></_State>
-						<_State id="paddingRight"><Value>10</Value></_State>
-						<_State id="paddingTop"><Value>30</Value></_State>
-						<_State id="paddingBottom"><Value>10</Value></_State>
-						<_State id="horizontalGap"><Value>12</Value></_State>
-						<_State id="verticalGap"><Value>12</Value></_State>
-					</_States>
-					<Form><Space><Entities>
-						<!-- Create New -->
-						<Entity extends="SparkEditor.entities.lobby.projects.ProjectTile"><_States>
-							<_State id="projectName"><Value>Create New</Value></_State>
-							<_State id="imageName"><Value>lobbyProject_NewProject</Value></_State>
-						</_States>
-						<_Actions>
-							<_Action id="ButtonClicked">
-								<_Scripts>
-									<Script>
-										Display.error("ok this works fine..");
-										Logic.getEntityByName('Pop Up Area').setState('display','inline');
-									</Script>
-								</_Scripts>
-							</_Action>
-						</_Actions>
-						</Entity>
-					</Entities></Space></Form>
-				</Entity>
-			
-			
-				<!-- Pop Up Area -->
-				<Entity extends="std.display.Div">
-					<_States>
-						<_State id="name"><Value>Pop Up Area</Value></_State>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="height"><Value>100%</Value></_State>
-						<_State id="display"><Value>none</Value></_State>
-					</_States>
-					<!--children-->
-					<Form><Space><Entities>
-						<!-- Background Area -->
-						<Entity extends="std.display.Div">
-							<_States>
-								<_State id="width"><Value>100%</Value></_State>
-								<_State id="height"><Value>100%</Value></_State>
-								<_State id="backgroundColor"><Value>white</Value></_State>
-								<_State id="opacity"><Value>0.07</Value></_State>
-							</_States>
-						</Entity>
+				<Entity extends="std.display.VGroup"><_States>
+					<_State id="name"><Value>Lobby Projects Container</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="gap"><Value>6</Value></_State></_States><Form><Space><Entities>
+						<!-- Output Text -->
+						<Entity extends="std.display.Text"><_States>
+							<_State id="name"><Value>Dashboard Output Text</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>22</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>22px</Value></_State>
+							<_State id="fontColor"><Value>red</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+						</_States></Entity>
+				
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="height"><Value>2</Value></_State></_States></Entity>
 						
-						<!-- New Project Pop Up -->
-						<Entity extends="SparkEditor.entities.lobby.projects.NewProjectPopUp">
-							<_States>
-								<_State id="horizontalCenter"><Value>0</Value></_State>
-								<_State id="verticalCenter"><Value>0</Value></_State>
-							</_States>
-						</Entity>
-					</Entities></Space></Form>
-				</Entity>
+						
+						<!-- Create New Project -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+								<!-- Input Box -->
+								<Entity extends="std.display.Input"><_States>
+									<_State id="name"><Value>Create New Project Input</Value></_State>
+									<_State id="width"><Value>50%</Value></_State>
+									<_State id="height"><Value>47</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+									<_State id="border"><Value>0px</Value></_State>
+									<_State id="placeholder"><Value>New Project Name</Value></_State>
+									<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+									<_State id="fontSize"><Value>23px</Value></_State>
+									<_State id="fontColor"><Value>white</Value></_State>
+									<_State id="textIndent"><Value>12px</Value></_State>
+								</_States></Entity>
+								
+								<!-- Create Project Button -->
+								<Entity extends="std.display.Button"><_States>
+									<_State id="width"><Value>25%</Value></_State>
+									<_State id="height"><Value>49</Value></_State>
+									<_State id="textAlign"><Value>center</Value></_State>
+									<_State id="textVerticalAlign"><Value>middle</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+									<_State id="border"><Value>0px</Value></_State>
+									<_State id="text"><Value>Create New Project</Value></_State>
+									<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+									<_State id="fontSize"><Value>30px</Value></_State>
+									<_State id="fontColor"><Value>white</Value></_State>
+								</_States>
+								<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+								<Script>
+									var strProjectName = Logic.getEntityByName('Create New Project Input').getState('text');
+								
+									if (strProjectName.length>0 && strProjectName!='Undefined')
+									{
+										//Create New Project Code...
+										Logic.getEntityByName('Dashboard Output Text').setState('text', 'Please wait...');
+									
+										Comms.request("lobby.projectHandler.create", {projectName: strProjectName, tags: []}, "Create Project Request");
+									}
+									else
+									{
+										Logic.getEntityByName('Dashboard Output Text').setState('text', 'Please fill in project Name field');
+									}
+								</Script>
+								</Scripts></Trigger></_Triggers></Entity>
+								
+								<!-- Create Template Button -->
+								<Entity extends="std.display.Button"><_States>
+									<_State id="width"><Value>25%</Value></_State>
+									<_State id="height"><Value>49</Value></_State>
+									<_State id="textAlign"><Value>center</Value></_State>
+									<_State id="textVerticalAlign"><Value>middle</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(159, 85, 176)</Value></_State>
+									<_State id="border"><Value>0px</Value></_State>
+									<_State id="text"><Value>Create New Template</Value></_State>
+									<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+									<_State id="fontSize"><Value>30px</Value></_State>
+									<_State id="fontColor"><Value>white</Value></_State>
+								</_States>
+								<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+								<Script>
+									var strProjectName = Logic.getEntityByName('Create New Project Input').getState('text');
+								
+									if (strProjectName.length>0 && strProjectName!='Undefined')
+									{
+										//Create New Project Code...
+										Logic.getEntityByName('Dashboard Output Text').setState('text', 'Please wait...');
+									
+										Comms.request("lobby.projectHandler.create", {projectName: strProjectName, tags: ['template']}, "Create Project Request");
+									}
+									else
+									{
+										Logic.getEntityByName('Dashboard Output Text').setState('text', 'Please fill in project Name field');
+									}
+								</Script>
+								</Scripts></Trigger></_Triggers></Entity>
+						</Entities></Space></Form></Entity>
+						
+						<!-- Label Text -->
+						<Entity extends="std.display.Text"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>22</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>22px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="textAlign"><Value>left</Value></_State>
+							<_State id="text"><Value>My Projects</Value></_State>
+						</_States></Entity>
+				</Entities></Space></Form></Entity>
 			</Entities>
 		</Space>
 	</Form>
@@ -94,29 +139,34 @@
 			<Event>NetworkRequest</Event>
 			<Scripts>
 				<Script>
-					if (Comms.getRequestData("Lobby: Open Project")!=null)
+					if (Comms.getRequestData("Create Project Request")!=null)
 					{
-						var data = Comms.getRequestData("Lobby: Open Project");
+						var data = Comms.getRequestData("Create Project Request");
 						
 						if (data.code=="success")
 						{
-							Display.error("Project found. Connecting...");
-							
-							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+							//Logic.getEntityByName('Spark Editor').setState('projectname',data.project.projectname);
 
-							//Try some init stuff
-							Display.error("Doing INIT stuff!");
-							var projectEditor = Logic.getEntityByName('Project Editor');
-							projectEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
-							projectEditor.startAction('RequestProjectDbAssets');
+							//Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
+							//Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+
+						
+							//query library components
+							//Comms.request("editor.componentHandler.get", {queryArray: data.project.library}, "Get Components");
+							
+							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Project created!');
+							
+							//Add new project
+							me.getAction('AddProjects').setState('items', [data.project]);
+							me.startAction('AddProjects');
 						}
-						else if (data.code=="notfound")
+						else if (data.code=="exists")
 						{
-							Display.error("Project does't exist.");
+							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Project name already exists.');
 						}
 						else
 						{
-							Display.error('Error connecting to project.');
+							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Error creating project.');
 						}
 					}
 				</Script>
@@ -136,12 +186,18 @@
 					var i = 0;
 					while (projects.length>i)
 					{
-						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.lobby.projects.ProjectTile');
-
-						myNewItem.setState('projectName',projects[i].title);
-						myNewItem.setState('imageName','lobbyProjectTemplate_Platform');
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.LobbyProjectEntryPanel');
+						var templateSuffix='';
+						
+						if (projects[i].tags.length!=0)
+							if (projects[i].tags[0]=='template')
+								templateSuffix='Template: ';
+								
+						myNewItem.setState('projectName',templateSuffix+projects[i].name);
 						myNewItem.setState('project',projects[i]);
 						projectsContainer.addChild(myNewItem);
+						//Display.error('component #' + i + ':');
+						//Display.error(projects[i].assets);
 						
 						i+=1;
 					}

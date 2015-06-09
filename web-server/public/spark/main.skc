@@ -206,6 +206,43 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryItemNoName.egc</Asset>
+			
+			
+			
+			
+			<Asset type="script" location="local" bytes='35672'>SpriterTest/entities/Spriter.egc</Asset>
+
+			
+			<Asset type="image" subtype="2D" location="local" id="SpriterGuy1" bytes='35672' forceLoadAsData='true'>Spriter.scml</Asset>
+			
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/Body" bytes='35672'>SpriterTest/Soldier1/Body.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/BodyBack" bytes='35672'>SpriterTest/Soldier1/BodyBack.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/Grenade" bytes='35672'>SpriterTest/Soldier1/Grenade.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/Gun" bytes='35672'>SpriterTest/Soldier1/Gun.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/HandKnife" bytes='35672'>SpriterTest/Soldier1/HandKnife.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/HandOpen" bytes='35672'>SpriterTest/Soldier1/HandOpen.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/HeadBack" bytes='35672'>SpriterTest/Soldier1/HeadBack.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/HeadHappy" bytes='35672'>SpriterTest/Soldier1/HeadHappy.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/HeadHurt" bytes='35672'>SpriterTest/Soldier1/HeadHurt.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/HeadNormal" bytes='35672'>SpriterTest/Soldier1/HeadNormal.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/Knife" bytes='35672'>SpriterTest/Soldier1/Knife.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftFoot (1)" bytes='35672'>SpriterTest/Soldier1/LeftFoot (1).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftFoot (2)" bytes='35672'>SpriterTest/Soldier1/LeftFoot (2).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftFoot (3)" bytes='35672'>SpriterTest/Soldier1/LeftFoot (3).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftFootBack (1)" bytes='35672'>SpriterTest/Soldier1/LeftFootBack (1).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftFootBack (2)" bytes='35672'>SpriterTest/Soldier1/LeftFootBack (2).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftHand (1)" bytes='35672'>SpriterTest/Soldier1/LeftHand (1).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftHand (2)" bytes='35672'>SpriterTest/Soldier1/LeftHand (2).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/LeftHand (3)" bytes='35672'>SpriterTest/Soldier1/LeftHand (3).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightFoot (1)" bytes='35672'>SpriterTest/Soldier1/RightFoot (1).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightFoot (2)" bytes='35672'>SpriterTest/Soldier1/RightFoot (2).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightFoot (3)" bytes='35672'>SpriterTest/Soldier1/RightFoot (3).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightFootBack (1)" bytes='35672'>SpriterTest/Soldier1/RightFootBack (1).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightFootBack (2)" bytes='35672'>SpriterTest/Soldier1/RightFootBack (2).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightFootBack (3)" bytes='35672'>SpriterTest/Soldier1/RightFootBack (3).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightHand (1)" bytes='35672'>SpriterTest/Soldier1/RightHand (1).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightHand (2)" bytes='35672'>SpriterTest/Soldier1/RightHand (2).png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightHand (3)" bytes='35672'>SpriterTest/Soldier1/RightHand (3).png</Asset>
 		</Module>
 		
 		<Module id="DoNotLoad">
