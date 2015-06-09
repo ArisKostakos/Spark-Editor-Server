@@ -148,8 +148,8 @@
 					var strPass =parent.getState('passwordInput').getState('text');
 					//strUser = 'aris';
 					//strPass = 'r0diof';
-					strUser = 'test3';
-					strPass = 'lala3';
+					//strUser = 'test3';
+					//strPass = 'lala3';
 					//strUser = 'spark';
 					//strPass = '12qw!@QW ';
 					
@@ -212,19 +212,20 @@
 							else if (grandchild.getState('name')=='Password Input')
 								me.setState('passwordInput',grandchild);
 					}
-					return;
-								//enter project gui
-								Logic.getEntityByName('Dom View').setState('visible',false);
+					/*
+						//enter project gui
+						Logic.getEntityByName('Dom View').setState('visible',false);
 
-								Logic.getEntityByName('Navigation Bar View').setState('visible',true);
-								Logic.getEntityByName('Editor Left View').setState('visible',true);
-								//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
-								//Logic.getEntityByName('Editor Right View').setState('visible',true);
-								//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
-								
-								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
-								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
-								Logic.getEntityByName('NavigationBar').setState('height','74');
+						Logic.getEntityByName('Navigation Bar View').setState('visible',true);
+						Logic.getEntityByName('Editor Left View').setState('visible',true);
+						//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+						//Logic.getEntityByName('Editor Right View').setState('visible',true);
+						//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+						
+						Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
+						Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
+						Logic.getEntityByName('NavigationBar').setState('height','74');
+					*/
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -309,11 +310,16 @@
 							Display.error("Data projects received: " + data.projects);
 							
 							//Fill Dashboard View with projects
-							var dashboardScene = Logic.getEntityByName('Dashboard Scene');
-							
+							var dashboardScene;
+							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
+								dashboardScene = Logic.getEntityByName('Dashboard Admin');
+							else 
+								dashboardScene = Logic.getEntityByName('Dashboard Normal');
+								
+							dashboardScene.setState('display','inline');
 							dashboardScene.getAction('AddProjects').setState('items', data.projects);
 							dashboardScene.startAction('AddProjects');
-							
+
 							//enter lobby
 							Logic.getEntityByName('Top Bar Username Text').setState('text','Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
 							Logic.getEntityByName('Top Bar Lobby Mode Username').setState('text',Logic.getEntityByName('Spark Editor').getState('username'));

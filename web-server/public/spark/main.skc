@@ -198,6 +198,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ConditionEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ActionEdit.egc</Asset>
 			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/DashboardNormal.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/DashboardAdmin.egc</Asset>
+			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/ProjectTile.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/TemplateTile.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/NewProjectPopUp.egc</Asset>

@@ -43,7 +43,9 @@
 				</_States>
 				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
 				<Script>
-					//..
+					//Log In...
+					Logic.getEntityByName('Dashboard Output Text').setState('text', 'Connecting to Project: ' + parent.getState('project').name);
+					Comms.request("lobby.projectHandler.connect", {projectName: parent.getState('project').name}, "Admin Lobby: Open Project");
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 				
@@ -62,7 +64,7 @@
 				</_States>
 				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
 				<Script>
-					//Log In...
+					//Log In Admin...
 					Logic.getEntityByName('Dashboard Output Text').setState('text', 'Connecting to Project: ' + parent.getState('project').name);
 					Comms.request("lobby.projectHandler.connect", {projectName: parent.getState('project').name}, "Connect To " + parent.getState('project').name);
 				</Script>
@@ -101,6 +103,32 @@
 						else
 						{
 							Logic.getEntityByName('Dashboard Output Text').setState('text', 'Error connecting to project.');
+						}
+					}
+					else if (Comms.getRequestData("Admin Lobby: Open Project")!=null)
+					{
+						var data = Comms.getRequestData("Admin Lobby: Open Project");
+						
+						if (data.code=="success")
+						{
+							Display.error("Project found. Connecting...");
+							
+							Logic.getEntityByName('Spark Editor').setState('projectname',me.getState('project').name);
+							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+
+							//Try some init stuff
+							Display.error("Doing INIT stuff!");
+							var projectEditor = Logic.getEntityByName('Project Editor');
+							projectEditor.setState('assetUserName',Logic.getEntityByName('Spark Editor').getState('username'));
+							projectEditor.startAction('RequestProjectDbAssets');
+						}
+						else if (data.code=="notfound")
+						{
+							Display.error("Project does't exist.");
+						}
+						else
+						{
+							Display.error('Error connecting to project.');
 						}
 					}
 				</Script>
