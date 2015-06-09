@@ -209,10 +209,8 @@
 			
 			
 			
-			
+			<!--
 			<Asset type="script" location="local" bytes='35672'>SpriterTest/entities/Spriter.egc</Asset>
-
-			
 			<Asset type="image" subtype="2D" location="local" id="SpriterGuy1" bytes='35672' forceLoadAsData='true'>Spriter.scml</Asset>
 			
 			<Asset type="image" subtype="2D" location="local" id="/Soldier1/Body" bytes='35672'>SpriterTest/Soldier1/Body.png</Asset>
@@ -243,6 +241,7 @@
 			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightHand (1)" bytes='35672'>SpriterTest/Soldier1/RightHand (1).png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightHand (2)" bytes='35672'>SpriterTest/Soldier1/RightHand (2).png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="/Soldier1/RightHand (3)" bytes='35672'>SpriterTest/Soldier1/RightHand (3).png</Asset>
+			-->
 		</Module>
 		
 		<Module id="DoNotLoad">
