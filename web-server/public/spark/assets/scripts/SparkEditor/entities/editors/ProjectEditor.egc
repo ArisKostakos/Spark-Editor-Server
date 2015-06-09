@@ -174,13 +174,13 @@
 							
 							//Fill Library with Tiles
 							var tilesPanel = Logic.getEntityByName('Editor Library Tiles Panel');
-							tilesPanel.getAction('AddItem').setState('items', behaviorsFound);
+							tilesPanel.getAction('AddItem').setState('items', tilesFound);
 							tilesPanel.startAction('AddItem');
 							
 							//Fill Players with Actors
-							var tilesPanel = Logic.getEntityByName('Editor Library Tiles Panel');
-							tilesPanel.getAction('AddItem').setState('items', behaviorsFound);
-							tilesPanel.startAction('AddItem');
+							var playersPanel = Logic.getEntityByName('Editor Library Player Panel');
+							playersPanel.getAction('AddItem').setState('items', spriterActorsFound);
+							playersPanel.startAction('AddItem');
 							
 							var assetUserName = me.getState('assetUserName');
 							
