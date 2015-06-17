@@ -1,5 +1,5 @@
 (function () { "use strict";
-var $hxClasses = {};
+var $hxClasses = {},$estr = function() { return js_Boot.__string_rec(this,''); };
 function $extend(from, fields) {
 	function Inherit() {} Inherit.prototype = from; var proto = new Inherit();
 	for (var name in fields) proto[name] = fields[name];
@@ -67,7 +67,7 @@ var Lambda = function() { };
 $hxClasses["Lambda"] = Lambda;
 Lambda.__name__ = true;
 Lambda.array = function(it) {
-	var a = new Array();
+	var a = [];
 	var $it0 = $iterator(it)();
 	while( $it0.hasNext() ) {
 		var i = $it0.next();
@@ -105,22 +105,26 @@ List.prototype = {
 		this.length++;
 	}
 	,iterator: function() {
-		return { h : this.h, hasNext : function() {
-			return this.h != null;
-		}, next : function() {
-			if(this.h == null) return null;
-			var x = this.h[0];
-			this.h = this.h[1];
-			return x;
-		}};
+		return new _$List_ListIterator(this.h);
 	}
 	,__class__: List
 };
-var IMap = function() { };
-$hxClasses["IMap"] = IMap;
-IMap.__name__ = true;
-IMap.prototype = {
-	__class__: IMap
+var _$List_ListIterator = function(head) {
+	this.head = head;
+	this.val = null;
+};
+$hxClasses["_List.ListIterator"] = _$List_ListIterator;
+_$List_ListIterator.__name__ = true;
+_$List_ListIterator.prototype = {
+	hasNext: function() {
+		return this.head != null;
+	}
+	,next: function() {
+		this.val = this.head[0];
+		this.head = this.head[1];
+		return this.val;
+	}
+	,__class__: _$List_ListIterator
 };
 Math.__name__ = true;
 var Reflect = function() { };
@@ -133,6 +137,7 @@ Reflect.field = function(o,field) {
 	try {
 		return o[field];
 	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
 		return null;
 	}
 };
@@ -193,6 +198,9 @@ StringBuf.prototype = {
 	add: function(x) {
 		this.b += Std.string(x);
 	}
+	,addChar: function(c) {
+		this.b += String.fromCharCode(c);
+	}
 	,addSub: function(s,pos,len) {
 		if(len == null) this.b += HxOverrides.substr(s,pos,null); else this.b += HxOverrides.substr(s,pos,len);
 	}
@@ -207,6 +215,25 @@ StringTools.__name__ = true;
 StringTools.htmlEscape = function(s,quotes) {
 	s = s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 	if(quotes) return s.split("\"").join("&quot;").split("'").join("&#039;"); else return s;
+};
+StringTools.isSpace = function(s,pos) {
+	var c = HxOverrides.cca(s,pos);
+	return c > 8 && c < 14 || c == 32;
+};
+StringTools.ltrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,r)) r++;
+	if(r > 0) return HxOverrides.substr(s,r,l - r); else return s;
+};
+StringTools.rtrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,l - r - 1)) r++;
+	if(r > 0) return HxOverrides.substr(s,0,l - r); else return s;
+};
+StringTools.trim = function(s) {
+	return StringTools.ltrim(StringTools.rtrim(s));
 };
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
@@ -252,18 +279,18 @@ Type.createInstance = function(cl,args) {
 	case 8:
 		return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
 	default:
-		throw "Too many arguments";
+		throw new js__$Boot_HaxeError("Too many arguments");
 	}
 	return null;
 };
 Type.createEnum = function(e,constr,params) {
 	var f = Reflect.field(e,constr);
-	if(f == null) throw "No such constructor " + constr;
+	if(f == null) throw new js__$Boot_HaxeError("No such constructor " + constr);
 	if(Reflect.isFunction(f)) {
-		if(params == null) throw "Constructor " + constr + " need parameters";
+		if(params == null) throw new js__$Boot_HaxeError("Constructor " + constr + " need parameters");
 		return Reflect.callMethod(e,f,params);
 	}
-	if(params != null && params.length != 0) throw "Constructor " + constr + " does not need parameters";
+	if(params != null && params.length != 0) throw new js__$Boot_HaxeError("Constructor " + constr + " does not need parameters");
 	return f;
 };
 Type.enumEq = function(a,b) {
@@ -279,6 +306,7 @@ Type.enumEq = function(a,b) {
 		var e = a.__enum__;
 		if(e != b.__enum__ || e == null) return false;
 	} catch( e1 ) {
+		if (e1 instanceof js__$Boot_HaxeError) e1 = e1.val;
 		return false;
 	}
 	return true;
@@ -289,8 +317,10 @@ Type.enumParameters = function(e) {
 Type.enumIndex = function(e) {
 	return e[1];
 };
-var XmlType = $hxClasses["XmlType"] = { __ename__ : true, __constructs__ : [] };
-var Xml = function() {
+var Xml = function(nodeType) {
+	this.nodeType = nodeType;
+	this.children = [];
+	this.attributeMap = new haxe_ds_StringMap();
 };
 $hxClasses["Xml"] = Xml;
 Xml.__name__ = true;
@@ -298,214 +328,147 @@ Xml.parse = function(str) {
 	return haxe_xml_Parser.parse(str);
 };
 Xml.createElement = function(name) {
-	var r = new Xml();
-	r.nodeType = Xml.Element;
-	r._children = new Array();
-	r._attributes = new haxe_ds_StringMap();
-	r.set_nodeName(name);
-	return r;
+	var xml = new Xml(Xml.Element);
+	xml.set_nodeName(name);
+	return xml;
 };
 Xml.createPCData = function(data) {
-	var r = new Xml();
-	r.nodeType = Xml.PCData;
-	r.set_nodeValue(data);
-	return r;
+	var xml = new Xml(Xml.PCData);
+	xml.set_nodeValue(data);
+	return xml;
 };
 Xml.createCData = function(data) {
-	var r = new Xml();
-	r.nodeType = Xml.CData;
-	r.set_nodeValue(data);
-	return r;
+	var xml = new Xml(Xml.CData);
+	xml.set_nodeValue(data);
+	return xml;
 };
 Xml.createComment = function(data) {
-	var r = new Xml();
-	r.nodeType = Xml.Comment;
-	r.set_nodeValue(data);
-	return r;
+	var xml = new Xml(Xml.Comment);
+	xml.set_nodeValue(data);
+	return xml;
 };
 Xml.createDocType = function(data) {
-	var r = new Xml();
-	r.nodeType = Xml.DocType;
-	r.set_nodeValue(data);
-	return r;
+	var xml = new Xml(Xml.DocType);
+	xml.set_nodeValue(data);
+	return xml;
 };
 Xml.createProcessingInstruction = function(data) {
-	var r = new Xml();
-	r.nodeType = Xml.ProcessingInstruction;
-	r.set_nodeValue(data);
-	return r;
+	var xml = new Xml(Xml.ProcessingInstruction);
+	xml.set_nodeValue(data);
+	return xml;
 };
 Xml.createDocument = function() {
-	var r = new Xml();
-	r.nodeType = Xml.Document;
-	r._children = new Array();
-	return r;
+	return new Xml(Xml.Document);
 };
 Xml.prototype = {
 	get_nodeName: function() {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		return this._nodeName;
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		return this.nodeName;
 	}
-	,set_nodeName: function(n) {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		return this._nodeName = n;
+	,set_nodeName: function(v) {
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		return this.nodeName = v;
 	}
 	,get_nodeValue: function() {
-		if(this.nodeType == Xml.Element || this.nodeType == Xml.Document) throw "bad nodeType";
-		return this._nodeValue;
+		if(this.nodeType == Xml.Document || this.nodeType == Xml.Element) throw new js__$Boot_HaxeError("Bad node type, unexpected " + this.nodeType);
+		return this.nodeValue;
 	}
 	,set_nodeValue: function(v) {
-		if(this.nodeType == Xml.Element || this.nodeType == Xml.Document) throw "bad nodeType";
-		return this._nodeValue = v;
+		if(this.nodeType == Xml.Document || this.nodeType == Xml.Element) throw new js__$Boot_HaxeError("Bad node type, unexpected " + this.nodeType);
+		return this.nodeValue = v;
 	}
 	,get: function(att) {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		return this._attributes.get(att);
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		return this.attributeMap.get(att);
 	}
 	,set: function(att,value) {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		this._attributes.set(att,value);
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		this.attributeMap.set(att,value);
 	}
 	,remove: function(att) {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		this._attributes.remove(att);
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		this.attributeMap.remove(att);
 	}
 	,exists: function(att) {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		return this._attributes.exists(att);
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		return this.attributeMap.exists(att);
 	}
 	,attributes: function() {
-		if(this.nodeType != Xml.Element) throw "bad nodeType";
-		return this._attributes.keys();
+		if(this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element but found " + this.nodeType);
+		return this.attributeMap.keys();
 	}
 	,iterator: function() {
-		if(this._children == null) throw "bad nodetype";
-		return { cur : 0, x : this._children, hasNext : function() {
-			return this.cur < this.x.length;
-		}, next : function() {
-			return this.x[this.cur++];
-		}};
+		this.ensureElementType();
+		return HxOverrides.iter(this.children);
 	}
 	,elements: function() {
-		if(this._children == null) throw "bad nodetype";
-		return { cur : 0, x : this._children, hasNext : function() {
-			var k = this.cur;
-			var l = this.x.length;
-			while(k < l) {
-				if(this.x[k].nodeType == Xml.Element) break;
-				k += 1;
-			}
-			this.cur = k;
-			return k < l;
-		}, next : function() {
-			var k1 = this.cur;
-			var l1 = this.x.length;
-			while(k1 < l1) {
-				var n = this.x[k1];
-				k1 += 1;
-				if(n.nodeType == Xml.Element) {
-					this.cur = k1;
-					return n;
-				}
-			}
-			return null;
-		}};
+		this.ensureElementType();
+		var ret;
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = this.children;
+		while(_g1 < _g2.length) {
+			var child = _g2[_g1];
+			++_g1;
+			if(child.nodeType == Xml.Element) _g.push(child);
+		}
+		ret = _g;
+		return HxOverrides.iter(ret);
 	}
 	,elementsNamed: function(name) {
-		if(this._children == null) throw "bad nodetype";
-		return { cur : 0, x : this._children, hasNext : function() {
-			var k = this.cur;
-			var l = this.x.length;
-			while(k < l) {
-				var n = this.x[k];
-				if(n.nodeType == Xml.Element && n._nodeName == name) break;
-				k++;
-			}
-			this.cur = k;
-			return k < l;
-		}, next : function() {
-			var k1 = this.cur;
-			var l1 = this.x.length;
-			while(k1 < l1) {
-				var n1 = this.x[k1];
-				k1++;
-				if(n1.nodeType == Xml.Element && n1._nodeName == name) {
-					this.cur = k1;
-					return n1;
-				}
-			}
-			return null;
-		}};
+		this.ensureElementType();
+		var ret;
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = this.children;
+		while(_g1 < _g2.length) {
+			var child = _g2[_g1];
+			++_g1;
+			if(child.nodeType == Xml.Element && child.get_nodeName() == name) _g.push(child);
+		}
+		ret = _g;
+		return HxOverrides.iter(ret);
 	}
 	,firstChild: function() {
-		if(this._children == null) throw "bad nodetype";
-		return this._children[0];
+		this.ensureElementType();
+		return this.children[0];
 	}
 	,firstElement: function() {
-		if(this._children == null) throw "bad nodetype";
-		var cur = 0;
-		var l = this._children.length;
-		while(cur < l) {
-			var n = this._children[cur];
-			if(n.nodeType == Xml.Element) return n;
-			cur++;
+		this.ensureElementType();
+		var _g = 0;
+		var _g1 = this.children;
+		while(_g < _g1.length) {
+			var child = _g1[_g];
+			++_g;
+			if(child.nodeType == Xml.Element) return child;
 		}
 		return null;
 	}
 	,addChild: function(x) {
-		if(this._children == null) throw "bad nodetype";
-		if(x._parent != null) HxOverrides.remove(x._parent._children,x);
-		x._parent = this;
-		this._children.push(x);
+		this.ensureElementType();
+		if(x.parent != null) x.parent.removeChild(x);
+		this.children.push(x);
+		x.parent = this;
 	}
 	,removeChild: function(x) {
-		if(this._children == null) throw "bad nodetype";
-		var b = HxOverrides.remove(this._children,x);
-		if(b) x._parent = null;
-		return b;
+		this.ensureElementType();
+		if(HxOverrides.remove(this.children,x)) {
+			x.parent = null;
+			return true;
+		}
+		return false;
 	}
 	,insertChild: function(x,pos) {
-		if(this._children == null) throw "bad nodetype";
-		if(x._parent != null) HxOverrides.remove(x._parent._children,x);
-		x._parent = this;
-		this._children.splice(pos,0,x);
+		this.ensureElementType();
+		if(x.parent != null) HxOverrides.remove(x.parent.children,x);
+		this.children.splice(pos,0,x);
+		x.parent = this;
 	}
 	,toString: function() {
-		if(this.nodeType == Xml.PCData) return StringTools.htmlEscape(this._nodeValue);
-		if(this.nodeType == Xml.CData) return "<![CDATA[" + this._nodeValue + "]]>";
-		if(this.nodeType == Xml.Comment) return "<!--" + this._nodeValue + "-->";
-		if(this.nodeType == Xml.DocType) return "<!DOCTYPE " + this._nodeValue + ">";
-		if(this.nodeType == Xml.ProcessingInstruction) return "<?" + this._nodeValue + "?>";
-		var s = new StringBuf();
-		if(this.nodeType == Xml.Element) {
-			s.add("<");
-			s.add(this._nodeName);
-			var $it0 = this._attributes.keys();
-			while( $it0.hasNext() ) {
-				var k = $it0.next();
-				s.add(" ");
-				s.add(k);
-				s.add("=\"");
-				s.add(this._attributes.get(k));
-				s.add("\"");
-			}
-			if(this._children.length == 0) {
-				s.add("/>");
-				return s.toString();
-			}
-			s.add(">");
-		}
-		var $it1 = this.iterator();
-		while( $it1.hasNext() ) {
-			var x = $it1.next();
-			s.add(x.toString());
-		}
-		if(this.nodeType == Xml.Element) {
-			s.add("</");
-			s.add(this._nodeName);
-			s.add(">");
-		}
-		return s.toString();
+		return haxe_xml_Printer.print(this);
+	}
+	,ensureElementType: function() {
+		if(this.nodeType != Xml.Document && this.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Bad node type, expected Element or Document but found " + this.nodeType);
 	}
 	,__class__: Xml
 };
@@ -689,6 +652,7 @@ flambe_platform_html_HtmlPlatform.prototype = {
 		try {
 			canvas = js_Browser.get_window().flambe.canvas;
 		} catch( error ) {
+			if (error instanceof js__$Boot_HaxeError) error = error.val;
 		}
 		flambe_util_Assert.that(canvas != null,"Could not find a Flambe canvas! Are you embedding with flambe.js?");
 		canvas.setAttribute("tabindex","0");
@@ -914,6 +878,7 @@ flambe_platform_html_HtmlPlatform.prototype = {
 				if(flambe_platform_html_HtmlUtil.detectSlowDriver(gl)) flambe_Log.warn("Detected a slow WebGL driver, falling back to canvas"); else return new flambe_platform_html_WebGLRenderer(this._stage,gl);
 			}
 		} catch( _ ) {
+			if (_ instanceof js__$Boot_HaxeError) _ = _.val;
 		}
 		return new flambe_platform_html_CanvasRenderer(canvas);
 		flambe_Log.error("No renderer available!");
@@ -1241,32 +1206,46 @@ flambe_asset_Asset.prototype = {
 };
 var flambe_asset_AssetFormat = $hxClasses["flambe.asset.AssetFormat"] = { __ename__ : true, __constructs__ : ["WEBP","JXR","PNG","JPG","GIF","DDS","PVR","PKM","MP3","M4A","OPUS","OGG","WAV","Data"] };
 flambe_asset_AssetFormat.WEBP = ["WEBP",0];
+flambe_asset_AssetFormat.WEBP.toString = $estr;
 flambe_asset_AssetFormat.WEBP.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.JXR = ["JXR",1];
+flambe_asset_AssetFormat.JXR.toString = $estr;
 flambe_asset_AssetFormat.JXR.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.PNG = ["PNG",2];
+flambe_asset_AssetFormat.PNG.toString = $estr;
 flambe_asset_AssetFormat.PNG.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.JPG = ["JPG",3];
+flambe_asset_AssetFormat.JPG.toString = $estr;
 flambe_asset_AssetFormat.JPG.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.GIF = ["GIF",4];
+flambe_asset_AssetFormat.GIF.toString = $estr;
 flambe_asset_AssetFormat.GIF.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.DDS = ["DDS",5];
+flambe_asset_AssetFormat.DDS.toString = $estr;
 flambe_asset_AssetFormat.DDS.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.PVR = ["PVR",6];
+flambe_asset_AssetFormat.PVR.toString = $estr;
 flambe_asset_AssetFormat.PVR.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.PKM = ["PKM",7];
+flambe_asset_AssetFormat.PKM.toString = $estr;
 flambe_asset_AssetFormat.PKM.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.MP3 = ["MP3",8];
+flambe_asset_AssetFormat.MP3.toString = $estr;
 flambe_asset_AssetFormat.MP3.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.M4A = ["M4A",9];
+flambe_asset_AssetFormat.M4A.toString = $estr;
 flambe_asset_AssetFormat.M4A.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.OPUS = ["OPUS",10];
+flambe_asset_AssetFormat.OPUS.toString = $estr;
 flambe_asset_AssetFormat.OPUS.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.OGG = ["OGG",11];
+flambe_asset_AssetFormat.OGG.toString = $estr;
 flambe_asset_AssetFormat.OGG.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.WAV = ["WAV",12];
+flambe_asset_AssetFormat.WAV.toString = $estr;
 flambe_asset_AssetFormat.WAV.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.Data = ["Data",13];
+flambe_asset_AssetFormat.Data.toString = $estr;
 flambe_asset_AssetFormat.Data.__enum__ = flambe_asset_AssetFormat;
 var flambe_asset_AssetEntry = function(name,url,format,bytes) {
 	this.name = name;
@@ -1376,16 +1355,22 @@ flambe_asset_Manifest.prototype = {
 };
 var flambe_display_BlendMode = $hxClasses["flambe.display.BlendMode"] = { __ename__ : true, __constructs__ : ["Normal","Add","Multiply","Screen","Mask","Copy"] };
 flambe_display_BlendMode.Normal = ["Normal",0];
+flambe_display_BlendMode.Normal.toString = $estr;
 flambe_display_BlendMode.Normal.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Add = ["Add",1];
+flambe_display_BlendMode.Add.toString = $estr;
 flambe_display_BlendMode.Add.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Multiply = ["Multiply",2];
+flambe_display_BlendMode.Multiply.toString = $estr;
 flambe_display_BlendMode.Multiply.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Screen = ["Screen",3];
+flambe_display_BlendMode.Screen.toString = $estr;
 flambe_display_BlendMode.Screen.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Mask = ["Mask",4];
+flambe_display_BlendMode.Mask.toString = $estr;
 flambe_display_BlendMode.Mask.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Copy = ["Copy",5];
+flambe_display_BlendMode.Copy.toString = $estr;
 flambe_display_BlendMode.Copy.__enum__ = flambe_display_BlendMode;
 var flambe_math_Point = function(x,y) {
 	if(y == null) y = 0;
@@ -1402,18 +1387,22 @@ flambe_math_Point.prototype = {
 	,__class__: flambe_math_Point
 };
 var flambe_display_Sprite = function() {
+	this._cosCache = 0;
+	this._sinCache = 0;
 	this.scissor = null;
 	this.blendMode = null;
 	var _g = this;
 	flambe_Component.call(this);
-	this._flags = flambe_util_BitSets.add(this._flags,2 | 4 | 16 | 32);
+	this._flags = flambe_util_BitSets.add(this._flags,2 | 4 | 16 | 32 | 128);
 	this._localMatrix = new flambe_math_Matrix();
 	var dirtyMatrix = function(_,_1) {
 		_g._flags = flambe_util_BitSets.add(_g._flags,8 | 16);
 	};
 	this.x = new flambe_animation_AnimatedFloat(0,dirtyMatrix);
 	this.y = new flambe_animation_AnimatedFloat(0,dirtyMatrix);
-	this.rotation = new flambe_animation_AnimatedFloat(0,dirtyMatrix);
+	this.rotation = new flambe_animation_AnimatedFloat(0,function(_2,_3) {
+		_g._flags = flambe_util_BitSets.add(_g._flags,8 | 16 | 128);
+	});
 	this.scaleX = new flambe_animation_AnimatedFloat(1,dirtyMatrix);
 	this.scaleY = new flambe_animation_AnimatedFloat(1,dirtyMatrix);
 	this.anchorX = new flambe_animation_AnimatedFloat(0,dirtyMatrix);
@@ -1558,7 +1547,15 @@ flambe_display_Sprite.prototype = $extend(flambe_Component.prototype,{
 	,getLocalMatrix: function() {
 		if(flambe_util_BitSets.contains(this._flags,8)) {
 			this._flags = flambe_util_BitSets.remove(this._flags,8);
-			this._localMatrix.compose(this.x.get__(),this.y.get__(),this.scaleX.get__(),this.scaleY.get__(),flambe_math_FMath.toRadians(this.rotation.get__()));
+			if(flambe_util_BitSets.contains(this._flags,128)) {
+				this._flags = flambe_util_BitSets.remove(this._flags,128);
+				var rotation = flambe_math_FMath.toRadians(this.rotation.get__());
+				this._sinCache = Math.sin(rotation);
+				this._cosCache = Math.cos(rotation);
+			}
+			var scaleX = this.scaleX.get__();
+			var scaleY = this.scaleY.get__();
+			this._localMatrix.set(this._cosCache * scaleX,this._sinCache * scaleX,-this._sinCache * scaleY,this._cosCache * scaleY,this.x.get__(),this.y.get__());
 			this._localMatrix.translate(-this.anchorX.get__(),-this.anchorY.get__());
 		}
 		return this._localMatrix;
@@ -1632,8 +1629,10 @@ flambe_display_Sprite.prototype = $extend(flambe_Component.prototype,{
 			}
 			if(_g._pointerOut != null && flambe_util_BitSets.contains(_g._flags,64)) _g._pointerOut.emit(event);
 			_g._flags = flambe_util_BitSets.remove(_g._flags,64);
-			_g._hoverConnection.dispose();
-			_g._hoverConnection = null;
+			if(_g._hoverConnection != null) {
+				_g._hoverConnection.dispose();
+				_g._hoverConnection = null;
+			}
 		});
 	}
 	,get_visible: function() {
@@ -1744,8 +1743,10 @@ flambe_display_ImageSprite.prototype = $extend(flambe_display_Sprite.prototype,{
 });
 var flambe_display_Orientation = $hxClasses["flambe.display.Orientation"] = { __ename__ : true, __constructs__ : ["Portrait","Landscape"] };
 flambe_display_Orientation.Portrait = ["Portrait",0];
+flambe_display_Orientation.Portrait.toString = $estr;
 flambe_display_Orientation.Portrait.__enum__ = flambe_display_Orientation;
 flambe_display_Orientation.Landscape = ["Landscape",1];
+flambe_display_Orientation.Landscape.toString = $estr;
 flambe_display_Orientation.Landscape.__enum__ = flambe_display_Orientation;
 var flambe_display_Texture = function() { };
 $hxClasses["flambe.display.Texture"] = flambe_display_Texture;
@@ -1760,206 +1761,306 @@ flambe_display_SubTexture.__name__ = true;
 flambe_display_SubTexture.__interfaces__ = [flambe_display_Texture];
 var flambe_input_Key = $hxClasses["flambe.input.Key"] = { __ename__ : true, __constructs__ : ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Number0","Number1","Number2","Number3","Number4","Number5","Number6","Number7","Number8","Number9","Numpad0","Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8","Numpad9","NumpadAdd","NumpadDecimal","NumpadDivide","NumpadEnter","NumpadMultiply","NumpadSubtract","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","Left","Up","Right","Down","Alt","Backquote","Backslash","Backspace","CapsLock","Comma","Command","Control","Delete","End","Enter","Equals","Escape","Home","Insert","LeftBracket","Minus","PageDown","PageUp","Period","Quote","RightBracket","Semicolon","Shift","Slash","Space","Tab","Menu","Search","Unknown"] };
 flambe_input_Key.A = ["A",0];
+flambe_input_Key.A.toString = $estr;
 flambe_input_Key.A.__enum__ = flambe_input_Key;
 flambe_input_Key.B = ["B",1];
+flambe_input_Key.B.toString = $estr;
 flambe_input_Key.B.__enum__ = flambe_input_Key;
 flambe_input_Key.C = ["C",2];
+flambe_input_Key.C.toString = $estr;
 flambe_input_Key.C.__enum__ = flambe_input_Key;
 flambe_input_Key.D = ["D",3];
+flambe_input_Key.D.toString = $estr;
 flambe_input_Key.D.__enum__ = flambe_input_Key;
 flambe_input_Key.E = ["E",4];
+flambe_input_Key.E.toString = $estr;
 flambe_input_Key.E.__enum__ = flambe_input_Key;
 flambe_input_Key.F = ["F",5];
+flambe_input_Key.F.toString = $estr;
 flambe_input_Key.F.__enum__ = flambe_input_Key;
 flambe_input_Key.G = ["G",6];
+flambe_input_Key.G.toString = $estr;
 flambe_input_Key.G.__enum__ = flambe_input_Key;
 flambe_input_Key.H = ["H",7];
+flambe_input_Key.H.toString = $estr;
 flambe_input_Key.H.__enum__ = flambe_input_Key;
 flambe_input_Key.I = ["I",8];
+flambe_input_Key.I.toString = $estr;
 flambe_input_Key.I.__enum__ = flambe_input_Key;
 flambe_input_Key.J = ["J",9];
+flambe_input_Key.J.toString = $estr;
 flambe_input_Key.J.__enum__ = flambe_input_Key;
 flambe_input_Key.K = ["K",10];
+flambe_input_Key.K.toString = $estr;
 flambe_input_Key.K.__enum__ = flambe_input_Key;
 flambe_input_Key.L = ["L",11];
+flambe_input_Key.L.toString = $estr;
 flambe_input_Key.L.__enum__ = flambe_input_Key;
 flambe_input_Key.M = ["M",12];
+flambe_input_Key.M.toString = $estr;
 flambe_input_Key.M.__enum__ = flambe_input_Key;
 flambe_input_Key.N = ["N",13];
+flambe_input_Key.N.toString = $estr;
 flambe_input_Key.N.__enum__ = flambe_input_Key;
 flambe_input_Key.O = ["O",14];
+flambe_input_Key.O.toString = $estr;
 flambe_input_Key.O.__enum__ = flambe_input_Key;
 flambe_input_Key.P = ["P",15];
+flambe_input_Key.P.toString = $estr;
 flambe_input_Key.P.__enum__ = flambe_input_Key;
 flambe_input_Key.Q = ["Q",16];
+flambe_input_Key.Q.toString = $estr;
 flambe_input_Key.Q.__enum__ = flambe_input_Key;
 flambe_input_Key.R = ["R",17];
+flambe_input_Key.R.toString = $estr;
 flambe_input_Key.R.__enum__ = flambe_input_Key;
 flambe_input_Key.S = ["S",18];
+flambe_input_Key.S.toString = $estr;
 flambe_input_Key.S.__enum__ = flambe_input_Key;
 flambe_input_Key.T = ["T",19];
+flambe_input_Key.T.toString = $estr;
 flambe_input_Key.T.__enum__ = flambe_input_Key;
 flambe_input_Key.U = ["U",20];
+flambe_input_Key.U.toString = $estr;
 flambe_input_Key.U.__enum__ = flambe_input_Key;
 flambe_input_Key.V = ["V",21];
+flambe_input_Key.V.toString = $estr;
 flambe_input_Key.V.__enum__ = flambe_input_Key;
 flambe_input_Key.W = ["W",22];
+flambe_input_Key.W.toString = $estr;
 flambe_input_Key.W.__enum__ = flambe_input_Key;
 flambe_input_Key.X = ["X",23];
+flambe_input_Key.X.toString = $estr;
 flambe_input_Key.X.__enum__ = flambe_input_Key;
 flambe_input_Key.Y = ["Y",24];
+flambe_input_Key.Y.toString = $estr;
 flambe_input_Key.Y.__enum__ = flambe_input_Key;
 flambe_input_Key.Z = ["Z",25];
+flambe_input_Key.Z.toString = $estr;
 flambe_input_Key.Z.__enum__ = flambe_input_Key;
 flambe_input_Key.Number0 = ["Number0",26];
+flambe_input_Key.Number0.toString = $estr;
 flambe_input_Key.Number0.__enum__ = flambe_input_Key;
 flambe_input_Key.Number1 = ["Number1",27];
+flambe_input_Key.Number1.toString = $estr;
 flambe_input_Key.Number1.__enum__ = flambe_input_Key;
 flambe_input_Key.Number2 = ["Number2",28];
+flambe_input_Key.Number2.toString = $estr;
 flambe_input_Key.Number2.__enum__ = flambe_input_Key;
 flambe_input_Key.Number3 = ["Number3",29];
+flambe_input_Key.Number3.toString = $estr;
 flambe_input_Key.Number3.__enum__ = flambe_input_Key;
 flambe_input_Key.Number4 = ["Number4",30];
+flambe_input_Key.Number4.toString = $estr;
 flambe_input_Key.Number4.__enum__ = flambe_input_Key;
 flambe_input_Key.Number5 = ["Number5",31];
+flambe_input_Key.Number5.toString = $estr;
 flambe_input_Key.Number5.__enum__ = flambe_input_Key;
 flambe_input_Key.Number6 = ["Number6",32];
+flambe_input_Key.Number6.toString = $estr;
 flambe_input_Key.Number6.__enum__ = flambe_input_Key;
 flambe_input_Key.Number7 = ["Number7",33];
+flambe_input_Key.Number7.toString = $estr;
 flambe_input_Key.Number7.__enum__ = flambe_input_Key;
 flambe_input_Key.Number8 = ["Number8",34];
+flambe_input_Key.Number8.toString = $estr;
 flambe_input_Key.Number8.__enum__ = flambe_input_Key;
 flambe_input_Key.Number9 = ["Number9",35];
+flambe_input_Key.Number9.toString = $estr;
 flambe_input_Key.Number9.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad0 = ["Numpad0",36];
+flambe_input_Key.Numpad0.toString = $estr;
 flambe_input_Key.Numpad0.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad1 = ["Numpad1",37];
+flambe_input_Key.Numpad1.toString = $estr;
 flambe_input_Key.Numpad1.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad2 = ["Numpad2",38];
+flambe_input_Key.Numpad2.toString = $estr;
 flambe_input_Key.Numpad2.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad3 = ["Numpad3",39];
+flambe_input_Key.Numpad3.toString = $estr;
 flambe_input_Key.Numpad3.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad4 = ["Numpad4",40];
+flambe_input_Key.Numpad4.toString = $estr;
 flambe_input_Key.Numpad4.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad5 = ["Numpad5",41];
+flambe_input_Key.Numpad5.toString = $estr;
 flambe_input_Key.Numpad5.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad6 = ["Numpad6",42];
+flambe_input_Key.Numpad6.toString = $estr;
 flambe_input_Key.Numpad6.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad7 = ["Numpad7",43];
+flambe_input_Key.Numpad7.toString = $estr;
 flambe_input_Key.Numpad7.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad8 = ["Numpad8",44];
+flambe_input_Key.Numpad8.toString = $estr;
 flambe_input_Key.Numpad8.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad9 = ["Numpad9",45];
+flambe_input_Key.Numpad9.toString = $estr;
 flambe_input_Key.Numpad9.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadAdd = ["NumpadAdd",46];
+flambe_input_Key.NumpadAdd.toString = $estr;
 flambe_input_Key.NumpadAdd.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadDecimal = ["NumpadDecimal",47];
+flambe_input_Key.NumpadDecimal.toString = $estr;
 flambe_input_Key.NumpadDecimal.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadDivide = ["NumpadDivide",48];
+flambe_input_Key.NumpadDivide.toString = $estr;
 flambe_input_Key.NumpadDivide.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadEnter = ["NumpadEnter",49];
+flambe_input_Key.NumpadEnter.toString = $estr;
 flambe_input_Key.NumpadEnter.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadMultiply = ["NumpadMultiply",50];
+flambe_input_Key.NumpadMultiply.toString = $estr;
 flambe_input_Key.NumpadMultiply.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadSubtract = ["NumpadSubtract",51];
+flambe_input_Key.NumpadSubtract.toString = $estr;
 flambe_input_Key.NumpadSubtract.__enum__ = flambe_input_Key;
 flambe_input_Key.F1 = ["F1",52];
+flambe_input_Key.F1.toString = $estr;
 flambe_input_Key.F1.__enum__ = flambe_input_Key;
 flambe_input_Key.F2 = ["F2",53];
+flambe_input_Key.F2.toString = $estr;
 flambe_input_Key.F2.__enum__ = flambe_input_Key;
 flambe_input_Key.F3 = ["F3",54];
+flambe_input_Key.F3.toString = $estr;
 flambe_input_Key.F3.__enum__ = flambe_input_Key;
 flambe_input_Key.F4 = ["F4",55];
+flambe_input_Key.F4.toString = $estr;
 flambe_input_Key.F4.__enum__ = flambe_input_Key;
 flambe_input_Key.F5 = ["F5",56];
+flambe_input_Key.F5.toString = $estr;
 flambe_input_Key.F5.__enum__ = flambe_input_Key;
 flambe_input_Key.F6 = ["F6",57];
+flambe_input_Key.F6.toString = $estr;
 flambe_input_Key.F6.__enum__ = flambe_input_Key;
 flambe_input_Key.F7 = ["F7",58];
+flambe_input_Key.F7.toString = $estr;
 flambe_input_Key.F7.__enum__ = flambe_input_Key;
 flambe_input_Key.F8 = ["F8",59];
+flambe_input_Key.F8.toString = $estr;
 flambe_input_Key.F8.__enum__ = flambe_input_Key;
 flambe_input_Key.F9 = ["F9",60];
+flambe_input_Key.F9.toString = $estr;
 flambe_input_Key.F9.__enum__ = flambe_input_Key;
 flambe_input_Key.F10 = ["F10",61];
+flambe_input_Key.F10.toString = $estr;
 flambe_input_Key.F10.__enum__ = flambe_input_Key;
 flambe_input_Key.F11 = ["F11",62];
+flambe_input_Key.F11.toString = $estr;
 flambe_input_Key.F11.__enum__ = flambe_input_Key;
 flambe_input_Key.F12 = ["F12",63];
+flambe_input_Key.F12.toString = $estr;
 flambe_input_Key.F12.__enum__ = flambe_input_Key;
 flambe_input_Key.F13 = ["F13",64];
+flambe_input_Key.F13.toString = $estr;
 flambe_input_Key.F13.__enum__ = flambe_input_Key;
 flambe_input_Key.F14 = ["F14",65];
+flambe_input_Key.F14.toString = $estr;
 flambe_input_Key.F14.__enum__ = flambe_input_Key;
 flambe_input_Key.F15 = ["F15",66];
+flambe_input_Key.F15.toString = $estr;
 flambe_input_Key.F15.__enum__ = flambe_input_Key;
 flambe_input_Key.Left = ["Left",67];
+flambe_input_Key.Left.toString = $estr;
 flambe_input_Key.Left.__enum__ = flambe_input_Key;
 flambe_input_Key.Up = ["Up",68];
+flambe_input_Key.Up.toString = $estr;
 flambe_input_Key.Up.__enum__ = flambe_input_Key;
 flambe_input_Key.Right = ["Right",69];
+flambe_input_Key.Right.toString = $estr;
 flambe_input_Key.Right.__enum__ = flambe_input_Key;
 flambe_input_Key.Down = ["Down",70];
+flambe_input_Key.Down.toString = $estr;
 flambe_input_Key.Down.__enum__ = flambe_input_Key;
 flambe_input_Key.Alt = ["Alt",71];
+flambe_input_Key.Alt.toString = $estr;
 flambe_input_Key.Alt.__enum__ = flambe_input_Key;
 flambe_input_Key.Backquote = ["Backquote",72];
+flambe_input_Key.Backquote.toString = $estr;
 flambe_input_Key.Backquote.__enum__ = flambe_input_Key;
 flambe_input_Key.Backslash = ["Backslash",73];
+flambe_input_Key.Backslash.toString = $estr;
 flambe_input_Key.Backslash.__enum__ = flambe_input_Key;
 flambe_input_Key.Backspace = ["Backspace",74];
+flambe_input_Key.Backspace.toString = $estr;
 flambe_input_Key.Backspace.__enum__ = flambe_input_Key;
 flambe_input_Key.CapsLock = ["CapsLock",75];
+flambe_input_Key.CapsLock.toString = $estr;
 flambe_input_Key.CapsLock.__enum__ = flambe_input_Key;
 flambe_input_Key.Comma = ["Comma",76];
+flambe_input_Key.Comma.toString = $estr;
 flambe_input_Key.Comma.__enum__ = flambe_input_Key;
 flambe_input_Key.Command = ["Command",77];
+flambe_input_Key.Command.toString = $estr;
 flambe_input_Key.Command.__enum__ = flambe_input_Key;
 flambe_input_Key.Control = ["Control",78];
+flambe_input_Key.Control.toString = $estr;
 flambe_input_Key.Control.__enum__ = flambe_input_Key;
 flambe_input_Key.Delete = ["Delete",79];
+flambe_input_Key.Delete.toString = $estr;
 flambe_input_Key.Delete.__enum__ = flambe_input_Key;
 flambe_input_Key.End = ["End",80];
+flambe_input_Key.End.toString = $estr;
 flambe_input_Key.End.__enum__ = flambe_input_Key;
 flambe_input_Key.Enter = ["Enter",81];
+flambe_input_Key.Enter.toString = $estr;
 flambe_input_Key.Enter.__enum__ = flambe_input_Key;
 flambe_input_Key.Equals = ["Equals",82];
+flambe_input_Key.Equals.toString = $estr;
 flambe_input_Key.Equals.__enum__ = flambe_input_Key;
 flambe_input_Key.Escape = ["Escape",83];
+flambe_input_Key.Escape.toString = $estr;
 flambe_input_Key.Escape.__enum__ = flambe_input_Key;
 flambe_input_Key.Home = ["Home",84];
+flambe_input_Key.Home.toString = $estr;
 flambe_input_Key.Home.__enum__ = flambe_input_Key;
 flambe_input_Key.Insert = ["Insert",85];
+flambe_input_Key.Insert.toString = $estr;
 flambe_input_Key.Insert.__enum__ = flambe_input_Key;
 flambe_input_Key.LeftBracket = ["LeftBracket",86];
+flambe_input_Key.LeftBracket.toString = $estr;
 flambe_input_Key.LeftBracket.__enum__ = flambe_input_Key;
 flambe_input_Key.Minus = ["Minus",87];
+flambe_input_Key.Minus.toString = $estr;
 flambe_input_Key.Minus.__enum__ = flambe_input_Key;
 flambe_input_Key.PageDown = ["PageDown",88];
+flambe_input_Key.PageDown.toString = $estr;
 flambe_input_Key.PageDown.__enum__ = flambe_input_Key;
 flambe_input_Key.PageUp = ["PageUp",89];
+flambe_input_Key.PageUp.toString = $estr;
 flambe_input_Key.PageUp.__enum__ = flambe_input_Key;
 flambe_input_Key.Period = ["Period",90];
+flambe_input_Key.Period.toString = $estr;
 flambe_input_Key.Period.__enum__ = flambe_input_Key;
 flambe_input_Key.Quote = ["Quote",91];
+flambe_input_Key.Quote.toString = $estr;
 flambe_input_Key.Quote.__enum__ = flambe_input_Key;
 flambe_input_Key.RightBracket = ["RightBracket",92];
+flambe_input_Key.RightBracket.toString = $estr;
 flambe_input_Key.RightBracket.__enum__ = flambe_input_Key;
 flambe_input_Key.Semicolon = ["Semicolon",93];
+flambe_input_Key.Semicolon.toString = $estr;
 flambe_input_Key.Semicolon.__enum__ = flambe_input_Key;
 flambe_input_Key.Shift = ["Shift",94];
+flambe_input_Key.Shift.toString = $estr;
 flambe_input_Key.Shift.__enum__ = flambe_input_Key;
 flambe_input_Key.Slash = ["Slash",95];
+flambe_input_Key.Slash.toString = $estr;
 flambe_input_Key.Slash.__enum__ = flambe_input_Key;
 flambe_input_Key.Space = ["Space",96];
+flambe_input_Key.Space.toString = $estr;
 flambe_input_Key.Space.__enum__ = flambe_input_Key;
 flambe_input_Key.Tab = ["Tab",97];
+flambe_input_Key.Tab.toString = $estr;
 flambe_input_Key.Tab.__enum__ = flambe_input_Key;
 flambe_input_Key.Menu = ["Menu",98];
+flambe_input_Key.Menu.toString = $estr;
 flambe_input_Key.Menu.__enum__ = flambe_input_Key;
 flambe_input_Key.Search = ["Search",99];
+flambe_input_Key.Search.toString = $estr;
 flambe_input_Key.Search.__enum__ = flambe_input_Key;
-flambe_input_Key.Unknown = function(keyCode) { var $x = ["Unknown",100,keyCode]; $x.__enum__ = flambe_input_Key; return $x; };
+flambe_input_Key.Unknown = function(keyCode) { var $x = ["Unknown",100,keyCode]; $x.__enum__ = flambe_input_Key; $x.toString = $estr; return $x; };
 var flambe_input_KeyboardEvent = function() {
 	this.init(0,null);
 };
@@ -1974,18 +2075,24 @@ flambe_input_KeyboardEvent.prototype = {
 };
 var flambe_input_MouseButton = $hxClasses["flambe.input.MouseButton"] = { __ename__ : true, __constructs__ : ["Left","Middle","Right","Unknown"] };
 flambe_input_MouseButton.Left = ["Left",0];
+flambe_input_MouseButton.Left.toString = $estr;
 flambe_input_MouseButton.Left.__enum__ = flambe_input_MouseButton;
 flambe_input_MouseButton.Middle = ["Middle",1];
+flambe_input_MouseButton.Middle.toString = $estr;
 flambe_input_MouseButton.Middle.__enum__ = flambe_input_MouseButton;
 flambe_input_MouseButton.Right = ["Right",2];
+flambe_input_MouseButton.Right.toString = $estr;
 flambe_input_MouseButton.Right.__enum__ = flambe_input_MouseButton;
-flambe_input_MouseButton.Unknown = function(buttonCode) { var $x = ["Unknown",3,buttonCode]; $x.__enum__ = flambe_input_MouseButton; return $x; };
+flambe_input_MouseButton.Unknown = function(buttonCode) { var $x = ["Unknown",3,buttonCode]; $x.__enum__ = flambe_input_MouseButton; $x.toString = $estr; return $x; };
 var flambe_input_MouseCursor = $hxClasses["flambe.input.MouseCursor"] = { __ename__ : true, __constructs__ : ["Default","Button","None"] };
 flambe_input_MouseCursor.Default = ["Default",0];
+flambe_input_MouseCursor.Default.toString = $estr;
 flambe_input_MouseCursor.Default.__enum__ = flambe_input_MouseCursor;
 flambe_input_MouseCursor.Button = ["Button",1];
+flambe_input_MouseCursor.Button.toString = $estr;
 flambe_input_MouseCursor.Button.__enum__ = flambe_input_MouseCursor;
 flambe_input_MouseCursor.None = ["None",2];
+flambe_input_MouseCursor.None.toString = $estr;
 flambe_input_MouseCursor.None.__enum__ = flambe_input_MouseCursor;
 var flambe_input_MouseEvent = function() {
 	this.init(0,0,0,null);
@@ -2002,8 +2109,8 @@ flambe_input_MouseEvent.prototype = {
 	,__class__: flambe_input_MouseEvent
 };
 var flambe_input_EventSource = $hxClasses["flambe.input.EventSource"] = { __ename__ : true, __constructs__ : ["Mouse","Touch"] };
-flambe_input_EventSource.Mouse = function(event) { var $x = ["Mouse",0,event]; $x.__enum__ = flambe_input_EventSource; return $x; };
-flambe_input_EventSource.Touch = function(point) { var $x = ["Touch",1,point]; $x.__enum__ = flambe_input_EventSource; return $x; };
+flambe_input_EventSource.Mouse = function(event) { var $x = ["Mouse",0,event]; $x.__enum__ = flambe_input_EventSource; $x.toString = $estr; return $x; };
+flambe_input_EventSource.Touch = function(point) { var $x = ["Touch",1,point]; $x.__enum__ = flambe_input_EventSource; $x.toString = $estr; return $x; };
 var flambe_input_PointerEvent = function() {
 	this.init(0,0,0,null,null);
 };
@@ -2242,6 +2349,7 @@ var flambe_platform_BasicAssetPackLoader = function(platform,manifest) {
 						try {
 							_g.loadEntry(url,bestEntry);
 						} catch( error ) {
+							if (error instanceof js__$Boot_HaxeError) error = error.val;
 							_g.handleError(bestEntry,"Unexpected error: " + Std.string(error));
 						}
 						var _g11 = _g.promise;
@@ -2393,7 +2501,7 @@ flambe_platform__$BasicAssetPackLoader_BasicAssetPack.prototype = {
 		this.assertNotDisposed();
 		flambe_platform__$BasicAssetPackLoader_BasicAssetPack.warnOnExtension(name);
 		var texture = this.textures.get(name);
-		if(texture == null && required) throw flambe_util_Strings.withFields("Missing texture",["name",name]);
+		if(texture == null && required) throw new js__$Boot_HaxeError(flambe_util_Strings.withFields("Missing texture",["name",name]));
 		return texture;
 	}
 	,getSound: function(name,required) {
@@ -2401,14 +2509,14 @@ flambe_platform__$BasicAssetPackLoader_BasicAssetPack.prototype = {
 		this.assertNotDisposed();
 		flambe_platform__$BasicAssetPackLoader_BasicAssetPack.warnOnExtension(name);
 		var sound = this.sounds.get(name);
-		if(sound == null && required) throw flambe_util_Strings.withFields("Missing sound",["name",name]);
+		if(sound == null && required) throw new js__$Boot_HaxeError(flambe_util_Strings.withFields("Missing sound",["name",name]));
 		return sound;
 	}
 	,getFile: function(name,required) {
 		if(required == null) required = true;
 		this.assertNotDisposed();
 		var file = this.files.get(name);
-		if(file == null && required) throw flambe_util_Strings.withFields("Missing file",["name",name]);
+		if(file == null && required) throw new js__$Boot_HaxeError(flambe_util_Strings.withFields("Missing file",["name",name]));
 		return file;
 	}
 	,dispose: function() {
@@ -2510,6 +2618,9 @@ flambe_platform_BasicKeyboard.prototype = {
 var flambe_subsystem_MouseSystem = function() { };
 $hxClasses["flambe.subsystem.MouseSystem"] = flambe_subsystem_MouseSystem;
 flambe_subsystem_MouseSystem.__name__ = true;
+flambe_subsystem_MouseSystem.prototype = {
+	__class__: flambe_subsystem_MouseSystem
+};
 var flambe_platform_BasicMouse = function(pointer) {
 	this._pointer = pointer;
 	this._source = flambe_input_EventSource.Mouse(flambe_platform_BasicMouse._sharedEvent);
@@ -2871,6 +2982,9 @@ var flambe_sound_Playback = function() { };
 $hxClasses["flambe.sound.Playback"] = flambe_sound_Playback;
 flambe_sound_Playback.__name__ = true;
 flambe_sound_Playback.__interfaces__ = [flambe_util_Disposable];
+flambe_sound_Playback.prototype = {
+	__class__: flambe_sound_Playback
+};
 var flambe_platform_DummyPlayback = function(sound) {
 	this._sound = sound;
 	this.volume = new flambe_animation_AnimatedFloat(0);
@@ -3704,6 +3818,7 @@ flambe_platform_html_HtmlAssetPackLoader.detectAudioFormats = function() {
 		try {
 			canPlayType = audio.canPlayType(type.mimeType);
 		} catch( _ ) {
+			if (_ instanceof js__$Boot_HaxeError) _ = _.val;
 		}
 		if(canPlayType != "") result.push(type.format);
 	}
@@ -4116,7 +4231,7 @@ flambe_platform_html_HtmlStage.computeScaleFactor = function() {
 	var canvas;
 	var _this = js_Browser.get_document();
 	canvas = _this.createElement("canvas");
-	var ctx = canvas.getContext("2d");
+	var ctx = canvas.getContext("2d",null);
 	var backingStorePixelRatio = flambe_platform_html_HtmlUtil.loadExtension("backingStorePixelRatio",ctx).value;
 	if(backingStorePixelRatio == null) backingStorePixelRatio = 1;
 	var scale = devicePixelRatio / backingStorePixelRatio;
@@ -4256,7 +4371,7 @@ flambe_platform_html_HtmlUtil.createEmptyCanvas = function(width,height) {
 };
 flambe_platform_html_HtmlUtil.createCanvas = function(source) {
 	var canvas = flambe_platform_html_HtmlUtil.createEmptyCanvas(source.width,source.height);
-	var ctx = canvas.getContext("2d");
+	var ctx = canvas.getContext("2d",null);
 	ctx.save();
 	ctx.globalCompositeOperation = "copy";
 	ctx.drawImage(source,0,0);
@@ -4918,7 +5033,7 @@ $hxClasses["flambe.platform.html.WebGLTextureRoot"] = flambe_platform_html_WebGL
 flambe_platform_html_WebGLTextureRoot.__name__ = true;
 flambe_platform_html_WebGLTextureRoot.__interfaces__ = [flambe_platform_TextureRoot];
 flambe_platform_html_WebGLTextureRoot.drawBorder = function(canvas,width,height) {
-	var ctx = canvas.getContext("2d");
+	var ctx = canvas.getContext("2d",null);
 	ctx.drawImage(canvas,width - 1,0,1,height,width,0,1,height);
 	ctx.drawImage(canvas,0,height - 1,width,1,0,height,width,1);
 };
@@ -4931,7 +5046,7 @@ flambe_platform_html_WebGLTextureRoot.prototype = $extend(flambe_platform_BasicA
 		this.assertNotDisposed();
 		if(this.width != image.width || this.height != image.height) {
 			var resized = flambe_platform_html_HtmlUtil.createEmptyCanvas(this.width,this.height);
-			resized.getContext("2d").drawImage(image,0,0);
+			resized.getContext("2d",null).drawImage(image,0,0);
 			flambe_platform_html_WebGLTextureRoot.drawBorder(resized,image.width,image.height);
 			image = resized;
 		}
@@ -5120,15 +5235,15 @@ flambe_scene_Director.prototype = $extend(flambe_Component.prototype,{
 	,invalidateVisibility: function() {
 		var ii = this.scenes.length;
 		while(ii > 0) {
-			var scene = this.scenes[--ii];
+			var scene1 = this.scenes[--ii];
 			var comp;
-			var component = scene.getComponent("Scene_6");
+			var component = scene1.getComponent("Scene_6");
 			comp = component;
 			if(comp == null || comp.opaque) break;
 		}
 		if(this.scenes.length > 0) this.occludedScenes = this.scenes.slice(ii,this.scenes.length - 1); else this.occludedScenes = [];
-		var scene1 = this.get_topScene();
-		if(scene1 != null) this.show(scene1);
+		var scene = this.get_topScene();
+		if(scene != null) this.show(scene);
 	}
 	,completeTransition: function() {
 		if(this._transitor != null) {
@@ -5175,10 +5290,13 @@ flambe_scene_Transition.prototype = {
 };
 var flambe_subsystem_RendererType = $hxClasses["flambe.subsystem.RendererType"] = { __ename__ : true, __constructs__ : ["Stage3D","WebGL","Canvas"] };
 flambe_subsystem_RendererType.Stage3D = ["Stage3D",0];
+flambe_subsystem_RendererType.Stage3D.toString = $estr;
 flambe_subsystem_RendererType.Stage3D.__enum__ = flambe_subsystem_RendererType;
 flambe_subsystem_RendererType.WebGL = ["WebGL",1];
+flambe_subsystem_RendererType.WebGL.toString = $estr;
 flambe_subsystem_RendererType.WebGL.__enum__ = flambe_subsystem_RendererType;
 flambe_subsystem_RendererType.Canvas = ["Canvas",2];
+flambe_subsystem_RendererType.Canvas.toString = $estr;
 flambe_subsystem_RendererType.Canvas.__enum__ = flambe_subsystem_RendererType;
 var flambe_util_Arrays = function() { };
 $hxClasses["flambe.util.Arrays"] = flambe_util_Arrays;
@@ -5196,7 +5314,7 @@ flambe_util_Assert.fail = function(message,fields) {
 	var error = "Assertion failed!";
 	if(message != null) error += " " + message;
 	if(fields != null) error = flambe_util_Strings.withFields(error,fields);
-	throw error;
+	throw new js__$Boot_HaxeError(error);
 };
 var flambe_util_BitSets = function() { };
 $hxClasses["flambe.util.BitSets"] = flambe_util_BitSets;
@@ -5218,10 +5336,13 @@ flambe_util_BitSets.set = function(bits,mask,enabled) {
 };
 var flambe_util_LogLevel = $hxClasses["flambe.util.LogLevel"] = { __ename__ : true, __constructs__ : ["Info","Warn","Error"] };
 flambe_util_LogLevel.Info = ["Info",0];
+flambe_util_LogLevel.Info.toString = $estr;
 flambe_util_LogLevel.Info.__enum__ = flambe_util_LogLevel;
 flambe_util_LogLevel.Warn = ["Warn",1];
+flambe_util_LogLevel.Warn.toString = $estr;
 flambe_util_LogLevel.Warn.__enum__ = flambe_util_LogLevel;
 flambe_util_LogLevel.Error = ["Error",2];
+flambe_util_LogLevel.Error.toString = $estr;
 flambe_util_LogLevel.Error.__enum__ = flambe_util_LogLevel;
 var flambe_util_Pool = function(allocator) {
 	this._capacity = 2147483647;
@@ -5268,7 +5389,7 @@ $hxClasses["flambe.util.Promise"] = flambe_util_Promise;
 flambe_util_Promise.__name__ = true;
 flambe_util_Promise.prototype = {
 	set_result: function(result) {
-		if(this.hasResult) throw "Promise result already assigned";
+		if(this.hasResult) throw new js__$Boot_HaxeError("Promise result already assigned");
 		this._result = result;
 		this.hasResult = true;
 		this.success.emit(result);
@@ -5383,6 +5504,21 @@ flambe_util_Strings.withFields = function(message,fields) {
 	}
 	return message;
 };
+var haxe_IMap = function() { };
+$hxClasses["haxe.IMap"] = haxe_IMap;
+haxe_IMap.__name__ = true;
+haxe_IMap.prototype = {
+	__class__: haxe_IMap
+};
+var haxe__$Int64__$_$_$Int64 = function(high,low) {
+	this.high = high;
+	this.low = low;
+};
+$hxClasses["haxe._Int64.___Int64"] = haxe__$Int64__$_$_$Int64;
+haxe__$Int64__$_$_$Int64.__name__ = true;
+haxe__$Int64__$_$_$Int64.prototype = {
+	__class__: haxe__$Int64__$_$_$Int64
+};
 var haxe_Log = function() { };
 $hxClasses["haxe.Log"] = haxe_Log;
 haxe_Log.__name__ = true;
@@ -5435,6 +5571,11 @@ haxe_ds_BalancedTree.prototype = {
 		}
 		return false;
 	}
+	,iterator: function() {
+		var ret = [];
+		this.iteratorLoop(this.root,ret);
+		return HxOverrides.iter(ret);
+	}
 	,keys: function() {
 		var ret = [];
 		this.keysLoop(this.root,ret);
@@ -5449,6 +5590,13 @@ haxe_ds_BalancedTree.prototype = {
 		} else {
 			var nr = this.setLoop(k,v,node.right);
 			return this.balance(node.left,node.key,node.value,nr);
+		}
+	}
+	,iteratorLoop: function(node,acc) {
+		if(node != null) {
+			this.iteratorLoop(node.left,acc);
+			acc.push(node.value);
+			this.iteratorLoop(node.right,acc);
 		}
 	}
 	,keysLoop: function(node,acc) {
@@ -5532,7 +5680,7 @@ var haxe_ds_EnumValueMap = function() {
 };
 $hxClasses["haxe.ds.EnumValueMap"] = haxe_ds_EnumValueMap;
 haxe_ds_EnumValueMap.__name__ = true;
-haxe_ds_EnumValueMap.__interfaces__ = [IMap];
+haxe_ds_EnumValueMap.__interfaces__ = [haxe_IMap];
 haxe_ds_EnumValueMap.__super__ = haxe_ds_BalancedTree;
 haxe_ds_EnumValueMap.prototype = $extend(haxe_ds_BalancedTree.prototype,{
 	compare: function(k1,k2) {
@@ -5594,7 +5742,7 @@ var haxe_ds_IntMap = function() {
 };
 $hxClasses["haxe.ds.IntMap"] = haxe_ds_IntMap;
 haxe_ds_IntMap.__name__ = true;
-haxe_ds_IntMap.__interfaces__ = [IMap];
+haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
 haxe_ds_IntMap.prototype = {
 	set: function(key,value) {
 		this.h[key] = value;
@@ -5610,6 +5758,21 @@ haxe_ds_IntMap.prototype = {
 		delete(this.h[key]);
 		return true;
 	}
+	,keys: function() {
+		var a = [];
+		for( var key in this.h ) {
+		if(this.h.hasOwnProperty(key)) a.push(key | 0);
+		}
+		return HxOverrides.iter(a);
+	}
+	,iterator: function() {
+		return { ref : this.h, it : this.keys(), hasNext : function() {
+			return this.it.hasNext();
+		}, next : function() {
+			var i = this.it.next();
+			return this.ref[i];
+		}};
+	}
 	,__class__: haxe_ds_IntMap
 };
 var haxe_ds_ObjectMap = function() {
@@ -5618,7 +5781,7 @@ var haxe_ds_ObjectMap = function() {
 };
 $hxClasses["haxe.ds.ObjectMap"] = haxe_ds_ObjectMap;
 haxe_ds_ObjectMap.__name__ = true;
-haxe_ds_ObjectMap.__interfaces__ = [IMap];
+haxe_ds_ObjectMap.__interfaces__ = [haxe_IMap];
 haxe_ds_ObjectMap.assignId = function(obj) {
 	return obj.__id__ = ++haxe_ds_ObjectMap.count;
 };
@@ -5644,64 +5807,112 @@ haxe_ds_ObjectMap.prototype = {
 		}
 		return HxOverrides.iter(a);
 	}
+	,iterator: function() {
+		return { ref : this.h, it : this.keys(), hasNext : function() {
+			return this.it.hasNext();
+		}, next : function() {
+			var i = this.it.next();
+			return this.ref[haxe_ds_ObjectMap.getId(i)];
+		}};
+	}
 	,__class__: haxe_ds_ObjectMap
+};
+var haxe_ds__$StringMap_StringMapIterator = function(map,keys) {
+	this.map = map;
+	this.keys = keys;
+	this.index = 0;
+	this.count = keys.length;
+};
+$hxClasses["haxe.ds._StringMap.StringMapIterator"] = haxe_ds__$StringMap_StringMapIterator;
+haxe_ds__$StringMap_StringMapIterator.__name__ = true;
+haxe_ds__$StringMap_StringMapIterator.prototype = {
+	hasNext: function() {
+		return this.index < this.count;
+	}
+	,next: function() {
+		return this.map.get(this.keys[this.index++]);
+	}
+	,__class__: haxe_ds__$StringMap_StringMapIterator
 };
 var haxe_ds_StringMap = function() {
 	this.h = { };
 };
 $hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
 haxe_ds_StringMap.__name__ = true;
-haxe_ds_StringMap.__interfaces__ = [IMap];
+haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
 haxe_ds_StringMap.prototype = {
-	set: function(key,value) {
-		this.h["$" + key] = value;
+	isReserved: function(key) {
+		return __map_reserved[key] != null;
+	}
+	,set: function(key,value) {
+		if(this.isReserved(key)) this.setReserved(key,value); else this.h[key] = value;
 	}
 	,get: function(key) {
-		return this.h["$" + key];
+		if(this.isReserved(key)) return this.getReserved(key);
+		return this.h[key];
 	}
 	,exists: function(key) {
-		return this.h.hasOwnProperty("$" + key);
+		if(this.isReserved(key)) return this.existsReserved(key);
+		return this.h.hasOwnProperty(key);
+	}
+	,setReserved: function(key,value) {
+		if(this.rh == null) this.rh = { };
+		this.rh["$" + key] = value;
+	}
+	,getReserved: function(key) {
+		if(this.rh == null) return null; else return this.rh["$" + key];
+	}
+	,existsReserved: function(key) {
+		if(this.rh == null) return false;
+		return this.rh.hasOwnProperty("$" + key);
 	}
 	,remove: function(key) {
-		key = "$" + key;
-		if(!this.h.hasOwnProperty(key)) return false;
-		delete(this.h[key]);
-		return true;
+		if(this.isReserved(key)) {
+			key = "$" + key;
+			if(this.rh == null || !this.rh.hasOwnProperty(key)) return false;
+			delete(this.rh[key]);
+			return true;
+		} else {
+			if(!this.h.hasOwnProperty(key)) return false;
+			delete(this.h[key]);
+			return true;
+		}
 	}
 	,keys: function() {
-		var a = [];
+		var _this = this.arrayKeys();
+		return HxOverrides.iter(_this);
+	}
+	,arrayKeys: function() {
+		var out = [];
 		for( var key in this.h ) {
-		if(this.h.hasOwnProperty(key)) a.push(key.substr(1));
+		if(this.h.hasOwnProperty(key)) out.push(key);
 		}
-		return HxOverrides.iter(a);
+		if(this.rh != null) {
+			for( var key in this.rh ) {
+			if(key.charCodeAt(0) == 36) out.push(key.substr(1));
+			}
+		}
+		return out;
 	}
 	,iterator: function() {
-		return { ref : this.h, it : this.keys(), hasNext : function() {
-			return this.it.hasNext();
-		}, next : function() {
-			var i = this.it.next();
-			return this.ref["$" + i];
-		}};
+		return new haxe_ds__$StringMap_StringMapIterator(this,this.arrayKeys());
 	}
 	,__class__: haxe_ds_StringMap
 };
-var haxe_io_Bytes = function(length,b) {
-	this.length = length;
-	this.b = b;
+var haxe_io_Bytes = function(data) {
+	this.length = data.byteLength;
+	this.b = new Uint8Array(data);
+	this.b.bufferValue = data;
+	data.hxBytes = this;
+	data.bytes = this.b;
 };
 $hxClasses["haxe.io.Bytes"] = haxe_io_Bytes;
 haxe_io_Bytes.__name__ = true;
 haxe_io_Bytes.alloc = function(length) {
-	var a = new Array();
-	var _g = 0;
-	while(_g < length) {
-		var i = _g++;
-		a.push(0);
-	}
-	return new haxe_io_Bytes(length,a);
+	return new haxe_io_Bytes(new ArrayBuffer(length));
 };
 haxe_io_Bytes.ofString = function(s) {
-	var a = new Array();
+	var a = [];
 	var i = 0;
 	while(i < s.length) {
 		var c = StringTools.fastCodeAt(s,i++);
@@ -5720,14 +5931,14 @@ haxe_io_Bytes.ofString = function(s) {
 			a.push(128 | c & 63);
 		}
 	}
-	return new haxe_io_Bytes(a.length,a);
+	return new haxe_io_Bytes(new Uint8Array(a).buffer);
 };
 haxe_io_Bytes.fastGet = function(b,pos) {
-	return b[pos];
+	return b.bytes[pos];
 };
 haxe_io_Bytes.prototype = {
 	getString: function(pos,len) {
-		if(pos < 0 || len < 0 || pos + len > this.length) throw haxe_io_Error.OutsideBounds;
+		if(pos < 0 || len < 0 || pos + len > this.length) throw new js__$Boot_HaxeError(haxe_io_Error.OutsideBounds);
 		var s = "";
 		var b = this.b;
 		var fcc = String.fromCharCode;
@@ -5755,12 +5966,12 @@ haxe_io_Bytes.prototype = {
 		return this.getString(0,this.length);
 	}
 	,getData: function() {
-		return this.b;
+		return this.b.bufferValue;
 	}
 	,__class__: haxe_io_Bytes
 };
 var haxe_io_BytesBuffer = function() {
-	this.b = new Array();
+	this.b = [];
 };
 $hxClasses["haxe.io.BytesBuffer"] = haxe_io_BytesBuffer;
 haxe_io_BytesBuffer.__name__ = true;
@@ -5769,7 +5980,7 @@ haxe_io_BytesBuffer.prototype = {
 		this.b.push($byte);
 	}
 	,getBytes: function() {
-		var bytes = new haxe_io_Bytes(this.b.length,this.b);
+		var bytes = new haxe_io_Bytes(new Uint8Array(this.b).buffer);
 		this.b = null;
 		return bytes;
 	}
@@ -5780,12 +5991,12 @@ $hxClasses["haxe.io.Input"] = haxe_io_Input;
 haxe_io_Input.__name__ = true;
 haxe_io_Input.prototype = {
 	readByte: function() {
-		throw "Not implemented";
+		throw new js__$Boot_HaxeError("Not implemented");
 	}
 	,readBytes: function(s,pos,len) {
 		var k = len;
-		var b = s.getData();
-		if(pos < 0 || len < 0 || pos + len > s.length) throw haxe_io_Error.OutsideBounds;
+		var b = s.b;
+		if(pos < 0 || len < 0 || pos + len > s.length) throw new js__$Boot_HaxeError(haxe_io_Error.OutsideBounds);
 		while(k > 0) {
 			b[pos] = this.readByte();
 			pos++;
@@ -5810,8 +6021,8 @@ haxe_io_Input.prototype = {
 var haxe_io_BytesInput = function(b,pos,len) {
 	if(pos == null) pos = 0;
 	if(len == null) len = b.length - pos;
-	if(pos < 0 || len < 0 || pos + len > b.length) throw haxe_io_Error.OutsideBounds;
-	this.b = b.getData();
+	if(pos < 0 || len < 0 || pos + len > b.length) throw new js__$Boot_HaxeError(haxe_io_Error.OutsideBounds);
+	this.b = b.b;
 	this.pos = pos;
 	this.len = len;
 	this.totlen = len;
@@ -5821,16 +6032,16 @@ haxe_io_BytesInput.__name__ = true;
 haxe_io_BytesInput.__super__ = haxe_io_Input;
 haxe_io_BytesInput.prototype = $extend(haxe_io_Input.prototype,{
 	readByte: function() {
-		if(this.len == 0) throw new haxe_io_Eof();
+		if(this.len == 0) throw new js__$Boot_HaxeError(new haxe_io_Eof());
 		this.len--;
 		return this.b[this.pos++];
 	}
 	,readBytes: function(buf,pos,len) {
-		if(pos < 0 || len < 0 || pos + len > buf.length) throw haxe_io_Error.OutsideBounds;
-		if(this.len == 0 && len > 0) throw new haxe_io_Eof();
+		if(pos < 0 || len < 0 || pos + len > buf.length) throw new js__$Boot_HaxeError(haxe_io_Error.OutsideBounds);
+		if(this.len == 0 && len > 0) throw new js__$Boot_HaxeError(new haxe_io_Eof());
 		if(this.len < len) len = this.len;
 		var b1 = this.b;
-		var b2 = buf.getData();
+		var b2 = buf.b;
 		var _g = 0;
 		while(_g < len) {
 			var i = _g++;
@@ -5872,12 +6083,60 @@ haxe_io_Eof.prototype = {
 };
 var haxe_io_Error = $hxClasses["haxe.io.Error"] = { __ename__ : true, __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] };
 haxe_io_Error.Blocked = ["Blocked",0];
+haxe_io_Error.Blocked.toString = $estr;
 haxe_io_Error.Blocked.__enum__ = haxe_io_Error;
 haxe_io_Error.Overflow = ["Overflow",1];
+haxe_io_Error.Overflow.toString = $estr;
 haxe_io_Error.Overflow.__enum__ = haxe_io_Error;
 haxe_io_Error.OutsideBounds = ["OutsideBounds",2];
+haxe_io_Error.OutsideBounds.toString = $estr;
 haxe_io_Error.OutsideBounds.__enum__ = haxe_io_Error;
-haxe_io_Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe_io_Error; return $x; };
+haxe_io_Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe_io_Error; $x.toString = $estr; return $x; };
+var haxe_io_FPHelper = function() { };
+$hxClasses["haxe.io.FPHelper"] = haxe_io_FPHelper;
+haxe_io_FPHelper.__name__ = true;
+haxe_io_FPHelper.i32ToFloat = function(i) {
+	var sign = 1 - (i >>> 31 << 1);
+	var exp = i >>> 23 & 255;
+	var sig = i & 8388607;
+	if(sig == 0 && exp == 0) return 0.0;
+	return sign * (1 + Math.pow(2,-23) * sig) * Math.pow(2,exp - 127);
+};
+haxe_io_FPHelper.floatToI32 = function(f) {
+	if(f == 0) return 0;
+	var af;
+	if(f < 0) af = -f; else af = f;
+	var exp = Math.floor(Math.log(af) / 0.6931471805599453);
+	if(exp < -127) exp = -127; else if(exp > 128) exp = 128;
+	var sig = Math.round((af / Math.pow(2,exp) - 1) * 8388608) & 8388607;
+	return (f < 0?-2147483648:0) | exp + 127 << 23 | sig;
+};
+haxe_io_FPHelper.i64ToDouble = function(low,high) {
+	var sign = 1 - (high >>> 31 << 1);
+	var exp = (high >> 20 & 2047) - 1023;
+	var sig = (high & 1048575) * 4294967296. + (low >>> 31) * 2147483648. + (low & 2147483647);
+	if(sig == 0 && exp == -1023) return 0.0;
+	return sign * (1.0 + Math.pow(2,-52) * sig) * Math.pow(2,exp);
+};
+haxe_io_FPHelper.doubleToI64 = function(v) {
+	var i64 = haxe_io_FPHelper.i64tmp;
+	if(v == 0) {
+		i64.low = 0;
+		i64.high = 0;
+	} else {
+		var av;
+		if(v < 0) av = -v; else av = v;
+		var exp = Math.floor(Math.log(av) / 0.6931471805599453);
+		var sig;
+		var v1 = (av / Math.pow(2,exp) - 1) * 4503599627370496.;
+		sig = Math.round(v1);
+		var sig_l = Std["int"](sig);
+		var sig_h = Std["int"](sig / 4294967296.0);
+		i64.low = sig_l;
+		i64.high = (v < 0?-2147483648:0) | exp + 1023 << 20 | sig_h;
+	}
+	return i64;
+};
 var haxe_io_StringInput = function(s) {
 	haxe_io_BytesInput.call(this,haxe_io_Bytes.ofString(s));
 };
@@ -5889,32 +6148,35 @@ haxe_io_StringInput.prototype = $extend(haxe_io_BytesInput.prototype,{
 });
 var haxe_xml_Filter = $hxClasses["haxe.xml.Filter"] = { __ename__ : true, __constructs__ : ["FInt","FBool","FEnum","FReg"] };
 haxe_xml_Filter.FInt = ["FInt",0];
+haxe_xml_Filter.FInt.toString = $estr;
 haxe_xml_Filter.FInt.__enum__ = haxe_xml_Filter;
 haxe_xml_Filter.FBool = ["FBool",1];
+haxe_xml_Filter.FBool.toString = $estr;
 haxe_xml_Filter.FBool.__enum__ = haxe_xml_Filter;
-haxe_xml_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = haxe_xml_Filter; return $x; };
-haxe_xml_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = haxe_xml_Filter; return $x; };
+haxe_xml_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = haxe_xml_Filter; $x.toString = $estr; return $x; };
+haxe_xml_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = haxe_xml_Filter; $x.toString = $estr; return $x; };
 var haxe_xml_Attrib = $hxClasses["haxe.xml.Attrib"] = { __ename__ : true, __constructs__ : ["Att"] };
-haxe_xml_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = haxe_xml_Attrib; return $x; };
+haxe_xml_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = haxe_xml_Attrib; $x.toString = $estr; return $x; };
 var haxe_xml_Rule = $hxClasses["haxe.xml.Rule"] = { __ename__ : true, __constructs__ : ["RNode","RData","RMulti","RList","RChoice","ROptional"] };
-haxe_xml_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = haxe_xml_Rule; return $x; };
-haxe_xml_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = haxe_xml_Rule; return $x; };
-haxe_xml_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = haxe_xml_Rule; return $x; };
-haxe_xml_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = haxe_xml_Rule; return $x; };
-haxe_xml_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = haxe_xml_Rule; return $x; };
-haxe_xml_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = haxe_xml_Rule; return $x; };
+haxe_xml_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
+haxe_xml_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
+haxe_xml_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
+haxe_xml_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
+haxe_xml_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
+haxe_xml_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
 var haxe_xml__$Check_CheckResult = $hxClasses["haxe.xml._Check.CheckResult"] = { __ename__ : true, __constructs__ : ["CMatch","CMissing","CExtra","CElementExpected","CDataExpected","CExtraAttrib","CMissingAttrib","CInvalidAttrib","CInvalidData","CInElement"] };
 haxe_xml__$Check_CheckResult.CMatch = ["CMatch",0];
+haxe_xml__$Check_CheckResult.CMatch.toString = $estr;
 haxe_xml__$Check_CheckResult.CMatch.__enum__ = haxe_xml__$Check_CheckResult;
-haxe_xml__$Check_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
-haxe_xml__$Check_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
 var haxe_xml_Check = function() { };
 $hxClasses["haxe.xml.Check"] = haxe_xml_Check;
 haxe_xml_Check.__name__ = true;
@@ -5981,7 +6243,7 @@ haxe_xml_Check.check = function(x,r) {
 		var name = r[2];
 		if(x.nodeType != Xml.Element || x.get_nodeName() != name) return haxe_xml__$Check_CheckResult.CElementExpected(name,x);
 		var attribs1;
-		if(attribs == null) attribs1 = new Array(); else attribs1 = attribs.slice();
+		if(attribs == null) attribs1 = []; else attribs1 = attribs.slice();
 		var $it0 = x.attributes();
 		while( $it0.hasNext() ) {
 			var xatt = $it0.next();
@@ -6032,7 +6294,7 @@ haxe_xml_Check.check = function(x,r) {
 		return haxe_xml__$Check_CheckResult.CMatch;
 	case 4:
 		var choices = r[2];
-		if(choices.length == 0) throw "No choice possible";
+		if(choices.length == 0) throw new js__$Boot_HaxeError("No choice possible");
 		var _g3 = 0;
 		while(_g3 < choices.length) {
 			var c = choices[_g3];
@@ -6044,7 +6306,7 @@ haxe_xml_Check.check = function(x,r) {
 		var r1 = r[2];
 		return haxe_xml_Check.check(x,r1);
 	default:
-		throw "Unexpected " + Std.string(r);
+		throw new js__$Boot_HaxeError("Unexpected " + Std.string(r));
 	}
 };
 haxe_xml_Check.checkList = function(it,r) {
@@ -6171,10 +6433,10 @@ haxe_xml_Check.makeRule = function(r) {
 	}
 };
 haxe_xml_Check.makeError = function(m,path) {
-	if(path == null) path = new Array();
+	if(path == null) path = [];
 	switch(Type.enumIndex(m)) {
 	case 0:
-		throw "assert";
+		throw new js__$Boot_HaxeError("assert");
 		break;
 	case 1:
 		var r = m[2];
@@ -6217,7 +6479,7 @@ haxe_xml_Check.makeError = function(m,path) {
 haxe_xml_Check.checkNode = function(x,r) {
 	var m = haxe_xml_Check.checkList(HxOverrides.iter([x]),r);
 	if(m == haxe_xml__$Check_CheckResult.CMatch) return;
-	throw haxe_xml_Check.makeError(m);
+	throw new js__$Boot_HaxeError(haxe_xml_Check.makeError(m));
 };
 var haxe_xml__$Fast_NodeAccess = function(x) {
 	this.__x = x;
@@ -6230,7 +6492,7 @@ haxe_xml__$Fast_NodeAccess.prototype = {
 		if(x == null) {
 			var xname;
 			if(this.__x.nodeType == Xml.Document) xname = "Document"; else xname = this.__x.get_nodeName();
-			throw xname + " is missing element " + name;
+			throw new js__$Boot_HaxeError(xname + " is missing element " + name);
 		}
 		return new haxe_xml_Fast(x);
 	}
@@ -6243,9 +6505,9 @@ $hxClasses["haxe.xml._Fast.AttribAccess"] = haxe_xml__$Fast_AttribAccess;
 haxe_xml__$Fast_AttribAccess.__name__ = true;
 haxe_xml__$Fast_AttribAccess.prototype = {
 	resolve: function(name) {
-		if(this.__x.nodeType == Xml.Document) throw "Cannot access document attribute " + name;
+		if(this.__x.nodeType == Xml.Document) throw new js__$Boot_HaxeError("Cannot access document attribute " + name);
 		var v = this.__x.get(name);
-		if(v == null) throw this.__x.get_nodeName() + " is missing attribute " + name;
+		if(v == null) throw new js__$Boot_HaxeError(this.__x.get_nodeName() + " is missing attribute " + name);
 		return v;
 	}
 	,__class__: haxe_xml__$Fast_AttribAccess
@@ -6257,7 +6519,7 @@ $hxClasses["haxe.xml._Fast.HasAttribAccess"] = haxe_xml__$Fast_HasAttribAccess;
 haxe_xml__$Fast_HasAttribAccess.__name__ = true;
 haxe_xml__$Fast_HasAttribAccess.prototype = {
 	resolve: function(name) {
-		if(this.__x.nodeType == Xml.Document) throw "Cannot access document attribute " + name;
+		if(this.__x.nodeType == Xml.Document) throw new js__$Boot_HaxeError("Cannot access document attribute " + name);
 		return this.__x.exists(name);
 	}
 	,__class__: haxe_xml__$Fast_HasAttribAccess
@@ -6291,7 +6553,7 @@ haxe_xml__$Fast_NodeListAccess.prototype = {
 	,__class__: haxe_xml__$Fast_NodeListAccess
 };
 var haxe_xml_Fast = function(x) {
-	if(x.nodeType != Xml.Document && x.nodeType != Xml.Element) throw "Invalid nodeType " + Std.string(x.nodeType);
+	if(x.nodeType != Xml.Document && x.nodeType != Xml.Element) throw new js__$Boot_HaxeError("Invalid nodeType " + x.nodeType);
 	this.x = x;
 	this.node = new haxe_xml__$Fast_NodeAccess(x);
 	this.nodes = new haxe_xml__$Fast_NodeListAccess(x);
@@ -6318,12 +6580,13 @@ haxe_xml_Fast.prototype = {
 var haxe_xml_Parser = function() { };
 $hxClasses["haxe.xml.Parser"] = haxe_xml_Parser;
 haxe_xml_Parser.__name__ = true;
-haxe_xml_Parser.parse = function(str) {
+haxe_xml_Parser.parse = function(str,strict) {
+	if(strict == null) strict = false;
 	var doc = Xml.createDocument();
-	haxe_xml_Parser.doParse(str,0,doc);
+	haxe_xml_Parser.doParse(str,strict,0,doc);
 	return doc;
 };
-haxe_xml_Parser.doParse = function(str,p,parent) {
+haxe_xml_Parser.doParse = function(str,strict,p,parent) {
 	if(p == null) p = 0;
 	var xml = null;
 	var state = 1;
@@ -6334,6 +6597,8 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 	var nbrackets = 0;
 	var c = StringTools.fastCodeAt(str,p);
 	var buf = new StringBuf();
+	var escapeNext = 1;
+	var attrValQuote = -1;
 	while(!StringTools.isEof(c)) {
 		switch(state) {
 		case 0:
@@ -6359,7 +6624,8 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			break;
 		case 13:
 			if(c == 60) {
-				var child = Xml.createPCData(buf.toString() + HxOverrides.substr(str,start,p - start));
+				buf.addSub(str,start,p - start);
+				var child = Xml.createPCData(buf.toString());
 				buf = new StringBuf();
 				parent.addChild(child);
 				nsubs++;
@@ -6368,7 +6634,7 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			} else if(c == 38) {
 				buf.addSub(str,start,p - start);
 				state = 18;
-				next = 13;
+				escapeNext = 13;
 				start = p + 1;
 			}
 			break;
@@ -6386,16 +6652,16 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			case 33:
 				if(StringTools.fastCodeAt(str,p + 1) == 91) {
 					p += 2;
-					if(HxOverrides.substr(str,p,6).toUpperCase() != "CDATA[") throw "Expected <![CDATA[";
+					if(HxOverrides.substr(str,p,6).toUpperCase() != "CDATA[") throw new js__$Boot_HaxeError("Expected <![CDATA[");
 					p += 5;
 					state = 17;
 					start = p + 1;
 				} else if(StringTools.fastCodeAt(str,p + 1) == 68 || StringTools.fastCodeAt(str,p + 1) == 100) {
-					if(HxOverrides.substr(str,p + 2,6).toUpperCase() != "OCTYPE") throw "Expected <!DOCTYPE";
+					if(HxOverrides.substr(str,p + 2,6).toUpperCase() != "OCTYPE") throw new js__$Boot_HaxeError("Expected <!DOCTYPE");
 					p += 8;
 					state = 16;
 					start = p + 1;
-				} else if(StringTools.fastCodeAt(str,p + 1) != 45 || StringTools.fastCodeAt(str,p + 2) != 45) throw "Expected <!--"; else {
+				} else if(StringTools.fastCodeAt(str,p + 1) != 45 || StringTools.fastCodeAt(str,p + 2) != 45) throw new js__$Boot_HaxeError("Expected <!--"); else {
 					p += 2;
 					state = 15;
 					start = p + 1;
@@ -6406,7 +6672,7 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 				start = p;
 				break;
 			case 47:
-				if(parent == null) throw "Expected node name";
+				if(parent == null) throw new js__$Boot_HaxeError("Expected node name");
 				start = p + 1;
 				state = 0;
 				next = 10;
@@ -6419,9 +6685,10 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			break;
 		case 3:
 			if(!haxe_xml_Parser.isValidChar(c)) {
-				if(p == start) throw "Expected node name";
+				if(p == start) throw new js__$Boot_HaxeError("Expected node name");
 				xml = Xml.createElement(HxOverrides.substr(str,start,p - start));
 				parent.addChild(xml);
+				nsubs++;
 				state = 0;
 				next = 4;
 				continue;
@@ -6431,11 +6698,9 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			switch(c) {
 			case 47:
 				state = 11;
-				nsubs++;
 				break;
 			case 62:
 				state = 9;
-				nsubs++;
 				break;
 			default:
 				state = 5;
@@ -6446,10 +6711,10 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 		case 5:
 			if(!haxe_xml_Parser.isValidChar(c)) {
 				var tmp;
-				if(start == p) throw "Expected attribute name";
+				if(start == p) throw new js__$Boot_HaxeError("Expected attribute name");
 				tmp = HxOverrides.substr(str,start,p - start);
 				aname = tmp;
-				if(xml.exists(aname)) throw "Duplicate attribute";
+				if(xml.exists(aname)) throw new js__$Boot_HaxeError("Duplicate attribute");
 				state = 0;
 				next = 6;
 				continue;
@@ -6462,29 +6727,62 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 				next = 7;
 				break;
 			default:
-				throw "Expected =";
+				throw new js__$Boot_HaxeError("Expected =");
 			}
 			break;
 		case 7:
 			switch(c) {
 			case 34:case 39:
+				buf = new StringBuf();
 				state = 8;
-				start = p;
+				start = p + 1;
+				attrValQuote = c;
 				break;
 			default:
-				throw "Expected \"";
+				throw new js__$Boot_HaxeError("Expected \"");
 			}
 			break;
 		case 8:
-			if(c == StringTools.fastCodeAt(str,start)) {
-				var val = HxOverrides.substr(str,start + 1,p - start - 1);
-				xml.set(aname,val);
-				state = 0;
-				next = 4;
+			switch(c) {
+			case 38:
+				buf.addSub(str,start,p - start);
+				state = 18;
+				escapeNext = 8;
+				start = p + 1;
+				break;
+			case 62:
+				if(strict) throw new js__$Boot_HaxeError("Invalid unescaped " + String.fromCharCode(c) + " in attribute value"); else if(c == attrValQuote) {
+					buf.addSub(str,start,p - start);
+					var val = buf.toString();
+					buf = new StringBuf();
+					xml.set(aname,val);
+					state = 0;
+					next = 4;
+				}
+				break;
+			case 60:
+				if(strict) throw new js__$Boot_HaxeError("Invalid unescaped " + String.fromCharCode(c) + " in attribute value"); else if(c == attrValQuote) {
+					buf.addSub(str,start,p - start);
+					var val1 = buf.toString();
+					buf = new StringBuf();
+					xml.set(aname,val1);
+					state = 0;
+					next = 4;
+				}
+				break;
+			default:
+				if(c == attrValQuote) {
+					buf.addSub(str,start,p - start);
+					var val2 = buf.toString();
+					buf = new StringBuf();
+					xml.set(aname,val2);
+					state = 0;
+					next = 4;
+				}
 			}
 			break;
 		case 9:
-			p = haxe_xml_Parser.doParse(str,p,xml);
+			p = haxe_xml_Parser.doParse(str,strict,p,xml);
 			start = p;
 			state = 1;
 			break;
@@ -6494,7 +6792,7 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 				state = 1;
 				break;
 			default:
-				throw "Expected >";
+				throw new js__$Boot_HaxeError("Expected >");
 			}
 			break;
 		case 12:
@@ -6503,14 +6801,14 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 				if(nsubs == 0) parent.addChild(Xml.createPCData(""));
 				return p;
 			default:
-				throw "Expected >";
+				throw new js__$Boot_HaxeError("Expected >");
 			}
 			break;
 		case 10:
 			if(!haxe_xml_Parser.isValidChar(c)) {
-				if(start == p) throw "Expected node name";
+				if(start == p) throw new js__$Boot_HaxeError("Expected node name");
 				var v = HxOverrides.substr(str,start,p - start);
-				if(v != parent.get_nodeName()) throw "Expected </" + parent.get_nodeName() + ">";
+				if(v != parent.get_nodeName()) throw new js__$Boot_HaxeError("Expected </" + parent.get_nodeName() + ">");
 				state = 0;
 				next = 12;
 				continue;
@@ -6518,14 +6816,18 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			break;
 		case 15:
 			if(c == 45 && StringTools.fastCodeAt(str,p + 1) == 45 && StringTools.fastCodeAt(str,p + 2) == 62) {
-				parent.addChild(Xml.createComment(HxOverrides.substr(str,start,p - start)));
+				var xml1 = Xml.createComment(HxOverrides.substr(str,start,p - start));
+				parent.addChild(xml1);
+				nsubs++;
 				p += 2;
 				state = 1;
 			}
 			break;
 		case 16:
 			if(c == 91) nbrackets++; else if(c == 93) nbrackets--; else if(c == 62 && nbrackets == 0) {
-				parent.addChild(Xml.createDocType(HxOverrides.substr(str,start,p - start)));
+				var xml2 = Xml.createDocType(HxOverrides.substr(str,start,p - start));
+				parent.addChild(xml2);
+				nsubs++;
 				state = 1;
 			}
 			break;
@@ -6533,7 +6835,9 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			if(c == 63 && StringTools.fastCodeAt(str,p + 1) == 62) {
 				p++;
 				var str1 = HxOverrides.substr(str,start + 1,p - start - 2);
-				parent.addChild(Xml.createProcessingInstruction(str1));
+				var xml3 = Xml.createProcessingInstruction(str1);
+				parent.addChild(xml3);
+				nsubs++;
 				state = 1;
 			}
 			break;
@@ -6541,12 +6845,22 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 			if(c == 59) {
 				var s = HxOverrides.substr(str,start,p - start);
 				if(StringTools.fastCodeAt(s,0) == 35) {
-					var i;
-					if(StringTools.fastCodeAt(s,1) == 120) i = Std.parseInt("0" + HxOverrides.substr(s,1,s.length - 1)); else i = Std.parseInt(HxOverrides.substr(s,1,s.length - 1));
-					buf.add(String.fromCharCode(i));
-				} else if(!haxe_xml_Parser.escapes.exists(s)) buf.add("&" + s + ";"); else buf.add(haxe_xml_Parser.escapes.get(s));
+					var c1;
+					if(StringTools.fastCodeAt(s,1) == 120) c1 = Std.parseInt("0" + HxOverrides.substr(s,1,s.length - 1)); else c1 = Std.parseInt(HxOverrides.substr(s,1,s.length - 1));
+					buf.addChar(c1);
+				} else if(!haxe_xml_Parser.escapes.exists(s)) {
+					if(strict) throw new js__$Boot_HaxeError("Undefined entity: " + s);
+					buf.add("&" + s + ";");
+				} else buf.add(haxe_xml_Parser.escapes.get(s));
 				start = p + 1;
-				state = next;
+				state = escapeNext;
+			} else if(!haxe_xml_Parser.isValidChar(c) && c != 35) {
+				if(strict) throw new js__$Boot_HaxeError("Invalid character in entity: " + String.fromCharCode(c));
+				buf.addChar(38);
+				buf.addSub(str,start,p - start);
+				p--;
+				start = p + 1;
+				state = escapeNext;
 			}
 			break;
 		}
@@ -6557,67 +6871,189 @@ haxe_xml_Parser.doParse = function(str,p,parent) {
 		state = 13;
 	}
 	if(state == 13) {
-		if(p != start || nsubs == 0) parent.addChild(Xml.createPCData(buf.toString() + HxOverrides.substr(str,start,p - start)));
+		if(p != start || nsubs == 0) {
+			buf.addSub(str,start,p - start);
+			var xml4 = Xml.createPCData(buf.toString());
+			parent.addChild(xml4);
+			nsubs++;
+		}
 		return p;
 	}
-	throw "Unexpected end";
+	if(!strict && state == 18 && escapeNext == 13) {
+		buf.addChar(38);
+		buf.addSub(str,start,p - start);
+		var xml5 = Xml.createPCData(buf.toString());
+		parent.addChild(xml5);
+		nsubs++;
+		return p;
+	}
+	throw new js__$Boot_HaxeError("Unexpected end");
 };
 haxe_xml_Parser.isValidChar = function(c) {
 	return c >= 97 && c <= 122 || c >= 65 && c <= 90 || c >= 48 && c <= 57 || c == 58 || c == 46 || c == 95 || c == 45;
 };
+var haxe_xml_Printer = function(pretty) {
+	this.output = new StringBuf();
+	this.pretty = pretty;
+};
+$hxClasses["haxe.xml.Printer"] = haxe_xml_Printer;
+haxe_xml_Printer.__name__ = true;
+haxe_xml_Printer.print = function(xml,pretty) {
+	if(pretty == null) pretty = false;
+	var printer = new haxe_xml_Printer(pretty);
+	printer.writeNode(xml,"");
+	return printer.output.toString();
+};
+haxe_xml_Printer.prototype = {
+	writeNode: function(value,tabs) {
+		var _g = value.nodeType;
+		switch(_g) {
+		case 2:
+			this.write(tabs + "<![CDATA[");
+			this.write(StringTools.trim(value.get_nodeValue()));
+			this.write("]]>");
+			this.newline();
+			break;
+		case 3:
+			var commentContent = value.get_nodeValue();
+			commentContent = new EReg("[\n\r\t]+","g").replace(commentContent,"");
+			commentContent = "<!--" + commentContent + "-->";
+			this.write(tabs);
+			this.write(StringTools.trim(commentContent));
+			this.newline();
+			break;
+		case 6:
+			var $it0 = value.iterator();
+			while( $it0.hasNext() ) {
+				var child = $it0.next();
+				this.writeNode(child,tabs);
+			}
+			break;
+		case 0:
+			this.write(tabs + "<");
+			this.write(value.get_nodeName());
+			var $it1 = value.attributes();
+			while( $it1.hasNext() ) {
+				var attribute = $it1.next();
+				this.write(" " + attribute + "=\"");
+				this.write(StringTools.htmlEscape(value.get(attribute),true));
+				this.write("\"");
+			}
+			if(this.hasChildren(value)) {
+				this.write(">");
+				this.newline();
+				var $it2 = value.iterator();
+				while( $it2.hasNext() ) {
+					var child1 = $it2.next();
+					this.writeNode(child1,this.pretty?tabs + "\t":tabs);
+				}
+				this.write(tabs + "</");
+				this.write(value.get_nodeName());
+				this.write(">");
+				this.newline();
+			} else {
+				this.write("/>");
+				this.newline();
+			}
+			break;
+		case 1:
+			var nodeValue = value.get_nodeValue();
+			if(nodeValue.length != 0) {
+				this.write(tabs + StringTools.htmlEscape(nodeValue));
+				this.newline();
+			}
+			break;
+		case 5:
+			this.write("<?" + value.get_nodeValue() + "?>");
+			break;
+		case 4:
+			this.write("<!DOCTYPE " + value.get_nodeValue() + ">");
+			break;
+		}
+	}
+	,write: function(input) {
+		this.output.add(input);
+	}
+	,newline: function() {
+		if(this.pretty) this.output.add("");
+	}
+	,hasChildren: function(value) {
+		var $it0 = value.iterator();
+		while( $it0.hasNext() ) {
+			var child = $it0.next();
+			var _g = child.nodeType;
+			switch(_g) {
+			case 0:case 1:
+				return true;
+			case 2:case 3:
+				if(StringTools.ltrim(child.get_nodeValue()).length != 0) return true;
+				break;
+			default:
+			}
+		}
+		return false;
+	}
+	,__class__: haxe_xml_Printer
+};
 var hscript_Const = $hxClasses["hscript.Const"] = { __ename__ : true, __constructs__ : ["CInt","CFloat","CString"] };
-hscript_Const.CInt = function(v) { var $x = ["CInt",0,v]; $x.__enum__ = hscript_Const; return $x; };
-hscript_Const.CFloat = function(f) { var $x = ["CFloat",1,f]; $x.__enum__ = hscript_Const; return $x; };
-hscript_Const.CString = function(s) { var $x = ["CString",2,s]; $x.__enum__ = hscript_Const; return $x; };
+hscript_Const.CInt = function(v) { var $x = ["CInt",0,v]; $x.__enum__ = hscript_Const; $x.toString = $estr; return $x; };
+hscript_Const.CFloat = function(f) { var $x = ["CFloat",1,f]; $x.__enum__ = hscript_Const; $x.toString = $estr; return $x; };
+hscript_Const.CString = function(s) { var $x = ["CString",2,s]; $x.__enum__ = hscript_Const; $x.toString = $estr; return $x; };
 var hscript_Expr = $hxClasses["hscript.Expr"] = { __ename__ : true, __constructs__ : ["EConst","EIdent","EVar","EParent","EBlock","EField","EBinop","EUnop","ECall","EIf","EWhile","EFor","EBreak","EContinue","EFunction","EReturn","EArray","EArrayDecl","ENew","EThrow","ETry","EObject","ETernary","ESwitch"] };
-hscript_Expr.EConst = function(c) { var $x = ["EConst",0,c]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EIdent = function(v) { var $x = ["EIdent",1,v]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EVar = function(n,t,e) { var $x = ["EVar",2,n,t,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EParent = function(e) { var $x = ["EParent",3,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EBlock = function(e) { var $x = ["EBlock",4,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EField = function(e,f) { var $x = ["EField",5,e,f]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EBinop = function(op,e1,e2) { var $x = ["EBinop",6,op,e1,e2]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EUnop = function(op,prefix,e) { var $x = ["EUnop",7,op,prefix,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.ECall = function(e,params) { var $x = ["ECall",8,e,params]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EIf = function(cond,e1,e2) { var $x = ["EIf",9,cond,e1,e2]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EWhile = function(cond,e) { var $x = ["EWhile",10,cond,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EFor = function(v,it,e) { var $x = ["EFor",11,v,it,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EConst = function(c) { var $x = ["EConst",0,c]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EIdent = function(v) { var $x = ["EIdent",1,v]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EVar = function(n,t,e) { var $x = ["EVar",2,n,t,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EParent = function(e) { var $x = ["EParent",3,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EBlock = function(e) { var $x = ["EBlock",4,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EField = function(e,f) { var $x = ["EField",5,e,f]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EBinop = function(op,e1,e2) { var $x = ["EBinop",6,op,e1,e2]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EUnop = function(op,prefix,e) { var $x = ["EUnop",7,op,prefix,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.ECall = function(e,params) { var $x = ["ECall",8,e,params]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EIf = function(cond,e1,e2) { var $x = ["EIf",9,cond,e1,e2]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EWhile = function(cond,e) { var $x = ["EWhile",10,cond,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EFor = function(v,it,e) { var $x = ["EFor",11,v,it,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
 hscript_Expr.EBreak = ["EBreak",12];
+hscript_Expr.EBreak.toString = $estr;
 hscript_Expr.EBreak.__enum__ = hscript_Expr;
 hscript_Expr.EContinue = ["EContinue",13];
+hscript_Expr.EContinue.toString = $estr;
 hscript_Expr.EContinue.__enum__ = hscript_Expr;
-hscript_Expr.EFunction = function(args,e,name,ret) { var $x = ["EFunction",14,args,e,name,ret]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EReturn = function(e) { var $x = ["EReturn",15,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EArray = function(e,index) { var $x = ["EArray",16,e,index]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EArrayDecl = function(e) { var $x = ["EArrayDecl",17,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.ENew = function(cl,params) { var $x = ["ENew",18,cl,params]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EThrow = function(e) { var $x = ["EThrow",19,e]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.ETry = function(e,v,t,ecatch) { var $x = ["ETry",20,e,v,t,ecatch]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.EObject = function(fl) { var $x = ["EObject",21,fl]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.ETernary = function(cond,e1,e2) { var $x = ["ETernary",22,cond,e1,e2]; $x.__enum__ = hscript_Expr; return $x; };
-hscript_Expr.ESwitch = function(e,cases,defaultExpr) { var $x = ["ESwitch",23,e,cases,defaultExpr]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EFunction = function(args,e,name,ret) { var $x = ["EFunction",14,args,e,name,ret]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EReturn = function(e) { var $x = ["EReturn",15,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EArray = function(e,index) { var $x = ["EArray",16,e,index]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EArrayDecl = function(e) { var $x = ["EArrayDecl",17,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.ENew = function(cl,params) { var $x = ["ENew",18,cl,params]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EThrow = function(e) { var $x = ["EThrow",19,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.ETry = function(e,v,t,ecatch) { var $x = ["ETry",20,e,v,t,ecatch]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EObject = function(fl) { var $x = ["EObject",21,fl]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.ETernary = function(cond,e1,e2) { var $x = ["ETernary",22,cond,e1,e2]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.ESwitch = function(e,cases,defaultExpr) { var $x = ["ESwitch",23,e,cases,defaultExpr]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
 var hscript_CType = $hxClasses["hscript.CType"] = { __ename__ : true, __constructs__ : ["CTPath","CTFun","CTAnon","CTParent"] };
-hscript_CType.CTPath = function(path,params) { var $x = ["CTPath",0,path,params]; $x.__enum__ = hscript_CType; return $x; };
-hscript_CType.CTFun = function(args,ret) { var $x = ["CTFun",1,args,ret]; $x.__enum__ = hscript_CType; return $x; };
-hscript_CType.CTAnon = function(fields) { var $x = ["CTAnon",2,fields]; $x.__enum__ = hscript_CType; return $x; };
-hscript_CType.CTParent = function(t) { var $x = ["CTParent",3,t]; $x.__enum__ = hscript_CType; return $x; };
+hscript_CType.CTPath = function(path,params) { var $x = ["CTPath",0,path,params]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
+hscript_CType.CTFun = function(args,ret) { var $x = ["CTFun",1,args,ret]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
+hscript_CType.CTAnon = function(fields) { var $x = ["CTAnon",2,fields]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
+hscript_CType.CTParent = function(t) { var $x = ["CTParent",3,t]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
 var hscript_Error = $hxClasses["hscript.Error"] = { __ename__ : true, __constructs__ : ["EInvalidChar","EUnexpected","EUnterminatedString","EUnterminatedComment","EUnknownVariable","EInvalidIterator","EInvalidOp","EInvalidAccess"] };
-hscript_Error.EInvalidChar = function(c) { var $x = ["EInvalidChar",0,c]; $x.__enum__ = hscript_Error; return $x; };
-hscript_Error.EUnexpected = function(s) { var $x = ["EUnexpected",1,s]; $x.__enum__ = hscript_Error; return $x; };
+hscript_Error.EInvalidChar = function(c) { var $x = ["EInvalidChar",0,c]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
+hscript_Error.EUnexpected = function(s) { var $x = ["EUnexpected",1,s]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
 hscript_Error.EUnterminatedString = ["EUnterminatedString",2];
+hscript_Error.EUnterminatedString.toString = $estr;
 hscript_Error.EUnterminatedString.__enum__ = hscript_Error;
 hscript_Error.EUnterminatedComment = ["EUnterminatedComment",3];
+hscript_Error.EUnterminatedComment.toString = $estr;
 hscript_Error.EUnterminatedComment.__enum__ = hscript_Error;
-hscript_Error.EUnknownVariable = function(v) { var $x = ["EUnknownVariable",4,v]; $x.__enum__ = hscript_Error; return $x; };
-hscript_Error.EInvalidIterator = function(v) { var $x = ["EInvalidIterator",5,v]; $x.__enum__ = hscript_Error; return $x; };
-hscript_Error.EInvalidOp = function(op) { var $x = ["EInvalidOp",6,op]; $x.__enum__ = hscript_Error; return $x; };
-hscript_Error.EInvalidAccess = function(f) { var $x = ["EInvalidAccess",7,f]; $x.__enum__ = hscript_Error; return $x; };
+hscript_Error.EUnknownVariable = function(v) { var $x = ["EUnknownVariable",4,v]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
+hscript_Error.EInvalidIterator = function(v) { var $x = ["EInvalidIterator",5,v]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
+hscript_Error.EInvalidOp = function(op) { var $x = ["EInvalidOp",6,op]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
+hscript_Error.EInvalidAccess = function(f) { var $x = ["EInvalidAccess",7,f]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
 var hscript__$Interp_Stop = $hxClasses["hscript._Interp.Stop"] = { __ename__ : true, __constructs__ : ["SBreak","SContinue","SReturn"] };
 hscript__$Interp_Stop.SBreak = ["SBreak",0];
+hscript__$Interp_Stop.SBreak.toString = $estr;
 hscript__$Interp_Stop.SBreak.__enum__ = hscript__$Interp_Stop;
 hscript__$Interp_Stop.SContinue = ["SContinue",1];
+hscript__$Interp_Stop.SContinue.toString = $estr;
 hscript__$Interp_Stop.SContinue.__enum__ = hscript__$Interp_Stop;
-hscript__$Interp_Stop.SReturn = function(v) { var $x = ["SReturn",2,v]; $x.__enum__ = hscript__$Interp_Stop; return $x; };
+hscript__$Interp_Stop.SReturn = function(v) { var $x = ["SReturn",2,v]; $x.__enum__ = hscript__$Interp_Stop; $x.toString = $estr; return $x; };
 var hscript_Interp = function() {
 	this.variables = new haxe_ds_StringMap();
 	this.locals = new haxe_ds_StringMap();
@@ -6840,20 +7276,21 @@ hscript_Interp.prototype = {
 	,execute: function(expr) {
 		this.depth = 0;
 		this.locals = new haxe_ds_StringMap();
-		this.declared = new Array();
+		this.declared = [];
 		return this.exprReturn(expr);
 	}
 	,exprReturn: function(e) {
 		try {
 			return this.expr(e);
 		} catch( e1 ) {
+			if (e1 instanceof js__$Boot_HaxeError) e1 = e1.val;
 			if( js_Boot.__instanceof(e1,hscript__$Interp_Stop) ) {
 				switch(Type.enumIndex(e1)) {
 				case 0:
-					throw "Invalid break";
+					throw new js__$Boot_HaxeError("Invalid break");
 					break;
 				case 1:
-					throw "Invalid continue";
+					throw new js__$Boot_HaxeError("Invalid continue");
 					break;
 				case 2:
 					var v = e1[2];
@@ -6883,7 +7320,7 @@ hscript_Interp.prototype = {
 		return e;
 	}
 	,error: function(e) {
-		throw e;
+		throw new js__$Boot_HaxeError(e);
 		return null;
 	}
 	,resolve: function(id) {
@@ -6967,7 +7404,7 @@ hscript_Interp.prototype = {
 		case 8:
 			var params = e[3];
 			var e6 = e[2];
-			var args = new Array();
+			var args = [];
 			var _g1 = 0;
 			while(_g1 < params.length) {
 				var p = params[_g1];
@@ -7006,14 +7443,14 @@ hscript_Interp.prototype = {
 			this.forLoop(v2,it,e9);
 			return null;
 		case 12:
-			throw hscript__$Interp_Stop.SBreak;
+			throw new js__$Boot_HaxeError(hscript__$Interp_Stop.SBreak);
 			break;
 		case 13:
-			throw hscript__$Interp_Stop.SContinue;
+			throw new js__$Boot_HaxeError(hscript__$Interp_Stop.SContinue);
 			break;
 		case 15:
 			var e10 = e[2];
-			throw hscript__$Interp_Stop.SReturn(e10 == null?null:this.expr(e10));
+			throw new js__$Boot_HaxeError(hscript__$Interp_Stop.SReturn(e10 == null?null:this.expr(e10)));
 			break;
 		case 14:
 			var name = e[4];
@@ -7023,27 +7460,27 @@ hscript_Interp.prototype = {
 			var me = this;
 			var hasOpt = false;
 			var minParams = 0;
-			var _g3 = 0;
-			while(_g3 < params1.length) {
-				var p1 = params1[_g3];
-				++_g3;
-				if(p1.opt) hasOpt = true; else minParams++;
+			var _g5 = 0;
+			while(_g5 < params1.length) {
+				var p2 = params1[_g5];
+				++_g5;
+				if(p2.opt) hasOpt = true; else minParams++;
 			}
 			var f3 = function(args1) {
 				if(args1.length != params1.length) {
 					if(args1.length < minParams) {
 						var str = "Invalid number of parameters. Got " + args1.length + ", required " + minParams;
 						if(name != null) str += " for function '" + name + "'";
-						throw str;
+						throw new js__$Boot_HaxeError(str);
 					}
 					var args2 = [];
 					var extraParams = args1.length - minParams;
 					var pos = 0;
-					var _g4 = 0;
-					while(_g4 < params1.length) {
-						var p2 = params1[_g4];
-						++_g4;
-						if(p2.opt) {
+					var _g3 = 0;
+					while(_g3 < params1.length) {
+						var p1 = params1[_g3];
+						++_g3;
+						if(p1.opt) {
 							if(extraParams > 0) {
 								args2.push(args1[pos++]);
 								extraParams--;
@@ -7057,8 +7494,8 @@ hscript_Interp.prototype = {
 				me.depth++;
 				me.locals = me.duplicate(capturedLocals);
 				var _g11 = 0;
-				var _g5 = params1.length;
-				while(_g11 < _g5) {
+				var _g4 = params1.length;
+				while(_g11 < _g4) {
 					var i = _g11++;
 					me.locals.set(params1[i].name,{ r : args1[i]});
 				}
@@ -7066,9 +7503,10 @@ hscript_Interp.prototype = {
 				try {
 					r = me.exprReturn(fexpr);
 				} catch( e13 ) {
+					if (e13 instanceof js__$Boot_HaxeError) e13 = e13.val;
 					me.locals = old1;
 					me.depth = depth;
-					throw e13;
+					throw new js__$Boot_HaxeError(e13);
 				}
 				me.locals = old1;
 				me.depth = depth;
@@ -7086,7 +7524,7 @@ hscript_Interp.prototype = {
 			return f4;
 		case 17:
 			var arr = e[2];
-			var a = new Array();
+			var a = [];
 			var _g6 = 0;
 			while(_g6 < arr.length) {
 				var e14 = arr[_g6];
@@ -7101,7 +7539,7 @@ hscript_Interp.prototype = {
 		case 18:
 			var params2 = e[3];
 			var cl = e[2];
-			var a1 = new Array();
+			var a1 = [];
 			var _g7 = 0;
 			while(_g7 < params2.length) {
 				var e16 = params2[_g7];
@@ -7111,7 +7549,7 @@ hscript_Interp.prototype = {
 			return this.cnew(cl,a1);
 		case 19:
 			var e17 = e[2];
-			throw this.expr(e17);
+			throw new js__$Boot_HaxeError(this.expr(e17));
 			break;
 		case 20:
 			var ecatch = e[5];
@@ -7123,9 +7561,10 @@ hscript_Interp.prototype = {
 				this.restore(old2);
 				return v3;
 			} catch( $e0 ) {
+				if ($e0 instanceof js__$Boot_HaxeError) $e0 = $e0.val;
 				if( js_Boot.__instanceof($e0,hscript__$Interp_Stop) ) {
 					var err = $e0;
-					throw err;
+					throw new js__$Boot_HaxeError(err);
 				} else {
 				var err1 = $e0;
 				this.restore(old2);
@@ -7189,6 +7628,7 @@ hscript_Interp.prototype = {
 			while(this.expr(econd) == true) try {
 				this.expr(e);
 			} catch( err ) {
+				if (err instanceof js__$Boot_HaxeError) err = err.val;
 				if( js_Boot.__instanceof(err,hscript__$Interp_Stop) ) {
 					switch(Type.enumIndex(err)) {
 					case 1:
@@ -7197,7 +7637,7 @@ hscript_Interp.prototype = {
 						throw "__break__";
 						break;
 					case 2:
-						throw err;
+						throw new js__$Boot_HaxeError(err);
 						break;
 					}
 				} else throw(err);
@@ -7209,6 +7649,7 @@ hscript_Interp.prototype = {
 		try {
 			v = $iterator(v)();
 		} catch( e ) {
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
 		}
 		if(v.hasNext == null || v.next == null) this.error(hscript_Error.EInvalidIterator(v));
 		return v;
@@ -7224,6 +7665,7 @@ hscript_Interp.prototype = {
 				try {
 					this.expr(e);
 				} catch( err ) {
+					if (err instanceof js__$Boot_HaxeError) err = err.val;
 					if( js_Boot.__instanceof(err,hscript__$Interp_Stop) ) {
 						switch(Type.enumIndex(err)) {
 						case 1:
@@ -7232,7 +7674,7 @@ hscript_Interp.prototype = {
 							throw "__break__";
 							break;
 						case 2:
-							throw err;
+							throw new js__$Boot_HaxeError(err);
 							break;
 						}
 					} else throw(err);
@@ -7265,31 +7707,43 @@ hscript_Interp.prototype = {
 };
 var hscript_Token = $hxClasses["hscript.Token"] = { __ename__ : true, __constructs__ : ["TEof","TConst","TId","TOp","TPOpen","TPClose","TBrOpen","TBrClose","TDot","TComma","TSemicolon","TBkOpen","TBkClose","TQuestion","TDoubleDot"] };
 hscript_Token.TEof = ["TEof",0];
+hscript_Token.TEof.toString = $estr;
 hscript_Token.TEof.__enum__ = hscript_Token;
-hscript_Token.TConst = function(c) { var $x = ["TConst",1,c]; $x.__enum__ = hscript_Token; return $x; };
-hscript_Token.TId = function(s) { var $x = ["TId",2,s]; $x.__enum__ = hscript_Token; return $x; };
-hscript_Token.TOp = function(s) { var $x = ["TOp",3,s]; $x.__enum__ = hscript_Token; return $x; };
+hscript_Token.TConst = function(c) { var $x = ["TConst",1,c]; $x.__enum__ = hscript_Token; $x.toString = $estr; return $x; };
+hscript_Token.TId = function(s) { var $x = ["TId",2,s]; $x.__enum__ = hscript_Token; $x.toString = $estr; return $x; };
+hscript_Token.TOp = function(s) { var $x = ["TOp",3,s]; $x.__enum__ = hscript_Token; $x.toString = $estr; return $x; };
 hscript_Token.TPOpen = ["TPOpen",4];
+hscript_Token.TPOpen.toString = $estr;
 hscript_Token.TPOpen.__enum__ = hscript_Token;
 hscript_Token.TPClose = ["TPClose",5];
+hscript_Token.TPClose.toString = $estr;
 hscript_Token.TPClose.__enum__ = hscript_Token;
 hscript_Token.TBrOpen = ["TBrOpen",6];
+hscript_Token.TBrOpen.toString = $estr;
 hscript_Token.TBrOpen.__enum__ = hscript_Token;
 hscript_Token.TBrClose = ["TBrClose",7];
+hscript_Token.TBrClose.toString = $estr;
 hscript_Token.TBrClose.__enum__ = hscript_Token;
 hscript_Token.TDot = ["TDot",8];
+hscript_Token.TDot.toString = $estr;
 hscript_Token.TDot.__enum__ = hscript_Token;
 hscript_Token.TComma = ["TComma",9];
+hscript_Token.TComma.toString = $estr;
 hscript_Token.TComma.__enum__ = hscript_Token;
 hscript_Token.TSemicolon = ["TSemicolon",10];
+hscript_Token.TSemicolon.toString = $estr;
 hscript_Token.TSemicolon.__enum__ = hscript_Token;
 hscript_Token.TBkOpen = ["TBkOpen",11];
+hscript_Token.TBkOpen.toString = $estr;
 hscript_Token.TBkOpen.__enum__ = hscript_Token;
 hscript_Token.TBkClose = ["TBkClose",12];
+hscript_Token.TBkClose.toString = $estr;
 hscript_Token.TBkClose.__enum__ = hscript_Token;
 hscript_Token.TQuestion = ["TQuestion",13];
+hscript_Token.TQuestion.toString = $estr;
 hscript_Token.TQuestion.__enum__ = hscript_Token;
 hscript_Token.TDoubleDot = ["TDoubleDot",14];
+hscript_Token.TDoubleDot.toString = $estr;
 hscript_Token.TDoubleDot.__enum__ = hscript_Token;
 var hscript_Parser = function() {
 	this.uid = 0;
@@ -7325,7 +7779,7 @@ $hxClasses["hscript.Parser"] = hscript_Parser;
 hscript_Parser.__name__ = true;
 hscript_Parser.prototype = {
 	error: function(err,pmin,pmax) {
-		throw err;
+		throw new js__$Boot_HaxeError(err);
 	}
 	,invalidChar: function(c) {
 		this.error(hscript_Error.EInvalidChar(c),0,0);
@@ -7339,8 +7793,8 @@ hscript_Parser.prototype = {
 		this.tokens = new haxe_ds_GenericStack();
 		this["char"] = -1;
 		this.input = s;
-		this.ops = new Array();
-		this.idents = new Array();
+		this.ops = [];
+		this.idents = [];
 		var _g1 = 0;
 		var _g = this.opChars.length;
 		while(_g1 < _g) {
@@ -7353,7 +7807,7 @@ hscript_Parser.prototype = {
 			var i1 = _g11++;
 			this.idents[HxOverrides.cca(this.identChars,i1)] = true;
 		}
-		var a = new Array();
+		var a = [];
 		while(true) {
 			var tk = this.token();
 			if(tk == hscript_Token.TEof) break;
@@ -7432,7 +7886,7 @@ hscript_Parser.prototype = {
 		return e;
 	}
 	,parseObject: function(p1) {
-		var fl = new Array();
+		var fl = [];
 		try {
 			while(true) {
 				var tk = this.token();
@@ -7526,7 +7980,7 @@ hscript_Parser.prototype = {
 			default:
 				this.push(tk);
 			}
-			var a = new Array();
+			var a = [];
 			while(true) {
 				a.push(this.parseFullExpr());
 				tk = this.token();
@@ -7539,7 +7993,7 @@ hscript_Parser.prototype = {
 			if(this.unops.exists(op)) return this.makeUnop(op,this.parseExpr());
 			return this.unexpected(tk);
 		case 11:
-			var a1 = new Array();
+			var a1 = [];
 			tk = this.token();
 			while(tk != hscript_Token.TBkClose) {
 				this.push(tk);
@@ -7721,7 +8175,7 @@ hscript_Parser.prototype = {
 				this.push(tk3);
 			}
 			this.ensure(hscript_Token.TPOpen);
-			var args = new Array();
+			var args = [];
 			tk3 = this.token();
 			if(tk3 != hscript_Token.TPClose) {
 				var done = false;
@@ -7777,7 +8231,7 @@ hscript_Parser.prototype = {
 			if(tk4 == hscript_Token.TSemicolon) e5 = null; else e5 = this.parseExpr();
 			return this.mk(hscript_Expr.EReturn(e5),0,e5 == null?0:this.pmax(e5));
 		case "new":
-			var a = new Array();
+			var a = [];
 			var tk5 = this.token();
 			switch(Type.enumIndex(tk5)) {
 			case 2:
@@ -8105,7 +8559,7 @@ hscript_Parser.prototype = {
 		}
 	}
 	,parseExprList: function(etk) {
-		var args = new Array();
+		var args = [];
 		var tk = this.token();
 		if(tk == etk) return args;
 		this.push(tk);
@@ -8131,6 +8585,7 @@ hscript_Parser.prototype = {
 		try {
 			return this.input.readByte();
 		} catch( e ) {
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
 			return 0;
 		}
 	}
@@ -8145,6 +8600,7 @@ hscript_Parser.prototype = {
 				this.incPos();
 				c = s.readByte();
 			} catch( e ) {
+				if (e instanceof js__$Boot_HaxeError) e = e.val;
 				this.line = old;
 				this.error(hscript_Error.EUnterminatedString,0,0);
 			}
@@ -8167,7 +8623,7 @@ hscript_Parser.prototype = {
 					if(this.allowJSON) b.writeByte(c); else this.invalidChar(c);
 					break;
 				case 117:
-					if(!this.allowJSON) throw this.invalidChar(c);
+					if(!this.allowJSON) throw new js__$Boot_HaxeError(this.invalidChar(c));
 					var code = null;
 					try {
 						this.incPos();
@@ -8176,6 +8632,7 @@ hscript_Parser.prototype = {
 						this.incPos();
 						code = s.readString(4);
 					} catch( e1 ) {
+						if (e1 instanceof js__$Boot_HaxeError) e1 = e1.val;
 						this.line = old;
 						this.error(hscript_Error.EUnterminatedString,0,0);
 					}
@@ -8185,7 +8642,7 @@ hscript_Parser.prototype = {
 						var i = _g++;
 						k <<= 4;
 						var $char = HxOverrides.cca(code,i);
-						switch($char) {
+						if($char != null) switch($char) {
 						case 48:case 49:case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:
 							k += $char - 48;
 							break;
@@ -8197,7 +8654,7 @@ hscript_Parser.prototype = {
 							break;
 						default:
 							this.invalidChar($char);
-						}
+						} else this.invalidChar($char);
 					}
 					if(k <= 127) b.writeByte(k); else if(k <= 2047) {
 						b.writeByte(192 | k >> 6);
@@ -8376,6 +8833,7 @@ hscript_Parser.prototype = {
 				}
 				this["char"] = $char;
 			} catch( e ) {
+				if (e instanceof js__$Boot_HaxeError) e = e.val;
 			}
 			return this.token();
 		}
@@ -8393,6 +8851,7 @@ hscript_Parser.prototype = {
 					if($char == 47) break;
 				}
 			} catch( e1 ) {
+				if (e1 instanceof js__$Boot_HaxeError) e1 = e1.val;
 				this.line = old;
 				this.error(hscript_Error.EUnterminatedComment,0,0);
 			}
@@ -8453,6 +8912,18 @@ hscript_Parser.prototype = {
 	}
 	,__class__: hscript_Parser
 };
+var js__$Boot_HaxeError = function(val) {
+	Error.call(this);
+	this.val = val;
+	this.message = String(val);
+	if(Error.captureStackTrace) Error.captureStackTrace(this,js__$Boot_HaxeError);
+};
+$hxClasses["js._Boot.HaxeError"] = js__$Boot_HaxeError;
+js__$Boot_HaxeError.__name__ = true;
+js__$Boot_HaxeError.__super__ = Error;
+js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
+	__class__: js__$Boot_HaxeError
+});
 var js_Boot = function() { };
 $hxClasses["js.Boot"] = js_Boot;
 js_Boot.__name__ = true;
@@ -8482,7 +8953,13 @@ js_Boot.isEnum = function(e) {
 	return e.__ename__;
 };
 js_Boot.getClass = function(o) {
-	if(Std["is"](o,Array)) return Array; else return o.__class__;
+	if(Std["is"](o,Array)) return Array; else {
+		var cl = o.__class__;
+		if(cl != null) return cl;
+		var name = js_Boot.__nativeClassName(o);
+		if(name != null) return js_Boot.__resolveNativeClass(name);
+		return null;
+	}
 };
 js_Boot.__string_rec = function(o,s) {
 	if(o == null) return "null";
@@ -8494,18 +8971,18 @@ js_Boot.__string_rec = function(o,s) {
 		if(o instanceof Array) {
 			if(o.__enum__) {
 				if(o.length == 2) return o[0];
-				var str = o[0] + "(";
+				var str2 = o[0] + "(";
 				s += "\t";
 				var _g1 = 2;
 				var _g = o.length;
 				while(_g1 < _g) {
-					var i = _g1++;
-					if(i != 2) str += "," + js_Boot.__string_rec(o[i],s); else str += js_Boot.__string_rec(o[i],s);
+					var i1 = _g1++;
+					if(i1 != 2) str2 += "," + js_Boot.__string_rec(o[i1],s); else str2 += js_Boot.__string_rec(o[i1],s);
 				}
-				return str + ")";
+				return str2 + ")";
 			}
 			var l = o.length;
-			var i1;
+			var i;
 			var str1 = "[";
 			s += "\t";
 			var _g2 = 0;
@@ -8520,14 +8997,15 @@ js_Boot.__string_rec = function(o,s) {
 		try {
 			tostr = o.toString;
 		} catch( e ) {
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
 			return "???";
 		}
-		if(tostr != null && tostr != Object.toString) {
+		if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
 			var s2 = o.toString();
 			if(s2 != "[object Object]") return s2;
 		}
 		var k = null;
-		var str2 = "{\n";
+		var str = "{\n";
 		s += "\t";
 		var hasp = o.hasOwnProperty != null;
 		for( var k in o ) {
@@ -8537,12 +9015,12 @@ js_Boot.__string_rec = function(o,s) {
 		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
 			continue;
 		}
-		if(str2.length != 2) str2 += ", \n";
-		str2 += s + k + " : " + js_Boot.__string_rec(o[k],s);
+		if(str.length != 2) str += ", \n";
+		str += s + k + " : " + js_Boot.__string_rec(o[k],s);
 		}
 		s = s.substring(1);
-		str2 += "\n" + s + "}";
-		return str2;
+		str += "\n" + s + "}";
+		return str;
 	case "function":
 		return "<function>";
 	case "string":
@@ -8586,6 +9064,8 @@ js_Boot.__instanceof = function(o,cl) {
 			if(typeof(cl) == "function") {
 				if(o instanceof cl) return true;
 				if(js_Boot.__interfLoop(js_Boot.getClass(o),cl)) return true;
+			} else if(typeof(cl) == "object" && js_Boot.__isNativeObj(cl)) {
+				if(o instanceof cl) return true;
 			}
 		} else return false;
 		if(cl == Class && o.__name__ != null) return true;
@@ -8594,7 +9074,18 @@ js_Boot.__instanceof = function(o,cl) {
 	}
 };
 js_Boot.__cast = function(o,t) {
-	if(js_Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
+	if(js_Boot.__instanceof(o,t)) return o; else throw new js__$Boot_HaxeError("Cannot cast " + Std.string(o) + " to " + Std.string(t));
+};
+js_Boot.__nativeClassName = function(o) {
+	var name = js_Boot.__toStr.call(o).slice(8,-1);
+	if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") return null;
+	return name;
+};
+js_Boot.__isNativeObj = function(o) {
+	return js_Boot.__nativeClassName(o) != null;
+};
+js_Boot.__resolveNativeClass = function(name) {
+	return (Function("return typeof " + name + " != \"undefined\" ? " + name + " : null"))();
 };
 var js_html__$CanvasElement_CanvasUtil = function() { };
 $hxClasses["js.html._CanvasElement.CanvasUtil"] = js_html__$CanvasElement_CanvasUtil;
@@ -8609,6 +9100,191 @@ js_html__$CanvasElement_CanvasUtil.getContextWebGL = function(canvas,attribs) {
 		if(ctx != null) return ctx;
 	}
 	return null;
+};
+var js_html_compat_ArrayBuffer = function(a) {
+	if(Std["is"](a,Array)) {
+		this.a = a;
+		this.byteLength = a.length;
+	} else {
+		var len = a;
+		this.a = [];
+		var _g = 0;
+		while(_g < len) {
+			var i = _g++;
+			this.a[i] = 0;
+		}
+		this.byteLength = len;
+	}
+};
+$hxClasses["js.html.compat.ArrayBuffer"] = js_html_compat_ArrayBuffer;
+js_html_compat_ArrayBuffer.__name__ = true;
+js_html_compat_ArrayBuffer.sliceImpl = function(begin,end) {
+	var u = new Uint8Array(this,begin,end == null?null:end - begin);
+	var result = new ArrayBuffer(u.byteLength);
+	var resultArray = new Uint8Array(result);
+	resultArray.set(u);
+	return result;
+};
+js_html_compat_ArrayBuffer.prototype = {
+	slice: function(begin,end) {
+		return new js_html_compat_ArrayBuffer(this.a.slice(begin,end));
+	}
+	,__class__: js_html_compat_ArrayBuffer
+};
+var js_html_compat_DataView = function(buffer,byteOffset,byteLength) {
+	this.buf = buffer;
+	if(byteOffset == null) this.offset = 0; else this.offset = byteOffset;
+	if(byteLength == null) this.length = buffer.byteLength - this.offset; else this.length = byteLength;
+	if(this.offset < 0 || this.length < 0 || this.offset + this.length > buffer.byteLength) throw new js__$Boot_HaxeError(haxe_io_Error.OutsideBounds);
+};
+$hxClasses["js.html.compat.DataView"] = js_html_compat_DataView;
+js_html_compat_DataView.__name__ = true;
+js_html_compat_DataView.prototype = {
+	getInt8: function(byteOffset) {
+		var v = this.buf.a[this.offset + byteOffset];
+		if(v >= 128) return v - 256; else return v;
+	}
+	,getUint8: function(byteOffset) {
+		return this.buf.a[this.offset + byteOffset];
+	}
+	,getInt16: function(byteOffset,littleEndian) {
+		var v = this.getUint16(byteOffset,littleEndian);
+		if(v >= 32768) return v - 65536; else return v;
+	}
+	,getUint16: function(byteOffset,littleEndian) {
+		if(littleEndian) return this.buf.a[this.offset + byteOffset] | this.buf.a[this.offset + byteOffset + 1] << 8; else return this.buf.a[this.offset + byteOffset] << 8 | this.buf.a[this.offset + byteOffset + 1];
+	}
+	,getInt32: function(byteOffset,littleEndian) {
+		var p = this.offset + byteOffset;
+		var a = this.buf.a[p++];
+		var b = this.buf.a[p++];
+		var c = this.buf.a[p++];
+		var d = this.buf.a[p++];
+		if(littleEndian) return a | b << 8 | c << 16 | d << 24; else return d | c << 8 | b << 16 | a << 24;
+	}
+	,getUint32: function(byteOffset,littleEndian) {
+		var v = this.getInt32(byteOffset,littleEndian);
+		if(v < 0) return v + 4294967296.; else return v;
+	}
+	,getFloat32: function(byteOffset,littleEndian) {
+		return haxe_io_FPHelper.i32ToFloat(this.getInt32(byteOffset,littleEndian));
+	}
+	,getFloat64: function(byteOffset,littleEndian) {
+		var a = this.getInt32(byteOffset,littleEndian);
+		var b = this.getInt32(byteOffset + 4,littleEndian);
+		return haxe_io_FPHelper.i64ToDouble(littleEndian?a:b,littleEndian?b:a);
+	}
+	,setInt8: function(byteOffset,value) {
+		if(value < 0) this.buf.a[byteOffset + this.offset] = value + 128 & 255; else this.buf.a[byteOffset + this.offset] = value & 255;
+	}
+	,setUint8: function(byteOffset,value) {
+		this.buf.a[byteOffset + this.offset] = value & 255;
+	}
+	,setInt16: function(byteOffset,value,littleEndian) {
+		this.setUint16(byteOffset,value < 0?value + 65536:value,littleEndian);
+	}
+	,setUint16: function(byteOffset,value,littleEndian) {
+		var p = byteOffset + this.offset;
+		if(littleEndian) {
+			this.buf.a[p] = value & 255;
+			this.buf.a[p++] = value >> 8 & 255;
+		} else {
+			this.buf.a[p++] = value >> 8 & 255;
+			this.buf.a[p] = value & 255;
+		}
+	}
+	,setInt32: function(byteOffset,value,littleEndian) {
+		this.setUint32(byteOffset,value,littleEndian);
+	}
+	,setUint32: function(byteOffset,value,littleEndian) {
+		var p = byteOffset + this.offset;
+		if(littleEndian) {
+			this.buf.a[p++] = value & 255;
+			this.buf.a[p++] = value >> 8 & 255;
+			this.buf.a[p++] = value >> 16 & 255;
+			this.buf.a[p++] = value >>> 24;
+		} else {
+			this.buf.a[p++] = value >>> 24;
+			this.buf.a[p++] = value >> 16 & 255;
+			this.buf.a[p++] = value >> 8 & 255;
+			this.buf.a[p++] = value & 255;
+		}
+	}
+	,setFloat32: function(byteOffset,value,littleEndian) {
+		this.setUint32(byteOffset,haxe_io_FPHelper.floatToI32(value),littleEndian);
+	}
+	,setFloat64: function(byteOffset,value,littleEndian) {
+		var i64 = haxe_io_FPHelper.doubleToI64(value);
+		if(littleEndian) {
+			this.setUint32(byteOffset,i64.low);
+			this.setUint32(byteOffset,i64.high);
+		} else {
+			this.setUint32(byteOffset,i64.high);
+			this.setUint32(byteOffset,i64.low);
+		}
+	}
+	,__class__: js_html_compat_DataView
+};
+var js_html_compat_Uint8Array = function() { };
+$hxClasses["js.html.compat.Uint8Array"] = js_html_compat_Uint8Array;
+js_html_compat_Uint8Array.__name__ = true;
+js_html_compat_Uint8Array._new = function(arg1,offset,length) {
+	var arr;
+	if(typeof(arg1) == "number") {
+		arr = [];
+		var _g = 0;
+		while(_g < arg1) {
+			var i = _g++;
+			arr[i] = 0;
+		}
+		arr.byteLength = arr.length;
+		arr.byteOffset = 0;
+		arr.buffer = new js_html_compat_ArrayBuffer(arr);
+	} else if(Std["is"](arg1,js_html_compat_ArrayBuffer)) {
+		var buffer = arg1;
+		if(offset == null) offset = 0;
+		if(length == null) length = buffer.byteLength - offset;
+		if(offset == 0) arr = buffer.a; else arr = buffer.a.slice(offset,offset + length);
+		arr.byteLength = arr.length;
+		arr.byteOffset = offset;
+		arr.buffer = buffer;
+	} else if(Std["is"](arg1,Array)) {
+		arr = arg1.slice();
+		arr.byteLength = arr.length;
+		arr.byteOffset = 0;
+		arr.buffer = new js_html_compat_ArrayBuffer(arr);
+	} else throw new js__$Boot_HaxeError("TODO " + Std.string(arg1));
+	arr.subarray = js_html_compat_Uint8Array._subarray;
+	arr.set = js_html_compat_Uint8Array._set;
+	return arr;
+};
+js_html_compat_Uint8Array._set = function(arg,offset) {
+	var t = this;
+	if(Std["is"](arg.buffer,js_html_compat_ArrayBuffer)) {
+		var a = arg;
+		if(arg.byteLength + offset > t.byteLength) throw new js__$Boot_HaxeError("set() outside of range");
+		var _g1 = 0;
+		var _g = arg.byteLength;
+		while(_g1 < _g) {
+			var i = _g1++;
+			t[i + offset] = a[i];
+		}
+	} else if(Std["is"](arg,Array)) {
+		var a1 = arg;
+		if(a1.length + offset > t.byteLength) throw new js__$Boot_HaxeError("set() outside of range");
+		var _g11 = 0;
+		var _g2 = a1.length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			t[i1 + offset] = a1[i1];
+		}
+	} else throw new js__$Boot_HaxeError("TODO");
+};
+js_html_compat_Uint8Array._subarray = function(start,end) {
+	var t = this;
+	var a = js_html_compat_Uint8Array._new(t.slice(start,end));
+	a.byteOffset = start;
+	return a;
 };
 var nape_Config = function() { };
 $hxClasses["nape.Config"] = nape_Config;
@@ -8665,13 +9341,13 @@ nape_callbacks_Listener.prototype = {
 			var itype;
 			var _g = con1.itype;
 			switch(_g) {
-			case zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION:
+			case 1:
 				itype = "COLLISION";
 				break;
-			case zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR:
+			case 2:
 				itype = "SENSOR";
 				break;
-			case zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID:
+			case 4:
 				itype = "FLUID";
 				break;
 			default:
@@ -9478,7 +10154,7 @@ nape_dynamics_Arbiter.prototype = {
 		if(x == (zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS)) return nape_callbacks_PreFlag.get_ACCEPT(); else {
 			var x1 = _g;
 			switch(_g) {
-			case zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT:
+			case 1:
 				return nape_callbacks_PreFlag.get_ACCEPT_ONCE();
 			default:
 				if(x1 == (zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS)) return nape_callbacks_PreFlag.get_IGNORE(); else return nape_callbacks_PreFlag.get_IGNORE_ONCE();
@@ -12247,7 +12923,8 @@ spriter_definitions_TimelineKey.prototype = {
 	}
 	,linearKey: function(keyB,t) {
 		haxe_Log.trace("Has to be overriden",{ fileName : "TimelineKey.hx", lineNumber : 89, className : "spriter.definitions.TimelineKey", methodName : "linearKey"});
-		return null;
+		null;
+		return;
 	}
 	,angleLinear: function(angleA,angleB,spin,t) {
 		if(spin == 0) return angleA;
@@ -12346,7 +13023,7 @@ spriter_definitions_BoneTimelineKey.prototype = $extend(spriter_definitions_Spat
 		return new spriter_definitions_PivotInfo(pivotX,pivotY);
 	}
 	,linearKey: function(keyB,t) {
-		if(!Std["is"](keyB,spriter_definitions_BoneTimelineKey)) throw "keyB must be BoneTimelineKeys";
+		if(!Std["is"](keyB,spriter_definitions_BoneTimelineKey)) throw new js__$Boot_HaxeError("keyB must be BoneTimelineKeys");
 		var keyBBone;
 		keyBBone = js_Boot.__cast(keyB , spriter_definitions_BoneTimelineKey);
 		this.linearSpatialInfo(this.info,keyBBone.info,this.info.spin,t);
@@ -12358,7 +13035,7 @@ spriter_definitions_BoneTimelineKey.prototype = $extend(spriter_definitions_Spat
 	,__class__: spriter_definitions_BoneTimelineKey
 });
 var spriter_definitions_CharacterMap = function(fast) {
-	this.maps = new Array();
+	this.maps = [];
 	this.id = Std.parseInt(fast.att.resolve("id"));
 	this.name = fast.att.resolve("name");
 	var $it0 = fast.nodes.resolve("map").iterator();
@@ -12373,8 +13050,8 @@ spriter_definitions_CharacterMap.prototype = {
 	__class__: spriter_definitions_CharacterMap
 };
 var spriter_definitions_MainlineKey = function(fast) {
-	this.boneRefs = new Array();
-	this.objectRefs = new Array();
+	this.boneRefs = [];
+	this.objectRefs = [];
 	this.id = Std.parseInt(fast.att.resolve("id"));
 	if(fast.has.resolve("time")) this.time = Std.parseInt(fast.att.resolve("time")); else this.time = 0;
 	var $it0 = fast.nodes.resolve("bone_ref").iterator();
@@ -12444,7 +13121,7 @@ spriter_definitions_ObjectTimelineKey.prototype = $extend(spriter_definitions_Sp
 		return new spriter_definitions_PivotInfo(paintPivotX,paintPivotY);
 	}
 	,linearKey: function(keyB,t) {
-		if(!Std["is"](keyB,spriter_definitions_ObjectTimelineKey)) throw "keyB must be ObjectTimelineKey";
+		if(!Std["is"](keyB,spriter_definitions_ObjectTimelineKey)) throw new js__$Boot_HaxeError("keyB must be ObjectTimelineKey");
 		var keyBSprite;
 		keyBSprite = js_Boot.__cast(keyB , spriter_definitions_ObjectTimelineKey);
 		this.linearSpatialInfo(this.info,keyBSprite.info,this.info.spin,t);
@@ -12501,10 +13178,13 @@ spriter_definitions_Ref.prototype = {
 };
 var spriter_definitions_MetaDispatch = $hxClasses["spriter.definitions.MetaDispatch"] = { __ename__ : true, __constructs__ : ["ONCE","ONCE_PER_LOOP","ALWAYS"] };
 spriter_definitions_MetaDispatch.ONCE = ["ONCE",0];
+spriter_definitions_MetaDispatch.ONCE.toString = $estr;
 spriter_definitions_MetaDispatch.ONCE.__enum__ = spriter_definitions_MetaDispatch;
 spriter_definitions_MetaDispatch.ONCE_PER_LOOP = ["ONCE_PER_LOOP",1];
+spriter_definitions_MetaDispatch.ONCE_PER_LOOP.toString = $estr;
 spriter_definitions_MetaDispatch.ONCE_PER_LOOP.__enum__ = spriter_definitions_MetaDispatch;
 spriter_definitions_MetaDispatch.ALWAYS = ["ALWAYS",2];
+spriter_definitions_MetaDispatch.ALWAYS.toString = $estr;
 spriter_definitions_MetaDispatch.ALWAYS.__enum__ = spriter_definitions_MetaDispatch;
 var spriter_interfaces_IScml = function() { };
 $hxClasses["spriter.interfaces.IScml"] = spriter_interfaces_IScml;
@@ -12518,7 +13198,7 @@ var spriter_definitions_ScmlObject = function(source) {
 	this.currentAnimation = "";
 	this.currentEntity = "";
 	if(source != null) {
-		this.folders = new Array();
+		this.folders = [];
 		this.entities = new haxe_ds_StringMap();
 		var fast = new haxe_xml_Fast(source.firstElement());
 		if(fast.att.resolve("scml_version") != "1.0") haxe_Log.trace("Warning, unsupported format.",{ fileName : "ScmlObject.hx", lineNumber : 62, className : "spriter.definitions.ScmlObject", methodName : "new"});
@@ -12580,7 +13260,7 @@ spriter_definitions_ScmlObject.prototype = {
 		currentAnim.setCurrentTime(newTime,library,this,currentEnt);
 	}
 	,copyFolders: function() {
-		var newFolders = new Array();
+		var newFolders = [];
 		var _g1 = 0;
 		var _g = this.folders.length;
 		while(_g1 < _g) {
@@ -12674,13 +13354,15 @@ spriter_definitions_SpriteTimelineKey.prototype = $extend(spriter_definitions_Ob
 });
 var spriter_definitions_LoopType = $hxClasses["spriter.definitions.LoopType"] = { __ename__ : true, __constructs__ : ["LOOPING","NO_LOOPING"] };
 spriter_definitions_LoopType.LOOPING = ["LOOPING",0];
+spriter_definitions_LoopType.LOOPING.toString = $estr;
 spriter_definitions_LoopType.LOOPING.__enum__ = spriter_definitions_LoopType;
 spriter_definitions_LoopType.NO_LOOPING = ["NO_LOOPING",1];
+spriter_definitions_LoopType.NO_LOOPING.toString = $estr;
 spriter_definitions_LoopType.NO_LOOPING.__enum__ = spriter_definitions_LoopType;
 var spriter_definitions_SpriterAnimation = function(fast) {
 	this.loop = 0;
-	this.mainlineKeys = new Array();
-	this.timelines = new Array();
+	this.mainlineKeys = [];
+	this.timelines = [];
 	this.id = Std.parseInt(fast.att.resolve("id"));
 	this.name = fast.att.resolve("name");
 	this.length = Std.parseInt(fast.att.resolve("length"));
@@ -12741,7 +13423,7 @@ spriter_definitions_SpriterAnimation.prototype = {
 		}
 	}
 	,updateCharacter: function(mainKey,newTime,library,root,currentEntity) {
-		var transformedBoneKeys = new Array();
+		var transformedBoneKeys = [];
 		var currentKey;
 		var currentRef;
 		var spatialInfo;
@@ -12885,7 +13567,7 @@ spriter_definitions_SpriterBox.prototype = {
 var spriter_definitions_SpriterEntity = function(fast) {
 	this.characterMaps = new haxe_ds_StringMap();
 	this.animations = new haxe_ds_StringMap();
-	this.variables = new Array();
+	this.variables = [];
 	this.boxes_info = new haxe_ds_StringMap();
 	this.id = Std.parseInt(fast.att.resolve("id"));
 	this.name = fast.att.resolve("name");
@@ -12961,7 +13643,7 @@ spriter_definitions_SpriterFile.prototype = {
 };
 var spriter_definitions_SpriterFolder = function(fast) {
 	this.name = "";
-	this.files = new Array();
+	this.files = [];
 	if(fast != null) {
 		this.id = Std.parseInt(fast.att.resolve("id"));
 		if(fast.hasNode.resolve("name")) this.name = fast.att.resolve("name");
@@ -12991,21 +13673,28 @@ spriter_definitions_SpriterFolder.prototype = {
 };
 var spriter_definitions_ObjectType = $hxClasses["spriter.definitions.ObjectType"] = { __ename__ : true, __constructs__ : ["SPRITE","BONE","BOX","POINT","SOUND","ENTITY","VARIABLE"] };
 spriter_definitions_ObjectType.SPRITE = ["SPRITE",0];
+spriter_definitions_ObjectType.SPRITE.toString = $estr;
 spriter_definitions_ObjectType.SPRITE.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.BONE = ["BONE",1];
+spriter_definitions_ObjectType.BONE.toString = $estr;
 spriter_definitions_ObjectType.BONE.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.BOX = ["BOX",2];
+spriter_definitions_ObjectType.BOX.toString = $estr;
 spriter_definitions_ObjectType.BOX.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.POINT = ["POINT",3];
+spriter_definitions_ObjectType.POINT.toString = $estr;
 spriter_definitions_ObjectType.POINT.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.SOUND = ["SOUND",4];
+spriter_definitions_ObjectType.SOUND.toString = $estr;
 spriter_definitions_ObjectType.SOUND.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.ENTITY = ["ENTITY",5];
+spriter_definitions_ObjectType.ENTITY.toString = $estr;
 spriter_definitions_ObjectType.ENTITY.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.VARIABLE = ["VARIABLE",6];
+spriter_definitions_ObjectType.VARIABLE.toString = $estr;
 spriter_definitions_ObjectType.VARIABLE.__enum__ = spriter_definitions_ObjectType;
 var spriter_definitions_SpriterTimeline = function(fast) {
-	this.keys = new Array();
+	this.keys = [];
 	this.id = Std.parseInt(fast.att.resolve("id"));
 	if(fast.has.resolve("name")) this.name = fast.att.resolve("name"); else this.name = "";
 	if(fast.has.resolve("object_type")) this.objectType = Type.createEnum(spriter_definitions_ObjectType,fast.att.resolve("object_type").toUpperCase()); else this.objectType = spriter_definitions_ObjectType.SPRITE;
@@ -13081,12 +13770,16 @@ spriter_definitions_TaglineKey.prototype = {
 };
 var spriter_definitions_CurveType = $hxClasses["spriter.definitions.CurveType"] = { __ename__ : true, __constructs__ : ["INSTANT","LINEAR","QUADRATIC","CUBIC"] };
 spriter_definitions_CurveType.INSTANT = ["INSTANT",0];
+spriter_definitions_CurveType.INSTANT.toString = $estr;
 spriter_definitions_CurveType.INSTANT.__enum__ = spriter_definitions_CurveType;
 spriter_definitions_CurveType.LINEAR = ["LINEAR",1];
+spriter_definitions_CurveType.LINEAR.toString = $estr;
 spriter_definitions_CurveType.LINEAR.__enum__ = spriter_definitions_CurveType;
 spriter_definitions_CurveType.QUADRATIC = ["QUADRATIC",2];
+spriter_definitions_CurveType.QUADRATIC.toString = $estr;
 spriter_definitions_CurveType.QUADRATIC.__enum__ = spriter_definitions_CurveType;
 spriter_definitions_CurveType.CUBIC = ["CUBIC",3];
+spriter_definitions_CurveType.CUBIC.toString = $estr;
 spriter_definitions_CurveType.CUBIC.__enum__ = spriter_definitions_CurveType;
 var spriter_definitions_Varline = function(fast) {
 	if(fast != null) {
@@ -13155,20 +13848,25 @@ spriter_engine_Spriter.prototype = {
 			if(endAnimCallback != null) {
 				this.scml.endAnimCallback = (function(f,a1,a2,a3) {
 					return function() {
-						return f(a1,a2,a3);
+						f(a1,a2,a3);
 					};
 				})(endAnimCallback,this,this.scml.currentEntity,this.scml.currentAnimation);
 				this.scml.endAnimRemoval = removeCallback;
 			}
 			return true;
-		} else if(this.scml.entities.get(this.scml.currentEntity).animations.exists(name)) {
+		} else if((function($this) {
+			var $r;
+			var this1 = $this.scml.entities.get($this.scml.currentEntity).animations;
+			$r = this1.exists(name);
+			return $r;
+		}(this))) {
 			if(this.paused) this.paused = false;
 			this.resetTime();
 			this.scml.currentAnimation = name;
 			if(endAnimCallback != null) {
 				this.scml.endAnimCallback = (function(f1,a11,a21,a31) {
 					return function() {
-						return f1(a11,a21,a31);
+						f1(a11,a21,a31);
 					};
 				})(endAnimCallback,this,this.scml.currentEntity,name);
 				this.scml.endAnimRemoval = removeCallback;
@@ -13220,7 +13918,7 @@ $hxClasses["spriter.library.AbstractLibrary"] = spriter_library_AbstractLibrary;
 spriter_library_AbstractLibrary.__name__ = true;
 spriter_library_AbstractLibrary.prototype = {
 	addGraphic: function(group,timeline,key,name,info,pivots) {
-		throw "must be overrided";
+		throw new js__$Boot_HaxeError("must be overrided");
 	}
 	,compute: function(info,pivots,width,height) {
 		var degreesUnder360 = spriter_util_SpriterUtil.under360(info.angle);
@@ -13412,6 +14110,7 @@ tools_spark_Main._getSkcUrl = function() {
 		var l_skcUrl = flambe_System.get_external().call("getMainSparkClientUrl");
 		if(l_skcUrl.length == 0) return "main.skc"; else return l_skcUrl;
 	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
 		return "main.skc";
 	}
 };
@@ -13498,8 +14197,8 @@ $hxClasses["tools.spark.framework.ModuleManager"] = tools_spark_framework_Module
 tools_spark_framework_ModuleManager.__name__ = true;
 tools_spark_framework_ModuleManager.init = function() {
 	tools_spark_framework_ModuleManager._moduleStates = new haxe_ds_StringMap();
-	tools_spark_framework_ModuleManager._modulesLoadQueue = new Array();
-	tools_spark_framework_ModuleManager._modulesLoadQueueBytes = new Array();
+	tools_spark_framework_ModuleManager._modulesLoadQueue = [];
+	tools_spark_framework_ModuleManager._modulesLoadQueueBytes = [];
 	tools_spark_framework_ModuleManager._loadingBatch = false;
 	tools_spark_framework_Assets.successSignal.connect(tools_spark_framework_ModuleManager._onLoaderSuccess);
 	tools_spark_framework_Assets.errorSignal.connect(tools_spark_framework_ModuleManager._onLoaderError);
@@ -13585,7 +14284,12 @@ tools_spark_framework_ModuleManager._loadModule = function(p_moduleName) {
 };
 tools_spark_framework_ModuleManager._loadAssetsOfModule = function(p_moduleName) {
 	var l_bytes = 0;
-	var $it0 = tools_spark_framework_Project.modules.get(p_moduleName).assets.iterator();
+	var $it0 = (function($this) {
+		var $r;
+		var this1 = tools_spark_framework_Project.modules.get(p_moduleName).assets;
+		$r = this1.iterator();
+		return $r;
+	}(this));
 	while( $it0.hasNext() ) {
 		var asset = $it0.next();
 		l_bytes += Std.parseInt(asset.bytes);
@@ -13601,7 +14305,12 @@ tools_spark_framework_ModuleManager._startLoadBatch = function() {
 	if(tools_spark_framework_ModuleManager._modulesLoadQueue.length > 0) {
 		var l_moduleName = tools_spark_framework_ModuleManager._modulesLoadQueue[0];
 		tools_spark_framework_Assets.initiateBatch();
-		var $it0 = tools_spark_framework_Project.modules.get(l_moduleName).assets.iterator();
+		var $it0 = (function($this) {
+			var $r;
+			var this1 = tools_spark_framework_Project.modules.get(l_moduleName).assets;
+			$r = this1.iterator();
+			return $r;
+		}(this));
 		while( $it0.hasNext() ) {
 			var asset = $it0.next();
 			tools_spark_framework_Assets.addFile(tools_spark_framework_Project.getPath(asset.location,asset.type) + asset.url,asset.id,asset.forceLoadAsData == "true");
@@ -13614,7 +14323,7 @@ var tools_spark_framework_Project = function() { };
 $hxClasses["tools.spark.framework.Project"] = tools_spark_framework_Project;
 tools_spark_framework_Project.__name__ = true;
 tools_spark_framework_Project.init = function() {
-	tools_spark_framework_Project.executeModules = new Array();
+	tools_spark_framework_Project.executeModules = [];
 	tools_spark_framework_Project.sliced = new haxe_ds_EnumValueMap();
 	tools_spark_framework_Project.paths = new haxe_ds_StringMap();
 	tools_spark_framework_Project.modules = new haxe_ds_StringMap();
@@ -13675,14 +14384,19 @@ tools_spark_framework_assets_Asset.prototype = {
 };
 var tools_spark_framework_assets_EModuleState = $hxClasses["tools.spark.framework.assets.EModuleState"] = { __ename__ : true, __constructs__ : ["NOT_LOADED","LOADING","LOADED","RUNNING","PAUSED"] };
 tools_spark_framework_assets_EModuleState.NOT_LOADED = ["NOT_LOADED",0];
+tools_spark_framework_assets_EModuleState.NOT_LOADED.toString = $estr;
 tools_spark_framework_assets_EModuleState.NOT_LOADED.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.LOADING = ["LOADING",1];
+tools_spark_framework_assets_EModuleState.LOADING.toString = $estr;
 tools_spark_framework_assets_EModuleState.LOADING.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.LOADED = ["LOADED",2];
+tools_spark_framework_assets_EModuleState.LOADED.toString = $estr;
 tools_spark_framework_assets_EModuleState.LOADED.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.RUNNING = ["RUNNING",3];
+tools_spark_framework_assets_EModuleState.RUNNING.toString = $estr;
 tools_spark_framework_assets_EModuleState.RUNNING.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.PAUSED = ["PAUSED",4];
+tools_spark_framework_assets_EModuleState.PAUSED.toString = $estr;
 tools_spark_framework_assets_EModuleState.PAUSED.__enum__ = tools_spark_framework_assets_EModuleState;
 var tools_spark_framework_assets_FlambeLoader = function() {
 	this._init();
@@ -13743,8 +14457,10 @@ tools_spark_framework_assets_FlambeLoader.prototype = {
 	}
 	,_onPromiseSuccess: function(p_assettPack) {
 		this._disposePromiseSignals();
-		this._batchLoadToAssetPack.set(this._manifest,p_assettPack);
-		p_assettPack;
+		{
+			this._batchLoadToAssetPack.set(this._manifest,p_assettPack);
+			p_assettPack;
+		}
 		this.successSignal.emit();
 	}
 	,_onPromiseError: function(p_error) {
@@ -13769,7 +14485,7 @@ $hxClasses["tools.spark.framework.assets.Module"] = tools_spark_framework_assets
 tools_spark_framework_assets_Module.__name__ = true;
 tools_spark_framework_assets_Module.prototype = {
 	_init: function() {
-		this.requiresModules = new Array();
+		this.requiresModules = [];
 		this.assets = new haxe_ds_StringMap();
 	}
 	,__class__: tools_spark_framework_assets_Module
@@ -13796,6 +14512,7 @@ tools_spark_framework_config_Config.prototype = {
 		try {
 			l_configNode = Xml.parse(this._configFile.toString());
 		} catch( err ) {
+			if (err instanceof js__$Boot_HaxeError) err = err.val;
 			tools_spark_framework_Console.error(Std.string(err));
 			return false;
 		}
@@ -13837,48 +14554,90 @@ tools_spark_framework_config_Config.prototype = {
 	}
 	,_initNodeNamesMap: function() {
 		this._xmlNodeTypeToNodeName = new haxe_ds_EnumValueMap();
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.CLIENT,"Client");
-		"Client";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.SERVER,"Server");
-		"Server";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PROJECT,"Project");
-		"Project";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.SLICED,"Sliced");
-		"Sliced";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PATHS,"Paths");
-		"Paths";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.ASSETS,"Assets");
-		"Assets";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PROJECT_NAME,"Name");
-		"Name";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PROJECT_VERSION,"Version");
-		"Version";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH,"ExecuteAtLaunch");
-		"ExecuteAtLaunch";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.EXECUTE_MODULE,"ExecuteModule");
-		"ExecuteModule";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.SOUND_SERVICE,"Sound");
-		"Sound";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.LOGIC_SERVICE,"Logic");
-		"Logic";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.INPUT_SERVICE,"Input");
-		"Input";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE,"Comms");
-		"Comms";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.EVENT_SERVICE,"Event");
-		"Event";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.DISPLAY_SERVICE,"Display");
-		"Display";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PATH,"Path");
-		"Path";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.MODULE,"Module");
-		"Module";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.ASSET,"Asset");
-		"Asset";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.REQUIRES,"Requires");
-		"Requires";
-		this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.REQUIRES_MODULE,"RequiresModule");
-		"RequiresModule";
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.CLIENT,"Client");
+			"Client";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.SERVER,"Server");
+			"Server";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PROJECT,"Project");
+			"Project";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.SLICED,"Sliced");
+			"Sliced";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PATHS,"Paths");
+			"Paths";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.ASSETS,"Assets");
+			"Assets";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PROJECT_NAME,"Name");
+			"Name";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PROJECT_VERSION,"Version");
+			"Version";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH,"ExecuteAtLaunch");
+			"ExecuteAtLaunch";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.EXECUTE_MODULE,"ExecuteModule");
+			"ExecuteModule";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.SOUND_SERVICE,"Sound");
+			"Sound";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.LOGIC_SERVICE,"Logic");
+			"Logic";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.INPUT_SERVICE,"Input");
+			"Input";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE,"Comms");
+			"Comms";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.EVENT_SERVICE,"Event");
+			"Event";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.DISPLAY_SERVICE,"Display");
+			"Display";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.PATH,"Path");
+			"Path";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.MODULE,"Module");
+			"Module";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.ASSET,"Asset");
+			"Asset";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.REQUIRES,"Requires");
+			"Requires";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_framework_config_ENodeType.REQUIRES_MODULE,"RequiresModule");
+			"RequiresModule";
+		}
 	}
 	,_initNodeTypesMap: function() {
 		this._xmlNodeNameToNodeType = new haxe_ds_StringMap();
@@ -14048,8 +14807,10 @@ tools_spark_framework_config_ConfigInstantiator.prototype = {
 		while(l_assetChildren.hasNext()) {
 			var w_assetNode = l_assetChildren.next();
 			var w_asset = this._instantiateAsset(w_assetNode);
-			l_module.assets.set(w_asset.id,w_asset);
-			w_asset;
+			{
+				l_module.assets.set(w_asset.id,w_asset);
+				w_asset;
+			}
 		}
 		return l_module;
 	}
@@ -14158,6 +14919,7 @@ tools_spark_framework_config_ConfigValidator.prototype = {
 			haxe_xml_Check.checkNode(p_configNode,this._xmlNodeTypeToNodeRule.get(p_nodeType));
 			return true;
 		} catch( m ) {
+			if (m instanceof js__$Boot_HaxeError) m = m.val;
 			if( js_Boot.__instanceof(m,String) ) {
 				tools_spark_framework_Console.error(m);
 				return false;
@@ -14259,46 +15021,67 @@ tools_spark_framework_config_ConfigValidator.prototype = {
 };
 var tools_spark_framework_config_ENodeType = $hxClasses["tools.spark.framework.config.ENodeType"] = { __ename__ : true, __constructs__ : ["CLIENT","SERVER","PROJECT","SLICED","PATHS","ASSETS","PROJECT_NAME","PROJECT_VERSION","EXECUTE_AT_LAUNCH","EXECUTE_MODULE","SOUND_SERVICE","LOGIC_SERVICE","INPUT_SERVICE","COMMUNICATIONS_SERVICE","EVENT_SERVICE","DISPLAY_SERVICE","PATH","MODULE","ASSET","REQUIRES","REQUIRES_MODULE"] };
 tools_spark_framework_config_ENodeType.CLIENT = ["CLIENT",0];
+tools_spark_framework_config_ENodeType.CLIENT.toString = $estr;
 tools_spark_framework_config_ENodeType.CLIENT.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.SERVER = ["SERVER",1];
+tools_spark_framework_config_ENodeType.SERVER.toString = $estr;
 tools_spark_framework_config_ENodeType.SERVER.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PROJECT = ["PROJECT",2];
+tools_spark_framework_config_ENodeType.PROJECT.toString = $estr;
 tools_spark_framework_config_ENodeType.PROJECT.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.SLICED = ["SLICED",3];
+tools_spark_framework_config_ENodeType.SLICED.toString = $estr;
 tools_spark_framework_config_ENodeType.SLICED.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PATHS = ["PATHS",4];
+tools_spark_framework_config_ENodeType.PATHS.toString = $estr;
 tools_spark_framework_config_ENodeType.PATHS.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.ASSETS = ["ASSETS",5];
+tools_spark_framework_config_ENodeType.ASSETS.toString = $estr;
 tools_spark_framework_config_ENodeType.ASSETS.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PROJECT_NAME = ["PROJECT_NAME",6];
+tools_spark_framework_config_ENodeType.PROJECT_NAME.toString = $estr;
 tools_spark_framework_config_ENodeType.PROJECT_NAME.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PROJECT_VERSION = ["PROJECT_VERSION",7];
+tools_spark_framework_config_ENodeType.PROJECT_VERSION.toString = $estr;
 tools_spark_framework_config_ENodeType.PROJECT_VERSION.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH = ["EXECUTE_AT_LAUNCH",8];
+tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH.toString = $estr;
 tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.EXECUTE_MODULE = ["EXECUTE_MODULE",9];
+tools_spark_framework_config_ENodeType.EXECUTE_MODULE.toString = $estr;
 tools_spark_framework_config_ENodeType.EXECUTE_MODULE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.SOUND_SERVICE = ["SOUND_SERVICE",10];
+tools_spark_framework_config_ENodeType.SOUND_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.SOUND_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.LOGIC_SERVICE = ["LOGIC_SERVICE",11];
+tools_spark_framework_config_ENodeType.LOGIC_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.LOGIC_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.INPUT_SERVICE = ["INPUT_SERVICE",12];
+tools_spark_framework_config_ENodeType.INPUT_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.INPUT_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE = ["COMMUNICATIONS_SERVICE",13];
+tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.EVENT_SERVICE = ["EVENT_SERVICE",14];
+tools_spark_framework_config_ENodeType.EVENT_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.EVENT_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.DISPLAY_SERVICE = ["DISPLAY_SERVICE",15];
+tools_spark_framework_config_ENodeType.DISPLAY_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.DISPLAY_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PATH = ["PATH",16];
+tools_spark_framework_config_ENodeType.PATH.toString = $estr;
 tools_spark_framework_config_ENodeType.PATH.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.MODULE = ["MODULE",17];
+tools_spark_framework_config_ENodeType.MODULE.toString = $estr;
 tools_spark_framework_config_ENodeType.MODULE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.ASSET = ["ASSET",18];
+tools_spark_framework_config_ENodeType.ASSET.toString = $estr;
 tools_spark_framework_config_ENodeType.ASSET.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.REQUIRES = ["REQUIRES",19];
+tools_spark_framework_config_ENodeType.REQUIRES.toString = $estr;
 tools_spark_framework_config_ENodeType.REQUIRES.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.REQUIRES_MODULE = ["REQUIRES_MODULE",20];
+tools_spark_framework_config_ENodeType.REQUIRES_MODULE.toString = $estr;
 tools_spark_framework_config_ENodeType.REQUIRES_MODULE.__enum__ = tools_spark_framework_config_ENodeType;
 var tools_spark_framework_space2_$5D_interfaces_IBase2_$5D = function() { };
 $hxClasses["tools.spark.framework.space2_5D.interfaces.IBase2_5D"] = tools_spark_framework_space2_$5D_interfaces_IBase2_$5D;
@@ -14351,8 +15134,10 @@ tools_spark_framework_space2_$5D_core_ACamera2_$5D.prototype = $extend(tools_spa
 		this._attachedToViews = new haxe_ds_ObjectMap();
 	}
 	,attachToView: function(p_view2_5D) {
-		this._attachedToViews.set(p_view2_5D,p_view2_5D);
-		p_view2_5D;
+		{
+			this._attachedToViews.set(p_view2_5D,p_view2_5D);
+			p_view2_5D;
+		}
 		return null;
 	}
 	,__class__: tools_spark_framework_space2_$5D_core_ACamera2_$5D
@@ -14372,7 +15157,7 @@ tools_spark_framework_space2_$5D_interfaces_IObjectContainer2_$5D.__name__ = tru
 tools_spark_framework_space2_$5D_interfaces_IObjectContainer2_$5D.__interfaces__ = [tools_spark_framework_space2_$5D_interfaces_IObject2_$5D];
 var tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D = function(p_gameEntity) {
 	tools_spark_framework_space2_$5D_core_AObject2_$5D.call(this,p_gameEntity);
-	this.children = new Array();
+	this.children = [];
 };
 $hxClasses["tools.spark.framework.space2_5D.core.AObjectContainer2_5D"] = tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D;
 tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.__name__ = true;
@@ -14433,7 +15218,7 @@ tools_spark_framework_space2_$5D_core_AInstantiable2_$5D.prototype = $extend(too
 		} else this.groupInstances.get(p_view2_5D).update();
 	}
 	,_updateStateOfInstance: function(p_state,p_view2_5D) {
-		if(this._updateStateFunctions.get(p_state) != null) (this._updateStateFunctions.get(p_state))(this.gameEntity.getState(p_state),p_view2_5D); else tools_spark_framework_Console.warn("State " + p_state + " does not have a function handler! Ignoring :(");
+		if(this._updateStateFunctions.get(p_state) != null) this._updateStateFunctions.get(p_state)(this.gameEntity.getState(p_state),p_view2_5D); else tools_spark_framework_Console.warn("State " + p_state + " does not have a function handler! Ignoring :(");
 	}
 	,_createChildrenOfInstance: function(p_view2_5D) {
 		var _g = 0;
@@ -14501,8 +15286,9 @@ tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype = $extend(tools_spa
 	}
 	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
 		if(p_childEntity.gameEntity.getState("layoutable") == true) {
+			var _this = this.groupInstances.get(p_view2_5D).children;
 			var x = p_childEntity.groupInstances.get(p_view2_5D);
-			HxOverrides.remove(this.groupInstances.get(p_view2_5D).children,x);
+			HxOverrides.remove(_this,x);
 		}
 	}
 	,__class__: tools_spark_framework_space2_$5D_core_AEntity2_$5D
@@ -14625,11 +15411,11 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		return tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype.createInstance.call(this,p_view2_5D);
 	}
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
-		this._instances.get(p_view2_5D).appendChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , Element));
+		this._instances.get(p_view2_5D).appendChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , HTMLElement));
 		tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
 	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
-		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , Element));
+		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , HTMLElement));
 		tools_spark_framework_space2_$5D_core_AEntity2_$5D.prototype._removeChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
 	,update: function(p_view2_5D) {
@@ -14682,7 +15468,9 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		var l_instance = this._instances.get(p_view2_5D);
 		if(p_src != "Undefined") {
 			if(p_src.indexOf("assets/") == -1) {
-				var l_asset = tools_spark_framework_Project.modules.get("DoNotLoad").assets.get(p_src);
+				var l_asset;
+				var this1 = tools_spark_framework_Project.modules.get("DoNotLoad").assets;
+				l_asset = this1.get(p_src);
 				l_instance.src = tools_spark_framework_Project.getPath(l_asset.location,l_asset.type) + l_asset.url;
 			} else l_instance.src = "../" + p_src;
 		}
@@ -14877,7 +15665,7 @@ tools_spark_framework_dom2_$5D_DomScene2_$5D.prototype = $extend(tools_spark_fra
 		}
 	}
 	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
-		this._instances.get(p_view2_5D).appendChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , Element));
+		this._instances.get(p_view2_5D).appendChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , HTMLElement));
 		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
 	,__class__: tools_spark_framework_dom2_$5D_DomScene2_$5D
@@ -15131,8 +15919,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			l_mesh = new flambe_display_ImageSprite(tools_spark_framework_Assets.getTexture(this.gameEntity.gameForm.getState(p_2DMeshImageForm)));
 			l_mesh.blendMode = flambe_display_BlendMode.Copy;
 			l_instance.add(l_mesh);
-			this._instancesMesh.set(p_view2_5D,l_mesh);
-			l_mesh;
+			{
+				this._instancesMesh.set(p_view2_5D,l_mesh);
+				l_mesh;
+			}
 		} else l_mesh.texture = tools_spark_framework_Assets.getTexture(this.gameEntity.gameForm.getState(p_2DMeshImageForm));
 	}
 	,_update2DMeshSpriterForm: function(p_2DMeshSpriterForm,p_view2_5D) {
@@ -15147,8 +15937,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			l_mesh.blendMode = flambe_display_BlendMode.Copy;
 			l_instance.add(l_mesh);
 			l_instance.add(l_spriterMovie);
-			this._instancesMesh.set(p_view2_5D,l_mesh);
-			l_mesh;
+			{
+				this._instancesMesh.set(p_view2_5D,l_mesh);
+				l_mesh;
+			}
 		} else {
 		}
 		this._updateStateOfInstance("2DMeshSpriterAnimForm",p_view2_5D);
@@ -15163,8 +15955,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			l_mesh = new flambe_display_FillSprite(this.gameEntity.gameForm.getState(p_2DMeshFillRectForm),this.gameEntity.getState("spaceWidth"),this.gameEntity.getState("spaceHeight"));
 			l_mesh.blendMode = flambe_display_BlendMode.Copy;
 			l_instance.add(l_mesh);
-			this._instancesMesh.set(p_view2_5D,l_mesh);
-			l_mesh;
+			{
+				this._instancesMesh.set(p_view2_5D,l_mesh);
+				l_mesh;
+			}
 		} else {
 		}
 	}
@@ -15178,8 +15972,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			l_mesh = new flambe_display_Sprite();
 			l_mesh.blendMode = flambe_display_BlendMode.Copy;
 			l_instance.add(l_mesh);
-			this._instancesMesh.set(p_view2_5D,l_mesh);
-			l_mesh;
+			{
+				this._instancesMesh.set(p_view2_5D,l_mesh);
+				l_mesh;
+			}
 		} else {
 		}
 	}
@@ -15291,7 +16087,8 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 	}
 	,_updateVelocityX: function(p_newVel,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
-		var body = ((function($this) {
+		var body;
+		body = ((function($this) {
 			var $r;
 			var component = l_instance.getComponent("BodyComponent_4");
 			$r = component;
@@ -15301,7 +16098,8 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 	}
 	,_updateVelocityY: function(p_newVel,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
-		var body = ((function($this) {
+		var body;
+		body = ((function($this) {
 			var $r;
 			var component = l_instance.getComponent("BodyComponent_4");
 			$r = component;
@@ -15524,32 +16322,35 @@ tools_spark_framework_flambe2_$5D_components_SpaceComponent.prototype = $extend(
 });
 var tools_spark_framework_haxe_Filter = $hxClasses["tools.spark.framework.haxe.Filter"] = { __ename__ : true, __constructs__ : ["FInt","FBool","FEnum","FReg"] };
 tools_spark_framework_haxe_Filter.FInt = ["FInt",0];
+tools_spark_framework_haxe_Filter.FInt.toString = $estr;
 tools_spark_framework_haxe_Filter.FInt.__enum__ = tools_spark_framework_haxe_Filter;
 tools_spark_framework_haxe_Filter.FBool = ["FBool",1];
+tools_spark_framework_haxe_Filter.FBool.toString = $estr;
 tools_spark_framework_haxe_Filter.FBool.__enum__ = tools_spark_framework_haxe_Filter;
-tools_spark_framework_haxe_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = tools_spark_framework_haxe_Filter; return $x; };
-tools_spark_framework_haxe_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = tools_spark_framework_haxe_Filter; return $x; };
+tools_spark_framework_haxe_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = tools_spark_framework_haxe_Filter; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = tools_spark_framework_haxe_Filter; $x.toString = $estr; return $x; };
 var tools_spark_framework_haxe_Attrib = $hxClasses["tools.spark.framework.haxe.Attrib"] = { __ename__ : true, __constructs__ : ["Att"] };
-tools_spark_framework_haxe_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = tools_spark_framework_haxe_Attrib; return $x; };
+tools_spark_framework_haxe_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = tools_spark_framework_haxe_Attrib; $x.toString = $estr; return $x; };
 var tools_spark_framework_haxe_Rule = $hxClasses["tools.spark.framework.haxe.Rule"] = { __ename__ : true, __constructs__ : ["RNode","RData","RMulti","RList","RChoice","ROptional"] };
-tools_spark_framework_haxe_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
-tools_spark_framework_haxe_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
-tools_spark_framework_haxe_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
-tools_spark_framework_haxe_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
-tools_spark_framework_haxe_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
-tools_spark_framework_haxe_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
+tools_spark_framework_haxe_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
 var tools_spark_framework_haxe__$LooseCheck_CheckResult = $hxClasses["tools.spark.framework.haxe._LooseCheck.CheckResult"] = { __ename__ : true, __constructs__ : ["CMatch","CMissing","CExtra","CElementExpected","CDataExpected","CExtraAttrib","CMissingAttrib","CInvalidAttrib","CInvalidData","CInElement"] };
 tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch = ["CMatch",0];
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch.toString = $estr;
 tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult;
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
 var tools_spark_framework_haxe_LooseCheck = function() { };
 $hxClasses["tools.spark.framework.haxe.LooseCheck"] = tools_spark_framework_haxe_LooseCheck;
 tools_spark_framework_haxe_LooseCheck.__name__ = true;
@@ -15671,7 +16472,7 @@ tools_spark_framework_haxe_LooseCheck.check = function(x,r) {
 		return tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch;
 	case 4:
 		var choices = r[2];
-		if(choices.length == 0) throw "No choice possible";
+		if(choices.length == 0) throw new js__$Boot_HaxeError("No choice possible");
 		var _g3 = 0;
 		while(_g3 < choices.length) {
 			var c = choices[_g3];
@@ -15683,7 +16484,7 @@ tools_spark_framework_haxe_LooseCheck.check = function(x,r) {
 		var r1 = r[2];
 		return tools_spark_framework_haxe_LooseCheck.check(x,r1);
 	default:
-		throw "Unexpected " + Std.string(r);
+		throw new js__$Boot_HaxeError("Unexpected " + Std.string(r));
 	}
 };
 tools_spark_framework_haxe_LooseCheck.checkList = function(it,r) {
@@ -15810,10 +16611,10 @@ tools_spark_framework_haxe_LooseCheck.makeRule = function(r) {
 	}
 };
 tools_spark_framework_haxe_LooseCheck.makeError = function(m,path) {
-	if(path == null) path = new Array();
+	if(path == null) path = [];
 	switch(Type.enumIndex(m)) {
 	case 0:
-		throw "assert";
+		throw new js__$Boot_HaxeError("assert");
 		break;
 	case 1:
 		var r = m[2];
@@ -15856,7 +16657,7 @@ tools_spark_framework_haxe_LooseCheck.makeError = function(m,path) {
 tools_spark_framework_haxe_LooseCheck.checkNode = function(x,r) {
 	var m = tools_spark_framework_haxe_LooseCheck.checkList(HxOverrides.iter([x]),r);
 	if(m == tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch) return;
-	throw tools_spark_framework_haxe_LooseCheck.makeError(m);
+	throw new js__$Boot_HaxeError(tools_spark_framework_haxe_LooseCheck.makeError(m));
 };
 var tools_spark_framework_layout_containers_Group = function(p_layoutableEntity,p_layoutableInstanceType,p_layoutableInstance) {
 	this.layoutableEntity = p_layoutableEntity;
@@ -15868,7 +16669,7 @@ $hxClasses["tools.spark.framework.layout.containers.Group"] = tools_spark_framew
 tools_spark_framework_layout_containers_Group.__name__ = true;
 tools_spark_framework_layout_containers_Group.prototype = {
 	_init: function() {
-		this.children = new Array();
+		this.children = [];
 		this.x = this.y = this.width = this.height = 0;
 		this.visibleStartX = this.visibleStartY = 0;
 		this.visibleStartIndex = this.visibleEndIndex = this.numElementsCached = -1;
@@ -15934,10 +16735,20 @@ tools_spark_framework_layout_containers_Group.prototype = {
 			this.includeInLayout = this.layoutableEntity.getState(p_state);
 			break;
 		case "x":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.x = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f);
+				return $r;
+			}(this))) this.x = this.layoutableEntity.getState(p_state);
 			break;
 		case "y":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.y = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f1 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f1);
+				return $r;
+			}(this))) this.y = this.layoutableEntity.getState(p_state);
 			break;
 		case "width":
 			this._updateExplicitSize(this.layoutableEntity.getState(p_state),"width");
@@ -15946,22 +16757,52 @@ tools_spark_framework_layout_containers_Group.prototype = {
 			this._updateExplicitSize(this.layoutableEntity.getState(p_state),"height");
 			break;
 		case "left":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.left = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f2 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f2);
+				return $r;
+			}(this))) this.left = this.layoutableEntity.getState(p_state);
 			break;
 		case "top":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.top = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f3 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f3);
+				return $r;
+			}(this))) this.top = this.layoutableEntity.getState(p_state);
 			break;
 		case "right":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.right = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f4 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f4);
+				return $r;
+			}(this))) this.right = this.layoutableEntity.getState(p_state);
 			break;
 		case "bottom":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.bottom = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f5 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f5);
+				return $r;
+			}(this))) this.bottom = this.layoutableEntity.getState(p_state);
 			break;
 		case "horizontalCenter":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.horizontalCenter = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f6 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f6);
+				return $r;
+			}(this))) this.horizontalCenter = this.layoutableEntity.getState(p_state);
 			break;
 		case "verticalCenter":
-			if(!Math.isNaN(this.layoutableEntity.getState(p_state))) this.verticalCenter = this.layoutableEntity.getState(p_state);
+			if(!(function($this) {
+				var $r;
+				var f7 = $this.layoutableEntity.getState(p_state);
+				$r = isNaN(f7);
+				return $r;
+			}(this))) this.verticalCenter = this.layoutableEntity.getState(p_state);
 			break;
 		case "paddingLeft":
 			this.paddingLeft = this.layoutableEntity.getState(p_state);
@@ -16173,44 +17014,62 @@ tools_spark_framework_layout_helpers_SizesAndLimit.prototype = {
 };
 var tools_spark_framework_layout_interfaces_EColumnAlign = $hxClasses["tools.spark.framework.layout.interfaces.EColumnAlign"] = { __ename__ : true, __constructs__ : ["JUSTIFY_USING_GAP","JUSTIFY_USING_WIDTH","LEFT"] };
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP = ["JUSTIFY_USING_GAP",0];
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP.toString = $estr;
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH = ["JUSTIFY_USING_WIDTH",1];
+tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH.toString = $estr;
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 tools_spark_framework_layout_interfaces_EColumnAlign.LEFT = ["LEFT",2];
+tools_spark_framework_layout_interfaces_EColumnAlign.LEFT.toString = $estr;
 tools_spark_framework_layout_interfaces_EColumnAlign.LEFT.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 var tools_spark_framework_layout_interfaces_EHorizontalAlign = $hxClasses["tools.spark.framework.layout.interfaces.EHorizontalAlign"] = { __ename__ : true, __constructs__ : ["LEFT","CENTER","RIGHT","JUSTIFY","CONTENT_JUSTIFY"] };
 tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT = ["LEFT",0];
+tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CENTER = ["CENTER",1];
+tools_spark_framework_layout_interfaces_EHorizontalAlign.CENTER.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CENTER.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.RIGHT = ["RIGHT",2];
+tools_spark_framework_layout_interfaces_EHorizontalAlign.RIGHT.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.RIGHT.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY = ["JUSTIFY",3];
+tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY = ["CONTENT_JUSTIFY",4];
+tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 var tools_spark_framework_layout_interfaces_ERowAlign = $hxClasses["tools.spark.framework.layout.interfaces.ERowAlign"] = { __ename__ : true, __constructs__ : ["JUSTIFY_USING_GAP","JUSTIFY_USING_HEIGHT","TOP"] };
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP = ["JUSTIFY_USING_GAP",0];
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP.toString = $estr;
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT = ["JUSTIFY_USING_HEIGHT",1];
+tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT.toString = $estr;
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
 tools_spark_framework_layout_interfaces_ERowAlign.TOP = ["TOP",2];
+tools_spark_framework_layout_interfaces_ERowAlign.TOP.toString = $estr;
 tools_spark_framework_layout_interfaces_ERowAlign.TOP.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
 var tools_spark_framework_layout_interfaces_ETileOrientation = $hxClasses["tools.spark.framework.layout.interfaces.ETileOrientation"] = { __ename__ : true, __constructs__ : ["COLUMNS","ROWS"] };
 tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS = ["COLUMNS",0];
+tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS.toString = $estr;
 tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS.__enum__ = tools_spark_framework_layout_interfaces_ETileOrientation;
 tools_spark_framework_layout_interfaces_ETileOrientation.ROWS = ["ROWS",1];
+tools_spark_framework_layout_interfaces_ETileOrientation.ROWS.toString = $estr;
 tools_spark_framework_layout_interfaces_ETileOrientation.ROWS.__enum__ = tools_spark_framework_layout_interfaces_ETileOrientation;
 var tools_spark_framework_layout_interfaces_EVerticalAlign = $hxClasses["tools.spark.framework.layout.interfaces.EVerticalAlign"] = { __ename__ : true, __constructs__ : ["TOP","MIDDLE","BOTTOM","JUSTIFY","CONTENT_JUSTIFY"] };
 tools_spark_framework_layout_interfaces_EVerticalAlign.TOP = ["TOP",0];
+tools_spark_framework_layout_interfaces_EVerticalAlign.TOP.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.TOP.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE = ["MIDDLE",1];
+tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM = ["BOTTOM",2];
+tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY = ["JUSTIFY",3];
+tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY = ["CONTENT_JUSTIFY",4];
+tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 var tools_spark_framework_layout_layouts_ALayoutBase = function() {
 };
@@ -16388,7 +17247,7 @@ tools_spark_framework_layout_layouts_HorizontalLayout.prototype = $extend(tools_
 	,_distributeWidth: function(p_width,p_height,p_restrictedHeight) {
 		var l_spaceToDistribute = p_width;
 		var l_totalPercentWidth = 0;
-		var l_childInfoArray = new Array();
+		var l_childInfoArray = [];
 		var l_childInfo;
 		var l_newHeight;
 		var l_layoutElement;
@@ -16892,7 +17751,7 @@ tools_spark_framework_layout_layouts_VerticalLayout.prototype = $extend(tools_sp
 	,_distributeHeight: function(p_width,p_height,p_restrictedWidth) {
 		var l_spaceToDistribute = p_height;
 		var l_totalPercentHeight = 0;
-		var l_childInfoArray = new Array();
+		var l_childInfoArray = [];
 		var l_childInfo;
 		var l_layoutElement;
 		var l_rh;
@@ -17482,8 +18341,8 @@ tools_spark_sliced_services_std_display_active_$displayentity_$references_core_A
 tools_spark_sliced_services_std_display_active_$displayentity_$references_core_ActiveStageReference.__interfaces__ = [tools_spark_sliced_services_std_display_active_$displayentity_$references_interfaces_IActiveStageReference];
 tools_spark_sliced_services_std_display_active_$displayentity_$references_core_ActiveStageReference.prototype = {
 	_init: function() {
-		this.activeViewReferences = new Array();
-		this.activeStageAreaReferences = new Array();
+		this.activeViewReferences = [];
+		this.activeStageAreaReferences = [];
 		this.layoutRoot = new tools_spark_framework_layout_containers_Group(this.stageEntity,"Stage",this);
 		this.layoutManager = new tools_spark_framework_layout_managers_LayoutManager(this.layoutRoot);
 		flambe_System.get_stage().resize.connect($bind(this,this._onResize));
@@ -17550,82 +18409,158 @@ tools_spark_sliced_services_std_display_core_Display.__interfaces__ = [tools_spa
 tools_spark_sliced_services_std_display_core_Display.__super__ = tools_spark_sliced_core_AService;
 tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_spark_sliced_core_AService.prototype,{
 	_initRenderStateNames: function() {
-		this._renderStateNames.set("2DmeshType",true);
-		true;
-		this._renderStateNames.set("3DmeshType",true);
-		true;
-		this._renderStateNames.set("touchable",true);
-		true;
-		this._renderStateNames.set("2DMeshImageForm",true);
-		true;
-		this._renderStateNames.set("2DMeshSpriterForm",true);
-		true;
-		this._renderStateNames.set("2DMeshFillRectForm",true);
-		true;
-		this._renderStateNames.set("2DMeshSpriteForm",true);
-		true;
-		this._renderStateNames.set("2DMeshSpriterAnimForm",true);
-		true;
-		this._renderStateNames.set("visibility",true);
-		true;
-		this._renderStateNames.set("visible",true);
-		true;
-		this._renderStateNames.set("width",true);
-		true;
-		this._renderStateNames.set("height",true);
-		true;
-		this._renderStateNames.set("opacity",true);
-		true;
-		this._renderStateNames.set("display",true);
-		true;
-		this._renderStateNames.set("text",true);
-		true;
-		this._renderStateNames.set("fontSize",true);
-		true;
-		this._renderStateNames.set("fontWeight",true);
-		true;
-		this._renderStateNames.set("fontColor",true);
-		true;
-		this._renderStateNames.set("src",true);
-		true;
-		this._renderStateNames.set("overflow",true);
-		true;
-		this._renderStateNames.set("backgroundColor",true);
-		true;
-		this._renderStateNames.set("border",true);
-		true;
-		this._renderStateNames.set("spaceX",true);
-		true;
-		this._renderStateNames.set("spaceY",true);
-		true;
-		this._renderStateNames.set("spaceZ",true);
-		true;
-		this._renderStateNames.set("scaleX",true);
-		true;
-		this._renderStateNames.set("scaleY",true);
-		true;
-		this._renderStateNames.set("scaleZ",true);
-		true;
-		this._renderStateNames.set("velocityX",true);
-		true;
-		this._renderStateNames.set("velocityY",true);
-		true;
-		this._renderStateNames.set("spaceWidth",true);
-		true;
-		this._renderStateNames.set("spaceHeight",true);
-		true;
-		this._renderStateNames.set("stage",true);
-		true;
-		this._renderStateNames.set("view",true);
-		true;
-		this._renderStateNames.set("camera",true);
-		true;
-		this._renderStateNames.set("scene",true);
-		true;
-		this._renderStateNames.set("space",true);
-		true;
-		this._renderStateNames.set("active",true);
-		true;
+		{
+			this._renderStateNames.set("2DmeshType",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("3DmeshType",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("touchable",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("2DMeshImageForm",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("2DMeshSpriterForm",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("2DMeshFillRectForm",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("2DMeshSpriteForm",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("2DMeshSpriterAnimForm",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("visibility",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("visible",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("width",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("height",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("opacity",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("display",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("text",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("fontSize",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("fontWeight",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("fontColor",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("src",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("overflow",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("backgroundColor",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("border",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("spaceX",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("spaceY",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("spaceZ",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("scaleX",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("scaleY",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("scaleZ",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("velocityX",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("velocityY",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("spaceWidth",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("spaceHeight",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("stage",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("view",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("camera",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("scene",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("space",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("active",true);
+			true;
+		}
 	}
 	,_init: function() {
 		tools_spark_framework_Console.log("Init Display std Service...");
@@ -17824,26 +18759,31 @@ tools_spark_sliced_services_std_display_databuffer_core_DataBuffer.__name__ = tr
 tools_spark_sliced_services_std_display_databuffer_core_DataBuffer.__interfaces__ = [tools_spark_sliced_services_std_display_databuffer_interfaces_IDataBuffer];
 tools_spark_sliced_services_std_display_databuffer_core_DataBuffer.prototype = {
 	_init: function() {
-		this.dataBuffer = new Array();
+		this.dataBuffer = [];
 	}
 	,addEntry: function(p_type,p_source,p_target,p_field) {
 		this.dataBuffer.push(new tools_spark_sliced_services_std_display_databuffer_core_BufferEntry(p_type,p_source,p_target,p_field));
 	}
 	,clearBuffer: function() {
-		this.dataBuffer = new Array();
+		this.dataBuffer = [];
 	}
 	,__class__: tools_spark_sliced_services_std_display_databuffer_core_DataBuffer
 };
 var tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType = $hxClasses["tools.spark.sliced.services.std.display.databuffer.interfaces.EBufferEntryType"] = { __ename__ : true, __constructs__ : ["SET_SPACE","ADDED","REMOVED","UPDATED_STATE","UPDATED_FORM_STATE"] };
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.SET_SPACE = ["SET_SPACE",0];
+tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.SET_SPACE.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.SET_SPACE.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED = ["ADDED",1];
+tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED = ["REMOVED",2];
+tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE = ["UPDATED_STATE",3];
+tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_FORM_STATE = ["UPDATED_FORM_STATE",4];
+tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_FORM_STATE.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_FORM_STATE.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 var tools_spark_sliced_services_std_display_managers_interfaces_IActiveReferenceMediator = function() { };
 $hxClasses["tools.spark.sliced.services.std.display.managers.interfaces.IActiveReferenceMediator"] = tools_spark_sliced_services_std_display_managers_interfaces_IActiveReferenceMediator;
@@ -18610,8 +19550,8 @@ tools_spark_sliced_services_std_event_core_Event.__super__ = tools_spark_sliced_
 tools_spark_sliced_services_std_event_core_Event.prototype = $extend(tools_spark_sliced_core_AService.prototype,{
 	_init: function() {
 		tools_spark_framework_Console.log("Init Event std Service...");
-		this._NO_FILTER = new Array();
-		this._FILTER_VARIABLE_USER_ENTITY = new Array();
+		this._NO_FILTER = [];
+		this._FILTER_VARIABLE_USER_ENTITY = [];
 		this._eventTypeFilterFlags = new haxe_ds_EnumValueMap();
 		this._eventTypeFilterTriggers = new haxe_ds_EnumValueMap();
 		this._initPrefabConvertToTypeMap();
@@ -18625,7 +19565,7 @@ tools_spark_sliced_services_std_event_core_Event.prototype = $extend(tools_spark
 			var value = new haxe_ds_ObjectMap();
 			this._eventTypeFilterTriggers.set(l_eventType,value);
 		}
-		if(this._eventTypeFilterTriggers.get(l_eventType).exists(l_eventFilter) == false) this._eventTypeFilterTriggers.get(l_eventType).set(l_eventFilter,new Array());
+		if(this._eventTypeFilterTriggers.get(l_eventType).exists(l_eventFilter) == false) this._eventTypeFilterTriggers.get(l_eventType).set(l_eventFilter,[]);
 		this._eventTypeFilterTriggers.get(l_eventType).get(l_eventFilter).push(p_gameTrigger);
 		if(l_eventType == tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK || l_eventType == tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK || l_eventType == tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED || l_eventType == tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED || l_eventType == tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT) tools_spark_sliced_core_Sliced.input.pointer.registerTrigger(l_eventType,l_eventFilter);
 	}
@@ -19585,8 +20525,8 @@ tools_spark_sliced_services_std_input_devices_core_KeyboardDevice.__name__ = tru
 tools_spark_sliced_services_std_input_devices_core_KeyboardDevice.__interfaces__ = [tools_spark_sliced_services_std_input_devices_interfaces_IInputDevice];
 tools_spark_sliced_services_std_input_devices_core_KeyboardDevice.prototype = {
 	_init: function() {
-		this._keysDown = new Array();
-		this._keysUp = new Array();
+		this._keysDown = [];
+		this._keysUp = [];
 		this._keysJustPressed = new haxe_ds_EnumValueMap();
 		this._keysJustReleased = new haxe_ds_EnumValueMap();
 		flambe_System.get_keyboard().down.connect($bind(this,this._onKeyDown));
@@ -19603,14 +20543,18 @@ tools_spark_sliced_services_std_input_devices_core_KeyboardDevice.prototype = {
 		this._keysJustReleased = new haxe_ds_EnumValueMap();
 		while(this._keysDown.length > 0) {
 			var w_keyDown = this._keysDown.pop();
-			this._keysJustPressed.set(w_keyDown,true);
-			true;
+			{
+				this._keysJustPressed.set(w_keyDown,true);
+				true;
+			}
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED,w_keyDown);
 		}
 		while(this._keysUp.length > 0) {
 			var w_keyUp = this._keysUp.pop();
-			this._keysJustReleased.set(w_keyUp,true);
-			true;
+			{
+				this._keysJustReleased.set(w_keyUp,true);
+				true;
+			}
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED,w_keyUp);
 		}
 	}
@@ -19763,13 +20707,15 @@ tools_spark_sliced_services_std_logic_gde_core_GameAction.__interfaces__ = [tool
 tools_spark_sliced_services_std_logic_gde_core_GameAction.__super__ = tools_spark_sliced_services_std_logic_gde_core_AGameBase;
 tools_spark_sliced_services_std_logic_gde_core_GameAction.prototype = $extend(tools_spark_sliced_services_std_logic_gde_core_AGameBase.prototype,{
 	_init: function() {
-		this.scriptSet = new Array();
+		this.scriptSet = [];
 		this.gameStateSet = new haxe_ds_StringMap();
 	}
 	,addState: function(gameState) {
 		if(this.gameStateSet.get(gameState.id) != null) tools_spark_framework_Console.warn("A State with id " + gameState.id + " already exists in this Action.");
-		this.gameStateSet.set(gameState.id,gameState);
-		gameState;
+		{
+			this.gameStateSet.set(gameState.id,gameState);
+			gameState;
+		}
 	}
 	,doPass: function() {
 		var _g = 0;
@@ -19983,44 +20929,82 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 	}
 	,_initNodeNamesMap: function() {
 		this._xmlNodeTypeToNodeName = new haxe_ds_EnumValueMap();
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,"Action");
-		"Action";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,"Actions");
-		"Actions";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,"Entities");
-		"Entities";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,"Entity");
-		"Entity";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,"Form");
-		"Form";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,"Scripts");
-		"Scripts";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,"Script");
-		"Script";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,"Gml");
-		"Gml";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,"Triggers");
-		"Triggers";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,"Trigger");
-		"Trigger";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,"Event");
-		"Event";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,"Concurrency");
-		"Concurrency";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,"Id");
-		"Id";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,"Space");
-		"Space";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,"State");
-		"State";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,"States");
-		"States";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,"Type");
-		"Type";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,"Value");
-		"Value";
-		this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,"Extends");
-		"Extends";
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,"Action");
+			"Action";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,"Actions");
+			"Actions";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,"Entities");
+			"Entities";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,"Entity");
+			"Entity";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,"Form");
+			"Form";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,"Scripts");
+			"Scripts";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,"Script");
+			"Script";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,"Gml");
+			"Gml";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,"Triggers");
+			"Triggers";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,"Trigger");
+			"Trigger";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,"Event");
+			"Event";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,"Concurrency");
+			"Concurrency";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,"Id");
+			"Id";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,"Space");
+			"Space";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,"State");
+			"State";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,"States");
+			"States";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,"Type");
+			"Type";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,"Value");
+			"Value";
+		}
+		{
+			this._xmlNodeTypeToNodeName.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,"Extends");
+			"Extends";
+		}
 	}
 	,_initNodeTypesMap: function() {
 		this._xmlNodeNameToNodeType = new haxe_ds_StringMap();
@@ -20145,191 +21129,361 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 	}
 	,_initFileExtensionsMap: function() {
 		this._xmlGameTypeToFileExtension = new haxe_ds_EnumValueMap();
-		this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY,"egc");
-		"egc";
-		this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE,"sgc");
-		"sgc";
-		this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE,"pgc");
-		"pgc";
-		this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM,"fgc");
-		"fgc";
-		this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION,"agc");
-		"agc";
-		this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER,"tgc");
-		"tgc";
+		{
+			this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY,"egc");
+			"egc";
+		}
+		{
+			this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE,"sgc");
+			"sgc";
+		}
+		{
+			this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE,"pgc");
+			"pgc";
+		}
+		{
+			this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM,"fgc");
+			"fgc";
+		}
+		{
+			this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION,"agc");
+			"agc";
+		}
+		{
+			this._xmlGameTypeToFileExtension.set(tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER,"tgc");
+			"tgc";
+		}
 	}
 	,_initExtendableNodesMap: function() {
 		this._isNodeExtendable = new haxe_ds_EnumValueMap();
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,true);
-		true;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,true);
-		true;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,true);
-		true;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,true);
-		true;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,true);
-		true;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,true);
-		true;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
-		false;
-		this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,false);
-		false;
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,true);
+			true;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,true);
+			true;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,true);
+			true;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,true);
+			true;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,true);
+			true;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,true);
+			true;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
+			false;
+		}
+		{
+			this._isNodeExtendable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,false);
+			false;
+		}
 	}
 	,_initMergableNodesMap: function() {
 		this._isNodeMergable = new haxe_ds_EnumValueMap();
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,true);
-		true;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
-		false;
-		this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,false);
-		false;
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,true);
+			true;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
+			false;
+		}
+		{
+			this._isNodeMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,false);
+			false;
+		}
 	}
 	,_initTargetMergableNodesMap: function() {
 		this._isNodeTargetMergable = new haxe_ds_EnumValueMap();
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,true);
-		true;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,true);
-		true;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
-		false;
-		this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,false);
-		false;
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,true);
+			true;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,true);
+			true;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
+			false;
+		}
+		{
+			this._isNodeTargetMergable.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,false);
+			false;
+		}
 	}
 	,_initArrayNodesMap: function() {
 		this._isNodeArray = new haxe_ds_EnumValueMap();
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,true);
-		true;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,true);
-		true;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,true);
-		true;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,true);
-		true;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,true);
-		true;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
-		false;
-		this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,true);
-		true;
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS,true);
+			true;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES,true);
+			true;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS,true);
+			true;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS,true);
+			true;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES,true);
+			true;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE,false);
+			false;
+		}
+		{
+			this._isNodeArray.set(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS,true);
+			true;
+		}
 	}
 	,_initConcurrencyTypeToNameMap: function() {
 		this._xmlConcurrencyTypeToName = new haxe_ds_EnumValueMap();
-		this._xmlConcurrencyTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL,"Parallel");
-		"Parallel";
-		this._xmlConcurrencyTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT,"Persistent");
-		"Persistent";
-		this._xmlConcurrencyTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT,"Transient");
-		"Transient";
+		{
+			this._xmlConcurrencyTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL,"Parallel");
+			"Parallel";
+		}
+		{
+			this._xmlConcurrencyTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT,"Persistent");
+			"Persistent";
+		}
+		{
+			this._xmlConcurrencyTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT,"Transient");
+			"Transient";
+		}
 	}
 	,_initConcurrencyNameToTypeMap: function() {
 		this._xmlConcurrencyNameToType = new haxe_ds_StringMap();
@@ -20348,16 +21502,26 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 	}
 	,_initStateTypeToNameMap: function() {
 		this._xmlStateTypeToName = new haxe_ds_EnumValueMap();
-		this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC,"Dynamic");
-		"Dynamic";
-		this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN,"Boolean");
-		"Boolean";
-		this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL,"Decimal");
-		"Decimal";
-		this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER,"Integer");
-		"Integer";
-		this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT,"Text");
-		"Text";
+		{
+			this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC,"Dynamic");
+			"Dynamic";
+		}
+		{
+			this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN,"Boolean");
+			"Boolean";
+		}
+		{
+			this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL,"Decimal");
+			"Decimal";
+		}
+		{
+			this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER,"Integer");
+			"Integer";
+		}
+		{
+			this._xmlStateTypeToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT,"Text");
+			"Text";
+		}
 	}
 	,_initStateNameToTypeMap: function() {
 		this._xmlStateNameToType = new haxe_ds_StringMap();
@@ -20384,444 +21548,882 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 	}
 	,_initEventPrefabToNameMap: function() {
 		this._xmlEventPrefabToName = new haxe_ds_EnumValueMap();
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED,"Created");
-		"Created";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE,"Update");
-		"Update";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED,"Changed");
-		"Changed";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED,"NetworkConnected");
-		"NetworkConnected";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST,"NetworkRequest");
-		"NetworkRequest";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT,"NetworkServerEvent");
-		"NetworkServerEvent";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED,"FileTransferConnected");
-		"FileTransferConnected";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST,"FileTransferRequest");
-		"FileTransferRequest";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK,"MouseLeftClick");
-		"MouseLeftClick";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK,"MouseRightClick");
-		"MouseRightClick";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED,"MouseLeftClicked");
-		"MouseLeftClicked";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED,"MouseRightClicked");
-		"MouseRightClicked";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED,"MouseEntered");
-		"MouseEntered";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED,"MouseMoved");
-		"MouseMoved";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT,"MouseLeft");
-		"MouseLeft";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED,"KeyPressed");
-		"KeyPressed";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED,"KeyReleased");
-		"KeyReleased";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT,"KeyPressed_Alt");
-		"KeyPressed_Alt";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE,"KeyPressed_Backspace");
-		"KeyPressed_Backspace";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK,"KeyPressed_Capslock");
-		"KeyPressed_Capslock";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL,"KeyPressed_Control");
-		"KeyPressed_Control";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE,"KeyPressed_Delete");
-		"KeyPressed_Delete";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN,"KeyPressed_Down");
-		"KeyPressed_Down";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END,"KeyPressed_End");
-		"KeyPressed_End";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER,"KeyPressed_Enter");
-		"KeyPressed_Enter";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE,"KeyPressed_Escape");
-		"KeyPressed_Escape";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1,"KeyPressed_F1");
-		"KeyPressed_F1";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10,"KeyPressed_F10");
-		"KeyPressed_F10";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11,"KeyPressed_F11");
-		"KeyPressed_F11";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12,"KeyPressed_F12");
-		"KeyPressed_F12";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13,"KeyPressed_F13");
-		"KeyPressed_F13";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14,"KeyPressed_F14");
-		"KeyPressed_F14";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15,"KeyPressed_F15");
-		"KeyPressed_F15";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2,"KeyPressed_F2");
-		"KeyPressed_F2";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3,"KeyPressed_F3");
-		"KeyPressed_F3";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4,"KeyPressed_F4");
-		"KeyPressed_F4";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5,"KeyPressed_F5");
-		"KeyPressed_F5";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6,"KeyPressed_F6");
-		"KeyPressed_F6";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7,"KeyPressed_F7");
-		"KeyPressed_F7";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8,"KeyPressed_F8");
-		"KeyPressed_F8";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9,"KeyPressed_F9");
-		"KeyPressed_F9";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME,"KeyPressed_Home");
-		"KeyPressed_Home";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT,"KeyPressed_Insert");
-		"KeyPressed_Insert";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT,"KeyPressed_Left");
-		"KeyPressed_Left";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0,"KeyPressed_Num0");
-		"KeyPressed_Num0";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1,"KeyPressed_Num1");
-		"KeyPressed_Num1";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2,"KeyPressed_Num2");
-		"KeyPressed_Num2";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3,"KeyPressed_Num3");
-		"KeyPressed_Num3";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4,"KeyPressed_Num4");
-		"KeyPressed_Num4";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5,"KeyPressed_Num5");
-		"KeyPressed_Num5";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6,"KeyPressed_Num6");
-		"KeyPressed_Num6";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7,"KeyPressed_Num7");
-		"KeyPressed_Num7";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8,"KeyPressed_Num8");
-		"KeyPressed_Num8";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9,"KeyPressed_Num9");
-		"KeyPressed_Num9";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD,"KeyPressed_Add");
-		"KeyPressed_Add";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL,"KeyPressed_Decimal");
-		"KeyPressed_Decimal";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE,"KeyPressed_Divide");
-		"KeyPressed_Divide";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER,"KeyPressed_Enter");
-		"KeyPressed_Enter";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY,"KeyPressed_Multiply");
-		"KeyPressed_Multiply";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT,"KeyPressed_Subtract");
-		"KeyPressed_Subtract";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN,"KeyPressed_Pagedown");
-		"KeyPressed_Pagedown";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP,"KeyPressed_Pageup");
-		"KeyPressed_Pageup";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT,"KeyPressed_Right");
-		"KeyPressed_Right";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT,"KeyPressed_Shift");
-		"KeyPressed_Shift";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE,"KeyPressed_Space");
-		"KeyPressed_Space";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB,"KeyPressed_Tab");
-		"KeyPressed_Tab";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP,"KeyPressed_Up");
-		"KeyPressed_Up";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A,"KeyPressed_A");
-		"KeyPressed_A";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B,"KeyPressed_B");
-		"KeyPressed_B";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C,"KeyPressed_C");
-		"KeyPressed_C";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D,"KeyPressed_D");
-		"KeyPressed_D";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E,"KeyPressed_E");
-		"KeyPressed_E";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F,"KeyPressed_F");
-		"KeyPressed_F";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G,"KeyPressed_G");
-		"KeyPressed_G";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H,"KeyPressed_H");
-		"KeyPressed_H";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I,"KeyPressed_I");
-		"KeyPressed_I";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J,"KeyPressed_J");
-		"KeyPressed_J";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K,"KeyPressed_K");
-		"KeyPressed_K";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L,"KeyPressed_L");
-		"KeyPressed_L";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M,"KeyPressed_M");
-		"KeyPressed_M";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N,"KeyPressed_N");
-		"KeyPressed_N";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O,"KeyPressed_O");
-		"KeyPressed_O";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P,"KeyPressed_P");
-		"KeyPressed_P";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q,"KeyPressed_Q");
-		"KeyPressed_Q";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R,"KeyPressed_R");
-		"KeyPressed_R";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S,"KeyPressed_S");
-		"KeyPressed_S";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T,"KeyPressed_T");
-		"KeyPressed_T";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U,"KeyPressed_U");
-		"KeyPressed_U";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V,"KeyPressed_V");
-		"KeyPressed_V";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W,"KeyPressed_W");
-		"KeyPressed_W";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X,"KeyPressed_X");
-		"KeyPressed_X";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y,"KeyPressed_Y");
-		"KeyPressed_Y";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z,"KeyPressed_Z");
-		"KeyPressed_Z";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0,"KeyPressed_0");
-		"KeyPressed_0";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1,"KeyPressed_1");
-		"KeyPressed_1";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2,"KeyPressed_2");
-		"KeyPressed_2";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3,"KeyPressed_3");
-		"KeyPressed_3";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4,"KeyPressed_4");
-		"KeyPressed_4";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5,"KeyPressed_5");
-		"KeyPressed_5";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6,"KeyPressed_6");
-		"KeyPressed_6";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7,"KeyPressed_7");
-		"KeyPressed_7";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8,"KeyPressed_8");
-		"KeyPressed_8";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9,"KeyPressed_9");
-		"KeyPressed_9";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS,"KeyPressed_Equals");
-		"KeyPressed_Equals";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH,"KeyPressed_Slash");
-		"KeyPressed_Slash";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH,"KeyPressed_Backslash");
-		"KeyPressed_Backslash";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET,"KeyPressed_LeftBracket");
-		"KeyPressed_LeftBracket";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET,"KeyPressed_RightBracket");
-		"KeyPressed_RightBracket";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE,"KeyPressed_Backquote");
-		"KeyPressed_Backquote";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA,"KeyPressed_Comma");
-		"KeyPressed_Comma";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND,"KeyPressed_Command");
-		"KeyPressed_Command";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS,"KeyPressed_Minus");
-		"KeyPressed_Minus";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD,"KeyPressed_Period");
-		"KeyPressed_Period";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE,"KeyPressed_Quote");
-		"KeyPressed_Quote";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON,"KeyPressed_Semicolon");
-		"KeyPressed_Semicolon";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU,"KeyPressed_AndroidMenu");
-		"KeyPressed_AndroidMenu";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH,"KeyPressed_AndroidSearch");
-		"KeyPressed_AndroidSearch";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN,"KeyPressed_Unknown");
-		"KeyPressed_Unknown";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT,"KeyReleased_Alt");
-		"KeyReleased_Alt";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE,"KeyReleased_Backspace");
-		"KeyReleased_Backspace";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK,"KeyReleased_Capslock");
-		"KeyReleased_Capslock";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL,"KeyReleased_Control");
-		"KeyReleased_Control";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE,"KeyReleased_Delete");
-		"KeyReleased_Delete";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN,"KeyReleased_Down");
-		"KeyReleased_Down";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END,"KeyReleased_End");
-		"KeyReleased_End";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER,"KeyReleased_Enter");
-		"KeyReleased_Enter";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE,"KeyReleased_Escape");
-		"KeyReleased_Escape";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1,"KeyReleased_F1");
-		"KeyReleased_F1";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10,"KeyReleased_F10");
-		"KeyReleased_F10";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11,"KeyReleased_F11");
-		"KeyReleased_F11";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12,"KeyReleased_F12");
-		"KeyReleased_F12";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13,"KeyReleased_F13");
-		"KeyReleased_F13";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14,"KeyReleased_F14");
-		"KeyReleased_F14";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15,"KeyReleased_F15");
-		"KeyReleased_F15";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2,"KeyReleased_F2");
-		"KeyReleased_F2";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3,"KeyReleased_F3");
-		"KeyReleased_F3";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4,"KeyReleased_F4");
-		"KeyReleased_F4";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5,"KeyReleased_F5");
-		"KeyReleased_F5";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6,"KeyReleased_F6");
-		"KeyReleased_F6";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7,"KeyReleased_F7");
-		"KeyReleased_F7";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8,"KeyReleased_F8");
-		"KeyReleased_F8";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9,"KeyReleased_F9");
-		"KeyReleased_F9";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME,"KeyReleased_Home");
-		"KeyReleased_Home";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT,"KeyReleased_Insert");
-		"KeyReleased_Insert";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT,"KeyReleased_Left");
-		"KeyReleased_Left";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0,"KeyReleased_Num0");
-		"KeyReleased_Num0";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1,"KeyReleased_Num1");
-		"KeyReleased_Num1";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2,"KeyReleased_Num2");
-		"KeyReleased_Num2";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3,"KeyReleased_Num3");
-		"KeyReleased_Num3";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4,"KeyReleased_Num4");
-		"KeyReleased_Num4";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5,"KeyReleased_Num5");
-		"KeyReleased_Num5";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6,"KeyReleased_Num6");
-		"KeyReleased_Num6";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7,"KeyReleased_Num7");
-		"KeyReleased_Num7";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8,"KeyReleased_Num8");
-		"KeyReleased_Num8";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9,"KeyReleased_Num9");
-		"KeyReleased_Num9";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD,"KeyReleased_Add");
-		"KeyReleased_Add";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL,"KeyReleased_Decimal");
-		"KeyReleased_Decimal";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE,"KeyReleased_Divide");
-		"KeyReleased_Divide";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER,"KeyReleased_Enter");
-		"KeyReleased_Enter";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY,"KeyReleased_Multiply");
-		"KeyReleased_Multiply";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT,"KeyReleased_Subtract");
-		"KeyReleased_Subtract";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN,"KeyReleased_Pagedown");
-		"KeyReleased_Pagedown";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP,"KeyReleased_Pageup");
-		"KeyReleased_Pageup";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT,"KeyReleased_Right");
-		"KeyReleased_Right";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT,"KeyReleased_Shift");
-		"KeyReleased_Shift";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE,"KeyReleased_Space");
-		"KeyReleased_Space";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB,"KeyReleased_Tab");
-		"KeyReleased_Tab";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP,"KeyReleased_Up");
-		"KeyReleased_Up";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A,"KeyReleased_A");
-		"KeyReleased_A";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B,"KeyReleased_B");
-		"KeyReleased_B";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C,"KeyReleased_C");
-		"KeyReleased_C";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D,"KeyReleased_D");
-		"KeyReleased_D";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E,"KeyReleased_E");
-		"KeyReleased_E";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F,"KeyReleased_F");
-		"KeyReleased_F";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G,"KeyReleased_G");
-		"KeyReleased_G";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H,"KeyReleased_H");
-		"KeyReleased_H";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I,"KeyReleased_I");
-		"KeyReleased_I";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J,"KeyReleased_J");
-		"KeyReleased_J";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K,"KeyReleased_K");
-		"KeyReleased_K";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L,"KeyReleased_L");
-		"KeyReleased_L";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M,"KeyReleased_M");
-		"KeyReleased_M";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N,"KeyReleased_N");
-		"KeyReleased_N";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O,"KeyReleased_O");
-		"KeyReleased_O";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P,"KeyReleased_P");
-		"KeyReleased_P";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q,"KeyReleased_Q");
-		"KeyReleased_Q";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R,"KeyReleased_R");
-		"KeyReleased_R";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S,"KeyReleased_S");
-		"KeyReleased_S";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T,"KeyReleased_T");
-		"KeyReleased_T";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U,"KeyReleased_U");
-		"KeyReleased_U";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V,"KeyReleased_V");
-		"KeyReleased_V";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W,"KeyReleased_W");
-		"KeyReleased_W";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X,"KeyReleased_X");
-		"KeyReleased_X";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y,"KeyReleased_Y");
-		"KeyReleased_Y";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z,"KeyReleased_Z");
-		"KeyReleased_Z";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0,"KeyReleased_0");
-		"KeyReleased_0";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1,"KeyReleased_1");
-		"KeyReleased_1";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2,"KeyReleased_2");
-		"KeyReleased_2";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3,"KeyReleased_3");
-		"KeyReleased_3";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4,"KeyReleased_4");
-		"KeyReleased_4";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5,"KeyReleased_5");
-		"KeyReleased_5";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6,"KeyReleased_6");
-		"KeyReleased_6";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7,"KeyReleased_7");
-		"KeyReleased_7";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8,"KeyReleased_8");
-		"KeyReleased_8";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9,"KeyReleased_9");
-		"KeyReleased_9";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS,"KeyReleased_Equals");
-		"KeyReleased_Equals";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH,"KeyReleased_Slash");
-		"KeyReleased_Slash";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH,"KeyReleased_Backslash");
-		"KeyReleased_Backslash";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET,"KeyReleased_LeftBracket");
-		"KeyReleased_LeftBracket";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET,"KeyReleased_RightBracket");
-		"KeyReleased_RightBracket";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE,"KeyReleased_Backquote");
-		"KeyReleased_Backquote";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA,"KeyReleased_Comma");
-		"KeyReleased_Comma";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND,"KeyReleased_Command");
-		"KeyReleased_Command";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS,"KeyReleased_Minus");
-		"KeyReleased_Minus";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD,"KeyReleased_Period");
-		"KeyReleased_Period";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE,"KeyReleased_Quote");
-		"KeyReleased_Quote";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON,"KeyReleased_Semicolon");
-		"KeyReleased_Semicolon";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU,"KeyReleased_AndroidMenu");
-		"KeyReleased_AndroidMenu";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH,"KeyReleased_AndroidSearch");
-		"KeyReleased_AndroidSearch";
-		this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN,"KeyReleased_Unknown");
-		"KeyReleased_Unknown";
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED,"Created");
+			"Created";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE,"Update");
+			"Update";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED,"Changed");
+			"Changed";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED,"NetworkConnected");
+			"NetworkConnected";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST,"NetworkRequest");
+			"NetworkRequest";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT,"NetworkServerEvent");
+			"NetworkServerEvent";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED,"FileTransferConnected");
+			"FileTransferConnected";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST,"FileTransferRequest");
+			"FileTransferRequest";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK,"MouseLeftClick");
+			"MouseLeftClick";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK,"MouseRightClick");
+			"MouseRightClick";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED,"MouseLeftClicked");
+			"MouseLeftClicked";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED,"MouseRightClicked");
+			"MouseRightClicked";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED,"MouseEntered");
+			"MouseEntered";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED,"MouseMoved");
+			"MouseMoved";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT,"MouseLeft");
+			"MouseLeft";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED,"KeyPressed");
+			"KeyPressed";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED,"KeyReleased");
+			"KeyReleased";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT,"KeyPressed_Alt");
+			"KeyPressed_Alt";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE,"KeyPressed_Backspace");
+			"KeyPressed_Backspace";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK,"KeyPressed_Capslock");
+			"KeyPressed_Capslock";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL,"KeyPressed_Control");
+			"KeyPressed_Control";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE,"KeyPressed_Delete");
+			"KeyPressed_Delete";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN,"KeyPressed_Down");
+			"KeyPressed_Down";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END,"KeyPressed_End");
+			"KeyPressed_End";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER,"KeyPressed_Enter");
+			"KeyPressed_Enter";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE,"KeyPressed_Escape");
+			"KeyPressed_Escape";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1,"KeyPressed_F1");
+			"KeyPressed_F1";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10,"KeyPressed_F10");
+			"KeyPressed_F10";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11,"KeyPressed_F11");
+			"KeyPressed_F11";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12,"KeyPressed_F12");
+			"KeyPressed_F12";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13,"KeyPressed_F13");
+			"KeyPressed_F13";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14,"KeyPressed_F14");
+			"KeyPressed_F14";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15,"KeyPressed_F15");
+			"KeyPressed_F15";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2,"KeyPressed_F2");
+			"KeyPressed_F2";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3,"KeyPressed_F3");
+			"KeyPressed_F3";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4,"KeyPressed_F4");
+			"KeyPressed_F4";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5,"KeyPressed_F5");
+			"KeyPressed_F5";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6,"KeyPressed_F6");
+			"KeyPressed_F6";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7,"KeyPressed_F7");
+			"KeyPressed_F7";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8,"KeyPressed_F8");
+			"KeyPressed_F8";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9,"KeyPressed_F9");
+			"KeyPressed_F9";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME,"KeyPressed_Home");
+			"KeyPressed_Home";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT,"KeyPressed_Insert");
+			"KeyPressed_Insert";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT,"KeyPressed_Left");
+			"KeyPressed_Left";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0,"KeyPressed_Num0");
+			"KeyPressed_Num0";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1,"KeyPressed_Num1");
+			"KeyPressed_Num1";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2,"KeyPressed_Num2");
+			"KeyPressed_Num2";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3,"KeyPressed_Num3");
+			"KeyPressed_Num3";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4,"KeyPressed_Num4");
+			"KeyPressed_Num4";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5,"KeyPressed_Num5");
+			"KeyPressed_Num5";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6,"KeyPressed_Num6");
+			"KeyPressed_Num6";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7,"KeyPressed_Num7");
+			"KeyPressed_Num7";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8,"KeyPressed_Num8");
+			"KeyPressed_Num8";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9,"KeyPressed_Num9");
+			"KeyPressed_Num9";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD,"KeyPressed_Add");
+			"KeyPressed_Add";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL,"KeyPressed_Decimal");
+			"KeyPressed_Decimal";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE,"KeyPressed_Divide");
+			"KeyPressed_Divide";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER,"KeyPressed_Enter");
+			"KeyPressed_Enter";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY,"KeyPressed_Multiply");
+			"KeyPressed_Multiply";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT,"KeyPressed_Subtract");
+			"KeyPressed_Subtract";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN,"KeyPressed_Pagedown");
+			"KeyPressed_Pagedown";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP,"KeyPressed_Pageup");
+			"KeyPressed_Pageup";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT,"KeyPressed_Right");
+			"KeyPressed_Right";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT,"KeyPressed_Shift");
+			"KeyPressed_Shift";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE,"KeyPressed_Space");
+			"KeyPressed_Space";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB,"KeyPressed_Tab");
+			"KeyPressed_Tab";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP,"KeyPressed_Up");
+			"KeyPressed_Up";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A,"KeyPressed_A");
+			"KeyPressed_A";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B,"KeyPressed_B");
+			"KeyPressed_B";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C,"KeyPressed_C");
+			"KeyPressed_C";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D,"KeyPressed_D");
+			"KeyPressed_D";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E,"KeyPressed_E");
+			"KeyPressed_E";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F,"KeyPressed_F");
+			"KeyPressed_F";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G,"KeyPressed_G");
+			"KeyPressed_G";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H,"KeyPressed_H");
+			"KeyPressed_H";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I,"KeyPressed_I");
+			"KeyPressed_I";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J,"KeyPressed_J");
+			"KeyPressed_J";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K,"KeyPressed_K");
+			"KeyPressed_K";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L,"KeyPressed_L");
+			"KeyPressed_L";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M,"KeyPressed_M");
+			"KeyPressed_M";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N,"KeyPressed_N");
+			"KeyPressed_N";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O,"KeyPressed_O");
+			"KeyPressed_O";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P,"KeyPressed_P");
+			"KeyPressed_P";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q,"KeyPressed_Q");
+			"KeyPressed_Q";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R,"KeyPressed_R");
+			"KeyPressed_R";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S,"KeyPressed_S");
+			"KeyPressed_S";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T,"KeyPressed_T");
+			"KeyPressed_T";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U,"KeyPressed_U");
+			"KeyPressed_U";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V,"KeyPressed_V");
+			"KeyPressed_V";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W,"KeyPressed_W");
+			"KeyPressed_W";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X,"KeyPressed_X");
+			"KeyPressed_X";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y,"KeyPressed_Y");
+			"KeyPressed_Y";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z,"KeyPressed_Z");
+			"KeyPressed_Z";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0,"KeyPressed_0");
+			"KeyPressed_0";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1,"KeyPressed_1");
+			"KeyPressed_1";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2,"KeyPressed_2");
+			"KeyPressed_2";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3,"KeyPressed_3");
+			"KeyPressed_3";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4,"KeyPressed_4");
+			"KeyPressed_4";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5,"KeyPressed_5");
+			"KeyPressed_5";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6,"KeyPressed_6");
+			"KeyPressed_6";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7,"KeyPressed_7");
+			"KeyPressed_7";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8,"KeyPressed_8");
+			"KeyPressed_8";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9,"KeyPressed_9");
+			"KeyPressed_9";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS,"KeyPressed_Equals");
+			"KeyPressed_Equals";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH,"KeyPressed_Slash");
+			"KeyPressed_Slash";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH,"KeyPressed_Backslash");
+			"KeyPressed_Backslash";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET,"KeyPressed_LeftBracket");
+			"KeyPressed_LeftBracket";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET,"KeyPressed_RightBracket");
+			"KeyPressed_RightBracket";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE,"KeyPressed_Backquote");
+			"KeyPressed_Backquote";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA,"KeyPressed_Comma");
+			"KeyPressed_Comma";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND,"KeyPressed_Command");
+			"KeyPressed_Command";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS,"KeyPressed_Minus");
+			"KeyPressed_Minus";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD,"KeyPressed_Period");
+			"KeyPressed_Period";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE,"KeyPressed_Quote");
+			"KeyPressed_Quote";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON,"KeyPressed_Semicolon");
+			"KeyPressed_Semicolon";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU,"KeyPressed_AndroidMenu");
+			"KeyPressed_AndroidMenu";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH,"KeyPressed_AndroidSearch");
+			"KeyPressed_AndroidSearch";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN,"KeyPressed_Unknown");
+			"KeyPressed_Unknown";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT,"KeyReleased_Alt");
+			"KeyReleased_Alt";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE,"KeyReleased_Backspace");
+			"KeyReleased_Backspace";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK,"KeyReleased_Capslock");
+			"KeyReleased_Capslock";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL,"KeyReleased_Control");
+			"KeyReleased_Control";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE,"KeyReleased_Delete");
+			"KeyReleased_Delete";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN,"KeyReleased_Down");
+			"KeyReleased_Down";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END,"KeyReleased_End");
+			"KeyReleased_End";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER,"KeyReleased_Enter");
+			"KeyReleased_Enter";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE,"KeyReleased_Escape");
+			"KeyReleased_Escape";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1,"KeyReleased_F1");
+			"KeyReleased_F1";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10,"KeyReleased_F10");
+			"KeyReleased_F10";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11,"KeyReleased_F11");
+			"KeyReleased_F11";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12,"KeyReleased_F12");
+			"KeyReleased_F12";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13,"KeyReleased_F13");
+			"KeyReleased_F13";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14,"KeyReleased_F14");
+			"KeyReleased_F14";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15,"KeyReleased_F15");
+			"KeyReleased_F15";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2,"KeyReleased_F2");
+			"KeyReleased_F2";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3,"KeyReleased_F3");
+			"KeyReleased_F3";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4,"KeyReleased_F4");
+			"KeyReleased_F4";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5,"KeyReleased_F5");
+			"KeyReleased_F5";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6,"KeyReleased_F6");
+			"KeyReleased_F6";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7,"KeyReleased_F7");
+			"KeyReleased_F7";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8,"KeyReleased_F8");
+			"KeyReleased_F8";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9,"KeyReleased_F9");
+			"KeyReleased_F9";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME,"KeyReleased_Home");
+			"KeyReleased_Home";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT,"KeyReleased_Insert");
+			"KeyReleased_Insert";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT,"KeyReleased_Left");
+			"KeyReleased_Left";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0,"KeyReleased_Num0");
+			"KeyReleased_Num0";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1,"KeyReleased_Num1");
+			"KeyReleased_Num1";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2,"KeyReleased_Num2");
+			"KeyReleased_Num2";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3,"KeyReleased_Num3");
+			"KeyReleased_Num3";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4,"KeyReleased_Num4");
+			"KeyReleased_Num4";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5,"KeyReleased_Num5");
+			"KeyReleased_Num5";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6,"KeyReleased_Num6");
+			"KeyReleased_Num6";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7,"KeyReleased_Num7");
+			"KeyReleased_Num7";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8,"KeyReleased_Num8");
+			"KeyReleased_Num8";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9,"KeyReleased_Num9");
+			"KeyReleased_Num9";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD,"KeyReleased_Add");
+			"KeyReleased_Add";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL,"KeyReleased_Decimal");
+			"KeyReleased_Decimal";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE,"KeyReleased_Divide");
+			"KeyReleased_Divide";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER,"KeyReleased_Enter");
+			"KeyReleased_Enter";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY,"KeyReleased_Multiply");
+			"KeyReleased_Multiply";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT,"KeyReleased_Subtract");
+			"KeyReleased_Subtract";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN,"KeyReleased_Pagedown");
+			"KeyReleased_Pagedown";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP,"KeyReleased_Pageup");
+			"KeyReleased_Pageup";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT,"KeyReleased_Right");
+			"KeyReleased_Right";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT,"KeyReleased_Shift");
+			"KeyReleased_Shift";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE,"KeyReleased_Space");
+			"KeyReleased_Space";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB,"KeyReleased_Tab");
+			"KeyReleased_Tab";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP,"KeyReleased_Up");
+			"KeyReleased_Up";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A,"KeyReleased_A");
+			"KeyReleased_A";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B,"KeyReleased_B");
+			"KeyReleased_B";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C,"KeyReleased_C");
+			"KeyReleased_C";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D,"KeyReleased_D");
+			"KeyReleased_D";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E,"KeyReleased_E");
+			"KeyReleased_E";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F,"KeyReleased_F");
+			"KeyReleased_F";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G,"KeyReleased_G");
+			"KeyReleased_G";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H,"KeyReleased_H");
+			"KeyReleased_H";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I,"KeyReleased_I");
+			"KeyReleased_I";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J,"KeyReleased_J");
+			"KeyReleased_J";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K,"KeyReleased_K");
+			"KeyReleased_K";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L,"KeyReleased_L");
+			"KeyReleased_L";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M,"KeyReleased_M");
+			"KeyReleased_M";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N,"KeyReleased_N");
+			"KeyReleased_N";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O,"KeyReleased_O");
+			"KeyReleased_O";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P,"KeyReleased_P");
+			"KeyReleased_P";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q,"KeyReleased_Q");
+			"KeyReleased_Q";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R,"KeyReleased_R");
+			"KeyReleased_R";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S,"KeyReleased_S");
+			"KeyReleased_S";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T,"KeyReleased_T");
+			"KeyReleased_T";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U,"KeyReleased_U");
+			"KeyReleased_U";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V,"KeyReleased_V");
+			"KeyReleased_V";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W,"KeyReleased_W");
+			"KeyReleased_W";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X,"KeyReleased_X");
+			"KeyReleased_X";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y,"KeyReleased_Y");
+			"KeyReleased_Y";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z,"KeyReleased_Z");
+			"KeyReleased_Z";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0,"KeyReleased_0");
+			"KeyReleased_0";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1,"KeyReleased_1");
+			"KeyReleased_1";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2,"KeyReleased_2");
+			"KeyReleased_2";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3,"KeyReleased_3");
+			"KeyReleased_3";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4,"KeyReleased_4");
+			"KeyReleased_4";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5,"KeyReleased_5");
+			"KeyReleased_5";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6,"KeyReleased_6");
+			"KeyReleased_6";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7,"KeyReleased_7");
+			"KeyReleased_7";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8,"KeyReleased_8");
+			"KeyReleased_8";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9,"KeyReleased_9");
+			"KeyReleased_9";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS,"KeyReleased_Equals");
+			"KeyReleased_Equals";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH,"KeyReleased_Slash");
+			"KeyReleased_Slash";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH,"KeyReleased_Backslash");
+			"KeyReleased_Backslash";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET,"KeyReleased_LeftBracket");
+			"KeyReleased_LeftBracket";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET,"KeyReleased_RightBracket");
+			"KeyReleased_RightBracket";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE,"KeyReleased_Backquote");
+			"KeyReleased_Backquote";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA,"KeyReleased_Comma");
+			"KeyReleased_Comma";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND,"KeyReleased_Command");
+			"KeyReleased_Command";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS,"KeyReleased_Minus");
+			"KeyReleased_Minus";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD,"KeyReleased_Period");
+			"KeyReleased_Period";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE,"KeyReleased_Quote");
+			"KeyReleased_Quote";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON,"KeyReleased_Semicolon");
+			"KeyReleased_Semicolon";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU,"KeyReleased_AndroidMenu");
+			"KeyReleased_AndroidMenu";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH,"KeyReleased_AndroidSearch");
+			"KeyReleased_AndroidSearch";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN,"KeyReleased_Unknown");
+			"KeyReleased_Unknown";
+		}
 	}
 	,_initEventNameToPrefabMap: function() {
 		this._xmlEventNameToPrefab = new haxe_ds_StringMap();
@@ -21768,7 +23370,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		var l_extendsElementFound = p_gameNode.elementsNamed("Extends").hasNext();
 		if(this._isNodeExtendable.get(p_nodeType) && l_extendsElementFound) {
 			var l_extendsElement = p_gameNode.elementsNamed("Extends").next();
-			var l_extendsChildren = new Array();
+			var l_extendsChildren = [];
 			var $it0 = l_extendsElement.elements();
 			while( $it0.hasNext() ) {
 				var elt = $it0.next();
@@ -21812,7 +23414,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		} else return true;
 	}
 	,_moveChildren: function(p_gameNode,p_superNode) {
-		var childrenArray = new Array();
+		var childrenArray = [];
 		var $it0 = p_superNode.elements();
 		while( $it0.hasNext() ) {
 			var elt = $it0.next();
@@ -21858,7 +23460,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		}
 	}
 	,_mergeSingleGameNode: function(p_gameNode) {
-		var childrenArray = new Array();
+		var childrenArray = [];
 		var $it0 = p_gameNode.elements();
 		while( $it0.hasNext() ) {
 			var elt = $it0.next();
@@ -21932,7 +23534,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		}
 	}
 	,_mergeChildren: function(mergeNode,cleanNode) {
-		var childrenArray = new Array();
+		var childrenArray = [];
 		var $it0 = mergeNode.elements();
 		while( $it0.hasNext() ) {
 			var elt = $it0.next();
@@ -21975,6 +23577,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		try {
 			return Xml.parse(tools_spark_framework_Assets.getFile(p_stringAssetUrl).toString());
 		} catch( err ) {
+			if (err instanceof js__$Boot_HaxeError) err = err.val;
 			tools_spark_framework_Console.error(Std.string(err));
 			return null;
 		}
@@ -22090,6 +23693,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassValidator.prototype = {
 			tools_spark_framework_haxe_LooseCheck.checkNode(p_gameNode,this._xmlNodeTypeToNodeRule.get(p_nodeType));
 			return true;
 		} catch( m ) {
+			if (m instanceof js__$Boot_HaxeError) m = m.val;
 			if( js_Boot.__instanceof(m,String) ) {
 				tools_spark_framework_Console.error(m);
 				return false;
@@ -22212,17 +23816,21 @@ tools_spark_sliced_services_std_logic_gde_core_GameEntity.prototype = $extend(to
 	}
 	,addState: function(gameState) {
 		if(this.gameStateSet.get(gameState.id) != null) tools_spark_framework_Console.warn("A State with id " + gameState.id + " already exists in this Entity.");
-		this.gameStateSet.set(gameState.id,gameState);
-		gameState;
+		{
+			this.gameStateSet.set(gameState.id,gameState);
+			gameState;
+		}
 	}
 	,addAction: function(gameAction) {
 		if(this.possibleActionSet.get(gameAction.id) != null) tools_spark_framework_Console.warn("An Action with id " + gameAction.id + " already exists in this Entity."); else {
-			var v = new Array();
+			var v = [];
 			this.currentActionSet.set(gameAction.id,v);
 			v;
 		}
-		this.possibleActionSet.set(gameAction.id,gameAction);
-		gameAction;
+		{
+			this.possibleActionSet.set(gameAction.id,gameAction);
+			gameAction;
+		}
 	}
 	,getAction: function(p_actionId) {
 		return this.possibleActionSet.get(p_actionId);
@@ -22354,8 +23962,10 @@ tools_spark_sliced_services_std_logic_gde_core_GameForm.prototype = $extend(tool
 	}
 	,addState: function(gameState) {
 		if(this.gameStateSet.get(gameState.id) != null) tools_spark_framework_Console.warn("A State with id " + gameState.id + " already exists in this Form.");
-		this.gameStateSet.set(gameState.id,gameState);
-		gameState;
+		{
+			this.gameStateSet.set(gameState.id,gameState);
+			gameState;
+		}
 	}
 	,getState: function(p_stateId) {
 		if(this.gameStateSet.get(p_stateId) == null) return null; else return this.gameStateSet.get(p_stateId).value;
@@ -22383,7 +23993,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameSpace.__interfaces__ = [tools
 tools_spark_sliced_services_std_logic_gde_core_GameSpace.__super__ = tools_spark_sliced_services_std_logic_gde_core_AGameBase;
 tools_spark_sliced_services_std_logic_gde_core_GameSpace.prototype = $extend(tools_spark_sliced_services_std_logic_gde_core_AGameBase.prototype,{
 	_init: function() {
-		this.gameEntitySet = new Array();
+		this.gameEntitySet = [];
 	}
 	,__class__: tools_spark_sliced_services_std_logic_gde_core_GameSpace
 });
@@ -22424,7 +24034,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameTrigger.__interfaces__ = [too
 tools_spark_sliced_services_std_logic_gde_core_GameTrigger.__super__ = tools_spark_sliced_services_std_logic_gde_core_AGameBase;
 tools_spark_sliced_services_std_logic_gde_core_GameTrigger.prototype = $extend(tools_spark_sliced_services_std_logic_gde_core_AGameBase.prototype,{
 	_init: function() {
-		this.scriptSet = new Array();
+		this.scriptSet = [];
 	}
 	,doPass: function() {
 		var _g = 0;
@@ -22453,543 +24063,810 @@ tools_spark_sliced_services_std_logic_gde_core_GameTrigger.prototype = $extend(t
 });
 var tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EConcurrencyType"] = { __ename__ : true, __constructs__ : ["PARALLEL","PERSISTENT","TRANSIENT"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL = ["PARALLEL",0];
+tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT = ["PERSISTENT",1];
+tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT = ["TRANSIENT",2];
+tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EEventPrefab"] = { __ename__ : true, __constructs__ : ["CREATED","UPDATE","CHANGED","NETWORK_CONNECTED","NETWORK_REQUEST","NETWORK_SERVER_EVENT","FILETRANSFER_CONNECTED","FILETRANSFER_SENDREQUEST","MOUSE_LEFT_CLICK","MOUSE_RIGHT_CLICK","MOUSE_LEFT_CLICKED","MOUSE_RIGHT_CLICKED","MOUSE_ENTERED","MOUSE_MOVED","MOUSE_LEFT","KEY_PRESSED","KEY_RELEASED","KEY_PRESSED_ALT","KEY_PRESSED_BACKSPACE","KEY_PRESSED_CAPS_LOCK","KEY_PRESSED_CONTROL","KEY_PRESSED_DELETE","KEY_PRESSED_DOWN","KEY_PRESSED_END","KEY_PRESSED_ENTER","KEY_PRESSED_ESCAPE","KEY_PRESSED_F1","KEY_PRESSED_F10","KEY_PRESSED_F11","KEY_PRESSED_F12","KEY_PRESSED_F13","KEY_PRESSED_F14","KEY_PRESSED_F15","KEY_PRESSED_F2","KEY_PRESSED_F3","KEY_PRESSED_F4","KEY_PRESSED_F5","KEY_PRESSED_F6","KEY_PRESSED_F7","KEY_PRESSED_F8","KEY_PRESSED_F9","KEY_PRESSED_HOME","KEY_PRESSED_INSERT","KEY_PRESSED_LEFT","KEY_PRESSED_NUMPAD_0","KEY_PRESSED_NUMPAD_1","KEY_PRESSED_NUMPAD_2","KEY_PRESSED_NUMPAD_3","KEY_PRESSED_NUMPAD_4","KEY_PRESSED_NUMPAD_5","KEY_PRESSED_NUMPAD_6","KEY_PRESSED_NUMPAD_7","KEY_PRESSED_NUMPAD_8","KEY_PRESSED_NUMPAD_9","KEY_PRESSED_NUMPAD_ADD","KEY_PRESSED_NUMPAD_DECIMAL","KEY_PRESSED_NUMPAD_DIVIDE","KEY_PRESSED_NUMPAD_ENTER","KEY_PRESSED_NUMPAD_MULTIPLY","KEY_PRESSED_NUMPAD_SUBTRACT","KEY_PRESSED_PAGE_DOWN","KEY_PRESSED_PAGE_UP","KEY_PRESSED_RIGHT","KEY_PRESSED_SHIFT","KEY_PRESSED_SPACE","KEY_PRESSED_TAB","KEY_PRESSED_UP","KEY_PRESSED_A","KEY_PRESSED_B","KEY_PRESSED_C","KEY_PRESSED_D","KEY_PRESSED_E","KEY_PRESSED_F","KEY_PRESSED_G","KEY_PRESSED_H","KEY_PRESSED_I","KEY_PRESSED_J","KEY_PRESSED_K","KEY_PRESSED_L","KEY_PRESSED_M","KEY_PRESSED_N","KEY_PRESSED_O","KEY_PRESSED_P","KEY_PRESSED_Q","KEY_PRESSED_R","KEY_PRESSED_S","KEY_PRESSED_T","KEY_PRESSED_U","KEY_PRESSED_V","KEY_PRESSED_W","KEY_PRESSED_X","KEY_PRESSED_Y","KEY_PRESSED_Z","KEY_PRESSED_NUMBER_0","KEY_PRESSED_NUMBER_1","KEY_PRESSED_NUMBER_2","KEY_PRESSED_NUMBER_3","KEY_PRESSED_NUMBER_4","KEY_PRESSED_NUMBER_5","KEY_PRESSED_NUMBER_6","KEY_PRESSED_NUMBER_7","KEY_PRESSED_NUMBER_8","KEY_PRESSED_NUMBER_9","KEY_PRESSED_EQUALS","KEY_PRESSED_SLASH","KEY_PRESSED_BACKSLASH","KEY_PRESSED_LEFTBRACKET","KEY_PRESSED_RIGHTBRACKET","KEY_PRESSED_BACKQUOTE","KEY_PRESSED_COMMA","KEY_PRESSED_COMMAND","KEY_PRESSED_MINUS","KEY_PRESSED_PERIOD","KEY_PRESSED_QUOTE","KEY_PRESSED_SEMICOLON","KEY_PRESSED_ANDROIDMENU","KEY_PRESSED_ANDROIDSEARCH","KEY_PRESSED_UNKNOWN","KEY_RELEASED_ALT","KEY_RELEASED_BACKSPACE","KEY_RELEASED_CAPS_LOCK","KEY_RELEASED_CONTROL","KEY_RELEASED_DELETE","KEY_RELEASED_DOWN","KEY_RELEASED_END","KEY_RELEASED_ENTER","KEY_RELEASED_ESCAPE","KEY_RELEASED_F1","KEY_RELEASED_F10","KEY_RELEASED_F11","KEY_RELEASED_F12","KEY_RELEASED_F13","KEY_RELEASED_F14","KEY_RELEASED_F15","KEY_RELEASED_F2","KEY_RELEASED_F3","KEY_RELEASED_F4","KEY_RELEASED_F5","KEY_RELEASED_F6","KEY_RELEASED_F7","KEY_RELEASED_F8","KEY_RELEASED_F9","KEY_RELEASED_HOME","KEY_RELEASED_INSERT","KEY_RELEASED_LEFT","KEY_RELEASED_NUMPAD_0","KEY_RELEASED_NUMPAD_1","KEY_RELEASED_NUMPAD_2","KEY_RELEASED_NUMPAD_3","KEY_RELEASED_NUMPAD_4","KEY_RELEASED_NUMPAD_5","KEY_RELEASED_NUMPAD_6","KEY_RELEASED_NUMPAD_7","KEY_RELEASED_NUMPAD_8","KEY_RELEASED_NUMPAD_9","KEY_RELEASED_NUMPAD_ADD","KEY_RELEASED_NUMPAD_DECIMAL","KEY_RELEASED_NUMPAD_DIVIDE","KEY_RELEASED_NUMPAD_ENTER","KEY_RELEASED_NUMPAD_MULTIPLY","KEY_RELEASED_NUMPAD_SUBTRACT","KEY_RELEASED_PAGE_DOWN","KEY_RELEASED_PAGE_UP","KEY_RELEASED_RIGHT","KEY_RELEASED_SHIFT","KEY_RELEASED_SPACE","KEY_RELEASED_TAB","KEY_RELEASED_UP","KEY_RELEASED_A","KEY_RELEASED_B","KEY_RELEASED_C","KEY_RELEASED_D","KEY_RELEASED_E","KEY_RELEASED_F","KEY_RELEASED_G","KEY_RELEASED_H","KEY_RELEASED_I","KEY_RELEASED_J","KEY_RELEASED_K","KEY_RELEASED_L","KEY_RELEASED_M","KEY_RELEASED_N","KEY_RELEASED_O","KEY_RELEASED_P","KEY_RELEASED_Q","KEY_RELEASED_R","KEY_RELEASED_S","KEY_RELEASED_T","KEY_RELEASED_U","KEY_RELEASED_V","KEY_RELEASED_W","KEY_RELEASED_X","KEY_RELEASED_Y","KEY_RELEASED_Z","KEY_RELEASED_NUMBER_0","KEY_RELEASED_NUMBER_1","KEY_RELEASED_NUMBER_2","KEY_RELEASED_NUMBER_3","KEY_RELEASED_NUMBER_4","KEY_RELEASED_NUMBER_5","KEY_RELEASED_NUMBER_6","KEY_RELEASED_NUMBER_7","KEY_RELEASED_NUMBER_8","KEY_RELEASED_NUMBER_9","KEY_RELEASED_EQUALS","KEY_RELEASED_SLASH","KEY_RELEASED_BACKSLASH","KEY_RELEASED_LEFTBRACKET","KEY_RELEASED_RIGHTBRACKET","KEY_RELEASED_BACKQUOTE","KEY_RELEASED_COMMA","KEY_RELEASED_COMMAND","KEY_RELEASED_MINUS","KEY_RELEASED_PERIOD","KEY_RELEASED_QUOTE","KEY_RELEASED_SEMICOLON","KEY_RELEASED_ANDROIDMENU","KEY_RELEASED_ANDROIDSEARCH","KEY_RELEASED_UNKNOWN"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED = ["CREATED",0];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE = ["UPDATE",1];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED = ["CHANGED",2];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED = ["NETWORK_CONNECTED",3];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST = ["NETWORK_REQUEST",4];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT = ["NETWORK_SERVER_EVENT",5];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED = ["FILETRANSFER_CONNECTED",6];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST = ["FILETRANSFER_SENDREQUEST",7];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK = ["MOUSE_LEFT_CLICK",8];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK = ["MOUSE_RIGHT_CLICK",9];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED = ["MOUSE_LEFT_CLICKED",10];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED = ["MOUSE_RIGHT_CLICKED",11];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED = ["MOUSE_ENTERED",12];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED = ["MOUSE_MOVED",13];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT = ["MOUSE_LEFT",14];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED = ["KEY_PRESSED",15];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED = ["KEY_RELEASED",16];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT = ["KEY_PRESSED_ALT",17];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE = ["KEY_PRESSED_BACKSPACE",18];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK = ["KEY_PRESSED_CAPS_LOCK",19];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL = ["KEY_PRESSED_CONTROL",20];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE = ["KEY_PRESSED_DELETE",21];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN = ["KEY_PRESSED_DOWN",22];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END = ["KEY_PRESSED_END",23];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER = ["KEY_PRESSED_ENTER",24];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE = ["KEY_PRESSED_ESCAPE",25];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1 = ["KEY_PRESSED_F1",26];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10 = ["KEY_PRESSED_F10",27];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11 = ["KEY_PRESSED_F11",28];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12 = ["KEY_PRESSED_F12",29];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13 = ["KEY_PRESSED_F13",30];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14 = ["KEY_PRESSED_F14",31];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15 = ["KEY_PRESSED_F15",32];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2 = ["KEY_PRESSED_F2",33];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3 = ["KEY_PRESSED_F3",34];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4 = ["KEY_PRESSED_F4",35];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5 = ["KEY_PRESSED_F5",36];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6 = ["KEY_PRESSED_F6",37];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7 = ["KEY_PRESSED_F7",38];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8 = ["KEY_PRESSED_F8",39];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9 = ["KEY_PRESSED_F9",40];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME = ["KEY_PRESSED_HOME",41];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT = ["KEY_PRESSED_INSERT",42];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT = ["KEY_PRESSED_LEFT",43];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0 = ["KEY_PRESSED_NUMPAD_0",44];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1 = ["KEY_PRESSED_NUMPAD_1",45];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2 = ["KEY_PRESSED_NUMPAD_2",46];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3 = ["KEY_PRESSED_NUMPAD_3",47];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4 = ["KEY_PRESSED_NUMPAD_4",48];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5 = ["KEY_PRESSED_NUMPAD_5",49];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6 = ["KEY_PRESSED_NUMPAD_6",50];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7 = ["KEY_PRESSED_NUMPAD_7",51];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8 = ["KEY_PRESSED_NUMPAD_8",52];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9 = ["KEY_PRESSED_NUMPAD_9",53];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD = ["KEY_PRESSED_NUMPAD_ADD",54];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL = ["KEY_PRESSED_NUMPAD_DECIMAL",55];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE = ["KEY_PRESSED_NUMPAD_DIVIDE",56];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER = ["KEY_PRESSED_NUMPAD_ENTER",57];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY = ["KEY_PRESSED_NUMPAD_MULTIPLY",58];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT = ["KEY_PRESSED_NUMPAD_SUBTRACT",59];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN = ["KEY_PRESSED_PAGE_DOWN",60];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP = ["KEY_PRESSED_PAGE_UP",61];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT = ["KEY_PRESSED_RIGHT",62];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT = ["KEY_PRESSED_SHIFT",63];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE = ["KEY_PRESSED_SPACE",64];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB = ["KEY_PRESSED_TAB",65];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP = ["KEY_PRESSED_UP",66];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A = ["KEY_PRESSED_A",67];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B = ["KEY_PRESSED_B",68];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C = ["KEY_PRESSED_C",69];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D = ["KEY_PRESSED_D",70];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E = ["KEY_PRESSED_E",71];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F = ["KEY_PRESSED_F",72];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G = ["KEY_PRESSED_G",73];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H = ["KEY_PRESSED_H",74];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I = ["KEY_PRESSED_I",75];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J = ["KEY_PRESSED_J",76];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K = ["KEY_PRESSED_K",77];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L = ["KEY_PRESSED_L",78];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M = ["KEY_PRESSED_M",79];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N = ["KEY_PRESSED_N",80];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O = ["KEY_PRESSED_O",81];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P = ["KEY_PRESSED_P",82];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q = ["KEY_PRESSED_Q",83];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R = ["KEY_PRESSED_R",84];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S = ["KEY_PRESSED_S",85];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T = ["KEY_PRESSED_T",86];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U = ["KEY_PRESSED_U",87];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V = ["KEY_PRESSED_V",88];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W = ["KEY_PRESSED_W",89];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X = ["KEY_PRESSED_X",90];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y = ["KEY_PRESSED_Y",91];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z = ["KEY_PRESSED_Z",92];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0 = ["KEY_PRESSED_NUMBER_0",93];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1 = ["KEY_PRESSED_NUMBER_1",94];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2 = ["KEY_PRESSED_NUMBER_2",95];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3 = ["KEY_PRESSED_NUMBER_3",96];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4 = ["KEY_PRESSED_NUMBER_4",97];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5 = ["KEY_PRESSED_NUMBER_5",98];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6 = ["KEY_PRESSED_NUMBER_6",99];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7 = ["KEY_PRESSED_NUMBER_7",100];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8 = ["KEY_PRESSED_NUMBER_8",101];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9 = ["KEY_PRESSED_NUMBER_9",102];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS = ["KEY_PRESSED_EQUALS",103];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH = ["KEY_PRESSED_SLASH",104];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH = ["KEY_PRESSED_BACKSLASH",105];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET = ["KEY_PRESSED_LEFTBRACKET",106];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET = ["KEY_PRESSED_RIGHTBRACKET",107];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE = ["KEY_PRESSED_BACKQUOTE",108];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA = ["KEY_PRESSED_COMMA",109];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND = ["KEY_PRESSED_COMMAND",110];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS = ["KEY_PRESSED_MINUS",111];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD = ["KEY_PRESSED_PERIOD",112];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE = ["KEY_PRESSED_QUOTE",113];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON = ["KEY_PRESSED_SEMICOLON",114];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU = ["KEY_PRESSED_ANDROIDMENU",115];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH = ["KEY_PRESSED_ANDROIDSEARCH",116];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN = ["KEY_PRESSED_UNKNOWN",117];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT = ["KEY_RELEASED_ALT",118];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE = ["KEY_RELEASED_BACKSPACE",119];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK = ["KEY_RELEASED_CAPS_LOCK",120];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL = ["KEY_RELEASED_CONTROL",121];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE = ["KEY_RELEASED_DELETE",122];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN = ["KEY_RELEASED_DOWN",123];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END = ["KEY_RELEASED_END",124];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER = ["KEY_RELEASED_ENTER",125];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE = ["KEY_RELEASED_ESCAPE",126];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1 = ["KEY_RELEASED_F1",127];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10 = ["KEY_RELEASED_F10",128];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11 = ["KEY_RELEASED_F11",129];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12 = ["KEY_RELEASED_F12",130];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13 = ["KEY_RELEASED_F13",131];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14 = ["KEY_RELEASED_F14",132];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15 = ["KEY_RELEASED_F15",133];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2 = ["KEY_RELEASED_F2",134];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3 = ["KEY_RELEASED_F3",135];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4 = ["KEY_RELEASED_F4",136];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5 = ["KEY_RELEASED_F5",137];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6 = ["KEY_RELEASED_F6",138];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7 = ["KEY_RELEASED_F7",139];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8 = ["KEY_RELEASED_F8",140];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9 = ["KEY_RELEASED_F9",141];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME = ["KEY_RELEASED_HOME",142];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT = ["KEY_RELEASED_INSERT",143];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT = ["KEY_RELEASED_LEFT",144];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0 = ["KEY_RELEASED_NUMPAD_0",145];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1 = ["KEY_RELEASED_NUMPAD_1",146];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2 = ["KEY_RELEASED_NUMPAD_2",147];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3 = ["KEY_RELEASED_NUMPAD_3",148];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4 = ["KEY_RELEASED_NUMPAD_4",149];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5 = ["KEY_RELEASED_NUMPAD_5",150];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6 = ["KEY_RELEASED_NUMPAD_6",151];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7 = ["KEY_RELEASED_NUMPAD_7",152];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8 = ["KEY_RELEASED_NUMPAD_8",153];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9 = ["KEY_RELEASED_NUMPAD_9",154];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD = ["KEY_RELEASED_NUMPAD_ADD",155];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL = ["KEY_RELEASED_NUMPAD_DECIMAL",156];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE = ["KEY_RELEASED_NUMPAD_DIVIDE",157];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER = ["KEY_RELEASED_NUMPAD_ENTER",158];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY = ["KEY_RELEASED_NUMPAD_MULTIPLY",159];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT = ["KEY_RELEASED_NUMPAD_SUBTRACT",160];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN = ["KEY_RELEASED_PAGE_DOWN",161];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP = ["KEY_RELEASED_PAGE_UP",162];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT = ["KEY_RELEASED_RIGHT",163];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT = ["KEY_RELEASED_SHIFT",164];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE = ["KEY_RELEASED_SPACE",165];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB = ["KEY_RELEASED_TAB",166];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP = ["KEY_RELEASED_UP",167];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A = ["KEY_RELEASED_A",168];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B = ["KEY_RELEASED_B",169];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C = ["KEY_RELEASED_C",170];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D = ["KEY_RELEASED_D",171];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E = ["KEY_RELEASED_E",172];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F = ["KEY_RELEASED_F",173];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G = ["KEY_RELEASED_G",174];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H = ["KEY_RELEASED_H",175];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I = ["KEY_RELEASED_I",176];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J = ["KEY_RELEASED_J",177];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K = ["KEY_RELEASED_K",178];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L = ["KEY_RELEASED_L",179];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M = ["KEY_RELEASED_M",180];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N = ["KEY_RELEASED_N",181];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O = ["KEY_RELEASED_O",182];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P = ["KEY_RELEASED_P",183];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q = ["KEY_RELEASED_Q",184];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R = ["KEY_RELEASED_R",185];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S = ["KEY_RELEASED_S",186];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T = ["KEY_RELEASED_T",187];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U = ["KEY_RELEASED_U",188];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V = ["KEY_RELEASED_V",189];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W = ["KEY_RELEASED_W",190];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X = ["KEY_RELEASED_X",191];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y = ["KEY_RELEASED_Y",192];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z = ["KEY_RELEASED_Z",193];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0 = ["KEY_RELEASED_NUMBER_0",194];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1 = ["KEY_RELEASED_NUMBER_1",195];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2 = ["KEY_RELEASED_NUMBER_2",196];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3 = ["KEY_RELEASED_NUMBER_3",197];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4 = ["KEY_RELEASED_NUMBER_4",198];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5 = ["KEY_RELEASED_NUMBER_5",199];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6 = ["KEY_RELEASED_NUMBER_6",200];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7 = ["KEY_RELEASED_NUMBER_7",201];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8 = ["KEY_RELEASED_NUMBER_8",202];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9 = ["KEY_RELEASED_NUMBER_9",203];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS = ["KEY_RELEASED_EQUALS",204];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH = ["KEY_RELEASED_SLASH",205];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH = ["KEY_RELEASED_BACKSLASH",206];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET = ["KEY_RELEASED_LEFTBRACKET",207];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET = ["KEY_RELEASED_RIGHTBRACKET",208];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE = ["KEY_RELEASED_BACKQUOTE",209];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA = ["KEY_RELEASED_COMMA",210];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND = ["KEY_RELEASED_COMMAND",211];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS = ["KEY_RELEASED_MINUS",212];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD = ["KEY_RELEASED_PERIOD",213];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE = ["KEY_RELEASED_QUOTE",214];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON = ["KEY_RELEASED_SEMICOLON",215];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU = ["KEY_RELEASED_ANDROIDMENU",216];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH = ["KEY_RELEASED_ANDROIDSEARCH",217];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN = ["KEY_RELEASED_UNKNOWN",218];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 var tools_spark_sliced_services_std_logic_gde_interfaces_EEventType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EEventType"] = { __ename__ : true, __constructs__ : ["CREATED","UPDATE","CHANGED","NETWORK_CONNECTED","NETWORK_REQUEST","NETWORK_SERVER_EVENT","FILETRANSFER_CONNECTED","FILETRANSFER_SENDREQUEST","MOUSE_LEFT_CLICK","MOUSE_RIGHT_CLICK","MOUSE_ENTERED","MOUSE_MOVED","MOUSE_LEFT","KEY_PRESSED","KEY_RELEASED"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CREATED = ["CREATED",0];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CREATED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CREATED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.UPDATE = ["UPDATE",1];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.UPDATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.UPDATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CHANGED = ["CHANGED",2];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CHANGED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CHANGED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_CONNECTED = ["NETWORK_CONNECTED",3];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_REQUEST = ["NETWORK_REQUEST",4];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_REQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_REQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_SERVER_EVENT = ["NETWORK_SERVER_EVENT",5];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_SERVER_EVENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_SERVER_EVENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_CONNECTED = ["FILETRANSFER_CONNECTED",6];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_SENDREQUEST = ["FILETRANSFER_SENDREQUEST",7];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_SENDREQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_SENDREQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK = ["MOUSE_LEFT_CLICK",8];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK = ["MOUSE_RIGHT_CLICK",9];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED = ["MOUSE_ENTERED",10];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED = ["MOUSE_MOVED",11];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT = ["MOUSE_LEFT",12];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED = ["KEY_PRESSED",13];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED = ["KEY_RELEASED",14];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_EGameType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EGameType"] = { __ename__ : true, __constructs__ : ["ENTITY","FORM","STATE","SPACE","ACTION","TRIGGER"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY = ["ENTITY",0];
+tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM = ["FORM",1];
+tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE = ["STATE",2];
+tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE = ["SPACE",3];
+tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION = ["ACTION",4];
+tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER = ["TRIGGER",5];
+tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.ENodeType"] = { __ename__ : true, __constructs__ : ["ENTITIES","ENTITY","FORM","STATES","STATE","SPACE","ACTIONS","ACTION","SCRIPTS","SCRIPT","GML","TRIGGERS","TRIGGER","EVENT","CONCURRENCY","ID","TYPE","VALUE","EXTENDS"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES = ["ENTITIES",0];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY = ["ENTITY",1];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM = ["FORM",2];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES = ["STATES",3];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE = ["STATE",4];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE = ["SPACE",5];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS = ["ACTIONS",6];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION = ["ACTION",7];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS = ["SCRIPTS",8];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT = ["SCRIPT",9];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML = ["GML",10];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS = ["TRIGGERS",11];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER = ["TRIGGER",12];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT = ["EVENT",13];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY = ["CONCURRENCY",14];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID = ["ID",15];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE = ["TYPE",16];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE = ["VALUE",17];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS = ["EXTENDS",18];
+tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_EStateType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EStateType"] = { __ename__ : true, __constructs__ : ["DYNAMIC","INTEGER","DECIMAL","BOOLEAN","TEXT"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC = ["DYNAMIC",0];
+tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER = ["INTEGER",1];
+tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL = ["DECIMAL",2];
+tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN = ["BOOLEAN",3];
+tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT = ["TEXT",4];
+tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 var tools_spark_sliced_services_std_logic_interpreter_interfaces_IInterpreter = function() { };
 $hxClasses["tools.spark.sliced.services.std.logic.interpreter.interfaces.IInterpreter"] = tools_spark_sliced_services_std_logic_interpreter_interfaces_IInterpreter;
@@ -23102,8 +24979,10 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype
 				return this._store(script,++hashId);
 			}
 		} else {
-			this._hashTable.set(hashId,script);
-			script;
+			{
+				this._hashTable.set(hashId,script);
+				script;
+			}
 			return hashId;
 		}
 	}
@@ -23133,10 +25012,10 @@ var zpp_$nape_ZPP_$Const = function() { };
 $hxClasses["zpp_nape.ZPP_Const"] = zpp_$nape_ZPP_$Const;
 zpp_$nape_ZPP_$Const.__name__ = true;
 zpp_$nape_ZPP_$Const.POSINF = function() {
-	return Math.POSITIVE_INFINITY;
+	return Infinity;
 };
 zpp_$nape_ZPP_$Const.NEGINF = function() {
-	return Math.NEGATIVE_INFINITY;
+	return -Infinity;
 };
 var zpp_$nape_ZPP_$ID = function() { };
 $hxClasses["zpp_nape.ZPP_ID"] = zpp_$nape_ZPP_$ID;
@@ -26717,13 +28596,13 @@ zpp_$nape_geom_ZPP_$Collide.contactCollide = function(s1,s2,arb,rev) {
 					var den = 1 / (d1 - d0);
 					var t = (-ax2.tp1 - d0) * den;
 					if(t > nape_Config.epsilon) {
-						var t1 = t;
-						c0x += dvx * t1;
-						c0y += dvy * t1;
+						var t2 = t;
+						c0x += dvx * t2;
+						c0y += dvy * t2;
 					}
-					var t2 = (-ax2.tp0 - d1) * den;
-					if(t2 < -nape_Config.epsilon) {
-						var t3 = t2;
+					var t1 = (-ax2.tp0 - d1) * den;
+					if(t1 < -nape_Config.epsilon) {
+						var t3 = t1;
 						c1x += dvx * t3;
 						c1y += dvy * t3;
 					}
@@ -27039,8 +28918,8 @@ zpp_$nape_geom_ZPP_$Collide.testCollide = function(s1,s2) {
 };
 zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 	if(s2.isPolygon()) if(s1.isPolygon()) {
-		var out1 = new Array();
-		var out2 = new Array();
+		var out1 = [];
+		var out2 = [];
 		var cont = true;
 		var total = true;
 		var cx_ite = s1.polygon.edges.begin();
@@ -27429,7 +29308,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 						var beg_ite = itm;
 						var cx_ite4 = itm;
 						do {
-							var v4 = cx_ite4.elem();
+							var v5 = cx_ite4.elem();
 							var t4 = 0.0;
 							if((function($this) {
 								var $r;
@@ -27442,8 +29321,8 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 								var _vx4 = 0.0;
 								var _vy4 = 0.0;
 								{
-									_vx4 = v4.x - u1.x;
-									_vy4 = v4.y - u1.y;
+									_vx4 = v5.x - u1.x;
+									_vy4 = v5.y - u1.y;
 								}
 								var _qx4 = 0.0;
 								var _qy4 = 0.0;
@@ -27481,7 +29360,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 									} else max = t4;
 								}
 							}
-							u1 = v4;
+							u1 = v5;
 							ite2 = cx_ite4;
 							ind2++;
 							if(ind2 >= s2.polygon.edgeCnt) ind2 = 0;
@@ -27489,7 +29368,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 							if(cx_ite4 == null) cx_ite4 = s2.polygon.gverts.begin();
 						} while(false);
 						while(cx_ite4 != beg_ite) {
-							var v5 = cx_ite4.elem();
+							var v6 = cx_ite4.elem();
 							var t5 = 0.0;
 							if((function($this) {
 								var $r;
@@ -27502,8 +29381,8 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 								var _vx5 = 0.0;
 								var _vy5 = 0.0;
 								{
-									_vx5 = v5.x - u1.x;
-									_vy5 = v5.y - u1.y;
+									_vx5 = v6.x - u1.x;
+									_vy5 = v6.y - u1.y;
 								}
 								var _qx5 = 0.0;
 								var _qy5 = 0.0;
@@ -27541,7 +29420,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 									} else max = t5;
 								}
 							}
-							u1 = v5;
+							u1 = v6;
 							ite2 = cx_ite4;
 							ind2++;
 							if(ind2 >= s2.polygon.edgeCnt) ind2 = 0;
@@ -27552,12 +29431,12 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 						var u2 = itmo.elem();
 						var itm2 = itmo.next;
 						if(itm2 == null) itm2 = s2.polygon.gverts.begin();
-						var v6 = itm2.elem();
+						var v4 = itm2.elem();
 						var cx2 = 0.0;
 						var cy2 = 0.0;
 						var T2 = max;
-						cx2 = u2.x + (v6.x - u2.x) * T2;
-						cy2 = u2.y + (v6.y - u2.y) * T2;
+						cx2 = u2.x + (v4.x - u2.x) * T2;
+						cy2 = u2.y + (v4.y - u2.y) * T2;
 						if(fst_vert != null && zpp_$nape_geom_ZPP_$VecMath.vec_dsq(cx2,cy2,fst_vert.x,fst_vert.y) < nape_Config.epsilon) break;
 						zpp_$nape_geom_ZPP_$Collide.flowpoly.add(zpp_$nape_geom_ZPP_$Vec2.get(cx2,cy2));
 						if(fst_vert == null) fst_vert = zpp_$nape_geom_ZPP_$Collide.flowpoly.front();
@@ -27592,7 +29471,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 						var beg_ite1 = itm1;
 						var cx_ite5 = itm1;
 						do {
-							var v7 = cx_ite5.elem();
+							var v8 = cx_ite5.elem();
 							var t6 = 0.0;
 							if((function($this) {
 								var $r;
@@ -27605,8 +29484,8 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 								var _vx6 = 0.0;
 								var _vy6 = 0.0;
 								{
-									_vx6 = v7.x - u3.x;
-									_vy6 = v7.y - u3.y;
+									_vx6 = v8.x - u3.x;
+									_vy6 = v8.y - u3.y;
 								}
 								var _qx6 = 0.0;
 								var _qy6 = 0.0;
@@ -27644,7 +29523,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 									} else max1 = t6;
 								}
 							}
-							u3 = v7;
+							u3 = v8;
 							ite1 = cx_ite5;
 							ind11++;
 							if(ind11 >= s1.polygon.edgeCnt) ind11 = 0;
@@ -27652,7 +29531,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 							if(cx_ite5 == null) cx_ite5 = s1.polygon.gverts.begin();
 						} while(false);
 						while(cx_ite5 != beg_ite1) {
-							var v8 = cx_ite5.elem();
+							var v9 = cx_ite5.elem();
 							var t7 = 0.0;
 							if((function($this) {
 								var $r;
@@ -27665,8 +29544,8 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 								var _vx7 = 0.0;
 								var _vy7 = 0.0;
 								{
-									_vx7 = v8.x - u3.x;
-									_vy7 = v8.y - u3.y;
+									_vx7 = v9.x - u3.x;
+									_vy7 = v9.y - u3.y;
 								}
 								var _qx7 = 0.0;
 								var _qy7 = 0.0;
@@ -27704,7 +29583,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 									} else max1 = t7;
 								}
 							}
-							u3 = v8;
+							u3 = v9;
 							ite1 = cx_ite5;
 							ind11++;
 							if(ind11 >= s1.polygon.edgeCnt) ind11 = 0;
@@ -27715,12 +29594,12 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 						var u4 = itmo1.elem();
 						var itm21 = itmo1.next;
 						if(itm21 == null) itm21 = s1.polygon.gverts.begin();
-						var v9 = itm21.elem();
+						var v7 = itm21.elem();
 						var cx3 = 0.0;
 						var cy3 = 0.0;
 						var T3 = max1;
-						cx3 = u4.x + (v9.x - u4.x) * T3;
-						cy3 = u4.y + (v9.y - u4.y) * T3;
+						cx3 = u4.x + (v7.x - u4.x) * T3;
+						cy3 = u4.y + (v7.y - u4.y) * T3;
 						if(fst_vert != null && zpp_$nape_geom_ZPP_$VecMath.vec_dsq(cx3,cy3,fst_vert.x,fst_vert.y) < nape_Config.epsilon) break;
 						zpp_$nape_geom_ZPP_$Collide.flowpoly.add(zpp_$nape_geom_ZPP_$Vec2.get(cx3,cy3));
 						if(fst_vert == null) fst_vert = zpp_$nape_geom_ZPP_$Collide.flowpoly.front();
@@ -27743,29 +29622,29 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 					var v10 = cx_ite6.elem();
 					cx_ite6 = cx_ite6.next;
 					while(cx_ite6 != null) {
-						var w = cx_ite6.elem();
-						area += v10.x * (w.y - u5.y);
-						var cf = w.y * v10.x - w.x * v10.y;
-						COMx += (v10.x + w.x) * cf;
-						COMy += (v10.y + w.y) * cf;
+						var w2 = cx_ite6.elem();
+						area += v10.x * (w2.y - u5.y);
+						var cf = w2.y * v10.x - w2.x * v10.y;
+						COMx += (v10.x + w2.x) * cf;
+						COMy += (v10.y + w2.y) * cf;
 						u5 = v10;
-						v10 = w;
+						v10 = w2;
 						cx_ite6 = cx_ite6.next;
 					}
 					cx_ite6 = zpp_$nape_geom_ZPP_$Collide.flowpoly.begin();
+					var w = cx_ite6.elem();
+					area += v10.x * (w.y - u5.y);
+					var cf1 = w.y * v10.x - w.x * v10.y;
+					COMx += (v10.x + w.x) * cf1;
+					COMy += (v10.y + w.y) * cf1;
+					u5 = v10;
+					v10 = w;
+					cx_ite6 = cx_ite6.next;
 					var w1 = cx_ite6.elem();
 					area += v10.x * (w1.y - u5.y);
-					var cf1 = w1.y * v10.x - w1.x * v10.y;
-					COMx += (v10.x + w1.x) * cf1;
-					COMy += (v10.y + w1.y) * cf1;
-					u5 = v10;
-					v10 = w1;
-					cx_ite6 = cx_ite6.next;
-					var w2 = cx_ite6.elem();
-					area += v10.x * (w2.y - u5.y);
-					var cf2 = w2.y * v10.x - w2.x * v10.y;
-					COMx += (v10.x + w2.x) * cf2;
-					COMy += (v10.y + w2.y) * cf2;
+					var cf2 = w1.y * v10.x - w1.x * v10.y;
+					COMx += (v10.x + w1.x) * cf2;
+					COMy += (v10.y + w1.y) * cf2;
 					area *= 0.5;
 					var ia = 1 / (6 * area);
 					var t8 = ia;
@@ -27777,7 +29656,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 			} else return false;
 		} else return false;
 	} else {
-		var inte = new Array();
+		var inte = [];
 		var total1 = true;
 		var a0 = null;
 		var vi = null;
@@ -27840,7 +29719,7 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 					$r = distSqr1 <= minDist1 * minDist1;
 					return $r;
 				}(this)):true) {
-					var ins = new Array();
+					var ins = [];
 					var ind4 = 0;
 					var total2 = true;
 					var vi1 = null;
@@ -28154,29 +30033,29 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 								var v16 = cx_ite11.elem();
 								cx_ite11 = cx_ite11.next;
 								while(cx_ite11 != null) {
-									var w3 = cx_ite11.elem();
-									parea += v16.x * (w3.y - u8.y);
-									var cf3 = w3.y * v16.x - w3.x * v16.y;
-									pCOMx += (v16.x + w3.x) * cf3;
-									pCOMy += (v16.y + w3.y) * cf3;
+									var w5 = cx_ite11.elem();
+									parea += v16.x * (w5.y - u8.y);
+									var cf3 = w5.y * v16.x - w5.x * v16.y;
+									pCOMx += (v16.x + w5.x) * cf3;
+									pCOMy += (v16.y + w5.y) * cf3;
 									u8 = v16;
-									v16 = w3;
+									v16 = w5;
 									cx_ite11 = cx_ite11.next;
 								}
 								cx_ite11 = zpp_$nape_geom_ZPP_$Collide.flowpoly.begin();
+								var w3 = cx_ite11.elem();
+								parea += v16.x * (w3.y - u8.y);
+								var cf4 = w3.y * v16.x - w3.x * v16.y;
+								pCOMx += (v16.x + w3.x) * cf4;
+								pCOMy += (v16.y + w3.y) * cf4;
+								u8 = v16;
+								v16 = w3;
+								cx_ite11 = cx_ite11.next;
 								var w4 = cx_ite11.elem();
 								parea += v16.x * (w4.y - u8.y);
-								var cf4 = w4.y * v16.x - w4.x * v16.y;
-								pCOMx += (v16.x + w4.x) * cf4;
-								pCOMy += (v16.y + w4.y) * cf4;
-								u8 = v16;
-								v16 = w4;
-								cx_ite11 = cx_ite11.next;
-								var w5 = cx_ite11.elem();
-								parea += v16.x * (w5.y - u8.y);
-								var cf5 = w5.y * v16.x - w5.x * v16.y;
-								pCOMx += (v16.x + w5.x) * cf5;
-								pCOMy += (v16.y + w5.y) * cf5;
+								var cf5 = w4.y * v16.x - w4.x * v16.y;
+								pCOMx += (v16.x + w4.x) * cf5;
+								pCOMy += (v16.y + w4.y) * cf5;
 								parea *= 0.5;
 								var ia1 = 1 / (6 * parea);
 								var t14 = ia1;
@@ -28881,13 +30760,13 @@ zpp_$nape_geom_ZPP_$SweepDistance.distance = function(s1,s2,w1,w2,axis,upperBoun
 						var den = 1 / (d11 - d0);
 						var t17 = (-ax.tp1 - d0) * den;
 						if(t17 > nape_Config.epsilon) {
-							var t18 = t17;
-							c0x += dvx * t18;
-							c0y += dvy * t18;
+							var t19 = t17;
+							c0x += dvx * t19;
+							c0y += dvy * t19;
 						}
-						var t19 = (-ax.tp0 - d11) * den;
-						if(t19 < -nape_Config.epsilon) {
-							var t20 = t19;
+						var t18 = (-ax.tp0 - d11) * den;
+						if(t18 < -nape_Config.epsilon) {
+							var t20 = t18;
 							c1x += dvx * t20;
 							c1y += dvy * t20;
 						}
@@ -29452,25 +31331,25 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 			var u = cx_ite1.elem();
 			cx_ite1 = cx_ite1.next;
 			while(cx_ite1 != null) {
-				var v = cx_ite1.elem();
+				var v1 = cx_ite1.elem();
 				var e = ite.elem();
 				ite = ite.next;
 				e.gnormx = this.axisy * e.lnormx - this.axisx * e.lnormy;
 				e.gnormy = e.lnormx * this.axisx + e.lnormy * this.axisy;
 				e.gprojection = this.posx * e.gnormx + this.posy * e.gnormy + e.lprojection;
 				e.tp0 = u.y * e.gnormx - u.x * e.gnormy;
-				e.tp1 = v.y * e.gnormx - v.x * e.gnormy;
-				u = v;
+				e.tp1 = v1.y * e.gnormx - v1.x * e.gnormy;
+				u = v1;
 				cx_ite1 = cx_ite1.next;
 			}
-			var v1 = p.gverts.front();
+			var v = p.gverts.front();
 			var e1 = ite.elem();
 			ite = ite.next;
 			e1.gnormx = this.axisy * e1.lnormx - this.axisx * e1.lnormy;
 			e1.gnormy = e1.lnormx * this.axisx + e1.lnormy * this.axisy;
 			e1.gprojection = this.posx * e1.gnormx + this.posy * e1.gnormy + e1.lprojection;
 			e1.tp0 = u.y * e1.gnormx - u.x * e1.gnormy;
-			e1.tp1 = v1.y * e1.gnormx - v1.x * e1.gnormy;
+			e1.tp1 = v.y * e1.gnormx - v.x * e1.gnormy;
 		}
 	}
 	,invalidate_pos: function() {
@@ -30432,15 +32311,15 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 			var u = cx_ite.elem();
 			cx_ite = cx_ite.next;
 			while(cx_ite != null) {
-				var v = cx_ite.elem();
+				var v1 = cx_ite.elem();
 				var edge = ite.elem();
 				ite = ite.next;
 				edge.lp0 = u;
-				edge.lp1 = v;
+				edge.lp1 = v1;
 				var dx = 0.0;
 				var dy = 0.0;
-				dx = u.x - v.x;
-				dy = u.y - v.y;
+				dx = u.x - v1.x;
+				dy = u.y - v1.y;
 				var l = Math.sqrt(dx * dx + dy * dy);
 				edge.length = l;
 				var t = 1.0 / l;
@@ -30456,18 +32335,18 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 					edge.wrap_lnorm.zpp_inner.x = dx;
 					edge.wrap_lnorm.zpp_inner.y = dy;
 				}
-				u = v;
+				u = v1;
 				cx_ite = cx_ite.next;
 			}
-			var v1 = this.lverts.front();
+			var v = this.lverts.front();
 			var edge1 = ite.elem();
 			ite = ite.next;
 			edge1.lp0 = u;
-			edge1.lp1 = v1;
+			edge1.lp1 = v;
 			var dx1 = 0.0;
 			var dy1 = 0.0;
-			dx1 = u.x - v1.x;
-			dy1 = u.y - v1.y;
+			dx1 = u.x - v.x;
+			dy1 = u.y - v.y;
 			var l1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
 			edge1.length = l1;
 			var t2 = 1.0 / l1;
@@ -30516,11 +32395,11 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 				var u = cx_ite.elem();
 				cx_ite = cx_ite.next;
 				while(cx_ite != null) {
-					var v = cx_ite.elem();
+					var v1 = cx_ite.elem();
 					var e = ite.elem();
 					ite = ite.next;
 					e.gp0 = u;
-					e.gp1 = v;
+					e.gp1 = v1;
 					e.gnormx = this.body.axisy * e.lnormx - this.body.axisx * e.lnormy;
 					e.gnormy = e.lnormx * this.body.axisx + e.lnormy * this.body.axisy;
 					e.gprojection = this.body.posx * e.gnormx + this.body.posy * e.gnormy + e.lprojection;
@@ -30530,14 +32409,14 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 					}
 					e.tp0 = e.gp0.y * e.gnormx - e.gp0.x * e.gnormy;
 					e.tp1 = e.gp1.y * e.gnormx - e.gp1.x * e.gnormy;
-					u = v;
+					u = v1;
 					cx_ite = cx_ite.next;
 				}
-				var v1 = this.gverts.front();
+				var v = this.gverts.front();
 				var e1 = ite.elem();
 				ite = ite.next;
 				e1.gp0 = u;
-				e1.gp1 = v1;
+				e1.gp1 = v;
 				e1.gnormx = this.body.axisy * e1.lnormx - this.body.axisx * e1.lnormy;
 				e1.gnormy = e1.lnormx * this.body.axisx + e1.lnormy * this.body.axisy;
 				e1.gprojection = this.body.posx * e1.gnormx + this.body.posy * e1.gnormy + e1.lprojection;
@@ -30630,32 +32509,32 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 			var v = cx_ite.elem();
 			cx_ite = cx_ite.next;
 			while(cx_ite != null) {
-				var w = cx_ite.elem();
+				var w2 = cx_ite.elem();
 				var a = v.y * u.x - v.x * u.y;
 				var b = v.x * v.x + v.y * v.y + (v.x * u.x + v.y * u.y) + (u.x * u.x + u.y * u.y);
 				s1 += a * b;
 				s2 += a;
-				this.area += v.x * (w.y - u.y);
+				this.area += v.x * (w2.y - u.y);
 				u = v;
-				v = w;
+				v = w2;
 				cx_ite = cx_ite.next;
 			}
 			cx_ite = this.lverts.begin();
-			var w1 = cx_ite.elem();
+			var w = cx_ite.elem();
 			var a1 = v.y * u.x - v.x * u.y;
 			var b1 = v.x * v.x + v.y * v.y + (v.x * u.x + v.y * u.y) + (u.x * u.x + u.y * u.y);
 			s1 += a1 * b1;
 			s2 += a1;
-			this.area += v.x * (w1.y - u.y);
+			this.area += v.x * (w.y - u.y);
 			u = v;
-			v = w1;
+			v = w;
 			cx_ite = cx_ite.next;
-			var w2 = cx_ite.elem();
+			var w1 = cx_ite.elem();
 			var a2 = v.y * u.x - v.x * u.y;
 			var b2 = v.x * v.x + v.y * v.y + (v.x * u.x + v.y * u.y) + (u.x * u.x + u.y * u.y);
 			s1 += a2 * b2;
 			s2 += a2;
-			this.area += v.x * (w2.y - u.y);
+			this.area += v.x * (w1.y - u.y);
 			this.inertia = s1 / (6 * s2);
 			this.area *= 0.5;
 			if(this.area < 0) {
@@ -30787,29 +32666,29 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 			var v = cx_ite.elem();
 			cx_ite = cx_ite.next;
 			while(cx_ite != null) {
-				var w = cx_ite.elem();
-				area += v.x * (w.y - u.y);
-				var cf = w.y * v.x - w.x * v.y;
-				this.localCOMx += (v.x + w.x) * cf;
-				this.localCOMy += (v.y + w.y) * cf;
+				var w2 = cx_ite.elem();
+				area += v.x * (w2.y - u.y);
+				var cf = w2.y * v.x - w2.x * v.y;
+				this.localCOMx += (v.x + w2.x) * cf;
+				this.localCOMy += (v.y + w2.y) * cf;
 				u = v;
-				v = w;
+				v = w2;
 				cx_ite = cx_ite.next;
 			}
 			cx_ite = this.lverts.begin();
+			var w = cx_ite.elem();
+			area += v.x * (w.y - u.y);
+			var cf1 = w.y * v.x - w.x * v.y;
+			this.localCOMx += (v.x + w.x) * cf1;
+			this.localCOMy += (v.y + w.y) * cf1;
+			u = v;
+			v = w;
+			cx_ite = cx_ite.next;
 			var w1 = cx_ite.elem();
 			area += v.x * (w1.y - u.y);
-			var cf1 = w1.y * v.x - w1.x * v.y;
-			this.localCOMx += (v.x + w1.x) * cf1;
-			this.localCOMy += (v.y + w1.y) * cf1;
-			u = v;
-			v = w1;
-			cx_ite = cx_ite.next;
-			var w2 = cx_ite.elem();
-			area += v.x * (w2.y - u.y);
-			var cf2 = w2.y * v.x - w2.x * v.y;
-			this.localCOMx += (v.x + w2.x) * cf2;
-			this.localCOMy += (v.y + w2.y) * cf2;
+			var cf2 = w1.y * v.x - w1.x * v.y;
+			this.localCOMx += (v.x + w1.x) * cf2;
+			this.localCOMy += (v.y + w1.y) * cf2;
 			area = 1 / (3 * area);
 			var t2 = area;
 			this.localCOMx *= t2;
@@ -31184,48 +33063,48 @@ zpp_$nape_space_ZPP_$DynAABBPhase.prototype = $extend(zpp_$nape_space_ZPP_$Broad
 		}
 		shape.node = null;
 		if(node.synced) {
-			var pre = null;
-			var cur = this.syncs;
-			while(cur != null) {
-				if(cur == node) break;
-				pre = cur;
-				cur = cur.snext;
-			}
-			if(pre == null) this.syncs = cur.snext; else pre.snext = cur.snext;
-			cur.snext = null;
-			node.synced = false;
-		}
-		if(node.moved) {
 			var pre1 = null;
-			var cur1 = this.moves;
+			var cur1 = this.syncs;
 			while(cur1 != null) {
 				if(cur1 == node) break;
 				pre1 = cur1;
-				cur1 = cur1.mnext;
+				cur1 = cur1.snext;
 			}
-			if(pre1 == null) this.moves = cur1.mnext; else pre1.mnext = cur1.mnext;
-			cur1.mnext = null;
+			if(pre1 == null) this.syncs = cur1.snext; else pre1.snext = cur1.snext;
+			cur1.snext = null;
+			node.synced = false;
+		}
+		if(node.moved) {
+			var pre2 = null;
+			var cur2 = this.moves;
+			while(cur2 != null) {
+				if(cur2 == node) break;
+				pre2 = cur2;
+				cur2 = cur2.mnext;
+			}
+			if(pre2 == null) this.moves = cur2.mnext; else pre2.mnext = cur2.mnext;
+			cur2.mnext = null;
 			node.moved = false;
 		}
-		var pre2 = null;
-		var cur2 = this.pairs;
-		while(cur2 != null) {
-			var nxt = cur2.next;
-			if(cur2.n1 == node || cur2.n2 == node) {
-				if(pre2 == null) this.pairs = nxt; else pre2.next = nxt;
-				if(cur2.arb != null) cur2.arb.pair = null;
-				cur2.arb = null;
-				cur2.n1.shape.pairs.remove(cur2);
-				cur2.n2.shape.pairs.remove(cur2);
-				var o = cur2;
+		var pre = null;
+		var cur = this.pairs;
+		while(cur != null) {
+			var nxt = cur.next;
+			if(cur.n1 == node || cur.n2 == node) {
+				if(pre == null) this.pairs = nxt; else pre.next = nxt;
+				if(cur.arb != null) cur.arb.pair = null;
+				cur.arb = null;
+				cur.n1.shape.pairs.remove(cur);
+				cur.n2.shape.pairs.remove(cur);
+				var o = cur;
 				o.free();
 				o.next = zpp_$nape_space_ZPP_$AABBPair.zpp_pool;
 				zpp_$nape_space_ZPP_$AABBPair.zpp_pool = o;
-				cur2 = nxt;
+				cur = nxt;
 				continue;
 			}
-			pre2 = cur2;
-			cur2 = nxt;
+			pre = cur;
+			cur = nxt;
 		}
 		while(!shape.pairs.empty()) {
 			var cur3 = shape.pairs.pop_unsafe();
@@ -31259,16 +33138,16 @@ zpp_$nape_space_ZPP_$DynAABBPhase.prototype = $extend(zpp_$nape_space_ZPP_$Broad
 		while(node != null) {
 			var shape = node.shape;
 			if(!node.first_sync) {
-				var tree;
-				if(node.dyn) tree = this.dtree; else tree = this.stree;
-				tree.inlined_removeLeaf(node);
+				var tree1;
+				if(node.dyn) tree1 = this.dtree; else tree1 = this.stree;
+				tree1.inlined_removeLeaf(node);
 			} else node.first_sync = false;
 			var aabb = node.aabb;
 			if(!space.continuous) shape.validate_aabb();
 			aabb.setExpand(shape.aabb,3.0);
-			var tree1;
-			if(node.dyn = this.dyn(shape)) tree1 = this.dtree; else tree1 = this.stree;
-			tree1.inlined_insertLeaf(node);
+			var tree;
+			if(node.dyn = this.dyn(shape)) tree = this.dtree; else tree = this.stree;
+			tree.inlined_insertLeaf(node);
 			node.synced = false;
 			node = node.snext;
 		}
@@ -32492,7 +34371,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			var set = [cx_ite5.elem()];
 			if(set[0].really_empty()) {
 				cx_ite5 = this.callbackset_list.inlined_erase(pre1);
-				var inf = set[0].int1.id + " " + set[0].int2.id;
 				var o = set[0];
 				o.free();
 				o.next = zpp_$nape_space_ZPP_$CallbackSet.zpp_pool;
@@ -32544,9 +34422,9 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			var cx_ite = this.toiEvents.begin();
 			while(cx_ite != null) {
 				var toi = cx_ite.elem();
-				var b1 = toi.s1.body;
-				var b2 = toi.s2.body;
-				if(b1.sweepFrozen && b2.sweepFrozen) {
+				var b11 = toi.s1.body;
+				var b21 = toi.s2.body;
+				if(b11.sweepFrozen && b21.sweepFrozen) {
 					if(toi.toi != 0 && zpp_$nape_geom_ZPP_$Collide.testCollide_safe(toi.s1,toi.s2)) toi.toi = 0; else {
 						cx_ite = this.toiEvents.erase(pre);
 						var o = toi;
@@ -32556,10 +34434,10 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 						continue;
 					}
 				}
-				if(toi.frozen1 != b1.sweepFrozen || toi.frozen2 != b2.sweepFrozen) {
+				if(toi.frozen1 != b11.sweepFrozen || toi.frozen2 != b21.sweepFrozen) {
 					if(!toi.kinematic) {
-						toi.frozen1 = b1.sweepFrozen;
-						toi.frozen2 = b2.sweepFrozen;
+						toi.frozen1 = b11.sweepFrozen;
+						toi.frozen2 = b21.sweepFrozen;
 						if(toi.frozen1) {
 							var tmp = toi.s1;
 							toi.s1 = toi.s2;
@@ -32597,15 +34475,15 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			if(minTOI == null) break;
 			this.toiEvents.erase(preMin);
 			curTimeAlpha = minTOI.toi;
-			var b11 = minTOI.s1.body;
-			var b21 = minTOI.s2.body;
-			if(!b11.sweepFrozen) {
-				b11.sweepIntegrate(curTimeAlpha * deltaTime);
-				b11.sweepValidate(minTOI.s1);
+			var b1 = minTOI.s1.body;
+			var b2 = minTOI.s2.body;
+			if(!b1.sweepFrozen) {
+				b1.sweepIntegrate(curTimeAlpha * deltaTime);
+				b1.sweepValidate(minTOI.s1);
 			}
-			if(!b21.sweepFrozen) {
-				b21.sweepIntegrate(curTimeAlpha * deltaTime);
-				b21.sweepValidate(minTOI.s2);
+			if(!b2.sweepFrozen) {
+				b2.sweepIntegrate(curTimeAlpha * deltaTime);
+				b2.sweepValidate(minTOI.s2);
 			}
 			var wasnull = minTOI.arbiter == null;
 			var arb = this.narrowPhase(minTOI.s1,minTOI.s2,true,minTOI.arbiter,true);
@@ -32621,27 +34499,31 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					arb.colarb.applyImpulseVel();
 					arb.colarb.applyImpulseVel();
 					arb.colarb.applyImpulseVel();
-					b11.sweep_angvel = b11.angvel % MAX_VEL;
-					b21.sweep_angvel = b21.angvel % MAX_VEL;
+					b1.sweep_angvel = b1.angvel % MAX_VEL;
+					b2.sweep_angvel = b2.angvel % MAX_VEL;
 				}
 			}
 			if(arb != null && arb.acting() && arb.type == zpp_$nape_dynamics_ZPP_$Arbiter.COL) {
-				if(!b11.sweepFrozen && !b11.isKinematic()) {
-					b11.sweepFrozen = true;
-					if(minTOI.failed) b11.angvel = b11.sweep_angvel = 0; else if(minTOI.slipped) b11.angvel = b11.sweep_angvel *= nape_Config.angularCCDSlipScale; else b11.angvel = b11.sweep_angvel;
+				if(!b1.sweepFrozen && !b1.isKinematic()) {
+					b1.sweepFrozen = true;
+					if(minTOI.failed) b1.angvel = b1.sweep_angvel = 0; else if(minTOI.slipped) b1.angvel = b1.sweep_angvel *= nape_Config.angularCCDSlipScale; else b1.angvel = b1.sweep_angvel;
 				}
-				if(!b21.sweepFrozen && !b21.isKinematic()) {
-					b21.sweepFrozen = true;
-					if(minTOI.failed) b21.angvel = b21.sweep_angvel = 0; else if(minTOI.slipped) b21.angvel = b21.sweep_angvel *= nape_Config.angularCCDSlipScale; else b21.angvel = b21.sweep_angvel;
+				if(!b2.sweepFrozen && !b2.isKinematic()) {
+					b2.sweepFrozen = true;
+					if(minTOI.failed) b2.angvel = b2.sweep_angvel = 0; else if(minTOI.slipped) b2.angvel = b2.sweep_angvel *= nape_Config.angularCCDSlipScale; else b2.angvel = b2.sweep_angvel;
 				}
 			}
-		}
-		while(!this.toiEvents.empty()) {
-			var toi1 = this.toiEvents.pop_unsafe();
-			var o3 = toi1;
+			var o3 = minTOI;
 			o3.free();
 			o3.next = zpp_$nape_geom_ZPP_$ToiEvent.zpp_pool;
 			zpp_$nape_geom_ZPP_$ToiEvent.zpp_pool = o3;
+		}
+		while(!this.toiEvents.empty()) {
+			var toi1 = this.toiEvents.pop_unsafe();
+			var o4 = toi1;
+			o4.free();
+			o4.next = zpp_$nape_geom_ZPP_$ToiEvent.zpp_pool;
+			zpp_$nape_geom_ZPP_$ToiEvent.zpp_pool = o4;
 		}
 		var cx_ite1 = this.kinematics.begin();
 		while(cx_ite1 != null) {
@@ -33463,7 +35345,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 		var fst1 = null != null;
 		if(fst1 && arbite1 == null) {
 			fst1 = false;
-			arbite1 = null.begin();
 			arbs1 = null;
 			pre1 = null;
 		}
@@ -33475,7 +35356,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 				arbite1 = arbs1.inlined_erase(pre1);
 				if(fst1 && arbite1 == null) {
 					fst1 = false;
-					arbite1 = null.begin();
 					arbs1 = null;
 					pre1 = null;
 				}
@@ -33485,7 +35365,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			arbite1 = arbite1.next;
 			if(fst1 && arbite1 == null) {
 				fst1 = false;
-				arbite1 = null.begin();
 				arbs1 = null;
 				pre1 = null;
 			}
@@ -33496,7 +35375,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 		var fst2 = null != null;
 		if(fst2 && arbite2 == null) {
 			fst2 = false;
-			arbite2 = null.begin();
 			arbs2 = null;
 			pre2 = null;
 		}
@@ -33508,7 +35386,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 				arbite2 = arbs2.inlined_erase(pre2);
 				if(fst2 && arbite2 == null) {
 					fst2 = false;
-					arbite2 = null.begin();
 					arbs2 = null;
 					pre2 = null;
 				}
@@ -33518,7 +35395,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			arbite2 = arbite2.next;
 			if(fst2 && arbite2 == null) {
 				fst2 = false;
-				arbite2 = null.begin();
 				arbs2 = null;
 				pre2 = null;
 			}
@@ -33958,7 +35834,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 		var fst1 = null != null;
 		if(fst1 && arbite1 == null) {
 			fst1 = false;
-			arbite1 = null.begin();
 			arbs1 = null;
 			pre2 = null;
 		}
@@ -33968,7 +35843,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 				arbite1 = arbs1.inlined_erase(pre2);
 				if(fst1 && arbite1 == null) {
 					fst1 = false;
-					arbite1 = null.begin();
 					arbs1 = null;
 					pre2 = null;
 				}
@@ -33978,7 +35852,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			arbite1 = arbite1.next;
 			if(fst1 && arbite1 == null) {
 				fst1 = false;
-				arbite1 = null.begin();
 				arbs1 = null;
 				pre2 = null;
 			}
@@ -33989,7 +35862,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 		var fst2 = null != null;
 		if(fst2 && arbite2 == null) {
 			fst2 = false;
-			arbite2 = null.begin();
 			arbs2 = null;
 			pre3 = null;
 		}
@@ -33999,7 +35871,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 				arbite2 = arbs2.inlined_erase(pre3);
 				if(fst2 && arbite2 == null) {
 					fst2 = false;
-					arbite2 = null.begin();
 					arbs2 = null;
 					pre3 = null;
 				}
@@ -34009,7 +35880,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			arbite2 = arbite2.next;
 			if(fst2 && arbite2 == null) {
 				fst2 = false;
-				arbite2 = null.begin();
 				arbs2 = null;
 				pre3 = null;
 			}
@@ -34200,9 +36070,9 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					if(b1.arbiters.length < b2.arbiters.length) b = b1; else b = b2;
 					var cx_ite = b.arbiters.begin();
 					while(cx_ite != null) {
-						var arb = cx_ite.elem();
-						if(arb.id == sa.id && arb.di == sb.id) {
-							ret1 = arb;
+						var arb1 = cx_ite.elem();
+						if(arb1.id == sa.id && arb1.di == sb.id) {
+							ret1 = arb1;
 							break;
 						}
 						cx_ite = cx_ite.next;
@@ -34210,44 +36080,44 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					xarb = ret1;
 				} else xarb = in_arb;
 				var first = xarb == null;
-				var arb1;
+				var arb;
 				var swapped = false;
 				if(first) {
-					if(zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool == null) arb1 = new zpp_$nape_dynamics_ZPP_$FluidArbiter(); else {
-						arb1 = zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool;
-						zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool = arb1.next;
-						arb1.next = null;
+					if(zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool == null) arb = new zpp_$nape_dynamics_ZPP_$FluidArbiter(); else {
+						arb = zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool;
+						zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool = arb.next;
+						arb.next = null;
 					}
-					arb1.alloc();
+					arb.alloc();
 				} else if(xarb.fluidarb == null) {
 					xarb.lazyRetire(this,null);
-					if(zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool == null) arb1 = new zpp_$nape_dynamics_ZPP_$FluidArbiter(); else {
-						arb1 = zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool;
-						zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool = arb1.next;
-						arb1.next = null;
+					if(zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool == null) arb = new zpp_$nape_dynamics_ZPP_$FluidArbiter(); else {
+						arb = zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool;
+						zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool = arb.next;
+						arb.next = null;
 					}
-					arb1.alloc();
-					arb1.intchange = true;
+					arb.alloc();
+					arb.intchange = true;
 					first = true;
 					swapped = true;
-				} else arb1 = xarb.fluidarb;
+				} else arb = xarb.fluidarb;
 				var inttype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID;
-				if(first || arb1.stamp != this.stamp || continuous) {
-					arb1.stamp = this.stamp;
-					if(zpp_$nape_geom_ZPP_$Collide.flowCollide(sa,sb,arb1)) {
+				if(first || arb.stamp != this.stamp || continuous) {
+					arb.stamp = this.stamp;
+					if(zpp_$nape_geom_ZPP_$Collide.flowCollide(sa,sb,arb)) {
 						if(first) {
-							arb1.assign(s1,s2,sa.id,sb.id);
-							this.f_arbiters.inlined_add(arb1);
-							arb1.fresh = !swapped;
-						} else arb1.fresh = arb1.up_stamp < this.stamp - 1 || arb1.endGenerated == this.stamp && continuous;
-						arb1.up_stamp = arb1.stamp;
-						if(arb1.fresh || (arb1.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
-							arb1.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
+							arb.assign(s1,s2,sa.id,sb.id);
+							this.f_arbiters.inlined_add(arb);
+							arb.fresh = !swapped;
+						} else arb.fresh = arb.up_stamp < this.stamp - 1 || arb.endGenerated == this.stamp && continuous;
+						arb.up_stamp = arb.stamp;
+						if(arb.fresh || (arb.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
+							arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
 							var anyimpure = false;
 							var arbs1;
-							if(arb1.ws1.id > arb1.ws2.id) arbs1 = arb1.ws2; else arbs1 = arb1.ws1;
+							if(arb.ws1.id > arb.ws2.id) arbs1 = arb.ws2; else arbs1 = arb.ws1;
 							var arbs2;
-							if(arb1.ws1.id > arb1.ws2.id) arbs2 = arb1.ws1; else arbs2 = arb1.ws2;
+							if(arb.ws1.id > arb.ws2.id) arbs2 = arb.ws1; else arbs2 = arb.ws2;
 							this.inlined_MRCA_chains(arbs1,arbs2);
 							var cx_ite1 = this.mrca1.begin();
 							while(cx_ite1 != null) {
@@ -34296,10 +36166,10 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 												cx_ite3 = cx_ite3.next;
 											}
 										}
-										var pact = arb1.active;
-										arb1.active = true;
+										var pact = arb.active;
+										arb.active = true;
 										var emptycontacts = false;
-										this.precb.zpp_inner.pre_arbiter = arb1;
+										this.precb.zpp_inner.pre_arbiter = arb;
 										this.precb.zpp_inner.set = callbackset;
 										var cx_ite4 = this.prelisteners.begin();
 										while(cx_ite4 != null) {
@@ -34308,41 +36178,41 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 											zpp_$nape_phys_ZPP_$Interactor.int_callback(callbackset,listener2,this.precb.zpp_inner);
 											this.precb.zpp_inner.pre_swapped = i1 != this.precb.zpp_inner.int1;
 											var ret2 = listener2.handlerp(this.precb);
-											if(ret2 != null) if(ret2 == nape_callbacks_PreFlag.get_ACCEPT()) arb1.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret2 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb1.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret2 == nape_callbacks_PreFlag.get_IGNORE()) arb1.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb1.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
+											if(ret2 != null) if(ret2 == nape_callbacks_PreFlag.get_ACCEPT()) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret2 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret2 == nape_callbacks_PreFlag.get_IGNORE()) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
 											cx_ite4 = cx_ite4.next;
 										}
-										arb1.active = pact;
+										arb.active = pact;
 										if(callbackset != null) {
 											var cx_ite5 = this.prelisteners.begin();
 											while(cx_ite5 != null) {
 												var listener3 = cx_ite5.elem();
 												if(listener3.itype == zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY) {
-													callbackset.COLLISIONstate = arb1.immState;
-													callbackset.SENSORstate = arb1.immState;
-													callbackset.FLUIDstate = arb1.immState;
-												} else callbackset.FLUIDstate = arb1.immState;
+													callbackset.COLLISIONstate = arb.immState;
+													callbackset.SENSORstate = arb.immState;
+													callbackset.FLUIDstate = arb.immState;
+												} else callbackset.FLUIDstate = arb.immState;
 												cx_ite5 = cx_ite5.next;
 											}
 										}
 									} else if(callbackset == null) {
-										if((arb1.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) arb1.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
-									} else arb1.immState = callbackset.FLUIDstate;
+										if((arb.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
+									} else arb.immState = callbackset.FLUIDstate;
 									cx_ite2 = cx_ite2.next;
 								}
 								cx_ite1 = cx_ite1.next;
 							}
-							if(anyimpure && (arb1.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
+							if(anyimpure && (arb.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
 								if(true) {
-									if(arb1.b1.isDynamic()) {
-										var o = arb1.b1;
+									if(arb.b1.isDynamic()) {
+										var o = arb.b1;
 										if(!o.world) {
 											o.component.waket = this.stamp + (this.midstep?0:1);
 											if(o.isKinematic()) o.kinematicDelaySleep = true;
 											if(o.component.sleeping) this.really_wake(o,false);
 										}
 									}
-									if(arb1.b1.isDynamic()) {
-										var o1 = arb1.b2;
+									if(arb.b1.isDynamic()) {
+										var o1 = arb.b2;
 										if(!o1.world) {
 											o1.component.waket = this.stamp + (this.midstep?0:1);
 											if(o1.isKinematic()) o1.kinematicDelaySleep = true;
@@ -34350,16 +36220,16 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 										}
 									}
 								} else {
-									if(!arb1.b1.isStatic()) {
-										var o2 = arb1.b1;
+									if(!arb.b1.isStatic()) {
+										var o2 = arb.b1;
 										if(!o2.world) {
 											o2.component.waket = this.stamp + (this.midstep?0:1);
 											if(o2.isKinematic()) o2.kinematicDelaySleep = true;
 											if(o2.component.sleeping) this.really_wake(o2,false);
 										}
 									}
-									if(!arb1.b2.isStatic()) {
-										var o3 = arb1.b2;
+									if(!arb.b2.isStatic()) {
+										var o3 = arb.b2;
 										if(!o3.world) {
 											o3.component.waket = this.stamp + (this.midstep?0:1);
 											if(o3.isKinematic()) o3.kinematicDelaySleep = true;
@@ -34369,17 +36239,17 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 								}
 							}
 						}
-						if(true && (arb1.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0) {
-							if(arb1.b1.isDynamic() && arb1.b1.component.sleeping) {
-								var o4 = arb1.b1;
+						if(true && (arb.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0) {
+							if(arb.b1.isDynamic() && arb.b1.component.sleeping) {
+								var o4 = arb.b1;
 								if(!o4.world) {
 									o4.component.waket = this.stamp + (this.midstep?0:1);
 									if(o4.isKinematic()) o4.kinematicDelaySleep = true;
 									if(o4.component.sleeping) this.really_wake(o4,false);
 								}
 							}
-							if(arb1.b2.isDynamic() && arb1.b2.component.sleeping) {
-								var o5 = arb1.b2;
+							if(arb.b2.isDynamic() && arb.b2.component.sleeping) {
+								var o5 = arb.b2;
 								if(!o5.world) {
 									o5.component.waket = this.stamp + (this.midstep?0:1);
 									if(o5.isKinematic()) o5.kinematicDelaySleep = true;
@@ -34387,19 +36257,19 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 								}
 							}
 						}
-						if(arb1.sleeping) {
-							arb1.sleeping = false;
-							this.f_arbiters.inlined_add(arb1);
+						if(arb.sleeping) {
+							arb.sleeping = false;
+							this.f_arbiters.inlined_add(arb);
 						}
-						ret = arb1;
+						ret = arb;
 					} else if(first) {
-						var o6 = arb1;
+						var o6 = arb;
 						o6.free();
 						o6.next = zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool;
 						zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool = o6;
 						ret = null;
-					} else ret = arb1;
-				} else ret = arb1;
+					} else ret = arb;
+				} else ret = arb;
 			} else if(itype == 1) {
 				var carbs;
 				if(stat) carbs = this.c_arbiters_true; else carbs = this.c_arbiters_false;
@@ -34410,9 +36280,9 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					if(b1.arbiters.length < b2.arbiters.length) b3 = b1; else b3 = b2;
 					var cx_ite6 = b3.arbiters.begin();
 					while(cx_ite6 != null) {
-						var arb2 = cx_ite6.elem();
-						if(arb2.id == sa.id && arb2.di == sb.id) {
-							ret3 = arb2;
+						var arb3 = cx_ite6.elem();
+						if(arb3.id == sa.id && arb3.di == sb.id) {
+							ret3 = arb3;
 							break;
 						}
 						cx_ite6 = cx_ite6.next;
@@ -34420,56 +36290,56 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					xarb1 = ret3;
 				} else xarb1 = in_arb;
 				var first1 = xarb1 == null;
-				var arb3;
+				var arb2;
 				var swapped1 = false;
 				if(first1) {
-					if(zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool == null) arb3 = new zpp_$nape_dynamics_ZPP_$ColArbiter(); else {
-						arb3 = zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool;
-						zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool = arb3.next;
-						arb3.next = null;
+					if(zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool == null) arb2 = new zpp_$nape_dynamics_ZPP_$ColArbiter(); else {
+						arb2 = zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool;
+						zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool = arb2.next;
+						arb2.next = null;
 					}
-					arb3.alloc();
-					arb3.stat = stat;
+					arb2.alloc();
+					arb2.stat = stat;
 				} else if(xarb1.colarb == null) {
 					xarb1.lazyRetire(this,null);
-					if(zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool == null) arb3 = new zpp_$nape_dynamics_ZPP_$ColArbiter(); else {
-						arb3 = zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool;
-						zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool = arb3.next;
-						arb3.next = null;
+					if(zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool == null) arb2 = new zpp_$nape_dynamics_ZPP_$ColArbiter(); else {
+						arb2 = zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool;
+						zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool = arb2.next;
+						arb2.next = null;
 					}
-					arb3.alloc();
-					arb3.intchange = true;
-					arb3.stat = stat;
+					arb2.alloc();
+					arb2.intchange = true;
+					arb2.stat = stat;
 					first1 = true;
 					swapped1 = true;
 				} else {
-					arb3 = xarb1.colarb;
-					reverse = sa != arb3.s1;
-					if(arb3.stat != stat) {
-						arb3.stat = stat;
-						if(!arb3.sleeping) {
-							(stat?this.c_arbiters_false:this.c_arbiters_true).remove(arb3);
-							carbs.add(arb3);
+					arb2 = xarb1.colarb;
+					reverse = sa != arb2.s1;
+					if(arb2.stat != stat) {
+						arb2.stat = stat;
+						if(!arb2.sleeping) {
+							(stat?this.c_arbiters_false:this.c_arbiters_true).remove(arb2);
+							carbs.add(arb2);
 						}
 					}
 				}
 				var inttype1 = zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION;
-				if(first1 || arb3.stamp != this.stamp || continuous) {
-					arb3.stamp = this.stamp;
-					if(zpp_$nape_geom_ZPP_$Collide.contactCollide(sa,sb,arb3,reverse)) {
+				if(first1 || arb2.stamp != this.stamp || continuous) {
+					arb2.stamp = this.stamp;
+					if(zpp_$nape_geom_ZPP_$Collide.contactCollide(sa,sb,arb2,reverse)) {
 						if(first1) {
-							arb3.assign(s1,s2,sa.id,sb.id);
-							carbs.inlined_add(arb3);
-							arb3.fresh = !swapped1;
-						} else arb3.fresh = arb3.up_stamp < this.stamp - 1 || arb3.endGenerated == this.stamp && continuous;
-						arb3.up_stamp = arb3.stamp;
-						if(arb3.fresh || (arb3.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
-							arb3.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
+							arb2.assign(s1,s2,sa.id,sb.id);
+							carbs.inlined_add(arb2);
+							arb2.fresh = !swapped1;
+						} else arb2.fresh = arb2.up_stamp < this.stamp - 1 || arb2.endGenerated == this.stamp && continuous;
+						arb2.up_stamp = arb2.stamp;
+						if(arb2.fresh || (arb2.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
+							arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
 							var anyimpure1 = false;
 							var arbs11;
-							if(arb3.ws1.id > arb3.ws2.id) arbs11 = arb3.ws2; else arbs11 = arb3.ws1;
+							if(arb2.ws1.id > arb2.ws2.id) arbs11 = arb2.ws2; else arbs11 = arb2.ws1;
 							var arbs21;
-							if(arb3.ws1.id > arb3.ws2.id) arbs21 = arb3.ws1; else arbs21 = arb3.ws2;
+							if(arb2.ws1.id > arb2.ws2.id) arbs21 = arb2.ws1; else arbs21 = arb2.ws2;
 							this.inlined_MRCA_chains(arbs11,arbs21);
 							var cx_ite7 = this.mrca1.begin();
 							while(cx_ite7 != null) {
@@ -34518,11 +36388,11 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 												cx_ite9 = cx_ite9.next;
 											}
 										}
-										var pact1 = arb3.active;
-										arb3.active = true;
+										var pact1 = arb2.active;
+										arb2.active = true;
 										var emptycontacts1 = false;
-										arb3.cleanupContacts();
-										this.precb.zpp_inner.pre_arbiter = arb3;
+										arb2.cleanupContacts();
+										this.precb.zpp_inner.pre_arbiter = arb2;
 										this.precb.zpp_inner.set = callbackset1;
 										var cx_ite10 = this.prelisteners.begin();
 										while(cx_ite10 != null) {
@@ -34531,41 +36401,41 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 											zpp_$nape_phys_ZPP_$Interactor.int_callback(callbackset1,listener6,this.precb.zpp_inner);
 											this.precb.zpp_inner.pre_swapped = i11 != this.precb.zpp_inner.int1;
 											var ret4 = listener6.handlerp(this.precb);
-											if(ret4 != null) if(ret4 == nape_callbacks_PreFlag.get_ACCEPT()) arb3.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret4 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb3.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret4 == nape_callbacks_PreFlag.get_IGNORE()) arb3.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb3.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
+											if(ret4 != null) if(ret4 == nape_callbacks_PreFlag.get_ACCEPT()) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret4 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret4 == nape_callbacks_PreFlag.get_IGNORE()) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
 											cx_ite10 = cx_ite10.next;
 										}
-										arb3.active = pact1;
+										arb2.active = pact1;
 										if(callbackset1 != null) {
 											var cx_ite11 = this.prelisteners.begin();
 											while(cx_ite11 != null) {
 												var listener7 = cx_ite11.elem();
 												if(listener7.itype == zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY) {
-													callbackset1.COLLISIONstate = arb3.immState;
-													callbackset1.SENSORstate = arb3.immState;
-													callbackset1.FLUIDstate = arb3.immState;
-												} else callbackset1.COLLISIONstate = arb3.immState;
+													callbackset1.COLLISIONstate = arb2.immState;
+													callbackset1.SENSORstate = arb2.immState;
+													callbackset1.FLUIDstate = arb2.immState;
+												} else callbackset1.COLLISIONstate = arb2.immState;
 												cx_ite11 = cx_ite11.next;
 											}
 										}
 									} else if(callbackset1 == null) {
-										if((arb3.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) arb3.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
-									} else arb3.immState = callbackset1.COLLISIONstate;
+										if((arb2.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
+									} else arb2.immState = callbackset1.COLLISIONstate;
 									cx_ite8 = cx_ite8.next;
 								}
 								cx_ite7 = cx_ite7.next;
 							}
-							if(anyimpure1 && (arb3.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
+							if(anyimpure1 && (arb2.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
 								if(true) {
-									if(arb3.b1.isDynamic()) {
-										var o7 = arb3.b1;
+									if(arb2.b1.isDynamic()) {
+										var o7 = arb2.b1;
 										if(!o7.world) {
 											o7.component.waket = this.stamp + (this.midstep?0:1);
 											if(o7.isKinematic()) o7.kinematicDelaySleep = true;
 											if(o7.component.sleeping) this.really_wake(o7,false);
 										}
 									}
-									if(arb3.b1.isDynamic()) {
-										var o8 = arb3.b2;
+									if(arb2.b1.isDynamic()) {
+										var o8 = arb2.b2;
 										if(!o8.world) {
 											o8.component.waket = this.stamp + (this.midstep?0:1);
 											if(o8.isKinematic()) o8.kinematicDelaySleep = true;
@@ -34573,16 +36443,16 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 										}
 									}
 								} else {
-									if(!arb3.b1.isStatic()) {
-										var o9 = arb3.b1;
+									if(!arb2.b1.isStatic()) {
+										var o9 = arb2.b1;
 										if(!o9.world) {
 											o9.component.waket = this.stamp + (this.midstep?0:1);
 											if(o9.isKinematic()) o9.kinematicDelaySleep = true;
 											if(o9.component.sleeping) this.really_wake(o9,false);
 										}
 									}
-									if(!arb3.b2.isStatic()) {
-										var o10 = arb3.b2;
+									if(!arb2.b2.isStatic()) {
+										var o10 = arb2.b2;
 										if(!o10.world) {
 											o10.component.waket = this.stamp + (this.midstep?0:1);
 											if(o10.isKinematic()) o10.kinematicDelaySleep = true;
@@ -34592,17 +36462,17 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 								}
 							}
 						}
-						if(true && (arb3.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0) {
-							if(arb3.b1.isDynamic() && arb3.b1.component.sleeping) {
-								var o11 = arb3.b1;
+						if(true && (arb2.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0) {
+							if(arb2.b1.isDynamic() && arb2.b1.component.sleeping) {
+								var o11 = arb2.b1;
 								if(!o11.world) {
 									o11.component.waket = this.stamp + (this.midstep?0:1);
 									if(o11.isKinematic()) o11.kinematicDelaySleep = true;
 									if(o11.component.sleeping) this.really_wake(o11,false);
 								}
 							}
-							if(arb3.b2.isDynamic() && arb3.b2.component.sleeping) {
-								var o12 = arb3.b2;
+							if(arb2.b2.isDynamic() && arb2.b2.component.sleeping) {
+								var o12 = arb2.b2;
 								if(!o12.world) {
 									o12.component.waket = this.stamp + (this.midstep?0:1);
 									if(o12.isKinematic()) o12.kinematicDelaySleep = true;
@@ -34610,19 +36480,19 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 								}
 							}
 						}
-						if(arb3.sleeping) {
-							arb3.sleeping = false;
-							carbs.inlined_add(arb3);
+						if(arb2.sleeping) {
+							arb2.sleeping = false;
+							carbs.inlined_add(arb2);
 						}
-						ret = arb3;
+						ret = arb2;
 					} else if(first1) {
-						var o13 = arb3;
+						var o13 = arb2;
 						o13.free();
 						o13.next = zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool;
 						zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool = o13;
 						ret = null;
-					} else ret = arb3;
-				} else ret = arb3;
+					} else ret = arb2;
+				} else ret = arb2;
 			} else {
 				var xarb2;
 				if(in_arb == null) {
@@ -34631,9 +36501,9 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					if(b1.arbiters.length < b2.arbiters.length) b4 = b1; else b4 = b2;
 					var cx_ite12 = b4.arbiters.begin();
 					while(cx_ite12 != null) {
-						var arb4 = cx_ite12.elem();
-						if(arb4.id == sa.id && arb4.di == sb.id) {
-							ret5 = arb4;
+						var arb5 = cx_ite12.elem();
+						if(arb5.id == sa.id && arb5.di == sb.id) {
+							ret5 = arb5;
 							break;
 						}
 						cx_ite12 = cx_ite12.next;
@@ -34641,44 +36511,44 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 					xarb2 = ret5;
 				} else xarb2 = in_arb;
 				var first2 = xarb2 == null;
-				var arb5;
+				var arb4;
 				var swapped2 = false;
 				if(first2) {
-					if(zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool == null) arb5 = new zpp_$nape_dynamics_ZPP_$SensorArbiter(); else {
-						arb5 = zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool;
-						zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool = arb5.next;
-						arb5.next = null;
+					if(zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool == null) arb4 = new zpp_$nape_dynamics_ZPP_$SensorArbiter(); else {
+						arb4 = zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool;
+						zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool = arb4.next;
+						arb4.next = null;
 					}
-					arb5.alloc();
+					arb4.alloc();
 				} else if(xarb2.sensorarb == null) {
 					xarb2.lazyRetire(this,null);
-					if(zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool == null) arb5 = new zpp_$nape_dynamics_ZPP_$SensorArbiter(); else {
-						arb5 = zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool;
-						zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool = arb5.next;
-						arb5.next = null;
+					if(zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool == null) arb4 = new zpp_$nape_dynamics_ZPP_$SensorArbiter(); else {
+						arb4 = zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool;
+						zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool = arb4.next;
+						arb4.next = null;
 					}
-					arb5.alloc();
-					arb5.intchange = true;
+					arb4.alloc();
+					arb4.intchange = true;
 					first2 = true;
 					swapped2 = true;
-				} else arb5 = xarb2.sensorarb;
+				} else arb4 = xarb2.sensorarb;
 				var inttype2 = zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR;
-				if(first2 || arb5.stamp != this.stamp || continuous) {
-					arb5.stamp = this.stamp;
+				if(first2 || arb4.stamp != this.stamp || continuous) {
+					arb4.stamp = this.stamp;
 					if(zpp_$nape_geom_ZPP_$Collide.testCollide(sa,sb)) {
 						if(first2) {
-							arb5.assign(s1,s2,sa.id,sb.id);
-							this.s_arbiters.inlined_add(arb5);
-							arb5.fresh = !swapped2;
-						} else arb5.fresh = arb5.up_stamp < this.stamp - 1 || arb5.endGenerated == this.stamp && continuous;
-						arb5.up_stamp = arb5.stamp;
-						if(arb5.fresh || (arb5.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
-							arb5.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
+							arb4.assign(s1,s2,sa.id,sb.id);
+							this.s_arbiters.inlined_add(arb4);
+							arb4.fresh = !swapped2;
+						} else arb4.fresh = arb4.up_stamp < this.stamp - 1 || arb4.endGenerated == this.stamp && continuous;
+						arb4.up_stamp = arb4.stamp;
+						if(arb4.fresh || (arb4.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
+							arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
 							var anyimpure2 = false;
 							var arbs12;
-							if(arb5.ws1.id > arb5.ws2.id) arbs12 = arb5.ws2; else arbs12 = arb5.ws1;
+							if(arb4.ws1.id > arb4.ws2.id) arbs12 = arb4.ws2; else arbs12 = arb4.ws1;
 							var arbs22;
-							if(arb5.ws1.id > arb5.ws2.id) arbs22 = arb5.ws1; else arbs22 = arb5.ws2;
+							if(arb4.ws1.id > arb4.ws2.id) arbs22 = arb4.ws1; else arbs22 = arb4.ws2;
 							this.inlined_MRCA_chains(arbs12,arbs22);
 							var cx_ite13 = this.mrca1.begin();
 							while(cx_ite13 != null) {
@@ -34727,10 +36597,10 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 												cx_ite15 = cx_ite15.next;
 											}
 										}
-										var pact2 = arb5.active;
-										arb5.active = true;
+										var pact2 = arb4.active;
+										arb4.active = true;
 										var emptycontacts2 = false;
-										this.precb.zpp_inner.pre_arbiter = arb5;
+										this.precb.zpp_inner.pre_arbiter = arb4;
 										this.precb.zpp_inner.set = callbackset2;
 										var cx_ite16 = this.prelisteners.begin();
 										while(cx_ite16 != null) {
@@ -34739,41 +36609,41 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 											zpp_$nape_phys_ZPP_$Interactor.int_callback(callbackset2,listener10,this.precb.zpp_inner);
 											this.precb.zpp_inner.pre_swapped = i12 != this.precb.zpp_inner.int1;
 											var ret6 = listener10.handlerp(this.precb);
-											if(ret6 != null) if(ret6 == nape_callbacks_PreFlag.get_ACCEPT()) arb5.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret6 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb5.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret6 == nape_callbacks_PreFlag.get_IGNORE()) arb5.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb5.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
+											if(ret6 != null) if(ret6 == nape_callbacks_PreFlag.get_ACCEPT()) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret6 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret6 == nape_callbacks_PreFlag.get_IGNORE()) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
 											cx_ite16 = cx_ite16.next;
 										}
-										arb5.active = pact2;
+										arb4.active = pact2;
 										if(callbackset2 != null) {
 											var cx_ite17 = this.prelisteners.begin();
 											while(cx_ite17 != null) {
 												var listener11 = cx_ite17.elem();
 												if(listener11.itype == zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY) {
-													callbackset2.COLLISIONstate = arb5.immState;
-													callbackset2.SENSORstate = arb5.immState;
-													callbackset2.FLUIDstate = arb5.immState;
-												} else callbackset2.SENSORstate = arb5.immState;
+													callbackset2.COLLISIONstate = arb4.immState;
+													callbackset2.SENSORstate = arb4.immState;
+													callbackset2.FLUIDstate = arb4.immState;
+												} else callbackset2.SENSORstate = arb4.immState;
 												cx_ite17 = cx_ite17.next;
 											}
 										}
 									} else if(callbackset2 == null) {
-										if((arb5.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) arb5.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
-									} else arb5.immState = callbackset2.SENSORstate;
+										if((arb4.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT;
+									} else arb4.immState = callbackset2.SENSORstate;
 									cx_ite14 = cx_ite14.next;
 								}
 								cx_ite13 = cx_ite13.next;
 							}
-							if(anyimpure2 && (arb5.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
+							if(anyimpure2 && (arb4.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS) == 0) {
 								if(false) {
-									if(arb5.b1.isDynamic()) {
-										var o14 = arb5.b1;
+									if(arb4.b1.isDynamic()) {
+										var o14 = arb4.b1;
 										if(!o14.world) {
 											o14.component.waket = this.stamp + (this.midstep?0:1);
 											if(o14.isKinematic()) o14.kinematicDelaySleep = true;
 											if(o14.component.sleeping) this.really_wake(o14,false);
 										}
 									}
-									if(arb5.b1.isDynamic()) {
-										var o15 = arb5.b2;
+									if(arb4.b1.isDynamic()) {
+										var o15 = arb4.b2;
 										if(!o15.world) {
 											o15.component.waket = this.stamp + (this.midstep?0:1);
 											if(o15.isKinematic()) o15.kinematicDelaySleep = true;
@@ -34781,16 +36651,16 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 										}
 									}
 								} else {
-									if(!arb5.b1.isStatic()) {
-										var o16 = arb5.b1;
+									if(!arb4.b1.isStatic()) {
+										var o16 = arb4.b1;
 										if(!o16.world) {
 											o16.component.waket = this.stamp + (this.midstep?0:1);
 											if(o16.isKinematic()) o16.kinematicDelaySleep = true;
 											if(o16.component.sleeping) this.really_wake(o16,false);
 										}
 									}
-									if(!arb5.b2.isStatic()) {
-										var o17 = arb5.b2;
+									if(!arb4.b2.isStatic()) {
+										var o17 = arb4.b2;
 										if(!o17.world) {
 											o17.component.waket = this.stamp + (this.midstep?0:1);
 											if(o17.isKinematic()) o17.kinematicDelaySleep = true;
@@ -34800,17 +36670,17 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 								}
 							}
 						}
-						if(false && (arb5.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0) {
-							if(arb5.b1.isDynamic() && arb5.b1.component.sleeping) {
-								var o18 = arb5.b1;
+						if(false && (arb4.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0) {
+							if(arb4.b1.isDynamic() && arb4.b1.component.sleeping) {
+								var o18 = arb4.b1;
 								if(!o18.world) {
 									o18.component.waket = this.stamp + (this.midstep?0:1);
 									if(o18.isKinematic()) o18.kinematicDelaySleep = true;
 									if(o18.component.sleeping) this.really_wake(o18,false);
 								}
 							}
-							if(arb5.b2.isDynamic() && arb5.b2.component.sleeping) {
-								var o19 = arb5.b2;
+							if(arb4.b2.isDynamic() && arb4.b2.component.sleeping) {
+								var o19 = arb4.b2;
 								if(!o19.world) {
 									o19.component.waket = this.stamp + (this.midstep?0:1);
 									if(o19.isKinematic()) o19.kinematicDelaySleep = true;
@@ -34818,19 +36688,19 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 								}
 							}
 						}
-						if(arb5.sleeping) {
-							arb5.sleeping = false;
-							this.s_arbiters.inlined_add(arb5);
+						if(arb4.sleeping) {
+							arb4.sleeping = false;
+							this.s_arbiters.inlined_add(arb4);
 						}
-						ret = arb5;
+						ret = arb4;
 					} else if(first2) {
-						var o20 = arb5;
+						var o20 = arb4;
 						o20.free();
 						o20.next = zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool;
 						zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool = o20;
 						ret = null;
-					} else ret = arb5;
-				} else ret = arb5;
+					} else ret = arb4;
+				} else ret = arb4;
 			}
 		}
 		return ret;
@@ -35899,89 +37769,6 @@ zpp_$nape_util_ZNPList_$ZPP_$InteractionGroup.prototype = {
 	}
 	,__class__: zpp_$nape_util_ZNPList_$ZPP_$InteractionGroup
 };
-var zpp_$nape_util_ZNPList_$ZPP_$ColArbiter = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_ColArbiter"] = zpp_$nape_util_ZNPList_$ZPP_$ColArbiter;
-zpp_$nape_util_ZNPList_$ZPP_$ColArbiter.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$ColArbiter.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,setbegin: function(i) {
-		this.head = i;
-		this.modified = true;
-		this.pushmod = true;
-	}
-	,add: function(o) {
-		return this.inlined_add(o);
-	}
-	,inlined_add: function(o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		temp.next = this.begin();
-		this.head = temp;
-		this.modified = true;
-		this.length++;
-		return o;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$ColArbiter
-};
 var zpp_$nape_util_ZNPList_$ZPP_$FluidArbiter = function() {
 	this.length = 0;
 	this.pushmod = false;
@@ -36095,6 +37882,89 @@ zpp_$nape_util_ZNPList_$ZPP_$SensorArbiter.prototype = {
 		return this.begin() == null;
 	}
 	,__class__: zpp_$nape_util_ZNPList_$ZPP_$SensorArbiter
+};
+var zpp_$nape_util_ZNPList_$ZPP_$ColArbiter = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_ColArbiter"] = zpp_$nape_util_ZNPList_$ZPP_$ColArbiter;
+zpp_$nape_util_ZNPList_$ZPP_$ColArbiter.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$ColArbiter.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,setbegin: function(i) {
+		this.head = i;
+		this.modified = true;
+		this.pushmod = true;
+	}
+	,add: function(o) {
+		return this.inlined_add(o);
+	}
+	,inlined_add: function(o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		temp.next = this.begin();
+		this.head = temp;
+		this.modified = true;
+		this.length++;
+		return o;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$ColArbiter
 };
 var zpp_$nape_util_ZNPList_$ZPP_$Listener = function() {
 	this.length = 0;
@@ -36404,23 +38274,6 @@ zpp_$nape_util_ZNPNode_$ZPP_$Compound.prototype = {
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$Compound
 };
-var zpp_$nape_util_ZNPNode_$ZPP_$Arbiter = function() {
-	this.elt = null;
-	this.next = null;
-};
-$hxClasses["zpp_nape.util.ZNPNode_ZPP_Arbiter"] = zpp_$nape_util_ZNPNode_$ZPP_$Arbiter;
-zpp_$nape_util_ZNPNode_$ZPP_$Arbiter.__name__ = true;
-zpp_$nape_util_ZNPNode_$ZPP_$Arbiter.prototype = {
-	alloc: function() {
-	}
-	,free: function() {
-		this.elt = null;
-	}
-	,elem: function() {
-		return this.elt;
-	}
-	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$Arbiter
-};
 var zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener = function() {
 	this.elt = null;
 	this.next = null;
@@ -36489,13 +38342,13 @@ zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.prototype = {
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$BodyListener
 };
-var zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair = function() {
+var zpp_$nape_util_ZNPNode_$ZPP_$Arbiter = function() {
 	this.elt = null;
 	this.next = null;
 };
-$hxClasses["zpp_nape.util.ZNPNode_ZPP_CbSetPair"] = zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair;
-zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair.__name__ = true;
-zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair.prototype = {
+$hxClasses["zpp_nape.util.ZNPNode_ZPP_Arbiter"] = zpp_$nape_util_ZNPNode_$ZPP_$Arbiter;
+zpp_$nape_util_ZNPNode_$ZPP_$Arbiter.__name__ = true;
+zpp_$nape_util_ZNPNode_$ZPP_$Arbiter.prototype = {
 	alloc: function() {
 	}
 	,free: function() {
@@ -36504,7 +38357,7 @@ zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair.prototype = {
 	,elem: function() {
 		return this.elt;
 	}
-	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair
+	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$Arbiter
 };
 var zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener = function() {
 	this.elt = null;
@@ -36523,6 +38376,23 @@ zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.prototype = {
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener
 };
+var zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair = function() {
+	this.elt = null;
+	this.next = null;
+};
+$hxClasses["zpp_nape.util.ZNPNode_ZPP_CbSetPair"] = zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair;
+zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair.__name__ = true;
+zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair.prototype = {
+	alloc: function() {
+	}
+	,free: function() {
+		this.elt = null;
+	}
+	,elem: function() {
+		return this.elt;
+	}
+	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$CbSetPair
+};
 var zpp_$nape_util_ZNPNode_$ZPP_$AABBPair = function() {
 	this.elt = null;
 	this.next = null;
@@ -36540,23 +38410,6 @@ zpp_$nape_util_ZNPNode_$ZPP_$AABBPair.prototype = {
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$AABBPair
 };
-var zpp_$nape_util_ZNPNode_$ZPP_$Vec2 = function() {
-	this.elt = null;
-	this.next = null;
-};
-$hxClasses["zpp_nape.util.ZNPNode_ZPP_Vec2"] = zpp_$nape_util_ZNPNode_$ZPP_$Vec2;
-zpp_$nape_util_ZNPNode_$ZPP_$Vec2.__name__ = true;
-zpp_$nape_util_ZNPNode_$ZPP_$Vec2.prototype = {
-	alloc: function() {
-	}
-	,free: function() {
-		this.elt = null;
-	}
-	,elem: function() {
-		return this.elt;
-	}
-	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$Vec2
-};
 var zpp_$nape_util_ZNPNode_$ZPP_$Edge = function() {
 	this.elt = null;
 	this.next = null;
@@ -36573,6 +38426,23 @@ zpp_$nape_util_ZNPNode_$ZPP_$Edge.prototype = {
 		return this.elt;
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$Edge
+};
+var zpp_$nape_util_ZNPNode_$ZPP_$Vec2 = function() {
+	this.elt = null;
+	this.next = null;
+};
+$hxClasses["zpp_nape.util.ZNPNode_ZPP_Vec2"] = zpp_$nape_util_ZNPNode_$ZPP_$Vec2;
+zpp_$nape_util_ZNPNode_$ZPP_$Vec2.__name__ = true;
+zpp_$nape_util_ZNPNode_$ZPP_$Vec2.prototype = {
+	alloc: function() {
+	}
+	,free: function() {
+		this.elt = null;
+	}
+	,elem: function() {
+		return this.elt;
+	}
+	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$Vec2
 };
 var zpp_$nape_util_ZNPNode_$ZPP_$Component = function() {
 	this.elt = null;
@@ -36602,23 +38472,6 @@ zpp_$nape_util_ZNPNode_$ZPP_$InteractionGroup.prototype = {
 		return this.elt;
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$InteractionGroup
-};
-var zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter = function() {
-	this.elt = null;
-	this.next = null;
-};
-$hxClasses["zpp_nape.util.ZNPNode_ZPP_ColArbiter"] = zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter;
-zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.__name__ = true;
-zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.prototype = {
-	alloc: function() {
-	}
-	,free: function() {
-		this.elt = null;
-	}
-	,elem: function() {
-		return this.elt;
-	}
-	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter
 };
 var zpp_$nape_util_ZNPNode_$ZPP_$FluidArbiter = function() {
 	this.elt = null;
@@ -36653,6 +38506,23 @@ zpp_$nape_util_ZNPNode_$ZPP_$SensorArbiter.prototype = {
 		return this.elt;
 	}
 	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$SensorArbiter
+};
+var zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter = function() {
+	this.elt = null;
+	this.next = null;
+};
+$hxClasses["zpp_nape.util.ZNPNode_ZPP_ColArbiter"] = zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter;
+zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.__name__ = true;
+zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter.prototype = {
+	alloc: function() {
+	}
+	,free: function() {
+		this.elt = null;
+	}
+	,elem: function() {
+		return this.elt;
+	}
+	,__class__: zpp_$nape_util_ZNPNode_$ZPP_$ColArbiter
 };
 var zpp_$nape_util_ZNPNode_$ZPP_$Listener = function() {
 	this.elt = null;
@@ -37871,16 +39741,7 @@ zpp_$nape_util_ZPP_$Set_$ZPP_$CbSet.prototype = {
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
-Math.NaN = Number.NaN;
-Math.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY;
-Math.POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
 $hxClasses.Math = Math;
-Math.isFinite = function(i) {
-	return isFinite(i);
-};
-Math.isNaN = function(i1) {
-	return isNaN(i1);
-};
 String.prototype.__class__ = $hxClasses.String = String;
 String.__name__ = true;
 $hxClasses.Array = Array;
@@ -37895,13 +39756,18 @@ var Bool = $hxClasses.Bool = Boolean;
 Bool.__ename__ = ["Bool"];
 var Class = $hxClasses.Class = { __name__ : ["Class"]};
 var Enum = { };
-Xml.Element = "element";
-Xml.PCData = "pcdata";
-Xml.CData = "cdata";
-Xml.Comment = "comment";
-Xml.DocType = "doctype";
-Xml.ProcessingInstruction = "processingInstruction";
-Xml.Document = "document";
+var __map_reserved = {}
+var ArrayBuffer = (Function("return typeof ArrayBuffer != 'undefined' ? ArrayBuffer : null"))() || js_html_compat_ArrayBuffer;
+if(ArrayBuffer.prototype.slice == null) ArrayBuffer.prototype.slice = js_html_compat_ArrayBuffer.sliceImpl;
+var DataView = (Function("return typeof DataView != 'undefined' ? DataView : null"))() || js_html_compat_DataView;
+var Uint8Array = (Function("return typeof Uint8Array != 'undefined' ? Uint8Array : null"))() || js_html_compat_Uint8Array._new;
+Xml.Element = 0;
+Xml.PCData = 1;
+Xml.CData = 2;
+Xml.Comment = 3;
+Xml.DocType = 4;
+Xml.ProcessingInstruction = 5;
+Xml.Document = 6;
 flambe_platform_html_HtmlPlatform.instance = new flambe_platform_html_HtmlPlatform();
 flambe_util_SignalBase.DISPATCHING_SENTINEL = new flambe_util_SignalConnection(null,null);
 flambe_System.root = new flambe_Entity();
@@ -37936,6 +39802,12 @@ flambe_platform_html_HtmlUtil.SHOULD_HIDE_MOBILE_BROWSER = js_Browser.get_window
 flambe_platform_html_WebAudioSound._detectSupport = true;
 flambe_platform_html_WebGLGraphics._scratchMatrix = new flambe_math_Matrix();
 haxe_ds_ObjectMap.count = 0;
+haxe_io_FPHelper.i64tmp = (function($this) {
+	var $r;
+	var x = new haxe__$Int64__$_$_$Int64(0 >> 31,0);
+	$r = x;
+	return $r;
+}(this));
 haxe_xml_Check.blanks = new EReg("^[ \r\n\t]*$","");
 haxe_xml_Parser.escapes = (function($this) {
 	var $r;
@@ -37945,10 +39817,11 @@ haxe_xml_Parser.escapes = (function($this) {
 	h.set("amp","&");
 	h.set("quot","\"");
 	h.set("apos","'");
-	h.set("nbsp",String.fromCharCode(160));
 	$r = h;
 	return $r;
 }(this));
+js_Boot.__toStr = {}.toString;
+js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 nape_Config.epsilon = 1e-8;
 nape_Config.fluidAngularDragFriction = 2.5;
 nape_Config.fluidAngularDrag = 100;
@@ -37997,19 +39870,19 @@ zpp_$nape_util_ZPP_$Flags.id_BodyType_STATIC = 1;
 zpp_$nape_util_ZPP_$Flags.id_BodyType_DYNAMIC = 2;
 zpp_$nape_util_ZPP_$Flags.id_BodyType_KINEMATIC = 3;
 zpp_$nape_util_ZPP_$Flags.id_ListenerType_BODY = 0;
-zpp_$nape_util_ZPP_$Flags.id_PreFlag_ACCEPT = 1;
 zpp_$nape_util_ZPP_$Flags.id_ListenerType_CONSTRAINT = 1;
+zpp_$nape_util_ZPP_$Flags.id_PreFlag_ACCEPT = 1;
 zpp_$nape_util_ZPP_$Flags.id_ListenerType_INTERACTION = 2;
 zpp_$nape_util_ZPP_$Flags.id_ListenerType_PRE = 3;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_BEGIN = 0;
-zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION = 1;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_ONGOING = 6;
-zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR = 2;
+zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION = 1;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_END = 1;
-zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID = 4;
+zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR = 2;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_WAKE = 2;
-zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY = 7;
+zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID = 4;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_SLEEP = 3;
+zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY = 7;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_BREAK = 4;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_PRE = 5;
 zpp_$nape_util_ZPP_$Flags.id_ShapeType_CIRCLE = 0;
