@@ -187,7 +187,7 @@
 							//Event Listener
 							Assets.successSignal.connect(function () {
 								var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
-
+								Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
 								//temp scene stuff
 								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
 								sceneEditor.setState('assetUserName', assetUserName);

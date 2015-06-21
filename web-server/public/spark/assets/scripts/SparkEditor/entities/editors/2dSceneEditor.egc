@@ -177,11 +177,11 @@
 					
 					//Get Scene
 					var scene = me.getState('target');
-					
+					Display.error("DEBUG LOG: Run: 11111111");
 					//Add Scene's Xml to Doc
 					var sceneXml = Xml.parse(scene.getState('xmlData').toString()).firstElement(); //clone it
 					//sceneFileXml.addChild(sceneXml);
-					
+					Display.error("DEBUG LOG: Run: 2222222222");
 					//Create [Form.Space.Entities]
 					var formXml = Xml.createElement('Form');
 					sceneXml.addChild(formXml);
@@ -189,7 +189,7 @@
 					formXml.addChild(spaceXml);
 					var entitiesXml = Xml.createElement('Entities');
 					spaceXml.addChild(entitiesXml);
-					
+					Display.error("DEBUG LOG: Run: 3333333333");
 					//For Scene's Children
 					for (child in scene.getChildren())
 					{
@@ -198,7 +198,7 @@
 							entitiesXml.addChild(child.getState('xmlData'));
 						}
 					}
-					
+					Display.error("DEBUG LOG: Run: 44444444444");
 					//var finalString = sceneFileXml.toString();
 					//Display.error("sceneXml: " + finalString);
 					
@@ -210,18 +210,19 @@
 					
 					//Instantiate
 					var editScene = Logic.gameFactory.createGameEntityByXml(sceneBakedXml);
-					
+					Display.error("DEBUG LOG: Run: 5555555555");
 					me.setState('sceneRun',editScene);
 					
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(editScene);
-					
+					Display.error("DEBUG LOG: Run: 6666666666666");
 					//Assign it to view
 					Logic.getEntityByName('Main View 2D Run').setState('scene',editScene);
 					Logic.getEntityByName('Main View 2D Run').setState('visible',true);
 					
 					//Hide Edit View
 					Logic.getEntityByName('Main View 2D').setState('visible',false);
+					Display.error("DEBUG LOG: Run: 77777777777777");
 				</Script>
 			</Scripts>
 		</Action>
