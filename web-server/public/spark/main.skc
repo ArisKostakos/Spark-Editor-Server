@@ -140,6 +140,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/ProgrammerEditorScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DragSurfaceScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSprite.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/FullScreenView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DashboardView.egc</Asset>
@@ -149,6 +150,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorRightView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorBottomView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/EditorViewportView.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DragSurfaceView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/SignupPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/LobbyModePanel.egc</Asset>

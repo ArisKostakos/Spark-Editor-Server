@@ -109,6 +109,7 @@
 				
 				<Entity extends="SparkEditor.views.MainView2D"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>
 				<Entity extends="SparkEditor.views.MainView2DRun"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>
+				<Entity extends="SparkEditor.views.DragSurfaceView"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>
 				<!--<Entity extends="SparkEditor.views.MainView3D"><_States><_State id="parent"><Value>Viewport</Value></_State></_States></Entity>-->
 				
 				

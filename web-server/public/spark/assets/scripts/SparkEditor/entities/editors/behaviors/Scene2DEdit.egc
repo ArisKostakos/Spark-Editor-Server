@@ -61,10 +61,13 @@
 			<_Scripts>
 				<Script>
 					me.setState('selectedEntities', []);
+					
+					/*
 					//set thing to update
 					var propertiesWindow = Logic.getEntityByName('Properties Window');
 					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
 					propertiesWindow.startAction('Update');
+					*/
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -107,11 +110,12 @@
 					{
 						me.setState('selectedEntities', []);
 						Display.error("SOOO:: " + me.getState('xmlData'));
-						
+						/*
 						//set thing to update
 						var propertiesWindow = Logic.getEntityByName('Properties Window');
 						propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData'));
 						propertiesWindow.startAction('Update');
+						*/
 					}
 					
 					

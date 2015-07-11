@@ -9,7 +9,7 @@
 		<State>
 			<Id>physicsType</Id>
 			<Type>Text</Type>
-			<Value>Dynamic</Value>
+			<Value>Kinematic</Value>
 		</State>
 		<State><!--export-->
 			<Id>physicsShape</Id>

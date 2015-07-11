@@ -49,7 +49,7 @@
 					var sceneEditXml = Xml.createElement('Entity');
 					sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Scene2DEdit');
 					extendsXml.addChild(sceneEditXml);
-					
+
 					//Instantiate
 					var editScene = Logic.gameFactory.createGameEntityByXml(editXml);
 					me.setState('target',editScene);
@@ -247,6 +247,25 @@
 					Logic.getEntityByName('Main Space').removeChild(me.getState('sceneRun'));
 				</Script>
 			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>ImportAsset</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("ImportAsset");
+					
+					Display.error("ImportAsset");
+					
+					
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>mediaAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>scriptAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>type</Id><Type>Text</Type><Value>null</Value></State>
+			</States>
 		</Action>
 	</_Actions>
 	

@@ -314,7 +314,7 @@
 							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
 								dashboardScene = Logic.getEntityByName('Dashboard Admin');
 							else 
-								dashboardScene = Logic.getEntityByName('Dashboard Normal');
+								dashboardScene = Logic.getEntityByName('Dashboard Admin');//Normal
 								
 							dashboardScene.setState('display','inline');
 							dashboardScene.getAction('AddProjects').setState('items', data.projects);

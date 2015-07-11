@@ -36,5 +36,23 @@
 			<Type>Boolean</Type>
 			<Value>false</Value>
 		</State>
+		
+		<State>
+			<Id>draggable</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+
+		<State>
+			<Id>dropTarget</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+
+		<State>
+			<Id>eventObject</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
 	</_States>
 </Entity>
