@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Action</Value></_State>
+	</_States>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_Actions>
+		<Action>
+			<Id>Run</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Run');
+					
+
+					Display.error("Action Run Happened");
+
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

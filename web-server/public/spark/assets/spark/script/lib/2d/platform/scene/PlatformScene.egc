@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.scene.ScenePhysics">
+			<_States>
+				<_State id="gravityY"><Value>200</Value></_State>
+			</_States>
+		</Entity>
+	</Extends>
+</Entity>

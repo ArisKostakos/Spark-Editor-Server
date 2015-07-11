@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Space">
+	<_States>
+		<_State id="name">
+			<Value>Main Space</Value>
+		</_State>
+		
+		<_State id="initStageName">
+			<Value>Main Stage</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="blank.MainStage"/>
+				<Entity extends="blank.scenes.MainScene"/>
+				<Entity extends="blank.events.MainEventSheet"/>
+				<Entity extends="blank.cameras.MainCamera"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="lib.2d.platform.scene.PlatformScene">
+
+	<_States>
+		<_State id="name">
+			<Value>Platform Scene</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

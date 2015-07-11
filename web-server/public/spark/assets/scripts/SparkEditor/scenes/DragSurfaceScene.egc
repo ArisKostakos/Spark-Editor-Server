@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Drag Surface Scene</Value>
+		</_State>
+		<State><Id>assetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>white</Value></_State>
+						<_State id="opacity"><Value>0.25</Value></_State>
+						<_State id="dropTarget"><Value>true</Value></_State>
+					</_States>
+					<_Triggers>
+						<Trigger>
+							<Event>OnDrop</Event>
+							<Scripts>
+								<Script>
+									function firstElementNamed(p_xmlNode, p_elementName)
+									{
+										if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+										{
+											return p_xmlNode.elementsNamed(p_elementName).next();
+										}
+										else
+										{
+											return null;
+										}
+									}
+					
+									var eventObject = me.getState('eventObject');
+									var localX = eventObject.clientX - eventObject.target.getBoundingClientRect().left;
+									var localY = eventObject.clientY - eventObject.target.getBoundingClientRect().top;
+									Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+									
+									var assetBeingDragged = parent.getState('assetBeingDragged');
+									var componentType = assetBeingDragged.componentType;
+									
+									Display.error('Dropping: ' + assetBeingDragged.name);
+									
+									var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+									
+									if (componentType=='Tile')
+									{
+										//Get appropriate class (as an xml)
+										var pureXml = Xml.parse(Assets.getFile('lib/2d/platform/tile/Tile.egc').toString()).firstElement();
+										
+										//adjust spaceX and spaceY
+										var states = firstElementNamed(pureXml,'_States');
+										
+										for (state in states.elementsNamed('_State'))
+										{
+											if (state.get('id')=='spaceX')
+											{
+												firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(localX);
+											}
+											else if (state.get('id')=='spaceY')
+											{
+												firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(localY);
+											}
+										}
+										
+										//insert the correct images
+										var formStates = firstElementNamed(firstElementNamed(pureXml,'_Form'),'_States');
+										
+										for (state in formStates.elementsNamed('State'))
+										{
+											if (firstElementNamed(state,'Id').firstChild().nodeValue=='ImageUrl')
+											{
+												firstElementNamed(state,'Value').firstChild().nodeValue = 'image_' + assetBeingDragged.name;
+											}
+										}
+
+										
+										//Display.error('pureXml: ' + pureXml.toString());
+										var realXml = Xml.parse(pureXml.toString()).firstElement(); //clone it
+										
+										//attach the sprite2dEdit behavior
+										var extendsNode = firstElementNamed(realXml,'Extends');
+										
+										var spriteEditXml = Xml.createElement('Entity');
+										spriteEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+										extendsNode.addChild(spriteEditXml);
+										
+										
+										Display.error('realXml: ' + realXml.toString());
+										//Create the entity from the uploaded lib asssets
+										var tileGameEntity = Logic.gameFactory.createGameEntityByXml(realXml);
+										
+										//give it snapshot xml
+										tileGameEntity.setState('xmlData',pureXml);
+										
+										//add to scene
+										scene.addChild(tileGameEntity);
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
