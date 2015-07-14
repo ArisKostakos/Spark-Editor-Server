@@ -317,7 +317,7 @@
 								dashboardScene = Logic.getEntityByName('Dashboard Admin');
 							else
 							{
-								dashboardScene = Logic.getEntityByName('Dashboard Admin');//Normal //Admin
+								dashboardScene = Logic.getEntityByName('Dashboard Normal');//Normal //Admin
 							}
 								
 							dashboardScene.setState('display','inline');

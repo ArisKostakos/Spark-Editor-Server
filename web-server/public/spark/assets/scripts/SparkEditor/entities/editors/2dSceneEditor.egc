@@ -73,7 +73,7 @@
 									var entityChildXml = entities.next();
 									//Display.error("Found child: " + entityChildXml.get('extends'));
 									//take snapshot
-									var pureChildXml = Xml.parse(entityChildXml.toString());
+									var pureChildXml = Xml.parse(entityChildXml.toString()).firstElement();
 									//Display.error("Displaying Child: " + pureChildXml.toString());
 									
 									//Remove [extends]
