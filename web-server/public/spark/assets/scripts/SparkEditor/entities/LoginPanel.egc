@@ -313,8 +313,13 @@
 							var dashboardScene;
 							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
 								dashboardScene = Logic.getEntityByName('Dashboard Admin');
-							else 
-								dashboardScene = Logic.getEntityByName('Dashboard Normal');//Normal //Admin
+							else
+							{
+								if (Input.keyboard.isKeyDown(Key.Control))
+									dashboardScene = Logic.getEntityByName('Dashboard Admin');//Normal //Admin
+								else
+									dashboardScene = Logic.getEntityByName('Dashboard Normal');//Normal //Admin
+							}
 								
 							dashboardScene.setState('display','inline');
 							dashboardScene.getAction('AddProjects').setState('items', data.projects);
