@@ -7,8 +7,8 @@
 	<_States>
 		<_State id="name"><Value>Tile</Value></_State>
 		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
-		<_State id="spaceX"><Value>200</Value></_State>
-		<_State id="spaceY"><Value>200</Value></_State>
+		<_State id="spaceX"><Value>0</Value></_State>
+		<_State id="spaceY"><Value>0</Value></_State>
 	</_States>
 	
 	<_Form>

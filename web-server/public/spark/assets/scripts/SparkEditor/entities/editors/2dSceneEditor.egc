@@ -200,7 +200,7 @@
 					}
 					Display.error("DEBUG LOG: Run: 44444444444");
 					//var finalString = sceneFileXml.toString();
-					//Display.error("sceneXml: " + finalString);
+					Display.error("sceneXml: " + sceneXml);
 					
 					//var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 					

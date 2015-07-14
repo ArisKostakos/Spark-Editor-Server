@@ -13,9 +13,9 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="this_game_is_cool.MainStage"/>
-				<Entity extends="this_game_is_cool.scenes.MainScene"/>
-				<Entity extends="this_game_is_cool.cameras.MainCamera"/>
+				<Entity extends="lets_see.MainStage"/>
+				<Entity extends="lets_see.scenes.MainScene"/>
+				<Entity extends="lets_see.cameras.MainCamera"/>
 			</Entities>
 		</Space>
 	</Form>

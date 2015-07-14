@@ -168,7 +168,7 @@
 								Assets.addFile(assetUrl, assetId);
 								
 								
-								Display.error(data.assets[i].name);
+								Display.error(assetId);
 								i+=1;
 							}
 							

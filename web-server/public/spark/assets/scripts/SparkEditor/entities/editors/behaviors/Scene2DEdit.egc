@@ -77,6 +77,8 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					me.stopAction("EntityClicked");
+					
 					//Deselect old selected entities
 					var selectedEntities = me.getState('selectedEntities');
 					var entityClicked = me.getAction('EntityClicked').getState('entity');
@@ -117,9 +119,6 @@
 						propertiesWindow.startAction('Update');
 						*/
 					}
-					
-					
-					me.stopAction("EntityClicked");
 				</Script>
 			</Scripts>
 			<States>

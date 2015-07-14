@@ -148,8 +148,8 @@
 					var strPass =parent.getState('passwordInput').getState('text');
 					//strUser = 'aris';
 					//strPass = 'r0diof';
-					//strUser = 'test3';
-					//strPass = 'lala3';
+					strUser = 'test3';
+					strPass = 'lala3';
 					//strUser = 'spark';
 					//strPass = '12qw!@QW ';
 					
@@ -314,7 +314,7 @@
 							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
 								dashboardScene = Logic.getEntityByName('Dashboard Admin');
 							else 
-								dashboardScene = Logic.getEntityByName('Dashboard Admin');//Normal
+								dashboardScene = Logic.getEntityByName('Dashboard Normal');//Normal //Admin
 								
 							dashboardScene.setState('display','inline');
 							dashboardScene.getAction('AddProjects').setState('items', data.projects);

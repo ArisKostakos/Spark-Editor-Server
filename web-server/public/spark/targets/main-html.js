@@ -13882,9 +13882,11 @@ spriter_engine_Spriter.prototype = {
 var spriter_flambe_SpriterMovie = function(pack,scmlFilePath,spriterEntityName) {
 	flambe_Component.call(this);
 	this._pack = pack;
-	var aPath = scmlFilePath.split("/");
+	tools_spark_sliced_core_Sliced.display.error("THIS IS THE SCML FILE PATH I GOT: " + scmlFilePath);
+	var aPath = scmlFilePath.split(".");
 	aPath.pop();
-	this._basePath = aPath.join("/");
+	this._basePath = aPath.join(".");
+	tools_spark_sliced_core_Sliced.display.error("_basePath I GOT: " + this._basePath);
 	var scml_str = this._pack.getFile(scmlFilePath).toString();
 	this._scml = new spriter_definitions_ScmlObject(Xml.parse(scml_str));
 	this._container = new flambe_Entity().add(new flambe_display_Sprite());
@@ -13978,7 +13980,7 @@ spriter_library_FlambeLibrary.prototype = $extend(spriter_library_AbstractLibrar
 	getTexture: function(name) {
 		if(!spriter_library_FlambeLibrary._textures.exists(name)) {
 			var noExtension = name.substring(0,name.lastIndexOf("."));
-			var value = this._pack.getTexture(this._basePath + "/" + noExtension);
+			var value = this._pack.getTexture(this._basePath + "." + noExtension);
 			spriter_library_FlambeLibrary._textures.set(name,value);
 		}
 		return spriter_library_FlambeLibrary._textures.get(name);

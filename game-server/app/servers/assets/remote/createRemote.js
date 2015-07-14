@@ -27,7 +27,9 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 	console.log('assetTarget: ' + assetTarget);
 
 
-	fs.readFile(assetSource, 'utf8', function (err, data) {
+
+	//copy assetFile to /user location
+	fs.copy(assetSource, assetTarget, function(err) {
 		//Handle Error
 		if (err) {
 			cb(err);
@@ -35,9 +37,7 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 		}
 
 		//Success
-		var result = data.replace(new RegExp(oldProjectName+'.',"g"), newProjectName+'.');
-
-		fs.writeFile(assetSource, result, 'utf8', function (err) {
+		fs.readFile(assetTarget, 'utf8', function (err, data) {
 			//Handle Error
 			if (err) {
 				cb(err);
@@ -45,14 +45,16 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 			}
 
 			//Success
-			//copy assetFile to /user location
-			fs.copy(assetSource, assetTarget, function(err) {
+			var result = data.replace(new RegExp(oldProjectName+'.',"g"), newProjectName+'.');
+
+			fs.writeFile(assetTarget, result, 'utf8', function (err) {
 				//Handle Error
 				if (err) {
 					cb(err);
 					return;
 				}
 
+				//Success
 				//create new assetDB for each assetDB (mark as fork)
 				var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: [newProjectName], accessControl: [], assetDependancies: []};
 

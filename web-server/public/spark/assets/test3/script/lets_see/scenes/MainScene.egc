@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Scene2D">
+<Entity extends="lib.2d.platform.scene.PlatformScene">
 
 	<_States>
 		<_State id="name">
-			<Value>Main Scene</Value>
+			<Value>Platform Scene</Value>
 		</_State>
 	</_States>
 	

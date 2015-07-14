@@ -136,9 +136,9 @@
 					Display.error("Adding Behavior to: " + pureXml);
 					
 					//set thing to update
-					var propertiesWindow = Logic.getEntityByName('Properties Window');
-					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
-					propertiesWindow.startAction('Update');
+					//var propertiesWindow = Logic.getEntityByName('Properties Window');
+					//propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
+					//propertiesWindow.startAction('Update');
 				</Script>
 			</Scripts>
 			<_States>
@@ -153,6 +153,8 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					me.stopAction("Select");
+
 					if (me.getState('selector')==null)
 					{
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.behaviors.Sprite2DEditSelector');
@@ -167,12 +169,12 @@
 					}
 					
 					//set thing to update
-					var propertiesWindow = Logic.getEntityByName('Properties Window');
-					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
-					propertiesWindow.startAction('Update');
+					//var propertiesWindow = Logic.getEntityByName('Properties Window');
+					//propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
+					//propertiesWindow.startAction('Update');
 					
 					me.setState('selected',true);
-					me.stopAction("Select");
+					
 				</Script>
 			</Scripts>
 		</Action>
@@ -223,14 +225,15 @@
 						//Save changes to xmlData
 						var xmlData = me.getState("xmlData");
 						//Display.error(xmlData);
-						var entityXml = xmlData.elementsNamed('Entity').next();
+						//var entityXml = xmlData.elementsNamed('Entity').next();
 						
+						/*
 						//if no [_States], create it
-						var statesXml = firstElementNamed(entityXml,'_States');
+						var statesXml = firstElementNamed(xmlData,'_States');
 						if (statesXml==null)
 						{
 							statesXml = Xml.createElement('_States');
-							entityXml.addChild(statesXml);
+							xmlData.addChild(statesXml);
 						}
 						
 						var states = statesXml.elementsNamed('_State');
@@ -264,7 +267,22 @@
 								Display.error("spaceY: " + stateValueXml.firstChild().toString());
 							}
 						}
+						*/
 						
+						//adjust spaceX and spaceY
+						var states = firstElementNamed(xmlData,'_States');
+						
+						for (state in states.elementsNamed('_State'))
+						{
+							if (state.get('id')=='spaceX')
+							{
+								firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceX'));
+							}
+							else if (state.get('id')=='spaceY')
+							{
+								firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceY'));
+							}
+						}
 						
 						me.stopAction("Drag");
 					}

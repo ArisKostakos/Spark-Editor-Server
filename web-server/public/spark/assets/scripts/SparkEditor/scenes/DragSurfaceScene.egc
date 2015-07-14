@@ -48,29 +48,40 @@
 									
 									var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
 									
+									var pureXml;
+									
 									if (componentType=='Tile')
 									{
 										//Get appropriate class (as an xml)
-										var pureXml = Xml.parse(Assets.getFile('lib/2d/platform/tile/Tile.egc').toString()).firstElement();
-										
-										//adjust spaceX and spaceY
-										var states = firstElementNamed(pureXml,'_States');
-										
-										for (state in states.elementsNamed('_State'))
+										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/tile/Tile.egc').toString()).firstElement();
+									}
+									else if (componentType=='Actor')
+									{
+										//Get appropriate class (as an xml)
+										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/actor/player/PlayerPlatform.egc').toString()).firstElement();
+									}
+									
+									
+									//adjust spaceX and spaceY
+									var states = firstElementNamed(pureXml,'_States');
+									
+									for (state in states.elementsNamed('_State'))
+									{
+										if (state.get('id')=='spaceX')
 										{
-											if (state.get('id')=='spaceX')
-											{
-												firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(localX);
-											}
-											else if (state.get('id')=='spaceY')
-											{
-												firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(localY);
-											}
+											firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(localX);
 										}
-										
-										//insert the correct images
-										var formStates = firstElementNamed(firstElementNamed(pureXml,'_Form'),'_States');
-										
+										else if (state.get('id')=='spaceY')
+										{
+											firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(localY);
+										}
+									}
+									
+									//insert the correct images
+									var formStates = firstElementNamed(firstElementNamed(pureXml,'_Form'),'_States');
+									
+									if (componentType=='Tile')
+									{
 										for (state in formStates.elementsNamed('State'))
 										{
 											if (firstElementNamed(state,'Id').firstChild().nodeValue=='ImageUrl')
@@ -78,29 +89,46 @@
 												firstElementNamed(state,'Value').firstChild().nodeValue = 'image_' + assetBeingDragged.name;
 											}
 										}
-
-										
-										//Display.error('pureXml: ' + pureXml.toString());
-										var realXml = Xml.parse(pureXml.toString()).firstElement(); //clone it
-										
-										//attach the sprite2dEdit behavior
-										var extendsNode = firstElementNamed(realXml,'Extends');
-										
-										var spriteEditXml = Xml.createElement('Entity');
-										spriteEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
-										extendsNode.addChild(spriteEditXml);
-										
-										
-										Display.error('realXml: ' + realXml.toString());
-										//Create the entity from the uploaded lib asssets
-										var tileGameEntity = Logic.gameFactory.createGameEntityByXml(realXml);
-										
-										//give it snapshot xml
-										tileGameEntity.setState('xmlData',pureXml);
-										
-										//add to scene
-										scene.addChild(tileGameEntity);
 									}
+									else if (componentType=='Actor')
+									{
+										for (state in formStates.elementsNamed('State'))
+										{
+											if (firstElementNamed(state,'Id').firstChild().nodeValue=='Soldier1SpriterMain')
+											{
+												firstElementNamed(state,'Value').firstChild().nodeValue = 'image_' + assetBeingDragged.name;
+											}
+										}
+									}
+									
+									
+									//Display.error('pureXml: ' + pureXml.toString());
+									var realXml = Xml.parse(pureXml.toString()).firstElement(); //clone it
+									
+									//attach the sprite2dEdit behavior
+									var extendsNode = firstElementNamed(realXml,'Extends');
+									
+									//Clean Extends
+									for (entity in extendsNode.elementsNamed('Entity'))
+									{
+										extendsNode.removeChild(entity);
+									}
+									
+									//Add Edit Behavior
+									var spriteEditXml = Xml.createElement('Entity');
+									spriteEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+									extendsNode.addChild(spriteEditXml);
+									
+									
+									Display.error('realXml: ' + realXml.toString());
+									//Create the entity from the uploaded lib asssets
+									var tileGameEntity = Logic.gameFactory.createGameEntityByXml(realXml);
+									
+									//give it snapshot xml
+									tileGameEntity.setState('xmlData',pureXml);
+									
+									//add to scene
+									scene.addChild(tileGameEntity);
 								</Script>
 							</Scripts>
 						</Trigger>
