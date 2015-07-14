@@ -309,16 +309,15 @@
 							me.getState('outputText').setState('text', 'Success requesting all my projects!');
 							Display.error("Data projects received: " + data.projects);
 							
+							Display.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + Input.keyboard.isKeyDown(Key.A));
+							
 							//Fill Dashboard View with projects
 							var dashboardScene;
 							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
 								dashboardScene = Logic.getEntityByName('Dashboard Admin');
 							else
 							{
-								if (Input.keyboard.isKeyDown(Key.Control))
-									dashboardScene = Logic.getEntityByName('Dashboard Admin');//Normal //Admin
-								else
-									dashboardScene = Logic.getEntityByName('Dashboard Normal');//Normal //Admin
+								dashboardScene = Logic.getEntityByName('Dashboard Admin');//Normal //Admin
 							}
 								
 							dashboardScene.setState('display','inline');
