@@ -323,7 +323,7 @@
 						{
 							var newProjectName = me.getState('newProjectName');
 							var newProjectTitle = Logic.getEntityByName('Create New: Project Name Field').getState('text');
-							var forkTemplateName = "Platform";
+							var forkTemplateName = "PlatformTemplate";
 							Display.error('PROJECT DOES NOT EXIIIIIIIIIIST: ' + newProjectName);
 
 							//Fork Platform
