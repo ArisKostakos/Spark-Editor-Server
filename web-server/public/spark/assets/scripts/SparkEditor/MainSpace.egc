@@ -35,6 +35,7 @@
 				
 				<!-- Cameras -->
 				<Entity extends="SparkEditor.cameras.DummyCamera"/>
+				<Entity extends="SparkEditor.cameras.EditorSceneEditCamera"/>
 				
 				<!-- Editors -->
 				<Entity extends="SparkEditor.entities.editors.ProjectEditor"/>

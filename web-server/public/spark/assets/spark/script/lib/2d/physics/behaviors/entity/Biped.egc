@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="lib.2d.physics.behaviors.entity.Dynamic">
+	<_States>
+		<_State id="physicsShape"><Value>Biped</Value></_State>
+		<_State id="physicsMaterial"><Value>Biped</Value></_State>
+		<State>
+			<Id>shapeOffsetX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State>
+			<Id>shapeOffsetX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+	</_States>
+</Entity>

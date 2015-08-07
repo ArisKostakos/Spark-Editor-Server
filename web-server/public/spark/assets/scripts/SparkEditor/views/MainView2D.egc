@@ -14,7 +14,7 @@
 		</_State>
 		
 		<_State id="initCameraName">
-			<Value>Dummy Camera</Value>
+			<Value>Editor Scene Edit Camera</Value>
 		</_State>
 		
 		<_State id="width">

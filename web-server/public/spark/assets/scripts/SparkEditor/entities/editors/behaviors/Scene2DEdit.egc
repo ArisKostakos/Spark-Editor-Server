@@ -40,7 +40,40 @@
 					</_States>
 				</Entity>
 			-->
-			
+				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
+					<_States>
+						<_State id="name"><Value>tempScreenStage</Value></_State>
+						<_State id="spaceX"><Value>3430</Value></_State>
+						<_State id="spaceY"><Value>730</Value></_State>
+						<_State id="spaceWidth"><Value>6840</Value></_State>
+						<_State id="spaceHeight"><Value>1440</Value></_State>
+						<_State id="2DMeshFillRectForm"><Value>color3</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
+					<_States>
+						<_State id="name"><Value>tempScreenStage</Value></_State>
+						<_State id="spaceX"><Value>1150</Value></_State>
+						<_State id="spaceY"><Value>730</Value></_State>
+						<_State id="spaceWidth"><Value>2280</Value></_State>
+						<_State id="spaceHeight"><Value>1440</Value></_State>
+						<_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
+					<_States>
+						<_State id="name"><Value>tempScreenStage</Value></_State>
+						<_State id="spaceX"><Value>1150</Value></_State>
+						<_State id="spaceY"><Value>730</Value></_State>
+						<_State id="spaceWidth"><Value>1920</Value></_State>
+						<_State id="spaceHeight"><Value>1280</Value></_State>
+						<_State id="2DMeshFillRectForm"><Value>color2</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--
 				<Entity extends="SparkEditor.entities.LittleBox">
 					<_States>
 						<_State id="touchable"><Value>true</Value></_State>
@@ -52,6 +85,8 @@
 						leveleditor2d.startAction('EntityClicked');
 					</Script></Scripts></Trigger></_Triggers>
 				</Entity>
+				-->
+				
 			</Entities>
 		</Space>
 	</Form>
@@ -263,9 +298,63 @@
 				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</_States>
 		</Action>
+		
+		<!-- CameraPan -->
+		<Action>
+			<Id>CameraPan</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Input.mouse.isDown(MouseButton.Right)==false)
+					{
+						me.stopAction("CameraPan");
+						return;
+					}
+					
+					//If saficient movement
+					if (Input.pointer.distX()>3 || -3>Input.pointer.distX() || Input.pointer.distY()>3 || -3>Input.pointer.distY())
+					{
+						me.getAction('CameraPan').setState('dragStarted',true);
+					}
+					
+					if (me.getAction('CameraPan').getState('dragStarted'))
+					{
+						var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+						camera.setState('spaceX',camera.getState('spaceX')+Input.pointer.distX());
+						camera.setState('spaceY',camera.getState('spaceY')+Input.pointer.distY());
+					}
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>dragStarted</Id><Type>Boolean</Type><Value>false</Value></State>
+			</_States>
+		</Action>
 	</_Actions>
 	
 	<_Triggers>
+		<Trigger>
+			<Event>MouseScroll</Event>
+			<Scripts>
+				<Script>
+				var dir=0.05;
+				
+				if (0>Input.mouse.getScroll())
+					dir *= -1;
+					
+					Display.error("scrolly scrolyyyyy: " + Input.mouse.getScroll());
+
+					Logic.getEntityByName('Editor Scene Edit Camera').setState('scaleX', Logic.getEntityByName('Editor Scene Edit Camera').getState('scaleX')+dir);
+				</Script>
+			</Scripts>
+		</Trigger>
 		
+		<Trigger>
+			<Event>MouseRightDown</Event>
+			<Scripts>
+				<Script>
+					me.startAction("CameraPan");
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 </Entity>

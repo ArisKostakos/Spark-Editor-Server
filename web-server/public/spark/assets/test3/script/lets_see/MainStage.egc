@@ -9,7 +9,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="lets_see.views.MainView"/>
+				<Entity extends="this_game_is_cool.views.MainView"/>
 			</Entities>
 		</Space>
 	</Form>

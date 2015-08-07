@@ -193,7 +193,7 @@
 					//For Scene's Children
 					for (child in scene.getChildren())
 					{
-						if (child.getState('name')!='SceneBackground')
+						if (child.getState('name')!='SceneBackground' && child.getState('name')!='tempScreenStage')
 						{
 							entitiesXml.addChild(child.getState('xmlData'));
 						}

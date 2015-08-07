@@ -28,6 +28,11 @@
 				<Type>Integer</Type>
 				<Value>0x49AA59</Value>
 			</State>
+			<State>
+				<Id>color3</Id>
+				<Type>Integer</Type>
+				<Value>0xFFFFFF</Value>
+			</State>
 		</_States>
 	</_Form>
 </Entity>

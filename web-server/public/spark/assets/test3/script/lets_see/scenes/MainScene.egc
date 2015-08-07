@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Entity extends="lib.2d.platform.scene.PlatformScene">
 
 	<_States>
@@ -7,11 +6,195 @@
 		</_State>
 	</_States>
 	
-	<Form>
-		<Space>
-			<Entities>
-
-			</Entities>
-		</Space>
-	</Form>
-</Entity>
+	
+<Form><Space><Entities><Entity extends="std.display.Spriter2D">
+	<Extends>
+		<Entity extends="std.behaviors.input.KeyboardInputHorizontal"/>
+		<Entity extends="std.behaviors.movement.InputMoveHorizontal"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name">
+			<Value>Spriter Soldier 1</Value>
+		</_State>
+		
+		<_State id="spaceX">
+			<Value>255</Value>
+		</_State>
+		
+		<_State id="spaceY">
+			<Value>548</Value>
+		</_State>
+		
+		<_State id="scaleX">
+			<Value>1</Value>
+		</_State>
+		
+		<_State id="scaleY">
+			<Value>1</Value>
+		</_State>
+		
+		<_State id="2DMeshSpriterForm">
+			<Value>Soldier1SpriterMain</Value>
+		</_State>
+		
+		<_State id="2DMeshSpriterAnimForm">
+			<Value>AnimationStanding</Value>
+		</_State>
+		
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>Soldier1SpriterMain</Id>
+				<Type>Text</Type>
+				<Value>image_lib.2d.side.actors.spriter.soldier1.Soldier1</Value>
+			</State>
+			
+			<_State id="AnimationStanding">
+				<Value>Idle</Value>
+			</_State>
+			<_State id="AnimationWalking">
+				<Value>Walk</Value>
+			</_State>
+		</_States>
+	</_Form>
+	
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>114</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile3</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>242</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>370</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>498</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>626</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>754</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>882</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1010</Value></_State>
+		<_State id="spaceY"><Value>687</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile5</Value></State>
+		</_States>
+	</_Form>
+</Entity></Entities></Space></Form></Entity>
