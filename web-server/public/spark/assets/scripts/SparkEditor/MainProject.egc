@@ -2,6 +2,7 @@
 <Entity extends="std.core.Project">
 	<Extends>
 		<Entity extends="SparkEditor.behaviors.Networking"/>
+		<!--<Entity extends="std.behaviors.core.ShowFPS"/>-->
 	</Extends>
 
 	<_States>

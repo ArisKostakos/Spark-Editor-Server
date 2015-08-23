@@ -61,6 +61,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/LayerScreen2D.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/ShowFPS.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Layoutable.egc</Asset>

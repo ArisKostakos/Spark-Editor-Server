@@ -6,7 +6,7 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.setState('spaceX',me.getState('spaceX')-3);
+					me.setState('applyImpulseX',-300);
 				</Script>
 			</Scripts>
 		</Action>
@@ -16,7 +16,11 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.setState('spaceX',me.getState('spaceX')+3);
+					me.setState('applyImpulseX',300);
+					
+					var skata = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
+					
+					Display.error("MY X VELOCITY IS: " + skata);
 				</Script>
 			</Scripts>
 		</Action>

@@ -3,7 +3,7 @@
 	<Extends>
 		<Entity extends="lib.2d.physics.behaviors.scene.ScenePhysics">
 			<_States>
-				<_State id="gravityY"><Value>200</Value></_State>
+				<_State id="gravityY"><Value>1600</Value></_State>
 			</_States>
 		</Entity>
 	</Extends>

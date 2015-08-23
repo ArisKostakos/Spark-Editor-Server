@@ -1,5 +1,4 @@
 <Entity extends="lib.2d.platform.scene.PlatformScene">
-
 	<_States>
 		<_State id="name">
 			<Value>Platform Scene</Value>
@@ -11,6 +10,7 @@
 	<Extends>
 		<Entity extends="std.behaviors.input.KeyboardInputHorizontal"/>
 		<Entity extends="std.behaviors.movement.InputMoveHorizontal"/>
+		<Entity extends="lib.2d.physics.behaviors.entity.Biped"/>
 	</Extends>
 	
 	<_States>
@@ -23,7 +23,7 @@
 		</_State>
 		
 		<_State id="spaceY">
-			<Value>548</Value>
+			<Value>500</Value>
 		</_State>
 		
 		<_State id="scaleX">
