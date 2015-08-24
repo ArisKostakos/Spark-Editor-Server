@@ -1,5 +1,5 @@
 (function () { "use strict";
-var $hxClasses = {},$estr = function() { return js_Boot.__string_rec(this,''); };
+var $hxClasses = {};
 function $extend(from, fields) {
 	function Inherit() {} Inherit.prototype = from; var proto = new Inherit();
 	for (var name in fields) proto[name] = fields[name];
@@ -1221,46 +1221,32 @@ flambe_asset_Asset.prototype = {
 };
 var flambe_asset_AssetFormat = $hxClasses["flambe.asset.AssetFormat"] = { __ename__ : true, __constructs__ : ["WEBP","JXR","PNG","JPG","GIF","DDS","PVR","PKM","MP3","M4A","OPUS","OGG","WAV","Data"] };
 flambe_asset_AssetFormat.WEBP = ["WEBP",0];
-flambe_asset_AssetFormat.WEBP.toString = $estr;
 flambe_asset_AssetFormat.WEBP.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.JXR = ["JXR",1];
-flambe_asset_AssetFormat.JXR.toString = $estr;
 flambe_asset_AssetFormat.JXR.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.PNG = ["PNG",2];
-flambe_asset_AssetFormat.PNG.toString = $estr;
 flambe_asset_AssetFormat.PNG.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.JPG = ["JPG",3];
-flambe_asset_AssetFormat.JPG.toString = $estr;
 flambe_asset_AssetFormat.JPG.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.GIF = ["GIF",4];
-flambe_asset_AssetFormat.GIF.toString = $estr;
 flambe_asset_AssetFormat.GIF.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.DDS = ["DDS",5];
-flambe_asset_AssetFormat.DDS.toString = $estr;
 flambe_asset_AssetFormat.DDS.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.PVR = ["PVR",6];
-flambe_asset_AssetFormat.PVR.toString = $estr;
 flambe_asset_AssetFormat.PVR.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.PKM = ["PKM",7];
-flambe_asset_AssetFormat.PKM.toString = $estr;
 flambe_asset_AssetFormat.PKM.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.MP3 = ["MP3",8];
-flambe_asset_AssetFormat.MP3.toString = $estr;
 flambe_asset_AssetFormat.MP3.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.M4A = ["M4A",9];
-flambe_asset_AssetFormat.M4A.toString = $estr;
 flambe_asset_AssetFormat.M4A.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.OPUS = ["OPUS",10];
-flambe_asset_AssetFormat.OPUS.toString = $estr;
 flambe_asset_AssetFormat.OPUS.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.OGG = ["OGG",11];
-flambe_asset_AssetFormat.OGG.toString = $estr;
 flambe_asset_AssetFormat.OGG.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.WAV = ["WAV",12];
-flambe_asset_AssetFormat.WAV.toString = $estr;
 flambe_asset_AssetFormat.WAV.__enum__ = flambe_asset_AssetFormat;
 flambe_asset_AssetFormat.Data = ["Data",13];
-flambe_asset_AssetFormat.Data.toString = $estr;
 flambe_asset_AssetFormat.Data.__enum__ = flambe_asset_AssetFormat;
 var flambe_asset_AssetEntry = function(name,url,format,bytes) {
 	this.name = name;
@@ -1372,22 +1358,16 @@ flambe_asset_Manifest.prototype = {
 };
 var flambe_display_BlendMode = $hxClasses["flambe.display.BlendMode"] = { __ename__ : true, __constructs__ : ["Normal","Add","Multiply","Screen","Mask","Copy"] };
 flambe_display_BlendMode.Normal = ["Normal",0];
-flambe_display_BlendMode.Normal.toString = $estr;
 flambe_display_BlendMode.Normal.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Add = ["Add",1];
-flambe_display_BlendMode.Add.toString = $estr;
 flambe_display_BlendMode.Add.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Multiply = ["Multiply",2];
-flambe_display_BlendMode.Multiply.toString = $estr;
 flambe_display_BlendMode.Multiply.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Screen = ["Screen",3];
-flambe_display_BlendMode.Screen.toString = $estr;
 flambe_display_BlendMode.Screen.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Mask = ["Mask",4];
-flambe_display_BlendMode.Mask.toString = $estr;
 flambe_display_BlendMode.Mask.__enum__ = flambe_display_BlendMode;
 flambe_display_BlendMode.Copy = ["Copy",5];
-flambe_display_BlendMode.Copy.toString = $estr;
 flambe_display_BlendMode.Copy.__enum__ = flambe_display_BlendMode;
 var flambe_math_Point = function(x,y) {
 	if(y == null) y = 0;
@@ -1771,10 +1751,8 @@ flambe_display_ImageSprite.prototype = $extend(flambe_display_Sprite.prototype,{
 });
 var flambe_display_Orientation = $hxClasses["flambe.display.Orientation"] = { __ename__ : true, __constructs__ : ["Portrait","Landscape"] };
 flambe_display_Orientation.Portrait = ["Portrait",0];
-flambe_display_Orientation.Portrait.toString = $estr;
 flambe_display_Orientation.Portrait.__enum__ = flambe_display_Orientation;
 flambe_display_Orientation.Landscape = ["Landscape",1];
-flambe_display_Orientation.Landscape.toString = $estr;
 flambe_display_Orientation.Landscape.__enum__ = flambe_display_Orientation;
 var flambe_display_Texture = function() { };
 $hxClasses["flambe.display.Texture"] = flambe_display_Texture;
@@ -1790,306 +1768,206 @@ flambe_display_SubTexture.__name__ = true;
 flambe_display_SubTexture.__interfaces__ = [flambe_display_Texture];
 var flambe_input_Key = $hxClasses["flambe.input.Key"] = { __ename__ : true, __constructs__ : ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Number0","Number1","Number2","Number3","Number4","Number5","Number6","Number7","Number8","Number9","Numpad0","Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8","Numpad9","NumpadAdd","NumpadDecimal","NumpadDivide","NumpadEnter","NumpadMultiply","NumpadSubtract","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","Left","Up","Right","Down","Alt","Backquote","Backslash","Backspace","CapsLock","Comma","Command","Control","Delete","End","Enter","Equals","Escape","Home","Insert","LeftBracket","Minus","PageDown","PageUp","Period","Quote","RightBracket","Semicolon","Shift","Slash","Space","Tab","Menu","Search","Unknown"] };
 flambe_input_Key.A = ["A",0];
-flambe_input_Key.A.toString = $estr;
 flambe_input_Key.A.__enum__ = flambe_input_Key;
 flambe_input_Key.B = ["B",1];
-flambe_input_Key.B.toString = $estr;
 flambe_input_Key.B.__enum__ = flambe_input_Key;
 flambe_input_Key.C = ["C",2];
-flambe_input_Key.C.toString = $estr;
 flambe_input_Key.C.__enum__ = flambe_input_Key;
 flambe_input_Key.D = ["D",3];
-flambe_input_Key.D.toString = $estr;
 flambe_input_Key.D.__enum__ = flambe_input_Key;
 flambe_input_Key.E = ["E",4];
-flambe_input_Key.E.toString = $estr;
 flambe_input_Key.E.__enum__ = flambe_input_Key;
 flambe_input_Key.F = ["F",5];
-flambe_input_Key.F.toString = $estr;
 flambe_input_Key.F.__enum__ = flambe_input_Key;
 flambe_input_Key.G = ["G",6];
-flambe_input_Key.G.toString = $estr;
 flambe_input_Key.G.__enum__ = flambe_input_Key;
 flambe_input_Key.H = ["H",7];
-flambe_input_Key.H.toString = $estr;
 flambe_input_Key.H.__enum__ = flambe_input_Key;
 flambe_input_Key.I = ["I",8];
-flambe_input_Key.I.toString = $estr;
 flambe_input_Key.I.__enum__ = flambe_input_Key;
 flambe_input_Key.J = ["J",9];
-flambe_input_Key.J.toString = $estr;
 flambe_input_Key.J.__enum__ = flambe_input_Key;
 flambe_input_Key.K = ["K",10];
-flambe_input_Key.K.toString = $estr;
 flambe_input_Key.K.__enum__ = flambe_input_Key;
 flambe_input_Key.L = ["L",11];
-flambe_input_Key.L.toString = $estr;
 flambe_input_Key.L.__enum__ = flambe_input_Key;
 flambe_input_Key.M = ["M",12];
-flambe_input_Key.M.toString = $estr;
 flambe_input_Key.M.__enum__ = flambe_input_Key;
 flambe_input_Key.N = ["N",13];
-flambe_input_Key.N.toString = $estr;
 flambe_input_Key.N.__enum__ = flambe_input_Key;
 flambe_input_Key.O = ["O",14];
-flambe_input_Key.O.toString = $estr;
 flambe_input_Key.O.__enum__ = flambe_input_Key;
 flambe_input_Key.P = ["P",15];
-flambe_input_Key.P.toString = $estr;
 flambe_input_Key.P.__enum__ = flambe_input_Key;
 flambe_input_Key.Q = ["Q",16];
-flambe_input_Key.Q.toString = $estr;
 flambe_input_Key.Q.__enum__ = flambe_input_Key;
 flambe_input_Key.R = ["R",17];
-flambe_input_Key.R.toString = $estr;
 flambe_input_Key.R.__enum__ = flambe_input_Key;
 flambe_input_Key.S = ["S",18];
-flambe_input_Key.S.toString = $estr;
 flambe_input_Key.S.__enum__ = flambe_input_Key;
 flambe_input_Key.T = ["T",19];
-flambe_input_Key.T.toString = $estr;
 flambe_input_Key.T.__enum__ = flambe_input_Key;
 flambe_input_Key.U = ["U",20];
-flambe_input_Key.U.toString = $estr;
 flambe_input_Key.U.__enum__ = flambe_input_Key;
 flambe_input_Key.V = ["V",21];
-flambe_input_Key.V.toString = $estr;
 flambe_input_Key.V.__enum__ = flambe_input_Key;
 flambe_input_Key.W = ["W",22];
-flambe_input_Key.W.toString = $estr;
 flambe_input_Key.W.__enum__ = flambe_input_Key;
 flambe_input_Key.X = ["X",23];
-flambe_input_Key.X.toString = $estr;
 flambe_input_Key.X.__enum__ = flambe_input_Key;
 flambe_input_Key.Y = ["Y",24];
-flambe_input_Key.Y.toString = $estr;
 flambe_input_Key.Y.__enum__ = flambe_input_Key;
 flambe_input_Key.Z = ["Z",25];
-flambe_input_Key.Z.toString = $estr;
 flambe_input_Key.Z.__enum__ = flambe_input_Key;
 flambe_input_Key.Number0 = ["Number0",26];
-flambe_input_Key.Number0.toString = $estr;
 flambe_input_Key.Number0.__enum__ = flambe_input_Key;
 flambe_input_Key.Number1 = ["Number1",27];
-flambe_input_Key.Number1.toString = $estr;
 flambe_input_Key.Number1.__enum__ = flambe_input_Key;
 flambe_input_Key.Number2 = ["Number2",28];
-flambe_input_Key.Number2.toString = $estr;
 flambe_input_Key.Number2.__enum__ = flambe_input_Key;
 flambe_input_Key.Number3 = ["Number3",29];
-flambe_input_Key.Number3.toString = $estr;
 flambe_input_Key.Number3.__enum__ = flambe_input_Key;
 flambe_input_Key.Number4 = ["Number4",30];
-flambe_input_Key.Number4.toString = $estr;
 flambe_input_Key.Number4.__enum__ = flambe_input_Key;
 flambe_input_Key.Number5 = ["Number5",31];
-flambe_input_Key.Number5.toString = $estr;
 flambe_input_Key.Number5.__enum__ = flambe_input_Key;
 flambe_input_Key.Number6 = ["Number6",32];
-flambe_input_Key.Number6.toString = $estr;
 flambe_input_Key.Number6.__enum__ = flambe_input_Key;
 flambe_input_Key.Number7 = ["Number7",33];
-flambe_input_Key.Number7.toString = $estr;
 flambe_input_Key.Number7.__enum__ = flambe_input_Key;
 flambe_input_Key.Number8 = ["Number8",34];
-flambe_input_Key.Number8.toString = $estr;
 flambe_input_Key.Number8.__enum__ = flambe_input_Key;
 flambe_input_Key.Number9 = ["Number9",35];
-flambe_input_Key.Number9.toString = $estr;
 flambe_input_Key.Number9.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad0 = ["Numpad0",36];
-flambe_input_Key.Numpad0.toString = $estr;
 flambe_input_Key.Numpad0.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad1 = ["Numpad1",37];
-flambe_input_Key.Numpad1.toString = $estr;
 flambe_input_Key.Numpad1.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad2 = ["Numpad2",38];
-flambe_input_Key.Numpad2.toString = $estr;
 flambe_input_Key.Numpad2.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad3 = ["Numpad3",39];
-flambe_input_Key.Numpad3.toString = $estr;
 flambe_input_Key.Numpad3.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad4 = ["Numpad4",40];
-flambe_input_Key.Numpad4.toString = $estr;
 flambe_input_Key.Numpad4.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad5 = ["Numpad5",41];
-flambe_input_Key.Numpad5.toString = $estr;
 flambe_input_Key.Numpad5.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad6 = ["Numpad6",42];
-flambe_input_Key.Numpad6.toString = $estr;
 flambe_input_Key.Numpad6.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad7 = ["Numpad7",43];
-flambe_input_Key.Numpad7.toString = $estr;
 flambe_input_Key.Numpad7.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad8 = ["Numpad8",44];
-flambe_input_Key.Numpad8.toString = $estr;
 flambe_input_Key.Numpad8.__enum__ = flambe_input_Key;
 flambe_input_Key.Numpad9 = ["Numpad9",45];
-flambe_input_Key.Numpad9.toString = $estr;
 flambe_input_Key.Numpad9.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadAdd = ["NumpadAdd",46];
-flambe_input_Key.NumpadAdd.toString = $estr;
 flambe_input_Key.NumpadAdd.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadDecimal = ["NumpadDecimal",47];
-flambe_input_Key.NumpadDecimal.toString = $estr;
 flambe_input_Key.NumpadDecimal.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadDivide = ["NumpadDivide",48];
-flambe_input_Key.NumpadDivide.toString = $estr;
 flambe_input_Key.NumpadDivide.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadEnter = ["NumpadEnter",49];
-flambe_input_Key.NumpadEnter.toString = $estr;
 flambe_input_Key.NumpadEnter.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadMultiply = ["NumpadMultiply",50];
-flambe_input_Key.NumpadMultiply.toString = $estr;
 flambe_input_Key.NumpadMultiply.__enum__ = flambe_input_Key;
 flambe_input_Key.NumpadSubtract = ["NumpadSubtract",51];
-flambe_input_Key.NumpadSubtract.toString = $estr;
 flambe_input_Key.NumpadSubtract.__enum__ = flambe_input_Key;
 flambe_input_Key.F1 = ["F1",52];
-flambe_input_Key.F1.toString = $estr;
 flambe_input_Key.F1.__enum__ = flambe_input_Key;
 flambe_input_Key.F2 = ["F2",53];
-flambe_input_Key.F2.toString = $estr;
 flambe_input_Key.F2.__enum__ = flambe_input_Key;
 flambe_input_Key.F3 = ["F3",54];
-flambe_input_Key.F3.toString = $estr;
 flambe_input_Key.F3.__enum__ = flambe_input_Key;
 flambe_input_Key.F4 = ["F4",55];
-flambe_input_Key.F4.toString = $estr;
 flambe_input_Key.F4.__enum__ = flambe_input_Key;
 flambe_input_Key.F5 = ["F5",56];
-flambe_input_Key.F5.toString = $estr;
 flambe_input_Key.F5.__enum__ = flambe_input_Key;
 flambe_input_Key.F6 = ["F6",57];
-flambe_input_Key.F6.toString = $estr;
 flambe_input_Key.F6.__enum__ = flambe_input_Key;
 flambe_input_Key.F7 = ["F7",58];
-flambe_input_Key.F7.toString = $estr;
 flambe_input_Key.F7.__enum__ = flambe_input_Key;
 flambe_input_Key.F8 = ["F8",59];
-flambe_input_Key.F8.toString = $estr;
 flambe_input_Key.F8.__enum__ = flambe_input_Key;
 flambe_input_Key.F9 = ["F9",60];
-flambe_input_Key.F9.toString = $estr;
 flambe_input_Key.F9.__enum__ = flambe_input_Key;
 flambe_input_Key.F10 = ["F10",61];
-flambe_input_Key.F10.toString = $estr;
 flambe_input_Key.F10.__enum__ = flambe_input_Key;
 flambe_input_Key.F11 = ["F11",62];
-flambe_input_Key.F11.toString = $estr;
 flambe_input_Key.F11.__enum__ = flambe_input_Key;
 flambe_input_Key.F12 = ["F12",63];
-flambe_input_Key.F12.toString = $estr;
 flambe_input_Key.F12.__enum__ = flambe_input_Key;
 flambe_input_Key.F13 = ["F13",64];
-flambe_input_Key.F13.toString = $estr;
 flambe_input_Key.F13.__enum__ = flambe_input_Key;
 flambe_input_Key.F14 = ["F14",65];
-flambe_input_Key.F14.toString = $estr;
 flambe_input_Key.F14.__enum__ = flambe_input_Key;
 flambe_input_Key.F15 = ["F15",66];
-flambe_input_Key.F15.toString = $estr;
 flambe_input_Key.F15.__enum__ = flambe_input_Key;
 flambe_input_Key.Left = ["Left",67];
-flambe_input_Key.Left.toString = $estr;
 flambe_input_Key.Left.__enum__ = flambe_input_Key;
 flambe_input_Key.Up = ["Up",68];
-flambe_input_Key.Up.toString = $estr;
 flambe_input_Key.Up.__enum__ = flambe_input_Key;
 flambe_input_Key.Right = ["Right",69];
-flambe_input_Key.Right.toString = $estr;
 flambe_input_Key.Right.__enum__ = flambe_input_Key;
 flambe_input_Key.Down = ["Down",70];
-flambe_input_Key.Down.toString = $estr;
 flambe_input_Key.Down.__enum__ = flambe_input_Key;
 flambe_input_Key.Alt = ["Alt",71];
-flambe_input_Key.Alt.toString = $estr;
 flambe_input_Key.Alt.__enum__ = flambe_input_Key;
 flambe_input_Key.Backquote = ["Backquote",72];
-flambe_input_Key.Backquote.toString = $estr;
 flambe_input_Key.Backquote.__enum__ = flambe_input_Key;
 flambe_input_Key.Backslash = ["Backslash",73];
-flambe_input_Key.Backslash.toString = $estr;
 flambe_input_Key.Backslash.__enum__ = flambe_input_Key;
 flambe_input_Key.Backspace = ["Backspace",74];
-flambe_input_Key.Backspace.toString = $estr;
 flambe_input_Key.Backspace.__enum__ = flambe_input_Key;
 flambe_input_Key.CapsLock = ["CapsLock",75];
-flambe_input_Key.CapsLock.toString = $estr;
 flambe_input_Key.CapsLock.__enum__ = flambe_input_Key;
 flambe_input_Key.Comma = ["Comma",76];
-flambe_input_Key.Comma.toString = $estr;
 flambe_input_Key.Comma.__enum__ = flambe_input_Key;
 flambe_input_Key.Command = ["Command",77];
-flambe_input_Key.Command.toString = $estr;
 flambe_input_Key.Command.__enum__ = flambe_input_Key;
 flambe_input_Key.Control = ["Control",78];
-flambe_input_Key.Control.toString = $estr;
 flambe_input_Key.Control.__enum__ = flambe_input_Key;
 flambe_input_Key.Delete = ["Delete",79];
-flambe_input_Key.Delete.toString = $estr;
 flambe_input_Key.Delete.__enum__ = flambe_input_Key;
 flambe_input_Key.End = ["End",80];
-flambe_input_Key.End.toString = $estr;
 flambe_input_Key.End.__enum__ = flambe_input_Key;
 flambe_input_Key.Enter = ["Enter",81];
-flambe_input_Key.Enter.toString = $estr;
 flambe_input_Key.Enter.__enum__ = flambe_input_Key;
 flambe_input_Key.Equals = ["Equals",82];
-flambe_input_Key.Equals.toString = $estr;
 flambe_input_Key.Equals.__enum__ = flambe_input_Key;
 flambe_input_Key.Escape = ["Escape",83];
-flambe_input_Key.Escape.toString = $estr;
 flambe_input_Key.Escape.__enum__ = flambe_input_Key;
 flambe_input_Key.Home = ["Home",84];
-flambe_input_Key.Home.toString = $estr;
 flambe_input_Key.Home.__enum__ = flambe_input_Key;
 flambe_input_Key.Insert = ["Insert",85];
-flambe_input_Key.Insert.toString = $estr;
 flambe_input_Key.Insert.__enum__ = flambe_input_Key;
 flambe_input_Key.LeftBracket = ["LeftBracket",86];
-flambe_input_Key.LeftBracket.toString = $estr;
 flambe_input_Key.LeftBracket.__enum__ = flambe_input_Key;
 flambe_input_Key.Minus = ["Minus",87];
-flambe_input_Key.Minus.toString = $estr;
 flambe_input_Key.Minus.__enum__ = flambe_input_Key;
 flambe_input_Key.PageDown = ["PageDown",88];
-flambe_input_Key.PageDown.toString = $estr;
 flambe_input_Key.PageDown.__enum__ = flambe_input_Key;
 flambe_input_Key.PageUp = ["PageUp",89];
-flambe_input_Key.PageUp.toString = $estr;
 flambe_input_Key.PageUp.__enum__ = flambe_input_Key;
 flambe_input_Key.Period = ["Period",90];
-flambe_input_Key.Period.toString = $estr;
 flambe_input_Key.Period.__enum__ = flambe_input_Key;
 flambe_input_Key.Quote = ["Quote",91];
-flambe_input_Key.Quote.toString = $estr;
 flambe_input_Key.Quote.__enum__ = flambe_input_Key;
 flambe_input_Key.RightBracket = ["RightBracket",92];
-flambe_input_Key.RightBracket.toString = $estr;
 flambe_input_Key.RightBracket.__enum__ = flambe_input_Key;
 flambe_input_Key.Semicolon = ["Semicolon",93];
-flambe_input_Key.Semicolon.toString = $estr;
 flambe_input_Key.Semicolon.__enum__ = flambe_input_Key;
 flambe_input_Key.Shift = ["Shift",94];
-flambe_input_Key.Shift.toString = $estr;
 flambe_input_Key.Shift.__enum__ = flambe_input_Key;
 flambe_input_Key.Slash = ["Slash",95];
-flambe_input_Key.Slash.toString = $estr;
 flambe_input_Key.Slash.__enum__ = flambe_input_Key;
 flambe_input_Key.Space = ["Space",96];
-flambe_input_Key.Space.toString = $estr;
 flambe_input_Key.Space.__enum__ = flambe_input_Key;
 flambe_input_Key.Tab = ["Tab",97];
-flambe_input_Key.Tab.toString = $estr;
 flambe_input_Key.Tab.__enum__ = flambe_input_Key;
 flambe_input_Key.Menu = ["Menu",98];
-flambe_input_Key.Menu.toString = $estr;
 flambe_input_Key.Menu.__enum__ = flambe_input_Key;
 flambe_input_Key.Search = ["Search",99];
-flambe_input_Key.Search.toString = $estr;
 flambe_input_Key.Search.__enum__ = flambe_input_Key;
-flambe_input_Key.Unknown = function(keyCode) { var $x = ["Unknown",100,keyCode]; $x.__enum__ = flambe_input_Key; $x.toString = $estr; return $x; };
+flambe_input_Key.Unknown = function(keyCode) { var $x = ["Unknown",100,keyCode]; $x.__enum__ = flambe_input_Key; return $x; };
 var flambe_input_KeyboardEvent = function() {
 	this.init(0,null);
 };
@@ -2104,24 +1982,18 @@ flambe_input_KeyboardEvent.prototype = {
 };
 var flambe_input_MouseButton = $hxClasses["flambe.input.MouseButton"] = { __ename__ : true, __constructs__ : ["Left","Middle","Right","Unknown"] };
 flambe_input_MouseButton.Left = ["Left",0];
-flambe_input_MouseButton.Left.toString = $estr;
 flambe_input_MouseButton.Left.__enum__ = flambe_input_MouseButton;
 flambe_input_MouseButton.Middle = ["Middle",1];
-flambe_input_MouseButton.Middle.toString = $estr;
 flambe_input_MouseButton.Middle.__enum__ = flambe_input_MouseButton;
 flambe_input_MouseButton.Right = ["Right",2];
-flambe_input_MouseButton.Right.toString = $estr;
 flambe_input_MouseButton.Right.__enum__ = flambe_input_MouseButton;
-flambe_input_MouseButton.Unknown = function(buttonCode) { var $x = ["Unknown",3,buttonCode]; $x.__enum__ = flambe_input_MouseButton; $x.toString = $estr; return $x; };
+flambe_input_MouseButton.Unknown = function(buttonCode) { var $x = ["Unknown",3,buttonCode]; $x.__enum__ = flambe_input_MouseButton; return $x; };
 var flambe_input_MouseCursor = $hxClasses["flambe.input.MouseCursor"] = { __ename__ : true, __constructs__ : ["Default","Button","None"] };
 flambe_input_MouseCursor.Default = ["Default",0];
-flambe_input_MouseCursor.Default.toString = $estr;
 flambe_input_MouseCursor.Default.__enum__ = flambe_input_MouseCursor;
 flambe_input_MouseCursor.Button = ["Button",1];
-flambe_input_MouseCursor.Button.toString = $estr;
 flambe_input_MouseCursor.Button.__enum__ = flambe_input_MouseCursor;
 flambe_input_MouseCursor.None = ["None",2];
-flambe_input_MouseCursor.None.toString = $estr;
 flambe_input_MouseCursor.None.__enum__ = flambe_input_MouseCursor;
 var flambe_input_MouseEvent = function() {
 	this.init(0,0,0,null);
@@ -2138,8 +2010,8 @@ flambe_input_MouseEvent.prototype = {
 	,__class__: flambe_input_MouseEvent
 };
 var flambe_input_EventSource = $hxClasses["flambe.input.EventSource"] = { __ename__ : true, __constructs__ : ["Mouse","Touch"] };
-flambe_input_EventSource.Mouse = function(event) { var $x = ["Mouse",0,event]; $x.__enum__ = flambe_input_EventSource; $x.toString = $estr; return $x; };
-flambe_input_EventSource.Touch = function(point) { var $x = ["Touch",1,point]; $x.__enum__ = flambe_input_EventSource; $x.toString = $estr; return $x; };
+flambe_input_EventSource.Mouse = function(event) { var $x = ["Mouse",0,event]; $x.__enum__ = flambe_input_EventSource; return $x; };
+flambe_input_EventSource.Touch = function(point) { var $x = ["Touch",1,point]; $x.__enum__ = flambe_input_EventSource; return $x; };
 var flambe_input_PointerEvent = function() {
 	this.init(0,0,0,null,null);
 };
@@ -5349,13 +5221,10 @@ flambe_scene_Transition.prototype = {
 };
 var flambe_subsystem_RendererType = $hxClasses["flambe.subsystem.RendererType"] = { __ename__ : true, __constructs__ : ["Stage3D","WebGL","Canvas"] };
 flambe_subsystem_RendererType.Stage3D = ["Stage3D",0];
-flambe_subsystem_RendererType.Stage3D.toString = $estr;
 flambe_subsystem_RendererType.Stage3D.__enum__ = flambe_subsystem_RendererType;
 flambe_subsystem_RendererType.WebGL = ["WebGL",1];
-flambe_subsystem_RendererType.WebGL.toString = $estr;
 flambe_subsystem_RendererType.WebGL.__enum__ = flambe_subsystem_RendererType;
 flambe_subsystem_RendererType.Canvas = ["Canvas",2];
-flambe_subsystem_RendererType.Canvas.toString = $estr;
 flambe_subsystem_RendererType.Canvas.__enum__ = flambe_subsystem_RendererType;
 var flambe_util_Arrays = function() { };
 $hxClasses["flambe.util.Arrays"] = flambe_util_Arrays;
@@ -5395,13 +5264,10 @@ flambe_util_BitSets.set = function(bits,mask,enabled) {
 };
 var flambe_util_LogLevel = $hxClasses["flambe.util.LogLevel"] = { __ename__ : true, __constructs__ : ["Info","Warn","Error"] };
 flambe_util_LogLevel.Info = ["Info",0];
-flambe_util_LogLevel.Info.toString = $estr;
 flambe_util_LogLevel.Info.__enum__ = flambe_util_LogLevel;
 flambe_util_LogLevel.Warn = ["Warn",1];
-flambe_util_LogLevel.Warn.toString = $estr;
 flambe_util_LogLevel.Warn.__enum__ = flambe_util_LogLevel;
 flambe_util_LogLevel.Error = ["Error",2];
-flambe_util_LogLevel.Error.toString = $estr;
 flambe_util_LogLevel.Error.__enum__ = flambe_util_LogLevel;
 var flambe_util_Pool = function(allocator) {
 	this._capacity = 2147483647;
@@ -6143,15 +6009,12 @@ haxe_io_Eof.prototype = {
 };
 var haxe_io_Error = $hxClasses["haxe.io.Error"] = { __ename__ : true, __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] };
 haxe_io_Error.Blocked = ["Blocked",0];
-haxe_io_Error.Blocked.toString = $estr;
 haxe_io_Error.Blocked.__enum__ = haxe_io_Error;
 haxe_io_Error.Overflow = ["Overflow",1];
-haxe_io_Error.Overflow.toString = $estr;
 haxe_io_Error.Overflow.__enum__ = haxe_io_Error;
 haxe_io_Error.OutsideBounds = ["OutsideBounds",2];
-haxe_io_Error.OutsideBounds.toString = $estr;
 haxe_io_Error.OutsideBounds.__enum__ = haxe_io_Error;
-haxe_io_Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe_io_Error; $x.toString = $estr; return $x; };
+haxe_io_Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe_io_Error; return $x; };
 var haxe_io_FPHelper = function() { };
 $hxClasses["haxe.io.FPHelper"] = haxe_io_FPHelper;
 haxe_io_FPHelper.__name__ = true;
@@ -6208,35 +6071,32 @@ haxe_io_StringInput.prototype = $extend(haxe_io_BytesInput.prototype,{
 });
 var haxe_xml_Filter = $hxClasses["haxe.xml.Filter"] = { __ename__ : true, __constructs__ : ["FInt","FBool","FEnum","FReg"] };
 haxe_xml_Filter.FInt = ["FInt",0];
-haxe_xml_Filter.FInt.toString = $estr;
 haxe_xml_Filter.FInt.__enum__ = haxe_xml_Filter;
 haxe_xml_Filter.FBool = ["FBool",1];
-haxe_xml_Filter.FBool.toString = $estr;
 haxe_xml_Filter.FBool.__enum__ = haxe_xml_Filter;
-haxe_xml_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = haxe_xml_Filter; $x.toString = $estr; return $x; };
-haxe_xml_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = haxe_xml_Filter; $x.toString = $estr; return $x; };
+haxe_xml_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = haxe_xml_Filter; return $x; };
+haxe_xml_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = haxe_xml_Filter; return $x; };
 var haxe_xml_Attrib = $hxClasses["haxe.xml.Attrib"] = { __ename__ : true, __constructs__ : ["Att"] };
-haxe_xml_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = haxe_xml_Attrib; $x.toString = $estr; return $x; };
+haxe_xml_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = haxe_xml_Attrib; return $x; };
 var haxe_xml_Rule = $hxClasses["haxe.xml.Rule"] = { __ename__ : true, __constructs__ : ["RNode","RData","RMulti","RList","RChoice","ROptional"] };
-haxe_xml_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
-haxe_xml_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
-haxe_xml_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
-haxe_xml_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
-haxe_xml_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
-haxe_xml_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = haxe_xml_Rule; $x.toString = $estr; return $x; };
+haxe_xml_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = haxe_xml_Rule; return $x; };
+haxe_xml_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = haxe_xml_Rule; return $x; };
+haxe_xml_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = haxe_xml_Rule; return $x; };
+haxe_xml_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = haxe_xml_Rule; return $x; };
+haxe_xml_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = haxe_xml_Rule; return $x; };
+haxe_xml_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = haxe_xml_Rule; return $x; };
 var haxe_xml__$Check_CheckResult = $hxClasses["haxe.xml._Check.CheckResult"] = { __ename__ : true, __constructs__ : ["CMatch","CMissing","CExtra","CElementExpected","CDataExpected","CExtraAttrib","CMissingAttrib","CInvalidAttrib","CInvalidData","CInElement"] };
 haxe_xml__$Check_CheckResult.CMatch = ["CMatch",0];
-haxe_xml__$Check_CheckResult.CMatch.toString = $estr;
 haxe_xml__$Check_CheckResult.CMatch.__enum__ = haxe_xml__$Check_CheckResult;
-haxe_xml__$Check_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
-haxe_xml__$Check_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; $x.toString = $estr; return $x; };
+haxe_xml__$Check_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
+haxe_xml__$Check_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = haxe_xml__$Check_CheckResult; return $x; };
 var haxe_xml_Check = function() { };
 $hxClasses["haxe.xml.Check"] = haxe_xml_Check;
 haxe_xml_Check.__name__ = true;
@@ -7057,64 +6917,58 @@ haxe_xml_Printer.prototype = {
 	,__class__: haxe_xml_Printer
 };
 var hscript_Const = $hxClasses["hscript.Const"] = { __ename__ : true, __constructs__ : ["CInt","CFloat","CString"] };
-hscript_Const.CInt = function(v) { var $x = ["CInt",0,v]; $x.__enum__ = hscript_Const; $x.toString = $estr; return $x; };
-hscript_Const.CFloat = function(f) { var $x = ["CFloat",1,f]; $x.__enum__ = hscript_Const; $x.toString = $estr; return $x; };
-hscript_Const.CString = function(s) { var $x = ["CString",2,s]; $x.__enum__ = hscript_Const; $x.toString = $estr; return $x; };
+hscript_Const.CInt = function(v) { var $x = ["CInt",0,v]; $x.__enum__ = hscript_Const; return $x; };
+hscript_Const.CFloat = function(f) { var $x = ["CFloat",1,f]; $x.__enum__ = hscript_Const; return $x; };
+hscript_Const.CString = function(s) { var $x = ["CString",2,s]; $x.__enum__ = hscript_Const; return $x; };
 var hscript_Expr = $hxClasses["hscript.Expr"] = { __ename__ : true, __constructs__ : ["EConst","EIdent","EVar","EParent","EBlock","EField","EBinop","EUnop","ECall","EIf","EWhile","EFor","EBreak","EContinue","EFunction","EReturn","EArray","EArrayDecl","ENew","EThrow","ETry","EObject","ETernary","ESwitch"] };
-hscript_Expr.EConst = function(c) { var $x = ["EConst",0,c]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EIdent = function(v) { var $x = ["EIdent",1,v]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EVar = function(n,t,e) { var $x = ["EVar",2,n,t,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EParent = function(e) { var $x = ["EParent",3,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EBlock = function(e) { var $x = ["EBlock",4,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EField = function(e,f) { var $x = ["EField",5,e,f]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EBinop = function(op,e1,e2) { var $x = ["EBinop",6,op,e1,e2]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EUnop = function(op,prefix,e) { var $x = ["EUnop",7,op,prefix,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.ECall = function(e,params) { var $x = ["ECall",8,e,params]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EIf = function(cond,e1,e2) { var $x = ["EIf",9,cond,e1,e2]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EWhile = function(cond,e) { var $x = ["EWhile",10,cond,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EFor = function(v,it,e) { var $x = ["EFor",11,v,it,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EConst = function(c) { var $x = ["EConst",0,c]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EIdent = function(v) { var $x = ["EIdent",1,v]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EVar = function(n,t,e) { var $x = ["EVar",2,n,t,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EParent = function(e) { var $x = ["EParent",3,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EBlock = function(e) { var $x = ["EBlock",4,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EField = function(e,f) { var $x = ["EField",5,e,f]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EBinop = function(op,e1,e2) { var $x = ["EBinop",6,op,e1,e2]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EUnop = function(op,prefix,e) { var $x = ["EUnop",7,op,prefix,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.ECall = function(e,params) { var $x = ["ECall",8,e,params]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EIf = function(cond,e1,e2) { var $x = ["EIf",9,cond,e1,e2]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EWhile = function(cond,e) { var $x = ["EWhile",10,cond,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EFor = function(v,it,e) { var $x = ["EFor",11,v,it,e]; $x.__enum__ = hscript_Expr; return $x; };
 hscript_Expr.EBreak = ["EBreak",12];
-hscript_Expr.EBreak.toString = $estr;
 hscript_Expr.EBreak.__enum__ = hscript_Expr;
 hscript_Expr.EContinue = ["EContinue",13];
-hscript_Expr.EContinue.toString = $estr;
 hscript_Expr.EContinue.__enum__ = hscript_Expr;
-hscript_Expr.EFunction = function(args,e,name,ret) { var $x = ["EFunction",14,args,e,name,ret]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EReturn = function(e) { var $x = ["EReturn",15,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EArray = function(e,index) { var $x = ["EArray",16,e,index]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EArrayDecl = function(e) { var $x = ["EArrayDecl",17,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.ENew = function(cl,params) { var $x = ["ENew",18,cl,params]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EThrow = function(e) { var $x = ["EThrow",19,e]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.ETry = function(e,v,t,ecatch) { var $x = ["ETry",20,e,v,t,ecatch]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.EObject = function(fl) { var $x = ["EObject",21,fl]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.ETernary = function(cond,e1,e2) { var $x = ["ETernary",22,cond,e1,e2]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
-hscript_Expr.ESwitch = function(e,cases,defaultExpr) { var $x = ["ESwitch",23,e,cases,defaultExpr]; $x.__enum__ = hscript_Expr; $x.toString = $estr; return $x; };
+hscript_Expr.EFunction = function(args,e,name,ret) { var $x = ["EFunction",14,args,e,name,ret]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EReturn = function(e) { var $x = ["EReturn",15,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EArray = function(e,index) { var $x = ["EArray",16,e,index]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EArrayDecl = function(e) { var $x = ["EArrayDecl",17,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.ENew = function(cl,params) { var $x = ["ENew",18,cl,params]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EThrow = function(e) { var $x = ["EThrow",19,e]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.ETry = function(e,v,t,ecatch) { var $x = ["ETry",20,e,v,t,ecatch]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.EObject = function(fl) { var $x = ["EObject",21,fl]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.ETernary = function(cond,e1,e2) { var $x = ["ETernary",22,cond,e1,e2]; $x.__enum__ = hscript_Expr; return $x; };
+hscript_Expr.ESwitch = function(e,cases,defaultExpr) { var $x = ["ESwitch",23,e,cases,defaultExpr]; $x.__enum__ = hscript_Expr; return $x; };
 var hscript_CType = $hxClasses["hscript.CType"] = { __ename__ : true, __constructs__ : ["CTPath","CTFun","CTAnon","CTParent"] };
-hscript_CType.CTPath = function(path,params) { var $x = ["CTPath",0,path,params]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
-hscript_CType.CTFun = function(args,ret) { var $x = ["CTFun",1,args,ret]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
-hscript_CType.CTAnon = function(fields) { var $x = ["CTAnon",2,fields]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
-hscript_CType.CTParent = function(t) { var $x = ["CTParent",3,t]; $x.__enum__ = hscript_CType; $x.toString = $estr; return $x; };
+hscript_CType.CTPath = function(path,params) { var $x = ["CTPath",0,path,params]; $x.__enum__ = hscript_CType; return $x; };
+hscript_CType.CTFun = function(args,ret) { var $x = ["CTFun",1,args,ret]; $x.__enum__ = hscript_CType; return $x; };
+hscript_CType.CTAnon = function(fields) { var $x = ["CTAnon",2,fields]; $x.__enum__ = hscript_CType; return $x; };
+hscript_CType.CTParent = function(t) { var $x = ["CTParent",3,t]; $x.__enum__ = hscript_CType; return $x; };
 var hscript_Error = $hxClasses["hscript.Error"] = { __ename__ : true, __constructs__ : ["EInvalidChar","EUnexpected","EUnterminatedString","EUnterminatedComment","EUnknownVariable","EInvalidIterator","EInvalidOp","EInvalidAccess"] };
-hscript_Error.EInvalidChar = function(c) { var $x = ["EInvalidChar",0,c]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
-hscript_Error.EUnexpected = function(s) { var $x = ["EUnexpected",1,s]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
+hscript_Error.EInvalidChar = function(c) { var $x = ["EInvalidChar",0,c]; $x.__enum__ = hscript_Error; return $x; };
+hscript_Error.EUnexpected = function(s) { var $x = ["EUnexpected",1,s]; $x.__enum__ = hscript_Error; return $x; };
 hscript_Error.EUnterminatedString = ["EUnterminatedString",2];
-hscript_Error.EUnterminatedString.toString = $estr;
 hscript_Error.EUnterminatedString.__enum__ = hscript_Error;
 hscript_Error.EUnterminatedComment = ["EUnterminatedComment",3];
-hscript_Error.EUnterminatedComment.toString = $estr;
 hscript_Error.EUnterminatedComment.__enum__ = hscript_Error;
-hscript_Error.EUnknownVariable = function(v) { var $x = ["EUnknownVariable",4,v]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
-hscript_Error.EInvalidIterator = function(v) { var $x = ["EInvalidIterator",5,v]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
-hscript_Error.EInvalidOp = function(op) { var $x = ["EInvalidOp",6,op]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
-hscript_Error.EInvalidAccess = function(f) { var $x = ["EInvalidAccess",7,f]; $x.__enum__ = hscript_Error; $x.toString = $estr; return $x; };
+hscript_Error.EUnknownVariable = function(v) { var $x = ["EUnknownVariable",4,v]; $x.__enum__ = hscript_Error; return $x; };
+hscript_Error.EInvalidIterator = function(v) { var $x = ["EInvalidIterator",5,v]; $x.__enum__ = hscript_Error; return $x; };
+hscript_Error.EInvalidOp = function(op) { var $x = ["EInvalidOp",6,op]; $x.__enum__ = hscript_Error; return $x; };
+hscript_Error.EInvalidAccess = function(f) { var $x = ["EInvalidAccess",7,f]; $x.__enum__ = hscript_Error; return $x; };
 var hscript__$Interp_Stop = $hxClasses["hscript._Interp.Stop"] = { __ename__ : true, __constructs__ : ["SBreak","SContinue","SReturn"] };
 hscript__$Interp_Stop.SBreak = ["SBreak",0];
-hscript__$Interp_Stop.SBreak.toString = $estr;
 hscript__$Interp_Stop.SBreak.__enum__ = hscript__$Interp_Stop;
 hscript__$Interp_Stop.SContinue = ["SContinue",1];
-hscript__$Interp_Stop.SContinue.toString = $estr;
 hscript__$Interp_Stop.SContinue.__enum__ = hscript__$Interp_Stop;
-hscript__$Interp_Stop.SReturn = function(v) { var $x = ["SReturn",2,v]; $x.__enum__ = hscript__$Interp_Stop; $x.toString = $estr; return $x; };
+hscript__$Interp_Stop.SReturn = function(v) { var $x = ["SReturn",2,v]; $x.__enum__ = hscript__$Interp_Stop; return $x; };
 var hscript_Interp = function() {
 	this.variables = new haxe_ds_StringMap();
 	this.locals = new haxe_ds_StringMap();
@@ -7768,43 +7622,31 @@ hscript_Interp.prototype = {
 };
 var hscript_Token = $hxClasses["hscript.Token"] = { __ename__ : true, __constructs__ : ["TEof","TConst","TId","TOp","TPOpen","TPClose","TBrOpen","TBrClose","TDot","TComma","TSemicolon","TBkOpen","TBkClose","TQuestion","TDoubleDot"] };
 hscript_Token.TEof = ["TEof",0];
-hscript_Token.TEof.toString = $estr;
 hscript_Token.TEof.__enum__ = hscript_Token;
-hscript_Token.TConst = function(c) { var $x = ["TConst",1,c]; $x.__enum__ = hscript_Token; $x.toString = $estr; return $x; };
-hscript_Token.TId = function(s) { var $x = ["TId",2,s]; $x.__enum__ = hscript_Token; $x.toString = $estr; return $x; };
-hscript_Token.TOp = function(s) { var $x = ["TOp",3,s]; $x.__enum__ = hscript_Token; $x.toString = $estr; return $x; };
+hscript_Token.TConst = function(c) { var $x = ["TConst",1,c]; $x.__enum__ = hscript_Token; return $x; };
+hscript_Token.TId = function(s) { var $x = ["TId",2,s]; $x.__enum__ = hscript_Token; return $x; };
+hscript_Token.TOp = function(s) { var $x = ["TOp",3,s]; $x.__enum__ = hscript_Token; return $x; };
 hscript_Token.TPOpen = ["TPOpen",4];
-hscript_Token.TPOpen.toString = $estr;
 hscript_Token.TPOpen.__enum__ = hscript_Token;
 hscript_Token.TPClose = ["TPClose",5];
-hscript_Token.TPClose.toString = $estr;
 hscript_Token.TPClose.__enum__ = hscript_Token;
 hscript_Token.TBrOpen = ["TBrOpen",6];
-hscript_Token.TBrOpen.toString = $estr;
 hscript_Token.TBrOpen.__enum__ = hscript_Token;
 hscript_Token.TBrClose = ["TBrClose",7];
-hscript_Token.TBrClose.toString = $estr;
 hscript_Token.TBrClose.__enum__ = hscript_Token;
 hscript_Token.TDot = ["TDot",8];
-hscript_Token.TDot.toString = $estr;
 hscript_Token.TDot.__enum__ = hscript_Token;
 hscript_Token.TComma = ["TComma",9];
-hscript_Token.TComma.toString = $estr;
 hscript_Token.TComma.__enum__ = hscript_Token;
 hscript_Token.TSemicolon = ["TSemicolon",10];
-hscript_Token.TSemicolon.toString = $estr;
 hscript_Token.TSemicolon.__enum__ = hscript_Token;
 hscript_Token.TBkOpen = ["TBkOpen",11];
-hscript_Token.TBkOpen.toString = $estr;
 hscript_Token.TBkOpen.__enum__ = hscript_Token;
 hscript_Token.TBkClose = ["TBkClose",12];
-hscript_Token.TBkClose.toString = $estr;
 hscript_Token.TBkClose.__enum__ = hscript_Token;
 hscript_Token.TQuestion = ["TQuestion",13];
-hscript_Token.TQuestion.toString = $estr;
 hscript_Token.TQuestion.__enum__ = hscript_Token;
 hscript_Token.TDoubleDot = ["TDoubleDot",14];
-hscript_Token.TDoubleDot.toString = $estr;
 hscript_Token.TDoubleDot.__enum__ = hscript_Token;
 var hscript_Parser = function() {
 	this.uid = 0;
@@ -9631,6 +9473,42 @@ nape_callbacks_CbTypeList.prototype = {
 		}
 		return this.zpp_inner.at_ite.elem().outer;
 	}
+	,push: function(obj) {
+		this.zpp_inner.modify_test();
+		this.zpp_inner.valmod();
+		var cont;
+		if(this.zpp_inner.adder != null) cont = this.zpp_inner.adder(obj); else cont = true;
+		if(cont) {
+			if(this.zpp_inner.reverse_flag) this.zpp_inner.inner.add(obj.zpp_inner); else {
+				if(this.zpp_inner.push_ite == null) if(this.empty()) this.zpp_inner.push_ite = null; else this.zpp_inner.push_ite = this.zpp_inner.inner.iterator_at(this.get_length() - 1);
+				this.zpp_inner.push_ite = this.zpp_inner.inner.insert(this.zpp_inner.push_ite,obj.zpp_inner);
+			}
+			this.zpp_inner.invalidate();
+			if(this.zpp_inner.post_adder != null) this.zpp_inner.post_adder(obj);
+		}
+		return cont;
+	}
+	,unshift: function(obj) {
+		this.zpp_inner.modify_test();
+		this.zpp_inner.valmod();
+		var cont;
+		if(this.zpp_inner.adder != null) cont = this.zpp_inner.adder(obj); else cont = true;
+		if(cont) {
+			if(this.zpp_inner.reverse_flag) {
+				if(this.zpp_inner.push_ite == null) if(this.empty()) this.zpp_inner.push_ite = null; else this.zpp_inner.push_ite = this.zpp_inner.inner.iterator_at(this.get_length() - 1);
+				this.zpp_inner.push_ite = this.zpp_inner.inner.insert(this.zpp_inner.push_ite,obj.zpp_inner);
+			} else this.zpp_inner.inner.add(obj.zpp_inner);
+			this.zpp_inner.invalidate();
+			if(this.zpp_inner.post_adder != null) this.zpp_inner.post_adder(obj);
+		}
+		return cont;
+	}
+	,add: function(obj) {
+		if(this.zpp_inner.reverse_flag) return this.push(obj); else return this.unshift(obj);
+	}
+	,empty: function() {
+		if(false) return this.get_length() == 0; else return this.zpp_inner.inner.empty();
+	}
 	,iterator: function() {
 		this.zpp_inner.valmod();
 		return nape_callbacks_CbTypeIterator.get(this);
@@ -9710,8 +9588,20 @@ nape_callbacks_InteractionCallback.prototype = $extend(nape_callbacks_Callback.p
 	,__class__: nape_callbacks_InteractionCallback
 	,__properties__: $extend(nape_callbacks_Callback.prototype.__properties__,{get_arbiters:"get_arbiters",get_int2:"get_int2",get_int1:"get_int1"})
 });
-var nape_callbacks_InteractionListener = function() {
+var nape_callbacks_InteractionListener = function(event,interactionType,options1,options2,handler,precedence) {
+	if(precedence == null) precedence = 0;
 	this.zpp_inner_zn = null;
+	nape_callbacks_Listener.call(this);
+	var xevent = -1;
+	if(event == nape_callbacks_CbEvent.get_BEGIN()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_BEGIN; else if(event == nape_callbacks_CbEvent.get_END()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_END; else if(event == nape_callbacks_CbEvent.get_ONGOING()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_ONGOING; else {
+	}
+	this.zpp_inner_zn = new zpp_$nape_callbacks_ZPP_$InteractionListener(zpp_$nape_callbacks_ZPP_$OptionType.argument(options1),zpp_$nape_callbacks_ZPP_$OptionType.argument(options2),xevent,zpp_$nape_util_ZPP_$Flags.id_ListenerType_INTERACTION);
+	this.zpp_inner = this.zpp_inner_zn;
+	this.zpp_inner.outer = this;
+	this.zpp_inner_zn.outer_zni = this;
+	this.zpp_inner.precedence = precedence;
+	this.zpp_inner_zn.handleri = handler;
+	this.set_interactionType(interactionType);
 };
 $hxClasses["nape.callbacks.InteractionListener"] = nape_callbacks_InteractionListener;
 nape_callbacks_InteractionListener.__name__ = true;
@@ -9723,8 +9613,20 @@ nape_callbacks_InteractionListener.prototype = $extend(nape_callbacks_Listener.p
 	,get_options2: function() {
 		return this.zpp_inner_zn.options2.outer;
 	}
+	,get_interactionType: function() {
+		var ret = this.zpp_inner_zn.itype;
+		if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION) return nape_callbacks_InteractionType.get_COLLISION(); else if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR) return nape_callbacks_InteractionType.get_SENSOR(); else if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID) return nape_callbacks_InteractionType.get_FLUID(); else if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY) return nape_callbacks_InteractionType.get_ANY(); else return null;
+	}
+	,set_interactionType: function(interactionType) {
+		if(this.get_interactionType() != interactionType) {
+			var xtype;
+			if(interactionType == nape_callbacks_InteractionType.get_COLLISION()) xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION; else if(interactionType == nape_callbacks_InteractionType.get_SENSOR()) xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR; else if(interactionType == nape_callbacks_InteractionType.get_FLUID()) xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID; else xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY;
+			this.zpp_inner_zn.setInteractionType(xtype);
+		}
+		return this.get_interactionType();
+	}
 	,__class__: nape_callbacks_InteractionListener
-	,__properties__: {get_options2:"get_options2",get_options1:"get_options1"}
+	,__properties__: {set_interactionType:"set_interactionType",get_interactionType:"get_interactionType",get_options2:"get_options2",get_options1:"get_options1"}
 });
 var nape_callbacks_InteractionType = function() {
 };
@@ -9869,6 +9771,39 @@ nape_callbacks_ListenerList.prototype = {
 		}
 		return this.zpp_inner.at_ite.elem().outer;
 	}
+	,push: function(obj) {
+		this.zpp_inner.modify_test();
+		this.zpp_inner.valmod();
+		var cont;
+		if(this.zpp_inner.adder != null) cont = this.zpp_inner.adder(obj); else cont = true;
+		if(cont) {
+			if(this.zpp_inner.reverse_flag) this.zpp_inner.inner.add(obj.zpp_inner); else {
+				if(this.zpp_inner.push_ite == null) if(this.empty()) this.zpp_inner.push_ite = null; else this.zpp_inner.push_ite = this.zpp_inner.inner.iterator_at(this.get_length() - 1);
+				this.zpp_inner.push_ite = this.zpp_inner.inner.insert(this.zpp_inner.push_ite,obj.zpp_inner);
+			}
+			this.zpp_inner.invalidate();
+			if(this.zpp_inner.post_adder != null) this.zpp_inner.post_adder(obj);
+		}
+		return cont;
+	}
+	,unshift: function(obj) {
+		this.zpp_inner.modify_test();
+		this.zpp_inner.valmod();
+		var cont;
+		if(this.zpp_inner.adder != null) cont = this.zpp_inner.adder(obj); else cont = true;
+		if(cont) {
+			if(this.zpp_inner.reverse_flag) {
+				if(this.zpp_inner.push_ite == null) if(this.empty()) this.zpp_inner.push_ite = null; else this.zpp_inner.push_ite = this.zpp_inner.inner.iterator_at(this.get_length() - 1);
+				this.zpp_inner.push_ite = this.zpp_inner.inner.insert(this.zpp_inner.push_ite,obj.zpp_inner);
+			} else this.zpp_inner.inner.add(obj.zpp_inner);
+			this.zpp_inner.invalidate();
+			if(this.zpp_inner.post_adder != null) this.zpp_inner.post_adder(obj);
+		}
+		return cont;
+	}
+	,add: function(obj) {
+		if(this.zpp_inner.reverse_flag) return this.push(obj); else return this.unshift(obj);
+	}
 	,remove: function(obj) {
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
@@ -9889,6 +9824,9 @@ nape_callbacks_ListenerList.prototype = {
 			this.zpp_inner.invalidate();
 		}
 		return ret;
+	}
+	,empty: function() {
+		if(false) return this.get_length() == 0; else return this.zpp_inner.inner.empty();
 	}
 	,iterator: function() {
 		this.zpp_inner.valmod();
@@ -9952,8 +9890,12 @@ nape_callbacks_ListenerType.prototype = {
 	}
 	,__class__: nape_callbacks_ListenerType
 };
-var nape_callbacks_OptionType = function() {
+var nape_callbacks_OptionType = function(includes,excludes) {
 	this.zpp_inner = null;
+	this.zpp_inner = new zpp_$nape_callbacks_ZPP_$OptionType();
+	this.zpp_inner.outer = this;
+	if(includes != null) this.including(includes);
+	if(excludes != null) this.excluding(excludes);
 };
 $hxClasses["nape.callbacks.OptionType"] = nape_callbacks_OptionType;
 nape_callbacks_OptionType.__name__ = true;
@@ -9965,6 +9907,14 @@ nape_callbacks_OptionType.prototype = {
 	,get_excludes: function() {
 		if(this.zpp_inner.wrap_excludes == null) this.zpp_inner.setup_excludes();
 		return this.zpp_inner.wrap_excludes;
+	}
+	,including: function(includes) {
+		this.zpp_inner.append(this.zpp_inner.includes,includes);
+		return this;
+	}
+	,excluding: function(excludes) {
+		this.zpp_inner.append(this.zpp_inner.excludes,excludes);
+		return this;
 	}
 	,toString: function() {
 		var inc = this.get_includes().toString();
@@ -11579,11 +11529,25 @@ nape_phys_Interactor.prototype = {
 	get_id: function() {
 		return this.zpp_inner_i.id;
 	}
+	,get_userData: function() {
+		if(this.zpp_inner_i.userData == null) this.zpp_inner_i.userData = { };
+		return this.zpp_inner_i.userData;
+	}
+	,isShape: function() {
+		return this.zpp_inner_i.ishape != null;
+	}
+	,get_castShape: function() {
+		if(this.isShape()) return this.zpp_inner_i.ishape.outer; else return null;
+	}
+	,get_cbTypes: function() {
+		if(this.zpp_inner_i.wrap_cbTypes == null) this.zpp_inner_i.setupcbTypes();
+		return this.zpp_inner_i.wrap_cbTypes;
+	}
 	,toString: function() {
 		return "";
 	}
 	,__class__: nape_phys_Interactor
-	,__properties__: {get_id:"get_id"}
+	,__properties__: {get_cbTypes:"get_cbTypes",get_castShape:"get_castShape",get_userData:"get_userData",get_id:"get_id"}
 };
 var nape_phys_Body = function(type,position) {
 	this.zpp_inner = null;
@@ -12428,6 +12392,9 @@ nape_shape_Shape.prototype = $extend(nape_phys_Interactor.prototype,{
 	isCircle: function() {
 		return this.zpp_inner.isCircle();
 	}
+	,get_body: function() {
+		if(this.zpp_inner.body != null) return this.zpp_inner.body.outer; else return null;
+	}
 	,get_material: function() {
 		return this.zpp_inner.material.wrapper();
 	}
@@ -12459,7 +12426,7 @@ nape_shape_Shape.prototype = $extend(nape_phys_Interactor.prototype,{
 		return ret + "#" + this.get_id();
 	}
 	,__class__: nape_shape_Shape
-	,__properties__: $extend(nape_phys_Interactor.prototype.__properties__,{set_sensorEnabled:"set_sensorEnabled",get_sensorEnabled:"get_sensorEnabled",set_filter:"set_filter",get_filter:"get_filter",set_material:"set_material",get_material:"get_material"})
+	,__properties__: $extend(nape_phys_Interactor.prototype.__properties__,{set_sensorEnabled:"set_sensorEnabled",get_sensorEnabled:"get_sensorEnabled",set_filter:"set_filter",get_filter:"get_filter",set_material:"set_material",get_material:"get_material",get_body:"get_body"})
 });
 var nape_shape_Circle = function(radius,localCOM,material,filter) {
 	this.zpp_inner_zn = null;
@@ -13364,13 +13331,10 @@ spriter_definitions_Ref.prototype = {
 };
 var spriter_definitions_MetaDispatch = $hxClasses["spriter.definitions.MetaDispatch"] = { __ename__ : true, __constructs__ : ["ONCE","ONCE_PER_LOOP","ALWAYS"] };
 spriter_definitions_MetaDispatch.ONCE = ["ONCE",0];
-spriter_definitions_MetaDispatch.ONCE.toString = $estr;
 spriter_definitions_MetaDispatch.ONCE.__enum__ = spriter_definitions_MetaDispatch;
 spriter_definitions_MetaDispatch.ONCE_PER_LOOP = ["ONCE_PER_LOOP",1];
-spriter_definitions_MetaDispatch.ONCE_PER_LOOP.toString = $estr;
 spriter_definitions_MetaDispatch.ONCE_PER_LOOP.__enum__ = spriter_definitions_MetaDispatch;
 spriter_definitions_MetaDispatch.ALWAYS = ["ALWAYS",2];
-spriter_definitions_MetaDispatch.ALWAYS.toString = $estr;
 spriter_definitions_MetaDispatch.ALWAYS.__enum__ = spriter_definitions_MetaDispatch;
 var spriter_interfaces_IScml = function() { };
 $hxClasses["spriter.interfaces.IScml"] = spriter_interfaces_IScml;
@@ -13541,10 +13505,8 @@ spriter_definitions_SpriteTimelineKey.prototype = $extend(spriter_definitions_Ob
 });
 var spriter_definitions_LoopType = $hxClasses["spriter.definitions.LoopType"] = { __ename__ : true, __constructs__ : ["LOOPING","NO_LOOPING"] };
 spriter_definitions_LoopType.LOOPING = ["LOOPING",0];
-spriter_definitions_LoopType.LOOPING.toString = $estr;
 spriter_definitions_LoopType.LOOPING.__enum__ = spriter_definitions_LoopType;
 spriter_definitions_LoopType.NO_LOOPING = ["NO_LOOPING",1];
-spriter_definitions_LoopType.NO_LOOPING.toString = $estr;
 spriter_definitions_LoopType.NO_LOOPING.__enum__ = spriter_definitions_LoopType;
 var spriter_definitions_SpriterAnimation = function(fast) {
 	this.loop = 0;
@@ -13860,25 +13822,18 @@ spriter_definitions_SpriterFolder.prototype = {
 };
 var spriter_definitions_ObjectType = $hxClasses["spriter.definitions.ObjectType"] = { __ename__ : true, __constructs__ : ["SPRITE","BONE","BOX","POINT","SOUND","ENTITY","VARIABLE"] };
 spriter_definitions_ObjectType.SPRITE = ["SPRITE",0];
-spriter_definitions_ObjectType.SPRITE.toString = $estr;
 spriter_definitions_ObjectType.SPRITE.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.BONE = ["BONE",1];
-spriter_definitions_ObjectType.BONE.toString = $estr;
 spriter_definitions_ObjectType.BONE.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.BOX = ["BOX",2];
-spriter_definitions_ObjectType.BOX.toString = $estr;
 spriter_definitions_ObjectType.BOX.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.POINT = ["POINT",3];
-spriter_definitions_ObjectType.POINT.toString = $estr;
 spriter_definitions_ObjectType.POINT.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.SOUND = ["SOUND",4];
-spriter_definitions_ObjectType.SOUND.toString = $estr;
 spriter_definitions_ObjectType.SOUND.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.ENTITY = ["ENTITY",5];
-spriter_definitions_ObjectType.ENTITY.toString = $estr;
 spriter_definitions_ObjectType.ENTITY.__enum__ = spriter_definitions_ObjectType;
 spriter_definitions_ObjectType.VARIABLE = ["VARIABLE",6];
-spriter_definitions_ObjectType.VARIABLE.toString = $estr;
 spriter_definitions_ObjectType.VARIABLE.__enum__ = spriter_definitions_ObjectType;
 var spriter_definitions_SpriterTimeline = function(fast) {
 	this.keys = [];
@@ -13958,16 +13913,12 @@ spriter_definitions_TaglineKey.prototype = {
 };
 var spriter_definitions_CurveType = $hxClasses["spriter.definitions.CurveType"] = { __ename__ : true, __constructs__ : ["INSTANT","LINEAR","QUADRATIC","CUBIC"] };
 spriter_definitions_CurveType.INSTANT = ["INSTANT",0];
-spriter_definitions_CurveType.INSTANT.toString = $estr;
 spriter_definitions_CurveType.INSTANT.__enum__ = spriter_definitions_CurveType;
 spriter_definitions_CurveType.LINEAR = ["LINEAR",1];
-spriter_definitions_CurveType.LINEAR.toString = $estr;
 spriter_definitions_CurveType.LINEAR.__enum__ = spriter_definitions_CurveType;
 spriter_definitions_CurveType.QUADRATIC = ["QUADRATIC",2];
-spriter_definitions_CurveType.QUADRATIC.toString = $estr;
 spriter_definitions_CurveType.QUADRATIC.__enum__ = spriter_definitions_CurveType;
 spriter_definitions_CurveType.CUBIC = ["CUBIC",3];
-spriter_definitions_CurveType.CUBIC.toString = $estr;
 spriter_definitions_CurveType.CUBIC.__enum__ = spriter_definitions_CurveType;
 var spriter_definitions_Varline = function(fast) {
 	if(fast != null) {
@@ -14573,19 +14524,14 @@ tools_spark_framework_assets_Asset.prototype = {
 };
 var tools_spark_framework_assets_EModuleState = $hxClasses["tools.spark.framework.assets.EModuleState"] = { __ename__ : true, __constructs__ : ["NOT_LOADED","LOADING","LOADED","RUNNING","PAUSED"] };
 tools_spark_framework_assets_EModuleState.NOT_LOADED = ["NOT_LOADED",0];
-tools_spark_framework_assets_EModuleState.NOT_LOADED.toString = $estr;
 tools_spark_framework_assets_EModuleState.NOT_LOADED.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.LOADING = ["LOADING",1];
-tools_spark_framework_assets_EModuleState.LOADING.toString = $estr;
 tools_spark_framework_assets_EModuleState.LOADING.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.LOADED = ["LOADED",2];
-tools_spark_framework_assets_EModuleState.LOADED.toString = $estr;
 tools_spark_framework_assets_EModuleState.LOADED.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.RUNNING = ["RUNNING",3];
-tools_spark_framework_assets_EModuleState.RUNNING.toString = $estr;
 tools_spark_framework_assets_EModuleState.RUNNING.__enum__ = tools_spark_framework_assets_EModuleState;
 tools_spark_framework_assets_EModuleState.PAUSED = ["PAUSED",4];
-tools_spark_framework_assets_EModuleState.PAUSED.toString = $estr;
 tools_spark_framework_assets_EModuleState.PAUSED.__enum__ = tools_spark_framework_assets_EModuleState;
 var tools_spark_framework_assets_FlambeLoader = function() {
 	this._init();
@@ -15210,67 +15156,46 @@ tools_spark_framework_config_ConfigValidator.prototype = {
 };
 var tools_spark_framework_config_ENodeType = $hxClasses["tools.spark.framework.config.ENodeType"] = { __ename__ : true, __constructs__ : ["CLIENT","SERVER","PROJECT","SLICED","PATHS","ASSETS","PROJECT_NAME","PROJECT_VERSION","EXECUTE_AT_LAUNCH","EXECUTE_MODULE","SOUND_SERVICE","LOGIC_SERVICE","INPUT_SERVICE","COMMUNICATIONS_SERVICE","EVENT_SERVICE","DISPLAY_SERVICE","PATH","MODULE","ASSET","REQUIRES","REQUIRES_MODULE"] };
 tools_spark_framework_config_ENodeType.CLIENT = ["CLIENT",0];
-tools_spark_framework_config_ENodeType.CLIENT.toString = $estr;
 tools_spark_framework_config_ENodeType.CLIENT.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.SERVER = ["SERVER",1];
-tools_spark_framework_config_ENodeType.SERVER.toString = $estr;
 tools_spark_framework_config_ENodeType.SERVER.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PROJECT = ["PROJECT",2];
-tools_spark_framework_config_ENodeType.PROJECT.toString = $estr;
 tools_spark_framework_config_ENodeType.PROJECT.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.SLICED = ["SLICED",3];
-tools_spark_framework_config_ENodeType.SLICED.toString = $estr;
 tools_spark_framework_config_ENodeType.SLICED.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PATHS = ["PATHS",4];
-tools_spark_framework_config_ENodeType.PATHS.toString = $estr;
 tools_spark_framework_config_ENodeType.PATHS.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.ASSETS = ["ASSETS",5];
-tools_spark_framework_config_ENodeType.ASSETS.toString = $estr;
 tools_spark_framework_config_ENodeType.ASSETS.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PROJECT_NAME = ["PROJECT_NAME",6];
-tools_spark_framework_config_ENodeType.PROJECT_NAME.toString = $estr;
 tools_spark_framework_config_ENodeType.PROJECT_NAME.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PROJECT_VERSION = ["PROJECT_VERSION",7];
-tools_spark_framework_config_ENodeType.PROJECT_VERSION.toString = $estr;
 tools_spark_framework_config_ENodeType.PROJECT_VERSION.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH = ["EXECUTE_AT_LAUNCH",8];
-tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH.toString = $estr;
 tools_spark_framework_config_ENodeType.EXECUTE_AT_LAUNCH.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.EXECUTE_MODULE = ["EXECUTE_MODULE",9];
-tools_spark_framework_config_ENodeType.EXECUTE_MODULE.toString = $estr;
 tools_spark_framework_config_ENodeType.EXECUTE_MODULE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.SOUND_SERVICE = ["SOUND_SERVICE",10];
-tools_spark_framework_config_ENodeType.SOUND_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.SOUND_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.LOGIC_SERVICE = ["LOGIC_SERVICE",11];
-tools_spark_framework_config_ENodeType.LOGIC_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.LOGIC_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.INPUT_SERVICE = ["INPUT_SERVICE",12];
-tools_spark_framework_config_ENodeType.INPUT_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.INPUT_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE = ["COMMUNICATIONS_SERVICE",13];
-tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.COMMUNICATIONS_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.EVENT_SERVICE = ["EVENT_SERVICE",14];
-tools_spark_framework_config_ENodeType.EVENT_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.EVENT_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.DISPLAY_SERVICE = ["DISPLAY_SERVICE",15];
-tools_spark_framework_config_ENodeType.DISPLAY_SERVICE.toString = $estr;
 tools_spark_framework_config_ENodeType.DISPLAY_SERVICE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.PATH = ["PATH",16];
-tools_spark_framework_config_ENodeType.PATH.toString = $estr;
 tools_spark_framework_config_ENodeType.PATH.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.MODULE = ["MODULE",17];
-tools_spark_framework_config_ENodeType.MODULE.toString = $estr;
 tools_spark_framework_config_ENodeType.MODULE.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.ASSET = ["ASSET",18];
-tools_spark_framework_config_ENodeType.ASSET.toString = $estr;
 tools_spark_framework_config_ENodeType.ASSET.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.REQUIRES = ["REQUIRES",19];
-tools_spark_framework_config_ENodeType.REQUIRES.toString = $estr;
 tools_spark_framework_config_ENodeType.REQUIRES.__enum__ = tools_spark_framework_config_ENodeType;
 tools_spark_framework_config_ENodeType.REQUIRES_MODULE = ["REQUIRES_MODULE",20];
-tools_spark_framework_config_ENodeType.REQUIRES_MODULE.toString = $estr;
 tools_spark_framework_config_ENodeType.REQUIRES_MODULE.__enum__ = tools_spark_framework_config_ENodeType;
 var tools_spark_framework_space2_$5D_interfaces_IBase2_$5D = function() { };
 $hxClasses["tools.spark.framework.space2_5D.interfaces.IBase2_5D"] = tools_spark_framework_space2_$5D_interfaces_IBase2_$5D;
@@ -16393,13 +16318,14 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 							body.set_allowRotation(false);
 						} else body.get_shapes().add(new nape_shape_Polygon(nape_shape_Polygon.box(100,100),l_material));
 						body.set_position(new nape_geom_Vec2(l_mesh.x.get__(),l_mesh.y.get__()));
-						if(this.gameEntity.getState("physicsType") == "Dynamic") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("initialForceX"),this.gameEntity.getState("initialForceY"))); else if(this.gameEntity.getState("physicsType") == "Kinematic") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("velocityX"),this.gameEntity.getState("velocityY")));
+						if(this.gameEntity.getState("physicsType") == "Dynamic") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("velocityX"),this.gameEntity.getState("velocityY"))); else if(this.gameEntity.getState("physicsType") == "Kinematic") body.set_velocity(new nape_geom_Vec2(this.gameEntity.getState("velocityX"),this.gameEntity.getState("velocityY")));
 						body.set_space(((function($this) {
 							var $r;
 							var component = l_sceneInstance.getComponent("SpaceComponent_3");
 							$r = component;
 							return $r;
 						}(this))).space);
+						body.get_userData().gameEntity = this.gameEntity;
 						l_instance.add(new tools_spark_framework_flambe2_$5D_components_BodyComponent(body));
 					}
 				}
@@ -16421,6 +16347,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var l_feet = new nape_shape_Circle(l_circleRadious,new nape_geom_Vec2(l_offsetXScaled,l_rectHeight / 2 + l_offsetYScaled),p_bodyMaterial);
 		var l_feetSensor = new nape_shape_Polygon(nape_shape_Polygon.rect(-l_widthScaled / 2 / 2 + l_offsetXScaled,l_rectHeight / 2 + l_offsetYScaled + l_circleRadious - l_heightScaled * 0.05 / 2,l_widthScaled / 2,l_heightScaled * 0.05),p_bodyMaterial);
 		l_feetSensor.set_sensorEnabled(true);
+		l_feetSensor.get_cbTypes().add(tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET);
 		p_body.get_shapes().add(l_head);
 		p_body.get_shapes().add(l_main);
 		p_body.get_shapes().add(l_feet);
@@ -16546,6 +16473,773 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D
 });
+var zpp_$nape_callbacks_ZPP_$CbType = function() {
+	this.conlisteners = null;
+	this.bodylisteners = null;
+	this.listeners = null;
+	this.cbsets = null;
+	this.id = 0;
+	this.outer = null;
+	this.id = zpp_$nape_ZPP_$ID.CbType();
+	this.listeners = new zpp_$nape_util_ZNPList_$ZPP_$InteractionListener();
+	this.bodylisteners = new zpp_$nape_util_ZNPList_$ZPP_$BodyListener();
+	this.conlisteners = new zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener();
+	this.constraints = new zpp_$nape_util_ZNPList_$ZPP_$Constraint();
+	this.interactors = new zpp_$nape_util_ZNPList_$ZPP_$Interactor();
+	this.cbsets = new zpp_$nape_util_ZNPList_$ZPP_$CbSet();
+};
+$hxClasses["zpp_nape.callbacks.ZPP_CbType"] = zpp_$nape_callbacks_ZPP_$CbType;
+zpp_$nape_callbacks_ZPP_$CbType.__name__ = true;
+zpp_$nape_callbacks_ZPP_$CbType.setlt = function(a,b) {
+	return a.id < b.id;
+};
+zpp_$nape_callbacks_ZPP_$CbType.prototype = {
+	addConstraint: function(con) {
+		this.constraints.add(con);
+	}
+	,addInteractor: function(intx) {
+		this.interactors.add(intx);
+	}
+	,remConstraint: function(con) {
+		this.constraints.remove(con);
+	}
+	,remInteractor: function(intx) {
+		this.interactors.remove(intx);
+	}
+	,addint: function(x) {
+		var pre = null;
+		var cx_ite = this.listeners.begin();
+		while(cx_ite != null) {
+			var j = cx_ite.elem();
+			if(zpp_$nape_callbacks_ZPP_$Listener.setlt(x,j)) break;
+			pre = cx_ite;
+			cx_ite = cx_ite.next;
+		}
+		this.listeners.inlined_insert(pre,x);
+		this.invalidateint();
+	}
+	,removeint: function(x) {
+		this.listeners.remove(x);
+		this.invalidateint();
+	}
+	,invalidateint: function() {
+		var cx_ite = this.cbsets.begin();
+		while(cx_ite != null) {
+			var cb = cx_ite.elem();
+			cb.invalidate_listeners();
+			cx_ite = cx_ite.next;
+		}
+	}
+	,addbody: function(x) {
+		var pre = null;
+		var cx_ite = this.bodylisteners.begin();
+		while(cx_ite != null) {
+			var j = cx_ite.elem();
+			if(zpp_$nape_callbacks_ZPP_$Listener.setlt(x,j)) break;
+			pre = cx_ite;
+			cx_ite = cx_ite.next;
+		}
+		this.bodylisteners.inlined_insert(pre,x);
+		this.invalidatebody();
+	}
+	,removebody: function(x) {
+		this.bodylisteners.remove(x);
+		this.invalidatebody();
+	}
+	,invalidatebody: function() {
+		var cx_ite = this.cbsets.begin();
+		while(cx_ite != null) {
+			var cb = cx_ite.elem();
+			cb.invalidate_bodylisteners();
+			cx_ite = cx_ite.next;
+		}
+	}
+	,addconstraint: function(x) {
+		var pre = null;
+		var cx_ite = this.conlisteners.begin();
+		while(cx_ite != null) {
+			var j = cx_ite.elem();
+			if(zpp_$nape_callbacks_ZPP_$Listener.setlt(x,j)) break;
+			pre = cx_ite;
+			cx_ite = cx_ite.next;
+		}
+		this.conlisteners.inlined_insert(pre,x);
+		this.invalidateconstraint();
+	}
+	,removeconstraint: function(x) {
+		this.conlisteners.remove(x);
+		this.invalidateconstraint();
+	}
+	,invalidateconstraint: function() {
+		var cx_ite = this.cbsets.begin();
+		while(cx_ite != null) {
+			var cb = cx_ite.elem();
+			cb.invalidate_conlisteners();
+			cx_ite = cx_ite.next;
+		}
+	}
+	,__class__: zpp_$nape_callbacks_ZPP_$CbType
+};
+var zpp_$nape_ZPP_$ID = function() { };
+$hxClasses["zpp_nape.ZPP_ID"] = zpp_$nape_ZPP_$ID;
+zpp_$nape_ZPP_$ID.__name__ = true;
+zpp_$nape_ZPP_$ID.Interactor = function() {
+	return zpp_$nape_ZPP_$ID._Interactor++;
+};
+zpp_$nape_ZPP_$ID.CbType = function() {
+	return zpp_$nape_ZPP_$ID._CbType++;
+};
+zpp_$nape_ZPP_$ID.CbSet = function() {
+	return zpp_$nape_ZPP_$ID._CbSet++;
+};
+zpp_$nape_ZPP_$ID.Listener = function() {
+	return zpp_$nape_ZPP_$ID._Listener++;
+};
+var zpp_$nape_util_ZNPList_$ZPP_$InteractionListener = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_InteractionListener"] = zpp_$nape_util_ZNPList_$ZPP_$InteractionListener;
+zpp_$nape_util_ZNPList_$ZPP_$InteractionListener.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$InteractionListener.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,add: function(o) {
+		return this.inlined_add(o);
+	}
+	,inlined_add: function(o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		temp.next = this.begin();
+		this.head = temp;
+		this.modified = true;
+		this.length++;
+		return o;
+	}
+	,inlined_insert: function(cur,o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		if(cur == null) {
+			temp.next = this.begin();
+			this.head = temp;
+		} else {
+			temp.next = cur.next;
+			cur.next = temp;
+		}
+		this.pushmod = this.modified = true;
+		this.length++;
+		return temp;
+	}
+	,inlined_pop: function() {
+		var ret = this.begin();
+		this.head = ret.next;
+		var o = ret;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = o;
+		if(this.empty()) this.pushmod = true;
+		this.modified = true;
+		this.length--;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,clear: function() {
+		this.inlined_clear();
+	}
+	,inlined_clear: function() {
+		if(true) {
+			while(!this.empty()) this.inlined_pop();
+			this.pushmod = true;
+		}
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$InteractionListener
+};
+var zpp_$nape_util_ZNPList_$ZPP_$BodyListener = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_BodyListener"] = zpp_$nape_util_ZNPList_$ZPP_$BodyListener;
+zpp_$nape_util_ZNPList_$ZPP_$BodyListener.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$BodyListener.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,inlined_insert: function(cur,o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$BodyListener(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		if(cur == null) {
+			temp.next = this.begin();
+			this.head = temp;
+		} else {
+			temp.next = cur.next;
+			cur.next = temp;
+		}
+		this.pushmod = this.modified = true;
+		this.length++;
+		return temp;
+	}
+	,inlined_pop: function() {
+		var ret = this.begin();
+		this.head = ret.next;
+		var o = ret;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool = o;
+		if(this.empty()) this.pushmod = true;
+		this.modified = true;
+		this.length--;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,clear: function() {
+		this.inlined_clear();
+	}
+	,inlined_clear: function() {
+		if(true) {
+			while(!this.empty()) this.inlined_pop();
+			this.pushmod = true;
+		}
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$BodyListener
+};
+var zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_ConstraintListener"] = zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener;
+zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,inlined_insert: function(cur,o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		if(cur == null) {
+			temp.next = this.begin();
+			this.head = temp;
+		} else {
+			temp.next = cur.next;
+			cur.next = temp;
+		}
+		this.pushmod = this.modified = true;
+		this.length++;
+		return temp;
+	}
+	,inlined_pop: function() {
+		var ret = this.begin();
+		this.head = ret.next;
+		var o = ret;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool = o;
+		if(this.empty()) this.pushmod = true;
+		this.modified = true;
+		this.length--;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,clear: function() {
+		this.inlined_clear();
+	}
+	,inlined_clear: function() {
+		if(true) {
+			while(!this.empty()) this.inlined_pop();
+			this.pushmod = true;
+		}
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener
+};
+var zpp_$nape_util_ZNPList_$ZPP_$Constraint = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_Constraint"] = zpp_$nape_util_ZNPList_$ZPP_$Constraint;
+zpp_$nape_util_ZNPList_$ZPP_$Constraint.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$Constraint.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,add: function(o) {
+		return this.inlined_add(o);
+	}
+	,inlined_add: function(o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$Constraint(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		temp.next = this.begin();
+		this.head = temp;
+		this.modified = true;
+		this.length++;
+		return o;
+	}
+	,pop: function() {
+		this.inlined_pop();
+	}
+	,inlined_pop: function() {
+		var ret = this.begin();
+		this.head = ret.next;
+		var o = ret;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool = o;
+		if(this.empty()) this.pushmod = true;
+		this.modified = true;
+		this.length--;
+	}
+	,inlined_pop_unsafe: function() {
+		var ret = this.front();
+		this.pop();
+		return ret;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,erase: function(pre) {
+		return this.inlined_erase(pre);
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,front: function() {
+		return this.begin().elem();
+	}
+	,iterator_at: function(ind) {
+		var ret = this.begin();
+		while(ind-- > 0 && ret != null) ret = ret.next;
+		return ret;
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$Constraint
+};
+var zpp_$nape_util_ZNPList_$ZPP_$Interactor = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_Interactor"] = zpp_$nape_util_ZNPList_$ZPP_$Interactor;
+zpp_$nape_util_ZNPList_$ZPP_$Interactor.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$Interactor.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,add: function(o) {
+		return this.inlined_add(o);
+	}
+	,inlined_add: function(o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$Interactor(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		temp.next = this.begin();
+		this.head = temp;
+		this.modified = true;
+		this.length++;
+		return o;
+	}
+	,pop: function() {
+		this.inlined_pop();
+	}
+	,inlined_pop: function() {
+		var ret = this.begin();
+		this.head = ret.next;
+		var o = ret;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool = o;
+		if(this.empty()) this.pushmod = true;
+		this.modified = true;
+		this.length--;
+	}
+	,pop_unsafe: function() {
+		return this.inlined_pop_unsafe();
+	}
+	,inlined_pop_unsafe: function() {
+		var ret = this.front();
+		this.pop();
+		return ret;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,inlined_clear: function() {
+		if(true) {
+			while(!this.empty()) this.inlined_pop();
+			this.pushmod = true;
+		}
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,front: function() {
+		return this.begin().elem();
+	}
+	,iterator_at: function(ind) {
+		var ret = this.begin();
+		while(ind-- > 0 && ret != null) ret = ret.next;
+		return ret;
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$Interactor
+};
+var zpp_$nape_util_ZNPList_$ZPP_$CbSet = function() {
+	this.length = 0;
+	this.pushmod = false;
+	this.modified = false;
+	this.head = null;
+};
+$hxClasses["zpp_nape.util.ZNPList_ZPP_CbSet"] = zpp_$nape_util_ZNPList_$ZPP_$CbSet;
+zpp_$nape_util_ZNPList_$ZPP_$CbSet.__name__ = true;
+zpp_$nape_util_ZNPList_$ZPP_$CbSet.prototype = {
+	begin: function() {
+		return this.head;
+	}
+	,add: function(o) {
+		return this.inlined_add(o);
+	}
+	,inlined_add: function(o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$CbSet(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		temp.next = this.begin();
+		this.head = temp;
+		this.modified = true;
+		this.length++;
+		return o;
+	}
+	,pop: function() {
+		this.inlined_pop();
+	}
+	,inlined_pop: function() {
+		var ret = this.begin();
+		this.head = ret.next;
+		var o = ret;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool = o;
+		if(this.empty()) this.pushmod = true;
+		this.modified = true;
+		this.length--;
+	}
+	,pop_unsafe: function() {
+		return this.inlined_pop_unsafe();
+	}
+	,inlined_pop_unsafe: function() {
+		var ret = this.front();
+		this.pop();
+		return ret;
+	}
+	,remove: function(obj) {
+		this.inlined_try_remove(obj);
+	}
+	,inlined_try_remove: function(obj) {
+		var pre = null;
+		var cur = this.begin();
+		var ret = false;
+		while(cur != null) {
+			if(cur.elem() == obj) {
+				this.inlined_erase(pre);
+				ret = true;
+				break;
+			}
+			pre = cur;
+			cur = cur.next;
+		}
+		return ret;
+	}
+	,inlined_erase: function(pre) {
+		var old;
+		var ret;
+		if(pre == null) {
+			old = this.begin();
+			ret = old.next;
+			this.head = ret;
+			if(this.empty()) this.pushmod = true;
+		} else {
+			old = pre.next;
+			ret = old.next;
+			pre.next = ret;
+			if(ret == null) this.pushmod = true;
+		}
+		var o = old;
+		o.free();
+		o.next = zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool;
+		zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool = o;
+		this.modified = true;
+		this.length--;
+		this.pushmod = true;
+		return ret;
+	}
+	,empty: function() {
+		return this.begin() == null;
+	}
+	,front: function() {
+		return this.begin().elem();
+	}
+	,__class__: zpp_$nape_util_ZNPList_$ZPP_$CbSet
+};
 var tools_spark_framework_flambe2_$5D_FlambeScene2_$5D = function(p_gameEntity) {
 	tools_spark_framework_space2_$5D_core_AScene2_$5D.call(this,p_gameEntity);
 	this._initFlambeScene2_5D();
@@ -16579,6 +17273,14 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 			f_childEntity.update(p_view2_5D);
 		}
 	}
+	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
+		this._instances.get(p_view2_5D).addChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , flambe_Entity));
+		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
+	}
+	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
+		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , flambe_Entity));
+		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._removeChildOfInstance.call(this,p_childEntity,p_view2_5D);
+	}
 	,updateCamera: function(p_view,p_camera) {
 		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype.updateCamera.call(this,p_view,p_camera);
 		var l_instance = this._instances.get(p_view);
@@ -16594,15 +17296,32 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 			tools_spark_framework_Console.error("UPDATING PHYSICS SCENE: " + Std.string(this.gameEntity.getState("name")));
 			var spaceComponent = new tools_spark_framework_flambe2_$5D_components_SpaceComponent(this.gameEntity.getState("gravityX"),this.gameEntity.getState("gravityY"));
 			l_instance.add(spaceComponent);
+			this._scenePhysicsInit(spaceComponent.space);
 		}
 	}
-	,_createChildOfInstance: function(p_childEntity,p_view2_5D) {
-		this._instances.get(p_view2_5D).addChild(js_Boot.__cast(p_childEntity.createInstance(p_view2_5D) , flambe_Entity));
-		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
+	,_scenePhysicsInit: function(p_space) {
+		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_BEGIN(),nape_callbacks_InteractionType.get_COLLISION(),nape_callbacks_CbType.get_ANY_BODY(),nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._beginHandlerCollision)));
+		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_END(),nape_callbacks_InteractionType.get_COLLISION(),nape_callbacks_CbType.get_ANY_BODY(),nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._endHandlerCollision)));
+		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_BEGIN(),nape_callbacks_InteractionType.get_SENSOR(),tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET,nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._beginHandlerSensorFeet)));
+		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_END(),nape_callbacks_InteractionType.get_SENSOR(),tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET,nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._endHandlerSensorFeet)));
 	}
-	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
-		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , flambe_Entity));
-		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._removeChildOfInstance.call(this,p_childEntity,p_view2_5D);
+	,_beginHandlerCollision: function(cb) {
+		if(cb.get_int1().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START,cb.get_int1().get_userData().gameEntity);
+		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START,cb.get_int2().get_userData().gameEntity);
+	}
+	,_endHandlerCollision: function(cb) {
+		if(cb.get_int1().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END,cb.get_int1().get_userData().gameEntity);
+		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END,cb.get_int2().get_userData().gameEntity);
+	}
+	,_beginHandlerSensorFeet: function(cb) {
+		var int1Parent = cb.get_int1().get_castShape().get_body();
+		if(int1Parent.get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START_BIPED_FEET,int1Parent.get_userData().gameEntity);
+		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START_BIPED_FEET,cb.get_int2().get_userData().gameEntity);
+	}
+	,_endHandlerSensorFeet: function(cb) {
+		var int1Parent = cb.get_int1().get_castShape().get_body();
+		if(int1Parent.get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END_BIPED_FEET,int1Parent.get_userData().gameEntity);
+		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END_BIPED_FEET,cb.get_int2().get_userData().gameEntity);
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_FlambeScene2_$5D
 });
@@ -16723,35 +17442,32 @@ tools_spark_framework_flambe2_$5D_components_SpaceComponent.prototype = $extend(
 });
 var tools_spark_framework_haxe_Filter = $hxClasses["tools.spark.framework.haxe.Filter"] = { __ename__ : true, __constructs__ : ["FInt","FBool","FEnum","FReg"] };
 tools_spark_framework_haxe_Filter.FInt = ["FInt",0];
-tools_spark_framework_haxe_Filter.FInt.toString = $estr;
 tools_spark_framework_haxe_Filter.FInt.__enum__ = tools_spark_framework_haxe_Filter;
 tools_spark_framework_haxe_Filter.FBool = ["FBool",1];
-tools_spark_framework_haxe_Filter.FBool.toString = $estr;
 tools_spark_framework_haxe_Filter.FBool.__enum__ = tools_spark_framework_haxe_Filter;
-tools_spark_framework_haxe_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = tools_spark_framework_haxe_Filter; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = tools_spark_framework_haxe_Filter; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Filter.FEnum = function(values) { var $x = ["FEnum",2,values]; $x.__enum__ = tools_spark_framework_haxe_Filter; return $x; };
+tools_spark_framework_haxe_Filter.FReg = function(matcher) { var $x = ["FReg",3,matcher]; $x.__enum__ = tools_spark_framework_haxe_Filter; return $x; };
 var tools_spark_framework_haxe_Attrib = $hxClasses["tools.spark.framework.haxe.Attrib"] = { __ename__ : true, __constructs__ : ["Att"] };
-tools_spark_framework_haxe_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = tools_spark_framework_haxe_Attrib; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Attrib.Att = function(name,filter,defvalue) { var $x = ["Att",0,name,filter,defvalue]; $x.__enum__ = tools_spark_framework_haxe_Attrib; return $x; };
 var tools_spark_framework_haxe_Rule = $hxClasses["tools.spark.framework.haxe.Rule"] = { __ename__ : true, __constructs__ : ["RNode","RData","RMulti","RList","RChoice","ROptional"] };
-tools_spark_framework_haxe_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = tools_spark_framework_haxe_Rule; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe_Rule.RNode = function(name,attribs,childs) { var $x = ["RNode",0,name,attribs,childs]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
+tools_spark_framework_haxe_Rule.RData = function(filter) { var $x = ["RData",1,filter]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
+tools_spark_framework_haxe_Rule.RMulti = function(rule,atLeastOne) { var $x = ["RMulti",2,rule,atLeastOne]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
+tools_spark_framework_haxe_Rule.RList = function(rules,ordered) { var $x = ["RList",3,rules,ordered]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
+tools_spark_framework_haxe_Rule.RChoice = function(choices) { var $x = ["RChoice",4,choices]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
+tools_spark_framework_haxe_Rule.ROptional = function(rule) { var $x = ["ROptional",5,rule]; $x.__enum__ = tools_spark_framework_haxe_Rule; return $x; };
 var tools_spark_framework_haxe__$LooseCheck_CheckResult = $hxClasses["tools.spark.framework.haxe._LooseCheck.CheckResult"] = { __ename__ : true, __constructs__ : ["CMatch","CMissing","CExtra","CElementExpected","CDataExpected","CExtraAttrib","CMissingAttrib","CInvalidAttrib","CInvalidData","CInElement"] };
 tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch = ["CMatch",0];
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch.toString = $estr;
 tools_spark_framework_haxe__$LooseCheck_CheckResult.CMatch.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult;
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
-tools_spark_framework_haxe__$LooseCheck_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; $x.toString = $estr; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissing = function(r) { var $x = ["CMissing",1,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtra = function(x) { var $x = ["CExtra",2,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CElementExpected = function(name,x) { var $x = ["CElementExpected",3,name,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CDataExpected = function(x) { var $x = ["CDataExpected",4,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CExtraAttrib = function(att,x) { var $x = ["CExtraAttrib",5,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CMissingAttrib = function(att,x) { var $x = ["CMissingAttrib",6,att,x]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidAttrib = function(att,x,f) { var $x = ["CInvalidAttrib",7,att,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CInvalidData = function(x,f) { var $x = ["CInvalidData",8,x,f]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
+tools_spark_framework_haxe__$LooseCheck_CheckResult.CInElement = function(x,r) { var $x = ["CInElement",9,x,r]; $x.__enum__ = tools_spark_framework_haxe__$LooseCheck_CheckResult; return $x; };
 var tools_spark_framework_haxe_LooseCheck = function() { };
 $hxClasses["tools.spark.framework.haxe.LooseCheck"] = tools_spark_framework_haxe_LooseCheck;
 tools_spark_framework_haxe_LooseCheck.__name__ = true;
@@ -17416,62 +18132,44 @@ tools_spark_framework_layout_helpers_SizesAndLimit.prototype = {
 };
 var tools_spark_framework_layout_interfaces_EColumnAlign = $hxClasses["tools.spark.framework.layout.interfaces.EColumnAlign"] = { __ename__ : true, __constructs__ : ["JUSTIFY_USING_GAP","JUSTIFY_USING_WIDTH","LEFT"] };
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP = ["JUSTIFY_USING_GAP",0];
-tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP.toString = $estr;
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_GAP.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH = ["JUSTIFY_USING_WIDTH",1];
-tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH.toString = $estr;
 tools_spark_framework_layout_interfaces_EColumnAlign.JUSTIFY_USING_WIDTH.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 tools_spark_framework_layout_interfaces_EColumnAlign.LEFT = ["LEFT",2];
-tools_spark_framework_layout_interfaces_EColumnAlign.LEFT.toString = $estr;
 tools_spark_framework_layout_interfaces_EColumnAlign.LEFT.__enum__ = tools_spark_framework_layout_interfaces_EColumnAlign;
 var tools_spark_framework_layout_interfaces_EHorizontalAlign = $hxClasses["tools.spark.framework.layout.interfaces.EHorizontalAlign"] = { __ename__ : true, __constructs__ : ["LEFT","CENTER","RIGHT","JUSTIFY","CONTENT_JUSTIFY"] };
 tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT = ["LEFT",0];
-tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.LEFT.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CENTER = ["CENTER",1];
-tools_spark_framework_layout_interfaces_EHorizontalAlign.CENTER.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CENTER.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.RIGHT = ["RIGHT",2];
-tools_spark_framework_layout_interfaces_EHorizontalAlign.RIGHT.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.RIGHT.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY = ["JUSTIFY",3];
-tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY = ["CONTENT_JUSTIFY",4];
-tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EHorizontalAlign.CONTENT_JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EHorizontalAlign;
 var tools_spark_framework_layout_interfaces_ERowAlign = $hxClasses["tools.spark.framework.layout.interfaces.ERowAlign"] = { __ename__ : true, __constructs__ : ["JUSTIFY_USING_GAP","JUSTIFY_USING_HEIGHT","TOP"] };
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP = ["JUSTIFY_USING_GAP",0];
-tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP.toString = $estr;
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_GAP.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT = ["JUSTIFY_USING_HEIGHT",1];
-tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT.toString = $estr;
 tools_spark_framework_layout_interfaces_ERowAlign.JUSTIFY_USING_HEIGHT.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
 tools_spark_framework_layout_interfaces_ERowAlign.TOP = ["TOP",2];
-tools_spark_framework_layout_interfaces_ERowAlign.TOP.toString = $estr;
 tools_spark_framework_layout_interfaces_ERowAlign.TOP.__enum__ = tools_spark_framework_layout_interfaces_ERowAlign;
 var tools_spark_framework_layout_interfaces_ETileOrientation = $hxClasses["tools.spark.framework.layout.interfaces.ETileOrientation"] = { __ename__ : true, __constructs__ : ["COLUMNS","ROWS"] };
 tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS = ["COLUMNS",0];
-tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS.toString = $estr;
 tools_spark_framework_layout_interfaces_ETileOrientation.COLUMNS.__enum__ = tools_spark_framework_layout_interfaces_ETileOrientation;
 tools_spark_framework_layout_interfaces_ETileOrientation.ROWS = ["ROWS",1];
-tools_spark_framework_layout_interfaces_ETileOrientation.ROWS.toString = $estr;
 tools_spark_framework_layout_interfaces_ETileOrientation.ROWS.__enum__ = tools_spark_framework_layout_interfaces_ETileOrientation;
 var tools_spark_framework_layout_interfaces_EVerticalAlign = $hxClasses["tools.spark.framework.layout.interfaces.EVerticalAlign"] = { __ename__ : true, __constructs__ : ["TOP","MIDDLE","BOTTOM","JUSTIFY","CONTENT_JUSTIFY"] };
 tools_spark_framework_layout_interfaces_EVerticalAlign.TOP = ["TOP",0];
-tools_spark_framework_layout_interfaces_EVerticalAlign.TOP.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.TOP.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE = ["MIDDLE",1];
-tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.MIDDLE.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM = ["BOTTOM",2];
-tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.BOTTOM.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY = ["JUSTIFY",3];
-tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY = ["CONTENT_JUSTIFY",4];
-tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY.toString = $estr;
 tools_spark_framework_layout_interfaces_EVerticalAlign.CONTENT_JUSTIFY.__enum__ = tools_spark_framework_layout_interfaces_EVerticalAlign;
 var tools_spark_framework_layout_layouts_ALayoutBase = function() {
 };
@@ -19183,19 +19881,14 @@ tools_spark_sliced_services_std_display_databuffer_core_DataBuffer.prototype = {
 };
 var tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType = $hxClasses["tools.spark.sliced.services.std.display.databuffer.interfaces.EBufferEntryType"] = { __ename__ : true, __constructs__ : ["SET_SPACE","ADDED","REMOVED","UPDATED_STATE","UPDATED_FORM_STATE"] };
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.SET_SPACE = ["SET_SPACE",0];
-tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.SET_SPACE.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.SET_SPACE.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED = ["ADDED",1];
-tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.ADDED.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED = ["REMOVED",2];
-tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.REMOVED.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE = ["UPDATED_STATE",3];
-tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_STATE.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_FORM_STATE = ["UPDATED_FORM_STATE",4];
-tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_FORM_STATE.toString = $estr;
 tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType.UPDATED_FORM_STATE.__enum__ = tools_spark_sliced_services_std_display_databuffer_interfaces_EBufferEntryType;
 var tools_spark_sliced_services_std_display_managers_interfaces_IActiveReferenceMediator = function() { };
 $hxClasses["tools.spark.sliced.services.std.display.managers.interfaces.IActiveReferenceMediator"] = tools_spark_sliced_services_std_display_managers_interfaces_IActiveReferenceMediator;
@@ -20108,618 +20801,636 @@ tools_spark_sliced_services_std_event_core_Event.prototype = $extend(tools_spark
 		var v26 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DROP;
 		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP,v26);
 		v26;
-		var v27 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED,v27);
+		var v27 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START,v27);
 		v27;
-		var v28 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED,v28);
+		var v28 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END,v28);
 		v28;
-		var v29 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT,v29);
+		var v29 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START,v29);
 		v29;
-		var v30 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE,v30);
+		var v30 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START_BIPED_FEET;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET,v30);
 		v30;
-		var v31 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK,v31);
+		var v31 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END,v31);
 		v31;
-		var v32 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL,v32);
+		var v32 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END_BIPED_FEET;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET,v32);
 		v32;
 		var v33 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE,v33);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED,v33);
 		v33;
-		var v34 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN,v34);
+		var v34 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED,v34);
 		v34;
 		var v35 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END,v35);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT,v35);
 		v35;
 		var v36 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER,v36);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE,v36);
 		v36;
 		var v37 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE,v37);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK,v37);
 		v37;
 		var v38 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1,v38);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL,v38);
 		v38;
 		var v39 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10,v39);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE,v39);
 		v39;
 		var v40 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11,v40);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN,v40);
 		v40;
 		var v41 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12,v41);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END,v41);
 		v41;
 		var v42 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13,v42);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER,v42);
 		v42;
 		var v43 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14,v43);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE,v43);
 		v43;
 		var v44 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15,v44);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1,v44);
 		v44;
 		var v45 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2,v45);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10,v45);
 		v45;
 		var v46 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3,v46);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11,v46);
 		v46;
 		var v47 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4,v47);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12,v47);
 		v47;
 		var v48 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5,v48);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13,v48);
 		v48;
 		var v49 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6,v49);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14,v49);
 		v49;
 		var v50 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7,v50);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15,v50);
 		v50;
 		var v51 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8,v51);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2,v51);
 		v51;
 		var v52 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9,v52);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3,v52);
 		v52;
 		var v53 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME,v53);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4,v53);
 		v53;
 		var v54 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT,v54);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5,v54);
 		v54;
 		var v55 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT,v55);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6,v55);
 		v55;
 		var v56 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0,v56);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7,v56);
 		v56;
 		var v57 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1,v57);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8,v57);
 		v57;
 		var v58 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2,v58);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9,v58);
 		v58;
 		var v59 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3,v59);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME,v59);
 		v59;
 		var v60 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4,v60);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT,v60);
 		v60;
 		var v61 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5,v61);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT,v61);
 		v61;
 		var v62 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6,v62);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0,v62);
 		v62;
 		var v63 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7,v63);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1,v63);
 		v63;
 		var v64 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8,v64);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2,v64);
 		v64;
 		var v65 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9,v65);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3,v65);
 		v65;
 		var v66 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD,v66);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4,v66);
 		v66;
 		var v67 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL,v67);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5,v67);
 		v67;
 		var v68 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE,v68);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6,v68);
 		v68;
 		var v69 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER,v69);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7,v69);
 		v69;
 		var v70 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY,v70);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8,v70);
 		v70;
 		var v71 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT,v71);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9,v71);
 		v71;
 		var v72 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN,v72);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD,v72);
 		v72;
 		var v73 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP,v73);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL,v73);
 		v73;
 		var v74 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT,v74);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE,v74);
 		v74;
 		var v75 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT,v75);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER,v75);
 		v75;
 		var v76 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE,v76);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY,v76);
 		v76;
 		var v77 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB,v77);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT,v77);
 		v77;
 		var v78 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP,v78);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN,v78);
 		v78;
 		var v79 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A,v79);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP,v79);
 		v79;
 		var v80 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B,v80);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT,v80);
 		v80;
 		var v81 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C,v81);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT,v81);
 		v81;
 		var v82 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D,v82);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE,v82);
 		v82;
 		var v83 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E,v83);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB,v83);
 		v83;
 		var v84 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F,v84);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP,v84);
 		v84;
 		var v85 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G,v85);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A,v85);
 		v85;
 		var v86 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H,v86);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B,v86);
 		v86;
 		var v87 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I,v87);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C,v87);
 		v87;
 		var v88 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J,v88);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D,v88);
 		v88;
 		var v89 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K,v89);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E,v89);
 		v89;
 		var v90 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L,v90);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F,v90);
 		v90;
 		var v91 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M,v91);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G,v91);
 		v91;
 		var v92 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N,v92);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H,v92);
 		v92;
 		var v93 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O,v93);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I,v93);
 		v93;
 		var v94 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P,v94);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J,v94);
 		v94;
 		var v95 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q,v95);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K,v95);
 		v95;
 		var v96 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R,v96);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L,v96);
 		v96;
 		var v97 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S,v97);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M,v97);
 		v97;
 		var v98 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T,v98);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N,v98);
 		v98;
 		var v99 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U,v99);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O,v99);
 		v99;
 		var v100 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V,v100);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P,v100);
 		v100;
 		var v101 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W,v101);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q,v101);
 		v101;
 		var v102 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X,v102);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R,v102);
 		v102;
 		var v103 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y,v103);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S,v103);
 		v103;
 		var v104 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z,v104);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T,v104);
 		v104;
 		var v105 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0,v105);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U,v105);
 		v105;
 		var v106 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1,v106);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V,v106);
 		v106;
 		var v107 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2,v107);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W,v107);
 		v107;
 		var v108 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3,v108);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X,v108);
 		v108;
 		var v109 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4,v109);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y,v109);
 		v109;
 		var v110 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5,v110);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z,v110);
 		v110;
 		var v111 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6,v111);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0,v111);
 		v111;
 		var v112 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7,v112);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1,v112);
 		v112;
 		var v113 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8,v113);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2,v113);
 		v113;
 		var v114 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9,v114);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3,v114);
 		v114;
 		var v115 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS,v115);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4,v115);
 		v115;
 		var v116 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH,v116);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5,v116);
 		v116;
 		var v117 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH,v117);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6,v117);
 		v117;
 		var v118 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET,v118);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7,v118);
 		v118;
 		var v119 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET,v119);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8,v119);
 		v119;
 		var v120 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE,v120);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9,v120);
 		v120;
 		var v121 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA,v121);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS,v121);
 		v121;
 		var v122 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND,v122);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH,v122);
 		v122;
 		var v123 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS,v123);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH,v123);
 		v123;
 		var v124 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD,v124);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET,v124);
 		v124;
 		var v125 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE,v125);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET,v125);
 		v125;
 		var v126 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON,v126);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE,v126);
 		v126;
 		var v127 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU,v127);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA,v127);
 		v127;
 		var v128 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH,v128);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND,v128);
 		v128;
 		var v129 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN,v129);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS,v129);
 		v129;
-		var v130 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT,v130);
+		var v130 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD,v130);
 		v130;
-		var v131 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE,v131);
+		var v131 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE,v131);
 		v131;
-		var v132 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK,v132);
+		var v132 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON,v132);
 		v132;
-		var v133 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL,v133);
+		var v133 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU,v133);
 		v133;
-		var v134 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE,v134);
+		var v134 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH,v134);
 		v134;
-		var v135 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN,v135);
+		var v135 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN,v135);
 		v135;
 		var v136 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END,v136);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT,v136);
 		v136;
 		var v137 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER,v137);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE,v137);
 		v137;
 		var v138 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE,v138);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK,v138);
 		v138;
 		var v139 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1,v139);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL,v139);
 		v139;
 		var v140 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10,v140);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE,v140);
 		v140;
 		var v141 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11,v141);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN,v141);
 		v141;
 		var v142 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12,v142);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END,v142);
 		v142;
 		var v143 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13,v143);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER,v143);
 		v143;
 		var v144 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14,v144);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE,v144);
 		v144;
 		var v145 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15,v145);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1,v145);
 		v145;
 		var v146 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2,v146);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10,v146);
 		v146;
 		var v147 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3,v147);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11,v147);
 		v147;
 		var v148 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4,v148);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12,v148);
 		v148;
 		var v149 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5,v149);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13,v149);
 		v149;
 		var v150 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6,v150);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14,v150);
 		v150;
 		var v151 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7,v151);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15,v151);
 		v151;
 		var v152 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8,v152);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2,v152);
 		v152;
 		var v153 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9,v153);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3,v153);
 		v153;
 		var v154 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME,v154);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4,v154);
 		v154;
 		var v155 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT,v155);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5,v155);
 		v155;
 		var v156 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT,v156);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6,v156);
 		v156;
 		var v157 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0,v157);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7,v157);
 		v157;
 		var v158 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1,v158);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8,v158);
 		v158;
 		var v159 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2,v159);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9,v159);
 		v159;
 		var v160 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3,v160);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME,v160);
 		v160;
 		var v161 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4,v161);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT,v161);
 		v161;
 		var v162 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5,v162);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT,v162);
 		v162;
 		var v163 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6,v163);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0,v163);
 		v163;
 		var v164 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7,v164);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1,v164);
 		v164;
 		var v165 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8,v165);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2,v165);
 		v165;
 		var v166 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9,v166);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3,v166);
 		v166;
 		var v167 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD,v167);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4,v167);
 		v167;
 		var v168 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL,v168);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5,v168);
 		v168;
 		var v169 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE,v169);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6,v169);
 		v169;
 		var v170 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER,v170);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7,v170);
 		v170;
 		var v171 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY,v171);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8,v171);
 		v171;
 		var v172 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT,v172);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9,v172);
 		v172;
 		var v173 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN,v173);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD,v173);
 		v173;
 		var v174 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP,v174);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL,v174);
 		v174;
 		var v175 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT,v175);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE,v175);
 		v175;
 		var v176 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT,v176);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER,v176);
 		v176;
 		var v177 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE,v177);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY,v177);
 		v177;
 		var v178 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB,v178);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT,v178);
 		v178;
 		var v179 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP,v179);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN,v179);
 		v179;
 		var v180 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A,v180);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP,v180);
 		v180;
 		var v181 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B,v181);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT,v181);
 		v181;
 		var v182 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C,v182);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT,v182);
 		v182;
 		var v183 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D,v183);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE,v183);
 		v183;
 		var v184 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E,v184);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB,v184);
 		v184;
 		var v185 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F,v185);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP,v185);
 		v185;
 		var v186 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G,v186);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A,v186);
 		v186;
 		var v187 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H,v187);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B,v187);
 		v187;
 		var v188 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I,v188);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C,v188);
 		v188;
 		var v189 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J,v189);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D,v189);
 		v189;
 		var v190 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K,v190);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E,v190);
 		v190;
 		var v191 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L,v191);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F,v191);
 		v191;
 		var v192 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M,v192);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G,v192);
 		v192;
 		var v193 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N,v193);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H,v193);
 		v193;
 		var v194 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O,v194);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I,v194);
 		v194;
 		var v195 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P,v195);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J,v195);
 		v195;
 		var v196 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q,v196);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K,v196);
 		v196;
 		var v197 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R,v197);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L,v197);
 		v197;
 		var v198 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S,v198);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M,v198);
 		v198;
 		var v199 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T,v199);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N,v199);
 		v199;
 		var v200 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U,v200);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O,v200);
 		v200;
 		var v201 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V,v201);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P,v201);
 		v201;
 		var v202 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W,v202);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q,v202);
 		v202;
 		var v203 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X,v203);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R,v203);
 		v203;
 		var v204 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y,v204);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S,v204);
 		v204;
 		var v205 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z,v205);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T,v205);
 		v205;
 		var v206 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0,v206);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U,v206);
 		v206;
 		var v207 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1,v207);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V,v207);
 		v207;
 		var v208 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2,v208);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W,v208);
 		v208;
 		var v209 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3,v209);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X,v209);
 		v209;
 		var v210 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4,v210);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y,v210);
 		v210;
 		var v211 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5,v211);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z,v211);
 		v211;
 		var v212 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6,v212);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0,v212);
 		v212;
 		var v213 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7,v213);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1,v213);
 		v213;
 		var v214 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8,v214);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2,v214);
 		v214;
 		var v215 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9,v215);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3,v215);
 		v215;
 		var v216 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS,v216);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4,v216);
 		v216;
 		var v217 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH,v217);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5,v217);
 		v217;
 		var v218 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH,v218);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6,v218);
 		v218;
 		var v219 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET,v219);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7,v219);
 		v219;
 		var v220 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET,v220);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8,v220);
 		v220;
 		var v221 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE,v221);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9,v221);
 		v221;
 		var v222 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA,v222);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS,v222);
 		v222;
 		var v223 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND,v223);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH,v223);
 		v223;
 		var v224 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS,v224);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH,v224);
 		v224;
 		var v225 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD,v225);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET,v225);
 		v225;
 		var v226 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE,v226);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET,v226);
 		v226;
 		var v227 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON,v227);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE,v227);
 		v227;
 		var v228 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU,v228);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA,v228);
 		v228;
 		var v229 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH,v229);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND,v229);
 		v229;
 		var v230 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
-		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN,v230);
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS,v230);
 		v230;
+		var v231 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD,v231);
+		v231;
+		var v232 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE,v232);
+		v232;
+		var v233 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON,v233);
+		v233;
+		var v234 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU,v234);
+		v234;
+		var v235 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH,v235);
+		v235;
+		var v236 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED;
+		this._prefabConvertToType.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN,v236);
+		v236;
 	}
 	,_initPrefabConvertToFilterMap: function() {
 		this._prefabConvertToFilter = new haxe_ds_EnumValueMap();
@@ -20750,6 +21461,12 @@ tools_spark_sliced_services_std_event_core_Event.prototype = $extend(tools_spark
 		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_OVER,this._FILTER_VARIABLE_USER_ENTITY);
 		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_LEAVE,this._FILTER_VARIABLE_USER_ENTITY);
 		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP,this._FILTER_VARIABLE_USER_ENTITY);
+		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START,this._FILTER_VARIABLE_USER_ENTITY);
+		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END,this._FILTER_VARIABLE_USER_ENTITY);
+		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START,this._FILTER_VARIABLE_USER_ENTITY);
+		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET,this._FILTER_VARIABLE_USER_ENTITY);
+		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END,this._FILTER_VARIABLE_USER_ENTITY);
+		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET,this._FILTER_VARIABLE_USER_ENTITY);
 		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED,this._NO_FILTER);
 		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED,this._NO_FILTER);
 		this._prefabConvertToFilter.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT,flambe_input_Key.Alt);
@@ -22181,6 +22898,30 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 			"OnDrop";
 		}
 		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START,"PhysicsCollisionStart");
+			"PhysicsCollisionStart";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END,"PhysicsCollisionEnd");
+			"PhysicsCollisionEnd";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START,"PhysicsSensorStart");
+			"PhysicsSensorStart";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET,"PhysicsSensorStartBipedFeet");
+			"PhysicsSensorStartBipedFeet";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END,"PhysicsSensorEnd");
+			"PhysicsSensorEnd";
+		}
+		{
+			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET,"PhysicsSensorEndBipedFeet");
+			"PhysicsSensorEndBipedFeet";
+		}
+		{
 			this._xmlEventPrefabToName.set(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED,"KeyPressed");
 			"KeyPressed";
 		}
@@ -23107,822 +23848,846 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		var v26 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP;
 		this._xmlEventNameToPrefab.set(k26,v26);
 		v26;
-		var k27 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED);
-		var v27 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED;
+		var k27 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START);
+		var v27 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START;
 		this._xmlEventNameToPrefab.set(k27,v27);
 		v27;
-		var k28 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED);
-		var v28 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED;
+		var k28 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END);
+		var v28 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END;
 		this._xmlEventNameToPrefab.set(k28,v28);
 		v28;
-		var k29 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT);
-		var v29 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT;
+		var k29 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START);
+		var v29 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START;
 		this._xmlEventNameToPrefab.set(k29,v29);
 		v29;
-		var k30 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE);
-		var v30 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE;
+		var k30 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET);
+		var v30 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET;
 		this._xmlEventNameToPrefab.set(k30,v30);
 		v30;
-		var k31 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK);
-		var v31 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK;
+		var k31 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END);
+		var v31 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END;
 		this._xmlEventNameToPrefab.set(k31,v31);
 		v31;
-		var k32 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL);
-		var v32 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL;
+		var k32 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET);
+		var v32 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET;
 		this._xmlEventNameToPrefab.set(k32,v32);
 		v32;
-		var k33 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE);
-		var v33 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE;
+		var k33 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED);
+		var v33 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED;
 		this._xmlEventNameToPrefab.set(k33,v33);
 		v33;
-		var k34 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN);
-		var v34 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN;
+		var k34 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED);
+		var v34 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED;
 		this._xmlEventNameToPrefab.set(k34,v34);
 		v34;
-		var k35 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END);
-		var v35 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END;
+		var k35 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT);
+		var v35 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT;
 		this._xmlEventNameToPrefab.set(k35,v35);
 		v35;
-		var k36 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER);
-		var v36 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER;
+		var k36 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE);
+		var v36 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE;
 		this._xmlEventNameToPrefab.set(k36,v36);
 		v36;
-		var k37 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE);
-		var v37 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE;
+		var k37 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK);
+		var v37 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK;
 		this._xmlEventNameToPrefab.set(k37,v37);
 		v37;
-		var k38 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1);
-		var v38 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1;
+		var k38 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL);
+		var v38 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL;
 		this._xmlEventNameToPrefab.set(k38,v38);
 		v38;
-		var k39 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10);
-		var v39 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10;
+		var k39 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE);
+		var v39 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE;
 		this._xmlEventNameToPrefab.set(k39,v39);
 		v39;
-		var k40 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11);
-		var v40 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11;
+		var k40 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN);
+		var v40 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN;
 		this._xmlEventNameToPrefab.set(k40,v40);
 		v40;
-		var k41 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12);
-		var v41 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12;
+		var k41 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END);
+		var v41 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END;
 		this._xmlEventNameToPrefab.set(k41,v41);
 		v41;
-		var k42 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13);
-		var v42 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13;
+		var k42 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER);
+		var v42 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER;
 		this._xmlEventNameToPrefab.set(k42,v42);
 		v42;
-		var k43 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14);
-		var v43 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14;
+		var k43 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE);
+		var v43 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE;
 		this._xmlEventNameToPrefab.set(k43,v43);
 		v43;
-		var k44 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15);
-		var v44 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15;
+		var k44 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1);
+		var v44 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1;
 		this._xmlEventNameToPrefab.set(k44,v44);
 		v44;
-		var k45 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2);
-		var v45 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2;
+		var k45 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10);
+		var v45 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10;
 		this._xmlEventNameToPrefab.set(k45,v45);
 		v45;
-		var k46 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3);
-		var v46 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3;
+		var k46 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11);
+		var v46 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11;
 		this._xmlEventNameToPrefab.set(k46,v46);
 		v46;
-		var k47 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4);
-		var v47 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4;
+		var k47 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12);
+		var v47 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12;
 		this._xmlEventNameToPrefab.set(k47,v47);
 		v47;
-		var k48 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5);
-		var v48 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5;
+		var k48 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13);
+		var v48 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13;
 		this._xmlEventNameToPrefab.set(k48,v48);
 		v48;
-		var k49 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6);
-		var v49 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6;
+		var k49 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14);
+		var v49 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14;
 		this._xmlEventNameToPrefab.set(k49,v49);
 		v49;
-		var k50 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7);
-		var v50 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7;
+		var k50 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15);
+		var v50 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15;
 		this._xmlEventNameToPrefab.set(k50,v50);
 		v50;
-		var k51 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8);
-		var v51 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8;
+		var k51 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2);
+		var v51 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2;
 		this._xmlEventNameToPrefab.set(k51,v51);
 		v51;
-		var k52 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9);
-		var v52 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9;
+		var k52 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3);
+		var v52 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3;
 		this._xmlEventNameToPrefab.set(k52,v52);
 		v52;
-		var k53 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME);
-		var v53 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME;
+		var k53 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4);
+		var v53 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4;
 		this._xmlEventNameToPrefab.set(k53,v53);
 		v53;
-		var k54 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT);
-		var v54 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT;
+		var k54 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5);
+		var v54 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5;
 		this._xmlEventNameToPrefab.set(k54,v54);
 		v54;
-		var k55 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT);
-		var v55 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT;
+		var k55 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6);
+		var v55 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6;
 		this._xmlEventNameToPrefab.set(k55,v55);
 		v55;
-		var k56 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0);
-		var v56 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0;
+		var k56 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7);
+		var v56 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7;
 		this._xmlEventNameToPrefab.set(k56,v56);
 		v56;
-		var k57 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1);
-		var v57 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1;
+		var k57 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8);
+		var v57 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8;
 		this._xmlEventNameToPrefab.set(k57,v57);
 		v57;
-		var k58 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2);
-		var v58 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2;
+		var k58 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9);
+		var v58 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9;
 		this._xmlEventNameToPrefab.set(k58,v58);
 		v58;
-		var k59 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3);
-		var v59 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3;
+		var k59 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME);
+		var v59 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME;
 		this._xmlEventNameToPrefab.set(k59,v59);
 		v59;
-		var k60 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4);
-		var v60 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4;
+		var k60 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT);
+		var v60 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT;
 		this._xmlEventNameToPrefab.set(k60,v60);
 		v60;
-		var k61 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5);
-		var v61 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5;
+		var k61 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT);
+		var v61 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT;
 		this._xmlEventNameToPrefab.set(k61,v61);
 		v61;
-		var k62 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6);
-		var v62 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6;
+		var k62 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0);
+		var v62 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0;
 		this._xmlEventNameToPrefab.set(k62,v62);
 		v62;
-		var k63 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7);
-		var v63 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7;
+		var k63 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1);
+		var v63 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1;
 		this._xmlEventNameToPrefab.set(k63,v63);
 		v63;
-		var k64 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8);
-		var v64 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8;
+		var k64 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2);
+		var v64 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2;
 		this._xmlEventNameToPrefab.set(k64,v64);
 		v64;
-		var k65 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9);
-		var v65 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9;
+		var k65 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3);
+		var v65 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3;
 		this._xmlEventNameToPrefab.set(k65,v65);
 		v65;
-		var k66 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD);
-		var v66 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD;
+		var k66 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4);
+		var v66 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4;
 		this._xmlEventNameToPrefab.set(k66,v66);
 		v66;
-		var k67 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL);
-		var v67 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL;
+		var k67 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5);
+		var v67 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5;
 		this._xmlEventNameToPrefab.set(k67,v67);
 		v67;
-		var k68 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE);
-		var v68 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE;
+		var k68 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6);
+		var v68 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6;
 		this._xmlEventNameToPrefab.set(k68,v68);
 		v68;
-		var k69 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER);
-		var v69 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER;
+		var k69 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7);
+		var v69 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7;
 		this._xmlEventNameToPrefab.set(k69,v69);
 		v69;
-		var k70 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY);
-		var v70 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY;
+		var k70 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8);
+		var v70 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8;
 		this._xmlEventNameToPrefab.set(k70,v70);
 		v70;
-		var k71 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT);
-		var v71 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT;
+		var k71 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9);
+		var v71 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9;
 		this._xmlEventNameToPrefab.set(k71,v71);
 		v71;
-		var k72 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN);
-		var v72 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN;
+		var k72 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD);
+		var v72 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD;
 		this._xmlEventNameToPrefab.set(k72,v72);
 		v72;
-		var k73 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP);
-		var v73 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP;
+		var k73 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL);
+		var v73 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL;
 		this._xmlEventNameToPrefab.set(k73,v73);
 		v73;
-		var k74 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT);
-		var v74 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT;
+		var k74 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE);
+		var v74 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE;
 		this._xmlEventNameToPrefab.set(k74,v74);
 		v74;
-		var k75 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT);
-		var v75 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT;
+		var k75 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER);
+		var v75 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER;
 		this._xmlEventNameToPrefab.set(k75,v75);
 		v75;
-		var k76 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE);
-		var v76 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE;
+		var k76 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY);
+		var v76 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY;
 		this._xmlEventNameToPrefab.set(k76,v76);
 		v76;
-		var k77 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB);
-		var v77 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB;
+		var k77 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT);
+		var v77 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT;
 		this._xmlEventNameToPrefab.set(k77,v77);
 		v77;
-		var k78 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP);
-		var v78 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP;
+		var k78 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN);
+		var v78 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN;
 		this._xmlEventNameToPrefab.set(k78,v78);
 		v78;
-		var k79 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A);
-		var v79 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A;
+		var k79 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP);
+		var v79 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP;
 		this._xmlEventNameToPrefab.set(k79,v79);
 		v79;
-		var k80 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B);
-		var v80 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B;
+		var k80 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT);
+		var v80 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT;
 		this._xmlEventNameToPrefab.set(k80,v80);
 		v80;
-		var k81 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C);
-		var v81 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C;
+		var k81 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT);
+		var v81 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT;
 		this._xmlEventNameToPrefab.set(k81,v81);
 		v81;
-		var k82 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D);
-		var v82 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D;
+		var k82 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE);
+		var v82 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE;
 		this._xmlEventNameToPrefab.set(k82,v82);
 		v82;
-		var k83 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E);
-		var v83 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E;
+		var k83 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB);
+		var v83 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB;
 		this._xmlEventNameToPrefab.set(k83,v83);
 		v83;
-		var k84 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F);
-		var v84 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F;
+		var k84 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP);
+		var v84 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP;
 		this._xmlEventNameToPrefab.set(k84,v84);
 		v84;
-		var k85 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G);
-		var v85 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G;
+		var k85 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A);
+		var v85 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A;
 		this._xmlEventNameToPrefab.set(k85,v85);
 		v85;
-		var k86 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H);
-		var v86 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H;
+		var k86 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B);
+		var v86 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B;
 		this._xmlEventNameToPrefab.set(k86,v86);
 		v86;
-		var k87 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I);
-		var v87 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I;
+		var k87 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C);
+		var v87 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C;
 		this._xmlEventNameToPrefab.set(k87,v87);
 		v87;
-		var k88 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J);
-		var v88 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J;
+		var k88 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D);
+		var v88 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D;
 		this._xmlEventNameToPrefab.set(k88,v88);
 		v88;
-		var k89 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K);
-		var v89 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K;
+		var k89 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E);
+		var v89 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E;
 		this._xmlEventNameToPrefab.set(k89,v89);
 		v89;
-		var k90 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L);
-		var v90 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L;
+		var k90 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F);
+		var v90 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F;
 		this._xmlEventNameToPrefab.set(k90,v90);
 		v90;
-		var k91 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M);
-		var v91 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M;
+		var k91 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G);
+		var v91 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G;
 		this._xmlEventNameToPrefab.set(k91,v91);
 		v91;
-		var k92 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N);
-		var v92 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N;
+		var k92 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H);
+		var v92 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H;
 		this._xmlEventNameToPrefab.set(k92,v92);
 		v92;
-		var k93 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O);
-		var v93 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O;
+		var k93 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I);
+		var v93 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I;
 		this._xmlEventNameToPrefab.set(k93,v93);
 		v93;
-		var k94 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P);
-		var v94 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P;
+		var k94 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J);
+		var v94 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J;
 		this._xmlEventNameToPrefab.set(k94,v94);
 		v94;
-		var k95 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q);
-		var v95 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q;
+		var k95 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K);
+		var v95 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K;
 		this._xmlEventNameToPrefab.set(k95,v95);
 		v95;
-		var k96 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R);
-		var v96 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R;
+		var k96 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L);
+		var v96 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L;
 		this._xmlEventNameToPrefab.set(k96,v96);
 		v96;
-		var k97 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S);
-		var v97 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S;
+		var k97 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M);
+		var v97 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M;
 		this._xmlEventNameToPrefab.set(k97,v97);
 		v97;
-		var k98 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T);
-		var v98 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T;
+		var k98 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N);
+		var v98 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N;
 		this._xmlEventNameToPrefab.set(k98,v98);
 		v98;
-		var k99 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U);
-		var v99 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U;
+		var k99 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O);
+		var v99 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O;
 		this._xmlEventNameToPrefab.set(k99,v99);
 		v99;
-		var k100 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V);
-		var v100 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V;
+		var k100 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P);
+		var v100 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P;
 		this._xmlEventNameToPrefab.set(k100,v100);
 		v100;
-		var k101 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W);
-		var v101 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W;
+		var k101 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q);
+		var v101 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q;
 		this._xmlEventNameToPrefab.set(k101,v101);
 		v101;
-		var k102 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X);
-		var v102 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X;
+		var k102 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R);
+		var v102 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R;
 		this._xmlEventNameToPrefab.set(k102,v102);
 		v102;
-		var k103 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y);
-		var v103 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y;
+		var k103 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S);
+		var v103 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S;
 		this._xmlEventNameToPrefab.set(k103,v103);
 		v103;
-		var k104 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z);
-		var v104 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z;
+		var k104 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T);
+		var v104 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T;
 		this._xmlEventNameToPrefab.set(k104,v104);
 		v104;
-		var k105 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0);
-		var v105 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0;
+		var k105 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U);
+		var v105 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U;
 		this._xmlEventNameToPrefab.set(k105,v105);
 		v105;
-		var k106 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1);
-		var v106 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1;
+		var k106 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V);
+		var v106 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V;
 		this._xmlEventNameToPrefab.set(k106,v106);
 		v106;
-		var k107 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2);
-		var v107 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2;
+		var k107 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W);
+		var v107 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W;
 		this._xmlEventNameToPrefab.set(k107,v107);
 		v107;
-		var k108 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3);
-		var v108 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3;
+		var k108 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X);
+		var v108 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X;
 		this._xmlEventNameToPrefab.set(k108,v108);
 		v108;
-		var k109 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4);
-		var v109 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4;
+		var k109 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y);
+		var v109 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y;
 		this._xmlEventNameToPrefab.set(k109,v109);
 		v109;
-		var k110 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5);
-		var v110 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5;
+		var k110 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z);
+		var v110 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z;
 		this._xmlEventNameToPrefab.set(k110,v110);
 		v110;
-		var k111 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6);
-		var v111 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6;
+		var k111 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0);
+		var v111 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0;
 		this._xmlEventNameToPrefab.set(k111,v111);
 		v111;
-		var k112 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7);
-		var v112 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7;
+		var k112 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1);
+		var v112 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1;
 		this._xmlEventNameToPrefab.set(k112,v112);
 		v112;
-		var k113 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8);
-		var v113 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8;
+		var k113 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2);
+		var v113 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2;
 		this._xmlEventNameToPrefab.set(k113,v113);
 		v113;
-		var k114 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9);
-		var v114 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9;
+		var k114 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3);
+		var v114 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3;
 		this._xmlEventNameToPrefab.set(k114,v114);
 		v114;
-		var k115 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS);
-		var v115 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS;
+		var k115 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4);
+		var v115 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4;
 		this._xmlEventNameToPrefab.set(k115,v115);
 		v115;
-		var k116 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH);
-		var v116 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH;
+		var k116 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5);
+		var v116 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5;
 		this._xmlEventNameToPrefab.set(k116,v116);
 		v116;
-		var k117 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH);
-		var v117 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH;
+		var k117 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6);
+		var v117 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6;
 		this._xmlEventNameToPrefab.set(k117,v117);
 		v117;
-		var k118 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET);
-		var v118 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET;
+		var k118 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7);
+		var v118 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7;
 		this._xmlEventNameToPrefab.set(k118,v118);
 		v118;
-		var k119 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET);
-		var v119 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET;
+		var k119 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8);
+		var v119 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8;
 		this._xmlEventNameToPrefab.set(k119,v119);
 		v119;
-		var k120 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE);
-		var v120 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE;
+		var k120 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9);
+		var v120 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9;
 		this._xmlEventNameToPrefab.set(k120,v120);
 		v120;
-		var k121 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA);
-		var v121 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA;
+		var k121 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS);
+		var v121 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS;
 		this._xmlEventNameToPrefab.set(k121,v121);
 		v121;
-		var k122 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND);
-		var v122 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND;
+		var k122 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH);
+		var v122 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH;
 		this._xmlEventNameToPrefab.set(k122,v122);
 		v122;
-		var k123 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS);
-		var v123 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS;
+		var k123 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH);
+		var v123 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH;
 		this._xmlEventNameToPrefab.set(k123,v123);
 		v123;
-		var k124 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD);
-		var v124 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD;
+		var k124 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET);
+		var v124 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET;
 		this._xmlEventNameToPrefab.set(k124,v124);
 		v124;
-		var k125 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE);
-		var v125 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE;
+		var k125 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET);
+		var v125 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET;
 		this._xmlEventNameToPrefab.set(k125,v125);
 		v125;
-		var k126 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON);
-		var v126 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON;
+		var k126 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE);
+		var v126 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE;
 		this._xmlEventNameToPrefab.set(k126,v126);
 		v126;
-		var k127 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU);
-		var v127 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU;
+		var k127 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA);
+		var v127 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA;
 		this._xmlEventNameToPrefab.set(k127,v127);
 		v127;
-		var k128 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH);
-		var v128 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH;
+		var k128 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND);
+		var v128 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND;
 		this._xmlEventNameToPrefab.set(k128,v128);
 		v128;
-		var k129 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN);
-		var v129 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN;
+		var k129 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS);
+		var v129 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS;
 		this._xmlEventNameToPrefab.set(k129,v129);
 		v129;
-		var k130 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT);
-		var v130 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT;
+		var k130 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD);
+		var v130 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD;
 		this._xmlEventNameToPrefab.set(k130,v130);
 		v130;
-		var k131 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE);
-		var v131 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE;
+		var k131 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE);
+		var v131 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE;
 		this._xmlEventNameToPrefab.set(k131,v131);
 		v131;
-		var k132 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK);
-		var v132 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK;
+		var k132 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON);
+		var v132 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON;
 		this._xmlEventNameToPrefab.set(k132,v132);
 		v132;
-		var k133 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL);
-		var v133 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL;
+		var k133 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU);
+		var v133 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU;
 		this._xmlEventNameToPrefab.set(k133,v133);
 		v133;
-		var k134 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE);
-		var v134 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE;
+		var k134 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH);
+		var v134 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH;
 		this._xmlEventNameToPrefab.set(k134,v134);
 		v134;
-		var k135 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN);
-		var v135 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN;
+		var k135 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN);
+		var v135 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN;
 		this._xmlEventNameToPrefab.set(k135,v135);
 		v135;
-		var k136 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END);
-		var v136 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END;
+		var k136 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT);
+		var v136 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT;
 		this._xmlEventNameToPrefab.set(k136,v136);
 		v136;
-		var k137 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER);
-		var v137 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER;
+		var k137 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE);
+		var v137 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE;
 		this._xmlEventNameToPrefab.set(k137,v137);
 		v137;
-		var k138 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE);
-		var v138 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE;
+		var k138 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK);
+		var v138 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK;
 		this._xmlEventNameToPrefab.set(k138,v138);
 		v138;
-		var k139 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1);
-		var v139 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1;
+		var k139 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL);
+		var v139 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL;
 		this._xmlEventNameToPrefab.set(k139,v139);
 		v139;
-		var k140 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10);
-		var v140 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10;
+		var k140 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE);
+		var v140 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE;
 		this._xmlEventNameToPrefab.set(k140,v140);
 		v140;
-		var k141 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11);
-		var v141 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11;
+		var k141 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN);
+		var v141 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN;
 		this._xmlEventNameToPrefab.set(k141,v141);
 		v141;
-		var k142 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12);
-		var v142 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12;
+		var k142 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END);
+		var v142 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END;
 		this._xmlEventNameToPrefab.set(k142,v142);
 		v142;
-		var k143 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13);
-		var v143 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13;
+		var k143 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER);
+		var v143 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER;
 		this._xmlEventNameToPrefab.set(k143,v143);
 		v143;
-		var k144 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14);
-		var v144 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14;
+		var k144 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE);
+		var v144 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE;
 		this._xmlEventNameToPrefab.set(k144,v144);
 		v144;
-		var k145 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15);
-		var v145 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15;
+		var k145 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1);
+		var v145 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1;
 		this._xmlEventNameToPrefab.set(k145,v145);
 		v145;
-		var k146 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2);
-		var v146 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2;
+		var k146 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10);
+		var v146 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10;
 		this._xmlEventNameToPrefab.set(k146,v146);
 		v146;
-		var k147 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3);
-		var v147 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3;
+		var k147 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11);
+		var v147 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11;
 		this._xmlEventNameToPrefab.set(k147,v147);
 		v147;
-		var k148 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4);
-		var v148 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4;
+		var k148 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12);
+		var v148 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12;
 		this._xmlEventNameToPrefab.set(k148,v148);
 		v148;
-		var k149 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5);
-		var v149 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5;
+		var k149 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13);
+		var v149 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13;
 		this._xmlEventNameToPrefab.set(k149,v149);
 		v149;
-		var k150 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6);
-		var v150 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6;
+		var k150 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14);
+		var v150 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14;
 		this._xmlEventNameToPrefab.set(k150,v150);
 		v150;
-		var k151 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7);
-		var v151 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7;
+		var k151 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15);
+		var v151 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15;
 		this._xmlEventNameToPrefab.set(k151,v151);
 		v151;
-		var k152 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8);
-		var v152 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8;
+		var k152 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2);
+		var v152 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2;
 		this._xmlEventNameToPrefab.set(k152,v152);
 		v152;
-		var k153 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9);
-		var v153 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9;
+		var k153 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3);
+		var v153 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3;
 		this._xmlEventNameToPrefab.set(k153,v153);
 		v153;
-		var k154 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME);
-		var v154 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME;
+		var k154 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4);
+		var v154 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4;
 		this._xmlEventNameToPrefab.set(k154,v154);
 		v154;
-		var k155 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT);
-		var v155 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT;
+		var k155 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5);
+		var v155 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5;
 		this._xmlEventNameToPrefab.set(k155,v155);
 		v155;
-		var k156 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT);
-		var v156 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT;
+		var k156 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6);
+		var v156 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6;
 		this._xmlEventNameToPrefab.set(k156,v156);
 		v156;
-		var k157 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0);
-		var v157 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0;
+		var k157 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7);
+		var v157 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7;
 		this._xmlEventNameToPrefab.set(k157,v157);
 		v157;
-		var k158 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1);
-		var v158 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1;
+		var k158 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8);
+		var v158 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8;
 		this._xmlEventNameToPrefab.set(k158,v158);
 		v158;
-		var k159 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2);
-		var v159 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2;
+		var k159 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9);
+		var v159 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9;
 		this._xmlEventNameToPrefab.set(k159,v159);
 		v159;
-		var k160 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3);
-		var v160 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3;
+		var k160 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME);
+		var v160 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME;
 		this._xmlEventNameToPrefab.set(k160,v160);
 		v160;
-		var k161 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4);
-		var v161 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4;
+		var k161 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT);
+		var v161 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT;
 		this._xmlEventNameToPrefab.set(k161,v161);
 		v161;
-		var k162 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5);
-		var v162 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5;
+		var k162 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT);
+		var v162 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT;
 		this._xmlEventNameToPrefab.set(k162,v162);
 		v162;
-		var k163 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6);
-		var v163 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6;
+		var k163 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0);
+		var v163 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0;
 		this._xmlEventNameToPrefab.set(k163,v163);
 		v163;
-		var k164 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7);
-		var v164 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7;
+		var k164 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1);
+		var v164 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1;
 		this._xmlEventNameToPrefab.set(k164,v164);
 		v164;
-		var k165 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8);
-		var v165 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8;
+		var k165 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2);
+		var v165 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2;
 		this._xmlEventNameToPrefab.set(k165,v165);
 		v165;
-		var k166 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9);
-		var v166 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9;
+		var k166 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3);
+		var v166 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3;
 		this._xmlEventNameToPrefab.set(k166,v166);
 		v166;
-		var k167 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD);
-		var v167 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD;
+		var k167 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4);
+		var v167 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4;
 		this._xmlEventNameToPrefab.set(k167,v167);
 		v167;
-		var k168 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL);
-		var v168 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL;
+		var k168 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5);
+		var v168 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5;
 		this._xmlEventNameToPrefab.set(k168,v168);
 		v168;
-		var k169 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE);
-		var v169 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE;
+		var k169 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6);
+		var v169 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6;
 		this._xmlEventNameToPrefab.set(k169,v169);
 		v169;
-		var k170 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER);
-		var v170 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER;
+		var k170 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7);
+		var v170 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7;
 		this._xmlEventNameToPrefab.set(k170,v170);
 		v170;
-		var k171 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY);
-		var v171 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY;
+		var k171 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8);
+		var v171 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8;
 		this._xmlEventNameToPrefab.set(k171,v171);
 		v171;
-		var k172 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT);
-		var v172 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT;
+		var k172 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9);
+		var v172 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9;
 		this._xmlEventNameToPrefab.set(k172,v172);
 		v172;
-		var k173 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN);
-		var v173 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN;
+		var k173 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD);
+		var v173 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD;
 		this._xmlEventNameToPrefab.set(k173,v173);
 		v173;
-		var k174 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP);
-		var v174 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP;
+		var k174 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL);
+		var v174 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL;
 		this._xmlEventNameToPrefab.set(k174,v174);
 		v174;
-		var k175 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT);
-		var v175 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT;
+		var k175 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE);
+		var v175 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE;
 		this._xmlEventNameToPrefab.set(k175,v175);
 		v175;
-		var k176 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT);
-		var v176 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT;
+		var k176 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER);
+		var v176 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER;
 		this._xmlEventNameToPrefab.set(k176,v176);
 		v176;
-		var k177 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE);
-		var v177 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE;
+		var k177 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY);
+		var v177 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY;
 		this._xmlEventNameToPrefab.set(k177,v177);
 		v177;
-		var k178 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB);
-		var v178 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB;
+		var k178 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT);
+		var v178 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT;
 		this._xmlEventNameToPrefab.set(k178,v178);
 		v178;
-		var k179 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP);
-		var v179 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP;
+		var k179 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN);
+		var v179 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN;
 		this._xmlEventNameToPrefab.set(k179,v179);
 		v179;
-		var k180 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A);
-		var v180 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A;
+		var k180 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP);
+		var v180 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP;
 		this._xmlEventNameToPrefab.set(k180,v180);
 		v180;
-		var k181 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B);
-		var v181 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B;
+		var k181 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT);
+		var v181 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT;
 		this._xmlEventNameToPrefab.set(k181,v181);
 		v181;
-		var k182 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C);
-		var v182 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C;
+		var k182 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT);
+		var v182 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT;
 		this._xmlEventNameToPrefab.set(k182,v182);
 		v182;
-		var k183 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D);
-		var v183 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D;
+		var k183 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE);
+		var v183 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE;
 		this._xmlEventNameToPrefab.set(k183,v183);
 		v183;
-		var k184 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E);
-		var v184 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E;
+		var k184 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB);
+		var v184 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB;
 		this._xmlEventNameToPrefab.set(k184,v184);
 		v184;
-		var k185 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F);
-		var v185 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F;
+		var k185 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP);
+		var v185 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP;
 		this._xmlEventNameToPrefab.set(k185,v185);
 		v185;
-		var k186 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G);
-		var v186 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G;
+		var k186 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A);
+		var v186 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A;
 		this._xmlEventNameToPrefab.set(k186,v186);
 		v186;
-		var k187 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H);
-		var v187 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H;
+		var k187 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B);
+		var v187 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B;
 		this._xmlEventNameToPrefab.set(k187,v187);
 		v187;
-		var k188 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I);
-		var v188 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I;
+		var k188 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C);
+		var v188 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C;
 		this._xmlEventNameToPrefab.set(k188,v188);
 		v188;
-		var k189 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J);
-		var v189 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J;
+		var k189 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D);
+		var v189 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D;
 		this._xmlEventNameToPrefab.set(k189,v189);
 		v189;
-		var k190 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K);
-		var v190 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K;
+		var k190 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E);
+		var v190 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E;
 		this._xmlEventNameToPrefab.set(k190,v190);
 		v190;
-		var k191 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L);
-		var v191 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L;
+		var k191 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F);
+		var v191 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F;
 		this._xmlEventNameToPrefab.set(k191,v191);
 		v191;
-		var k192 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M);
-		var v192 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M;
+		var k192 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G);
+		var v192 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G;
 		this._xmlEventNameToPrefab.set(k192,v192);
 		v192;
-		var k193 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N);
-		var v193 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N;
+		var k193 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H);
+		var v193 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H;
 		this._xmlEventNameToPrefab.set(k193,v193);
 		v193;
-		var k194 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O);
-		var v194 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O;
+		var k194 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I);
+		var v194 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I;
 		this._xmlEventNameToPrefab.set(k194,v194);
 		v194;
-		var k195 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P);
-		var v195 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P;
+		var k195 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J);
+		var v195 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J;
 		this._xmlEventNameToPrefab.set(k195,v195);
 		v195;
-		var k196 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q);
-		var v196 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q;
+		var k196 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K);
+		var v196 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K;
 		this._xmlEventNameToPrefab.set(k196,v196);
 		v196;
-		var k197 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R);
-		var v197 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R;
+		var k197 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L);
+		var v197 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L;
 		this._xmlEventNameToPrefab.set(k197,v197);
 		v197;
-		var k198 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S);
-		var v198 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S;
+		var k198 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M);
+		var v198 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M;
 		this._xmlEventNameToPrefab.set(k198,v198);
 		v198;
-		var k199 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T);
-		var v199 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T;
+		var k199 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N);
+		var v199 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N;
 		this._xmlEventNameToPrefab.set(k199,v199);
 		v199;
-		var k200 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U);
-		var v200 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U;
+		var k200 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O);
+		var v200 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O;
 		this._xmlEventNameToPrefab.set(k200,v200);
 		v200;
-		var k201 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V);
-		var v201 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V;
+		var k201 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P);
+		var v201 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P;
 		this._xmlEventNameToPrefab.set(k201,v201);
 		v201;
-		var k202 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W);
-		var v202 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W;
+		var k202 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q);
+		var v202 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q;
 		this._xmlEventNameToPrefab.set(k202,v202);
 		v202;
-		var k203 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X);
-		var v203 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X;
+		var k203 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R);
+		var v203 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R;
 		this._xmlEventNameToPrefab.set(k203,v203);
 		v203;
-		var k204 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y);
-		var v204 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y;
+		var k204 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S);
+		var v204 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S;
 		this._xmlEventNameToPrefab.set(k204,v204);
 		v204;
-		var k205 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z);
-		var v205 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z;
+		var k205 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T);
+		var v205 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T;
 		this._xmlEventNameToPrefab.set(k205,v205);
 		v205;
-		var k206 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0);
-		var v206 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0;
+		var k206 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U);
+		var v206 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U;
 		this._xmlEventNameToPrefab.set(k206,v206);
 		v206;
-		var k207 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1);
-		var v207 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1;
+		var k207 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V);
+		var v207 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V;
 		this._xmlEventNameToPrefab.set(k207,v207);
 		v207;
-		var k208 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2);
-		var v208 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2;
+		var k208 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W);
+		var v208 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W;
 		this._xmlEventNameToPrefab.set(k208,v208);
 		v208;
-		var k209 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3);
-		var v209 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3;
+		var k209 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X);
+		var v209 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X;
 		this._xmlEventNameToPrefab.set(k209,v209);
 		v209;
-		var k210 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4);
-		var v210 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4;
+		var k210 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y);
+		var v210 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y;
 		this._xmlEventNameToPrefab.set(k210,v210);
 		v210;
-		var k211 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5);
-		var v211 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5;
+		var k211 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z);
+		var v211 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z;
 		this._xmlEventNameToPrefab.set(k211,v211);
 		v211;
-		var k212 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6);
-		var v212 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6;
+		var k212 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0);
+		var v212 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0;
 		this._xmlEventNameToPrefab.set(k212,v212);
 		v212;
-		var k213 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7);
-		var v213 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7;
+		var k213 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1);
+		var v213 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1;
 		this._xmlEventNameToPrefab.set(k213,v213);
 		v213;
-		var k214 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8);
-		var v214 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8;
+		var k214 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2);
+		var v214 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2;
 		this._xmlEventNameToPrefab.set(k214,v214);
 		v214;
-		var k215 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9);
-		var v215 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9;
+		var k215 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3);
+		var v215 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3;
 		this._xmlEventNameToPrefab.set(k215,v215);
 		v215;
-		var k216 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS);
-		var v216 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS;
+		var k216 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4);
+		var v216 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4;
 		this._xmlEventNameToPrefab.set(k216,v216);
 		v216;
-		var k217 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH);
-		var v217 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH;
+		var k217 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5);
+		var v217 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5;
 		this._xmlEventNameToPrefab.set(k217,v217);
 		v217;
-		var k218 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH);
-		var v218 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH;
+		var k218 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6);
+		var v218 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6;
 		this._xmlEventNameToPrefab.set(k218,v218);
 		v218;
-		var k219 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET);
-		var v219 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET;
+		var k219 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7);
+		var v219 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7;
 		this._xmlEventNameToPrefab.set(k219,v219);
 		v219;
-		var k220 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET);
-		var v220 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET;
+		var k220 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8);
+		var v220 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8;
 		this._xmlEventNameToPrefab.set(k220,v220);
 		v220;
-		var k221 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE);
-		var v221 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE;
+		var k221 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9);
+		var v221 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9;
 		this._xmlEventNameToPrefab.set(k221,v221);
 		v221;
-		var k222 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA);
-		var v222 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA;
+		var k222 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS);
+		var v222 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS;
 		this._xmlEventNameToPrefab.set(k222,v222);
 		v222;
-		var k223 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND);
-		var v223 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND;
+		var k223 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH);
+		var v223 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH;
 		this._xmlEventNameToPrefab.set(k223,v223);
 		v223;
-		var k224 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS);
-		var v224 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS;
+		var k224 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH);
+		var v224 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH;
 		this._xmlEventNameToPrefab.set(k224,v224);
 		v224;
-		var k225 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD);
-		var v225 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD;
+		var k225 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET);
+		var v225 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET;
 		this._xmlEventNameToPrefab.set(k225,v225);
 		v225;
-		var k226 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE);
-		var v226 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE;
+		var k226 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET);
+		var v226 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET;
 		this._xmlEventNameToPrefab.set(k226,v226);
 		v226;
-		var k227 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON);
-		var v227 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON;
+		var k227 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE);
+		var v227 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE;
 		this._xmlEventNameToPrefab.set(k227,v227);
 		v227;
-		var k228 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU);
-		var v228 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU;
+		var k228 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA);
+		var v228 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA;
 		this._xmlEventNameToPrefab.set(k228,v228);
 		v228;
-		var k229 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH);
-		var v229 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH;
+		var k229 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND);
+		var v229 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND;
 		this._xmlEventNameToPrefab.set(k229,v229);
 		v229;
-		var k230 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN);
-		var v230 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN;
+		var k230 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS);
+		var v230 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS;
 		this._xmlEventNameToPrefab.set(k230,v230);
 		v230;
+		var k231 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD);
+		var v231 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD;
+		this._xmlEventNameToPrefab.set(k231,v231);
+		v231;
+		var k232 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE);
+		var v232 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE;
+		this._xmlEventNameToPrefab.set(k232,v232);
+		v232;
+		var k233 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON);
+		var v233 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON;
+		this._xmlEventNameToPrefab.set(k233,v233);
+		v233;
+		var k234 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU);
+		var v234 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU;
+		this._xmlEventNameToPrefab.set(k234,v234);
+		v234;
+		var k235 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH);
+		var v235 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH;
+		this._xmlEventNameToPrefab.set(k235,v235);
+		v235;
+		var k236 = this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN);
+		var v236 = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN;
+		this._xmlEventNameToPrefab.set(k236,v236);
+		v236;
 	}
 	,parseGameNode: function(p_gameNode) {
 		tools_spark_framework_Console.info("Extending " + p_gameNode.get_nodeName() + " Node...");
@@ -24389,7 +25154,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassValidator.prototype = {
 		return tools_spark_framework_haxe_Rule.RNode(this._xmlNodeTypeToNodeName.get(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE),[],l_children);
 	}
 	,_createEventNodeRule: function() {
-		var l_children = tools_spark_framework_haxe_Rule.RData(tools_spark_framework_haxe_Filter.FEnum([this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_SCROLL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_START),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_OVER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_LEAVE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN)]));
+		var l_children = tools_spark_framework_haxe_Rule.RData(tools_spark_framework_haxe_Filter.FEnum([this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_SCROLL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_START),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_OVER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_LEAVE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH),this._xmlEventPrefabToName.get(tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN)]));
 		return tools_spark_framework_haxe_Rule.RNode(this._xmlNodeTypeToNodeName.get(tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT),[],l_children);
 	}
 	,__class__: tools_spark_sliced_services_std_logic_gde_core_GameClassValidator
@@ -24685,882 +25450,615 @@ tools_spark_sliced_services_std_logic_gde_core_GameTrigger.prototype = $extend(t
 });
 var tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EConcurrencyType"] = { __ename__ : true, __constructs__ : ["PARALLEL","PERSISTENT","TRANSIENT"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL = ["PARALLEL",0];
-tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PARALLEL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT = ["PERSISTENT",1];
-tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.PERSISTENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT = ["TRANSIENT",2];
-tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType.TRANSIENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EConcurrencyType;
-var tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EEventPrefab"] = { __ename__ : true, __constructs__ : ["CREATED","UPDATE","CHANGED","NETWORK_CONNECTED","NETWORK_REQUEST","NETWORK_SERVER_EVENT","FILETRANSFER_CONNECTED","FILETRANSFER_SENDREQUEST","MOUSE_LEFT_CLICK","MOUSE_RIGHT_CLICK","MOUSE_LEFT_DOWN","MOUSE_RIGHT_DOWN","MOUSE_SCROLL","MOUSE_LEFT_CLICKED","MOUSE_RIGHT_CLICKED","MOUSE_ENTERED","MOUSE_MOVED","MOUSE_LEFT","MOUSE_DOWN","MOUSE_UP","ON_DRAG_START","ON_DRAG","ON_DRAG_END","ON_DRAG_ENTER","ON_DRAG_OVER","ON_DRAG_LEAVE","ON_DROP","KEY_PRESSED","KEY_RELEASED","KEY_PRESSED_ALT","KEY_PRESSED_BACKSPACE","KEY_PRESSED_CAPS_LOCK","KEY_PRESSED_CONTROL","KEY_PRESSED_DELETE","KEY_PRESSED_DOWN","KEY_PRESSED_END","KEY_PRESSED_ENTER","KEY_PRESSED_ESCAPE","KEY_PRESSED_F1","KEY_PRESSED_F10","KEY_PRESSED_F11","KEY_PRESSED_F12","KEY_PRESSED_F13","KEY_PRESSED_F14","KEY_PRESSED_F15","KEY_PRESSED_F2","KEY_PRESSED_F3","KEY_PRESSED_F4","KEY_PRESSED_F5","KEY_PRESSED_F6","KEY_PRESSED_F7","KEY_PRESSED_F8","KEY_PRESSED_F9","KEY_PRESSED_HOME","KEY_PRESSED_INSERT","KEY_PRESSED_LEFT","KEY_PRESSED_NUMPAD_0","KEY_PRESSED_NUMPAD_1","KEY_PRESSED_NUMPAD_2","KEY_PRESSED_NUMPAD_3","KEY_PRESSED_NUMPAD_4","KEY_PRESSED_NUMPAD_5","KEY_PRESSED_NUMPAD_6","KEY_PRESSED_NUMPAD_7","KEY_PRESSED_NUMPAD_8","KEY_PRESSED_NUMPAD_9","KEY_PRESSED_NUMPAD_ADD","KEY_PRESSED_NUMPAD_DECIMAL","KEY_PRESSED_NUMPAD_DIVIDE","KEY_PRESSED_NUMPAD_ENTER","KEY_PRESSED_NUMPAD_MULTIPLY","KEY_PRESSED_NUMPAD_SUBTRACT","KEY_PRESSED_PAGE_DOWN","KEY_PRESSED_PAGE_UP","KEY_PRESSED_RIGHT","KEY_PRESSED_SHIFT","KEY_PRESSED_SPACE","KEY_PRESSED_TAB","KEY_PRESSED_UP","KEY_PRESSED_A","KEY_PRESSED_B","KEY_PRESSED_C","KEY_PRESSED_D","KEY_PRESSED_E","KEY_PRESSED_F","KEY_PRESSED_G","KEY_PRESSED_H","KEY_PRESSED_I","KEY_PRESSED_J","KEY_PRESSED_K","KEY_PRESSED_L","KEY_PRESSED_M","KEY_PRESSED_N","KEY_PRESSED_O","KEY_PRESSED_P","KEY_PRESSED_Q","KEY_PRESSED_R","KEY_PRESSED_S","KEY_PRESSED_T","KEY_PRESSED_U","KEY_PRESSED_V","KEY_PRESSED_W","KEY_PRESSED_X","KEY_PRESSED_Y","KEY_PRESSED_Z","KEY_PRESSED_NUMBER_0","KEY_PRESSED_NUMBER_1","KEY_PRESSED_NUMBER_2","KEY_PRESSED_NUMBER_3","KEY_PRESSED_NUMBER_4","KEY_PRESSED_NUMBER_5","KEY_PRESSED_NUMBER_6","KEY_PRESSED_NUMBER_7","KEY_PRESSED_NUMBER_8","KEY_PRESSED_NUMBER_9","KEY_PRESSED_EQUALS","KEY_PRESSED_SLASH","KEY_PRESSED_BACKSLASH","KEY_PRESSED_LEFTBRACKET","KEY_PRESSED_RIGHTBRACKET","KEY_PRESSED_BACKQUOTE","KEY_PRESSED_COMMA","KEY_PRESSED_COMMAND","KEY_PRESSED_MINUS","KEY_PRESSED_PERIOD","KEY_PRESSED_QUOTE","KEY_PRESSED_SEMICOLON","KEY_PRESSED_ANDROIDMENU","KEY_PRESSED_ANDROIDSEARCH","KEY_PRESSED_UNKNOWN","KEY_RELEASED_ALT","KEY_RELEASED_BACKSPACE","KEY_RELEASED_CAPS_LOCK","KEY_RELEASED_CONTROL","KEY_RELEASED_DELETE","KEY_RELEASED_DOWN","KEY_RELEASED_END","KEY_RELEASED_ENTER","KEY_RELEASED_ESCAPE","KEY_RELEASED_F1","KEY_RELEASED_F10","KEY_RELEASED_F11","KEY_RELEASED_F12","KEY_RELEASED_F13","KEY_RELEASED_F14","KEY_RELEASED_F15","KEY_RELEASED_F2","KEY_RELEASED_F3","KEY_RELEASED_F4","KEY_RELEASED_F5","KEY_RELEASED_F6","KEY_RELEASED_F7","KEY_RELEASED_F8","KEY_RELEASED_F9","KEY_RELEASED_HOME","KEY_RELEASED_INSERT","KEY_RELEASED_LEFT","KEY_RELEASED_NUMPAD_0","KEY_RELEASED_NUMPAD_1","KEY_RELEASED_NUMPAD_2","KEY_RELEASED_NUMPAD_3","KEY_RELEASED_NUMPAD_4","KEY_RELEASED_NUMPAD_5","KEY_RELEASED_NUMPAD_6","KEY_RELEASED_NUMPAD_7","KEY_RELEASED_NUMPAD_8","KEY_RELEASED_NUMPAD_9","KEY_RELEASED_NUMPAD_ADD","KEY_RELEASED_NUMPAD_DECIMAL","KEY_RELEASED_NUMPAD_DIVIDE","KEY_RELEASED_NUMPAD_ENTER","KEY_RELEASED_NUMPAD_MULTIPLY","KEY_RELEASED_NUMPAD_SUBTRACT","KEY_RELEASED_PAGE_DOWN","KEY_RELEASED_PAGE_UP","KEY_RELEASED_RIGHT","KEY_RELEASED_SHIFT","KEY_RELEASED_SPACE","KEY_RELEASED_TAB","KEY_RELEASED_UP","KEY_RELEASED_A","KEY_RELEASED_B","KEY_RELEASED_C","KEY_RELEASED_D","KEY_RELEASED_E","KEY_RELEASED_F","KEY_RELEASED_G","KEY_RELEASED_H","KEY_RELEASED_I","KEY_RELEASED_J","KEY_RELEASED_K","KEY_RELEASED_L","KEY_RELEASED_M","KEY_RELEASED_N","KEY_RELEASED_O","KEY_RELEASED_P","KEY_RELEASED_Q","KEY_RELEASED_R","KEY_RELEASED_S","KEY_RELEASED_T","KEY_RELEASED_U","KEY_RELEASED_V","KEY_RELEASED_W","KEY_RELEASED_X","KEY_RELEASED_Y","KEY_RELEASED_Z","KEY_RELEASED_NUMBER_0","KEY_RELEASED_NUMBER_1","KEY_RELEASED_NUMBER_2","KEY_RELEASED_NUMBER_3","KEY_RELEASED_NUMBER_4","KEY_RELEASED_NUMBER_5","KEY_RELEASED_NUMBER_6","KEY_RELEASED_NUMBER_7","KEY_RELEASED_NUMBER_8","KEY_RELEASED_NUMBER_9","KEY_RELEASED_EQUALS","KEY_RELEASED_SLASH","KEY_RELEASED_BACKSLASH","KEY_RELEASED_LEFTBRACKET","KEY_RELEASED_RIGHTBRACKET","KEY_RELEASED_BACKQUOTE","KEY_RELEASED_COMMA","KEY_RELEASED_COMMAND","KEY_RELEASED_MINUS","KEY_RELEASED_PERIOD","KEY_RELEASED_QUOTE","KEY_RELEASED_SEMICOLON","KEY_RELEASED_ANDROIDMENU","KEY_RELEASED_ANDROIDSEARCH","KEY_RELEASED_UNKNOWN"] };
+var tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EEventPrefab"] = { __ename__ : true, __constructs__ : ["CREATED","UPDATE","CHANGED","NETWORK_CONNECTED","NETWORK_REQUEST","NETWORK_SERVER_EVENT","FILETRANSFER_CONNECTED","FILETRANSFER_SENDREQUEST","MOUSE_LEFT_CLICK","MOUSE_RIGHT_CLICK","MOUSE_LEFT_DOWN","MOUSE_RIGHT_DOWN","MOUSE_SCROLL","MOUSE_LEFT_CLICKED","MOUSE_RIGHT_CLICKED","MOUSE_ENTERED","MOUSE_MOVED","MOUSE_LEFT","MOUSE_DOWN","MOUSE_UP","ON_DRAG_START","ON_DRAG","ON_DRAG_END","ON_DRAG_ENTER","ON_DRAG_OVER","ON_DRAG_LEAVE","ON_DROP","PHYSICS_COLLISION_START","PHYSICS_COLLISION_END","PHYSICS_SENSOR_START","PHYSICS_SENSOR_START_BIPED_FEET","PHYSICS_SENSOR_END","PHYSICS_SENSOR_END_BIPED_FEET","KEY_PRESSED","KEY_RELEASED","KEY_PRESSED_ALT","KEY_PRESSED_BACKSPACE","KEY_PRESSED_CAPS_LOCK","KEY_PRESSED_CONTROL","KEY_PRESSED_DELETE","KEY_PRESSED_DOWN","KEY_PRESSED_END","KEY_PRESSED_ENTER","KEY_PRESSED_ESCAPE","KEY_PRESSED_F1","KEY_PRESSED_F10","KEY_PRESSED_F11","KEY_PRESSED_F12","KEY_PRESSED_F13","KEY_PRESSED_F14","KEY_PRESSED_F15","KEY_PRESSED_F2","KEY_PRESSED_F3","KEY_PRESSED_F4","KEY_PRESSED_F5","KEY_PRESSED_F6","KEY_PRESSED_F7","KEY_PRESSED_F8","KEY_PRESSED_F9","KEY_PRESSED_HOME","KEY_PRESSED_INSERT","KEY_PRESSED_LEFT","KEY_PRESSED_NUMPAD_0","KEY_PRESSED_NUMPAD_1","KEY_PRESSED_NUMPAD_2","KEY_PRESSED_NUMPAD_3","KEY_PRESSED_NUMPAD_4","KEY_PRESSED_NUMPAD_5","KEY_PRESSED_NUMPAD_6","KEY_PRESSED_NUMPAD_7","KEY_PRESSED_NUMPAD_8","KEY_PRESSED_NUMPAD_9","KEY_PRESSED_NUMPAD_ADD","KEY_PRESSED_NUMPAD_DECIMAL","KEY_PRESSED_NUMPAD_DIVIDE","KEY_PRESSED_NUMPAD_ENTER","KEY_PRESSED_NUMPAD_MULTIPLY","KEY_PRESSED_NUMPAD_SUBTRACT","KEY_PRESSED_PAGE_DOWN","KEY_PRESSED_PAGE_UP","KEY_PRESSED_RIGHT","KEY_PRESSED_SHIFT","KEY_PRESSED_SPACE","KEY_PRESSED_TAB","KEY_PRESSED_UP","KEY_PRESSED_A","KEY_PRESSED_B","KEY_PRESSED_C","KEY_PRESSED_D","KEY_PRESSED_E","KEY_PRESSED_F","KEY_PRESSED_G","KEY_PRESSED_H","KEY_PRESSED_I","KEY_PRESSED_J","KEY_PRESSED_K","KEY_PRESSED_L","KEY_PRESSED_M","KEY_PRESSED_N","KEY_PRESSED_O","KEY_PRESSED_P","KEY_PRESSED_Q","KEY_PRESSED_R","KEY_PRESSED_S","KEY_PRESSED_T","KEY_PRESSED_U","KEY_PRESSED_V","KEY_PRESSED_W","KEY_PRESSED_X","KEY_PRESSED_Y","KEY_PRESSED_Z","KEY_PRESSED_NUMBER_0","KEY_PRESSED_NUMBER_1","KEY_PRESSED_NUMBER_2","KEY_PRESSED_NUMBER_3","KEY_PRESSED_NUMBER_4","KEY_PRESSED_NUMBER_5","KEY_PRESSED_NUMBER_6","KEY_PRESSED_NUMBER_7","KEY_PRESSED_NUMBER_8","KEY_PRESSED_NUMBER_9","KEY_PRESSED_EQUALS","KEY_PRESSED_SLASH","KEY_PRESSED_BACKSLASH","KEY_PRESSED_LEFTBRACKET","KEY_PRESSED_RIGHTBRACKET","KEY_PRESSED_BACKQUOTE","KEY_PRESSED_COMMA","KEY_PRESSED_COMMAND","KEY_PRESSED_MINUS","KEY_PRESSED_PERIOD","KEY_PRESSED_QUOTE","KEY_PRESSED_SEMICOLON","KEY_PRESSED_ANDROIDMENU","KEY_PRESSED_ANDROIDSEARCH","KEY_PRESSED_UNKNOWN","KEY_RELEASED_ALT","KEY_RELEASED_BACKSPACE","KEY_RELEASED_CAPS_LOCK","KEY_RELEASED_CONTROL","KEY_RELEASED_DELETE","KEY_RELEASED_DOWN","KEY_RELEASED_END","KEY_RELEASED_ENTER","KEY_RELEASED_ESCAPE","KEY_RELEASED_F1","KEY_RELEASED_F10","KEY_RELEASED_F11","KEY_RELEASED_F12","KEY_RELEASED_F13","KEY_RELEASED_F14","KEY_RELEASED_F15","KEY_RELEASED_F2","KEY_RELEASED_F3","KEY_RELEASED_F4","KEY_RELEASED_F5","KEY_RELEASED_F6","KEY_RELEASED_F7","KEY_RELEASED_F8","KEY_RELEASED_F9","KEY_RELEASED_HOME","KEY_RELEASED_INSERT","KEY_RELEASED_LEFT","KEY_RELEASED_NUMPAD_0","KEY_RELEASED_NUMPAD_1","KEY_RELEASED_NUMPAD_2","KEY_RELEASED_NUMPAD_3","KEY_RELEASED_NUMPAD_4","KEY_RELEASED_NUMPAD_5","KEY_RELEASED_NUMPAD_6","KEY_RELEASED_NUMPAD_7","KEY_RELEASED_NUMPAD_8","KEY_RELEASED_NUMPAD_9","KEY_RELEASED_NUMPAD_ADD","KEY_RELEASED_NUMPAD_DECIMAL","KEY_RELEASED_NUMPAD_DIVIDE","KEY_RELEASED_NUMPAD_ENTER","KEY_RELEASED_NUMPAD_MULTIPLY","KEY_RELEASED_NUMPAD_SUBTRACT","KEY_RELEASED_PAGE_DOWN","KEY_RELEASED_PAGE_UP","KEY_RELEASED_RIGHT","KEY_RELEASED_SHIFT","KEY_RELEASED_SPACE","KEY_RELEASED_TAB","KEY_RELEASED_UP","KEY_RELEASED_A","KEY_RELEASED_B","KEY_RELEASED_C","KEY_RELEASED_D","KEY_RELEASED_E","KEY_RELEASED_F","KEY_RELEASED_G","KEY_RELEASED_H","KEY_RELEASED_I","KEY_RELEASED_J","KEY_RELEASED_K","KEY_RELEASED_L","KEY_RELEASED_M","KEY_RELEASED_N","KEY_RELEASED_O","KEY_RELEASED_P","KEY_RELEASED_Q","KEY_RELEASED_R","KEY_RELEASED_S","KEY_RELEASED_T","KEY_RELEASED_U","KEY_RELEASED_V","KEY_RELEASED_W","KEY_RELEASED_X","KEY_RELEASED_Y","KEY_RELEASED_Z","KEY_RELEASED_NUMBER_0","KEY_RELEASED_NUMBER_1","KEY_RELEASED_NUMBER_2","KEY_RELEASED_NUMBER_3","KEY_RELEASED_NUMBER_4","KEY_RELEASED_NUMBER_5","KEY_RELEASED_NUMBER_6","KEY_RELEASED_NUMBER_7","KEY_RELEASED_NUMBER_8","KEY_RELEASED_NUMBER_9","KEY_RELEASED_EQUALS","KEY_RELEASED_SLASH","KEY_RELEASED_BACKSLASH","KEY_RELEASED_LEFTBRACKET","KEY_RELEASED_RIGHTBRACKET","KEY_RELEASED_BACKQUOTE","KEY_RELEASED_COMMA","KEY_RELEASED_COMMAND","KEY_RELEASED_MINUS","KEY_RELEASED_PERIOD","KEY_RELEASED_QUOTE","KEY_RELEASED_SEMICOLON","KEY_RELEASED_ANDROIDMENU","KEY_RELEASED_ANDROIDSEARCH","KEY_RELEASED_UNKNOWN"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED = ["CREATED",0];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CREATED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE = ["UPDATE",1];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.UPDATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED = ["CHANGED",2];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.CHANGED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED = ["NETWORK_CONNECTED",3];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST = ["NETWORK_REQUEST",4];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_REQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT = ["NETWORK_SERVER_EVENT",5];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.NETWORK_SERVER_EVENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED = ["FILETRANSFER_CONNECTED",6];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST = ["FILETRANSFER_SENDREQUEST",7];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.FILETRANSFER_SENDREQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK = ["MOUSE_LEFT_CLICK",8];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK = ["MOUSE_RIGHT_CLICK",9];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_DOWN = ["MOUSE_LEFT_DOWN",10];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_DOWN = ["MOUSE_RIGHT_DOWN",11];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_SCROLL = ["MOUSE_SCROLL",12];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_SCROLL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_SCROLL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED = ["MOUSE_LEFT_CLICKED",13];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT_CLICKED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED = ["MOUSE_RIGHT_CLICKED",14];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_RIGHT_CLICKED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED = ["MOUSE_ENTERED",15];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_ENTERED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED = ["MOUSE_MOVED",16];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_MOVED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT = ["MOUSE_LEFT",17];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_DOWN = ["MOUSE_DOWN",18];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_UP = ["MOUSE_UP",19];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_UP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.MOUSE_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_START = ["ON_DRAG_START",20];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_START.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_START.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG = ["ON_DRAG",21];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_END = ["ON_DRAG_END",22];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_END.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_ENTER = ["ON_DRAG_ENTER",23];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_ENTER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_OVER = ["ON_DRAG_OVER",24];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_OVER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_OVER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_LEAVE = ["ON_DRAG_LEAVE",25];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_LEAVE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DRAG_LEAVE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP = ["ON_DROP",26];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.ON_DROP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED = ["KEY_PRESSED",27];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START = ["PHYSICS_COLLISION_START",27];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_START.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END = ["PHYSICS_COLLISION_END",28];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_COLLISION_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START = ["PHYSICS_SENSOR_START",29];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET = ["PHYSICS_SENSOR_START_BIPED_FEET",30];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_START_BIPED_FEET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END = ["PHYSICS_SENSOR_END",31];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET = ["PHYSICS_SENSOR_END_BIPED_FEET",32];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.PHYSICS_SENSOR_END_BIPED_FEET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED = ["KEY_PRESSED",33];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED = ["KEY_RELEASED",28];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED = ["KEY_RELEASED",34];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT = ["KEY_PRESSED_ALT",29];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT = ["KEY_PRESSED_ALT",35];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ALT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE = ["KEY_PRESSED_BACKSPACE",30];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE = ["KEY_PRESSED_BACKSPACE",36];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK = ["KEY_PRESSED_CAPS_LOCK",31];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK = ["KEY_PRESSED_CAPS_LOCK",37];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CAPS_LOCK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL = ["KEY_PRESSED_CONTROL",32];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL = ["KEY_PRESSED_CONTROL",38];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_CONTROL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE = ["KEY_PRESSED_DELETE",33];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE = ["KEY_PRESSED_DELETE",39];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DELETE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN = ["KEY_PRESSED_DOWN",34];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN = ["KEY_PRESSED_DOWN",40];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END = ["KEY_PRESSED_END",35];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END = ["KEY_PRESSED_END",41];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER = ["KEY_PRESSED_ENTER",36];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER = ["KEY_PRESSED_ENTER",42];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE = ["KEY_PRESSED_ESCAPE",37];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE = ["KEY_PRESSED_ESCAPE",43];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ESCAPE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1 = ["KEY_PRESSED_F1",38];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1 = ["KEY_PRESSED_F1",44];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10 = ["KEY_PRESSED_F10",39];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10 = ["KEY_PRESSED_F10",45];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F10.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11 = ["KEY_PRESSED_F11",40];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11 = ["KEY_PRESSED_F11",46];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F11.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12 = ["KEY_PRESSED_F12",41];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12 = ["KEY_PRESSED_F12",47];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F12.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13 = ["KEY_PRESSED_F13",42];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13 = ["KEY_PRESSED_F13",48];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F13.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14 = ["KEY_PRESSED_F14",43];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14 = ["KEY_PRESSED_F14",49];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F14.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15 = ["KEY_PRESSED_F15",44];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15 = ["KEY_PRESSED_F15",50];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F15.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2 = ["KEY_PRESSED_F2",45];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2 = ["KEY_PRESSED_F2",51];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3 = ["KEY_PRESSED_F3",46];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3 = ["KEY_PRESSED_F3",52];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4 = ["KEY_PRESSED_F4",47];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4 = ["KEY_PRESSED_F4",53];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5 = ["KEY_PRESSED_F5",48];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5 = ["KEY_PRESSED_F5",54];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6 = ["KEY_PRESSED_F6",49];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6 = ["KEY_PRESSED_F6",55];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7 = ["KEY_PRESSED_F7",50];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7 = ["KEY_PRESSED_F7",56];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8 = ["KEY_PRESSED_F8",51];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8 = ["KEY_PRESSED_F8",57];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9 = ["KEY_PRESSED_F9",52];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9 = ["KEY_PRESSED_F9",58];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME = ["KEY_PRESSED_HOME",53];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME = ["KEY_PRESSED_HOME",59];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_HOME.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT = ["KEY_PRESSED_INSERT",54];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT = ["KEY_PRESSED_INSERT",60];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_INSERT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT = ["KEY_PRESSED_LEFT",55];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT = ["KEY_PRESSED_LEFT",61];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0 = ["KEY_PRESSED_NUMPAD_0",56];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0 = ["KEY_PRESSED_NUMPAD_0",62];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1 = ["KEY_PRESSED_NUMPAD_1",57];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1 = ["KEY_PRESSED_NUMPAD_1",63];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2 = ["KEY_PRESSED_NUMPAD_2",58];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2 = ["KEY_PRESSED_NUMPAD_2",64];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3 = ["KEY_PRESSED_NUMPAD_3",59];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3 = ["KEY_PRESSED_NUMPAD_3",65];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4 = ["KEY_PRESSED_NUMPAD_4",60];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4 = ["KEY_PRESSED_NUMPAD_4",66];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5 = ["KEY_PRESSED_NUMPAD_5",61];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5 = ["KEY_PRESSED_NUMPAD_5",67];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6 = ["KEY_PRESSED_NUMPAD_6",62];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6 = ["KEY_PRESSED_NUMPAD_6",68];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7 = ["KEY_PRESSED_NUMPAD_7",63];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7 = ["KEY_PRESSED_NUMPAD_7",69];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8 = ["KEY_PRESSED_NUMPAD_8",64];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8 = ["KEY_PRESSED_NUMPAD_8",70];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9 = ["KEY_PRESSED_NUMPAD_9",65];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9 = ["KEY_PRESSED_NUMPAD_9",71];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD = ["KEY_PRESSED_NUMPAD_ADD",66];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD = ["KEY_PRESSED_NUMPAD_ADD",72];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ADD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL = ["KEY_PRESSED_NUMPAD_DECIMAL",67];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL = ["KEY_PRESSED_NUMPAD_DECIMAL",73];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DECIMAL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE = ["KEY_PRESSED_NUMPAD_DIVIDE",68];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE = ["KEY_PRESSED_NUMPAD_DIVIDE",74];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_DIVIDE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER = ["KEY_PRESSED_NUMPAD_ENTER",69];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER = ["KEY_PRESSED_NUMPAD_ENTER",75];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY = ["KEY_PRESSED_NUMPAD_MULTIPLY",70];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY = ["KEY_PRESSED_NUMPAD_MULTIPLY",76];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_MULTIPLY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT = ["KEY_PRESSED_NUMPAD_SUBTRACT",71];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT = ["KEY_PRESSED_NUMPAD_SUBTRACT",77];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMPAD_SUBTRACT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN = ["KEY_PRESSED_PAGE_DOWN",72];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN = ["KEY_PRESSED_PAGE_DOWN",78];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP = ["KEY_PRESSED_PAGE_UP",73];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP = ["KEY_PRESSED_PAGE_UP",79];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PAGE_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT = ["KEY_PRESSED_RIGHT",74];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT = ["KEY_PRESSED_RIGHT",80];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT = ["KEY_PRESSED_SHIFT",75];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT = ["KEY_PRESSED_SHIFT",81];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SHIFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE = ["KEY_PRESSED_SPACE",76];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE = ["KEY_PRESSED_SPACE",82];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB = ["KEY_PRESSED_TAB",77];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB = ["KEY_PRESSED_TAB",83];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_TAB.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP = ["KEY_PRESSED_UP",78];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP = ["KEY_PRESSED_UP",84];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A = ["KEY_PRESSED_A",79];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A = ["KEY_PRESSED_A",85];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_A.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B = ["KEY_PRESSED_B",80];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B = ["KEY_PRESSED_B",86];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_B.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C = ["KEY_PRESSED_C",81];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C = ["KEY_PRESSED_C",87];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_C.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D = ["KEY_PRESSED_D",82];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D = ["KEY_PRESSED_D",88];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_D.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E = ["KEY_PRESSED_E",83];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E = ["KEY_PRESSED_E",89];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_E.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F = ["KEY_PRESSED_F",84];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F = ["KEY_PRESSED_F",90];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_F.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G = ["KEY_PRESSED_G",85];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G = ["KEY_PRESSED_G",91];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_G.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H = ["KEY_PRESSED_H",86];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H = ["KEY_PRESSED_H",92];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_H.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I = ["KEY_PRESSED_I",87];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I = ["KEY_PRESSED_I",93];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_I.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J = ["KEY_PRESSED_J",88];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J = ["KEY_PRESSED_J",94];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_J.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K = ["KEY_PRESSED_K",89];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K = ["KEY_PRESSED_K",95];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_K.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L = ["KEY_PRESSED_L",90];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L = ["KEY_PRESSED_L",96];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_L.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M = ["KEY_PRESSED_M",91];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M = ["KEY_PRESSED_M",97];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_M.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N = ["KEY_PRESSED_N",92];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N = ["KEY_PRESSED_N",98];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_N.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O = ["KEY_PRESSED_O",93];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O = ["KEY_PRESSED_O",99];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_O.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P = ["KEY_PRESSED_P",94];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P = ["KEY_PRESSED_P",100];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_P.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q = ["KEY_PRESSED_Q",95];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q = ["KEY_PRESSED_Q",101];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Q.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R = ["KEY_PRESSED_R",96];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R = ["KEY_PRESSED_R",102];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_R.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S = ["KEY_PRESSED_S",97];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S = ["KEY_PRESSED_S",103];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_S.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T = ["KEY_PRESSED_T",98];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T = ["KEY_PRESSED_T",104];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_T.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U = ["KEY_PRESSED_U",99];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U = ["KEY_PRESSED_U",105];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_U.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V = ["KEY_PRESSED_V",100];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V = ["KEY_PRESSED_V",106];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_V.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W = ["KEY_PRESSED_W",101];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W = ["KEY_PRESSED_W",107];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_W.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X = ["KEY_PRESSED_X",102];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X = ["KEY_PRESSED_X",108];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_X.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y = ["KEY_PRESSED_Y",103];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y = ["KEY_PRESSED_Y",109];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Y.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z = ["KEY_PRESSED_Z",104];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z = ["KEY_PRESSED_Z",110];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_Z.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0 = ["KEY_PRESSED_NUMBER_0",105];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0 = ["KEY_PRESSED_NUMBER_0",111];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1 = ["KEY_PRESSED_NUMBER_1",106];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1 = ["KEY_PRESSED_NUMBER_1",112];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2 = ["KEY_PRESSED_NUMBER_2",107];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2 = ["KEY_PRESSED_NUMBER_2",113];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3 = ["KEY_PRESSED_NUMBER_3",108];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3 = ["KEY_PRESSED_NUMBER_3",114];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4 = ["KEY_PRESSED_NUMBER_4",109];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4 = ["KEY_PRESSED_NUMBER_4",115];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5 = ["KEY_PRESSED_NUMBER_5",110];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5 = ["KEY_PRESSED_NUMBER_5",116];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6 = ["KEY_PRESSED_NUMBER_6",111];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6 = ["KEY_PRESSED_NUMBER_6",117];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7 = ["KEY_PRESSED_NUMBER_7",112];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7 = ["KEY_PRESSED_NUMBER_7",118];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8 = ["KEY_PRESSED_NUMBER_8",113];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8 = ["KEY_PRESSED_NUMBER_8",119];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9 = ["KEY_PRESSED_NUMBER_9",114];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9 = ["KEY_PRESSED_NUMBER_9",120];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_NUMBER_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS = ["KEY_PRESSED_EQUALS",115];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS = ["KEY_PRESSED_EQUALS",121];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_EQUALS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH = ["KEY_PRESSED_SLASH",116];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH = ["KEY_PRESSED_SLASH",122];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH = ["KEY_PRESSED_BACKSLASH",117];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH = ["KEY_PRESSED_BACKSLASH",123];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKSLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET = ["KEY_PRESSED_LEFTBRACKET",118];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET = ["KEY_PRESSED_LEFTBRACKET",124];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_LEFTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET = ["KEY_PRESSED_RIGHTBRACKET",119];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET = ["KEY_PRESSED_RIGHTBRACKET",125];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_RIGHTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE = ["KEY_PRESSED_BACKQUOTE",120];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE = ["KEY_PRESSED_BACKQUOTE",126];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_BACKQUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA = ["KEY_PRESSED_COMMA",121];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA = ["KEY_PRESSED_COMMA",127];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMA.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND = ["KEY_PRESSED_COMMAND",122];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND = ["KEY_PRESSED_COMMAND",128];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_COMMAND.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS = ["KEY_PRESSED_MINUS",123];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS = ["KEY_PRESSED_MINUS",129];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_MINUS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD = ["KEY_PRESSED_PERIOD",124];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD = ["KEY_PRESSED_PERIOD",130];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_PERIOD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE = ["KEY_PRESSED_QUOTE",125];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE = ["KEY_PRESSED_QUOTE",131];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_QUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON = ["KEY_PRESSED_SEMICOLON",126];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON = ["KEY_PRESSED_SEMICOLON",132];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_SEMICOLON.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU = ["KEY_PRESSED_ANDROIDMENU",127];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU = ["KEY_PRESSED_ANDROIDMENU",133];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDMENU.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH = ["KEY_PRESSED_ANDROIDSEARCH",128];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH = ["KEY_PRESSED_ANDROIDSEARCH",134];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_ANDROIDSEARCH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN = ["KEY_PRESSED_UNKNOWN",129];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN = ["KEY_PRESSED_UNKNOWN",135];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_PRESSED_UNKNOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT = ["KEY_RELEASED_ALT",130];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT = ["KEY_RELEASED_ALT",136];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ALT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE = ["KEY_RELEASED_BACKSPACE",131];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE = ["KEY_RELEASED_BACKSPACE",137];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK = ["KEY_RELEASED_CAPS_LOCK",132];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK = ["KEY_RELEASED_CAPS_LOCK",138];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CAPS_LOCK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL = ["KEY_RELEASED_CONTROL",133];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL = ["KEY_RELEASED_CONTROL",139];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_CONTROL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE = ["KEY_RELEASED_DELETE",134];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE = ["KEY_RELEASED_DELETE",140];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DELETE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN = ["KEY_RELEASED_DOWN",135];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN = ["KEY_RELEASED_DOWN",141];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END = ["KEY_RELEASED_END",136];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END = ["KEY_RELEASED_END",142];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER = ["KEY_RELEASED_ENTER",137];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER = ["KEY_RELEASED_ENTER",143];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE = ["KEY_RELEASED_ESCAPE",138];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE = ["KEY_RELEASED_ESCAPE",144];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ESCAPE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1 = ["KEY_RELEASED_F1",139];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1 = ["KEY_RELEASED_F1",145];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10 = ["KEY_RELEASED_F10",140];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10 = ["KEY_RELEASED_F10",146];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F10.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11 = ["KEY_RELEASED_F11",141];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11 = ["KEY_RELEASED_F11",147];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F11.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12 = ["KEY_RELEASED_F12",142];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12 = ["KEY_RELEASED_F12",148];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F12.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13 = ["KEY_RELEASED_F13",143];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13 = ["KEY_RELEASED_F13",149];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F13.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14 = ["KEY_RELEASED_F14",144];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14 = ["KEY_RELEASED_F14",150];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F14.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15 = ["KEY_RELEASED_F15",145];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15 = ["KEY_RELEASED_F15",151];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F15.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2 = ["KEY_RELEASED_F2",146];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2 = ["KEY_RELEASED_F2",152];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3 = ["KEY_RELEASED_F3",147];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3 = ["KEY_RELEASED_F3",153];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4 = ["KEY_RELEASED_F4",148];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4 = ["KEY_RELEASED_F4",154];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5 = ["KEY_RELEASED_F5",149];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5 = ["KEY_RELEASED_F5",155];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6 = ["KEY_RELEASED_F6",150];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6 = ["KEY_RELEASED_F6",156];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7 = ["KEY_RELEASED_F7",151];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7 = ["KEY_RELEASED_F7",157];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8 = ["KEY_RELEASED_F8",152];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8 = ["KEY_RELEASED_F8",158];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9 = ["KEY_RELEASED_F9",153];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9 = ["KEY_RELEASED_F9",159];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME = ["KEY_RELEASED_HOME",154];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME = ["KEY_RELEASED_HOME",160];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_HOME.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT = ["KEY_RELEASED_INSERT",155];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT = ["KEY_RELEASED_INSERT",161];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_INSERT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT = ["KEY_RELEASED_LEFT",156];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT = ["KEY_RELEASED_LEFT",162];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0 = ["KEY_RELEASED_NUMPAD_0",157];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0 = ["KEY_RELEASED_NUMPAD_0",163];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1 = ["KEY_RELEASED_NUMPAD_1",158];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1 = ["KEY_RELEASED_NUMPAD_1",164];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2 = ["KEY_RELEASED_NUMPAD_2",159];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2 = ["KEY_RELEASED_NUMPAD_2",165];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3 = ["KEY_RELEASED_NUMPAD_3",160];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3 = ["KEY_RELEASED_NUMPAD_3",166];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4 = ["KEY_RELEASED_NUMPAD_4",161];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4 = ["KEY_RELEASED_NUMPAD_4",167];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5 = ["KEY_RELEASED_NUMPAD_5",162];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5 = ["KEY_RELEASED_NUMPAD_5",168];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6 = ["KEY_RELEASED_NUMPAD_6",163];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6 = ["KEY_RELEASED_NUMPAD_6",169];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7 = ["KEY_RELEASED_NUMPAD_7",164];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7 = ["KEY_RELEASED_NUMPAD_7",170];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8 = ["KEY_RELEASED_NUMPAD_8",165];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8 = ["KEY_RELEASED_NUMPAD_8",171];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9 = ["KEY_RELEASED_NUMPAD_9",166];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9 = ["KEY_RELEASED_NUMPAD_9",172];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD = ["KEY_RELEASED_NUMPAD_ADD",167];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD = ["KEY_RELEASED_NUMPAD_ADD",173];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ADD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL = ["KEY_RELEASED_NUMPAD_DECIMAL",168];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL = ["KEY_RELEASED_NUMPAD_DECIMAL",174];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DECIMAL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE = ["KEY_RELEASED_NUMPAD_DIVIDE",169];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE = ["KEY_RELEASED_NUMPAD_DIVIDE",175];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_DIVIDE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER = ["KEY_RELEASED_NUMPAD_ENTER",170];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER = ["KEY_RELEASED_NUMPAD_ENTER",176];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY = ["KEY_RELEASED_NUMPAD_MULTIPLY",171];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY = ["KEY_RELEASED_NUMPAD_MULTIPLY",177];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_MULTIPLY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT = ["KEY_RELEASED_NUMPAD_SUBTRACT",172];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT = ["KEY_RELEASED_NUMPAD_SUBTRACT",178];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMPAD_SUBTRACT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN = ["KEY_RELEASED_PAGE_DOWN",173];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN = ["KEY_RELEASED_PAGE_DOWN",179];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP = ["KEY_RELEASED_PAGE_UP",174];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP = ["KEY_RELEASED_PAGE_UP",180];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PAGE_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT = ["KEY_RELEASED_RIGHT",175];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT = ["KEY_RELEASED_RIGHT",181];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT = ["KEY_RELEASED_SHIFT",176];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT = ["KEY_RELEASED_SHIFT",182];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SHIFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE = ["KEY_RELEASED_SPACE",177];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE = ["KEY_RELEASED_SPACE",183];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB = ["KEY_RELEASED_TAB",178];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB = ["KEY_RELEASED_TAB",184];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_TAB.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP = ["KEY_RELEASED_UP",179];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP = ["KEY_RELEASED_UP",185];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A = ["KEY_RELEASED_A",180];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A = ["KEY_RELEASED_A",186];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_A.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B = ["KEY_RELEASED_B",181];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B = ["KEY_RELEASED_B",187];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_B.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C = ["KEY_RELEASED_C",182];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C = ["KEY_RELEASED_C",188];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_C.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D = ["KEY_RELEASED_D",183];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D = ["KEY_RELEASED_D",189];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_D.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E = ["KEY_RELEASED_E",184];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E = ["KEY_RELEASED_E",190];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_E.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F = ["KEY_RELEASED_F",185];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F = ["KEY_RELEASED_F",191];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_F.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G = ["KEY_RELEASED_G",186];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G = ["KEY_RELEASED_G",192];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_G.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H = ["KEY_RELEASED_H",187];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H = ["KEY_RELEASED_H",193];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_H.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I = ["KEY_RELEASED_I",188];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I = ["KEY_RELEASED_I",194];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_I.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J = ["KEY_RELEASED_J",189];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J = ["KEY_RELEASED_J",195];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_J.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K = ["KEY_RELEASED_K",190];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K = ["KEY_RELEASED_K",196];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_K.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L = ["KEY_RELEASED_L",191];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L = ["KEY_RELEASED_L",197];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_L.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M = ["KEY_RELEASED_M",192];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M = ["KEY_RELEASED_M",198];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_M.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N = ["KEY_RELEASED_N",193];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N = ["KEY_RELEASED_N",199];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_N.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O = ["KEY_RELEASED_O",194];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O = ["KEY_RELEASED_O",200];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_O.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P = ["KEY_RELEASED_P",195];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P = ["KEY_RELEASED_P",201];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_P.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q = ["KEY_RELEASED_Q",196];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q = ["KEY_RELEASED_Q",202];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Q.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R = ["KEY_RELEASED_R",197];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R = ["KEY_RELEASED_R",203];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_R.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S = ["KEY_RELEASED_S",198];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S = ["KEY_RELEASED_S",204];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_S.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T = ["KEY_RELEASED_T",199];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T = ["KEY_RELEASED_T",205];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_T.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U = ["KEY_RELEASED_U",200];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U = ["KEY_RELEASED_U",206];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_U.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V = ["KEY_RELEASED_V",201];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V = ["KEY_RELEASED_V",207];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_V.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W = ["KEY_RELEASED_W",202];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W = ["KEY_RELEASED_W",208];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_W.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X = ["KEY_RELEASED_X",203];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X = ["KEY_RELEASED_X",209];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_X.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y = ["KEY_RELEASED_Y",204];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y = ["KEY_RELEASED_Y",210];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Y.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z = ["KEY_RELEASED_Z",205];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z = ["KEY_RELEASED_Z",211];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_Z.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0 = ["KEY_RELEASED_NUMBER_0",206];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0 = ["KEY_RELEASED_NUMBER_0",212];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_0.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1 = ["KEY_RELEASED_NUMBER_1",207];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1 = ["KEY_RELEASED_NUMBER_1",213];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_1.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2 = ["KEY_RELEASED_NUMBER_2",208];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2 = ["KEY_RELEASED_NUMBER_2",214];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_2.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3 = ["KEY_RELEASED_NUMBER_3",209];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3 = ["KEY_RELEASED_NUMBER_3",215];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_3.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4 = ["KEY_RELEASED_NUMBER_4",210];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4 = ["KEY_RELEASED_NUMBER_4",216];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_4.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5 = ["KEY_RELEASED_NUMBER_5",211];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5 = ["KEY_RELEASED_NUMBER_5",217];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_5.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6 = ["KEY_RELEASED_NUMBER_6",212];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6 = ["KEY_RELEASED_NUMBER_6",218];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_6.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7 = ["KEY_RELEASED_NUMBER_7",213];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7 = ["KEY_RELEASED_NUMBER_7",219];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_7.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8 = ["KEY_RELEASED_NUMBER_8",214];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8 = ["KEY_RELEASED_NUMBER_8",220];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_8.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9 = ["KEY_RELEASED_NUMBER_9",215];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9 = ["KEY_RELEASED_NUMBER_9",221];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_NUMBER_9.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS = ["KEY_RELEASED_EQUALS",216];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS = ["KEY_RELEASED_EQUALS",222];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_EQUALS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH = ["KEY_RELEASED_SLASH",217];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH = ["KEY_RELEASED_SLASH",223];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH = ["KEY_RELEASED_BACKSLASH",218];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH = ["KEY_RELEASED_BACKSLASH",224];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKSLASH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET = ["KEY_RELEASED_LEFTBRACKET",219];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET = ["KEY_RELEASED_LEFTBRACKET",225];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_LEFTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET = ["KEY_RELEASED_RIGHTBRACKET",220];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET = ["KEY_RELEASED_RIGHTBRACKET",226];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_RIGHTBRACKET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE = ["KEY_RELEASED_BACKQUOTE",221];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE = ["KEY_RELEASED_BACKQUOTE",227];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_BACKQUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA = ["KEY_RELEASED_COMMA",222];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA = ["KEY_RELEASED_COMMA",228];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMA.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND = ["KEY_RELEASED_COMMAND",223];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND = ["KEY_RELEASED_COMMAND",229];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_COMMAND.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS = ["KEY_RELEASED_MINUS",224];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS = ["KEY_RELEASED_MINUS",230];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_MINUS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD = ["KEY_RELEASED_PERIOD",225];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD = ["KEY_RELEASED_PERIOD",231];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_PERIOD.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE = ["KEY_RELEASED_QUOTE",226];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE = ["KEY_RELEASED_QUOTE",232];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_QUOTE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON = ["KEY_RELEASED_SEMICOLON",227];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON = ["KEY_RELEASED_SEMICOLON",233];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_SEMICOLON.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU = ["KEY_RELEASED_ANDROIDMENU",228];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU = ["KEY_RELEASED_ANDROIDMENU",234];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDMENU.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH = ["KEY_RELEASED_ANDROIDSEARCH",229];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH = ["KEY_RELEASED_ANDROIDSEARCH",235];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_ANDROIDSEARCH.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN = ["KEY_RELEASED_UNKNOWN",230];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN = ["KEY_RELEASED_UNKNOWN",236];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab.KEY_RELEASED_UNKNOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventPrefab;
-var tools_spark_sliced_services_std_logic_gde_interfaces_EEventType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EEventType"] = { __ename__ : true, __constructs__ : ["CREATED","UPDATE","CHANGED","NETWORK_CONNECTED","NETWORK_REQUEST","NETWORK_SERVER_EVENT","FILETRANSFER_CONNECTED","FILETRANSFER_SENDREQUEST","MOUSE_LEFT_CLICK","MOUSE_RIGHT_CLICK","MOUSE_LEFT_DOWN","MOUSE_RIGHT_DOWN","MOUSE_SCROLL","MOUSE_ENTERED","MOUSE_MOVED","MOUSE_LEFT","MOUSE_DOWN","MOUSE_UP","ON_DRAG_START","ON_DRAG","ON_DRAG_END","ON_DRAG_ENTER","ON_DRAG_OVER","ON_DRAG_LEAVE","ON_DROP","KEY_PRESSED","KEY_RELEASED"] };
+var tools_spark_sliced_services_std_logic_gde_interfaces_EEventType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EEventType"] = { __ename__ : true, __constructs__ : ["CREATED","UPDATE","CHANGED","NETWORK_CONNECTED","NETWORK_REQUEST","NETWORK_SERVER_EVENT","FILETRANSFER_CONNECTED","FILETRANSFER_SENDREQUEST","MOUSE_LEFT_CLICK","MOUSE_RIGHT_CLICK","MOUSE_LEFT_DOWN","MOUSE_RIGHT_DOWN","MOUSE_SCROLL","MOUSE_ENTERED","MOUSE_MOVED","MOUSE_LEFT","MOUSE_DOWN","MOUSE_UP","PHYSICS_COLLISION_START","PHYSICS_COLLISION_END","PHYSICS_SENSOR_START","PHYSICS_SENSOR_START_BIPED_FEET","PHYSICS_SENSOR_END","PHYSICS_SENSOR_END_BIPED_FEET","ON_DRAG_START","ON_DRAG","ON_DRAG_END","ON_DRAG_ENTER","ON_DRAG_OVER","ON_DRAG_LEAVE","ON_DROP","KEY_PRESSED","KEY_RELEASED"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CREATED = ["CREATED",0];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CREATED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CREATED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.UPDATE = ["UPDATE",1];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.UPDATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.UPDATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CHANGED = ["CHANGED",2];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CHANGED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.CHANGED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_CONNECTED = ["NETWORK_CONNECTED",3];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_REQUEST = ["NETWORK_REQUEST",4];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_REQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_REQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_SERVER_EVENT = ["NETWORK_SERVER_EVENT",5];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_SERVER_EVENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.NETWORK_SERVER_EVENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_CONNECTED = ["FILETRANSFER_CONNECTED",6];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_CONNECTED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_CONNECTED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_SENDREQUEST = ["FILETRANSFER_SENDREQUEST",7];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_SENDREQUEST.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.FILETRANSFER_SENDREQUEST.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK = ["MOUSE_LEFT_CLICK",8];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK = ["MOUSE_RIGHT_CLICK",9];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_DOWN = ["MOUSE_LEFT_DOWN",10];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_DOWN = ["MOUSE_RIGHT_DOWN",11];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_SCROLL = ["MOUSE_SCROLL",12];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_SCROLL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_SCROLL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED = ["MOUSE_ENTERED",13];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_ENTERED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED = ["MOUSE_MOVED",14];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_MOVED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT = ["MOUSE_LEFT",15];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_DOWN = ["MOUSE_DOWN",16];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_DOWN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_DOWN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_UP = ["MOUSE_UP",17];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_UP.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_UP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_START = ["ON_DRAG_START",18];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_START.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START = ["PHYSICS_COLLISION_START",18];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END = ["PHYSICS_COLLISION_END",19];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START = ["PHYSICS_SENSOR_START",20];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START_BIPED_FEET = ["PHYSICS_SENSOR_START_BIPED_FEET",21];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START_BIPED_FEET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END = ["PHYSICS_SENSOR_END",22];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END_BIPED_FEET = ["PHYSICS_SENSOR_END_BIPED_FEET",23];
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END_BIPED_FEET.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_START = ["ON_DRAG_START",24];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_START.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG = ["ON_DRAG",19];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG = ["ON_DRAG",25];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_END = ["ON_DRAG_END",20];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_END.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_END = ["ON_DRAG_END",26];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_END.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_ENTER = ["ON_DRAG_ENTER",21];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_ENTER.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_ENTER = ["ON_DRAG_ENTER",27];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_ENTER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_OVER = ["ON_DRAG_OVER",22];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_OVER.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_OVER = ["ON_DRAG_OVER",28];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_OVER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_LEAVE = ["ON_DRAG_LEAVE",23];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_LEAVE.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_LEAVE = ["ON_DRAG_LEAVE",29];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DRAG_LEAVE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DROP = ["ON_DROP",24];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DROP.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DROP = ["ON_DROP",30];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.ON_DROP.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED = ["KEY_PRESSED",25];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED = ["KEY_PRESSED",31];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED = ["KEY_RELEASED",26];
-tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED.toString = $estr;
+tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED = ["KEY_RELEASED",32];
 tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_EGameType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EGameType"] = { __ename__ : true, __constructs__ : ["ENTITY","FORM","STATE","SPACE","ACTION","TRIGGER"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY = ["ENTITY",0];
-tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ENTITY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM = ["FORM",1];
-tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.FORM.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE = ["STATE",2];
-tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.STATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE = ["SPACE",3];
-tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION = ["ACTION",4];
-tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.ACTION.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER = ["TRIGGER",5];
-tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EGameType.TRIGGER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EGameType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.ENodeType"] = { __ename__ : true, __constructs__ : ["ENTITIES","ENTITY","FORM","STATES","STATE","SPACE","ACTIONS","ACTION","SCRIPTS","SCRIPT","GML","TRIGGERS","TRIGGER","EVENT","CONCURRENCY","ID","TYPE","VALUE","EXTENDS"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES = ["ENTITIES",0];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITIES.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY = ["ENTITY",1];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ENTITY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM = ["FORM",2];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.FORM.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES = ["STATES",3];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATES.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE = ["STATE",4];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.STATE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE = ["SPACE",5];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SPACE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS = ["ACTIONS",6];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTIONS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION = ["ACTION",7];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ACTION.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS = ["SCRIPTS",8];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPTS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT = ["SCRIPT",9];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.SCRIPT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML = ["GML",10];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.GML.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS = ["TRIGGERS",11];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGERS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER = ["TRIGGER",12];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TRIGGER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT = ["EVENT",13];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EVENT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY = ["CONCURRENCY",14];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.CONCURRENCY.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID = ["ID",15];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.ID.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE = ["TYPE",16];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.TYPE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE = ["VALUE",17];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.VALUE.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS = ["EXTENDS",18];
-tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType.EXTENDS.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_ENodeType;
 var tools_spark_sliced_services_std_logic_gde_interfaces_EStateType = $hxClasses["tools.spark.sliced.services.std.logic.gde.interfaces.EStateType"] = { __ename__ : true, __constructs__ : ["DYNAMIC","INTEGER","DECIMAL","BOOLEAN","TEXT"] };
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC = ["DYNAMIC",0];
-tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DYNAMIC.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER = ["INTEGER",1];
-tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.INTEGER.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL = ["DECIMAL",2];
-tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.DECIMAL.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN = ["BOOLEAN",3];
-tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.BOOLEAN.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT = ["TEXT",4];
-tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT.toString = $estr;
 tools_spark_sliced_services_std_logic_gde_interfaces_EStateType.TEXT.__enum__ = tools_spark_sliced_services_std_logic_gde_interfaces_EStateType;
 var tools_spark_sliced_services_std_logic_interpreter_interfaces_IInterpreter = function() { };
 $hxClasses["tools.spark.sliced.services.std.logic.interpreter.interfaces.IInterpreter"] = tools_spark_sliced_services_std_logic_interpreter_interfaces_IInterpreter;
@@ -25712,18 +26210,6 @@ zpp_$nape_ZPP_$Const.POSINF = function() {
 };
 zpp_$nape_ZPP_$Const.NEGINF = function() {
 	return -Infinity;
-};
-var zpp_$nape_ZPP_$ID = function() { };
-$hxClasses["zpp_nape.ZPP_ID"] = zpp_$nape_ZPP_$ID;
-zpp_$nape_ZPP_$ID.__name__ = true;
-zpp_$nape_ZPP_$ID.Interactor = function() {
-	return zpp_$nape_ZPP_$ID._Interactor++;
-};
-zpp_$nape_ZPP_$ID.CbType = function() {
-	return zpp_$nape_ZPP_$ID._CbType++;
-};
-zpp_$nape_ZPP_$ID.CbSet = function() {
-	return zpp_$nape_ZPP_$ID._CbSet++;
 };
 var zpp_$nape_callbacks_ZPP_$Callback = function() {
 	this.constraint = null;
@@ -26105,758 +26591,6 @@ zpp_$nape_callbacks_ZPP_$CbSetPair.prototype = {
 	}
 	,__class__: zpp_$nape_callbacks_ZPP_$CbSetPair
 };
-var zpp_$nape_util_ZNPList_$ZPP_$InteractionListener = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_InteractionListener"] = zpp_$nape_util_ZNPList_$ZPP_$InteractionListener;
-zpp_$nape_util_ZNPList_$ZPP_$InteractionListener.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$InteractionListener.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,add: function(o) {
-		return this.inlined_add(o);
-	}
-	,inlined_add: function(o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		temp.next = this.begin();
-		this.head = temp;
-		this.modified = true;
-		this.length++;
-		return o;
-	}
-	,inlined_insert: function(cur,o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		if(cur == null) {
-			temp.next = this.begin();
-			this.head = temp;
-		} else {
-			temp.next = cur.next;
-			cur.next = temp;
-		}
-		this.pushmod = this.modified = true;
-		this.length++;
-		return temp;
-	}
-	,inlined_pop: function() {
-		var ret = this.begin();
-		this.head = ret.next;
-		var o = ret;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = o;
-		if(this.empty()) this.pushmod = true;
-		this.modified = true;
-		this.length--;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$InteractionListener.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,clear: function() {
-		this.inlined_clear();
-	}
-	,inlined_clear: function() {
-		if(true) {
-			while(!this.empty()) this.inlined_pop();
-			this.pushmod = true;
-		}
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$InteractionListener
-};
-var zpp_$nape_util_ZNPList_$ZPP_$BodyListener = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_BodyListener"] = zpp_$nape_util_ZNPList_$ZPP_$BodyListener;
-zpp_$nape_util_ZNPList_$ZPP_$BodyListener.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$BodyListener.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,inlined_insert: function(cur,o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$BodyListener(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		if(cur == null) {
-			temp.next = this.begin();
-			this.head = temp;
-		} else {
-			temp.next = cur.next;
-			cur.next = temp;
-		}
-		this.pushmod = this.modified = true;
-		this.length++;
-		return temp;
-	}
-	,inlined_pop: function() {
-		var ret = this.begin();
-		this.head = ret.next;
-		var o = ret;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool = o;
-		if(this.empty()) this.pushmod = true;
-		this.modified = true;
-		this.length--;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$BodyListener.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,clear: function() {
-		this.inlined_clear();
-	}
-	,inlined_clear: function() {
-		if(true) {
-			while(!this.empty()) this.inlined_pop();
-			this.pushmod = true;
-		}
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$BodyListener
-};
-var zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_ConstraintListener"] = zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener;
-zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,inlined_insert: function(cur,o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		if(cur == null) {
-			temp.next = this.begin();
-			this.head = temp;
-		} else {
-			temp.next = cur.next;
-			cur.next = temp;
-		}
-		this.pushmod = this.modified = true;
-		this.length++;
-		return temp;
-	}
-	,inlined_pop: function() {
-		var ret = this.begin();
-		this.head = ret.next;
-		var o = ret;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool = o;
-		if(this.empty()) this.pushmod = true;
-		this.modified = true;
-		this.length--;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$ConstraintListener.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,clear: function() {
-		this.inlined_clear();
-	}
-	,inlined_clear: function() {
-		if(true) {
-			while(!this.empty()) this.inlined_pop();
-			this.pushmod = true;
-		}
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener
-};
-var zpp_$nape_util_ZNPList_$ZPP_$Constraint = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_Constraint"] = zpp_$nape_util_ZNPList_$ZPP_$Constraint;
-zpp_$nape_util_ZNPList_$ZPP_$Constraint.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$Constraint.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,add: function(o) {
-		return this.inlined_add(o);
-	}
-	,inlined_add: function(o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$Constraint(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		temp.next = this.begin();
-		this.head = temp;
-		this.modified = true;
-		this.length++;
-		return o;
-	}
-	,pop: function() {
-		this.inlined_pop();
-	}
-	,inlined_pop: function() {
-		var ret = this.begin();
-		this.head = ret.next;
-		var o = ret;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool = o;
-		if(this.empty()) this.pushmod = true;
-		this.modified = true;
-		this.length--;
-	}
-	,inlined_pop_unsafe: function() {
-		var ret = this.front();
-		this.pop();
-		return ret;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,erase: function(pre) {
-		return this.inlined_erase(pre);
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$Constraint.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,front: function() {
-		return this.begin().elem();
-	}
-	,iterator_at: function(ind) {
-		var ret = this.begin();
-		while(ind-- > 0 && ret != null) ret = ret.next;
-		return ret;
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$Constraint
-};
-var zpp_$nape_util_ZNPList_$ZPP_$Interactor = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_Interactor"] = zpp_$nape_util_ZNPList_$ZPP_$Interactor;
-zpp_$nape_util_ZNPList_$ZPP_$Interactor.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$Interactor.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,add: function(o) {
-		return this.inlined_add(o);
-	}
-	,inlined_add: function(o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$Interactor(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		temp.next = this.begin();
-		this.head = temp;
-		this.modified = true;
-		this.length++;
-		return o;
-	}
-	,pop: function() {
-		this.inlined_pop();
-	}
-	,inlined_pop: function() {
-		var ret = this.begin();
-		this.head = ret.next;
-		var o = ret;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool = o;
-		if(this.empty()) this.pushmod = true;
-		this.modified = true;
-		this.length--;
-	}
-	,pop_unsafe: function() {
-		return this.inlined_pop_unsafe();
-	}
-	,inlined_pop_unsafe: function() {
-		var ret = this.front();
-		this.pop();
-		return ret;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$Interactor.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,inlined_clear: function() {
-		if(true) {
-			while(!this.empty()) this.inlined_pop();
-			this.pushmod = true;
-		}
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,front: function() {
-		return this.begin().elem();
-	}
-	,iterator_at: function(ind) {
-		var ret = this.begin();
-		while(ind-- > 0 && ret != null) ret = ret.next;
-		return ret;
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$Interactor
-};
-var zpp_$nape_util_ZNPList_$ZPP_$CbSet = function() {
-	this.length = 0;
-	this.pushmod = false;
-	this.modified = false;
-	this.head = null;
-};
-$hxClasses["zpp_nape.util.ZNPList_ZPP_CbSet"] = zpp_$nape_util_ZNPList_$ZPP_$CbSet;
-zpp_$nape_util_ZNPList_$ZPP_$CbSet.__name__ = true;
-zpp_$nape_util_ZNPList_$ZPP_$CbSet.prototype = {
-	begin: function() {
-		return this.head;
-	}
-	,add: function(o) {
-		return this.inlined_add(o);
-	}
-	,inlined_add: function(o) {
-		var temp;
-		var ret;
-		if(zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$CbSet(); else {
-			ret = zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool;
-			zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool = ret.next;
-			ret.next = null;
-		}
-		ret.alloc();
-		ret.elt = o;
-		temp = ret;
-		temp.next = this.begin();
-		this.head = temp;
-		this.modified = true;
-		this.length++;
-		return o;
-	}
-	,pop: function() {
-		this.inlined_pop();
-	}
-	,inlined_pop: function() {
-		var ret = this.begin();
-		this.head = ret.next;
-		var o = ret;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool = o;
-		if(this.empty()) this.pushmod = true;
-		this.modified = true;
-		this.length--;
-	}
-	,pop_unsafe: function() {
-		return this.inlined_pop_unsafe();
-	}
-	,inlined_pop_unsafe: function() {
-		var ret = this.front();
-		this.pop();
-		return ret;
-	}
-	,remove: function(obj) {
-		this.inlined_try_remove(obj);
-	}
-	,inlined_try_remove: function(obj) {
-		var pre = null;
-		var cur = this.begin();
-		var ret = false;
-		while(cur != null) {
-			if(cur.elem() == obj) {
-				this.inlined_erase(pre);
-				ret = true;
-				break;
-			}
-			pre = cur;
-			cur = cur.next;
-		}
-		return ret;
-	}
-	,inlined_erase: function(pre) {
-		var old;
-		var ret;
-		if(pre == null) {
-			old = this.begin();
-			ret = old.next;
-			this.head = ret;
-			if(this.empty()) this.pushmod = true;
-		} else {
-			old = pre.next;
-			ret = old.next;
-			pre.next = ret;
-			if(ret == null) this.pushmod = true;
-		}
-		var o = old;
-		o.free();
-		o.next = zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool;
-		zpp_$nape_util_ZNPNode_$ZPP_$CbSet.zpp_pool = o;
-		this.modified = true;
-		this.length--;
-		this.pushmod = true;
-		return ret;
-	}
-	,empty: function() {
-		return this.begin() == null;
-	}
-	,front: function() {
-		return this.begin().elem();
-	}
-	,__class__: zpp_$nape_util_ZNPList_$ZPP_$CbSet
-};
-var zpp_$nape_callbacks_ZPP_$CbType = function() {
-	this.conlisteners = null;
-	this.bodylisteners = null;
-	this.listeners = null;
-	this.cbsets = null;
-	this.id = 0;
-	this.outer = null;
-	this.id = zpp_$nape_ZPP_$ID.CbType();
-	this.listeners = new zpp_$nape_util_ZNPList_$ZPP_$InteractionListener();
-	this.bodylisteners = new zpp_$nape_util_ZNPList_$ZPP_$BodyListener();
-	this.conlisteners = new zpp_$nape_util_ZNPList_$ZPP_$ConstraintListener();
-	this.constraints = new zpp_$nape_util_ZNPList_$ZPP_$Constraint();
-	this.interactors = new zpp_$nape_util_ZNPList_$ZPP_$Interactor();
-	this.cbsets = new zpp_$nape_util_ZNPList_$ZPP_$CbSet();
-};
-$hxClasses["zpp_nape.callbacks.ZPP_CbType"] = zpp_$nape_callbacks_ZPP_$CbType;
-zpp_$nape_callbacks_ZPP_$CbType.__name__ = true;
-zpp_$nape_callbacks_ZPP_$CbType.setlt = function(a,b) {
-	return a.id < b.id;
-};
-zpp_$nape_callbacks_ZPP_$CbType.prototype = {
-	addConstraint: function(con) {
-		this.constraints.add(con);
-	}
-	,addInteractor: function(intx) {
-		this.interactors.add(intx);
-	}
-	,remConstraint: function(con) {
-		this.constraints.remove(con);
-	}
-	,remInteractor: function(intx) {
-		this.interactors.remove(intx);
-	}
-	,addint: function(x) {
-		var pre = null;
-		var cx_ite = this.listeners.begin();
-		while(cx_ite != null) {
-			var j = cx_ite.elem();
-			if(zpp_$nape_callbacks_ZPP_$Listener.setlt(x,j)) break;
-			pre = cx_ite;
-			cx_ite = cx_ite.next;
-		}
-		this.listeners.inlined_insert(pre,x);
-		this.invalidateint();
-	}
-	,removeint: function(x) {
-		this.listeners.remove(x);
-		this.invalidateint();
-	}
-	,invalidateint: function() {
-		var cx_ite = this.cbsets.begin();
-		while(cx_ite != null) {
-			var cb = cx_ite.elem();
-			cb.invalidate_listeners();
-			cx_ite = cx_ite.next;
-		}
-	}
-	,addbody: function(x) {
-		var pre = null;
-		var cx_ite = this.bodylisteners.begin();
-		while(cx_ite != null) {
-			var j = cx_ite.elem();
-			if(zpp_$nape_callbacks_ZPP_$Listener.setlt(x,j)) break;
-			pre = cx_ite;
-			cx_ite = cx_ite.next;
-		}
-		this.bodylisteners.inlined_insert(pre,x);
-		this.invalidatebody();
-	}
-	,removebody: function(x) {
-		this.bodylisteners.remove(x);
-		this.invalidatebody();
-	}
-	,invalidatebody: function() {
-		var cx_ite = this.cbsets.begin();
-		while(cx_ite != null) {
-			var cb = cx_ite.elem();
-			cb.invalidate_bodylisteners();
-			cx_ite = cx_ite.next;
-		}
-	}
-	,addconstraint: function(x) {
-		var pre = null;
-		var cx_ite = this.conlisteners.begin();
-		while(cx_ite != null) {
-			var j = cx_ite.elem();
-			if(zpp_$nape_callbacks_ZPP_$Listener.setlt(x,j)) break;
-			pre = cx_ite;
-			cx_ite = cx_ite.next;
-		}
-		this.conlisteners.inlined_insert(pre,x);
-		this.invalidateconstraint();
-	}
-	,removeconstraint: function(x) {
-		this.conlisteners.remove(x);
-		this.invalidateconstraint();
-	}
-	,invalidateconstraint: function() {
-		var cx_ite = this.cbsets.begin();
-		while(cx_ite != null) {
-			var cb = cx_ite.elem();
-			cb.invalidate_conlisteners();
-			cx_ite = cx_ite.next;
-		}
-	}
-	,__class__: zpp_$nape_callbacks_ZPP_$CbType
-};
 var zpp_$nape_util_ZPP_$Flags = function() { };
 $hxClasses["zpp_nape.util.ZPP_Flags"] = zpp_$nape_util_ZPP_$Flags;
 zpp_$nape_util_ZPP_$Flags.__name__ = true;
@@ -26870,6 +26604,7 @@ var zpp_$nape_callbacks_ZPP_$Listener = function() {
 	this.type = 0;
 	this.id = 0;
 	this.outer = null;
+	this.id = zpp_$nape_ZPP_$ID.Listener();
 };
 $hxClasses["zpp_nape.callbacks.ZPP_Listener"] = zpp_$nape_callbacks_ZPP_$Listener;
 zpp_$nape_callbacks_ZPP_$Listener.__name__ = true;
@@ -26962,6 +26697,9 @@ zpp_$nape_util_ZNPList_$ZPP_$CbType.__name__ = true;
 zpp_$nape_util_ZNPList_$ZPP_$CbType.prototype = {
 	begin: function() {
 		return this.head;
+	}
+	,add: function(o) {
+		return this.inlined_add(o);
 	}
 	,inlined_add: function(o) {
 		var temp;
@@ -27107,7 +26845,7 @@ zpp_$nape_util_ZNPList_$ZPP_$CbType.prototype = {
 	}
 	,__class__: zpp_$nape_util_ZNPList_$ZPP_$CbType
 };
-var zpp_$nape_callbacks_ZPP_$InteractionListener = function() {
+var zpp_$nape_callbacks_ZPP_$InteractionListener = function(options1,options2,event,type) {
 	this.handlerp = null;
 	this.pure = false;
 	this.allowSleepingCallbacks = false;
@@ -27117,12 +26855,22 @@ var zpp_$nape_callbacks_ZPP_$InteractionListener = function() {
 	this.itype = 0;
 	this.outer_znp = null;
 	this.outer_zni = null;
+	zpp_$nape_callbacks_ZPP_$Listener.call(this);
+	this.type = type;
+	this.interaction = this;
+	this.event = event;
+	this.options1 = options1.zpp_inner;
+	this.options2 = options2.zpp_inner;
+	this.allowSleepingCallbacks = false;
 };
 $hxClasses["zpp_nape.callbacks.ZPP_InteractionListener"] = zpp_$nape_callbacks_ZPP_$InteractionListener;
 zpp_$nape_callbacks_ZPP_$InteractionListener.__name__ = true;
 zpp_$nape_callbacks_ZPP_$InteractionListener.__super__ = zpp_$nape_callbacks_ZPP_$Listener;
 zpp_$nape_callbacks_ZPP_$InteractionListener.prototype = $extend(zpp_$nape_callbacks_ZPP_$Listener.prototype,{
-	CbSetset: function(A,B,lambda) {
+	setInteractionType: function(itype) {
+		this.itype = itype;
+	}
+	,CbSetset: function(A,B,lambda) {
 		var U = zpp_$nape_callbacks_ZPP_$InteractionListener.UCbSet;
 		var V = zpp_$nape_callbacks_ZPP_$InteractionListener.VCbSet;
 		var W = zpp_$nape_callbacks_ZPP_$InteractionListener.WCbSet;
@@ -27352,9 +27100,14 @@ var zpp_$nape_callbacks_ZPP_$OptionType = function() {
 	this.includes = null;
 	this.handler = null;
 	this.outer = null;
+	this.includes = new zpp_$nape_util_ZNPList_$ZPP_$CbType();
+	this.excludes = new zpp_$nape_util_ZNPList_$ZPP_$CbType();
 };
 $hxClasses["zpp_nape.callbacks.ZPP_OptionType"] = zpp_$nape_callbacks_ZPP_$OptionType;
 zpp_$nape_callbacks_ZPP_$OptionType.__name__ = true;
+zpp_$nape_callbacks_ZPP_$OptionType.argument = function(val) {
+	if(val == null) return new nape_callbacks_OptionType(); else if(Std["is"](val,nape_callbacks_OptionType)) return val; else return new nape_callbacks_OptionType().including(val);
+};
 zpp_$nape_callbacks_ZPP_$OptionType.prototype = {
 	setup_includes: function() {
 		this.wrap_includes = zpp_$nape_util_ZPP_$CbTypeList.get(this.includes,true);
@@ -27409,6 +27162,43 @@ zpp_$nape_callbacks_ZPP_$OptionType.prototype = {
 			}
 			this.excludes.inlined_insert(pre1,val);
 		} else this.excludes.remove(val);
+	}
+	,append_type: function(list,val) {
+		if(list == this.includes) {
+			if(!this.includes.has(val)) {
+				if(!this.excludes.has(val)) {
+					if(this.handler != null) this.handler(val,true,true); else this.effect_change(val,true,true);
+				} else if(this.handler != null) this.handler(val,false,false); else this.effect_change(val,false,false);
+			}
+		} else if(!this.excludes.has(val)) {
+			if(!this.includes.has(val)) {
+				if(this.handler != null) this.handler(val,false,true); else this.effect_change(val,false,true);
+			} else if(this.handler != null) this.handler(val,true,false); else this.effect_change(val,true,false);
+		}
+	}
+	,append: function(list,val) {
+		if(Std["is"](val,nape_callbacks_CbType)) {
+			var cb = val;
+			this.append_type(list,cb.zpp_inner);
+		} else if(Std["is"](val,nape_callbacks_CbTypeList)) {
+			var cbs = val;
+			var $it0 = cbs.iterator();
+			while( $it0.hasNext() ) {
+				var cb1 = $it0.next();
+				this.append_type(list,cb1.zpp_inner);
+			}
+		} else if(false) {
+		} else if(Std["is"](val,Array)) {
+			var cbs1 = val;
+			var _g = 0;
+			while(_g < cbs1.length) {
+				var cb2 = cbs1[_g];
+				++_g;
+				var cbx = cb2;
+				this.append_type(list,cbx.zpp_inner);
+			}
+		} else {
+		}
 	}
 	,__class__: zpp_$nape_callbacks_ZPP_$OptionType
 };
@@ -31669,6 +31459,7 @@ zpp_$nape_geom_ZPP_$VecMath.vec_dsq = function(ax,ay,bx,by) {
 	return dx * dx + dy * dy;
 };
 var zpp_$nape_phys_ZPP_$Interactor = function() {
+	this.wrap_cbTypes = null;
 	this.cbSet = null;
 	this.cbTypes = null;
 	this.group = null;
@@ -31676,6 +31467,7 @@ var zpp_$nape_phys_ZPP_$Interactor = function() {
 	this.icompound = null;
 	this.ibody = null;
 	this.ishape = null;
+	this.userData = null;
 	this.id = 0;
 	this.outer_i = null;
 	this.id = zpp_$nape_ZPP_$ID.Interactor();
@@ -31760,6 +31552,31 @@ zpp_$nape_phys_ZPP_$Interactor.prototype = {
 		if(this.isShape()) {
 			if(this.ishape.body == null) return null; else return this.ishape.body.space;
 		} else if(this.isBody()) return this.ibody.space; else return this.icompound.space;
+	}
+	,setupcbTypes: function() {
+		this.wrap_cbTypes = zpp_$nape_util_ZPP_$CbTypeList.get(this.cbTypes);
+		this.wrap_cbTypes.zpp_inner.adder = $bind(this,this.wrap_cbTypes_adder);
+		this.wrap_cbTypes.zpp_inner.subber = $bind(this,this.wrap_cbTypes_subber);
+		this.wrap_cbTypes.zpp_inner.dontremove = true;
+	}
+	,wrap_cbTypes_subber: function(pcb) {
+		var cb = pcb.zpp_inner;
+		if(this.cbTypes.has(cb)) {
+			var space = this.getSpace();
+			if(space != null) {
+				this.dealloc_cbSet();
+				cb.remInteractor(this);
+			}
+			this.cbTypes.remove(cb);
+			if(space != null) {
+				this.alloc_cbSet();
+				this.wake();
+			}
+		}
+	}
+	,wrap_cbTypes_adder: function(cb) {
+		this.insert_cbtype(cb.zpp_inner);
+		return false;
 	}
 	,insert_cbtype: function(cb) {
 		if(!this.cbTypes.has(cb)) {
@@ -38674,6 +38491,51 @@ zpp_$nape_util_ZNPList_$ZPP_$Listener.prototype = {
 	begin: function() {
 		return this.head;
 	}
+	,add: function(o) {
+		return this.inlined_add(o);
+	}
+	,inlined_add: function(o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$Listener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$Listener(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$Listener.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$Listener.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		temp.next = this.begin();
+		this.head = temp;
+		this.modified = true;
+		this.length++;
+		return o;
+	}
+	,insert: function(cur,o) {
+		return this.inlined_insert(cur,o);
+	}
+	,inlined_insert: function(cur,o) {
+		var temp;
+		var ret;
+		if(zpp_$nape_util_ZNPNode_$ZPP_$Listener.zpp_pool == null) ret = new zpp_$nape_util_ZNPNode_$ZPP_$Listener(); else {
+			ret = zpp_$nape_util_ZNPNode_$ZPP_$Listener.zpp_pool;
+			zpp_$nape_util_ZNPNode_$ZPP_$Listener.zpp_pool = ret.next;
+			ret.next = null;
+		}
+		ret.alloc();
+		ret.elt = o;
+		temp = ret;
+		if(cur == null) {
+			temp.next = this.begin();
+			this.head = temp;
+		} else {
+			temp.next = cur.next;
+			cur.next = temp;
+		}
+		this.pushmod = this.modified = true;
+		this.length++;
+		return temp;
+	}
 	,remove: function(obj) {
 		this.inlined_try_remove(obj);
 	}
@@ -39227,7 +39089,9 @@ var zpp_$nape_util_ZNPNode_$ZPP_$Listener = function() {
 $hxClasses["zpp_nape.util.ZNPNode_ZPP_Listener"] = zpp_$nape_util_ZNPNode_$ZPP_$Listener;
 zpp_$nape_util_ZNPNode_$ZPP_$Listener.__name__ = true;
 zpp_$nape_util_ZNPNode_$ZPP_$Listener.prototype = {
-	free: function() {
+	alloc: function() {
+	}
+	,free: function() {
 		this.elt = null;
 	}
 	,elem: function() {
@@ -39577,6 +39441,7 @@ var zpp_$nape_util_ZPP_$ListenerList = function() {
 	this.reverse_flag = false;
 	this.dontremove = false;
 	this.subber = null;
+	this.post_adder = null;
 	this.adder = null;
 	this._validate = null;
 	this._invalidate = null;
@@ -39629,7 +39494,12 @@ var zpp_$nape_util_ZPP_$CbTypeList = function() {
 	this.at_ite = null;
 	this.at_index = 0;
 	this.reverse_flag = false;
+	this.dontremove = false;
+	this.subber = null;
+	this.post_adder = null;
+	this.adder = null;
 	this._validate = null;
+	this._invalidate = null;
 	this._invalidated = false;
 	this.immutable = false;
 	this.inner = null;
@@ -39658,11 +39528,17 @@ zpp_$nape_util_ZPP_$CbTypeList.prototype = {
 			this.zip_length = true;
 		}
 	}
+	,modify_test: function() {
+	}
 	,validate: function() {
 		if(this._invalidated) {
 			this._invalidated = false;
 			if(this._validate != null) this._validate();
 		}
+	}
+	,invalidate: function() {
+		this._invalidated = true;
+		if(this._invalidate != null) this._invalidate(this);
 	}
 	,__class__: zpp_$nape_util_ZPP_$CbTypeList
 };
@@ -40545,14 +40421,16 @@ nape_Config.contactContinuousBiasCoef = 0.4;
 nape_Config.contactContinuousStaticBiasCoef = 0.5;
 nape_Config.illConditionedThreshold = 2e+8;
 tools_spark_framework_SparkLog.logger = flambe_System.createLogger("tools.spark.framework");
-tools_spark_framework_haxe_LooseCheck.blanks = new EReg("^[ \r\n\t]*$","");
-zpp_$nape_ZPP_$ID._Interactor = 0;
-zpp_$nape_ZPP_$ID._CbType = 0;
-zpp_$nape_ZPP_$ID._CbSet = 0;
 zpp_$nape_callbacks_ZPP_$CbType.ANY_SHAPE = new nape_callbacks_CbType();
 zpp_$nape_callbacks_ZPP_$CbType.ANY_BODY = new nape_callbacks_CbType();
 zpp_$nape_callbacks_ZPP_$CbType.ANY_COMPOUND = new nape_callbacks_CbType();
 zpp_$nape_callbacks_ZPP_$CbType.ANY_CONSTRAINT = new nape_callbacks_CbType();
+zpp_$nape_ZPP_$ID._Interactor = 0;
+zpp_$nape_ZPP_$ID._CbType = 0;
+zpp_$nape_ZPP_$ID._CbSet = 0;
+zpp_$nape_ZPP_$ID._Listener = 0;
+tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET = new nape_callbacks_CbType();
+tools_spark_framework_haxe_LooseCheck.blanks = new EReg("^[ \r\n\t]*$","");
 zpp_$nape_util_ZPP_$Flags.internal = false;
 zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT = 1;
 zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE = 2;

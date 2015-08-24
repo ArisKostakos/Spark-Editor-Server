@@ -8,9 +8,9 @@
 	
 <Form><Space><Entities><Entity extends="std.display.Spriter2D">
 	<Extends>
-		<Entity extends="std.behaviors.input.KeyboardInputHorizontal"/>
-		<Entity extends="std.behaviors.movement.InputMoveHorizontal"/>
 		<Entity extends="lib.2d.physics.behaviors.entity.Biped"/>
+		<Entity extends="lib.2d.platform.behaviors.movement.ActorMovement"/>
+		<Entity extends="lib.2d.platform.behaviors.input.PlayerInput"/>
 	</Extends>
 	
 	<_States>
@@ -19,11 +19,11 @@
 		</_State>
 		
 		<_State id="spaceX">
-			<Value>255</Value>
+			<Value>251</Value>
 		</_State>
 		
 		<_State id="spaceY">
-			<Value>500</Value>
+			<Value>450</Value>
 		</_State>
 		
 		<_State id="scaleX">
@@ -41,7 +41,6 @@
 		<_State id="2DMeshSpriterAnimForm">
 			<Value>AnimationStanding</Value>
 		</_State>
-		
 	</_States>
 	
 	<_Form>
@@ -58,10 +57,16 @@
 			<_State id="AnimationWalking">
 				<Value>Walk</Value>
 			</_State>
+			<_State id="AnimationCrouching">
+				<Value>Crouch</Value>
+			</_State>
+			<_State id="AnimationJumping">
+				<Value>Jump</Value>
+			</_State>
 		</_States>
 	</_Form>
-	
-</Entity><Entity extends="std.display.Image2D">
+</Entity>
+<Entity extends="std.display.Image2D">
 	<Extends>
 		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
 	</Extends>

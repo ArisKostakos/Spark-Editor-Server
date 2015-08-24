@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.display.Spriter2D">
 	<Extends>
-		<Entity extends="std.behaviors.input.KeyboardInputHorizontal"/>
-		<Entity extends="std.behaviors.movement.InputMoveHorizontal"/>
 		<Entity extends="lib.2d.physics.behaviors.entity.Biped"/>
+		<Entity extends="lib.2d.platform.behaviors.movement.ActorMovement"/>
+		<Entity extends="lib.2d.platform.behaviors.input.PlayerInput"/>
 	</Extends>
 	
 	<_States>
@@ -34,7 +34,6 @@
 		<_State id="2DMeshSpriterAnimForm">
 			<Value>AnimationStanding</Value>
 		</_State>
-		
 	</_States>
 	
 	<_Form>
@@ -51,7 +50,12 @@
 			<_State id="AnimationWalking">
 				<Value>Walk</Value>
 			</_State>
+			<_State id="AnimationCrouching">
+				<Value>Crouch</Value>
+			</_State>
+			<_State id="AnimationJumping">
+				<Value>Jump</Value>
+			</_State>
 		</_States>
 	</_Form>
-	
 </Entity>
