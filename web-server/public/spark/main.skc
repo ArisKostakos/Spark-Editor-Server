@@ -57,6 +57,8 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Spriter2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Line2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Rectangle2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Layer2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/LayerScreen2D.egc</Asset>
 			
@@ -90,6 +92,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/MainStage.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/DummyCamera.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/EditorSceneEditCamera.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/EditorSceneRunCamera.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/LevelEditor2DScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/LevelEditor2DView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DummyScene2D.egc</Asset>
@@ -212,6 +215,8 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryCategories.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPropsPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryBackgroundPanel.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryItemNoName.egc</Asset>
 		</Module>

@@ -117,8 +117,10 @@
 							//Get Username
 							var userName = 'spark';
 							
-							var tilesFound = [];
 							var spriterActorsFound = [];
+							var tilesFound = [];
+							var propsFound = [];
+							var backgroundsFound = [];
 							
 							//Initiate Load
 							Assets.initiateBatch();
@@ -153,6 +155,11 @@
 										Display.error("!!!! Tile FOUND!!!!");
 										tilesFound.push(asset);
 									}
+									else if (asset.componentType=='Prop')
+									{
+										Display.error("!!!! Prop FOUND!!!!");
+										propsFound.push(asset);
+									}
 									else if (asset.componentType=='Actor')
 									{
 										if (asset.tags[1]=='SpriterMain')
@@ -161,6 +168,12 @@
 											spriterActorsFound.push(asset);
 										}
 									}
+									else if (asset.componentType=='Background')
+									{
+										Display.error("!!!! Background FOUND!!!!");
+										backgroundsFound.push(asset);
+									}
+
 									
 									assetId = 'image_' + asset.name;
 								}
@@ -177,10 +190,20 @@
 							tilesPanel.getAction('AddItem').setState('items', tilesFound);
 							tilesPanel.startAction('AddItem');
 							
-							//Fill Players with Actors
+							//Fill Library with Props
+							var propsPanel = Logic.getEntityByName('Editor Library Props Panel');
+							propsPanel.getAction('AddItem').setState('items', propsFound);
+							propsPanel.startAction('AddItem');
+							
+							//Fill Library with Players
 							var playersPanel = Logic.getEntityByName('Editor Library Player Panel');
 							playersPanel.getAction('AddItem').setState('items', spriterActorsFound);
 							playersPanel.startAction('AddItem');
+							
+							//Fill Library with Backgrounds
+							var backgroundPanel = Logic.getEntityByName('Editor Library Background Panel');
+							backgroundPanel.getAction('AddItem').setState('items', backgroundsFound);
+							backgroundPanel.startAction('AddItem');
 							
 							var assetUserName = me.getState('assetUserName');
 							

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="lib.2d.physics.behaviors.entity.PhysicsEntity">
+	<_States>
+		<State><!--export-->
+			<Id>velocityX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State><!--export-->
+			<Id>velocityY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+	</_States>
+</Entity>

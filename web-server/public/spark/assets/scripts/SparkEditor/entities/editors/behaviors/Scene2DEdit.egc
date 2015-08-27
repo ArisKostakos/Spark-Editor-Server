@@ -40,38 +40,33 @@
 					</_States>
 				</Entity>
 			-->
-				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
+			
+				
+				<Entity extends="std.display.FillRect2D">
 					<_States>
-						<_State id="name"><Value>tempScreenStage</Value></_State>
-						<_State id="spaceX"><Value>3430</Value></_State>
-						<_State id="spaceY"><Value>730</Value></_State>
-						<_State id="spaceWidth"><Value>6840</Value></_State>
-						<_State id="spaceHeight"><Value>1440</Value></_State>
-						<_State id="2DMeshFillRectForm"><Value>color3</Value></_State>
+						<_State id="name"><Value>SceneBoundsDisplay</Value></_State>
+						<State><Id>sceneEditObject</Id><Type>Boolean</Type><Value>true</Value></State>
+						<_State id="2DMeshFillRectForm"><Value>RectColor</Value></_State>
+					</_States>
+					<_Form><_States><State><Id>RectColor</Id><Type>Integer</Type><Value>0xFFFFFF</Value></State></_States></_Form>
+				</Entity>
+				
+				<Entity extends="std.display.Rectangle2D">
+					<_States>
+						<_State id="name"><Value>CameraMaxBoundsDisplay</Value></_State>
+						<State><Id>sceneEditObject</Id><Type>Boolean</Type><Value>true</Value></State>
+						<_State id="rectColor"><Value>0xAA0000</Value></_State>
 					</_States>
 				</Entity>
 				
-				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
+				<Entity extends="std.display.Rectangle2D">
 					<_States>
-						<_State id="name"><Value>tempScreenStage</Value></_State>
-						<_State id="spaceX"><Value>1150</Value></_State>
-						<_State id="spaceY"><Value>730</Value></_State>
-						<_State id="spaceWidth"><Value>2280</Value></_State>
-						<_State id="spaceHeight"><Value>1440</Value></_State>
-						<_State id="2DMeshFillRectForm"><Value>color1</Value></_State>
+						<_State id="name"><Value>CameraMinBoundsDisplay</Value></_State>
+						<State><Id>sceneEditObject</Id><Type>Boolean</Type><Value>true</Value></State>
+						<_State id="rectColor"><Value>0x00AA00</Value></_State>
 					</_States>
 				</Entity>
 				
-				<Entity extends="SparkEditor.entities.LittleBoxNoLayout">
-					<_States>
-						<_State id="name"><Value>tempScreenStage</Value></_State>
-						<_State id="spaceX"><Value>1150</Value></_State>
-						<_State id="spaceY"><Value>730</Value></_State>
-						<_State id="spaceWidth"><Value>1920</Value></_State>
-						<_State id="spaceHeight"><Value>1280</Value></_State>
-						<_State id="2DMeshFillRectForm"><Value>color2</Value></_State>
-					</_States>
-				</Entity>
 				
 				<!--
 				<Entity extends="SparkEditor.entities.LittleBox">
@@ -96,6 +91,96 @@
 			<_Scripts>
 				<Script>
 					me.setState('selectedEntities', []);
+					
+					//Set up Display Objects (Visualize Bounds for scene and camera)
+					
+					//SCENE
+					var SceneBoundsDisplay = Logic.getEntityByName('SceneBoundsDisplay');
+					
+					//boundsX
+					var boundsX = me.getState('boundsX');
+					//boundsY
+					var boundsY = me.getState('boundsY');
+					//boundsWidth
+					var boundsWidth = me.getState('boundsWidth');
+					//boundsHeight
+					var boundsHeight = me.getState('boundsHeight');
+
+					SceneBoundsDisplay.setState('spaceX',boundsX+boundsWidth/2);
+					SceneBoundsDisplay.setState('spaceY',boundsY+boundsHeight/2);
+					SceneBoundsDisplay.setState('spaceWidth',boundsWidth);
+					SceneBoundsDisplay.setState('spaceHeight',boundsHeight);
+
+
+					//CAMERA
+					var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+					var CameraMaxBoundsDisplay = Logic.getEntityByName('CameraMaxBoundsDisplay');
+					var CameraMinBoundsDisplay = Logic.getEntityByName('CameraMinBoundsDisplay');
+					
+					//maxBoundsX
+					var maxBoundsX = camera.getState('maxBoundsX'); 
+					//maxBoundsY
+					var maxBoundsY = camera.getState('maxBoundsY'); 
+					//maxBoundsWidth
+					var maxBoundsWidth = camera.getState('maxBoundsWidth'); 
+					//maxBoundsHeight
+					var maxBoundsHeight = camera.getState('maxBoundsHeight'); 
+					//minBoundsWidthRatio
+					var minBoundsWidthRatio = camera.getState('minBoundsWidthRatio'); 
+					//minBoundsHeightRatio
+					var minBoundsHeightRatio = camera.getState('minBoundsHeightRatio'); 
+					//minBoundsHorizontalAlign
+					var minBoundsHorizontalAlign = camera.getState('minBoundsHorizontalAlign'); 
+					//minBoundsVerticalAlign
+					var minBoundsVerticalAlign = camera.getState('minBoundsVerticalAlign'); 
+
+					//Set-up Max Bounds
+					CameraMaxBoundsDisplay.setState('spaceX',maxBoundsX);
+					CameraMaxBoundsDisplay.setState('spaceY',maxBoundsY);
+					CameraMaxBoundsDisplay.setState('spaceWidth',maxBoundsWidth);
+					CameraMaxBoundsDisplay.setState('spaceHeight',maxBoundsHeight);
+					//Normaly, we ran CameraMaxBoundsDisplay.update() Action... but we dont need to by luck.. (it runs right after i guess..)
+					
+					
+					//Set-up Min Bounds
+					var minBoundsX =0;
+					var minBoundsY =0;
+					var minBoundsWidth = maxBoundsWidth*minBoundsWidthRatio;
+					var minBoundsHeight = maxBoundsHeight*minBoundsHeightRatio;
+					
+					//Horizontal Align
+					if (minBoundsHorizontalAlign=="Left")
+						minBoundsX = maxBoundsX;
+					else if (minBoundsHorizontalAlign=="Center")
+						minBoundsX = maxBoundsX + (maxBoundsWidth - minBoundsWidth)/2;
+					else if (minBoundsHorizontalAlign=="Right")
+						minBoundsX = maxBoundsX + (maxBoundsWidth - minBoundsWidth);
+					
+					//Vertical Align
+					if (minBoundsVerticalAlign=="Top")
+						minBoundsY = maxBoundsY;
+					else if (minBoundsVerticalAlign=="Middle")
+						minBoundsY = maxBoundsY + (maxBoundsHeight - minBoundsHeight)/2;
+					else if (minBoundsVerticalAlign=="Bottom")
+						minBoundsY = maxBoundsY + (maxBoundsHeight - minBoundsHeight);
+						
+					CameraMinBoundsDisplay.setState('spaceX', minBoundsX);
+					CameraMinBoundsDisplay.setState('spaceY', minBoundsY);
+					
+					CameraMinBoundsDisplay.setState('spaceWidth', minBoundsWidth);
+					CameraMinBoundsDisplay.setState('spaceHeight', minBoundsHeight);
+					//Normaly, we ran CameraMinBoundsDisplay.update() Action... but we dont need to by luck.. (it runs right after i guess..)
+					
+					
+					//Now we Move the Scene Camera to show all MaxBounds
+					camera.setState('captureAreaX',maxBoundsX);
+					camera.setState('captureAreaY',maxBoundsY);
+					camera.setState('captureAreaWidth',maxBoundsWidth);
+					camera.setState('captureAreaHeight',maxBoundsHeight);
+					
+					//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan, Sprite2DEdit scrolling, etc)
+					var editView = Logic.getEntityByName('Main View 2D');
+					camera.setState('scaleX',editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'));
 					
 					/*
 					//set thing to update
@@ -320,8 +405,9 @@
 					if (me.getAction('CameraPan').getState('dragStarted'))
 					{
 						var camera = Logic.getEntityByName('Editor Scene Edit Camera');
-						camera.setState('spaceX',camera.getState('spaceX')+Input.pointer.distX());
-						camera.setState('spaceY',camera.getState('spaceY')+Input.pointer.distY());
+						var scale = camera.getState('scaleX');
+						camera.setState('captureAreaX',camera.getState('captureAreaX')-Input.pointer.distX()/scale);
+						camera.setState('captureAreaY',camera.getState('captureAreaY')-Input.pointer.distY()/scale);
 					}
 				</Script>
 			</Scripts>
@@ -338,12 +424,21 @@
 				<Script>
 				var dir=0.05;
 				
-				if (0>Input.mouse.getScroll())
+				if (Input.mouse.getScroll()>0)
 					dir *= -1;
 					
 					Display.error("scrolly scrolyyyyy: " + Input.mouse.getScroll());
-
-					Logic.getEntityByName('Editor Scene Edit Camera').setState('scaleX', Logic.getEntityByName('Editor Scene Edit Camera').getState('scaleX')+dir);
+					
+					var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+					
+					//camera.setState('captureAreaX',maxBoundsX);
+					//camera.setState('captureAreaY',maxBoundsY);
+					camera.setState('captureAreaWidth',camera.getState('captureAreaWidth')+camera.getState('captureAreaWidth')*dir);
+					camera.setState('captureAreaHeight',camera.getState('captureAreaHeight')+camera.getState('captureAreaHeight')*dir);
+					
+					//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan above though..)
+					var editView = Logic.getEntityByName('Main View 2D');
+					camera.setState('scaleX',editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'));
 				</Script>
 			</Scripts>
 		</Trigger>

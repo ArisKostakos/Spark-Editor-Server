@@ -95,9 +95,52 @@
 									sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
 									childExtendsXml.addChild(sceneEditXml);
 									
-									//instantiate, add to scene
+									//instantiate
+									var isSpriter = (entityChildXml.get('extends').substr(entityChildXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
 									var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
-									editScene.addChild(childEntity);
+									
+									//add to scene
+									if (childEntity.getState('name')=="Background") //background entity
+									{
+										//add to SceneBoundsDisplay edit object
+										Logic.getEntityByName('SceneBoundsDisplay').addChild(childEntity);
+										
+										//Store the reference
+										editScene.setState('backgroundEntity',childEntity);
+										
+										//Untouchable
+										childEntity.setState('touchable',false);
+										
+										//Create a couple more backgrounds to fill the white bounds rect
+										var backgroundWidth = Logic.reflectField(Assets.getTexture(childEntity.gameForm.getState('ImageUrl')), 'width')-2; //-2 is to prevent some white gaps betweeen backgrounds
+										
+										var multipleBackgroundsCount = Math.ceil(editScene.getState('boundsWidth')/backgroundWidth);
+										var backgroundsCreated = 1;
+										
+										//Display.error("we need " + multipleBackgroundsCount + " Backgrounds!");
+										
+										while (multipleBackgroundsCount>backgroundsCreated)
+										{
+											var extraBackground = Logic.gameFactory.createGameEntityByXml(entityChildXml);
+											extraBackground.setState('spaceX',extraBackground.getState('spaceX')+backgroundWidth*backgroundsCreated);
+											Logic.getEntityByName('SceneBoundsDisplay').addChild(extraBackground);
+											
+											//Untouchable
+											extraBackground.setState('touchable',false);
+											
+											backgroundsCreated+=1;
+											//Display.error("Created a background!");
+										}
+									}
+									else //normal entity
+									{
+										//add to scene
+										editScene.addChild(childEntity);
+									}
+									
+									
+									//Grid Lock
+									if (isSpriter) childEntity.setState('spriteGridLock',8); //1
 									
 									//give it snapshot xml
 									childEntity.setState('xmlData',pureChildXml);
@@ -146,10 +189,14 @@
 					var entitiesXml = Xml.createElement('Entities');
 					spaceXml.addChild(entitiesXml);
 					
+					//First, add background entity
+					if (scene.getState('backgroundEntity')!=null)
+						entitiesXml.addChild(scene.getState('backgroundEntity').getState('xmlData'));
+					
 					//For Scene's Children
 					for (child in scene.getChildren())
 					{
-						if (child.getState('name')!='SceneBackground')
+						if (child.getState('sceneEditObject')==null)
 						{
 							entitiesXml.addChild(child.getState('xmlData'));
 						}
@@ -175,6 +222,11 @@
 					//Create Save File Xml
 					//var sceneFileXml = Xml.createDocument();
 					
+					//Deselect All Entities in Scene Edit
+					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					leveleditor2d.getAction('EntityClicked').setState('entity',null);
+					leveleditor2d.startAction('EntityClicked');
+					
 					//Get Scene
 					var scene = me.getState('target');
 					Display.error("DEBUG LOG: Run: 11111111");
@@ -190,10 +242,16 @@
 					var entitiesXml = Xml.createElement('Entities');
 					spaceXml.addChild(entitiesXml);
 					Display.error("DEBUG LOG: Run: 3333333333");
+					
+					//First, add background entity
+					if (scene.getState('backgroundEntity')!=null)
+						entitiesXml.addChild(scene.getState('backgroundEntity').getState('xmlData'));
+					
 					//For Scene's Children
 					for (child in scene.getChildren())
 					{
-						if (child.getState('name')!='SceneBackground' && child.getState('name')!='tempScreenStage')
+						//if (child.getState('name')!='SceneBackground' && child.getState('name')!='tempScreenStage')
+						if (child.getState('sceneEditObject')==null)
 						{
 							entitiesXml.addChild(child.getState('xmlData'));
 						}

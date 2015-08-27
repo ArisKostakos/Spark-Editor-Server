@@ -57,41 +57,30 @@
 				<Script>
 					var selected = me.getState('selectedCategoryObject');
 					
+					//Player
 					if (Logic.getEntityByName('EditorLibraryPlayer') == selected)
 						Logic.getEntityByName('Editor Library Player Panel').setState('display','inline');
 					else
 						Logic.getEntityByName('Editor Library Player Panel').setState('display','none');
-					/*
-					if (Logic.getEntityByName('EditorLibraryObjects') == selected)
-						Logic.getEntityByName('Editor Library Objects Panel').setState('display','inline');
-					else
-						Logic.getEntityByName('Editor Library Objects Panel').setState('display','none');
-						*/
+					
+					//Tiles
 					if (Logic.getEntityByName('EditorLibraryTiles') == selected)
 						Logic.getEntityByName('Editor Library Tiles Panel').setState('display','inline');
 					else
 						Logic.getEntityByName('Editor Library Tiles Panel').setState('display','none');
-					/*
-					if (Logic.getEntityByName('EditorLibraryLights') == selected)
-						Logic.getEntityByName('Editor Library Lights Panel').setState('display','inline');
+					
+					//Props
+					if (Logic.getEntityByName('EditorLibraryProps') == selected)
+						Logic.getEntityByName('Editor Library Props Panel').setState('display','inline');
 					else
-						Logic.getEntityByName('Editor Library Lights Panel').setState('display','none');
-						
-					if (Logic.getEntityByName('EditorLibraryTextures') == selected)
-						Logic.getEntityByName('Editor Library Textures Panel').setState('display','inline');
+						Logic.getEntityByName('Editor Library Props Panel').setState('display','none');
+					
+					//Background
+					if (Logic.getEntityByName('EditorLibraryBackground') == selected)
+						Logic.getEntityByName('Editor Library Background Panel').setState('display','inline');
 					else
-						Logic.getEntityByName('Editor Library Textures Panel').setState('display','none');
-						
-					if (Logic.getEntityByName('EditorLibrarySkies') == selected)
-						Logic.getEntityByName('Editor Library Skies Panel').setState('display','inline');
-					else
-						Logic.getEntityByName('Editor Library Skies Panel').setState('display','none');
-						
-					if (Logic.getEntityByName('EditorLibraryAudio') == selected)
-						Logic.getEntityByName('Editor Library Audio Panel').setState('display','inline');
-					else
-						Logic.getEntityByName('Editor Library Audio Panel').setState('display','none');
-					*/
+						Logic.getEntityByName('Editor Library Background Panel').setState('display','none');
+					
 					me.stopAction("SelectSubCategoryPanel");
 				</Script>
 			</Scripts>
@@ -140,6 +129,26 @@
 							<_State id="imageHeight"><Value>23</Value></_State>
 						</_States></Entity>
 						
+						<!-- Props -->
+						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
+							<_State id="name"><Value>EditorLibraryProps</Value></_State>
+							<_State id="buttonText"><Value>Props</Value></_State>
+							<_State id="imageName"><Value>libcat_shapes</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
+							<_State id="imageWidth"><Value>24</Value></_State>
+							<_State id="imageHeight"><Value>23</Value></_State>
+						</_States></Entity>
+						
+						<!-- Collectibles -->
+						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
+							<_State id="name"><Value>EditorLibraryCollectibles</Value></_State>
+							<_State id="buttonText"><Value>Collectibles</Value></_State>
+							<_State id="imageName"><Value>libcat_shapes</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
+							<_State id="imageWidth"><Value>24</Value></_State>
+							<_State id="imageHeight"><Value>23</Value></_State>
+						</_States></Entity>
+						
 						<!-- Background -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryBackground</Value></_State>
@@ -160,30 +169,10 @@
 							<_State id="imageHeight"><Value>23</Value></_State>
 						</_States></Entity>
 						
-						<!-- Collectibles -->
+						<!-- Sound -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
-							<_State id="name"><Value>EditorLibraryCollectibles</Value></_State>
-							<_State id="buttonText"><Value>Collectibles</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
-						</_States></Entity>
-						
-						<!-- Sound FX -->
-						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
-							<_State id="name"><Value>EditorLibrarySoundFX</Value></_State>
-							<_State id="buttonText"><Value>Sound FX</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
-						</_States></Entity>
-						
-						<!-- Music -->
-						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
-							<_State id="name"><Value>EditorLibraryMusic</Value></_State>
-							<_State id="buttonText"><Value>Music</Value></_State>
+							<_State id="name"><Value>EditorLibraryAudio</Value></_State>
+							<_State id="buttonText"><Value>Sound</Value></_State>
 							<_State id="imageName"><Value>libcat_shapes</Value></_State>
 							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
 							<_State id="imageWidth"><Value>24</Value></_State>
@@ -206,15 +195,15 @@
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
 						<!-- Tiles -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
-						<!-- Background -->
-						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
-						<!-- Clouds -->
-						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
+						<!-- Props -->
+						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryPropsPanel"/>
 						<!-- Collectibles -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
-						<!-- Sound FX -->
+						<!-- Background -->
+						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryBackgroundPanel"/>
+						<!-- Clouds -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
-						<!-- Music -->
+						<!-- Sound -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
 					</Entities></Space></Form>
 				</Entity>

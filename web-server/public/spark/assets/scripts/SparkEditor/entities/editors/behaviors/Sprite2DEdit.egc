@@ -7,6 +7,7 @@
 		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>spriteGridLock</Id><Type>Integer</Type><Value>8</Value></State> <!--64-->
 	</_States>
 	
 	<_Form>
@@ -22,9 +23,15 @@
 			<Event>MouseLeftClicked</Event>
 			<Scripts>
 				<Script>
+					if (Input.mouse.isDown(MouseButton.Right))
+						return;
+					
 					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
 					leveleditor2d.getAction('EntityClicked').setState('entity',me);
 					leveleditor2d.startAction('EntityClicked');
+					
+					me.getAction('Drag').setState('dragX',me.getState('spaceX'));
+					me.getAction('Drag').setState('dragY',me.getState('spaceY'));
 					me.startAction('Drag');
 				</Script>
 			</Scripts>
@@ -158,6 +165,7 @@
 					if (me.getState('selector')==null)
 					{
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.behaviors.Sprite2DEditSelector');
+						//Display.error("LAAAAAAAAAAAAAAAAAAAAA: " + me.getState('boundsRect'));
 						myNewItem.setState('selectRect', me.getState('boundsRect'));
 						
 						me.addChild(myNewItem);
@@ -204,8 +212,18 @@
 				<Script>
 					if (Input.pointer.isDown())
 					{
-						me.setState('spaceX',me.getState('spaceX')+Input.pointer.distX());
-						me.setState('spaceY',me.getState('spaceY')+Input.pointer.distY());
+						var scale = Logic.getEntityByName('Editor Scene Edit Camera').getState('scaleX');
+						
+						var realX = me.getAction('Drag').getState('dragX')+Input.pointer.distX()/scale;
+						var realY = me.getAction('Drag').getState('dragY')+Input.pointer.distY()/scale;
+						
+						me.getAction('Drag').setState('dragX',realX);
+						me.getAction('Drag').setState('dragY',realY);
+						
+						var gridLock = me.getState('spriteGridLock');
+						me.setState('spaceX', Math.round(realX/gridLock)*gridLock);
+						me.setState('spaceY', Math.round(realY/gridLock)*gridLock);
+						Display.error('spaceX: ' + me.getState('spaceX') + ", spaceY: " + me.getState('spaceY') + ' -> realX: ' + realX + ", realY: " + realY);
 					}
 					else
 					{
@@ -288,6 +306,10 @@
 					}
 				</Script>
 			</Scripts>
+			<States>
+				<State><Id>dragX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dragY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
 		</Action>
 		
 		<!-- Clone -->
@@ -370,7 +392,7 @@
 					
 					Display.error("Found child: " + entityChildXml.get('extends'));
 					//take snapshot
-					var pureChildXml = Xml.parse(entityChildXml.toString());
+					var pureChildXml = Xml.parse(entityChildXml.toString()).firstElement();
 					Display.error("Displaying Child: " + pureChildXml.toString());
 					
 					//Remove [extends]

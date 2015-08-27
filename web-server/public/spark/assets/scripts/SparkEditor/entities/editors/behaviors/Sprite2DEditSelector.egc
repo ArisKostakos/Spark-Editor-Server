@@ -18,12 +18,12 @@
 						me.setState('spaceWidth', parent.getState('selectRect').width);
 						me.setState('spaceHeight', parent.getState('selectRect').height);
 
-						me.setState('spaceX', me.getState('spaceWidth')/4);
-						me.setState('spaceY', me.getState('spaceHeight')/4);
+						me.setState('spaceX', me.getState('spaceWidth')/2 + parent.getState('selectRect').x);
+						me.setState('spaceY', me.getState('spaceHeight')/2 + parent.getState('selectRect').y);
 					</Script></_Scripts></_Action></_Actions>
 				</Entity>
 				
-				<!-- Resize Control -->
+				<!-- Resize Control 
 				<Entity extends="SparkEditor.entities.editors.behaviors.Sprite2DEditSelectorResize">
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
 						parent.setState('resizeControl', me);
@@ -34,7 +34,7 @@
 						me.setState('spaceX', (parent.getState('selectRect').width));
 						me.setState('spaceY', (parent.getState('selectRect').height));
 					</Script></_Scripts></_Action></_Actions>
-				</Entity>
+				</Entity>-->
 			</_Entities>
 		</_Space>
 	</_Form>
@@ -47,7 +47,7 @@
 			<Scripts>
 				<Script>
 					me.getState('overlay').setState('visible',true);
-					me.getState('resizeControl').setState('visible',true);
+					//me.getState('resizeControl').setState('visible',true);
 					
 					me.stopAction("show");
 				</Script>
@@ -61,7 +61,7 @@
 			<Scripts>
 				<Script>
 					me.getState('overlay').setState('visible',false);
-					me.getState('resizeControl').setState('visible',false);
+					//me.getState('resizeControl').setState('visible',false);
 					
 					me.stopAction("hide");
 				</Script>

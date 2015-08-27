@@ -18,7 +18,7 @@
 					var container2d = Logic.getEntityByName('LibraryPlayerContainer');
 					var components = me.getAction('AddItem').getState('items');
 					
-					var username = Logic.getEntityByName('Spark Editor').getState('username');
+					//var username = Logic.getEntityByName('Spark Editor').getState('username');
 					var i = 0;
 					while (components.length>i)
 					{

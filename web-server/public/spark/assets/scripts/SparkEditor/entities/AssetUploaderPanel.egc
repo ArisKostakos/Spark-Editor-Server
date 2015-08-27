@@ -188,6 +188,8 @@
 								
 								if (file2Last=='gc')
 									Logic.getEntityByName('AU_type').getState('value').setState('text','script');
+								else if (fileExtension=='png' || fileExtension=='jpg')
+									Logic.getEntityByName('AU_type').getState('value').setState('text','image');
 							}
 						}
 						</Script>

@@ -41,6 +41,12 @@
 									var localY = eventObject.clientY - eventObject.target.getBoundingClientRect().top;
 									Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
 									
+									//Add Camera Offsets and Scaling
+									var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+									var scale = camera.getState('scaleX');
+									localX = localX / scale + camera.getState('captureAreaX');
+									localY = localY / scale + camera.getState('captureAreaY');
+									
 									var assetBeingDragged = parent.getState('assetBeingDragged');
 									var componentType = assetBeingDragged.componentType;
 									
@@ -54,13 +60,50 @@
 									{
 										//Get appropriate class (as an xml)
 										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/tile/Tile.egc').toString()).firstElement();
+										
+										//Gridlock localX and localY
+										var gridLock = 8; //64;
+										
+										localX = Math.round(localX/gridLock)*gridLock;
+										localY = Math.round(localY/gridLock)*gridLock;
+									}
+									else if (componentType=='Prop')
+									{
+										//Get appropriate class (as an xml)
+										if (assetBeingDragged.tags[1]=="Background")
+											pureXml = Xml.parse(Assets.getFile('lib/2d/platform/prop/PropBackground.egc').toString()).firstElement();
+										else if (assetBeingDragged.tags[1]=="Static")
+											pureXml = Xml.parse(Assets.getFile('lib/2d/platform/prop/PropStatic.egc').toString()).firstElement();
+										else if (assetBeingDragged.tags[1]=="Dynamic")
+											pureXml = Xml.parse(Assets.getFile('lib/2d/platform/prop/PropDynamic.egc').toString()).firstElement();
+										
+										//Gridlock localX and localY
+										var gridLock = 8 ; //64; //8;
+										
+										localX = Math.round(localX/gridLock)*gridLock;
+										localY = Math.round(localY/gridLock)*gridLock;
 									}
 									else if (componentType=='Actor')
 									{
 										//Get appropriate class (as an xml)
 										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/actor/player/PlayerPlatform.egc').toString()).firstElement();
 									}
-									
+									else if (componentType=='Background')
+									{
+										//Get appropriate class (as an xml)
+										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/background/PlatformBackground.egc').toString()).firstElement();
+										//Display.error('Dropping,boundsX: ' + scene.getState('boundsX'));
+										//Display.error('Dropping,boundsY: ' + scene.getState('boundsY'));
+										
+										//Hack to re-adjust position if it's a background
+										var imageWidth = Logic.reflectField(Assets.getTexture('image_' + assetBeingDragged.name), 'width');
+										var imageHeight = Logic.reflectField(Assets.getTexture('image_' + assetBeingDragged.name), 'height');
+										//Display.error('Dropping,background width: ' + imageWidth);
+										//Display.error('Dropping,background height: ' + imageHeight);
+										
+										localX=scene.getState('boundsX') + imageWidth/2;
+										localY=scene.getState('boundsY') + imageHeight/2;
+									}
 									
 									//adjust spaceX and spaceY
 									var states = firstElementNamed(pureXml,'_States');
@@ -77,10 +120,11 @@
 										}
 									}
 									
+									
 									//insert the correct images
 									var formStates = firstElementNamed(firstElementNamed(pureXml,'_Form'),'_States');
 									
-									if (componentType=='Tile')
+									if (componentType=='Tile' || componentType=='Background' || componentType=='Prop')
 									{
 										for (state in formStates.elementsNamed('State'))
 										{
@@ -100,7 +144,6 @@
 											}
 										}
 									}
-									
 									
 									//Display.error('pureXml: ' + pureXml.toString());
 									var realXml = Xml.parse(pureXml.toString()).firstElement(); //clone it
@@ -122,13 +165,50 @@
 									
 									Display.error('realXml: ' + realXml.toString());
 									//Create the entity from the uploaded lib asssets
+									var isSpriter = (realXml.get('extends').substr(realXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
 									var tileGameEntity = Logic.gameFactory.createGameEntityByXml(realXml);
+									
+									//Grid Lock
+									if (isSpriter) tileGameEntity.setState('spriteGridLock',8); //1
 									
 									//give it snapshot xml
 									tileGameEntity.setState('xmlData',pureXml);
 									
-									//add to scene
-									scene.addChild(tileGameEntity);
+									//If it's a background put it to background layer, otherwise put it to the main layer ( I wish.. too hard to do layers right now..)
+									if (componentType=='Background')
+									{
+										//add to SceneBoundsDisplay edit object
+										Logic.getEntityByName('SceneBoundsDisplay').addChild(tileGameEntity);
+										
+										//Store the reference
+										scene.setState('backgroundEntity',tileGameEntity);
+										
+										//Untouchable
+										tileGameEntity.setState('touchable',false);
+										
+										//Create a couple more backgrounds to fill the white bounds rect
+										var backgroundWidth = Logic.reflectField(Assets.getTexture('image_' + assetBeingDragged.name), 'width')-2; //-2 is to prevent some white gaps betweeen backgrounds
+										
+										var multipleBackgroundsCount = Math.ceil(scene.getState('boundsWidth')/backgroundWidth);
+										var backgroundsCreated = 1;
+										
+										while (multipleBackgroundsCount>backgroundsCreated)
+										{
+											var extraBackground = Logic.gameFactory.createGameEntityByXml(realXml);
+											extraBackground.setState('spaceX',extraBackground.getState('spaceX')+backgroundWidth*backgroundsCreated);
+											Logic.getEntityByName('SceneBoundsDisplay').addChild(extraBackground);
+											
+											//Untouchable
+											extraBackground.setState('touchable',false);
+											
+											backgroundsCreated+=1;
+										}
+									}
+									else //
+									{
+										//add to scene
+										scene.addChild(tileGameEntity);
+									}
 								</Script>
 							</Scripts>
 						</Trigger>
