@@ -138,7 +138,7 @@
 									{
 										for (state in formStates.elementsNamed('State'))
 										{
-											if (firstElementNamed(state,'Id').firstChild().nodeValue=='Soldier1SpriterMain')
+											if (firstElementNamed(state,'Id').firstChild().nodeValue=='SpriterMain')
 											{
 												firstElementNamed(state,'Value').firstChild().nodeValue = 'image_' + assetBeingDragged.name;
 											}

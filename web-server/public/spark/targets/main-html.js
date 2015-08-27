@@ -14290,12 +14290,12 @@ spriter_library_FlambeLibrary.__name__ = true;
 spriter_library_FlambeLibrary.__super__ = spriter_library_AbstractLibrary;
 spriter_library_FlambeLibrary.prototype = $extend(spriter_library_AbstractLibrary.prototype,{
 	getTexture: function(name) {
-		if(!spriter_library_FlambeLibrary._textures.exists(name)) {
+		if(!spriter_library_FlambeLibrary._textures.exists(this._basePath + "." + name)) {
 			var noExtension = name.substring(0,name.lastIndexOf("."));
 			var value = this._pack.getTexture(this._basePath + "." + noExtension);
-			spriter_library_FlambeLibrary._textures.set(name,value);
+			spriter_library_FlambeLibrary._textures.set(this._basePath + "." + name,value);
 		}
-		return spriter_library_FlambeLibrary._textures.get(name);
+		return spriter_library_FlambeLibrary._textures.get(this._basePath + "." + name);
 	}
 	,clear: function() {
 		while(this._rootEntity.firstChild != null) {

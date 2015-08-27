@@ -55,6 +55,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Button2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Spriter2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Spritesheet2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Line2D.egc</Asset>

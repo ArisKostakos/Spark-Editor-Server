@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Spritesheet2D">
+	<Extends>
+		<!-- collectible behavior able to pick it up, etc-->
+	</Extends>
+	
+	<_States>
+		<_State id="name">
+			<Value>Animated Collectible</Value>
+		</_State>
+		
+		<_State id="spaceX">
+			<Value>300</Value>
+		</_State>
+		
+		<_State id="spaceY">
+			<Value>500</Value>
+		</_State>
+		
+		<_State id="scaleX">
+			<Value>1</Value>
+		</_State>
+		
+		<_State id="scaleY">
+			<Value>1</Value>
+		</_State>
+		
+		<_State id="2DMeshSpritesheetForm">
+			<Value>SpritesheetMain</Value>
+		</_State>
+		
+		<_State id="2DMeshSpritesheetAnimForm">
+			<Value>AnimationStanding</Value>
+		</_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>SpritesheetMain</Id>
+				<Type>Text</Type>
+				<Value>image_XXX</Value>
+			</State>
+			
+			<_State id="AnimationStanding">
+				<Value>Idle</Value>
+			</_State>
+			<_State id="AnimationWalking">
+				<Value>Walk</Value>
+			</_State>
+			<_State id="AnimationCrouching">
+				<Value>Crouch</Value>
+			</_State>
+			<_State id="AnimationJumping">
+				<Value>Jump</Value>
+			</_State>
+		</_States>
+	</_Form>
+</Entity>

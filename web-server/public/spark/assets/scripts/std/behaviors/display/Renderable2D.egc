@@ -14,6 +14,12 @@
 		</State>
 		
 		<State>
+			<Id>2DMeshSpritesheetForm</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
 			<Id>2DMeshFillRectForm</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>

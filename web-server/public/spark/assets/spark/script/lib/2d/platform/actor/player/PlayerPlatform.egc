@@ -8,7 +8,7 @@
 	
 	<_States>
 		<_State id="name">
-			<Value>Spriter Soldier 1</Value>
+			<Value>Player Platform</Value>
 		</_State>
 		
 		<_State id="spaceX">
@@ -28,7 +28,7 @@
 		</_State>
 		
 		<_State id="2DMeshSpriterForm">
-			<Value>Soldier1SpriterMain</Value>
+			<Value>SpriterMain</Value>
 		</_State>
 		
 		<_State id="2DMeshSpriterAnimForm">
@@ -39,7 +39,7 @@
 	<_Form>
 		<_States>
 			<State>
-				<Id>Soldier1SpriterMain</Id>
+				<Id>SpriterMain</Id>
 				<Type>Text</Type>
 				<Value>image_XXX</Value>
 			</State>

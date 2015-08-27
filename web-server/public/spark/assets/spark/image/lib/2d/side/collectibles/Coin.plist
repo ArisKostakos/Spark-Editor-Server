@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+
+                        <key>coin (1)</key>
+			<dict>
+				<key>x</key><real>2</real>
+				<key>y</key><real>2</real>
+				<key>w</key><real>55</real>
+				<key>h</key><real>56</real>
+				
+				
+			</dict>
+                        <key>coin (2)</key>
+			<dict>
+				<key>x</key><real>59</real>
+				<key>y</key><real>2</real>
+				<key>w</key><real>40</real>
+				<key>h</key><real>56</real>
+				
+				
+			</dict>
+                        <key>coin (3)</key>
+			<dict>
+				<key>x</key><real>143</real>
+				<key>y</key><real>2</real>
+				<key>w</key><real>17</real>
+				<key>h</key><real>55</real>
+				
+				
+			</dict>
+                        <key>coin (4)</key>
+			<dict>
+				<key>x</key><real>101</real>
+				<key>y</key><real>2</real>
+				<key>w</key><real>40</real>
+				<key>h</key><real>56</real>
+				
+				
+			</dict>
+		</dict>
+		<key>meta</key>
+		<dict>
+			<key>image</key>
+			<string>Coin_sheet.png</string>
+			<key>width</key>
+			<integer>162</integer>
+			<key>height</key>
+			<integer>60</integer>
+		</dict>
+	</dict>
+</plist>
