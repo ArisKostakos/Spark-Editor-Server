@@ -26,26 +26,43 @@
 						bar.setState('backgroundColor','rgb(41,59,77)');
 					
 						//Scene Editor Header
-						/*
+						
 						var sceneEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
+						sceneEditorHeader.setState('name','ViewportTabSceneHeader'); //quick fix
+						Logic.registerEntityByName(sceneEditorHeader); //quick fix
 						sceneEditorHeader.setState('caption','Scene');
-						sceneEditorHeader.setState('fontSize','17px');
-						sceneEditorHeader.setState('backgroundColor','rgb(76,143,165)');
+						sceneEditorHeader.setState('titleFontSize','15px');
+						sceneEditorHeader.setState('hasIcon',true);
+						sceneEditorHeader.setState('iconImage','toolbarIcon_Scene');
+						sceneEditorHeader.setState('iconWidth','12');
+						sceneEditorHeader.setState('iconHeight','14');
+						sceneEditorHeader.setState('selectedTextColor','rgb(88,162,184)');
+						//sceneEditorHeader.setState('labelLeft','22');
+						//sceneEditorHeader.setState('backgroundColor','rgb(76,143,165)');
 						bar.addChild(sceneEditorHeader);
-						*/
+						//sceneEditorHeader.startAction('Selected');
 						
 						//Event Editor Header
-						/*
+						
 						var eventEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
+						eventEditorHeader.setState('name','ViewportTabEventHeader'); //quick fix
+						Logic.registerEntityByName(eventEditorHeader); //quick fix
 						eventEditorHeader.setState('caption','Events');
-						eventEditorHeader.setState('fontSize','17px');
-						eventEditorHeader.setState('backgroundColor','rgb(46,113,135)');
+						eventEditorHeader.setState('titleFontSize','15px');
+						eventEditorHeader.setState('hasIcon',true);
+						eventEditorHeader.setState('iconImage','toolbarIcon_Events');
+						eventEditorHeader.setState('iconWidth','21');
+						eventEditorHeader.setState('iconHeight','14');
+						eventEditorHeader.setState('selectedTextColor','rgb(88,162,184)');
+						eventEditorHeader.setState('width','80');
+						//eventEditorHeader.setState('labelLeft','31');
+						//eventEditorHeader.setState('backgroundColor','rgb(46,113,135)');
 						bar.addChild(eventEditorHeader);
 						
 						
 						//Create it, don't add it
 						Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.EventsWindow');
-						*/
+						
 						
 						////container.addChild();
 						

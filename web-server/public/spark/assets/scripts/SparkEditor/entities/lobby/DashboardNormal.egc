@@ -8,18 +8,39 @@
 		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>100%</Value></_State>
 		<_State id="display"><Value>none</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
 	</_States>
 	
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Background -->
+				<!-- Background 
 				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
 						<_State id="backgroundColor"><Value>rgb(66,84,102)</Value></_State>
 					</_States>
+				</Entity>-->
+				
+				<!-- Create New -->
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="name"><Value>New Project</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+					</_States>
+						
+					<Form><Space><Entities>
+						<Entity extends="SparkEditor.entities.lobby.projects.NewProjectPopUp">
+							<_States>
+								<_State id="width"><Value>714</Value></_State>
+								<_State id="height"><Value>708</Value></_State>
+								<_State id="horizontalCenter"><Value>0</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+							</_States>
+						</Entity>
+					</Entities></Space></Form>
 				</Entity>
 				
 				<!-- My Projects -->
@@ -31,15 +52,15 @@
 						<_State id="height"><Value>100%</Value></_State>
 						<_State id="horizontalAlign"><Value>justify</Value></_State>
 						<_State id="verticalAlign"><Value>justify</Value></_State>
-						<_State id="paddingLeft"><Value>30</Value></_State>
+						<_State id="paddingLeft"><Value>90</Value></_State><!-- 30 -->
 						<_State id="paddingRight"><Value>10</Value></_State>
-						<_State id="paddingTop"><Value>30</Value></_State>
+						<_State id="paddingTop"><Value>60</Value></_State><!-- 30 -->
 						<_State id="paddingBottom"><Value>10</Value></_State>
-						<_State id="horizontalGap"><Value>12</Value></_State>
-						<_State id="verticalGap"><Value>12</Value></_State>
+						<_State id="horizontalGap"><Value>20</Value></_State><!-- 12 -->
+						<_State id="verticalGap"><Value>20</Value></_State><!-- 12 -->
 					</_States>
 					<Form><Space><Entities>
-						<!-- Create New -->
+						<!-- Create New 
 						<Entity extends="SparkEditor.entities.lobby.projects.ProjectTile"><_States>
 							<_State id="projectName"><Value>Create New</Value></_State>
 							<_State id="imageName"><Value>lobbyProject_NewProject</Value></_State>
@@ -54,12 +75,12 @@
 								</_Scripts>
 							</_Action>
 						</_Actions>
-						</Entity>
+						</Entity>-->
 					</Entities></Space></Form>
 				</Entity>
 			
 			
-				<!-- Pop Up Area -->
+				<!-- Pop Up Area 
 				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="name"><Value>Pop Up Area</Value></_State>
@@ -67,9 +88,9 @@
 						<_State id="height"><Value>100%</Value></_State>
 						<_State id="display"><Value>none</Value></_State>
 					</_States>
-					<!--children-->
+					<!--children
 					<Form><Space><Entities>
-						<!-- Background Area -->
+						<!-- Background Area 
 						<Entity extends="std.display.Div">
 							<_States>
 								<_State id="width"><Value>100%</Value></_State>
@@ -79,7 +100,7 @@
 							</_States>
 						</Entity>
 						
-						<!-- New Project Pop Up -->
+						<!-- New Project Pop Up 
 						<Entity extends="SparkEditor.entities.lobby.projects.NewProjectPopUp">
 							<_States>
 								<_State id="horizontalCenter"><Value>0</Value></_State>
@@ -87,7 +108,9 @@
 							</_States>
 						</Entity>
 					</Entities></Space></Form>
-				</Entity>
+				</Entity>-->
+							
+							
 			</Entities>
 		</Space>
 	</Form>
@@ -105,7 +128,8 @@
 						{
 							Display.error("Project found. Connecting...");
 							
-							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+							//Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: My first game!'); //NAME MODS
 
 							//Try some init stuff
 							Display.error("Doing INIT stuff!");
@@ -142,7 +166,7 @@
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.lobby.projects.ProjectTile');
 
 						myNewItem.setState('projectName',projects[i].title);
-						myNewItem.setState('imageName','lobbyProjectTemplate_Platform');
+						myNewItem.setState('imageName','lobbyProjectTemplate_Platform_Thumb');
 						myNewItem.setState('project',projects[i]);
 						projectsContainer.addChild(myNewItem);
 						

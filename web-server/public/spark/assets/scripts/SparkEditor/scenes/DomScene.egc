@@ -13,7 +13,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="SparkEditor.entities.LoginBackgroundImage"/>
+				<Entity extends="SparkEditor.entities.LoginBackground"/>
 				<Entity extends="SparkEditor.entities.SignupPanel"/>
 				<Entity extends="SparkEditor.entities.LoginPanel"/>
 			</Entities>

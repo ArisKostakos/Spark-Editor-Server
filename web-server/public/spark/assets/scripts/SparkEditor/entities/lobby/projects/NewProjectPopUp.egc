@@ -2,8 +2,13 @@
 <Entity extends="std.display.Div">
 	<_States>
 		<_State id="name"><Value>New Project Pop Up</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="paddingTop"><Value>32</Value></_State>
+		<_State id="paddingLeft"><Value>52</Value></_State>
+		<_State id="paddingBottom"><Value>32</Value></_State>
+		<_State id="paddingRight"><Value>52</Value></_State>
+		<_State id="gap"><Value>12</Value></_State>
 		<_State id="backgroundColor"><Value>#21303D</Value></_State>
-		<_State id="borderRadius"><Value>12px</Value></_State>
 		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
 		<State><Id>newProjectName</Id><Type>Text</Type><Value>Untitled</Value></State>
 	</_States>
@@ -11,292 +16,355 @@
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Title -->
-				<Entity extends="std.display.Text">
+				<!-- Text Thingie -->
+				<Entity extends="std.display.HGroup">
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
-						<_State id="height"><Value>34</Value></_State>
-						<_State id="text"><Value>Let's Make a Game!</Value></_State>
-						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-						<_State id="fontWeight"><Value>300</Value></_State>
-						<_State id="fontSize"><Value>27px</Value></_State>
-						<_State id="fontColor"><Value>white</Value></_State>
-						<_State id="textAlign"><Value>center</Value></_State>
-						<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
-						<_State id="borderRadius"><Value>12px 12px 0px 0px</Value></_State>
-					</_States>
-				</Entity>
-
-				<!-- Everything Else -->
-				<Entity extends="std.display.VGroup">
-					<_States>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="height"><Value>100%</Value></_State>
-						<_State id="top"><Value>34</Value></_State>
-						<_State id="gap"><Value>8</Value></_State>
-						<_State id="paddingTop"><Value>14</Value></_State>
-						<_State id="paddingLeft"><Value>25</Value></_State>
-						<_State id="paddingBottom"><Value>22</Value></_State>
-						<_State id="paddingRight"><Value>25</Value></_State>
+						<_State id="height"><Value>26</Value></_State>
 					</_States>
 					<Form>
 						<Space>
 							<Entities>
-								<!-- Enter Project Name -->
+								<!-- Label -->
 								<Entity extends="std.display.Text">
 									<_States>
-										<_State id="width"><Value>100%</Value></_State>
-										<_State id="height"><Value>26</Value></_State>
-										<_State id="text"><Value>Enter the name of your game:</Value></_State>
+										<_State id="width"><Value>77</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Step 1:</Value></_State>
 										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
 										<_State id="fontWeight"><Value>300</Value></_State>
-										<_State id="fontSize"><Value>22px</Value></_State>
-										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>rgb(79, 95, 112)</Value></_State>
 										<_State id="textAlign"><Value>left</Value></_State>
 									</_States>
 								</Entity>
 								
-								<!-- Name Input-->
-								<Entity extends="std.display.Input">
+								<!-- Instructions -->
+								<Entity extends="std.display.Text">
 									<_States>
-										<_State id="name"><Value>Create New: Project Name Field</Value></_State>
 										<_State id="width"><Value>100%</Value></_State>
-										<_State id="height"><Value>47</Value></_State>
-										<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
-										<_State id="border"><Value>0px</Value></_State>
-										<_State id="placeholder"><Value>e.g. My Amazing Game!</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Select a template to start with</Value></_State>
 										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
 										<_State id="fontSize"><Value>23px</Value></_State>
 										<_State id="fontColor"><Value>white</Value></_State>
-										<_State id="textIndent"><Value>12px</Value></_State>
-									</_States>
-								</Entity>
-								
-								<!-- Spacer -->
-								<Entity extends="std.display.Group"><_States><_State id="height"><Value>11</Value></_State></_States></Entity>
-				
-								<!-- Select Template Text -->
-								<Entity extends="std.display.Text">
-									<_States>
-										<_State id="width"><Value>100%</Value></_State>
-										<_State id="height"><Value>26</Value></_State>
-										<_State id="text"><Value>Select a template to start with:</Value></_State>
-										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-										<_State id="fontWeight"><Value>300</Value></_State>
-										<_State id="fontSize"><Value>22px</Value></_State>
-										<_State id="fontColor"><Value>white</Value></_State>
 										<_State id="textAlign"><Value>left</Value></_State>
 									</_States>
-								</Entity>
-								
-								<!-- Templates Container -->
-								<Entity extends="std.display.Div">
-									<_States>
-										<_State id="layout"><Value>Tile</Value></_State>
-										<_State id="horizontalAlign"><Value>justify</Value></_State>
-										<_State id="verticalAlign"><Value>justify</Value></_State>
-										<_State id="requestedColumnCount"><Value>3</Value></_State>
-										<_State id="requestedRowCount"><Value>2</Value></_State>
-										<_State id="horizontalGap"><Value>12</Value></_State>
-										<_State id="verticalGap"><Value>8</Value></_State>
-										<_State id="paddingLeft"><Value>12</Value></_State>
-										<_State id="paddingRight"><Value>12</Value></_State>
-										<_State id="paddingTop"><Value>12</Value></_State>
-										<_State id="paddingBottom"><Value>12</Value></_State>
-										<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
-									</_States>
-									
-									<Form>
-										<Space>
-											<Entities>
-												<!-- Platform -->
-												<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile">
-													<_States>
-														<_State id="projectName"><Value>Platform</Value></_State>
-														<_State id="imageName"><Value>lobbyProjectTemplate_Platform</Value></_State>
-													</_States>
-													<_Actions>
-														<_Action id="ButtonClicked">
-															<_Scripts>
-																<Script>
-																	Display.error("ok this works fine..");
-																</Script>
-															</_Scripts>
-														</_Action>
-														<_Action id="Constructor"><_Scripts><Script>
-															me.startAction('Select');
-														</Script></_Scripts></_Action>
-													</_Actions>
-												</Entity>
-												
-												<!-- Racing -->
-												<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
-													<_State id="projectName"><Value>Racing</Value></_State>
-													<_State id="imageName"><Value>lobbyProjectTemplate_Racing</Value></_State>
-												</_States>
-												<_Actions>
-													<_Action id="ButtonClicked">
-														<_Scripts>
-															<Script>
-																Display.error("ok this works fine..");
-															</Script>
-														</_Scripts>
-													</_Action>
-												</_Actions>
-												</Entity>
-												
-												<!-- Tower -->
-												<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
-													<_State id="projectName"><Value>Tower Defence</Value></_State>
-													<_State id="imageName"><Value>lobbyProjectTemplate_Tower</Value></_State>
-												</_States>
-												<_Actions>
-													<_Action id="ButtonClicked">
-														<_Scripts>
-															<Script>
-																Display.error("ok this works fine..");
-															</Script>
-														</_Scripts>
-													</_Action>
-												</_Actions>
-												</Entity>
-												
-												<!-- Flappy -->
-												<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
-													<_State id="projectName"><Value>Flappy</Value></_State>
-													<_State id="imageName"><Value>lobbyProjectTemplate_Flappy</Value></_State>
-												</_States>
-												<_Actions>
-													<_Action id="ButtonClicked">
-														<_Scripts>
-															<Script>
-																Display.error("ok this works fine..");
-															</Script>
-														</_Scripts>
-													</_Action>
-												</_Actions>
-												</Entity>
-												
-												<!-- Breakout -->
-												<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
-													<_State id="projectName"><Value>Breakout</Value></_State>
-													<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
-												</_States>
-												<_Actions>
-													<_Action id="ButtonClicked">
-														<_Scripts>
-															<Script>
-																Display.error("ok this works fine..");
-															</Script>
-														</_Scripts>
-													</_Action>
-												</_Actions>
-												</Entity>
-												
-												<!-- Match3 -->
-												<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
-													<_State id="projectName"><Value>Match 3</Value></_State>
-													<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
-												</_States>
-												<_Actions>
-													<_Action id="ButtonClicked">
-														<_Scripts>
-															<Script>
-																Display.error("ok this works fine..");
-															</Script>
-														</_Scripts>
-													</_Action>
-												</_Actions>
-												</Entity>
-											</Entities>
-										</Space>
-									</Form>
-								</Entity>
-
-								<!-- Buttons -->
-								<Entity extends="std.display.HGroup">
-									<_States>
-										<_State id="paddingTop"><Value>2</Value></_State>
-										<_State id="horizontalAlign"><Value>right</Value></_State>
-										<_State id="width"><Value>100%</Value></_State>
-										<_State id="height"><Value>30</Value></_State>
-										<_State id="gap"><Value>3</Value></_State>
-									</_States>
-									<Form>
-										<Space>
-											<Entities>
-												<!-- Create Button -->
-												<Entity extends="std.display.Button">
-													<_States>
-														<_State id="name"><Value>Create New: Create Project Button</Value></_State>
-														<_State id="width"><Value>100%</Value></_State>
-														<_State id="height"><Value>100%</Value></_State>
-														<_State id="textAlign"><Value>center</Value></_State>
-														<_State id="textVerticalAlign"><Value>middle</Value></_State>
-														<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
-														<_State id="border"><Value>0px</Value></_State>
-														<_State id="text"><Value>Create</Value></_State>
-														<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-														<_State id="fontSize"><Value>25px</Value></_State>
-														<_State id="fontColor"><Value>white</Value></_State>
-													</_States>
-													<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
-													<Script>
-														Display.warn("Create Project");
-														if (me.getState('text')!="Create") return;
-														
-														var projectName = Logic.getEntityByName('Create New: Project Name Field').getState('text');
-														projectName = Logic.replace(projectName,' ','g','_');
-														projectName = Logic.replace(projectName,'[^a-zA-Z0-9_]','g','');
-														projectName = projectName.toLowerCase();
-														
-														if (3>projectName.length || projectName=='undefined' || projectName.length>40)
-														{
-															Display.error("Project Name is less than 3 characters or more than 40");
-														}
-														else
-														{
-															Display.error("I'm sending this: " + projectName);
-															me.setState('text',"Please Wait...");
-															
-															Logic.getEntityByName('New Project Pop Up').setState('newProjectName',projectName);
-															
-															Comms.request("lobby.projectHandler.connect", {projectName: projectName}, "Check if Project Exists");
-														}
-													</Script>
-													</Scripts></Trigger></_Triggers>
-												</Entity>
-												
-												<!-- Cancel Button -->
-												<Entity extends="std.display.Button">
-													<_States>
-														<_State id="width"><Value>100%</Value></_State>
-														<_State id="height"><Value>100%</Value></_State>
-														<_State id="textAlign"><Value>center</Value></_State>
-														<_State id="textVerticalAlign"><Value>middle</Value></_State>
-														<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
-														<_State id="border"><Value>0px</Value></_State>
-														<_State id="text"><Value>Cancel</Value></_State>
-														<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-														<_State id="fontSize"><Value>25px</Value></_State>
-														<_State id="fontColor"><Value>white</Value></_State>
-													</_States>
-													<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
-													<Script>
-														Display.warn("Cancel");
-														Logic.getEntityByName('Pop Up Area').setState('display','none');
-													</Script>
-													</Scripts></Trigger></_Triggers>
-												</Entity>
-											</Entities>
-										</Space>
-									</Form>
 								</Entity>
 							</Entities>
 						</Space>
 					</Form>
-							
 				</Entity>
+				
+				
+				<!-- Templates Group -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Blank -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile">
+									<_States>
+										<_State id="name"><Value>BlankTemplateTile</Value></_State>
+										<_State id="projectName"><Value>Blank</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Blank</Value></_State>
+										<_State id="imageWidth"><Value>26</Value></_State>
+										<_State id="imageHeight"><Value>26</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+												</Script>
+											</_Scripts>
+										</_Action>
+										<_Action id="Constructor"><_Scripts><Script>
+											me.startAction('Select');
+										</Script></_Scripts></_Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Platform -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile">
+									<_States>
+										<_State id="projectName"><Value>Platform</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Platform</Value></_State>
+										<_State id="imageWidth"><Value>43</Value></_State>
+										<_State id="imageHeight"><Value>39</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+													Logic.getEntityByName('BlankTemplateTile').startAction('Deselect'); //terrible fix again..
+													me.startAction('Select');
+												</Script>
+											</_Scripts>
+										</_Action>
+										<_Action id="Constructor"><_Scripts><Script>
+											//me.startAction('Select');
+										</Script></_Scripts></_Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Racing -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
+										<_State id="projectName"><Value>Racing</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Racing</Value></_State>
+										<_State id="imageWidth"><Value>49</Value></_State>
+										<_State id="imageHeight"><Value>25</Value></_State>
+										<_State id="isDisabled"><Value>true</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+												</Script>
+											</_Scripts>
+										</_Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Tower -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
+										<_State id="projectName"><Value>Tower Defence</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Tower</Value></_State>
+										<_State id="imageWidth"><Value>45</Value></_State>
+										<_State id="imageHeight"><Value>31</Value></_State>
+										<_State id="isDisabled"><Value>true</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+												</Script>
+											</_Scripts>
+										</_Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Flappy -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
+										<_State id="projectName"><Value>Flappy</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Flappy</Value></_State>
+										<_State id="imageWidth"><Value>39</Value></_State>
+										<_State id="imageHeight"><Value>26</Value></_State>
+										<_State id="isDisabled"><Value>true</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+												</Script>
+											</_Scripts>
+										</_Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Breakout -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
+										<_State id="projectName"><Value>Breakout</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+										<_State id="imageWidth"><Value>29</Value></_State>
+										<_State id="imageHeight"><Value>28</Value></_State>
+										<_State id="isDisabled"><Value>true</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+												</Script>
+											</_Scripts>
+										</_Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Match3 -->
+								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile"><_States>
+										<_State id="projectName"><Value>Match 3</Value></_State>
+										<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+										<_State id="imageWidth"><Value>32</Value></_State>
+										<_State id="imageHeight"><Value>27</Value></_State>
+										<_State id="isDisabled"><Value>true</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="ButtonClicked">
+											<_Scripts>
+												<Script>
+													Display.error("ok this works fine..");
+												</Script>
+											</_Scripts>
+										</_Action>
+									</_Actions>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>30</Value></_State></_States></Entity>
+				
+				<!-- Text Thingie -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>26</Value></_State>
+					</_States>
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Label -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>77</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Step 2:</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>rgb(79, 95, 112)</Value></_State>
+										<_State id="textAlign"><Value>left</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- Instructions -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Enter the name of your game</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="textAlign"><Value>left</Value></_State>
+									</_States>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>
+				
+				<!-- Name Input-->
+				<Entity extends="std.display.Input">
+					<_States>
+						<_State id="name"><Value>Create New: Project Name Field</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>35</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46, 61, 74)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<!--<_State id="placeholder"><Value>e.g. My Amazing Game!</Value></_State>-->
+						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+						<_State id="fontSize"><Value>23px</Value></_State>
+						<_State id="fontWeight"><Value>300</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textIndent"><Value>12px</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>10</Value></_State></_States></Entity>
+				
+				<!-- Buttons -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="horizontalAlign"><Value>right</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>40</Value></_State>
+						<_State id="gap"><Value>27</Value></_State>
+					</_States>
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Create Button -->
+								<Entity extends="std.display.Button">
+									<_States>
+										<_State id="name"><Value>Create New: Create Project Button</Value></_State>
+										<_State id="width"><Value>140</Value></_State>
+										<_State id="height"><Value>40</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+										<_State id="textVerticalAlign"><Value>middle</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(255, 153, 51)</Value></_State>
+										<_State id="border"><Value>0px</Value></_State>
+										<_State id="text"><Value>Create</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+									</_States>
+									<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+									<Script>
+										Display.warn("Create Project");
+										if (me.getState('text')!="Create") return;
+										
+										var projectName = Logic.getEntityByName('Create New: Project Name Field').getState('text');
+										projectName = Logic.replace(projectName,' ','g','_');
+										projectName = Logic.replace(projectName,'[^a-zA-Z0-9_]','g','');
+										projectName = projectName.toLowerCase();
+										
+										if (3>projectName.length || projectName=='undefined' || projectName.length>40)
+										{
+											Display.error("Project Name is less than 3 characters or more than 40");
+										}
+										else
+										{
+											Display.error("I'm sending this: " + projectName);
+											me.setState('text',"Please Wait...");
+											
+											Logic.getEntityByName('New Project Pop Up').setState('newProjectName',projectName);
+											
+											Comms.request("lobby.projectHandler.connect", {projectName: projectName}, "Check if Project Exists");
+										}
+									</Script>
+									</Scripts></Trigger></_Triggers>
+								</Entity>
+								
+								<!-- Cancel Button -->
+								<Entity extends="std.display.Button">
+									<_States>
+										<_State id="width"><Value>140</Value></_State>
+										<_State id="height"><Value>40</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+										<_State id="textVerticalAlign"><Value>middle</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(20, 186, 169)</Value></_State>
+										<_State id="border"><Value>0px</Value></_State>
+										<_State id="text"><Value>Cancel</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+									</_States>
+									<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+									<Script>
+										Display.warn("Cancel");
+										Logic.getEntityByName('Pop Up Area').setState('display','none');
+									</Script>
+									</Scripts></Trigger></_Triggers>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>
+				
+				
 			</Entities>
 		</Space>
 	</Form>

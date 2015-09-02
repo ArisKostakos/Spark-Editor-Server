@@ -65,7 +65,7 @@
 					<_State id="imageVerCenter"><Value>0</Value></_State>
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
-					Logic.getEntityByName('Level Editor 2D Scene').startAction('CleanScene');
+					Logic.getEntityByName('Level Editor 2D Scene').startAction('DeleteSelected');
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Lock -->

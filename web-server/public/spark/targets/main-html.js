@@ -3614,6 +3614,12 @@ flambe_platform_OverdrawGraphics.prototype = {
 	save: function() {
 		this._impl.save();
 	}
+	,translate: function(x,y) {
+		this._impl.translate(x,y);
+	}
+	,rotate: function(rotation) {
+		this._impl.rotate(rotation);
+	}
 	,transform: function(m00,m10,m01,m11,m02,m12) {
 		this._impl.transform(m00,m10,m01,m11,m02,m12);
 	}
@@ -3629,6 +3635,9 @@ flambe_platform_OverdrawGraphics.prototype = {
 	}
 	,drawTexture: function(texture,destX,destY) {
 		this.drawRegion(destX,destY,texture.get_width(),texture.get_height());
+	}
+	,drawSubTexture: function(texture,destX,destY,sourceX,sourceY,sourceW,sourceH) {
+		this.drawRegion(destX,destY,sourceW,sourceH);
 	}
 	,fillRect: function(color,x,y,width,height) {
 		this.drawRegion(x,y,width,height);
@@ -3669,6 +3678,12 @@ flambe_platform_html_CanvasGraphics.__interfaces__ = [flambe_platform_InternalGr
 flambe_platform_html_CanvasGraphics.prototype = {
 	save: function() {
 		this._canvasCtx.save();
+	}
+	,translate: function(x,y) {
+		this._canvasCtx.translate(Std["int"](x),Std["int"](y));
+	}
+	,rotate: function(rotation) {
+		this._canvasCtx.rotate(flambe_math_FMath.toRadians(rotation));
 	}
 	,transform: function(m00,m10,m01,m11,m02,m12) {
 		this._canvasCtx.transform(m00,m10,m01,m11,m02,m12);
@@ -4829,6 +4844,25 @@ flambe_platform_html_WebGLGraphics.prototype = {
 		state.blendMode = current.blendMode;
 		if(current.scissor != null) state.scissor = current.scissor.clone(state.scissor); else state.scissor = null;
 		this._stateList = state;
+	}
+	,translate: function(x,y) {
+		var matrix = this.getTopState().matrix;
+		matrix.m02 += matrix.m00 * x + matrix.m01 * y;
+		matrix.m12 += matrix.m10 * x + matrix.m11 * y;
+	}
+	,rotate: function(rotation) {
+		var matrix = this.getTopState().matrix;
+		rotation = flambe_math_FMath.toRadians(rotation);
+		var sin = Math.sin(rotation);
+		var cos = Math.cos(rotation);
+		var m00 = matrix.m00;
+		var m10 = matrix.m10;
+		var m01 = matrix.m01;
+		var m11 = matrix.m11;
+		matrix.m00 = m00 * cos + m01 * sin;
+		matrix.m10 = m10 * cos + m11 * sin;
+		matrix.m01 = m01 * cos - m00 * sin;
+		matrix.m11 = m11 * cos - m10 * sin;
 	}
 	,transform: function(m00,m10,m01,m11,m02,m12) {
 		var state = this.getTopState();
@@ -16285,15 +16319,18 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var v17 = $bind(this,this._update2DMeshSpriterForm);
 		this._updateStateFunctions.set("2DMeshSpriterForm",v17);
 		v17;
-		var v18 = $bind(this,this._update2DMeshFillRectForm);
-		this._updateStateFunctions.set("2DMeshFillRectForm",v18);
+		var v18 = $bind(this,this._update2DMeshSpritesheetForm);
+		this._updateStateFunctions.set("2DMeshSpritesheetForm",v18);
 		v18;
-		var v19 = $bind(this,this._update2DMeshSpriteForm);
-		this._updateStateFunctions.set("2DMeshSpriteForm",v19);
+		var v19 = $bind(this,this._update2DMeshFillRectForm);
+		this._updateStateFunctions.set("2DMeshFillRectForm",v19);
 		v19;
-		var v20 = $bind(this,this._update2DMeshSpriterAnimForm);
-		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v20);
+		var v20 = $bind(this,this._update2DMeshSpriteForm);
+		this._updateStateFunctions.set("2DMeshSpriteForm",v20);
 		v20;
+		var v21 = $bind(this,this._update2DMeshSpriterAnimForm);
+		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v21);
+		v21;
 	}
 	,createInstance: function(p_view2_5D) {
 		var v = new flambe_Entity();
@@ -16335,6 +16372,9 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 			break;
 		case "Spriter":
 			this._updateStateOfInstance("2DMeshSpriterForm",p_view2_5D);
+			break;
+		case "Spritesheet":
+			this._updateStateOfInstance("2DMeshSpritesheetForm",p_view2_5D);
 			break;
 		case "FillRect":
 			this._updateStateOfInstance("2DMeshFillRectForm",p_view2_5D);
@@ -16385,6 +16425,30 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		} else {
 		}
 		this._updateStateOfInstance("2DMeshSpriterAnimForm",p_view2_5D);
+	}
+	,_update2DMeshSpritesheetForm: function(p_2DMeshSpritesheetForm,p_view2_5D) {
+		if(this.gameEntity.getState("2DmeshType") != "Spritesheet") return;
+		if(p_2DMeshSpritesheetForm == "Undefined") return;
+		var l_instance = this._instances.get(p_view2_5D);
+		var l_mesh = this._instancesMesh.get(p_view2_5D);
+		if(l_mesh == null) {
+			l_mesh = new flambe_display_Sprite();
+			var l_SpritesheetFormName = this.gameEntity.gameForm.getState(p_2DMeshSpritesheetForm);
+			var l_spritesheetPlayer = new tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer(tools_spark_framework_Assets.getAssetPackOf(l_SpritesheetFormName),l_SpritesheetFormName);
+			l_mesh.blendMode = flambe_display_BlendMode.Copy;
+			l_instance.add(l_mesh);
+			l_instance.add(l_spritesheetPlayer);
+			{
+				this._instancesMesh.set(p_view2_5D,l_mesh);
+				l_mesh;
+			}
+		} else {
+		}
+		var l_spritesheetPlayeTemp;
+		var component = l_instance.getComponent("SpriteSheetPlayer_8");
+		l_spritesheetPlayeTemp = component;
+		if(this.gameEntity.getState("AnimationLoop") == true) l_spritesheetPlayeTemp.loop(); else l_spritesheetPlayeTemp.play();
+		l_spritesheetPlayeTemp.setSpeed(this.gameEntity.getState("AnimationSpeed"));
 	}
 	,_update2DMeshFillRectForm: function(p_2DMeshFillRectForm,p_view2_5D) {
 		if(this.gameEntity.getState("2DmeshType") != "FillRect") return;
@@ -16495,25 +16559,28 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 							l_material = new nape_phys_Material(1,0,0,1,0);
 							break;
 						case "Biped":
-							l_material = new nape_phys_Material(0,1,2,1,0.001);
+							l_material = new nape_phys_Material(-5,1,2,1,0.001);
 							break;
 						default:
 							l_material = nape_phys_Material.wood();
 						}
+						var l_meshWidth = flambe_display_Sprite.getBounds(l_instance).width;
+						var l_meshHeight = flambe_display_Sprite.getBounds(l_instance).height;
 						if(this.gameEntity.getState("2DmeshType") != "Spriter") {
 							var l_shape;
 							var _g1 = this.gameEntity.getState("physicsShape");
 							switch(_g1) {
 							case "Circle":
-								var l_radious = (l_mesh.getNaturalWidth() * l_mesh.scaleX.get__() + l_mesh.getNaturalHeight() * l_mesh.scaleY.get__()) / 4;
+								var l_radious = (l_meshWidth + l_meshHeight) / 4;
 								l_shape = new nape_shape_Circle(l_radious,null,l_material);
 								break;
 							case "Polygon":
-								l_shape = new nape_shape_Polygon(nape_shape_Polygon.box(l_mesh.getNaturalWidth() * l_mesh.scaleX.get__(),l_mesh.getNaturalHeight() * l_mesh.scaleY.get__()),l_material);
+								l_shape = new nape_shape_Polygon(nape_shape_Polygon.box(l_meshWidth,l_meshHeight),l_material);
 								break;
 							default:
-								l_shape = new nape_shape_Polygon(nape_shape_Polygon.box(l_mesh.getNaturalWidth() * l_mesh.scaleX.get__(),l_mesh.getNaturalHeight() * l_mesh.scaleY.get__()),l_material);
+								l_shape = new nape_shape_Polygon(nape_shape_Polygon.box(l_meshWidth,l_meshHeight),l_material);
 							}
+							l_shape.set_sensorEnabled(this.gameEntity.getState("physicsSensorFlag"));
 							body.get_shapes().add(l_shape);
 						} else if(this.gameEntity.getState("physicsShape") == "Biped") {
 							this._appendPhysicsBipedShapes(body,76,180,l_mesh.scaleX.get__(),0,-0.09,l_material);
@@ -17528,6 +17595,8 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 	,_scenePhysicsInit: function(p_space) {
 		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_BEGIN(),nape_callbacks_InteractionType.get_COLLISION(),nape_callbacks_CbType.get_ANY_BODY(),nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._beginHandlerCollision)));
 		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_END(),nape_callbacks_InteractionType.get_COLLISION(),nape_callbacks_CbType.get_ANY_BODY(),nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._endHandlerCollision)));
+		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_BEGIN(),nape_callbacks_InteractionType.get_ANY(),nape_callbacks_CbType.get_ANY_BODY(),nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._beginHandlerSensor)));
+		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_END(),nape_callbacks_InteractionType.get_ANY(),nape_callbacks_CbType.get_ANY_BODY(),nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._endHandlerSensor)));
 		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_BEGIN(),nape_callbacks_InteractionType.get_SENSOR(),tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET,nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._beginHandlerSensorFeet)));
 		p_space.get_listeners().add(new nape_callbacks_InteractionListener(nape_callbacks_CbEvent.get_END(),nape_callbacks_InteractionType.get_SENSOR(),tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET,nape_callbacks_CbType.get_ANY_BODY(),$bind(this,this._endHandlerSensorFeet)));
 	}
@@ -17538,6 +17607,14 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 	,_endHandlerCollision: function(cb) {
 		if(cb.get_int1().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END,cb.get_int1().get_userData().gameEntity);
 		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END,cb.get_int2().get_userData().gameEntity);
+	}
+	,_beginHandlerSensor: function(cb) {
+		if(cb.get_int1().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START,cb.get_int1().get_userData().gameEntity);
+		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START,cb.get_int2().get_userData().gameEntity);
+	}
+	,_endHandlerSensor: function(cb) {
+		if(cb.get_int1().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END,cb.get_int1().get_userData().gameEntity);
+		if(cb.get_int2().get_userData().gameEntity != null) tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END,cb.get_int2().get_userData().gameEntity);
 	}
 	,_beginHandlerSensorFeet: function(cb) {
 		var int1Parent = cb.get_int1().get_castShape().get_body();
@@ -17667,6 +17744,260 @@ tools_spark_framework_flambe2_$5D_components_SpaceComponent.prototype = $extend(
 		this.space.step(dt);
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_components_SpaceComponent
+});
+var tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry = function(entry) {
+	if(entry == null) return;
+	this.name = entry.name;
+	this.x = entry.x;
+	this.y = entry.y;
+	this.width = entry.width;
+	this.height = entry.height;
+	this.sourceColorX = entry.sourceColorX;
+	this.sourceColorY = entry.sourceColorY;
+	this.rotated = entry.rotated;
+};
+$hxClasses["tools.spark.framework.flambe2_5D.spritesheet.PlistEntry"] = tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry;
+tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry.__name__ = true;
+tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry.prototype = {
+	__class__: tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry
+};
+var tools_spark_framework_flambe2_$5D_spritesheet_PlistParser = function() { };
+$hxClasses["tools.spark.framework.flambe2_5D.spritesheet.PlistParser"] = tools_spark_framework_flambe2_$5D_spritesheet_PlistParser;
+tools_spark_framework_flambe2_$5D_spritesheet_PlistParser.__name__ = true;
+tools_spark_framework_flambe2_$5D_spritesheet_PlistParser.parse = function(xmlDoc) {
+	var plist = [];
+	var frames = null;
+	var metadata = null;
+	var index = 0;
+	var $it0 = xmlDoc.firstElement().firstElement().elements();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(x.firstChild().get_nodeValue() == "frames") index = 1; else if(x.get_nodeName() == "dict" && index == 1) frames = x; else if(x.firstChild().get_nodeValue() == "metadata") index = 2; else if(x.get_nodeName() == "dict" && index == 2) metadata = x;
+	}
+	index = 1;
+	var tempEntry = new tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry();
+	var tempKey = "";
+	var $it1 = frames.elements();
+	while( $it1.hasNext() ) {
+		var x1 = $it1.next();
+		if(x1.get_nodeName() == "key" && index == 1) {
+			tempEntry.name = x1.firstChild().get_nodeValue();
+			index = 2;
+		} else if(x1.get_nodeName() == "dict" && index == 2) {
+			index = 1;
+			var $it2 = x1.elements();
+			while( $it2.hasNext() ) {
+				var info = $it2.next();
+				if(info.get_nodeName() == "key") tempKey = info.firstChild().get_nodeValue(); else switch(tempKey) {
+				case "frame":
+					var s = tools_spark_framework_flambe2_$5D_spritesheet_PlistParser.parseString(info.firstChild().get_nodeValue());
+					tempEntry.x = s[0];
+					tempEntry.y = s[1];
+					tempEntry.width = s[2];
+					tempEntry.height = s[3];
+					break;
+				case "sourceColorRect":
+					var s1 = tools_spark_framework_flambe2_$5D_spritesheet_PlistParser.parseString(info.firstChild().get_nodeValue());
+					tempEntry.sourceColorX = s1[0];
+					tempEntry.sourceColorY = s1[1];
+					break;
+				case "rotated":
+					if(info.get_nodeName() == "true") tempEntry.rotated = true; else tempEntry.rotated = false;
+					break;
+				}
+			}
+			plist.push(new tools_spark_framework_flambe2_$5D_spritesheet_PlistEntry(tempEntry));
+		}
+	}
+	return plist;
+};
+tools_spark_framework_flambe2_$5D_spritesheet_PlistParser.parseString = function(str) {
+	var ret = [];
+	var index;
+	var temp;
+	var buf = new StringBuf();
+	var _g1 = 0;
+	var _g = str.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		if(str.charAt(i) != "{" && str.charAt(i) != "}") buf.addSub(str.charAt(i),0);
+	}
+	var newString = buf.toString();
+	var _g2 = 0;
+	var _g11 = newString.split(",");
+	while(_g2 < _g11.length) {
+		var i1 = _g11[_g2];
+		++_g2;
+		ret.push(Std.parseFloat(i1));
+	}
+	return ret;
+};
+var tools_spark_framework_flambe2_$5D_spritesheet_Size = function(width,height) {
+	if(height == null) height = 0;
+	if(width == null) width = 0;
+	this.width = width;
+	this.height = height;
+};
+$hxClasses["tools.spark.framework.flambe2_5D.spritesheet.Size"] = tools_spark_framework_flambe2_$5D_spritesheet_Size;
+tools_spark_framework_flambe2_$5D_spritesheet_Size.__name__ = true;
+tools_spark_framework_flambe2_$5D_spritesheet_Size.prototype = {
+	__class__: tools_spark_framework_flambe2_$5D_spritesheet_Size
+};
+var tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame = function() {
+	this._offset = new flambe_math_Point(0,0);
+	this._offsetInPixels = new flambe_math_Point(0,0);
+	this._originalSize = new tools_spark_framework_flambe2_$5D_spritesheet_Size(0,0);
+	this._rectInPixels = new flambe_math_Rectangle(0,0,0,0);
+	this._rect = new flambe_math_Rectangle(0,0,0,0);
+	this._originalSizeInPixels = new tools_spark_framework_flambe2_$5D_spritesheet_Size(0,0);
+	this._textureFilname = "";
+};
+$hxClasses["tools.spark.framework.flambe2_5D.spritesheet.SpriteFrame"] = tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame.__name__ = true;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame.createWithTexture = function(texture,rect,rotated,offset,originalSize) {
+	var spriteFrame = new tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame();
+	spriteFrame.initWithTexture(texture,rect,rotated,offset,originalSize);
+	return spriteFrame;
+};
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame.prototype = {
+	isRotated: function() {
+		return this._rotated;
+	}
+	,getRect: function() {
+		return this._rect;
+	}
+	,getTexture: function() {
+		if(this._texture != null) return this._texture;
+		return null;
+	}
+	,getOffset: function() {
+		return new flambe_math_Point(this._offset.x,this._offset.y);
+	}
+	,initWithTexture: function(texture,rect,rotated,offset,originalSize) {
+		this._texture = texture;
+		this._rectInPixels = rect;
+		this._rect = rect;
+		this._offsetInPixels = offset;
+		this._offset = offset;
+		this._originalSizeInPixels = originalSize;
+		this._originalSize = originalSize;
+		this._rotated = rotated;
+		return true;
+	}
+	,__class__: tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame
+};
+var tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet = function(frame) {
+	flambe_display_Sprite.call(this);
+	this.frame = frame;
+};
+$hxClasses["tools.spark.framework.flambe2_5D.spritesheet.SpriteSheet"] = tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet.__name__ = true;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet.__super__ = flambe_display_Sprite;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet.prototype = $extend(flambe_display_Sprite.prototype,{
+	draw: function(g) {
+		this.g = g;
+		if(this.frame.isRotated()) {
+			g.translate(this.frame.getOffset().x,this.frame.getOffset().y + this.frame.getRect().height);
+			g.rotate(-90);
+			g.drawSubTexture(this.frame.getTexture(),0,0,this.frame.getRect().x,this.frame.getRect().y,this.frame.getRect().height,this.frame.getRect().width);
+		} else {
+			g.translate(this.frame.getOffset().x,this.frame.getOffset().y);
+			g.drawSubTexture(this.frame.getTexture(),0,0,this.frame.getRect().x,this.frame.getRect().y,this.frame.getRect().width,this.frame.getRect().height);
+		}
+	}
+	,getNaturalHeight: function() {
+		if(this.frame == null) return 0;
+		return this.frame.getRect().height;
+	}
+	,getNaturalWidth: function() {
+		if(this.frame == null) return 0;
+		return this.frame.getRect().width;
+	}
+	,__class__: tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet
+});
+var tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer = function(pack,plistName) {
+	this.isLooping = false;
+	this.paused = false;
+	this.currentIndex = 0;
+	flambe_Component.call(this);
+	var xmlDoc = Xml.parse(pack.getFile(plistName).toString());
+	this.plist = tools_spark_framework_flambe2_$5D_spritesheet_PlistParser.parse(xmlDoc);
+	this._spriteFramesInfo = [];
+	this.sprites = [];
+	if(this.texture == null) {
+		var name = plistName + "_sheet";
+		this.texture = pack.getTexture(name);
+	}
+	this._addSpriteFramesWithDictionary();
+	this._initSprites();
+	this._root = new flambe_Entity();
+	this.speed = -1;
+};
+$hxClasses["tools.spark.framework.flambe2_5D.spritesheet.SpriteSheetPlayer"] = tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer.__name__ = true;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer.__super__ = flambe_Component;
+tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer.prototype = $extend(flambe_Component.prototype,{
+	get_name: function() {
+		return "SpriteSheetPlayer_8";
+	}
+	,_addSpriteFramesWithDictionary: function() {
+		var _g = 0;
+		var _g1 = this.plist;
+		while(_g < _g1.length) {
+			var p = _g1[_g];
+			++_g;
+			var rect = new flambe_math_Rectangle(p.x,p.y,p.width,p.height);
+			var rotated = p.rotated;
+			var offset = new flambe_math_Point(p.sourceColorX,p.sourceColorY);
+			var size = new tools_spark_framework_flambe2_$5D_spritesheet_Size(0,0);
+			var frame = tools_spark_framework_flambe2_$5D_spritesheet_SpriteFrame.createWithTexture(this.texture,rect,rotated,offset,size);
+			this._spriteFramesInfo.push(frame);
+		}
+	}
+	,_initSprites: function() {
+		this.currentFrame = new tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet(this._spriteFramesInfo[0]);
+		this.currentIndex++;
+	}
+	,play: function() {
+		if(Std.instance(this._root.getComponent("Sprite_2"),tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheet) == null) {
+			this._root.add(this.currentFrame);
+			this.currentFrame.centerAnchor();
+		}
+		this.currentIndex = 0;
+		this.paused = false;
+	}
+	,loop: function() {
+		this.play();
+		this.isLooping = true;
+	}
+	,onAdded: function() {
+		this.owner.addChild(this._root);
+		this.oldTime = new Date().getTime();
+		this.curTime = new Date().getTime();
+	}
+	,onRemoved: function() {
+		this._root.parent.removeChild(this._root);
+		this.currentFrame.frame = this._spriteFramesInfo[0];
+		this.currentIndex = 0;
+		this.paused = false;
+		this.isLooping = false;
+	}
+	,onUpdate: function(dt) {
+		if(this.speed != -1) {
+			this.curTime = new Date().getTime();
+			if(this.curTime - this.oldTime < this.speed) return; else this.oldTime = this.curTime;
+		}
+		if(!this.paused && this.currentFrame != null) {
+			if(this.currentIndex == this._spriteFramesInfo.length) {
+				if(this.isLooping) this.currentIndex = 0; else this.paused = true;
+			}
+			if(!this.paused) this.currentFrame.frame = this._spriteFramesInfo[this.currentIndex++];
+		}
+	}
+	,setSpeed: function(s) {
+		this.speed = s;
+	}
+	,__class__: tools_spark_framework_flambe2_$5D_spritesheet_SpriteSheetPlayer
 });
 var tools_spark_framework_haxe_Filter = $hxClasses["tools.spark.framework.haxe.Filter"] = { __ename__ : true, __constructs__ : ["FInt","FBool","FEnum","FReg"] };
 tools_spark_framework_haxe_Filter.FInt = ["FInt",0];
@@ -24960,17 +25291,9 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		v236;
 	}
 	,parseGameNode: function(p_gameNode) {
-		tools_spark_framework_Console.info("Extending " + p_gameNode.get_nodeName() + " Node...");
 		if(this._extendGameNode(p_gameNode)) {
-			tools_spark_framework_Console.info("Extending " + p_gameNode.get_nodeName() + " Node COMPLETED");
-			tools_spark_framework_Console.info("Merging " + p_gameNode.get_nodeName() + " Node...");
 			this._mergeGameNode(p_gameNode);
-			tools_spark_framework_Console.info("Merging " + p_gameNode.get_nodeName() + " Node COMPLETED");
-			tools_spark_framework_Console.info("Validating " + p_gameNode.get_nodeName() + " Node...");
-			if(this._validateGameNode(p_gameNode)) {
-				tools_spark_framework_Console.info("Validating " + p_gameNode.get_nodeName() + " Node COMPLETED");
-				return true;
-			} else {
+			if(this._validateGameNode(p_gameNode)) return true; else {
 				tools_spark_framework_Console.error("Game Entity could not be validated");
 				return false;
 			}

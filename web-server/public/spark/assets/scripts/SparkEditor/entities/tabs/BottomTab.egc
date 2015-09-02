@@ -25,15 +25,19 @@
 					{
 						bar.setState('backgroundColor','rgb(33,48,61)');
 						bar.setState('height','100%');
-						
 						container.setState('height','0%');
 						
 						//Chat
 						var chatHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
 						chatHeader.setState('caption','Chat');
-						chatHeader.setState('fontSize','14');
-						chatHeader.setState('width','70');
-						chatHeader.setState('backgroundColor','rgb(1,84,239)');
+						chatHeader.setState('titleFontSize','15px');
+						chatHeader.setState('width','65');
+						chatHeader.setState('hasIcon',true);
+						chatHeader.setState('iconImage','toolbarIcon_Chat');
+						chatHeader.setState('iconWidth','19');
+						chatHeader.setState('iconHeight','15');
+						//chatHeader.setState('labelLeft',30);
+						//chatHeader.setState('backgroundColor','rgb(1,84,239)');
 						bar.addChild(chatHeader);
 
 						//container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.PropertiesWindow'));

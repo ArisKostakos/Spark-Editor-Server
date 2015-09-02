@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="SparkEditor.entities.editors.Editor">
+	<_States>
+		<_State id="name"><Value>Event Collection Editor</Value></_State>
+		<State><Id>eventSheetRun</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
 	<_Actions>
 		<_Action id="AssetLoaded">
 			<_Scripts>
@@ -299,9 +304,4 @@
 			</Scripts>
 		</Trigger>
 	</_Triggers>
-	
-	<_States>
-		<_State id="name"><Value>Event Collection Editor</Value></_State>
-		<State><Id>eventSheetRun</Id><Type>Dynamic</Type><Value>null</Value></State>
-	</_States>
 </Entity>

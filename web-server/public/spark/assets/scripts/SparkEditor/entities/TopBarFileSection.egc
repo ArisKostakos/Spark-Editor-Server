@@ -2,8 +2,9 @@
 <Entity extends="std.display.VGroup">
 	<_States>
 		<_State id="horizontalAlign"><Value>left</Value></_State>
-		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="verticalAlign"><Value>top</Value></_State>
 		<_State id="paddingLeft"><Value>4</Value></_State>
+		<_State id="paddingTop"><Value>4</Value></_State>
 		<_State id="height"><Value>100%</Value></_State>
 		<_State id="gap"><Value>4</Value></_State>
 	</_States>

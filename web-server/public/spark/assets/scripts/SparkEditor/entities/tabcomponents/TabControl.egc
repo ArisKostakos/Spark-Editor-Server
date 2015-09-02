@@ -29,12 +29,18 @@
 							Display.error('Changing To Scene');
 
 							view.setState('height','25');
+							
+							Logic.getEntityByName('ViewportTabSceneHeader').startAction('Selected'); //quick fix
+							Logic.getEntityByName('ViewportTabEventHeader').startAction('Unselected'); //quick fix
 						}
 						else if (windowName=="Events")
 						{
 							Display.error('Changing To Events');
 
 							view.setState('height','100%');
+							
+							Logic.getEntityByName('ViewportTabSceneHeader').startAction('Unselected'); //quick fix
+							Logic.getEntityByName('ViewportTabEventHeader').startAction('Selected'); //quick fix
 						}
 					}
 					

@@ -313,13 +313,13 @@
 			</_States>
 		</Action>
 		
-		<!-- CleanScene -->
+		<!-- DeleteSelected -->
 		<Action>
-			<Id>CleanScene</Id>
+			<Id>DeleteSelected</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.stopAction("CleanScene");
+					me.stopAction("DeleteSelected");
 					
 					var selectedEntities = me.getState('selectedEntities');
 					
@@ -429,16 +429,37 @@
 					
 					Display.error("scrolly scrolyyyyy: " + Input.mouse.getScroll());
 					
-					var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+					//Resize selected
+					if (Input.keyboard.isKeyDown(Key.Control))
+					{
+						var selectedEntities = me.getState('selectedEntities');
 					
-					//camera.setState('captureAreaX',maxBoundsX);
-					//camera.setState('captureAreaY',maxBoundsY);
-					camera.setState('captureAreaWidth',camera.getState('captureAreaWidth')+camera.getState('captureAreaWidth')*dir);
-					camera.setState('captureAreaHeight',camera.getState('captureAreaHeight')+camera.getState('captureAreaHeight')*dir);
-					
-					//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan above though..)
-					var editView = Logic.getEntityByName('Main View 2D');
-					camera.setState('scaleX',editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'));
+						//Get Scene
+						var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+						
+						if (selectedEntities.length==1)
+						{
+							var entity = selectedEntities[0];
+							
+							entity.setState('scaleX',entity.getState('scaleX')-dir);
+							entity.setState('scaleY',entity.getState('scaleY')-dir);
+							
+							entity.forceAction("UpdateScale");
+						}
+					}
+					else //zoom camera in out
+					{
+						var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+						
+						//camera.setState('captureAreaX',maxBoundsX);
+						//camera.setState('captureAreaY',maxBoundsY);
+						camera.setState('captureAreaWidth',camera.getState('captureAreaWidth')+camera.getState('captureAreaWidth')*dir);
+						camera.setState('captureAreaHeight',camera.getState('captureAreaHeight')+camera.getState('captureAreaHeight')*dir);
+						
+						//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan above though..)
+						var editView = Logic.getEntityByName('Main View 2D');
+						camera.setState('scaleX',editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'));
+					}
 				</Script>
 			</Scripts>
 		</Trigger>

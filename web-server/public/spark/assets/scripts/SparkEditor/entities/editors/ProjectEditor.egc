@@ -120,6 +120,7 @@
 							var spriterActorsFound = [];
 							var tilesFound = [];
 							var propsFound = [];
+							var collectiblesFound = [];
 							var backgroundsFound = [];
 							
 							//Initiate Load
@@ -160,6 +161,11 @@
 										Display.error("!!!! Prop FOUND!!!!");
 										propsFound.push(asset);
 									}
+									else if (asset.componentType=='Collectible')
+									{
+										Display.error("!!!! Collectible FOUND!!!!");
+										collectiblesFound.push(asset);
+									}
 									else if (asset.componentType=='Actor')
 									{
 										if (asset.tags[1]=='SpriterMain')
@@ -194,6 +200,11 @@
 							var propsPanel = Logic.getEntityByName('Editor Library Props Panel');
 							propsPanel.getAction('AddItem').setState('items', propsFound);
 							propsPanel.startAction('AddItem');
+							
+							//Fill Library with Collectibles
+							var collectiblesPanel = Logic.getEntityByName('Editor Library Collectibles Panel');
+							collectiblesPanel.getAction('AddItem').setState('items', collectiblesFound);
+							collectiblesPanel.startAction('AddItem');
 							
 							//Fill Library with Players
 							var playersPanel = Logic.getEntityByName('Editor Library Player Panel');
@@ -233,9 +244,9 @@
 
 								//Logic.getEntityByName('Navigation Bar View').setState('visible',true);
 								Logic.getEntityByName('Editor Left View').setState('visible',true);
-								////Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+								Logic.getEntityByName('Editor Bottom View').setState('visible',true);
 								////Logic.getEntityByName('Editor Right View').setState('visible',true);
-								////Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+								Logic.getEntityByName('Editor Viewport View').setState('visible',true);
 								//Logic.getEntityByName('Drag Surface View').setState('visible',true);
 								
 								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');

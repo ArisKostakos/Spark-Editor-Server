@@ -7,16 +7,36 @@
 			<Value>0</Value>
 		</State>
 		
+	
+	
 		<State>
 			<Id>WalkSpeed</Id>
 			<Type>Integer</Type>
 			<Value>600</Value>
 		</State>
+	
+		<State>
+			<Id>WalkLimit</Id>
+			<Type>Integer</Type>
+			<Value>1000</Value>
+		</State>
 		
 		<State>
 			<Id>JumpStrength</Id>
 			<Type>Integer</Type>
-			<Value>13000</Value>
+			<Value>15000</Value>
+		</State>
+	
+		<State>
+			<Id>OnAir</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+	
+		<State>
+			<Id>Crouching</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
 		</State>
 		
 	</_States>
@@ -50,8 +70,11 @@
 					//}
 					
 					//Display.error(me.getState('name') + " Feet Collided! [Start]");
-					me.setState('OnAirCounter',me.getState('OnAirCounter')+1);
-					Display.error("start MY OnAirCounter IS: " + me.getState('OnAirCounter'));
+					//me.setState('OnAirCounter',me.getState('OnAirCounter')+1);
+					//Display.error("start MY OnAirCounter IS: " + me.getState('OnAirCounter'));
+					
+					
+					me.setState('OnAir',false);
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -61,8 +84,8 @@
 			<Scripts>
 				<Script>
 					//Display.error(me.getState('name') + " Feet Collided! [End]");
-					if (me.getState('OnAirCounter')>0) me.setState('OnAirCounter',me.getState('OnAirCounter')-1);
-					Display.error("end MY OnAirCounter IS: " + me.getState('OnAirCounter'));
+					//if (me.getState('OnAirCounter')>0) me.setState('OnAirCounter',me.getState('OnAirCounter')-1);
+					//Display.error("end MY OnAirCounter IS: " + me.getState('OnAirCounter'));
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -71,6 +94,7 @@
 	<_Actions>
 		<_Action id="Constructor">
 			<_Scripts><Script>
+				me.startAction('Actor Update');
 				me.startAction('Camera Follow');
 				
 				var view = Logic.getEntityByName('Main View 2D Run');
@@ -205,13 +229,47 @@
 			</Scripts>
 		</Action>
 		
+		<Action>
+			<Id>Actor Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var actorVelocityX = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
+					var actorVelocityY = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "y");
+					Display.error("MY VELOCITY IS: " + actorVelocityX + ", " + actorVelocityY);
+					
+					
+					if (me.getState('Crouching')==true)
+					{
+						if (me.getState('2DMeshSpriterAnimForm')!="AnimationCrouching") me.setState('2DMeshSpriterAnimForm',"AnimationCrouching");
+					}
+					if (me.getState('OnAir')==true)
+					{
+						if (me.getState('2DMeshSpriterAnimForm')!="AnimationJumping") me.setState('2DMeshSpriterAnimForm',"AnimationJumping");
+					}
+					else if (actorVelocityX>10 || -10>actorVelocityX)
+					{
+						if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
+					}
+					else
+					{
+						if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
+					}
+					
+				</Script>
+			</Scripts>
+		</Action>
+		
 		<!--Continuous-->
 		<Action>
 			<Id>WalkLeft</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.setState('applyImpulseX',me.getState('WalkSpeed')*(-1));
+					var velocityX = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
+					//Display.error("MY X VELOCITY IS: " + skata);
+					if (velocityX> -me.getState('WalkLimit'))
+						me.setState('applyImpulseX',me.getState('WalkSpeed')*(-1));
 				</Script>
 			</Scripts>
 		</Action>
@@ -221,10 +279,10 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.setState('applyImpulseX',me.getState('WalkSpeed'));
-					
-					//var skata = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
+					var velocityX = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
 					//Display.error("MY X VELOCITY IS: " + skata);
+					if (me.getState('WalkLimit')>velocityX)
+						me.setState('applyImpulseX',me.getState('WalkSpeed'));
 				</Script>
 			</Scripts>
 		</Action>
@@ -235,13 +293,27 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					Display.error("MY OnAirCounter IS: " + me.getState('OnAirCounter'));
-					if (me.getState('OnAirCounter')>0)
+					if (me.getState('OnAir')==false)
+					{
+						me.setState('OnAir',true);
+						me.setState('applyImpulseY',me.getState('JumpStrength')*(-1));
+					}
+				/*
+				
+					var actorVelocityX = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
+					var actorVelocityY = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "y");
+					
+					//Display.error("MY OnAirCounter IS: " + me.getState('OnAirCounter'));
+					//if (me.getState('OnAirCounter')>0)
+					//{
+					if (10>actorVelocityY && actorVelocityY> -10)
 					{
 						me.setState('applyImpulseY',me.getState('JumpStrength')*(-1));
-						me.setState('OnAirCounter',0);
-						if (me.getState('2DMeshSpriterAnimForm')!="AnimationJumping") me.setState('2DMeshSpriterAnimForm',"AnimationJumping");
+						//me.setState('OnAirCounter',0);
+						//if (me.getState('2DMeshSpriterAnimForm')!="AnimationJumping") me.setState('2DMeshSpriterAnimForm',"AnimationJumping");
 					}
+					
+					*/
 				</Script>
 			</Scripts>
 		</Action>
@@ -250,9 +322,9 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					if (me.getState('OnAirCounter')>0)
+					if (me.getState('OnAir')==false)
 					{
-						if (me.getState('2DMeshSpriterAnimForm')!="AnimationCrouching") me.setState('2DMeshSpriterAnimForm',"AnimationCrouching");
+						me.setState('Crouching',true);
 					}
 				</Script>
 			</Scripts>
@@ -262,7 +334,7 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
+					me.setState('Crouching',false);
 				</Script>
 			</Scripts>
 		</Action>
@@ -273,7 +345,7 @@
 				<Script>
 					me.startAction("WalkLeft");
 					if (me.getState('scaleX') > 0) me.setState('scaleX',me.getState('scaleX')*(-1));
-					if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
+					//if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
 				</Script>
 			</Scripts>
 		</Action>
@@ -284,7 +356,7 @@
 				<Script>
 					me.stopAction("WalkLeft");
 					me.setState('velocityX',0);
-					if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
+					//if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
 				</Script>
 			</Scripts>
 		</Action>
@@ -295,7 +367,7 @@
 				<Script>
 					me.startAction("WalkRight");
 					if (me.getState('scaleX') > 0) {} else me.setState('scaleX',me.getState('scaleX')*(-1));
-					if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
+					//if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
 				</Script>
 			</Scripts>
 		</Action>
@@ -306,7 +378,7 @@
 				<Script>
 					me.stopAction("WalkRight");
 					me.setState('velocityX',0);
-					if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
+					//if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
 				</Script>
 			</Scripts>
 		</Action>

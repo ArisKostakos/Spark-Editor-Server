@@ -84,6 +84,113 @@
 				</Script>
 			</Scripts>
 		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_Delete</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						Logic.getEntityByName('Level Editor 2D Scene').startAction('DeleteSelected');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_Up</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Up");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_Down</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Down");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_Left</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Left");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_Right</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Right");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased_Up</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.forceAction("UpdatePosition");
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased_Down</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.forceAction("UpdatePosition");
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased_Left</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.forceAction("UpdatePosition");
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased_Right</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.forceAction("UpdatePosition");
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
@@ -212,6 +319,9 @@
 				<Script>
 					if (Input.pointer.isDown())
 					{
+						if (Input.pointer.distX()==0 && Input.pointer.distY()==0)
+							return; //don't grid lock and stuff.. (not good code..)
+						
 						var scale = Logic.getEntityByName('Editor Scene Edit Camera').getState('scaleX');
 						
 						var realX = me.getAction('Drag').getState('dragX')+Input.pointer.distX()/scale;
@@ -227,80 +337,7 @@
 					}
 					else
 					{
-						//We will need this function...
-						function firstElementNamed(p_xmlNode, p_elementName)
-						{
-							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-							{
-								return p_xmlNode.elementsNamed(p_elementName).next();
-							}
-							else
-							{
-								return null;
-							}
-						}
-						
-						//Save changes to xmlData
-						var xmlData = me.getState("xmlData");
-						//Display.error(xmlData);
-						//var entityXml = xmlData.elementsNamed('Entity').next();
-						
-						/*
-						//if no [_States], create it
-						var statesXml = firstElementNamed(xmlData,'_States');
-						if (statesXml==null)
-						{
-							statesXml = Xml.createElement('_States');
-							xmlData.addChild(statesXml);
-						}
-						
-						var states = statesXml.elementsNamed('_State');
-						//for each [_state] in [_states]
-						while (states.hasNext())
-						{
-							var stateChildXml = states.next();
-
-							if (stateChildXml.get("id")=="spaceX")
-							{
-								//Remove previous Value Node
-								var stateValueXml = firstElementNamed(stateChildXml,'Value');
-								stateChildXml.removeChild(stateValueXml);
-								
-								//Create New Value Node, correct its value
-								stateValueXml = Xml.createElement('Value');
-								stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX'))));
-								stateChildXml.addChild(stateValueXml);
-								Display.error("spaceX: " + stateValueXml.firstChild().toString());
-							}
-							else if (stateChildXml.get("id")=="spaceY")
-							{
-								//Remove previous Value Node
-								var stateValueXml = firstElementNamed(stateChildXml,'Value');
-								stateChildXml.removeChild(stateValueXml);
-								
-								//Create New Value Node, correct its value
-								stateValueXml = Xml.createElement('Value');
-								stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY'))));
-								stateChildXml.addChild(stateValueXml);
-								Display.error("spaceY: " + stateValueXml.firstChild().toString());
-							}
-						}
-						*/
-						
-						//adjust spaceX and spaceY
-						var states = firstElementNamed(xmlData,'_States');
-						
-						for (state in states.elementsNamed('_State'))
-						{
-							if (state.get('id')=='spaceX')
-							{
-								firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceX'));
-							}
-							else if (state.get('id')=='spaceY')
-							{
-								firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceY'));
-							}
-						}
+						me.forceAction("UpdatePosition");
 						
 						me.stopAction("Drag");
 					}
@@ -311,6 +348,107 @@
 				<State><Id>dragY</Id><Type>Decimal</Type><Value>0</Value></State>
 			</States>
 		</Action>
+		
+		<!-- Move -->
+		<Action>
+			<Id>Move</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var direction = me.getAction("Move").getState("Dir");
+					
+					if (direction=="Left")
+						me.setState("spaceX",me.getState("spaceX")-1);
+					else if (direction=="Right")
+						me.setState("spaceX",me.getState("spaceX")+1);
+					else if (direction=="Up")
+						me.setState("spaceY",me.getState("spaceY")-1);
+					else if (direction=="Down")
+						me.setState("spaceY",me.getState("spaceY")+1);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>Dir</Id><Type>Text</Type><Value>undefined</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>UpdatePosition</Id>
+			<Concurrency>Persistent</Concurrency> <!--Forced-->
+			<Scripts>
+				<Script>
+					//We will need this function...
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+					
+					//Save changes to xmlData
+					var xmlData = me.getState("xmlData");
+					
+					//adjust spaceX and spaceY
+					var states = firstElementNamed(xmlData,'_States');
+					
+					for (state in states.elementsNamed('_State'))
+					{
+						if (state.get('id')=='spaceX')
+						{
+							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceX'));
+						}
+						else if (state.get('id')=='spaceY')
+						{
+							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceY'));
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>UpdateScale</Id>
+			<Concurrency>Persistent</Concurrency> <!--Forced-->
+			<Scripts>
+				<Script>
+					//We will need this function...
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+					
+					//Save changes to xmlData
+					var xmlData = me.getState("xmlData");
+					
+					//adjust spaceX and spaceY
+					var states = firstElementNamed(xmlData,'_States');
+					
+					for (state in states.elementsNamed('_State'))
+					{
+						if (state.get('id')=='scaleX')
+						{
+							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('scaleX'));
+						}
+						else if (state.get('id')=='scaleY')
+						{
+							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('scaleY'));
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>	
 		
 		<!-- Clone -->
 		<Action>
@@ -419,6 +557,9 @@
 					
 					var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
 					editScene.addChild(childEntity);
+					
+					//Stupid gridlock (redo me properly, with hash probably)
+					childEntity.setState('spriteGridLock',me.getState('spriteGridLock'));
 					
 					//give it snapshot xml
 					childEntity.setState('xmlData',pureChildXml);

@@ -8,6 +8,18 @@
 		<_State id="2DmeshType">
 			<Value>Spritesheet</Value>
 		</_State>
+		
+		<State>
+			<Id>AnimationSpeed</Id>
+			<Type>Integer</Type>
+			<Value>100</Value>
+		</State>
+		
+		<State>
+			<Id>AnimationLoop</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
 	</_States>
 	
 	<_Form>

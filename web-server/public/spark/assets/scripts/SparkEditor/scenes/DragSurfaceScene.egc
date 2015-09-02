@@ -56,16 +56,22 @@
 									
 									var pureXml;
 									
+									var displayTypeData;
+									
+									var gridLock;
+									
 									if (componentType=='Tile')
 									{
 										//Get appropriate class (as an xml)
 										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/tile/Tile.egc').toString()).firstElement();
 										
 										//Gridlock localX and localY
-										var gridLock = 8; //64;
+										gridLock = 64; //64;
 										
 										localX = Math.round(localX/gridLock)*gridLock;
 										localY = Math.round(localY/gridLock)*gridLock;
+										
+										displayTypeData = "Image";
 									}
 									else if (componentType=='Prop')
 									{
@@ -78,7 +84,29 @@
 											pureXml = Xml.parse(Assets.getFile('lib/2d/platform/prop/PropDynamic.egc').toString()).firstElement();
 										
 										//Gridlock localX and localY
-										var gridLock = 8 ; //64; //8;
+										gridLock = 8 ; //64; //8;
+										
+										localX = Math.round(localX/gridLock)*gridLock;
+										localY = Math.round(localY/gridLock)*gridLock;
+										
+										displayTypeData = "Image";
+									}
+									else if (componentType=='Collectible')
+									{
+										//Get appropriate class (as an xml)
+										if (assetBeingDragged.tags[2]=="Coin")
+										{
+											pureXml = Xml.parse(Assets.getFile('lib/2d/platform/collectible/Coin.egc').toString()).firstElement();
+											displayTypeData = "Spritesheet";
+										}
+										else if (assetBeingDragged.tags[2]=="Jewel")
+										{
+											pureXml = Xml.parse(Assets.getFile('lib/2d/platform/collectible/Jewel.egc').toString()).firstElement();
+											displayTypeData = "Image";
+										}
+										
+										//Gridlock localX and localY
+										gridLock = 8 ; //64; //8;
 										
 										localX = Math.round(localX/gridLock)*gridLock;
 										localY = Math.round(localY/gridLock)*gridLock;
@@ -87,6 +115,9 @@
 									{
 										//Get appropriate class (as an xml)
 										pureXml = Xml.parse(Assets.getFile('lib/2d/platform/actor/player/PlayerPlatform.egc').toString()).firstElement();
+										displayTypeData = "Spriter";
+										
+										gridLock = 1 ;
 									}
 									else if (componentType=='Background')
 									{
@@ -103,6 +134,9 @@
 										
 										localX=scene.getState('boundsX') + imageWidth/2;
 										localY=scene.getState('boundsY') + imageHeight/2;
+										displayTypeData = "Image";
+										
+										gridLock = 1 ;
 									}
 									
 									//adjust spaceX and spaceY
@@ -124,7 +158,7 @@
 									//insert the correct images
 									var formStates = firstElementNamed(firstElementNamed(pureXml,'_Form'),'_States');
 									
-									if (componentType=='Tile' || componentType=='Background' || componentType=='Prop')
+									if (displayTypeData == "Image")
 									{
 										for (state in formStates.elementsNamed('State'))
 										{
@@ -134,11 +168,21 @@
 											}
 										}
 									}
-									else if (componentType=='Actor')
+									else if (displayTypeData=='Spriter')
 									{
 										for (state in formStates.elementsNamed('State'))
 										{
 											if (firstElementNamed(state,'Id').firstChild().nodeValue=='SpriterMain')
+											{
+												firstElementNamed(state,'Value').firstChild().nodeValue = 'image_' + assetBeingDragged.name;
+											}
+										}
+									}
+									else if (displayTypeData=='Spritesheet')
+									{
+										for (state in formStates.elementsNamed('State'))
+										{
+											if (firstElementNamed(state,'Id').firstChild().nodeValue=='SpritesheetMain')
 											{
 												firstElementNamed(state,'Value').firstChild().nodeValue = 'image_' + assetBeingDragged.name;
 											}
@@ -165,11 +209,12 @@
 									
 									Display.error('realXml: ' + realXml.toString());
 									//Create the entity from the uploaded lib asssets
-									var isSpriter = (realXml.get('extends').substr(realXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
+									//var isSpriter = (realXml.get('extends').substr(realXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
 									var tileGameEntity = Logic.gameFactory.createGameEntityByXml(realXml);
 									
 									//Grid Lock
-									if (isSpriter) tileGameEntity.setState('spriteGridLock',8); //1
+									//if (isSpriter) 
+										tileGameEntity.setState('spriteGridLock',gridLock); //1
 									
 									//give it snapshot xml
 									tileGameEntity.setState('xmlData',pureXml);

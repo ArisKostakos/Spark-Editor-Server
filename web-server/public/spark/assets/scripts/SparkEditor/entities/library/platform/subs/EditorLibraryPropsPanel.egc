@@ -29,6 +29,9 @@
 						var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 						
 						myNewItem.setState('src',assetUrl);
+						myNewItem.setState('width','70');
+						myNewItem.setState('height','70');
+						
 						container2d.addChild(myNewItem);
 						Display.error('asset #' + i + ':' + asset.fileName);
 						//Display.error(components[i].assets);
@@ -56,7 +59,7 @@
 						<_State id="layout"><Value>Tile</Value></_State>
 						<_State id="horizontalAlign"><Value>justify</Value></_State>
 						<_State id="verticalAlign"><Value>justify</Value></_State>
-						<_State id="requestedColumnCount"><Value>4</Value></_State>
+						<_State id="requestedColumnCount"><Value>3</Value></_State>
 						<_State id="horizontalGap"><Value>6</Value></_State>
 						<_State id="verticalGap"><Value>6</Value></_State>
 						<_State id="paddingLeft"><Value>6</Value></_State>

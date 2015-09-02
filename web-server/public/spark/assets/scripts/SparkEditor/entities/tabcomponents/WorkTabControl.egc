@@ -4,6 +4,13 @@
 		<Space>
 			<Entities>
 				<Entity extends="SparkEditor.entities.tabcomponents.WorkTabBar"/>
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>1</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(88,162,184)</Value></_State>
+					</_States>
+				</Entity>
 				<Entity extends="SparkEditor.entities.tabcomponents.TabContainer"/>
 			</Entities>
 		</Space>

@@ -2,7 +2,7 @@
 <Client>
 	<Project>
 		<Name>Spark Editor</Name>
-		<Version>0.01</Version>
+		<Version>0.25</Version>
 		<ExecuteAtLaunch>
 			<ExecuteModule>SparkEditor</ExecuteModule>
 		</ExecuteAtLaunch>
@@ -188,7 +188,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySkiesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryAudioPanel.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorAssetImport.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackgroundImage.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackground.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Networking.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/Editor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/ProjectEditor.egc</Asset>
@@ -217,13 +217,14 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPropsPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryCollectiblesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryBackgroundPanel.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryItemNoName.egc</Asset>
 		</Module>
 		
 		<Module id="DoNotLoad">
-			<Asset type="image" subtype="2D" location="local" id="backgroundImage" bytes='35672' forceLoadAsData='true'>signUpBackground.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="sparkLogoWhite" bytes='35672' forceLoadAsData='true'>sparkLogoWhite.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="userIcon" bytes='35672' forceLoadAsData='true'>userIcon.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="passwordIcon" bytes='35672' forceLoadAsData='true'>passwordIcon.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="nameIcon" bytes='35672' forceLoadAsData='true'>nameIcon.png</Asset>
@@ -251,22 +252,38 @@
 			<Asset type="image" subtype="2D" location="local" id="editor_save" bytes='35672' forceLoadAsData='true'>editor/topbar/save.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="editor_share" bytes='35672' forceLoadAsData='true'>editor/topbar/share.png</Asset>
 			
-			<!-- Left Bar, Library, Categories (normal) -->
+			<!-- Left Bar, Library, Categories (normal) 
 			<Asset type="image" subtype="2D" location="local" id="libcat_shapes" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/shape.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_objects" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/object.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_behaviors" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/behaviors.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_lights" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/lights.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_textures" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/textures.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_skies" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/skies.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_audio" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio.png</Asset>-->
+			<Asset type="image" subtype="2D" location="local" id="libcat_player" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/player.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_enemies" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/enemies.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_tiles" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/tiles.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_props" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/props.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_collectibles" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/collectibles.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_background" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/background.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_clouds" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/clouds.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_audio" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio.png</Asset>
 			
-			<!-- Left Bar, Library, Categories (selected) -->
+			<!-- Left Bar, Library, Categories (selected)
 			<Asset type="image" subtype="2D" location="local" id="libcat_shapes_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/shape_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_objects_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/object_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_behaviors_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/behaviors_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_lights_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/lights_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_textures_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/textures_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_skies_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/skies_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>-->
+			<Asset type="image" subtype="2D" location="local" id="libcat_player_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/player_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_enemies_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/enemies_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_tiles_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/tiles_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_props_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/props_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_collectibles_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/collectibles_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_background_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/background_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_clouds_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/clouds_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>
 			
 			<!-- Left Bar, Library, Misc -->
@@ -275,15 +292,31 @@
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
 			
 			<!-- Lobby, Projects -->
-			<Asset type="image" subtype="2D" location="local" id="lobbyProject_NewProject" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/NewProject.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Platform_Thumb" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTilePlatform_Thumb.png</Asset>
 			
 			<!-- Lobby, Projects, Template Thumbnails -->
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Blank" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileEmpty.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Platform" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTilePlatform.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Racing" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileRacing.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Tower" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileTower.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Flappy" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileFlappy.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Breakout" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileBreakout.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Match3" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTileMatch3.png</Asset>
+			
+			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Selected" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/checkMark.png</Asset>
+			
+			<!-- Toolbar Icons -->
+			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Scene" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/scene.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Scene_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/scene_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Events" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/events.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Events_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/events_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Chat" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/chat.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Chat_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/chat_selected.png</Asset>
+			
+			<!-- Events demo for Video Purposes -->
+			<Asset type="image" subtype="2D" location="local" id="eventsDemo1" bytes='35672' forceLoadAsData='true'>editor/eventsDemo1.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="eventsDemo2" bytes='35672' forceLoadAsData='true'>editor/eventsDemo2.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="eventsDemo3" bytes='35672' forceLoadAsData='true'>editor/eventsDemo3.png</Asset>
 		</Module>
 	</Assets>
 	

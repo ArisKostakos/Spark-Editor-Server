@@ -26,6 +26,11 @@
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
+		<State>
+			<Id>physicsSensorFlag</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
 		<State><!--import (physics engine feedback)-->
 			<Id>physicsBody</Id>
 			<Type>Dynamic</Type>

@@ -75,6 +75,12 @@
 					else
 						Logic.getEntityByName('Editor Library Props Panel').setState('display','none');
 					
+					//Collectibles
+					if (Logic.getEntityByName('EditorLibraryCollectibles') == selected)
+						Logic.getEntityByName('Editor Library Collectibles Panel').setState('display','inline');
+					else
+						Logic.getEntityByName('Editor Library Collectibles Panel').setState('display','none');
+					
 					//Background
 					if (Logic.getEntityByName('EditorLibraryBackground') == selected)
 						Logic.getEntityByName('Editor Library Background Panel').setState('display','inline');
@@ -103,80 +109,80 @@
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryPlayer</Value></_State>
 							<_State id="buttonText"><Value>Player</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_player</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(56,192,182)</Value></_State>
+							<_State id="imageWidth"><Value>28</Value></_State>
+							<_State id="imageHeight"><Value>39</Value></_State>
 						</_States></Entity>
 						
 						<!-- Enemies -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryEnemies</Value></_State>
 							<_State id="buttonText"><Value>Enemies</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_enemies</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(236,49,87)</Value></_State>
+							<_State id="imageWidth"><Value>36</Value></_State>
+							<_State id="imageHeight"><Value>26</Value></_State>
 						</_States></Entity>
 						
 						<!-- Tiles -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryTiles</Value></_State>
 							<_State id="buttonText"><Value>Tiles</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_tiles</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(239,130,67)</Value></_State>
+							<_State id="imageWidth"><Value>40</Value></_State>
+							<_State id="imageHeight"><Value>29</Value></_State>
 						</_States></Entity>
 						
 						<!-- Props -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryProps</Value></_State>
 							<_State id="buttonText"><Value>Props</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_props</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(43,194,63)</Value></_State>
+							<_State id="imageWidth"><Value>38</Value></_State>
+							<_State id="imageHeight"><Value>37</Value></_State>
 						</_States></Entity>
 						
 						<!-- Collectibles -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryCollectibles</Value></_State>
 							<_State id="buttonText"><Value>Collectibles</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_collectibles</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(255,204,41)</Value></_State>
+							<_State id="imageWidth"><Value>44</Value></_State>
+							<_State id="imageHeight"><Value>46</Value></_State>
 						</_States></Entity>
 						
 						<!-- Background -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryBackground</Value></_State>
 							<_State id="buttonText"><Value>Background</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_background</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(159,194,43)</Value></_State>
+							<_State id="imageWidth"><Value>46</Value></_State>
+							<_State id="imageHeight"><Value>25</Value></_State>
 						</_States></Entity>
 						
 						<!-- Clouds -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryClouds</Value></_State>
 							<_State id="buttonText"><Value>Clouds</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="imageName"><Value>libcat_clouds</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(0,204,255)</Value></_State>
+							<_State id="imageWidth"><Value>34</Value></_State>
+							<_State id="imageHeight"><Value>24</Value></_State>
 						</_States></Entity>
 						
-						<!-- Sound -->
+						<!-- Audio -->
 						<Entity extends="SparkEditor.entities.EditorLibraryCategoryButton"><_States>
 							<_State id="name"><Value>EditorLibraryAudio</Value></_State>
-							<_State id="buttonText"><Value>Sound</Value></_State>
-							<_State id="imageName"><Value>libcat_shapes</Value></_State>
-							<_State id="selectedTextColor"><Value>rgb(148,194,43)</Value></_State>
-							<_State id="imageWidth"><Value>24</Value></_State>
-							<_State id="imageHeight"><Value>23</Value></_State>
+							<_State id="buttonText"><Value>Audio</Value></_State>
+							<_State id="imageName"><Value>libcat_audio</Value></_State>
+							<_State id="selectedTextColor"><Value>rgb(194,70,235)</Value></_State>
+							<_State id="imageWidth"><Value>26</Value></_State>
+							<_State id="imageHeight"><Value>31</Value></_State>
 						</_States></Entity>
 					</Entities></Space></Form>
 				</Entity>
@@ -198,12 +204,12 @@
 						<!-- Props -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryPropsPanel"/>
 						<!-- Collectibles -->
-						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
+						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryCollectiblesPanel"/>
 						<!-- Background -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryBackgroundPanel"/>
 						<!-- Clouds -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
-						<!-- Sound -->
+						<!-- Audio -->
 						<Entity extends="SparkEditor.entities.library.platform.subs.EditorLibraryTilesPanel"/>
 					</Entities></Space></Form>
 				</Entity>
