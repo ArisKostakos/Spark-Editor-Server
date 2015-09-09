@@ -23,7 +23,7 @@ handler.getPopulated = function(msg, session, next) {
 
 
     //Find Assets
-    database.findAndDeepPopulate(database.Asset, {owner: developer._id}, "fork owner accessControl assetDependancies owner.user",
+    database.findAndDeepPopulate(database.Asset, {owner: developer._id, 'tags.0': project.name}, "fork owner accessControl assetDependancies owner.user",
     //database.findAndDeepPopulate(database.Asset, {}, "fork owner accessControl assetDependancies owner.user",
         function (err, objects_found) {
             //Handle Error
