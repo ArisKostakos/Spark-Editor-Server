@@ -222,6 +222,7 @@
 							Assets.successSignal.connect(function () {
 								var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
 								Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
+								
 								//temp scene stuff
 								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
 								sceneEditor.setState('assetUserName', assetUserName);
@@ -229,14 +230,14 @@
 								sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
 								sceneEditor.startAction('GetAsset');
 							
-								/*
+								
 								//temp eventsheet stuff
 								var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
 								eventsheetEditor.setState('assetUserName', assetUserName);
 								eventsheetEditor.setState('assetType','script');
-								eventsheetEditor.setState('assetName','blank.events.MainEventSheet');
+								eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
 								eventsheetEditor.startAction('GetAsset');
-								*/
+								
 								
 								
 								//enter project gui

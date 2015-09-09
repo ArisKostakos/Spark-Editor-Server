@@ -210,12 +210,12 @@
 			<Id>Camera Follow</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
-				<Script>
+				<Script>return;
 					var actorPositionX = Logic.reflectFieldOfField(me.getState('physicsBody'),"position", "x");
 					//Display.error("MY X POSITION IS: " + actorPositionX);
 					
 					var camera = Logic.getEntityByName('Editor Scene Run Camera');
-					var platformScene = Logic.getEntityByName('Platform Scene');
+					var platformScene = Logic.getEntityByName('Main Scene');
 					
 					//The idea is that the actor is centered.. if possible..
 					var newCameraCaptureX = actorPositionX-camera.getState('captureAreaWidth')/2;
@@ -236,7 +236,7 @@
 				<Script>
 					var actorVelocityX = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
 					var actorVelocityY = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "y");
-					Display.error("MY VELOCITY IS: " + actorVelocityX + ", " + actorVelocityY);
+					//Display.error("MY VELOCITY IS: " + actorVelocityX + ", " + actorVelocityY);
 					
 					
 					if (me.getState('Crouching')==true)

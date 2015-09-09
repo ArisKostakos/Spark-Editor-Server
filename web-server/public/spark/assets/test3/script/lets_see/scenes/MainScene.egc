@@ -1,7 +1,7 @@
 <Entity extends="lib.2d.platform.scene.PlatformScene">
 	<_States>
 		<_State id="name">
-			<Value>Platform Scene</Value>
+			<Value>Main Scene</Value>
 		</_State>
 	</_States>
 	
@@ -6385,6 +6385,47 @@
 	<_Form>
 		<_States>
 			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.props.sign (2)</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<!-- Static Physics-->
+		<Entity extends="lib.2d.physics.behaviors.entity.Static">
+			<_States>
+				<_State id="physicsShape"><Value>Polygon</Value></_State>
+				<_State id="physicsMaterial"><Value>Steel</Value></_State>
+			</_States>
+			<Extends>
+				<!-- Collectible-->
+				<Entity extends="lib.2d.platform.behaviors.collectible.Collectible">
+					<_States>
+
+					</_States>
+					<Extends>
+						<!-- Win Point-->
+						<Entity extends="lib.2d.platform.behaviors.collectible.Win_Point">
+							<_States>
+
+							</_States>
+						</Entity>
+					</Extends>
+				</Entity>
+			</Extends>
+		</Entity>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Jewel</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1152</Value></_State>
+		<_State id="spaceY"><Value>432</Value></_State>
+		<_State id="scaleX"><Value>1.3500000000000003</Value></_State>
+		<_State id="scaleY"><Value>1.3500000000000003</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.collectibles.jewelBlue</Value></State>
 		</_States>
 	</_Form>
 </Entity></Entities></Space></Form></Entity>
