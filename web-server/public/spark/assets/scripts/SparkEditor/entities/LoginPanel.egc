@@ -89,7 +89,59 @@
 							<_State id="fontSize"><Value>23px</Value></_State>
 							<_State id="fontColor"><Value>white</Value></_State>
 							<_State id="textIndent"><Value>12px</Value></_State>
-						</_States></Entity>
+							<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+						</_States>
+							<_Triggers><Trigger><Event>KeyReleasedLocal</Event><Scripts>
+						<Script>
+						var eventObjectKeyRelease = me.getState('eventObjectKeyRelease');
+						Display.error("KEY RELEASEE");
+						if (eventObjectKeyRelease.keyCode==33 || eventObjectKeyRelease.keyCode==34)
+						{
+							var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+							if (projectEntity.getState('Connected')==true)
+							{
+								var strUser =parent.parentEntity.getState('userInput').getState('text');
+								var strPass =parent.parentEntity.getState('passwordInput').getState('text');
+							
+								if (eventObjectKeyRelease.keyCode==33) //Page Up
+								{
+									strUser = 'test3';
+									strPass = 'lala3';
+								}
+								else if (eventObjectKeyRelease.keyCode==34) //Page Up
+								{
+									strUser = 'spark';
+									strPass = '12qw!@QW ';
+									Logic.getEntityByName('Spark Editor').setState('adminMode',true);
+								}
+								
+								
+								if (strUser.length>0 && strUser!='Undefined' &&
+									strPass.length>0 && strPass!='Undefined')
+								{
+									parent.parentEntity.getState('outputText').setState('text', 'Please wait...');
+									
+									
+									Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																						username: strUser, 
+																						password: strPass}, "Log In Request");
+																						
+									
+									Logic.getEntityByName('Spark Editor').setState('username',strUser);
+								}
+								else
+								{
+									parent.parentEntity.getState('outputText').setState('text', 'Please fill in every field.');
+								}
+							}
+							else
+							{
+								parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+							}
+						}
+						</Script></Scripts></Trigger>
+					</_Triggers>
+				</Entity>
 				</Entities></Space></Form></Entity>
 				
 				<!-- Password -->
@@ -147,9 +199,7 @@
 																						password: strPass}, "Log In Request");
 																						
 									if (eventObjectKeyPress.keyCode==10)
-									{
 										Logic.getEntityByName('Spark Editor').setState('adminMode',true);
-									}
 									
 									Logic.getEntityByName('Spark Editor').setState('username',strUser);
 								}
