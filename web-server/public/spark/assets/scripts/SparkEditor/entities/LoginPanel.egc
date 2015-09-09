@@ -122,7 +122,49 @@
 						<_State id="fontSize"><Value>23px</Value></_State>
 						<_State id="fontColor"><Value>white</Value></_State>
 						<_State id="textIndent"><Value>12px</Value></_State>
-					</_States></Entity>
+						<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+					</_States>
+					<_Triggers><Trigger><Event>KeyPressedLocal</Event><Scripts>
+						<Script>
+						var eventObjectKeyPress = me.getState('eventObjectKeyPress');
+						
+						if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
+						{
+							var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+							if (projectEntity.getState('Connected')==true)
+							{
+								var strUser =parent.parentEntity.getState('userInput').getState('text');
+								var strPass =parent.parentEntity.getState('passwordInput').getState('text');
+								
+								if (strUser.length>0 && strUser!='Undefined' &&
+									strPass.length>0 && strPass!='Undefined')
+								{
+									parent.parentEntity.getState('outputText').setState('text', 'Please wait...');
+									
+									
+									Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																						username: strUser, 
+																						password: strPass}, "Log In Request");
+																						
+									if (eventObjectKeyPress.keyCode==10)
+									{
+										Logic.getEntityByName('Spark Editor').setState('adminMode',true);
+									}
+									
+									Logic.getEntityByName('Spark Editor').setState('username',strUser);
+								}
+								else
+								{
+									parent.parentEntity.getState('outputText').setState('text', 'Please fill in every field.');
+								}
+							}
+							else
+							{
+								parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+							}
+						}
+						</Script></Scripts></Trigger>
+					</_Triggers></Entity>
 				</Entities></Space></Form></Entity>
 				
 				<!-- Login Button -->
@@ -141,40 +183,40 @@
 				</_States>
 				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
 				<Script>
-				var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
-				if (projectEntity.getState('Connected')==true)
-				{
-					var strUser =parent.getState('userInput').getState('text');
-					var strPass =parent.getState('passwordInput').getState('text');
-					//strUser = 'aris';
-					//strPass = 'r0diof';
-					//strUser = 'test3';
-					//strPass = 'lala3';
-					//strUser = 'spark';
-					//strPass = '12qw!@QW ';
-					
-					
-					if (strUser.length>0 && strUser!='Undefined' &&
-						strPass.length>0 && strPass!='Undefined')
+					var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+					if (projectEntity.getState('Connected')==true)
 					{
-						parent.getState('outputText').setState('text', 'Please wait...');
+						var strUser =parent.getState('userInput').getState('text');
+						var strPass =parent.getState('passwordInput').getState('text');
+						//strUser = 'aris';
+						//strPass = 'r0diof';
+						//strUser = 'test3';
+						//strPass = 'lala3';
+						//strUser = 'spark';
+						//strPass = '12qw!@QW ';
 						
-						Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
-																			username: strUser, 
-																			password: strPass}, "Log In Request");
-																			
-						Logic.getEntityByName('Spark Editor').setState('username',strUser);
+						
+						if (strUser.length>0 && strUser!='Undefined' &&
+							strPass.length>0 && strPass!='Undefined')
+						{
+							parent.getState('outputText').setState('text', 'Please wait...');
+							
+							Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																				username: strUser, 
+																				password: strPass}, "Log In Request");
+																				
+							Logic.getEntityByName('Spark Editor').setState('username',strUser);
+						}
+						else
+						{
+							parent.getState('outputText').setState('text', 'Please fill in every field.');
+						}
+							
 					}
 					else
 					{
-						parent.getState('outputText').setState('text', 'Please fill in every field.');
+						parent.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
 					}
-						
-				}
-				else
-				{
-					parent.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
-				}
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 				
@@ -311,7 +353,7 @@
 							
 							//Fill Dashboard View with projects
 							var dashboardScene;
-							if (Logic.getEntityByName('Spark Editor').getState('username')=="spark")
+							if (Logic.getEntityByName('Spark Editor').getState('adminMode')==true)
 								dashboardScene = Logic.getEntityByName('Dashboard Admin');
 							else
 							{

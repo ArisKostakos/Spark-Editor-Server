@@ -189,5 +189,11 @@
 			<Type>Boolean</Type>
 			<Value>false</Value>
 		</State>
+				
+		<State>
+			<Id>adminMode</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
 	</_States>
 </Entity>
