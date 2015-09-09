@@ -9,6 +9,7 @@
 	<Form>
 		<Space>
 			<Entities>
+				<!--
 				<Entity extends="std.display.Image">
 					<_States>
 						<_State id="src"><Value>eventsDemo1</Value></_State>
@@ -65,6 +66,7 @@
 						<_State id="display"><Value>none</Value></_State>
 					</_States>
 				</Entity>
+					-->
 			</Entities>
 		</Space>
 	</Form>

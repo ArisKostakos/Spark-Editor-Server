@@ -128,8 +128,8 @@
 						{
 							Display.error("Project found. Connecting...");
 							
-							//Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
-							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: My first game!'); //NAME MODS
+							Logic.getEntityByName('Top Bar Project Text').setState('text','Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+							//Logic.getEntityByName('Top Bar Project Text').setState('text','Project: My first game!'); //NAME MODS
 
 							//Try some init stuff
 							Display.error("Doing INIT stuff!");

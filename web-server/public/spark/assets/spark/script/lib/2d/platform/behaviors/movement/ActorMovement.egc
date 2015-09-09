@@ -24,7 +24,7 @@
 		<State>
 			<Id>JumpStrength</Id>
 			<Type>Integer</Type>
-			<Value>15000</Value>
+			<Value>17000</Value>
 		</State>
 	
 		<State>
@@ -73,8 +73,8 @@
 					//me.setState('OnAirCounter',me.getState('OnAirCounter')+1);
 					//Display.error("start MY OnAirCounter IS: " + me.getState('OnAirCounter'));
 					
-					
-					me.setState('OnAir',false);
+					if (Input.keyboard.isKeyDown(Key.W)==false)
+						me.setState('OnAir',false);
 				</Script>
 			</Scripts>
 		</Trigger>
