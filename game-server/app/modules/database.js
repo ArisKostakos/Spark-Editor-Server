@@ -82,13 +82,42 @@ exp.Module = Module;
 //IncludeQuery
 var includeQuerySchema = mongoose.Schema({
     tags: [String], //(for beginer editor, eventsheet editor, brick editor, programming, everything)
-    queryHidden: String,
-    queryVisible: String,
-    projectReference: {type: Schema.Types.ObjectId, ref: 'Project'} //to query the includes externally
+    query: String
 });
 includeQuerySchema.plugin(deepPopulate, {});
 var IncludeQuery = mongoose.model('IncludeQuery', includeQuerySchema);
 exp.IncludeQuery = IncludeQuery;
+
+//LibraryCollection
+var libraryCollectionSchema = mongoose.Schema({
+    owner: {type: Schema.Types.ObjectId, ref: 'Developer'},
+    title: String,  //'Sprites'
+
+    //filter
+    //types: [], //image,sound,data,..
+    //componentTypes: []? String, //things here act as both the filter for our includes, AND import, AND how to create our include query when we do add more from DB from this category
+    //tags: [], //SpriterMain, ..
+
+
+    //import [image,spritesheet,spriter,sound,egc,..]   //on the editor, we maintain a hash that links file extensions to importTypes, such as [image,spritesheet,spriter,sound,egc,..]
+                                                        //Also, the editor knows how to handle an import type of say image (appropriate dialog, and also what asset to create on the DB, and what tags, etc..)
+
+    //on drag to stage creation
+    //baseClass: [Asset] the base class extended when added to stage
+    //behaviors: [Asset] (a list of behavior components that will be added automatically when thingie added to stage
+
+    //display
+    tileWidth: Number, //64
+    tileHeight: Number, //64
+    iconName: String, //libSpritesIcon
+    titleColor: String, //#34002f or red
+    tags: [String] // (for whatever, special conditions(background Image), weak linking, etc..) [first tag is for project created? hmm eh.. nuhhhhhhhhh]
+
+});
+libraryCollectionSchema.plugin(deepPopulate, {});
+var LibraryCollection = mongoose.model('LibraryCollection', libraryCollectionSchema);
+exp.LibraryCollection = LibraryCollection;
+
 
 //Asset
 var assetSchema = mongoose.Schema({

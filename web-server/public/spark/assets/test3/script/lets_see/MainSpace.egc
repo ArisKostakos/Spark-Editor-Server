@@ -15,6 +15,7 @@
 			<Entities>
 				<Entity extends="this_game_is_cool.MainStage"/>
 				<Entity extends="this_game_is_cool.scenes.MainScene"/>
+				<Entity extends="this_game_is_cool.events.MainEventSheet"/>
 				<Entity extends="this_game_is_cool.cameras.MainCamera"/>
 			</Entities>
 		</Space>

@@ -10,6 +10,12 @@
 			<Type>Text</Type>
 			<Value>Untitled</Value>
 		</State>
+		
+		<State>
+			<Id>id</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
 	</States>
 	
 	<Form><Space/></Form>

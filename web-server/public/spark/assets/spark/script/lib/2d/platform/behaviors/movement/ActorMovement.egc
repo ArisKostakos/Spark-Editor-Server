@@ -210,7 +210,7 @@
 			<Id>Camera Follow</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
-				<Script>return;
+				<Script>
 					var actorPositionX = Logic.reflectFieldOfField(me.getState('physicsBody'),"position", "x");
 					//Display.error("MY X POSITION IS: " + actorPositionX);
 					
