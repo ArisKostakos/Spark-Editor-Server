@@ -76,7 +76,7 @@ handler.fork = function(msg, session, next) {
                             var templateProject = object_found;
 
                             //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
-                            var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: [], accessControl: []};
+                            var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: [], libraryCollections: [], accessControl: []};
 
                             //Create Project
                             database.create(database.Project, raw_Project,
@@ -271,7 +271,7 @@ handler.create = function(msg, session, next) {
                 next(null, {code: "exists"});
             else
             {
-                var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, modules: [], tags: tags, includes: [], accessControl: []};
+                var raw_Project = {name: projectName, version: '0.0.1', title: projectName, owner: developer._id, modules: [], tags: tags, includes: [], libraryCollections: [], accessControl: []};
 
                 //Create Project
                 database.create(database.Project, raw_Project,
