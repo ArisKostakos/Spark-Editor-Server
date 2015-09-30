@@ -8,7 +8,7 @@ var deepPopulate = require('mongoose-deep-populate');
 var exp = module.exports;
 var db = mongoose.connection;
 
-
+exp.mongoose = mongoose;
 
 // DB OBJECTS //
 

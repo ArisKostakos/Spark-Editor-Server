@@ -170,7 +170,7 @@ handler.createLibraryCollection = function(msg, session, next) {
 
 
     var raw_LibraryCollection = {owner: developer._id, title: "Image", tileWidth: 64, tileHeight: 64, iconName: "libcat_image", titleColor: "rgb(59,185,176)", titleColorSelected: "rgb(65,80,97)", tags: [],
-                                baseClass: ObjectID("5518af05ba008d6a082229bf"), behaviors: [],
+                                baseClass: database.mongoose.Types.ObjectId("5518af05ba008d6a082229bf"), behaviors: [],
                                 importTypes: ["image"], filterTypes: ['image'], filterComponentTypes: [], filterTags: []};
 
     //Create Library Collection
