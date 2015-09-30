@@ -83,7 +83,7 @@ exp.Module = Module;
 //IncludeQuery
 var includeQuerySchema = mongoose.Schema({
     tags: [String], //(for beginer editor, eventsheet editor, brick editor, programming, everything)
-    query: String
+    query: Object
 });
 includeQuerySchema.plugin(deepPopulate, {});
 var IncludeQuery = mongoose.model('IncludeQuery', includeQuerySchema);

@@ -108,5 +108,11 @@
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
+		
+		<State>
+			<Id>selectable</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
 	</_States>
 </Entity>

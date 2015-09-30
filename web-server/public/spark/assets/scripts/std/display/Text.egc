@@ -15,5 +15,9 @@
 		<_State id="NCmeshType">
 			<Value>Div</Value>
 		</_State>
+		
+		<_State id="cursor">
+			<Value>default</Value>
+		</_State>
 	</_States>
 </Entity>

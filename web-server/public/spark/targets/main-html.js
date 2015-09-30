@@ -15850,6 +15850,14 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		if(this.gameEntity.getState("textIndent") != null && this.gameEntity.getState("textIndent") != "Undefined") this._instances.get(p_view2_5D).style.textIndent = this.gameEntity.getState("textIndent");
 		if(this.gameEntity.getState("cursor") != null && this.gameEntity.getState("cursor") != "Undefined") this._instances.get(p_view2_5D).style.cursor = this.gameEntity.getState("cursor");
 		if(this.gameEntity.getState("white-space") != null && this.gameEntity.getState("white-space") != "Undefined") this._instances.get(p_view2_5D).style.whiteSpace = this.gameEntity.getState("white-space");
+		if(this.gameEntity.getState("selectable") != null) {
+			if(this.gameEntity.getState("selectable") == false) {
+				this._instances.get(p_view2_5D).style.setProperty("-webkit-user-select","none");
+				this._instances.get(p_view2_5D).style.setProperty("-moz-user-select","none");
+				this._instances.get(p_view2_5D).style.setProperty("-ms-user-select","none");
+				this._instances.get(p_view2_5D).style.setProperty("user-select","none");
+			}
+		}
 	}
 	,_updateImageSrc: function(p_src,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
