@@ -299,10 +299,9 @@ handler.create = function(msg, session, next) {
 handler.createIncludeQuery = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
-    var projectName = msg.projectName;
-    var tags = msg.tags;
-    var user = session.get('user');
-    var developer = session.get('developer');
+
+    //var user = session.get('user');
+    //var developer = session.get('developer');
 
     console.warn("Creating test Include Query");
 
