@@ -39,7 +39,81 @@
 			<Event>NetworkRequest</Event>
 			<Scripts>
 				<Script>
-					if (Comms.getRequestData("Project Assets Request")!=null)
+					if (Comms.getRequestData("Project Main Module Assets Request")!=null)
+					{
+						var data = Comms.getRequestData("Project Main Module Assets Request");
+						
+						if (data.code=="success")
+						{
+							Display.error('Requesting Main Module Assets success!');
+							
+							//Get Username
+							var userName = me.getState('assetUserName');
+							
+							//Initiate Load
+							Assets.initiateBatch();
+							
+							var i = 0;
+							while (data.assets.length>i)
+							{
+								//Get AssetDb
+								var asset = data.assets[i];
+								
+								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								
+								Display.error("assetUrl: " + assetUrl);
+								var assetId;
+								
+								//If Asset is Script
+								if (asset.type=="script")
+								{
+									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								}
+								else if (asset.type=="image")
+								{
+									assetId = 'image_' + asset.name;
+								}
+								
+								Assets.addFile(assetUrl, assetId);
+								
+								
+								Display.error(data.assets[i].name);
+								i+=1;
+							}
+							
+							
+							var assetUserName = me.getState('assetUserName');
+							
+							var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
+							Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
+							
+							//Event Listener
+							Assets.successSignal.connect(function () {
+								//temp scene stuff
+								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+								sceneEditor.setState('assetUserName', assetUserName);
+								sceneEditor.setState('assetType','script');
+								sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
+								sceneEditor.startAction('GetAsset');
+							
+								
+								//temp eventsheet stuff
+								var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+								eventsheetEditor.setState('assetUserName', assetUserName);
+								eventsheetEditor.setState('assetType','script');
+								eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
+								eventsheetEditor.startAction('GetAsset');
+							}).once();
+							
+							//Load
+							Assets.loadBatch();
+						}
+						else
+						{
+							Display.error('Error Requesting Main Module Assets!');
+						}
+					}
+					else if (Comms.getRequestData("Project Assets Request")!=null)
 					{
 						var data = Comms.getRequestData("Project Assets Request");
 						
@@ -51,9 +125,6 @@
 							var userName = me.getState('assetUserName');
 							
 							var spritesFound = [];
-							
-							//Initiate Load
-							//Assets.initiateBatch();
 							
 							var i = 0;
 							while (data.assets.length>i)
@@ -108,7 +179,7 @@
 							objectsPanel.startAction('AddItemNoUpload');
 							*/
 							
-							var assetUserName = me.getState('assetUserName');
+							
 							
 							//Event Listener
 							//Assets.successSignal.connect(function () {}).once();
@@ -117,27 +188,6 @@
 							//Assets.loadBatch();
 							
 							//Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
-							
-							var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
-							Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
-							
-							
-							
-							
-							//temp scene stuff
-							var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-							sceneEditor.setState('assetUserName', assetUserName);
-							sceneEditor.setState('assetType','script');
-							sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
-							sceneEditor.startAction('GetAsset');
-						
-							
-							//temp eventsheet stuff
-							var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
-							eventsheetEditor.setState('assetUserName', assetUserName);
-							eventsheetEditor.setState('assetType','script');
-							eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
-							eventsheetEditor.startAction('GetAsset');
 						}
 						else
 						{
