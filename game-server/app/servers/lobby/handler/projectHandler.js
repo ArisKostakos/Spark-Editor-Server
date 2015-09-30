@@ -155,7 +155,7 @@ handler.fork = function(msg, session, next) {
     );
 }
 
-function forkAssets(self, msg, session, assets, index, addToModule, cb) {
+function forkAssets(self, msg, session, assets, index, moduleContainer, cb) {
     if (index<assets.length)
     {
         //put user into channel
@@ -167,26 +167,44 @@ function forkAssets(self, msg, session, assets, index, addToModule, cb) {
             }
 
             //Add Reference to Module
-            addToModule.assets.push(asset_created._id);
+            moduleContainer.assets.push(asset_created._id);
 
             //Next
-            forkAssets(self, msg, session, assets, index+1, addToModule, cb);
+            forkAssets(self, msg, session, assets, index+1, moduleContainer, cb);
         });
     }
     else
     {
-        console.warn("addToModule: ");
-        console.warn(addToModule.name);
+        //Re-get Module
+        database.findOne(database.Module, {_id: moduleContainer._id},
+            function (err, object_found) {
+                //Handle Error
+                if (err) {
+                    next(null, {code: "error"});
+                    return console.error(err);
+                }
 
-        addToModule.markModified('assets');
+                //Handle Success
+                if (object_found) {
 
-        addToModule.save(function (err) {
-            //Handle Error
-            if (err) {cb(err); return;}
+                    console.warn("moduleContainer: ");
+                    console.warn(object_found.name);
 
-            //Success
-            cb(null);
-        });
+                    object_found.markModified('assets');
+
+                    object_found.save(function (err) {
+                        //Handle Error
+                        if (err) {
+                            cb(err);
+                            return;
+                        }
+
+                        //Success
+                        cb(null);
+                    });
+                }
+            }
+        );
     }
 }
 
