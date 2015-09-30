@@ -60,7 +60,7 @@
 								var asset = data.assets[i];
 								
 								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-								
+								Display.error("asset.owner.user.name: " + asset.owner.user.name);
 								Display.error("assetUrl: " + assetUrl);
 								var assetId;
 								
