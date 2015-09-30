@@ -85,6 +85,7 @@ handler.fork = function(msg, session, next) {
                                 }
 
                                 //Handle Success
+                                module_created.save();
                                 //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
                                 var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_created._id], moduleMain: module_created._id, tags: [], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
 
