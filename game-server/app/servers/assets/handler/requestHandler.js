@@ -75,7 +75,7 @@ handler.getProjectMainModuleAssets = function(msg, session, next) {
     var developer = session.get('developer');
     var project = session.get('project');
 
-    database.findOneAndDeepPopulate(database.Module, {_id: project.moduleMain}, "assets",
+    database.findOneAndDeepPopulate(database.Module, {_id: project.moduleMain}, "assets assets.owner.user",
         function (err, module_found) {
             //Handle Error
             if (err) {
