@@ -175,8 +175,10 @@ function forkAssets(self, msg, session, assets, index, addToModule, cb) {
     }
     else
     {
-        //addToModule.markModified('assets');
-        console.warn("addToModule: " + addToModule);
+        console.warn("addToModule: ");
+        console.warn(addToModule.name);
+
+        addToModule.markModified('assets');
 
         addToModule.save(function (err) {
             //Handle Error
