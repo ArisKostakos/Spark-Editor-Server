@@ -14764,7 +14764,7 @@ tools_spark_framework_assets_FlambeLoader.prototype = {
 		this._manifest = new flambe_asset_Manifest();
 	}
 	,addFile: function(p_name,p_url,p_forceLoadAsData) {
-		if(p_forceLoadAsData) this._manifest.add(p_name,p_url + "?" + Std.random(10000),1,flambe_asset_AssetFormat.Data); else this._manifest.add(p_name,p_url + "?" + Std.random(10000),1);
+		if(p_forceLoadAsData) this._manifest.add(p_name,p_url,1,flambe_asset_AssetFormat.Data); else this._manifest.add(p_name,p_url,1);
 		var v = this._manifest;
 		this._assetToBatchLoad.set(p_name,v);
 		v;
