@@ -48,7 +48,7 @@
 							Display.error('Requesting Main Module Assets success!');
 							
 							//Get Username
-							var userName = me.getState('assetUserName');
+							//var userName = me.getState('assetUserName');
 							
 							//Initiate Load
 							Assets.initiateBatch();
@@ -59,7 +59,7 @@
 								//Get AssetDb
 								var asset = data.assets[i];
 								
-								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								
 								Display.error("assetUrl: " + assetUrl);
 								var assetId;
