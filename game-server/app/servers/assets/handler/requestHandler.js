@@ -75,16 +75,18 @@ handler.getProjectMainModuleAssets = function(msg, session, next) {
     var developer = session.get('developer');
     var project = session.get('project');
 
-    project.moduleMain.deepPopulate('assets', function (err, _moduleMain) {
-        //Handle Error
-        if (err) {
-            next(null, {code: "error"});
-            return console.error(err);
-        }
+    database.findOneAndDeepPopulate(database.Module, {_id: project.moduleMain}, "assets",
+        function (err, module_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
 
-        //Handle Success
-        next(null, {code: "success", assets: _moduleMain.assets});
-    });
+            //Handle Success
+            next(null, {code: "success", assets: module_found.assets});
+        }
+    );
 };
 
 
