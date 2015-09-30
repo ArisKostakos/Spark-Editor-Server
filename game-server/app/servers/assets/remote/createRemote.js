@@ -89,7 +89,22 @@ remote.createModule = function(moduleName, cb) {
 				return;
 			}
 
-			//Send Success Signal
-			cb(null, objCreated_Module);
+			//Handle Success
+
+			//Re-get Module. The one I get from the create() apparently is not a proper Mongoose document and lacks .save().. I don't know.... :/
+			database.findOne(database.Module, {_id: moduleContainer._id},
+				function (err, object_found) {
+					//Handle Error
+					if (err) {
+						next(null, {code: "error"});
+						return console.error(err);
+					}
+
+					//Handle Success
+
+					//Send Success Signal
+					cb(null, object_found);
+				}
+			);
 		});
 };

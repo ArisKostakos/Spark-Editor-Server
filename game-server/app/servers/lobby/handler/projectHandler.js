@@ -175,36 +175,21 @@ function forkAssets(self, msg, session, assets, index, moduleContainer, cb) {
     }
     else
     {
-        //Re-get Module
-        database.findOne(database.Module, {_id: moduleContainer._id},
-            function (err, object_found) {
-                //Handle Error
-                if (err) {
-                    next(null, {code: "error"});
-                    return console.error(err);
-                }
+        console.warn("moduleContainer: ");
+        console.warn(moduleContainer.name);
 
-                //Handle Success
-                if (object_found) {
+        moduleContainer.markModified('assets');
 
-                    console.warn("moduleContainer: ");
-                    console.warn(object_found.name);
-
-                    object_found.markModified('assets');
-
-                    object_found.save(function (err) {
-                        //Handle Error
-                        if (err) {
-                            cb(err);
-                            return;
-                        }
-
-                        //Success
-                        cb(null);
-                    });
-                }
+        moduleContainer.save(function (err) {
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
             }
-        );
+
+            //Success
+            cb(null);
+        });
     }
 }
 
