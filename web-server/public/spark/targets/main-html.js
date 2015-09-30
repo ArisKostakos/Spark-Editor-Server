@@ -190,6 +190,9 @@ Std.parseInt = function(x) {
 Std.parseFloat = function(x) {
 	return parseFloat(x);
 };
+Std.random = function(x) {
+	if(x <= 0) return 0; else return Math.floor(Math.random() * x);
+};
 var StringBuf = function() {
 	this.b = "";
 };
@@ -27090,6 +27093,7 @@ tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.__name__ 
 tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.__interfaces__ = [tools_spark_sliced_services_std_logic_interpreter_interfaces_IInterpreter];
 tools_spark_sliced_services_std_logic_interpreter_core_HaxeInterpreter.prototype = {
 	_init: function() {
+		var dummy = Std.random(1);
 		this._hashTable = new haxe_ds_IntMap();
 		this._parser = new hscript_Parser();
 		this._interpreter = new hscript_Interp();
