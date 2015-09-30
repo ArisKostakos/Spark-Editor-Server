@@ -188,9 +188,6 @@ function forkAssets(self, msg, session, assets, index, moduleContainer, cb) {
     }
     else
     {
-        console.warn("moduleContainer: ");
-        console.warn(moduleContainer.name);
-
         moduleContainer.markModified('assets');
 
         moduleContainer.save(function (err) {

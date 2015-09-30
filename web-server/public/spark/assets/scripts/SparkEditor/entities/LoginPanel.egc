@@ -108,7 +108,7 @@
 									strUser = 'test3';
 									strPass = 'lala3';
 								}
-								else if (eventObjectKeyRelease.keyCode==34) //Page Up
+								else if (eventObjectKeyRelease.keyCode==34) //Page Down
 								{
 									strUser = 'spark';
 									strPass = '12qw!@QW ';
