@@ -75,61 +75,71 @@ handler.fork = function(msg, session, next) {
                         if (object_found) {
                             var templateProject = object_found;
 
-                            //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
-                            var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [], tags: [], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
-
-                            //Create Project
-                            database.create(database.Project, raw_Project,
-                                function (err, objCreated_Project) {
-                                    //Handle Error
-                                    if (err) {
-                                        next(null, {code: "error"});
-                                        return console.error(err);
-                                    }
-
-                                    //Handle Success
-
-                                    //Create directories
-                                    createProjectDirectories(objCreated_Project.name, user.name);
-
-                                    // for all spark assetsDB with tag: blank
-                                    database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
-                                        function (err, objects_found) {
-                                            //Handle Error
-                                            if (err) {
-                                                next(null, {code: "error"});
-                                                return console.error(err);
-                                            }
-
-                                            //Handle Success
-                                            forkAssets(self, msg, session, objects_found,0,
-                                                function (err) {
-                                                    //Handle Error
-                                                    if (err) {
-                                                        next(null, {code: "error"});
-                                                        return console.error(err);
-                                                    }
-
-                                                    //Handle Success
-                                                    forkAssetDependancies(self, msg, session, objects_found,0,
-                                                        function (err) {
-                                                            //Handle Error
-                                                            if (err) {
-                                                                next(null, {code: "error"});
-                                                                return console.error(err);
-                                                            }
-
-
-                                                            //success
-                                                            next(null, {code: "success"});
-                                                        }
-                                                    );
-                                                }
-                                            );
-                                        }
-                                    );
+                            //Create Main Module for this project
+                            self.app.rpc.assets.createRemote.createModule(session, "Main", function(err, module_created){
+                                //Handle Error
+                                if (err) {
+                                    next(null, {code: "error"});
+                                    return console.error(err);
                                 }
-                            );
+
+                                //Handle Success
+                                //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
+                                var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_created._id], moduleMain: module_created._id, tags: [], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
+
+                                //Create Project
+                                database.create(database.Project, raw_Project,
+                                    function (err, objCreated_Project) {
+                                        //Handle Error
+                                        if (err) {
+                                            next(null, {code: "error"});
+                                            return console.error(err);
+                                        }
+
+                                        //Handle Success
+
+                                        //Create directories
+                                        createProjectDirectories(objCreated_Project.name, user.name);
+
+                                        // for all spark assetsDB with tag: blank
+                                        database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
+                                            function (err, objects_found) {
+                                                //Handle Error
+                                                if (err) {
+                                                    next(null, {code: "error"});
+                                                    return console.error(err);
+                                                }
+
+                                                //Handle Success
+                                                forkAssets(self, msg, session, objects_found,0,module_created,
+                                                    function (err) {
+                                                        //Handle Error
+                                                        if (err) {
+                                                            next(null, {code: "error"});
+                                                            return console.error(err);
+                                                        }
+
+                                                        //Handle Success
+                                                        forkAssetDependancies(self, msg, session, objects_found,0,
+                                                            function (err) {
+                                                                //Handle Error
+                                                                if (err) {
+                                                                    next(null, {code: "error"});
+                                                                    return console.error(err);
+                                                                }
+
+
+                                                                //success
+                                                                next(null, {code: "success"});
+                                                            }
+                                                        );
+                                                    }
+                                                );
+                                            }
+                                        );
+                                    }
+                                );
+                            });
                         }
                         else {
                             next(null, {code: "error"});    //notfound
@@ -144,16 +154,19 @@ handler.fork = function(msg, session, next) {
     );
 }
 
-function forkAssets(self, msg, session, assets, index, cb) {
+function forkAssets(self, msg, session, assets, index, addToModule, cb) {
     if (index<assets.length)
     {
         //put user into channel
-        self.app.rpc.assets.createRemote.copy(session, assets[index], msg.forkedProjectName, session.get('user'), session.get('developer'), msg.projectName, function(err){
+        self.app.rpc.assets.createRemote.copy(session, assets[index], msg.forkedProjectName, session.get('user'), session.get('developer'), msg.projectName, function(err, asset_created){
             //Handle Error
             if (err) {
                 cb(err);
                 return;
             }
+
+            //Add Reference to Module
+            addToModule.assets.push(asset_created._id);
 
             //Next
             forkAssets(self, msg, session, assets, index+1, cb);
@@ -161,7 +174,14 @@ function forkAssets(self, msg, session, assets, index, cb) {
     }
     else
     {
-        cb(null);
+        addToModule.markModified('assets');
+        addToModule.save(function (err) {
+            //Handle Error
+            if (err) {cb(err); return;}
+
+            //Success
+            cb(null);
+        });
     }
 }
 

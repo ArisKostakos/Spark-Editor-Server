@@ -68,9 +68,28 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 					}
 
 					//Send Success Signal
-					cb(null);
+					cb(null,objCreated_Asset);
 				});
 			});
 		});
 	});
+};
+
+
+remote.createModule = function(moduleName, cb) {
+	//create a new Module
+	var raw_Module = {name: moduleName, requires: [], assets: [], tags: []};
+
+	//Create Module
+	database.create(database.Module, raw_Module,
+		function (err, objCreated_Module) {
+			//Handle Error
+			if (err) {
+				cb(err);
+				return;
+			}
+
+			//Send Success Signal
+			cb(null, objCreated_Module);
+		});
 };

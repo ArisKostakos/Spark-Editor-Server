@@ -93,29 +93,24 @@ exp.IncludeQuery = IncludeQuery;
 var libraryCollectionSchema = mongoose.Schema({
     owner: {type: Schema.Types.ObjectId, ref: 'Developer'},
     title: String,  //'Sprites'
-
     //filter 'query'
     filterTypes: [String], //image,sound,data,..
     filterComponentTypes: [String] ,
     filterTags: [String], //SpriterMain, ..
-
     //import
     importTypes: [String], //[image,spritesheet,spriter,sound,egc,..]
                            //on the editor, we maintain a hash that links file extensions to importTypes, such as [image,spritesheet,spriter,sound,egc,..]
                            //Also, the editor knows how to handle an import type of say image (appropriate dialog, and also what asset to create on the DB, and what tags, etc..)
-
     //on drag to stage creation
     baseClass: {type: Schema.Types.ObjectId, ref: 'Asset'}, // the base class extended when added to stage
     behaviors: [{type: Schema.Types.ObjectId, ref: 'Asset'}], // (a list of behavior components that will be added automatically when thingie added to stage
-
     //display
     tileWidth: Number, //64
     tileHeight: Number, //64
     iconName: String, //libSpritesIcon
     titleColor: String, //#34002f or red
     titleColorSelected: String, //#34002f or red
-    tags: [String] // (for whatever, special conditions(background Image), weak linking, etc..) [first tag is for project created? hmm eh.. nuhhhhhhhhh]
-
+    tags: [String] // (for whatever, special conditions(background Image), weak linking, etc..) [first tag is for project created? hmm eh.. nuhhhhhhhhh] for now its used as a temp Base Asset name (instead of asset reference)
 });
 libraryCollectionSchema.plugin(deepPopulate, {});
 var LibraryCollection = mongoose.model('LibraryCollection', libraryCollectionSchema);
