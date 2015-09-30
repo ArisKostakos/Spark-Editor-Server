@@ -153,3 +153,40 @@ handler.getAssetsFromQuery = function(msg, session, next) {
         }
     );
 };
+
+
+//THIS IS A REMOTE BUT LETS TRY I HERE
+handler.createLibraryCollection = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+
+    console.warn("Creating Library Collection");
+
+
+    var raw_LibraryCollection = {owner: developer._id, title: "Image", tileWidth: 64, tileHeight: 64, iconName: "libcat_image", titleColor: "rgb(59,185,176)", titleColorSelected: "rgb(65,80,97)", tags: [],
+                                baseClass: ObjectID("5518af05ba008d6a082229bf"), behaviors: [],
+                                importTypes: ["image"], filterTypes: ['image'], filterComponentTypes: [], filterTags: []};
+
+    //Create Library Collection
+    database.create(database.LibraryCollection, raw_LibraryCollection,
+        function (err, objCreated_LibraryCollection) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+
+            console.warn("Success Creating Library Collection");
+            next(null, {code: "success", includeQuery: objCreated_LibraryCollection});
+        }
+    );
+
+};

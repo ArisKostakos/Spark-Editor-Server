@@ -135,6 +135,27 @@
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>
 				
+				<!-- Trigger Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Trigger Button</Value></_State>
+					<_State id="width"><Value>8%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(100, 147, 150)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="text"><Value>Submit</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<Script>
+					Display.error("TRIGGER BUTTON ACTIVATED!");
+					Comms.request('assets.requestHandler.createLibraryCollection', { }, "CreateLibraryCollection");
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
 				
 				<!-- File Drop Area -->
 				<Entity extends="std.display.Div"><_States>

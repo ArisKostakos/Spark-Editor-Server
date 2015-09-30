@@ -295,38 +295,6 @@ handler.create = function(msg, session, next) {
     );
 };
 
-//THIS IS A REMOTE BUT LETS TRY I HERE
-handler.createIncludeQuery = function(msg, session, next) {
-    var self = this;
-    var sessionService = self.app.get('sessionService');
-
-    //var user = session.get('user');
-    //var developer = session.get('developer');
-
-    console.warn("Creating test Include Query");
-
-    var includeQuery = msg.includeQuery;
-    var includeTags = msg.includeTags;
-
-    var raw_IncludeQuery = {tags: includeTags, query: includeQuery};
-
-    //Create IncludeQuery
-    database.create(database.IncludeQuery, raw_IncludeQuery,
-        function (err, objCreated_IncludeQuery) {
-            //Handle Error
-            if (err) {
-                next(null, {code: "error"});
-                return console.error(err);
-            }
-
-            //Handle Success
-
-            console.warn("Success Creating Include Query");
-            next(null, {code: "success", includeQuery: objCreated_IncludeQuery});
-        }
-    );
-
-};
 
 //todo: to connect to a project, user/team name is required as well. now it only connects to owner projects
 handler.connect = function(msg, session, next) {
@@ -391,3 +359,37 @@ function bindProject(session, project)
         }
     });
 }
+
+
+//THIS IS A REMOTE BUT LETS TRY I HERE
+handler.createIncludeQuery = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //var user = session.get('user');
+    //var developer = session.get('developer');
+
+    console.warn("Creating test Include Query");
+
+    var includeQuery = msg.includeQuery;
+    var includeTags = msg.includeTags;
+
+    var raw_IncludeQuery = {tags: includeTags, query: includeQuery};
+
+    //Create IncludeQuery
+    database.create(database.IncludeQuery, raw_IncludeQuery,
+        function (err, objCreated_IncludeQuery) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+
+            console.warn("Success Creating Include Query");
+            next(null, {code: "success", includeQuery: objCreated_IncludeQuery});
+        }
+    );
+
+};

@@ -113,6 +113,7 @@ var libraryCollectionSchema = mongoose.Schema({
     tileHeight: Number, //64
     iconName: String, //libSpritesIcon
     titleColor: String, //#34002f or red
+    titleColorSelected: String, //#34002f or red
     tags: [String] // (for whatever, special conditions(background Image), weak linking, etc..) [first tag is for project created? hmm eh.. nuhhhhhhhhh]
 
 });

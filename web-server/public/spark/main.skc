@@ -286,6 +286,10 @@
 			<Asset type="image" subtype="2D" location="local" id="libcat_clouds_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/clouds_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>
 			
+			<Asset type="image" subtype="2D" location="local" id="libcat_image" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/image.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_image_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/image_selected.png</Asset>
+			
+			
 			<!-- Left Bar, Library, Misc -->
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_import_mikro" bytes='35672' forceLoadAsData='true'>editor/leftbar/import_mikro.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
