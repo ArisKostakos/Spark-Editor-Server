@@ -75,6 +75,7 @@ handler.fork = function(msg, session, next) {
                         if (object_found) {
                             var templateProject = object_found;
 
+                            console.warn("Creating Main Module for forked project...");
                             //Create Main Module for this project
                             self.app.rpc.assets.createRemote.createModule(session, "Main", function(err, module_created){
                                 //Handle Error
@@ -169,7 +170,7 @@ function forkAssets(self, msg, session, assets, index, addToModule, cb) {
             addToModule.assets.push(asset_created._id);
 
             //Next
-            forkAssets(self, msg, session, assets, index+1, cb);
+            forkAssets(self, msg, session, assets, index+1, addToModule, cb);
         });
     }
     else
