@@ -65,6 +65,29 @@ handler.getProjectAssets = function(msg, session, next) {
 
 };
 
+//Get all assets referenced in the main module of this project
+handler.getProjectMainModuleAssets = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    project.moduleMain.deepPopulate('assets', function (err, _moduleMain) {
+        //Handle Error
+        if (err) {
+            next(null, {code: "error"});
+            return console.error(err);
+        }
+
+        //Handle Success
+        next(null, {code: "success", assets: _moduleMain.assets});
+    });
+};
+
+
 //temp load everything
 handler.getAssetsOf = function(msg, session, next) {
     var self = this;
