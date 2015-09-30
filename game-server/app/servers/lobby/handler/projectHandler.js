@@ -85,13 +85,9 @@ handler.fork = function(msg, session, next) {
                                 }
 
                                 //Handle Success
-                                module_created.save();
-                                //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
-                                var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_created._id], moduleMain: module_created._id, tags: [], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
-
-                                //Create Project
-                                database.create(database.Project, raw_Project,
-                                    function (err, objCreated_Project) {
+                                //Re-get Module. The one I get from rpc apparently is not a proper Mongoose document and lacks .save().. I don't know.... :/
+                                database.findOne(database.Module, {_id: module_created._id},
+                                    function (err, module_found) {
                                         //Handle Error
                                         if (err) {
                                             next(null, {code: "error"});
@@ -99,13 +95,14 @@ handler.fork = function(msg, session, next) {
                                         }
 
                                         //Handle Success
+                                        console.warn("save2");
+                                        module_found.save();
+                                        //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
+                                        var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_found._id], moduleMain: module_found._id, tags: [], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
 
-                                        //Create directories
-                                        createProjectDirectories(objCreated_Project.name, user.name);
-
-                                        // for all spark assetsDB with tag: blank
-                                        database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
-                                            function (err, objects_found) {
+                                        //Create Project
+                                        database.create(database.Project, raw_Project,
+                                            function (err, objCreated_Project) {
                                                 //Handle Error
                                                 if (err) {
                                                     next(null, {code: "error"});
@@ -113,8 +110,13 @@ handler.fork = function(msg, session, next) {
                                                 }
 
                                                 //Handle Success
-                                                forkAssets(self, msg, session, objects_found,0,module_created,
-                                                    function (err) {
+
+                                                //Create directories
+                                                createProjectDirectories(objCreated_Project.name, user.name);
+
+                                                // for all spark assetsDB with tag: blank
+                                                database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
+                                                    function (err, objects_found) {
                                                         //Handle Error
                                                         if (err) {
                                                             next(null, {code: "error"});
@@ -122,7 +124,7 @@ handler.fork = function(msg, session, next) {
                                                         }
 
                                                         //Handle Success
-                                                        forkAssetDependancies(self, msg, session, objects_found,0,
+                                                        forkAssets(self, msg, session, objects_found,0,module_found,
                                                             function (err) {
                                                                 //Handle Error
                                                                 if (err) {
@@ -130,9 +132,20 @@ handler.fork = function(msg, session, next) {
                                                                     return console.error(err);
                                                                 }
 
+                                                                //Handle Success
+                                                                forkAssetDependancies(self, msg, session, objects_found,0,
+                                                                    function (err) {
+                                                                        //Handle Error
+                                                                        if (err) {
+                                                                            next(null, {code: "error"});
+                                                                            return console.error(err);
+                                                                        }
 
-                                                                //success
-                                                                next(null, {code: "success"});
+
+                                                                        //success
+                                                                        next(null, {code: "success"});
+                                                                    }
+                                                                );
                                                             }
                                                         );
                                                     }
