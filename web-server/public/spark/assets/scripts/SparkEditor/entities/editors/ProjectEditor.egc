@@ -68,6 +68,23 @@
 								if (asset.type=="script")
 								{
 									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+									
+									if (asset.componentType=="Scene")
+									{
+										//Init Scene Editor
+										var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+										sceneEditor.setState('assetUserName', asset.owner.user.name);
+										sceneEditor.setState('assetType',asset.type);
+										//sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
+									}
+									else if (asset.componentType=="EventSheet")
+									{
+										//Init EventSheet Editor
+										var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+										eventsheetEditor.setState('assetUserName', asset.owner.user.name);
+										eventsheetEditor.setState('assetType',asset.type);
+										//eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
+									}
 								}
 								else if (asset.type=="image")
 								{
@@ -89,20 +106,11 @@
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
-								//temp scene stuff
-								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-								sceneEditor.setState('assetUserName', assetUserName);
-								sceneEditor.setState('assetType','script');
-								sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
-								sceneEditor.startAction('GetAsset');
-							
+								//Start up Scene Editor
+								Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
 								
-								//temp eventsheet stuff
-								var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
-								eventsheetEditor.setState('assetUserName', assetUserName);
-								eventsheetEditor.setState('assetType','script');
-								eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
-								eventsheetEditor.startAction('GetAsset');
+								//Start up EventSheet Editor
+								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
 							}).once();
 							
 							//Load
