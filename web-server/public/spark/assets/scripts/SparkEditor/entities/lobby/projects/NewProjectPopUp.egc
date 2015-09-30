@@ -11,6 +11,7 @@
 		<_State id="backgroundColor"><Value>#21303D</Value></_State>
 		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
 		<State><Id>newProjectName</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>templateName</Id><Type>Text</Type><Value>Untitled</Value></State>
 	</_States>
 	
 	<Form>
@@ -73,6 +74,7 @@
 									<_States>
 										<_State id="name"><Value>BlankTemplateTile</Value></_State>
 										<_State id="projectName"><Value>Blank</Value></_State>
+										<_State id="projectFork"><Value>BlankTemplate</Value></_State>
 										<_State id="imageName"><Value>lobbyProjectTemplate_Blank</Value></_State>
 										<_State id="imageWidth"><Value>26</Value></_State>
 										<_State id="imageHeight"><Value>26</Value></_State>
@@ -82,12 +84,17 @@
 										<_Action id="ButtonClicked">
 											<_Scripts>
 												<Script>
-													Display.error("ok this works fine..");
+													Logic.getEntityByName('PlatformTemplateTile').startAction('Deselect'); //terrible fix again..
+													me.startAction('Select');
+													Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
+													Display.error("Selected Template: " + Logic.getEntityByName('New Project Pop Up').getState('templateName'));
 												</Script>
 											</_Scripts>
 										</_Action>
 										<_Action id="Constructor"><_Scripts><Script>
 											me.startAction('Select');
+											Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
+											Display.error("Selected Template: " + Logic.getEntityByName('New Project Pop Up').getState('templateName'));
 										</Script></_Scripts></_Action>
 									</_Actions>
 								</Entity>
@@ -95,7 +102,9 @@
 								<!-- Platform -->
 								<Entity extends="SparkEditor.entities.lobby.projects.TemplateTile">
 									<_States>
+										<_State id="name"><Value>PlatformTemplateTile</Value></_State>
 										<_State id="projectName"><Value>Platform</Value></_State>
+										<_State id="projectFork"><Value>PlatformTemplate</Value></_State>
 										<_State id="imageName"><Value>lobbyProjectTemplate_Platform</Value></_State>
 										<_State id="imageWidth"><Value>43</Value></_State>
 										<_State id="imageHeight"><Value>39</Value></_State>
@@ -105,9 +114,10 @@
 										<_Action id="ButtonClicked">
 											<_Scripts>
 												<Script>
-													Display.error("ok this works fine..");
 													Logic.getEntityByName('BlankTemplateTile').startAction('Deselect'); //terrible fix again..
 													me.startAction('Select');
+													Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
+													Display.error("Selected Template: " + Logic.getEntityByName('New Project Pop Up').getState('templateName'));
 												</Script>
 											</_Scripts>
 										</_Action>
@@ -391,7 +401,7 @@
 						{
 							var newProjectName = me.getState('newProjectName');
 							var newProjectTitle = Logic.getEntityByName('Create New: Project Name Field').getState('text');
-							var forkTemplateName = "PlatformTemplate";
+							var forkTemplateName = Logic.getEntityByName('New Project Pop Up').getState('templateName');
 							Display.error('PROJECT DOES NOT EXIIIIIIIIIIST: ' + newProjectName);
 
 							//Fork Platform

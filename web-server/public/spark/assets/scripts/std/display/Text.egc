@@ -16,8 +16,8 @@
 			<Value>Div</Value>
 		</_State>
 		
-		<_State id="cursor">
+		<!--<_State id="cursor">
 			<Value>default</Value>
-		</_State>
+		</_State>-->
 	</_States>
 </Entity>

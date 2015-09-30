@@ -73,6 +73,8 @@
 						Display.error("Data received: " + data.code);
 						
 						me.setState('Connected',true);
+						
+						Comms.request('lobby.projectHandler.createIncludeQuery', { includeTags: ['test'], includeQuery: {type: "script"} }, "CreateIncludeQuery");
 					}
 					else if (Comms.getRequestData("Sign Up Request")!=null)
 					{

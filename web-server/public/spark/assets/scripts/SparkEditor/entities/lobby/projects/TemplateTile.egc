@@ -11,6 +11,7 @@
 		<_State id="paddingTop"><Value>4</Value></_State>
 		<_State id="verticalAlign"><Value>middle</Value></_State>
 		<State><Id>projectName</Id><Type>Text</Type><Value>Untitled Template</Value></State>
+		<State><Id>projectFork</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>imageWidth</Id><Type>Text</Type><Value>50</Value></State>
 		<State><Id>imageHeight</Id><Type>Text</Type><Value>50</Value></State>
