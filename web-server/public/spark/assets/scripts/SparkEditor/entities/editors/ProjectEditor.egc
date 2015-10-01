@@ -27,6 +27,13 @@
 					Logic.getEntityByName('NavigationBar').setState('height','74');
 					
 					//Comms.request("assets.requestHandler.getProjectAssets", {}, "Project Assets Request");
+					
+					//The proccess will be:
+					
+					//Get Module Assets and Flambe Load them
+					//Create Library Categories
+					//Get Project Assets & Get Include Assets, and distribute them to Library Categories
+					
 					Comms.request("assets.requestHandler.getProjectMainModuleAssets", {}, "Project Main Module Assets Request");
 				</Script>
 			</Scripts>
@@ -111,6 +118,9 @@
 								
 								//Start up EventSheet Editor
 								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+								
+								//Get Library Collections for this project
+								Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
 							}).once();
 							
 							//Load
@@ -119,6 +129,66 @@
 						else
 						{
 							Display.error('Error Requesting Main Module Assets!');
+						}
+					}
+					if (Comms.getRequestData("Project Library Collections Request")!=null)
+					{
+						var data = Comms.getRequestData("Project Library Collections Request");
+						
+						if (data.code=="success")
+						{
+							Display.error('Requesting Library Collections success!');
+							
+							//Get Username
+							//var userName = me.getState('assetUserName');
+							
+							var i = 0;
+							while (data.libraryCollections.length>i)
+							{
+								//Get AssetDb
+								var libraryCollection = data.assets[i];
+								/*
+								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								Display.error("asset.owner.user.name: " + asset.owner.user.name);
+								Display.error("assetUrl: " + assetUrl);
+								var assetId;
+								
+								//If Asset is Script
+								if (asset.type=="script")
+								{
+									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+									
+									if (asset.componentType=="Scene")
+									{
+										//Init Scene Editor
+										var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+										sceneEditor.setState('assetUserName', asset.owner.user.name);
+										sceneEditor.setState('assetType',asset.type);
+										sceneEditor.setState('assetName',asset.name);
+									}
+									else if (asset.componentType=="EventSheet")
+									{
+										//Init EventSheet Editor
+										var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+										eventsheetEditor.setState('assetUserName', asset.owner.user.name);
+										eventsheetEditor.setState('assetType',asset.type);
+										eventsheetEditor.setState('assetName',asset.name);
+									}
+								}
+								else if (asset.type=="image")
+								{
+									assetId = 'image_' + asset.name;
+								}
+								*/
+								
+								
+								Display.error(libraryCollection.title);
+								i+=1;
+							}
+						}
+						else
+						{
+							Display.error('Error Requesting Library Collections!');
 						}
 					}
 					else if (Comms.getRequestData("Project Assets Request")!=null)
