@@ -146,7 +146,7 @@
 							while (data.libraryCollections.length>i)
 							{
 								//Get AssetDb
-								var libraryCollection = data.assets[i];
+								var libraryCollection = data.libraryCollections[i];
 								/*
 								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								Display.error("asset.owner.user.name: " + asset.owner.user.name);
