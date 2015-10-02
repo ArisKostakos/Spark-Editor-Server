@@ -1,0 +1,636 @@
+<Entity extends="lib.2d.platform.scene.PlatformScene">
+
+	<_States>
+		<_State id="name">
+			<Value>Main Scene</Value>
+		</_State>
+	</_States>
+	
+	
+<Form><Space><Entities><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.platform.behaviors.background.BackgroundBehavior"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Background</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1360</Value></_State>
+		<_State id="spaceY"><Value>720</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.backgrounds.DesertBackground</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>448</Value></_State>
+		<_State id="spaceY"><Value>576</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.sandAndBrick.brick_tile3</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>576</Value></_State>
+		<_State id="spaceY"><Value>576</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>704</Value></_State>
+		<_State id="spaceY"><Value>576</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>832</Value></_State>
+		<_State id="spaceY"><Value>576</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>960</Value></_State>
+		<_State id="spaceY"><Value>576</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile5</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Dynamic"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Prop Dynamic</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>632</Value></_State>
+		<_State id="spaceY"><Value>368</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.props.crate</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Spriter2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Biped"/>
+		<Entity extends="lib.2d.platform.behaviors.movement.ActorMovement"/>
+		<Entity extends="lib.2d.platform.behaviors.input.PlayerInput"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Player Platform</Value></_State>
+		<_State id="spaceX"><Value>830</Value></_State>
+		<_State id="spaceY"><Value>366</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="2DMeshSpriterForm"><Value>SpriterMain</Value></_State>
+		<_State id="2DMeshSpriterAnimForm"><Value>AnimationStanding</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>SpriterMain</Id>
+				<Type>Text</Type>
+				<Value>image_lib.2d.side.actors.spriter.soldier3.Soldier3</Value>
+			</State>
+			
+			<_State id="AnimationStanding">
+				<Value>Idle</Value>
+			</_State>
+			<_State id="AnimationWalking">
+				<Value>Walk</Value>
+			</_State>
+			<_State id="AnimationCrouching">
+				<Value>Crouch</Value>
+			</_State>
+			<_State id="AnimationJumping">
+				<Value>Jump</Value>
+			</_State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1528</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1656</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1784</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>1912</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2040</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2168</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2296</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2424</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2552</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2680</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2808</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>2936</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3064</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3192</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3320</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3448</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3576</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3704</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3832</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>3960</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>4088</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>4216</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>4344</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity><Entity extends="std.display.Image2D">
+	<Extends>
+		<Entity extends="lib.2d.physics.behaviors.entity.Static"/>
+	</Extends>
+	
+	<_States>
+		<_State id="name"><Value>Tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State>
+		<_State id="spaceX"><Value>4472</Value></_State>
+		<_State id="spaceY"><Value>872</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>image_lib.2d.side.tiles.rocky.tile4</Value></State>
+		</_States>
+	</_Form>
+</Entity></Entities></Space></Form></Entity>

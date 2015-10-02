@@ -33,7 +33,7 @@
 						*/
 						
 						//Library
-						var libraryHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
+						var libraryHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabs.LibraryHeader');
 						libraryHeader.setState('caption','Library');
 						libraryHeader.setState('titleFontSize','23px');
 						libraryHeader.setState('backgroundColor','rgb(56,192,182)');

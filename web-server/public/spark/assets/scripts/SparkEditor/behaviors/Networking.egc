@@ -40,7 +40,7 @@
 			<Scripts>
 				<Script>
 					Display.error("Received Request...");
-					
+					//var dfdf = ;
 					/*This is terrible.. if two request events are raised simutaneously, this will collapse
 					if i do if else, then the first one will be triggered twice
 					if i do if, if, if then all of them will be executed twice
@@ -72,7 +72,9 @@
 						var data = Comms.getRequestData("greetConnector");
 						Display.error("Data received: " + data.code);
 						
+						
 						me.setState('Connected',true);
+						Logic.getEntityByName('Login Connected Light').setState('backgroundColor','green');
 						
 						//Comms.request('lobby.projectHandler.createIncludeQuery', { includeTags: ['test'], includeQuery: {type: "script"} }, "CreateIncludeQuery");
 					}
@@ -114,7 +116,6 @@
 			<Scripts>
 				<Script>
 					Display.error("Received Server Event...");
-					
 					
 				</Script>
 			</Scripts>

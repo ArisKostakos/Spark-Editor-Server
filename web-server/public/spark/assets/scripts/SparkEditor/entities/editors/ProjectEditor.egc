@@ -142,48 +142,53 @@
 							//Get Username
 							//var userName = me.getState('assetUserName');
 							
+							var libraryCollections = Logic.getEntityByName('Editor Library Collections');
+							var libraryCollectionButtonsContainer = Logic.getEntityByName('Editor Library Collections Buttons Container');
+							var libraryCollectionPanelsContainer = Logic.getEntityByName('Editor Library Collections Panels Container');
+							
+							var libraryCollectionsHash = new ObjectMap();
+							var selectedAtFirst = null;
+							
 							var i = 0;
 							while (data.libraryCollections.length>i)
 							{
 								//Get AssetDb
 								var libraryCollection = data.libraryCollections[i];
-								/*
-								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-								Display.error("asset.owner.user.name: " + asset.owner.user.name);
-								Display.error("assetUrl: " + assetUrl);
-								var assetId;
 								
-								//If Asset is Script
-								if (asset.type=="script")
-								{
-									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								//Create Button
+								var libraryCollectionButton = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryCollectionButton');
+								libraryCollectionButton.setState('buttonText',libraryCollection.title);
+								libraryCollectionButton.setState('imageName',libraryCollection.iconName);
+								libraryCollectionButton.setState('normalTextColor',libraryCollection.titleColor);
+								libraryCollectionButton.setState('selectedTextColor',libraryCollection.titleColorSelected);
+								//myNewItem.setState('asset',asset); //asset or panel object
+								libraryCollectionButtonsContainer.addChild(libraryCollectionButton);
+								
+								//Create Panel
+								var libraryCollectionPanel = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryCollectionPanel');
+								
+								libraryCollectionPanel.setState('name',libraryCollection.title);
+								libraryCollectionPanel.setState('importTypes',libraryCollection.importTypes);
+								//myNewItem.setState('asset',asset); //asset or panel object
+								libraryCollectionPanelsContainer.addChild(libraryCollectionPanel);
+								
+								//Register In hash
+								libraryCollectionsHash.set(libraryCollectionButton,libraryCollectionPanel);
+								
+								Display.error("libraryCollection.title: " + libraryCollection.title);
+								
+								if (i==0)
+									selectedAtFirst = libraryCollectionButton;
 									
-									if (asset.componentType=="Scene")
-									{
-										//Init Scene Editor
-										var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-										sceneEditor.setState('assetUserName', asset.owner.user.name);
-										sceneEditor.setState('assetType',asset.type);
-										sceneEditor.setState('assetName',asset.name);
-									}
-									else if (asset.componentType=="EventSheet")
-									{
-										//Init EventSheet Editor
-										var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
-										eventsheetEditor.setState('assetUserName', asset.owner.user.name);
-										eventsheetEditor.setState('assetType',asset.type);
-										eventsheetEditor.setState('assetName',asset.name);
-									}
-								}
-								else if (asset.type=="image")
-								{
-									assetId = 'image_' + asset.name;
-								}
-								*/
-								
-								
-								Display.error(libraryCollection.title);
 								i+=1;
+							}
+							
+							libraryCollections.setState('collectionsHash',libraryCollectionsHash);
+							
+							if (selectedAtFirst!=null)
+							{
+								libraryCollections.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = selectedAtFirst;
+								libraryCollections.startAction("SelectCategory");
 							}
 						}
 						else

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Project">
+	<_States>
+		<_State id="name">
+			<Value>Main Project</Value>
+		</_State>
+		
+		<_State id="initSpaceName">
+			<Value>Main Space</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="test13.MainSpace"/>
+			</Entities>
+		</Space>
+	</Form>
+	
+</Entity>
