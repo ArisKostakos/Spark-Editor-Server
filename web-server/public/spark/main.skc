@@ -116,7 +116,6 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabs/RightTab.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabs/BottomTab.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabs/ViewportTab.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabs/LibraryHeader.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/ProjectWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/LibraryWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/PropertiesWindow.egc</Asset>
@@ -133,7 +132,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/2DSelectorOverlay.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/2DSelectorResize.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LobbyProjectEntryPanel.egc</Asset>
-			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/Ball.egc</Asset>-->
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/Ball.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/BlueButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GreyButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/PanelTester.egc</Asset>
@@ -173,7 +172,10 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetExplorerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorCodePanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanel.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanel.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanelContainer.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryPanelContainer.egc</Asset>-->
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryCategoryButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItem.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItemUpload.egc</Asset>
@@ -211,16 +213,14 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/TemplateTile.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/projects/NewProjectPopUp.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryCollections.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryCollectionPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryCollectionButton.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorAssetImportButton.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryItemNoName.egc</Asset>
-			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryCategories.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPropsPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryCollectiblesPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryBackgroundPanel.egc</Asset>-->
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryBackgroundPanel.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/EditorLibraryItemNoName.egc</Asset>
 		</Module>
 		
 		<Module id="DoNotLoad">
@@ -276,7 +276,7 @@
 			<Asset type="image" subtype="2D" location="local" id="libcat_lights_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/lights_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_textures_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/textures_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_skies_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/skies_selected.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>-->
 			<Asset type="image" subtype="2D" location="local" id="libcat_player_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/player_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_enemies_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/enemies_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_tiles_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/tiles_selected.png</Asset>
@@ -284,18 +284,10 @@
 			<Asset type="image" subtype="2D" location="local" id="libcat_collectibles_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/collectibles_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_background_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/background_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_clouds_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/clouds_selected.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>-->
+			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>
 			
 			<Asset type="image" subtype="2D" location="local" id="libcat_image" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/image.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libcat_image_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/image_selected.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_spritesheet" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/spritesheet.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_spritesheet_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/spritesheet_selected.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_spriter" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/spriter.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_spriter_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/spriter_selected.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_audio" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_audio_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/audio_selected.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_video" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/video.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="libcat_video_selected" bytes='35672' forceLoadAsData='true'>editor/leftbar/librarycategories/video_selected.png</Asset>
 			
 			
 			<!-- Left Bar, Library, Misc -->
@@ -324,6 +316,11 @@
 			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Events_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/events_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Chat" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/chat.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Chat_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/chat_selected.png</Asset>
+			
+			<!-- Events demo for Video Purposes -->
+			<Asset type="image" subtype="2D" location="local" id="eventsDemo1" bytes='35672' forceLoadAsData='true'>editor/eventsDemo1.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="eventsDemo2" bytes='35672' forceLoadAsData='true'>editor/eventsDemo2.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="eventsDemo3" bytes='35672' forceLoadAsData='true'>editor/eventsDemo3.png</Asset>
 		</Module>
 	</Assets>
 	
