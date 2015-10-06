@@ -97,41 +97,8 @@
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
-								//Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
-								
-								var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
-								Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
-								
-								//temp scene stuff
-								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-								sceneEditor.setState('assetUserName', assetUserName);
-								sceneEditor.setState('assetType','script');
-								sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
-								sceneEditor.startAction('GetAsset');
-							
-								
-								//temp eventsheet stuff
-								var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
-								eventsheetEditor.setState('assetUserName', assetUserName);
-								eventsheetEditor.setState('assetType','script');
-								eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
-								eventsheetEditor.startAction('GetAsset');
-								
-								
-								
-								//enter project gui
-								Logic.getEntityByName('Dashboard View').setState('visible',false);
+								Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
 
-								//Logic.getEntityByName('Navigation Bar View').setState('visible',true);
-								Logic.getEntityByName('Editor Left View').setState('visible',true);
-								Logic.getEntityByName('Editor Bottom View').setState('visible',true);
-								////Logic.getEntityByName('Editor Right View').setState('visible',true);
-								Logic.getEntityByName('Editor Viewport View').setState('visible',true);
-								//Logic.getEntityByName('Drag Surface View').setState('visible',true);
-								
-								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
-								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
-								Logic.getEntityByName('NavigationBar').setState('height','74');
 							}).once();
 							
 							//Load
