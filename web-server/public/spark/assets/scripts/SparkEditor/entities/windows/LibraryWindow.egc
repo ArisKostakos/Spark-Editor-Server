@@ -9,7 +9,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="SparkEditor.entities.library.platform.EditorLibraryCategories"/>
+				<Entity extends="SparkEditor.entities.library.EditorLibraryCollections"/>
 			</Entities>
 		</Space>
 	</Form>

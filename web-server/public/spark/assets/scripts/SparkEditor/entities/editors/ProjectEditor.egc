@@ -12,7 +12,29 @@
 				<Script>
 					me.stopAction("RequestProjectDbAssets");
 					
-					Comms.request("assets.requestHandler.getProjectAssets", {}, "Project Assets Request");
+					//enter project gui
+					Logic.getEntityByName('Dashboard View').setState('visible',false);
+
+					//Logic.getEntityByName('Navigation Bar View').setState('visible',true);
+					Logic.getEntityByName('Editor Left View').setState('visible',true);
+					Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+					////Logic.getEntityByName('Editor Right View').setState('visible',true);
+					Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+					//Logic.getEntityByName('Drag Surface View').setState('visible',true);
+					
+					Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
+					Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
+					Logic.getEntityByName('NavigationBar').setState('height','74');
+					
+					//Comms.request("assets.requestHandler.getProjectAssets", {}, "Project Assets Request");
+					
+					//The proccess will be:
+					
+					//Get Module Assets and Flambe Load them
+					//Create Library Categories
+					//Get Project Assets & Get Include Assets, and distribute them to Library Categories
+					
+					Comms.request("assets.requestHandler.getProjectMainModuleAssets", {}, "Project Main Module Assets Request");
 				</Script>
 			</Scripts>
 		</Action>
@@ -24,7 +46,157 @@
 			<Event>NetworkRequest</Event>
 			<Scripts>
 				<Script>
-					if (Comms.getRequestData("Project Assets Request")!=null)
+					if (Comms.getRequestData("Project Main Module Assets Request")!=null)
+					{
+						var data = Comms.getRequestData("Project Main Module Assets Request");
+						
+						if (data.code=="success")
+						{
+							Display.error('Requesting Main Module Assets success!');
+							
+							//Get Username
+							//var userName = me.getState('assetUserName');
+							
+							//Initiate Load
+							Assets.initiateBatch();
+							
+							var i = 0;
+							while (data.assets.length>i)
+							{
+								//Get AssetDb
+								var asset = data.assets[i];
+								
+								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								Display.error("asset.owner.user.name: " + asset.owner.user.name);
+								Display.error("assetUrl: " + assetUrl);
+								var assetId;
+								
+								//If Asset is Script
+								if (asset.type=="script")
+								{
+									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+									
+									if (asset.componentType=="Scene")
+									{
+										//Init Scene Editor
+										var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+										sceneEditor.setState('assetUserName', asset.owner.user.name);
+										sceneEditor.setState('assetType',asset.type);
+										sceneEditor.setState('assetName',asset.name);
+									}
+									else if (asset.componentType=="EventSheet")
+									{
+										//Init EventSheet Editor
+										var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+										eventsheetEditor.setState('assetUserName', asset.owner.user.name);
+										eventsheetEditor.setState('assetType',asset.type);
+										eventsheetEditor.setState('assetName',asset.name);
+									}
+								}
+								else if (asset.type=="image")
+								{
+									assetId = 'image_' + asset.name;
+								}
+								
+								Assets.addFile(assetUrl, assetId);
+								
+								
+								Display.error(data.assets[i].name);
+								i+=1;
+							}
+							
+							
+							var assetUserName = me.getState('assetUserName');
+							
+							var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
+							Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
+							
+							//Event Listener
+							Assets.successSignal.connect(function () {
+								//Start up Scene Editor
+								Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
+								
+								//Start up EventSheet Editor
+								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+								
+								//Get Library Collections for this project
+								Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
+							}).once();
+							
+							//Load
+							Assets.loadBatch();
+						}
+						else
+						{
+							Display.error('Error Requesting Main Module Assets!');
+						}
+					}
+					if (Comms.getRequestData("Project Library Collections Request")!=null)
+					{
+						var data = Comms.getRequestData("Project Library Collections Request");
+						
+						if (data.code=="success")
+						{
+							Display.error('Requesting Library Collections success!');
+							
+							//Get Username
+							//var userName = me.getState('assetUserName');
+							
+							var libraryCollections = Logic.getEntityByName('Editor Library Collections');
+							var libraryCollectionButtonsContainer = Logic.getEntityByName('Editor Library Collections Buttons Container');
+							var libraryCollectionPanelsContainer = Logic.getEntityByName('Editor Library Collections Panels Container');
+							
+							var libraryCollectionsHash = new ObjectMap();
+							var selectedAtFirst = null;
+							
+							var i = 0;
+							while (data.libraryCollections.length>i)
+							{
+								//Get AssetDb
+								var libraryCollection = data.libraryCollections[i];
+								
+								//Create Button
+								var libraryCollectionButton = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryCollectionButton');
+								libraryCollectionButton.setState('buttonText',libraryCollection.title);
+								libraryCollectionButton.setState('imageName',libraryCollection.iconName);
+								libraryCollectionButton.setState('normalTextColor',libraryCollection.titleColor);
+								libraryCollectionButton.setState('selectedTextColor',libraryCollection.titleColorSelected);
+								//myNewItem.setState('asset',asset); //asset or panel object
+								libraryCollectionButtonsContainer.addChild(libraryCollectionButton);
+								
+								//Create Panel
+								var libraryCollectionPanel = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryCollectionPanel');
+								
+								libraryCollectionPanel.setState('name',libraryCollection.title);
+								libraryCollectionPanel.setState('importTypes',libraryCollection.importTypes);
+								//myNewItem.setState('asset',asset); //asset or panel object
+								libraryCollectionPanelsContainer.addChild(libraryCollectionPanel);
+								
+								//Register In hash
+								libraryCollectionsHash.set(libraryCollectionButton,libraryCollectionPanel);
+								
+								Display.error("libraryCollection.title: " + libraryCollection.title);
+								
+								if (i==0)
+									selectedAtFirst = libraryCollectionButton;
+									
+								i+=1;
+							}
+							
+							libraryCollections.setState('collectionsHash',libraryCollectionsHash);
+							
+							if (selectedAtFirst!=null)
+							{
+								libraryCollections.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = selectedAtFirst;
+								libraryCollections.startAction("SelectCategory");
+							}
+						}
+						else
+						{
+							Display.error('Error Requesting Library Collections!');
+						}
+					}
+					else if (Comms.getRequestData("Project Assets Request")!=null)
 					{
 						var data = Comms.getRequestData("Project Assets Request");
 						
@@ -36,9 +208,6 @@
 							var userName = me.getState('assetUserName');
 							
 							var spritesFound = [];
-							
-							//Initiate Load
-							Assets.initiateBatch();
 							
 							var i = 0;
 							while (data.assets.length>i)
@@ -78,7 +247,7 @@
 									assetId = 'image_' + asset.name;
 								}
 
-								Assets.addFile(assetUrl, assetId);
+								//Assets.addFile(assetUrl, assetId);
 								
 								
 								Display.error(data.assets[i].name);
@@ -93,16 +262,15 @@
 							objectsPanel.startAction('AddItemNoUpload');
 							*/
 							
-							var assetUserName = me.getState('assetUserName');
+							
 							
 							//Event Listener
-							Assets.successSignal.connect(function () {
-								Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
-
-							}).once();
+							//Assets.successSignal.connect(function () {}).once();
 							
 							//Load
-							Assets.loadBatch();
+							//Assets.loadBatch();
+							
+							//Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
 						}
 						else
 						{

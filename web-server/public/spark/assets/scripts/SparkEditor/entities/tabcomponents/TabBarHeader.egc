@@ -15,6 +15,8 @@
 		<_State id="verticalAlign"><Value>middle</Value></_State>
 		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>textObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="paddingLeft"><Value>5</Value></_State>
+		<_State id="paddingRight"><Value>5</Value></_State>
 	</_States>
 	
 	<Form>
@@ -23,7 +25,6 @@
 				<!-- Header Icon -->
 				<Entity extends="std.display.Image">
 					<_States>
-						<_State id="left"><Value>2</Value></_State>
 						<_State id="verticalCenter"><Value>0</Value></_State>
 						<_State id="display"><Value>none</Value></_State>
 						<_State id="width"><Value>1</Value></_State>

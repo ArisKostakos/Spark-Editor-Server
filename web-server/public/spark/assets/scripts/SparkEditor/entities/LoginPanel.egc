@@ -2,19 +2,12 @@
 <Entity extends="std.display.Div">
 	<_States>
 		<_State id="name"><Value>Login Panel</Value></_State>
-		<_State id="layout"><Value>Vertical</Value></_State>
-		<_State id="horizontalAlign"><Value>center</Value></_State>
-		<_State id="verticalAlign"><Value>top</Value></_State>
 		<_State id="width"><Value>512</Value></_State>
 		<_State id="height"><Value>377</Value></_State>
-		<_State id="gap"><Value>3</Value></_State>
 		<_State id="display"><Value>inline</Value></_State>
 		<_State id="horizontalCenter"><Value>0</Value></_State>
 		<_State id="verticalCenter"><Value>0</Value></_State>
-		<_State id="paddingLeft"><Value>42</Value></_State>
-		<_State id="paddingRight"><Value>38</Value></_State>
-		<_State id="paddingTop"><Value>52</Value></_State>
-		<_State id="paddingBottom"><Value>49</Value></_State>
+		
 		<_State id="backgroundColor"><Value>#21303D</Value></_State>
 		<_State id="borderRadius"><Value>12px</Value></_State>
 		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
@@ -29,262 +22,299 @@
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Sign Up Button -->
-				<Entity extends="std.display.Button"><_States>
-					<_State id="name"><Value>Sign Up Button</Value></_State>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>49</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
-					<_State id="border"><Value>0px</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="textVerticalAlign"><Value>middle</Value></_State>
-					<_State id="text"><Value>Sign Up</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>30px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
-				<Script>
-				parent.setState('display','none');
-				parent.parentEntity.getState('signupPanel').getState('nameInput').setState('text','');
-				parent.parentEntity.getState('signupPanel').getState('emailInput').setState('text','');
-				parent.parentEntity.getState('signupPanel').getState('alphaInput').setState('text','');
-				parent.parentEntity.getState('signupPanel').getState('userInput').setState('text','');
-				parent.parentEntity.getState('signupPanel').getState('passInput').setState('text','');
-				parent.parentEntity.getState('signupPanel').getState('vpassInput').setState('text','');
-				parent.parentEntity.getState('signupPanel').getState('outputText').setState('text','');
-				parent.parentEntity.getState('signupPanel').setState('display','inline');
-				</Script>
-				</Scripts></Trigger></_Triggers></Entity>
-				
-				<!-- Spacer -->
-				<Entity extends="std.display.Group"><_States><_State id="height"><Value>39</Value></_State></_States></Entity>
-				
-				<!-- User Name -->
-				<Entity extends="std.display.HGroup"><_States>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
-						<Entity extends="std.display.Div"><_States>
-							<_State id="name"><Value>UserBox</Value></_State>
-							<_State id="width"><Value>49</Value></_State>
-							<_State id="height"><Value>49</Value></_State>
-							<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
-						<Form><Space><Entities><Entity extends="std.display.Image"><_States>
-								<_State id="name"><Value>UserImage</Value></_State>
-								<_State id="width"><Value>24</Value></_State>
-								<_State id="height"><Value>26</Value></_State>
-								<_State id="horizontalCenter"><Value>0</Value></_State>
-								<_State id="verticalCenter"><Value>0</Value></_State>
-								<_State id="src"><Value>userIcon</Value></_State>
-						</_States></Entity></Entities></Space></Form></Entity>
-						
-						<Entity extends="std.display.Input"><_States>
-							<_State id="name"><Value>User Input</Value></_State>
-							<_State id="width"><Value>100%</Value></_State>
-							<_State id="height"><Value>47</Value></_State>
-							<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
-							<_State id="border"><Value>0px</Value></_State>
-							<_State id="placeholder"><Value>User Name</Value></_State>
-							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-							<_State id="fontSize"><Value>23px</Value></_State>
-							<_State id="fontColor"><Value>white</Value></_State>
-							<_State id="textIndent"><Value>12px</Value></_State>
-							<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
-						</_States>
-							<_Triggers><Trigger><Event>KeyReleasedLocal</Event><Scripts>
-						<Script>
-						var eventObjectKeyRelease = me.getState('eventObjectKeyRelease');
-						Display.error("KEY RELEASEE");
-						if (eventObjectKeyRelease.keyCode==33 || eventObjectKeyRelease.keyCode==34)
-						{
-							var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
-							if (projectEntity.getState('Connected')==true)
-							{
-								var strUser =parent.parentEntity.getState('userInput').getState('text');
-								var strPass =parent.parentEntity.getState('passwordInput').getState('text');
-							
-								if (eventObjectKeyRelease.keyCode==33) //Page Up
-								{
-									strUser = 'test3';
-									strPass = 'lala3';
-								}
-								else if (eventObjectKeyRelease.keyCode==34) //Page Down
-								{
-									strUser = 'spark';
-									strPass = '12qw!@QW ';
-									Logic.getEntityByName('Spark Editor').setState('adminMode',true);
-								}
-								
-								
-								if (strUser.length>0 && strUser!='Undefined' &&
-									strPass.length>0 && strPass!='Undefined')
-								{
-									parent.parentEntity.getState('outputText').setState('text', 'Please wait...');
-									
-									
-									Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
-																						username: strUser, 
-																						password: strPass}, "Log In Request");
-																						
-									
-									Logic.getEntityByName('Spark Editor').setState('username',strUser);
-								}
-								else
-								{
-									parent.parentEntity.getState('outputText').setState('text', 'Please fill in every field.');
-								}
-							}
-							else
-							{
-								parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
-							}
-						}
-						</Script></Scripts></Trigger>
-					</_Triggers>
-				</Entity>
-				</Entities></Space></Form></Entity>
-				
-				<!-- Password -->
-				<Entity extends="std.display.HGroup"><_States>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
-					<Entity extends="std.display.Div"><_States>
-						<_State id="name"><Value>PasswordBox</Value></_State>
-						<_State id="width"><Value>49</Value></_State>
-						<_State id="height"><Value>49</Value></_State>
-						<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
-					<Form><Space><Entities><Entity extends="std.display.Image"><_States>
-							<_State id="name"><Value>PasswordImage</Value></_State>
-							<_State id="width"><Value>17</Value></_State>
-							<_State id="height"><Value>23</Value></_State>
-							<_State id="horizontalCenter"><Value>0</Value></_State>
-							<_State id="verticalCenter"><Value>0</Value></_State>
-							<_State id="src"><Value>passwordIcon</Value></_State>
-					</_States></Entity></Entities></Space></Form></Entity>
-					
-					<Entity extends="std.display.Input"><_States>
-						<_State id="name"><Value>Password Input</Value></_State>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="height"><Value>47</Value></_State>
-						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
-						<_State id="border"><Value>0px</Value></_State>
-						<_State id="placeholder"><Value>Password</Value></_State>
-						<_State id="type"><Value>password</Value></_State>
-						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-						<_State id="fontSize"><Value>23px</Value></_State>
-						<_State id="fontColor"><Value>white</Value></_State>
-						<_State id="textIndent"><Value>12px</Value></_State>
-						<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
-					</_States>
-					<_Triggers><Trigger><Event>KeyPressedLocal</Event><Scripts>
-						<Script>
-						var eventObjectKeyPress = me.getState('eventObjectKeyPress');
-						
-						if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
-						{
-							var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
-							if (projectEntity.getState('Connected')==true)
-							{
-								var strUser =parent.parentEntity.getState('userInput').getState('text');
-								var strPass =parent.parentEntity.getState('passwordInput').getState('text');
-								
-								if (strUser.length>0 && strUser!='Undefined' &&
-									strPass.length>0 && strPass!='Undefined')
-								{
-									parent.parentEntity.getState('outputText').setState('text', 'Please wait...');
-									
-									
-									Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
-																						username: strUser, 
-																						password: strPass}, "Log In Request");
-																						
-									if (eventObjectKeyPress.keyCode==10)
-										Logic.getEntityByName('Spark Editor').setState('adminMode',true);
-									
-									Logic.getEntityByName('Spark Editor').setState('username',strUser);
-								}
-								else
-								{
-									parent.parentEntity.getState('outputText').setState('text', 'Please fill in every field.');
-								}
-							}
-							else
-							{
-								parent.parentEntity.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
-							}
-						}
-						</Script></Scripts></Trigger>
-					</_Triggers></Entity>
-				</Entities></Space></Form></Entity>
-				
-				<!-- Login Button -->
-				<Entity extends="std.display.Button"><_States>
-					<_State id="name"><Value>Login Button</Value></_State>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>49</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="textVerticalAlign"><Value>middle</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
-					<_State id="border"><Value>0px</Value></_State>
-					<_State id="text"><Value>Log in</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>30px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
-				<Script>
-					var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
-					if (projectEntity.getState('Connected')==true)
-					{
-						var strUser =parent.getState('userInput').getState('text');
-						var strPass =parent.getState('passwordInput').getState('text');
-						//strUser = 'aris';
-						//strPass = 'r0diof';
-						//strUser = 'test3';
-						//strPass = 'lala3';
-						//strUser = 'spark';
-						//strPass = '12qw!@QW ';
-						
-						
-						if (strUser.length>0 && strUser!='Undefined' &&
-							strPass.length>0 && strPass!='Undefined')
-						{
-							parent.getState('outputText').setState('text', 'Please wait...');
-							
-							Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
-																				username: strUser, 
-																				password: strPass}, "Log In Request");
-																				
-							Logic.getEntityByName('Spark Editor').setState('username',strUser);
-						}
-						else
-						{
-							parent.getState('outputText').setState('text', 'Please fill in every field.');
-						}
-							
-					}
-					else
-					{
-						parent.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
-					}
-				</Script>
-				</Scripts></Trigger></_Triggers></Entity>
-				
-				
-				
-				<!-- Spacer -->
-				<Entity extends="std.display.Group"><_States><_State id="height"><Value>10</Value></_State></_States></Entity>
-				
-				<!-- Output Text -->
-				<Entity extends="std.display.Text"><_States>
-					<_State id="name"><Value>Output Text</Value></_State>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>49</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>22px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
+				<!-- Connected Light -->
+				<Entity extends="std.display.Div"><_States>
+					<_State id="name"><Value>Login Connected Light</Value></_State>
+					<_State id="borderRadius"><Value>50%</Value></_State>
+					<_State id="backgroundColor"><Value>orange</Value></_State>
+					<_State id="width"><Value>10</Value></_State>
+					<_State id="height"><Value>10</Value></_State>
+					<_State id="top"><Value>10</Value></_State>
+					<_State id="left"><Value>10</Value></_State>
 				</_States></Entity>
+				
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>3</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="verticalAlign"><Value>top</Value></_State>
+						<_State id="paddingLeft"><Value>42</Value></_State>
+						<_State id="paddingRight"><Value>38</Value></_State>
+						<_State id="paddingTop"><Value>52</Value></_State>
+						<_State id="paddingBottom"><Value>49</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Sign Up Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Sign Up Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="text"><Value>Sign Up</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>30px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<Script>
+							var loginPanel = Logic.getEntityByName('Login Panel');
+							
+							loginPanel.setState('display','none');
+							loginPanel.parentEntity.getState('signupPanel').getState('nameInput').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').getState('emailInput').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').getState('alphaInput').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').getState('userInput').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').getState('passInput').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').getState('vpassInput').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').getState('outputText').setState('text','');
+							loginPanel.parentEntity.getState('signupPanel').setState('display','inline');
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="height"><Value>39</Value></_State></_States></Entity>
+						
+						<!-- User Name -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+								<Entity extends="std.display.Div"><_States>
+									<_State id="name"><Value>UserBox</Value></_State>
+									<_State id="width"><Value>49</Value></_State>
+									<_State id="height"><Value>49</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+								<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+										<_State id="name"><Value>UserImage</Value></_State>
+										<_State id="width"><Value>24</Value></_State>
+										<_State id="height"><Value>26</Value></_State>
+										<_State id="horizontalCenter"><Value>0</Value></_State>
+										<_State id="verticalCenter"><Value>0</Value></_State>
+										<_State id="src"><Value>userIcon</Value></_State>
+								</_States></Entity></Entities></Space></Form></Entity>
+								
+								<Entity extends="std.display.Input"><_States>
+									<_State id="width"><Value>100%</Value></_State>
+									<_State id="height"><Value>47</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+									<_State id="border"><Value>0px</Value></_State>
+									<_State id="placeholder"><Value>User Name</Value></_State>
+									<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+									<_State id="fontSize"><Value>23px</Value></_State>
+									<_State id="fontColor"><Value>white</Value></_State>
+									<_State id="textIndent"><Value>12px</Value></_State>
+									<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+								</_States>
+								<_Actions><_Action id="Constructor"><_Scripts><Script>
+									Logic.getEntityByName('Login Panel').setState('userInput',me);
+								</Script></_Scripts></_Action></_Actions>
+									<_Triggers><Trigger><Event>KeyReleasedLocal</Event><Scripts>
+								<Script>
+								var loginPanel = Logic.getEntityByName('Login Panel');
+								
+								var eventObjectKeyRelease = me.getState('eventObjectKeyRelease');
+								Display.error("KEY RELEASEE");
+								if (eventObjectKeyRelease.keyCode==33 || eventObjectKeyRelease.keyCode==34)
+								{
+									var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+									if (projectEntity.getState('Connected')==true)
+									{
+										var strUser =loginPanel.getState('userInput').getState('text');
+										var strPass =loginPanel.getState('passwordInput').getState('text');
+									
+										if (eventObjectKeyRelease.keyCode==33) //Page Up
+										{
+											strUser = 'test3';
+											strPass = 'lala3';
+										}
+										else if (eventObjectKeyRelease.keyCode==34) //Page Down
+										{
+											strUser = 'spark';
+											strPass = '12qw!@QW ';
+											Logic.getEntityByName('Spark Editor').setState('adminMode',true);
+										}
+										
+										
+										if (strUser.length>0 && strUser!='Undefined' &&
+											strPass.length>0 && strPass!='Undefined')
+										{
+											loginPanel.getState('outputText').setState('text', 'Please wait...');
+											
+											
+											Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																								username: strUser, 
+																								password: strPass}, "Log In Request");
+																								
+											
+											Logic.getEntityByName('Spark Editor').setState('username',strUser);
+										}
+										else
+										{
+											loginPanel.getState('outputText').setState('text', 'Please fill in every field.');
+										}
+									}
+									else
+									{
+										loginPanel.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+									}
+								}
+								</Script></Scripts></Trigger>
+							</_Triggers>
+						</Entity>
+						</Entities></Space></Form></Entity>
+						
+						<!-- Password -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+							<Entity extends="std.display.Div"><_States>
+								<_State id="name"><Value>PasswordBox</Value></_State>
+								<_State id="width"><Value>49</Value></_State>
+								<_State id="height"><Value>49</Value></_State>
+								<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+							<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+									<_State id="name"><Value>PasswordImage</Value></_State>
+									<_State id="width"><Value>17</Value></_State>
+									<_State id="height"><Value>23</Value></_State>
+									<_State id="horizontalCenter"><Value>0</Value></_State>
+									<_State id="verticalCenter"><Value>0</Value></_State>
+									<_State id="src"><Value>passwordIcon</Value></_State>
+							</_States></Entity></Entities></Space></Form></Entity>
+							
+							<Entity extends="std.display.Input"><_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>47</Value></_State>
+								<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+								<_State id="border"><Value>0px</Value></_State>
+								<_State id="placeholder"><Value>Password</Value></_State>
+								<_State id="type"><Value>password</Value></_State>
+								<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+								<_State id="fontSize"><Value>23px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textIndent"><Value>12px</Value></_State>
+								<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								Logic.getEntityByName('Login Panel').setState('passwordInput',me);
+							</Script></_Scripts></_Action></_Actions>
+							<_Triggers><Trigger><Event>KeyPressedLocal</Event><Scripts>
+								<Script>
+								var loginPanel = Logic.getEntityByName('Login Panel');
+								var eventObjectKeyPress = me.getState('eventObjectKeyPress');
+								
+								if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
+								{
+									var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+									if (projectEntity.getState('Connected')==true)
+									{
+										var strUser =loginPanel.getState('userInput').getState('text');
+										var strPass =loginPanel.getState('passwordInput').getState('text');
+										
+										if (strUser.length>0 && strUser!='Undefined' &&
+											strPass.length>0 && strPass!='Undefined')
+										{
+											loginPanel.getState('outputText').setState('text', 'Please wait...');
+											
+											
+											Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																								username: strUser, 
+																								password: strPass}, "Log In Request");
+																								
+											if (eventObjectKeyPress.keyCode==10)
+												Logic.getEntityByName('Spark Editor').setState('adminMode',true);
+											
+											Logic.getEntityByName('Spark Editor').setState('username',strUser);
+										}
+										else
+										{
+											loginPanel.getState('outputText').setState('text', 'Please fill in every field.');
+										}
+									}
+									else
+									{
+										loginPanel.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+									}
+								}
+								</Script></Scripts></Trigger>
+							</_Triggers></Entity>
+						</Entities></Space></Form></Entity>
+						
+						<!-- Login Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Login Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="text"><Value>Log in</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>30px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<Script>
+							var loginPanel = Logic.getEntityByName('Login Panel');
+							var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
+							if (projectEntity.getState('Connected')==true)
+							{
+								var strUser =loginPanel.getState('userInput').getState('text');
+								var strPass =loginPanel.getState('passwordInput').getState('text');
+								//strUser = 'aris';
+								//strPass = 'r0diof';
+								//strUser = 'test3';
+								//strPass = 'lala3';
+								//strUser = 'spark';
+								//strPass = '12qw!@QW ';
+								
+								
+								if (strUser.length>0 && strUser!='Undefined' &&
+									strPass.length>0 && strPass!='Undefined')
+								{
+									loginPanel.getState('outputText').setState('text', 'Please wait...');
+									
+									Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
+																						username: strUser, 
+																						password: strPass}, "Log In Request");
+																						
+									Logic.getEntityByName('Spark Editor').setState('username',strUser);
+								}
+								else
+								{
+									loginPanel.getState('outputText').setState('text', 'Please fill in every field.');
+								}
+									
+							}
+							else
+							{
+								loginPanel.getState('outputText').setState('text', 'Client has not connected yet! Be patient...');
+							}
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+						
+						
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="height"><Value>10</Value></_State></_States></Entity>
+						
+						<!-- Output Text -->
+						<Entity extends="std.display.Text"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>22px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+						</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+						Logic.getEntityByName('Login Panel').setState('outputText',me);
+						</Script></_Scripts></_Action></_Actions></Entity>
+					</Entities></Space></Form>
+				</Entity>
 			</Entities>
 		</Space>
 	</Form>
@@ -293,17 +323,6 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child in me.getChildren())
-					{
-						if (child.getState('name')=='Output Text')
-									me.setState('outputText',child);
-								
-						for (grandchild in child.getChildren())
-							if (grandchild.getState('name')=='User Input')
-								me.setState('userInput',grandchild);
-							else if (grandchild.getState('name')=='Password Input')
-								me.setState('passwordInput',grandchild);
-					}
 					/*
 						//enter project gui
 						Logic.getEntityByName('Dom View').setState('visible',false);
