@@ -9,6 +9,8 @@
 		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>importTypes</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>containerPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tileWidth</Id><Type>Integer</Type><Value>50</Value></State>
+		<State><Id>tileHeight</Id><Type>Integer</Type><Value>50</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -72,8 +74,8 @@
 					//var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
 					//myNewItem.setState('imageName',assetUrl);
-					newItem.setState('width','80');
-					newItem.setState('height','80');
+					newItem.setState('width',me.getState('tileWidth'));
+					newItem.setState('height',me.getState('tileHeight'));
 					newItem.setState('name',file.name);
 					
 					
