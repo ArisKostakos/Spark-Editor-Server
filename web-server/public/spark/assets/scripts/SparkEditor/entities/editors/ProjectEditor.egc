@@ -171,6 +171,7 @@
 								libraryCollectionPanel.setState('importTypes',libraryCollection.importTypes);
 								libraryCollectionPanel.setState('tileWidth',libraryCollection.tileWidth);
 								libraryCollectionPanel.setState('tileHeight',libraryCollection.tileHeight);
+								libraryCollectionPanel.setState('tileUploadingImageName',libraryCollection.iconName);
 								//myNewItem.setState('asset',asset); //asset or panel object
 								libraryCollectionPanelsContainer.addChild(libraryCollectionPanel);
 								
