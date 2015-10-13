@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="width"><Value>50</Value></_State>
+		<_State id="height"><Value>50</Value></_State>
+		<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>caption</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>skinType</Id><Type>Text</Type><Value>imageOnly</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Image -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="touchable"><Value>true</Value></_State>
+						<_State id="cursor"><Value>pointer</Value></_State>
+						<_State id="draggable"><Value>true</Value></_State>
+					</_States>
+						
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('imageObject',me);
+						me.setState('src',parent.getState('imageName'));
+						
+						if (parent.getState('skinType')=='imageOnly')
+						{
+							me.setState('width', '100%');
+							me.setState('height', '100%');
+						}
+					</Script></_Scripts></_Action></_Actions>
+						
+					<_Triggers>
+						<Trigger>
+							<Event>OnDragStart</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',true);				
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>OnDragEnd</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',false);
+									Display.error("DRAG ENDDD");
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>MouseDown</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',true);
+									Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',me.getState('asset'));
+									
+									//FINDS OFFSET FROM MOUSE CLICK TO IMAGE. I might need it later on..
+									//Display.error("Mouse Down!!!");
+									//var eventObject = me.getState('eventObject');
+									//var localX = eventObject.target.getBoundingClientRect().left;
+									//var localY = eventObject.target.getBoundingClientRect().top;
+									//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+									//.error("Mouse Global-> X: " + Input.pointer.currentX + ", Y: " + Input.pointer.currentY);
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>MouseUp</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',false);
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+					</_Triggers>
+				</Entity>
+					
+				<!-- Caption
+					..
+				-->
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -105,7 +105,14 @@
 								
 								var username = Logic.getEntityByName('Spark Editor').getState('username');
 								//Upload the file from the file service
-								//Comms.file_sendFileRequest(file, {name: file.name, size: file.size, user: username} , file.name);
+								Comms.file_sendFileRequest(file, {name: file.name, size: file.size, user: username} , file.name);
+								
+								//Send UploadItem to the collection
+								collectionsFound[0].getAction('UploadFile').setState('file',file);
+								collectionsFound[0].getAction('UploadFile').setState('componentType','Image'); //later, you use a hash to translate importType to componentType
+								collectionsFound[0].getAction('UploadFile').setState('assetType','image'); //later, you use a hash to translate importType to assetType
+								collectionsFound[0].getAction('UploadFile').setState('tags',''); //later, figure out tags too
+								collectionsFound[0].startAction('UploadFile');
 							}
 						}
 					}

@@ -7,31 +7,30 @@
 		<!--<_State id="overflow"><Value>scroll</Value></_State>-->
 		<_State id="display"><Value>none</Value></_State>
 		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
-	
 		<State><Id>importTypes</Id><Type>Dynamic</Type><Value>null</Value></State>
-		
+		<State><Id>containerPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
 		<Action>
-			<Id>AddItem</Id>
+			<Id>AddItems</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
 					var container2d = Logic.getEntityByName('LibraryTilesContainer');
-					var components = me.getAction('AddItem').getState('items');
+					var components = me.getAction('AddItems').getState('items');
 					
 					//var username = Logic.getEntityByName('Spark Editor').getState('username');
 					var i = 0;
 					while (components.length>i)
 					{
 						var asset = components[i];
-						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItemNoName');
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
 						myNewItem.setState('asset',asset);
 						
 						var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 						
-						myNewItem.setState('src',assetUrl);
+						myNewItem.setState('imageName',assetUrl);
 						myNewItem.setState('width','40');
 						myNewItem.setState('height','40');
 						
@@ -50,6 +49,55 @@
 				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
+				
+		<Action>
+			<Id>UploadFile</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("UploadFile");
+					var file = me.getAction('UploadFile').getState('file');
+					var componentType = me.getAction('UploadFile').getState('componentType');
+					var assetType = me.getAction('UploadFile').getState('assetType');
+					var tags = me.getAction('UploadFile').getState('tags');
+					
+					var containerPanel = me.getState('containerPanel');
+					
+					var newItem = Logic.gameFactory.createGameEntityExtended('SparkEditor.entities.library.EditorLibraryItem', 'SparkEditor.entities.library.EditorLibraryItemUpload');
+					//var username = Logic.getEntityByName('Spark Editor').getState('username');
+					//var asset = components[i];
+					//var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
+					//myNewItem.setState('asset',asset);
+					
+					//var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+
+					//myNewItem.setState('imageName',assetUrl);
+					newItem.setState('width','80');
+					newItem.setState('height','80');
+					newItem.setState('name',file.name);
+					
+					
+					newItem.setState('fileSize',file.size);
+					newItem.setState('componentType',componentType);
+					newItem.setState('assetType',assetType);
+					newItem.setState('tags',tags);
+					
+					containerPanel.addChild(newItem);
+					//Display.error('asset #' + i + ':' + asset.fileName);
+					//Display.error(components[i].assets);
+					
+					
+					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>file</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>componentType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>assetType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>tags</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
 	</_Actions>
 	
 	<Form>
@@ -61,15 +109,23 @@
 						<_State id="layout"><Value>Tile</Value></_State>
 						<_State id="horizontalAlign"><Value>justify</Value></_State>
 						<_State id="verticalAlign"><Value>justify</Value></_State>
-						<_State id="requestedColumnCount"><Value>5</Value></_State>
+							
+						<!--<_State id="requestedColumnCount"><Value>5</Value></_State>-->
+							
 						<_State id="horizontalGap"><Value>6</Value></_State>
 						<_State id="verticalGap"><Value>6</Value></_State>
+							
 						<_State id="paddingLeft"><Value>6</Value></_State>
 						<_State id="paddingRight"><Value>6</Value></_State>
 						<_State id="paddingTop"><Value>6</Value></_State>
 						<_State id="paddingBottom"><Value>6</Value></_State>
 						<!--<_State id="overflow"><Value>scroll</Value></_State>-->
 					</_States>
+						
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						//parent.setState('imageObject',me);
+						parent.setState('containerPanel',me);
+					</Script></_Scripts></_Action></_Actions>
 				</Entity>
 			</Entities>
 		</Space>

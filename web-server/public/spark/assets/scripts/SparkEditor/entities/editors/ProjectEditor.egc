@@ -30,8 +30,8 @@
 					
 					//The proccess will be:
 					
-					//Get Module Assets and Flambe Load them
-					//Create Library Categories
+					//*Get Module Assets and Flambe Load them*
+					//*Create Library Categories*
 					//Get Project Assets & Get Include Assets, and distribute them to Library Categories
 					
 					Comms.request("assets.requestHandler.getProjectMainModuleAssets", {}, "Project Main Module Assets Request");

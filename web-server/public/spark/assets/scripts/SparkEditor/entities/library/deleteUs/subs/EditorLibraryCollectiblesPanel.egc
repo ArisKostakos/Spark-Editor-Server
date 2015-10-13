@@ -23,7 +23,7 @@
 					while (components.length>i)
 					{
 						var asset = components[i];
-						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.platform.EditorLibraryItemNoName');
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.platform.EditorLibraryItem');
 						myNewItem.setState('asset',asset);
 						
 						var assetUrl;
