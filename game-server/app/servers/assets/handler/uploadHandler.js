@@ -104,7 +104,7 @@ handler.uploadAsset = function(msg, session, next) {
             var thumbnailUrl = userPath + '/' + 'thumbnail' + '/' + data.asset.dir + '/' + data.asset.fileName +  '.' + data.asset.fileExtension;
 
             //create thumbnail
-            createThumbnail(assetUrl, thumbnailUrl, 16, function(err) {
+            createThumbnail(assetUrl, thumbnailUrl, 128, function(err) {
                 if (err) {
                     next(null, {code: "error"});
                     return console.error(err);
