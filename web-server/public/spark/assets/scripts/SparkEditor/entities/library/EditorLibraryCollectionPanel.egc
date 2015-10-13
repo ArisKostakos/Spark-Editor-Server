@@ -74,8 +74,8 @@
 					//var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 
 					//myNewItem.setState('imageName',assetUrl);
-					newItem.setState('width',me.getState('tileWidth'));
-					newItem.setState('height',me.getState('tileHeight'));
+					newItem.setState('width',Std.string(me.getState('tileWidth')));
+					newItem.setState('height',Std.string(me.getState('tileHeight')));
 					newItem.setState('name',file.name);
 					
 					
