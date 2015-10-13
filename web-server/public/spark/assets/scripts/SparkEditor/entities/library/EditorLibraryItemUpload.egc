@@ -127,7 +127,7 @@
 							imageObject.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
 							//imageObject.setState('width','14');
 							//imageObject.setState('height','14');
-							imageObject.setState('opacity','1');
+							//imageObject.setState('opacity','1');
 							
 							//Text //ONLY IF ITEM IS captionType enabled...
 							//var objText = me.getState('obj_text');
@@ -136,6 +136,9 @@
 							//Progress Bar
 							var objProgressBar = me.getState('progressBar');
 							objProgressBar.setState('opacity','0');
+							
+							//Clear Border
+							me.setState('border','0px');
 							
 							//Set Component
 							me.setState('asset',asset);

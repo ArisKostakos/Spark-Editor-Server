@@ -12,6 +12,7 @@
 		<State><Id>tileWidth</Id><Type>Integer</Type><Value>50</Value></State>
 		<State><Id>tileHeight</Id><Type>Integer</Type><Value>50</Value></State>
 		<State><Id>tileUploadingImageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>tileUploadingBorderColor</Id><Type>Text</Type><Value>black</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -76,6 +77,7 @@
 
 					//myNewItem.setState('imageName',assetUrl);
 					newItem.setState('imageName',me.getState('tileUploadingImageName'));
+					newItem.setState('border',"2px dashed " + me.getState('tileUploadingBorderColor'));
 					newItem.setState('width',Std.string(me.getState('tileWidth')));
 					newItem.setState('height',Std.string(me.getState('tileHeight')));
 					newItem.setState('name',file.name);
