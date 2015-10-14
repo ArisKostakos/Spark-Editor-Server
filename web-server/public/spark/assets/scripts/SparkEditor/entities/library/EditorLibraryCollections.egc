@@ -41,7 +41,7 @@
 			</_Scripts>
 		</_Action>
 		
-		<!-- ImportRequest -->
+		<!-- ImportRequest (From a File)-->
 		<Action>
 			<Id>ImportRequest</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -122,7 +122,84 @@
 				<State><Id>file</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
-				
+		
+		<!-- ImportRequestAssetDb-->
+		<Action>
+			<Id>ImportRequestAssetsDb</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("ImportRequestAssetsDb");
+					//Get Hashes
+					var collectionsHash = me.getState('collectionsHash');
+					//var importTypesHash = me.getState('importTypesHash');
+					
+					//So Normally, I find an appropriate Library Collection by checking the library collection filters, against the asset db..
+					//But here comes a simplified version.. again..
+					
+					var assets = me.getAction('ImportRequestAssetsDb').getState('assets');
+					
+					Display.error("ImportRequestAssetDbImportRequestAssetDb: length: " + assets.length);
+					
+					
+					var imageAssets = [];
+					
+					//Again, here comes a moronic simplified versin to replace the advanced way of checking every asset against all collection's filtering system..
+					for (asset in assets)
+					{
+						if (asset.type=="image")
+						{
+							imageAssets.push(asset);
+							Display.error("Yeah boyyy: " + asset.name);
+						}
+					}
+					Display.error("imageAssets: length: " + imageAssets.length);
+					
+					if (imageAssets.length==0) return;
+					
+					//Determine Import Type
+					var importType = 'image'; //find collections that accept image importTypes... later on, do the hash legwork
+					
+					//Check which of are collections would be interested in this importType
+					if (importType==null)
+					{
+						Display.error("ERROR: Could not deduce importType from given file extension!");
+					}
+					else
+					{
+						var collectionsFound = [];
+						for (collection in collectionsHash)
+						{
+							if (collection.getState('importTypes')[0]==importType)
+								collectionsFound.push(collection);
+						}
+						
+						if (collectionsFound.length==0)
+						{
+							Display.error("ERROR: No collection likes this import type!");
+						}
+						else
+						{
+							if (collectionsFound.length>1)
+							{
+								Display.error("ERROR: It becomes a bit tricky when more than one collections want this, because we don't know what tags and what componentType to upload this asset with!");
+							}
+							else
+							{
+								//Send asset to the collection
+								collectionsFound[0].getAction('AddAssetsDB').setState('assets',imageAssets);
+								collectionsFound[0].startAction('AddAssetsDB');
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		
 		<!-- SelectCategory -->
 		<Action>
 			<Id>SelectCategory</Id>

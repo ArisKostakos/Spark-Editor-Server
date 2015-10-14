@@ -17,40 +17,41 @@
 	
 	<_Actions>
 		<Action>
-			<Id>AddItems</Id>
+			<Id>AddAssetsDB</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					var container2d = Logic.getEntityByName('LibraryTilesContainer');
-					var components = me.getAction('AddItems').getState('items');
+					me.stopAction("AddAssetsDB");
 					
-					//var username = Logic.getEntityByName('Spark Editor').getState('username');
-					var i = 0;
-					while (components.length>i)
+					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+					
+					var containerPanel = me.getState('containerPanel');
+					
+					var assets = me.getAction('AddAssetsDB').getState('assets');
+					
+					for (asset in assets)
 					{
-						var asset = components[i];
-						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
-						myNewItem.setState('asset',asset);
+						Display.error("AddAssetsDB: FOUND: " + asset.name);
 						
-						var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var containerPanel = me.getState('containerPanel');
 						
-						myNewItem.setState('imageName',assetUrl);
-						myNewItem.setState('width','40');
-						myNewItem.setState('height','40');
+						var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
 						
-						container2d.addChild(myNewItem);
-						Display.error('asset #' + i + ':' + asset.fileName);
-						//Display.error(components[i].assets);
+						newItem.setState('width',Std.string(me.getState('tileWidth')));
+						newItem.setState('height',Std.string(me.getState('tileHeight')));
+						newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+						newItem.setState('asset',asset);
+						//newItem.setState('name',asset.name);
 						
-						i+=1;
+						
+						containerPanel.addChild(newItem);
 					}
 					
 					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
-					me.stopAction("AddItem");
 				</Script>
 			</Scripts>
 			<States>
-				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
 				
@@ -68,14 +69,7 @@
 					var containerPanel = me.getState('containerPanel');
 					
 					var newItem = Logic.gameFactory.createGameEntityExtended('SparkEditor.entities.library.EditorLibraryItem', 'SparkEditor.entities.library.EditorLibraryItemUpload');
-					//var username = Logic.getEntityByName('Spark Editor').getState('username');
-					//var asset = components[i];
-					//var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
-					//myNewItem.setState('asset',asset);
 					
-					//var assetUrl = 'assets/' + 'spark' + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-
-					//myNewItem.setState('imageName',assetUrl);
 					newItem.setState('imageName',me.getState('tileUploadingImageName'));
 					newItem.setState('border',"2px dashed " + me.getState('tileUploadingBorderColor'));
 					newItem.setState('width',Std.string(me.getState('tileWidth')));
@@ -89,8 +83,6 @@
 					newItem.setState('tags',tags);
 					
 					containerPanel.addChild(newItem);
-					//Display.error('asset #' + i + ':' + asset.fileName);
-					//Display.error(components[i].assets);
 					
 					
 					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;

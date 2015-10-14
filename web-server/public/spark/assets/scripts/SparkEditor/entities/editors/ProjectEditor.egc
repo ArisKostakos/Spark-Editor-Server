@@ -14,25 +14,21 @@
 					
 					//enter project gui
 					Logic.getEntityByName('Dashboard View').setState('visible',false);
-
-					//Logic.getEntityByName('Navigation Bar View').setState('visible',true);
 					Logic.getEntityByName('Editor Left View').setState('visible',true);
 					Logic.getEntityByName('Editor Bottom View').setState('visible',true);
 					////Logic.getEntityByName('Editor Right View').setState('visible',true);
 					Logic.getEntityByName('Editor Viewport View').setState('visible',true);
-					//Logic.getEntityByName('Drag Surface View').setState('visible',true);
 					
 					Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
 					Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
 					Logic.getEntityByName('NavigationBar').setState('height','74');
 					
-					//Comms.request("assets.requestHandler.getProjectAssets", {}, "Project Assets Request");
 					
 					//The proccess will be:
 					
 					//*Get Module Assets and Flambe Load them*
 					//*Create Library Categories*
-					//Get Project Assets & Get Include Assets, and distribute them to Library Categories
+					//Get Project Assets (& Get Include Assets), and distribute them to Library Categories
 					
 					Comms.request("assets.requestHandler.getProjectMainModuleAssets", {}, "Project Main Module Assets Request");
 				</Script>
@@ -46,6 +42,7 @@
 			<Event>NetworkRequest</Event>
 			<Scripts>
 				<Script>
+					//Get Module Assets and Flambe Load them
 					if (Comms.getRequestData("Project Main Module Assets Request")!=null)
 					{
 						var data = Comms.getRequestData("Project Main Module Assets Request");
@@ -131,7 +128,8 @@
 							Display.error('Error Requesting Main Module Assets!');
 						}
 					}
-					if (Comms.getRequestData("Project Library Collections Request")!=null)
+					//Create Library Categories
+					else if (Comms.getRequestData("Project Library Collections Request")!=null)
 					{
 						var data = Comms.getRequestData("Project Library Collections Request");
 						
@@ -194,249 +192,46 @@
 								libraryCollections.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = selectedAtFirst;
 								libraryCollections.startAction("SelectCategory");
 							}
+							
+							//Get Project Assets
+							Comms.request("assets.requestHandler.getProjectAssets", {}, "Distribute Assets to Library Collections");
+							
+							//includes and such.. modify it, but keep the callback name
+							//Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Distribute Assets to Library Collections");
 						}
 						else
 						{
 							Display.error('Error Requesting Library Collections!');
 						}
 					}
-					else if (Comms.getRequestData("Project Assets Request")!=null)
+					//Get Project Assets (& Get Include Assets), and distribute them to Library Categories
+					//Make it so its generic? y not? :/ and do both requests at once..y not..
+					//if we get both answers on same frame, then we have to sequent.. but we must still use the same.. cause of infinite number of includes on every project..
+					//ok...
+					else if (Comms.getRequestData("Distribute Assets to Library Collections")!=null)
 					{
-						var data = Comms.getRequestData("Project Assets Request");
+						var data = Comms.getRequestData("Distribute Assets to Library Collections");
 						
 						if (data.code=="success")
 						{
-							Display.error('Requesting Project Assets success!');
+							Display.error('Distribute Assets to Library Collections success!');
 							
-							//Get Username
-							var userName = me.getState('assetUserName');
-							
-							var spritesFound = [];
-							
-							var i = 0;
-							while (data.assets.length>i)
+							if (data.assets.length>0)
 							{
-								//Get AssetDb
-								var asset = data.assets[i];
+								//Send it to Library Collections
+								var libraryCollections = Logic.getEntityByName('Editor Library Collections');
 								
-								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-								
-								Display.error("assetUrl: " + assetUrl);
-								var assetId;
-								
-								//If Asset is Script
-								if (asset.type=="script")
-								{
-									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-								}
-								else if (asset.type=="image")
-								{
-									//Check second tag
-									/*
-									if (asset.tags[1]=='sprite')
-									{
-										Display.error("!!!! IMAGE FOUND!!!!");
-										spritesFound.push(asset);
-									}*/
-									if (asset.componentType=='Tile')
-									{
-										Display.error("!!!! IMAGE FOUND!!!!");
-										spritesFound.push(asset);
-									}
-									//Is it uploaded to be used as a Sprite?
-									//..
-									//Is it uploaded to be used for Spriter?
-									//..
-									
-									assetId = 'image_' + asset.name;
-								}
-
-								//Assets.addFile(assetUrl, assetId);
-								
-								
-								Display.error(data.assets[i].name);
-								i+=1;
+								libraryCollections.getAction('ImportRequestAssetsDb').setState('assets', data.assets);
+								libraryCollections.startAction('ImportRequestAssetsDb');
 							}
-							
-							//Fill Library with Sprites
-							/*
-							var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
-							
-							objectsPanel.getAction('AddItemNoUpload').setState('items', spritesFound);
-							objectsPanel.startAction('AddItemNoUpload');
-							*/
-							
-							
-							
-							//Event Listener
-							//Assets.successSignal.connect(function () {}).once();
-							
-							//Load
-							//Assets.loadBatch();
-							
-							//Comms.request("assets.requestHandler.getAssetsOf", {userName:'spark', projectName:'lib'}, "Alpha Project Assets Request");
+							else
+							{
+								Display.error('Error Distribute Assets Array is empty!');
+							}
 						}
 						else
 						{
-							Display.error('Error Requesting Project Assets!');
-						}
-					}
-					else if (Comms.getRequestData("Alpha Project Assets Request")!=null)
-					{
-						var data = Comms.getRequestData("Alpha Project Assets Request");
-						
-						if (data.code=="success")
-						{
-							Display.error('Requesting Alpha Project Assets success!');
-							
-							//Get Username
-							var userName = 'spark';
-							
-							var spriterActorsFound = [];
-							var tilesFound = [];
-							var propsFound = [];
-							var collectiblesFound = [];
-							var backgroundsFound = [];
-							
-							//Initiate Load
-							Assets.initiateBatch();
-							
-							var i = 0;
-							while (data.assets.length>i)
-							{
-								//Get AssetDb
-								var asset = data.assets[i];
-								
-								var assetUrl = '/assets/' + userName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-								
-								Display.error("assetUrl: " + assetUrl);
-								var assetId;
-								
-								//If Asset is Script
-								if (asset.type=="script")
-								{
-									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-									
-									//Check second tag
-									if (asset.componentType=='Behavior')
-									{
-										Display.error("!!!! BEHAVIOR FOUND!!!!");
-										//behaviorsFound.push(asset);
-									}
-								}
-								else if (asset.type=="image")
-								{
-									if (asset.componentType=='Tile')
-									{
-										Display.error("!!!! Tile FOUND!!!!");
-										tilesFound.push(asset);
-									}
-									else if (asset.componentType=='Prop')
-									{
-										Display.error("!!!! Prop FOUND!!!!");
-										propsFound.push(asset);
-									}
-									else if (asset.componentType=='Collectible')
-									{
-										Display.error("!!!! Collectible FOUND!!!!");
-										collectiblesFound.push(asset);
-									}
-									else if (asset.componentType=='Actor')
-									{
-										if (asset.tags[1]=='SpriterMain')
-										{
-											Display.error("!!!! SpriterMain FOUND!!!!");
-											spriterActorsFound.push(asset);
-										}
-									}
-									else if (asset.componentType=='Background')
-									{
-										Display.error("!!!! Background FOUND!!!!");
-										backgroundsFound.push(asset);
-									}
-
-									
-									assetId = 'image_' + asset.name;
-								}
-
-								Assets.addFile(assetUrl, assetId);
-								
-								
-								Display.error(assetId);
-								i+=1;
-							}
-							
-							//Fill Library with Tiles
-							var tilesPanel = Logic.getEntityByName('Editor Library Tiles Panel');
-							tilesPanel.getAction('AddItem').setState('items', tilesFound);
-							tilesPanel.startAction('AddItem');
-							
-							//Fill Library with Props
-							var propsPanel = Logic.getEntityByName('Editor Library Props Panel');
-							propsPanel.getAction('AddItem').setState('items', propsFound);
-							propsPanel.startAction('AddItem');
-							
-							//Fill Library with Collectibles
-							var collectiblesPanel = Logic.getEntityByName('Editor Library Collectibles Panel');
-							collectiblesPanel.getAction('AddItem').setState('items', collectiblesFound);
-							collectiblesPanel.startAction('AddItem');
-							
-							//Fill Library with Players
-							var playersPanel = Logic.getEntityByName('Editor Library Player Panel');
-							playersPanel.getAction('AddItem').setState('items', spriterActorsFound);
-							playersPanel.startAction('AddItem');
-							
-							//Fill Library with Backgrounds
-							var backgroundPanel = Logic.getEntityByName('Editor Library Background Panel');
-							backgroundPanel.getAction('AddItem').setState('items', backgroundsFound);
-							backgroundPanel.startAction('AddItem');
-							
-							var assetUserName = me.getState('assetUserName');
-							
-							//Event Listener
-							Assets.successSignal.connect(function () {
-								var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
-								Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
-								
-								//temp scene stuff
-								var sceneEditor = Logic.getEntityByName('2d Scene Editor');
-								sceneEditor.setState('assetUserName', assetUserName);
-								sceneEditor.setState('assetType','script');
-								sceneEditor.setState('assetName',projectName + '.scenes.MainScene');
-								sceneEditor.startAction('GetAsset');
-							
-								
-								//temp eventsheet stuff
-								var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
-								eventsheetEditor.setState('assetUserName', assetUserName);
-								eventsheetEditor.setState('assetType','script');
-								eventsheetEditor.setState('assetName',projectName + '.events.MainEventSheet');
-								eventsheetEditor.startAction('GetAsset');
-								
-								
-								
-								//enter project gui
-								Logic.getEntityByName('Dashboard View').setState('visible',false);
-
-								//Logic.getEntityByName('Navigation Bar View').setState('visible',true);
-								Logic.getEntityByName('Editor Left View').setState('visible',true);
-								Logic.getEntityByName('Editor Bottom View').setState('visible',true);
-								////Logic.getEntityByName('Editor Right View').setState('visible',true);
-								Logic.getEntityByName('Editor Viewport View').setState('visible',true);
-								//Logic.getEntityByName('Drag Surface View').setState('visible',true);
-								
-								Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
-								Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
-								Logic.getEntityByName('NavigationBar').setState('height','74');
-								
-							}).once();
-							
-							//Load
-							Assets.loadBatch();
-						}
-						else
-						{
-							Display.error('Error Requesting Alpha Project Assets!');
+							Display.error('Error Distribute Assets to Library Collections!');
 						}
 					}
 				</Script>
