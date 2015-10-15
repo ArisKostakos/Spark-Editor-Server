@@ -125,7 +125,8 @@ function getDependancies(darray, index, dependancies, msg, session, cb)
 {
     if (index<darray.length)
     {
-        database.findOne(database.Asset, {owner: session.get('developer')._id, type: msg.type, name: darray[index]},
+        //database.findOne(database.Asset, {owner: session.get('developer')._id, type: msg.type, name: darray[index]}, //OK, here we should first look for name from the owner, otherwise look from other owners
+        database.findOne(database.Asset, {type: msg.type, name: darray[index]},
             function (err, object_found) {
                 //Handle Error
                 if (err) {
