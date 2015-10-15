@@ -18,9 +18,202 @@
 						<_State id="backgroundColor"><Value>white</Value></_State>
 						<_State id="opacity"><Value>0.25</Value></_State>
 						<_State id="dropTarget"><Value>true</Value></_State>
+						<State><Id>temp_newAssetName</Id><Type>Text</Type><Value>Undefined</Value></State>
+						<State><Id>temp_newAssetSize</Id><Type>Integer</Type><Value>0</Value></State>
 					</_States>
 					<_Triggers>
 						<Trigger>
+							<Event>OnDrop</Event>
+							<Scripts>
+								<Script>
+									function firstElementNamed(p_xmlNode, p_elementName)
+									{
+										if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+										{
+											return p_xmlNode.elementsNamed(p_elementName).next();
+										}
+										else
+										{
+											return null;
+										}
+									}
+					
+									//Figure out X, Y, etc..
+									var eventObject = me.getState('eventObject');
+									var localX = eventObject.clientX - eventObject.target.getBoundingClientRect().left;
+									var localY = eventObject.clientY - eventObject.target.getBoundingClientRect().top;
+									Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+									
+									//Add Camera Offsets and Scaling
+									var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+									var scale = camera.getState('scaleX');
+									localX = localX / scale + camera.getState('captureAreaX');
+									localY = localY / scale + camera.getState('captureAreaY');
+									
+									//Get the Asset & stuff
+									var asset = parent.getState('assetBeingDragged');
+									//var componentType = assetBeingDragged.componentType;
+									
+									Display.error('Dropping: ' + asset.name);
+									
+									var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+									
+									var pureXml;
+									
+									var displayTypeData;
+									
+									var gridLock;
+									
+									
+									
+									//Ok, here we go
+									
+									//let's name it
+									var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									
+									//check how i add things now.. plan how i'll do it differently
+									
+									//create new xml based on library collection
+									var newXml = Xml.createDocument();
+									
+									var entityXml = Xml.createElement('Entity');
+									entityXml.set('extends' , 'std.display.Image2D'); //this should be replaced by the base class of the library collection used to drag the item
+									
+									var extendsXml = Xml.createElement('_Extends');
+									
+									var statesXml = Xml.createElement('_States');
+									
+									//State Name
+									var stateName_Xml = Xml.createElement('_State');
+									stateName_Xml.set('id', 'name');
+									var stateName_ValueXml = Xml.createElement('Value');
+									stateName_ValueXml.addChild(Xml.createPCData(newClassName));
+									
+									//2d mesh image form
+									var stateMesh_Xml = Xml.createElement('_State');
+									stateMesh_Xml.set('id', '2DMeshImageForm');
+									var stateMesh_ValueXml = Xml.createElement('Value');
+									stateMesh_ValueXml.addChild(Xml.createPCData("ImageUrl"));
+									
+									var formXml = Xml.createElement('_Form');
+									var formStatesXml = Xml.createElement('_States');
+									var formStateXml = Xml.createElement('State');
+									var formStateIdXml = Xml.createElement('Id');
+									formStateIdXml.addChild(Xml.createPCData('ImageUrl'));
+									var formStateTypeXml = Xml.createElement('Type');
+									formStateTypeXml.addChild(Xml.createPCData('Text'));
+									var formStateValueXml = Xml.createElement('Value');
+									formStateValueXml.addChild(Xml.createPCData('image_' + asset.name));
+									
+									newXml.addChild(entityXml);
+									entityXml.addChild(extendsXml);
+									entityXml.addChild(statesXml);
+										statesXml.addChild(stateName_Xml);
+											stateName_Xml.addChild(stateName_ValueXml);
+										statesXml.addChild(stateMesh_Xml);
+											stateMesh_Xml.addChild(stateMesh_ValueXml);
+											
+									entityXml.addChild(formXml);
+										formXml.addChild(formStatesXml);
+											formStatesXml.addChild(formStateXml);
+												formStateXml.addChild(formStateIdXml);
+												formStateXml.addChild(formStateTypeXml);
+												formStateXml.addChild(formStateValueXml);
+									
+									
+									
+									var finalString = Logic.xmlToString(newXml);
+									Display.error("newXml: " + finalString);
+									
+									var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+									Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+									me.setState('temp_newAssetName',newClassName);
+									me.setState('temp_newAssetSize',finalString.length);
+									
+									Comms.file_sendFileRequest(finalString, {name: "createdAsset", size: finalString.length, user: connectedUserName} , "DragSurface Creating Asset Step 1");
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>FileTransferRequest</Event>
+							<Scripts>
+								<Script>
+									if (Comms.file_getSendFileRequestData("DragSurface Creating Asset Step 1")!=null)
+									{
+										var data = Comms.file_getSendFileRequestData("DragSurface Creating Asset Step 1");
+										
+										Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+										
+										//Logic.getEntityByName('AU_output').getState('value').setState('text','Uploading ' + data.progressPercent+'%');
+						
+										if (data.progress==1)
+										{
+											Logic.getEntityByName('Editor Output').setState('text','File Uploaded!');
+											
+											var libraryAsset = parent.getState('assetBeingDragged');
+											var newAssetName = me.getState('temp_newAssetName');
+											var newAssetSize = me.getState('temp_newAssetSize');
+											
+											//fileName
+											var fileName = newAssetName+'.egc';
+											
+											//fileSize
+											var fileSize = newAssetSize;
+											
+											//assetTitle.. not being used currently
+											var assetTitle=newAssetName;
+											
+											//Dir
+											var dir = "entities";
+											
+											//type
+											var type = "script";
+											
+											//componentType
+											var componentType = "Object Class"; //This should be determined by Library Collection stuff!!!!
+											
+											//tags
+											var tags =  ""; //This should be determined by Library Collection stuff!!!!
+											
+											Comms.request("assets.uploadHandler.rawUpload", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: dir, type: type, componentType: componentType, tags: tags}, "DragSurface Creating Asset Step 2");
+										}
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>NetworkRequest</Event>
+							<Scripts>
+								<Script>
+									if (Comms.getRequestData("DragSurface Creating Asset Step 2")!=null)
+									{
+										var data = Comms.getRequestData("DragSurface Creating Asset Step 2");
+										
+										if (data.code=="success")
+										{
+											Logic.getEntityByName('Editor Output').setState('text','Asset Created: ' + data.assetName);
+											
+										}
+										else if (data.code=="dMissing")
+										{
+											Logic.getEntityByName('Editor Output').setState('text','Missing: ' + data.dependancyName);
+										}
+										else if (data.code=="exists")
+										{
+											Logic.getEntityByName('Editor Output').setState('text','Already exists: ' + data.assetName);
+										}
+										else
+										{
+											Logic.getEntityByName('Editor Output').setState('text','Error Creating Asset.');
+										}
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<!--<Trigger> OLD ONE
 							<Event>OnDrop</Event>
 							<Scripts>
 								<Script>
@@ -256,7 +449,7 @@
 									}
 								</Script>
 							</Scripts>
-						</Trigger>
+						</Trigger>-->
 					</_Triggers>
 				</Entity>
 			</Entities>

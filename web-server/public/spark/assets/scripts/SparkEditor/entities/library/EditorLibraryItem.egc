@@ -59,7 +59,7 @@
 							<Scripts>
 								<Script>
 									Logic.getEntityByName('Drag Surface View').setState('visible',true);
-									Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',me.getState('asset'));
+									Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
 									
 									//FINDS OFFSET FROM MOUSE CLICK TO IMAGE. I might need it later on..
 									//Display.error("Mouse Down!!!");

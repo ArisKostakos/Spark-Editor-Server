@@ -68,7 +68,7 @@ handler.rawUpload = function(msg, session, next) {
                 }
 
                 //Handle Success
-                next(null, {code: data.code, assetName: data.asset.name});
+                next(null, {code: data.code, asset: data.asset, assetName: data.asset.name});
             }
         );
     });
