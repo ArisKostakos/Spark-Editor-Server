@@ -168,7 +168,7 @@
 					var eventCollectionFileXml = Xml.createDocument();
 					
 					//Add eventCollection's Xml to Doc
-					var eventCollectionXml = Xml.parse(eventCollection.getState('xmlData').toString()).firstElement(); //clone it
+					var eventCollectionXml = Xml.parse(Logic.xmlToString(eventCollection.getState('xmlData'))).firstElement(); //clone it
 					eventCollectionFileXml.addChild(eventCollectionXml);
 					
 					//Create [Form.Space.Entities]
@@ -184,7 +184,7 @@
 					{
 						if (child.getState('name')!='Event Sheet Controls')
 						{
-							var eventChildXml = Xml.parse(child.getState('xmlData').toString()).firstElement(); //clone it
+							var eventChildXml = Xml.parse(Logic.xmlToString(child.getState('xmlData'))).firstElement(); //clone it
 							
 							entitiesXml.addChild(eventChildXml);
 							
@@ -213,7 +213,7 @@
 					}
 					
 					
-					var finalString = eventCollectionFileXml.toString();
+					var finalString = Logic.xmlToString(eventCollectionFileXml);
 					//Display.error("eventCollectionXml: " + finalString);
 					
 					var eventSheetBakedXml = Xml.parse(finalString).firstElement(); //bake it?

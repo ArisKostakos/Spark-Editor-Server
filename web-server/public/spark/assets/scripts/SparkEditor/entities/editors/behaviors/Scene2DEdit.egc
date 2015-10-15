@@ -427,7 +427,7 @@
 				if (Input.mouse.getScroll()>0)
 					dir *= -1;
 					
-					Display.error("scrolly scrolyyyyy: " + Input.mouse.getScroll());
+					//Display.error("scrolly scrolyyyyy: " + Input.mouse.getScroll());
 					
 					//Resize selected
 					if (Input.keyboard.isKeyDown(Key.Control))

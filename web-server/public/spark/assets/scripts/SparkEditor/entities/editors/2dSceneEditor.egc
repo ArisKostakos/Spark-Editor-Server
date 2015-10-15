@@ -231,7 +231,11 @@
 					var scene = me.getState('target');
 					Display.error("DEBUG LOG: Run: 11111111");
 					//Add Scene's Xml to Doc
-					var sceneXml = Xml.parse(scene.getState('xmlData').toString()).firstElement(); //clone it
+					
+					var sceneXml = Xml.parse(Logic.xmlToString(scene.getState('xmlData'))).firstElement(); //clone it
+					//var sceneXml = Xml.parse(scene.getState('xmlData').toString()); //clone it
+					
+					//Display.error(sceneXml);
 					//sceneFileXml.addChild(sceneXml);
 					Display.error("DEBUG LOG: Run: 2222222222");
 					//Create [Form.Space.Entities]
@@ -258,16 +262,17 @@
 					}
 					Display.error("DEBUG LOG: Run: 44444444444");
 					//var finalString = sceneFileXml.toString();
-					Display.error("sceneXml: " + sceneXml);
+					//Display.error("sceneXml: " + sceneXml);
 					
 					//var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 					
 					//Comms.file_sendFileRequest(finalString, {name: "updatedAsset", size: finalString.length, user: connectedUserName} , "updatedAsset");
 					
-					var sceneBakedXml = Xml.parse(sceneXml.toString()).firstElement(); //bake it?
+					var finalString = Logic.xmlToString(sceneXml);
+					var sceneBakedXml = Xml.parse(finalString).firstElement(); //bake it?
 					
 					//Instantiate
-					var editScene = Logic.gameFactory.createGameEntityByXml(sceneBakedXml);
+					var editScene = Logic.gameFactory.createGameEntityByXml(sceneBakedXml);   //(sceneBakedXml);
 					Display.error("DEBUG LOG: Run: 5555555555");
 					me.setState('sceneRun',editScene);
 					
