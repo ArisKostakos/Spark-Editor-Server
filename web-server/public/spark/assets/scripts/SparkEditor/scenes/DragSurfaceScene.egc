@@ -127,10 +127,11 @@
 									
 									var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 									Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+
 									me.setState('temp_newAssetName',newClassName);
 									me.setState('temp_newAssetSize',finalString.length);
 									
-									Comms.file_sendFileRequest(finalString, {name: "createdAsset", size: finalString.length, user: connectedUserName} , "DragSurface Creating Asset Step 1");
+									Comms.file_sendFileRequest(finalString, {name: newClassName+'.egc', size: finalString.length, user: connectedUserName} , "DragSurface Creating Asset Step 1");
 								</Script>
 							</Scripts>
 						</Trigger>
@@ -194,6 +195,42 @@
 										if (data.code=="success")
 										{
 											Logic.getEntityByName('Editor Output').setState('text','Asset Created: ' + data.assetName);
+											
+											//Step 3
+											//Flambe Load the egc and if it's an image, flambe load the texture (and any other dependancies it has, later)
+											
+											var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+											
+											//Initiate Load
+											Assets.initiateBatch();
+											
+											//Flambe Load Object Class egc
+											var asset = data.asset;
+											var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+											var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+											Assets.addFile(assetUrl, assetId);
+											
+											//Flambe Load Image Asset
+											////this should be determined by the base class of the library collection used to drag the item
+											//for now it always assumes Image
+											asset = parent.getState('assetBeingDragged');
+											assetId = 'image_' + asset.name;
+											Assets.addFile(assetUrl, assetId);
+											
+											//Event Listener
+											Assets.successSignal.connect(function () {
+												Logic.getEntityByName('Editor Output').setState('text',"Everything Flambe Loaded!");
+												
+												//Step 4
+												//Create the instance XML
+												
+												//Step 5
+												//Create the GameObject, set up it's xml data, add it to scene
+												
+											}).once();
+											
+											//Load
+											Assets.loadBatch();
 											
 										}
 										else if (data.code=="dMissing")
