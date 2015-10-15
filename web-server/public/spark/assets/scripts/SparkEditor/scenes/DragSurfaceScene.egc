@@ -20,6 +20,9 @@
 						<_State id="dropTarget"><Value>true</Value></_State>
 						<State><Id>temp_newAssetName</Id><Type>Text</Type><Value>Undefined</Value></State>
 						<State><Id>temp_newAssetSize</Id><Type>Integer</Type><Value>0</Value></State>
+						<State><Id>temp_dropX</Id><Type>Integer</Type><Value>0</Value></State>
+						<State><Id>temp_dropY</Id><Type>Integer</Type><Value>0</Value></State>
+						<State><Id>temp_newAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
 					</_States>
 					<_Triggers>
 						<Trigger>
@@ -50,6 +53,9 @@
 									localX = localX / scale + camera.getState('captureAreaX');
 									localY = localY / scale + camera.getState('captureAreaY');
 									
+									me.setState('temp_dropX',Std.int(localX));
+									me.setState('temp_dropY',Std.int(localY));
+									
 									//Get the Asset & stuff
 									var asset = parent.getState('assetBeingDragged');
 									//var componentType = assetBeingDragged.componentType;
@@ -69,7 +75,7 @@
 									//Ok, here we go
 									
 									//let's name it
-									var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									var newClassName = asset.fileName; //PUT THE RANDOM BACK IMMEDIATELY!@*^&! + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
 									
 									//check how i add things now.. plan how i'll do it differently
 									
@@ -79,7 +85,7 @@
 									var entityXml = Xml.createElement('Entity');
 									entityXml.set('extends' , 'std.display.Image2D'); //this should be replaced by the base class of the library collection used to drag the item
 									
-									var extendsXml = Xml.createElement('_Extends');
+									var extendsXml = Xml.createElement('Extends');
 									
 									var statesXml = Xml.createElement('_States');
 									
@@ -209,24 +215,86 @@
 											var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 											var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 											Assets.addFile(assetUrl, assetId);
+											me.setState('temp_newAsset',asset);
 											
 											//Flambe Load Image Asset
 											////this should be determined by the base class of the library collection used to drag the item
 											//for now it always assumes Image
-											asset = parent.getState('assetBeingDragged');
-											assetId = 'image_' + asset.name;
-											Assets.addFile(assetUrl, assetId);
+											//maybe, don't always load the texture, if it's already loaded..
+											var asset2 = parent.getState('assetBeingDragged');
+											var assetUrl2 = '/assets/' + connectedUserName + '/' + asset2.type + '/' + asset2.dir + '/' + asset2.fileName + '.' + asset2.fileExtension;
+											var assetId2 = 'image_' + asset2.name;
+											Assets.addFile(assetUrl2, assetId2);
+											
+											var oldMe = me;
 											
 											//Event Listener
 											Assets.successSignal.connect(function () {
 												Logic.getEntityByName('Editor Output').setState('text',"Everything Flambe Loaded!");
 												
+												oldMe.startAction('AddNewAsset');
+												/*
 												//Step 4
 												//Create the instance XML
+												var entityXml = Xml.createElement('Entity');
+												entityXml.set('extends' , asset.name);
+												
+												
+												var statesXml = Xml.createElement('_States');
+												
+												//State Id
+												var stateId_Xml = Xml.createElement('_State');
+												stateId_Xml.set('id', 'id');
+												var stateId_ValueXml = Xml.createElement('Value');
+												stateId_ValueXml.addChild(Xml.createPCData('0')); //incremental, like class, or unique for every class, or...?
+												
+												//State spaceX
+												var stateSpaceX_Xml = Xml.createElement('_State');
+												stateSpaceX_Xml.set('id', 'spaceX');
+												var stateSpaceX_ValueXml = Xml.createElement('Value');
+												stateSpaceX_ValueXml.addChild(Xml.createPCData(Std.string(oldMe.getState('temp_dropX'))));
+												
+												//State spaceY
+												var stateSpaceY_Xml = Xml.createElement('_State');
+												stateSpaceY_Xml.set('id', 'spaceY');
+												var stateSpaceY_ValueXml = Xml.createElement('Value');
+												stateSpaceY_ValueXml.addChild(Xml.createPCData(Std.string(oldMe.getState('temp_dropY'))));
+												
+												entityXml.addChild(statesXml);
+													statesXml.addChild(stateId_Xml);
+														stateId_Xml.addChild(stateId_ValueXml);
+													statesXml.addChild(stateSpaceX_Xml);
+														stateSpaceX_Xml.addChild(stateSpaceX_ValueXml);
+													statesXml.addChild(stateSpaceY_Xml);
+														stateSpaceY_Xml.addChild(stateSpaceY_ValueXml);
+												
+												
+												
+												var finalString = Logic.xmlToString(entityXml);
 												
 												//Step 5
 												//Create the GameObject, set up it's xml data, add it to scene
+												var pureXml = Xml.parse(finalString).firstElement(); //clone
 												
+												Display.error("SPRITE XML: " + pureXml);
+												
+												
+												var childExtendsXml = Xml.createElement('Extends');
+												entityXml.insertChild(childExtendsXml,0);
+												
+												//add [entity] Sprite2DEdit in [extends]
+												var sceneEditXml = Xml.createElement('Entity');
+												sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+												childExtendsXml.addChild(sceneEditXml);
+												Display.error("creatiinnggggg");
+												//instantiate, add to scene
+												var childEntity = Logic.gameFactory.createGameEntityByXml(entityXml);
+												var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+												scene.addChild(childEntity);
+												Display.error("created and added!!!");
+												//give it snapshot xml
+												childEntity.setState('xmlData',pureXml);
+												*/
 											}).once();
 											
 											//Load
@@ -488,6 +556,92 @@
 							</Scripts>
 						</Trigger>-->
 					</_Triggers>
+						
+					<_Actions>
+						<Action>
+							<Id>AddNewAsset</Id>
+							<Concurrency>Persistent</Concurrency>
+							<Scripts>
+								<Script>
+									//Delay 1000 frames
+									me.getAction("AddNewAsset").setState('counter',me.getAction("AddNewAsset").getState('counter')+1);
+									if (1000>me.getAction("AddNewAsset").getState('counter')) return;
+									
+									//Stop
+									me.stopAction("AddNewAsset");
+									
+									//Do
+									Logic.getEntityByName('Editor Output').setState('text',"Everything Flambe WAITED!");
+									
+									var asset = me.getState('temp_newAsset');
+									
+									//Step 4
+									//Create the instance XML
+									var entityXml = Xml.createElement('Entity');
+									entityXml.set('extends' , asset.name);
+									
+									
+									var statesXml = Xml.createElement('_States');
+									
+									//State Id
+									var stateId_Xml = Xml.createElement('_State');
+									stateId_Xml.set('id', 'id');
+									var stateId_ValueXml = Xml.createElement('Value');
+									stateId_ValueXml.addChild(Xml.createPCData('0')); //incremental, like class, or unique for every class, or...?
+									
+									//State spaceX
+									var stateSpaceX_Xml = Xml.createElement('_State');
+									stateSpaceX_Xml.set('id', 'spaceX');
+									var stateSpaceX_ValueXml = Xml.createElement('Value');
+									stateSpaceX_ValueXml.addChild(Xml.createPCData(Std.string(me.getState('temp_dropX'))));
+									
+									//State spaceY
+									var stateSpaceY_Xml = Xml.createElement('_State');
+									stateSpaceY_Xml.set('id', 'spaceY');
+									var stateSpaceY_ValueXml = Xml.createElement('Value');
+									stateSpaceY_ValueXml.addChild(Xml.createPCData(Std.string(me.getState('temp_dropY'))));
+									
+									entityXml.addChild(statesXml);
+										statesXml.addChild(stateId_Xml);
+											stateId_Xml.addChild(stateId_ValueXml);
+										statesXml.addChild(stateSpaceX_Xml);
+											stateSpaceX_Xml.addChild(stateSpaceX_ValueXml);
+										statesXml.addChild(stateSpaceY_Xml);
+											stateSpaceY_Xml.addChild(stateSpaceY_ValueXml);
+									
+									
+									
+									var finalString = Logic.xmlToString(entityXml);
+									
+									//Step 5
+									//Create the GameObject, set up it's xml data, add it to scene
+									var pureXml = Xml.parse(finalString).firstElement(); //clone
+									
+									Display.error("SPRITE XML: " + pureXml);
+									
+									
+									var childExtendsXml = Xml.createElement('Extends');
+									entityXml.insertChild(childExtendsXml,0);
+									
+									//add [entity] Sprite2DEdit in [extends]
+									var sceneEditXml = Xml.createElement('Entity');
+									sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+									childExtendsXml.addChild(sceneEditXml);
+									Display.error("creatiinnggggg");
+									//instantiate, add to scene
+									var childEntity = Logic.gameFactory.createGameEntityByXml(entityXml);
+									var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+									scene.addChild(childEntity);
+									Display.error("created and added!!!");
+									//give it snapshot xml
+									childEntity.setState('xmlData',pureXml);
+								</Script>
+							</Scripts>
+							<States>
+								<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+							</States>
+						</Action>
+					</_Actions>
 				</Entity>
 			</Entities>
 		</Space>
