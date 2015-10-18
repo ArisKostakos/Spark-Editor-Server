@@ -67,7 +67,13 @@
 					<_State id="imageWidth"><Value>20</Value></_State>
 					<_State id="imageHeight"><Value>15</Value></_State>
 					<_State id="imageHorCenter"><Value>3</Value></_State>
-				</_States></Entity>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					var poutsakia = Logic.getEntityByName('poutsakia');
+					
+					var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					scene.removeChild(poutsakia);
+				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Publish -->
 				<Entity extends="SparkEditor.entities.BlueButton"><_States>
@@ -77,7 +83,25 @@
 					<_State id="imageHeight"><Value>17</Value></_State>
 					<_State id="imageHorCenter"><Value>0</Value></_State>
 					<_State id="imageVerCenter"><Value>-1</Value></_State>
-				</_States></Entity>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+				//Initiate Load
+				Assets.initiateBatch();
+
+
+				//Flambe Load Image Asset
+				var assetUrl2 = '/assets/test3/image/test13/hihihi.png';
+				var assetId2 = 'PAPARIA';
+				Assets.addFile(assetUrl2, assetId2);
+
+				//Event Listener
+				Assets.successSignal.connect(function () {
+					Display.error("----------loaded----------");
+				}).once();
+
+
+				Assets.loadBatch();
+				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Share -->
 				<Entity extends="SparkEditor.entities.BlueButton"><_States>
@@ -86,7 +110,98 @@
 					<_State id="imageWidth"><Value>15</Value></_State>
 					<_State id="imageHeight"><Value>15</Value></_State>
 					<_State id="imageHorCenter"><Value>-1</Value></_State>
-				</_States></Entity>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+				//create new xml based on library collection
+									var entityXml = Xml.createElement('Entity');
+									entityXml.set('extends' , 'std.display.Image2D'); //this should be replaced by the base class of the library collection used to drag the item
+									
+									//var extendsXml = Xml.createElement('Extends');
+									
+									var statesXml = Xml.createElement('_States');
+									
+									//State Name
+									var stateName_Xml = Xml.createElement('_State');
+									stateName_Xml.set('id', 'name');
+									var stateName_ValueXml = Xml.createElement('Value');
+									stateName_ValueXml.addChild(Xml.createPCData("poutsakia"));
+									
+									//State spaceX
+									var stateSpaceX_Xml = Xml.createElement('_State');
+									stateSpaceX_Xml.set('id', 'spaceX');
+									var stateSpaceX_ValueXml = Xml.createElement('Value');
+									stateSpaceX_ValueXml.addChild(Xml.createPCData('50'));
+									
+									//State spaceY
+									var stateSpaceY_Xml = Xml.createElement('_State');
+									stateSpaceY_Xml.set('id', 'spaceY');
+									var stateSpaceY_ValueXml = Xml.createElement('Value');
+									stateSpaceY_ValueXml.addChild(Xml.createPCData('50'));
+									
+									//2d mesh image form
+									var stateMesh_Xml = Xml.createElement('_State');
+									stateMesh_Xml.set('id', '2DMeshImageForm');
+									var stateMesh_ValueXml = Xml.createElement('Value');
+									stateMesh_ValueXml.addChild(Xml.createPCData("ImageUrl"));
+									
+									var formXml = Xml.createElement('_Form');
+									var formStatesXml = Xml.createElement('_States');
+									var formStateXml = Xml.createElement('State');
+									var formStateIdXml = Xml.createElement('Id');
+									formStateIdXml.addChild(Xml.createPCData('ImageUrl'));
+									var formStateTypeXml = Xml.createElement('Type');
+									formStateTypeXml.addChild(Xml.createPCData('Text'));
+									var formStateValueXml = Xml.createElement('Value');
+									formStateValueXml.addChild(Xml.createPCData('PAPARIA'));
+									
+									//entityXml.addChild(extendsXml);
+									entityXml.addChild(statesXml);
+										statesXml.addChild(stateName_Xml);
+											stateName_Xml.addChild(stateName_ValueXml);
+										statesXml.addChild(stateMesh_Xml);
+											stateMesh_Xml.addChild(stateMesh_ValueXml);
+										statesXml.addChild(stateSpaceX_Xml);
+											stateSpaceX_Xml.addChild(stateSpaceX_ValueXml);
+										statesXml.addChild(stateSpaceY_Xml);
+											stateSpaceY_Xml.addChild(stateSpaceY_ValueXml);
+											
+									entityXml.addChild(formXml);
+										formXml.addChild(formStatesXml);
+											formStatesXml.addChild(formStateXml);
+												formStateXml.addChild(formStateIdXml);
+												formStateXml.addChild(formStateTypeXml);
+												formStateXml.addChild(formStateValueXml);
+									
+									
+									
+									var finalString = Logic.xmlToString(entityXml);
+									Display.error("TEST CREATE XML: " + finalString);
+									
+									
+									//Step 5
+									//Create the GameObject, set up it's xml data, add it to scene
+									var pureXml = Xml.parse(finalString).firstElement(); //clone
+									
+									Display.error("SPRITE XML: " + Logic.xmlToString(pureXml));
+									
+									/*
+									var childExtendsXml = Xml.createElement('Extends');
+									entityXml.insertChild(childExtendsXml,0);
+									
+									//add [entity] Sprite2DEdit in [extends]
+									var sceneEditXml = Xml.createElement('Entity');
+									sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+									childExtendsXml.addChild(sceneEditXml);*/
+									Display.error("creatiinnggggg");
+									//instantiate, add to scene
+									var childEntity = Logic.gameFactory.createGameEntityByXml(entityXml);
+									var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+									scene.addChild(childEntity);
+									Display.error("created and added!!!");
+									//give it snapshot xml
+									//childEntity.setState('xmlData',pureXml);
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
 			</Entities>
 		</Space>
 	</Form>

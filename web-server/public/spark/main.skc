@@ -220,7 +220,8 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPropsPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryCollectiblesPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryBackgroundPanel.egc</Asset>-->
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryBackgroundPanel.egc</Asset>
+			<Asset type="image" subtype="2D" location="local" id="fuckYou" bytes='35672'>sparkLogoWhite.png</Asset>-->
 		</Module>
 		
 		<Module id="DoNotLoad">

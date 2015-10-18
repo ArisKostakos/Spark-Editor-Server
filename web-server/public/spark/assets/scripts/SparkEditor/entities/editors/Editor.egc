@@ -25,7 +25,8 @@
 					
 					me.setState('fileId', fileId);
 					me.setState('fileUrl', '/assets/' + userName + '/' + type + '/' + fileId);
-					Display.error("DEBUG LOG: The url to access: " + me.getState('fileUrl'));
+					Display.error("DEBUG LOG1: The url to access: " + me.getState('fileId'));
+					Display.error("DEBUG LOG2: The url to access: " + me.getState('fileUrl'));
 					me.setState('xmlPure',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
 					me.setState('xmlEdit',Xml.parse(Assets.getFile(me.getState('fileId')).toString()).firstElement());
 					me.startAction('AssetLoaded');

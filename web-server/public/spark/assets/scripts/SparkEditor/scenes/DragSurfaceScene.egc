@@ -75,7 +75,7 @@
 									//Ok, here we go
 									
 									//let's name it
-									var newClassName = asset.fileName; //PUT THE RANDOM BACK IMMEDIATELY!@*^&! + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
 									
 									//check how i add things now.. plan how i'll do it differently
 									
@@ -210,30 +210,38 @@
 											//Initiate Load
 											Assets.initiateBatch();
 											
-											//Flambe Load Object Class egc
-											var asset = data.asset;
-											var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-											var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-											Assets.addFile(assetUrl, assetId);
-											me.setState('temp_newAsset',asset);
 											
 											//Flambe Load Image Asset
 											////this should be determined by the base class of the library collection used to drag the item
 											//for now it always assumes Image
 											//maybe, don't always load the texture, if it's already loaded..
+											
+											//Flambe Load Object Class egc
+											
+											var asset = data.asset;
+											var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+											var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+											Assets.addFile(assetUrl, assetId);
+											me.setState('temp_newAsset',asset);
+											//Display.error("**" + assetUrl);
+											//Display.error("**" + assetId);
+											
+											
 											var asset2 = parent.getState('assetBeingDragged');
 											var assetUrl2 = '/assets/' + connectedUserName + '/' + asset2.type + '/' + asset2.dir + '/' + asset2.fileName + '.' + asset2.fileExtension;
 											var assetId2 = 'image_' + asset2.name;
 											Assets.addFile(assetUrl2, assetId2);
+											
+											Display.error("**************************YOYOYOYOYO*****************");
 											
 											var oldMe = me;
 											
 											//Event Listener
 											Assets.successSignal.connect(function () {
 												Logic.getEntityByName('Editor Output').setState('text',"Everything Flambe Loaded!");
+												Display.error("**************************LOADED*****************");
+												//oldMe.startAction('AddNewAsset');
 												
-												oldMe.startAction('AddNewAsset');
-												/*
 												//Step 4
 												//Create the instance XML
 												var entityXml = Xml.createElement('Entity');
@@ -294,7 +302,6 @@
 												Display.error("created and added!!!");
 												//give it snapshot xml
 												childEntity.setState('xmlData',pureXml);
-												*/
 											}).once();
 											
 											//Load
@@ -563,9 +570,10 @@
 							<Concurrency>Persistent</Concurrency>
 							<Scripts>
 								<Script>
-									//Delay 1000 frames
+									//Delay 300 frames
 									me.getAction("AddNewAsset").setState('counter',me.getAction("AddNewAsset").getState('counter')+1);
-									if (1000>me.getAction("AddNewAsset").getState('counter')) return;
+									Display.error("**************************" + me.getAction("AddNewAsset").getState('counter') + "*****************");
+									if (30>me.getAction("AddNewAsset").getState('counter')) return;
 									
 									//Stop
 									me.stopAction("AddNewAsset");
@@ -617,7 +625,7 @@
 									//Create the GameObject, set up it's xml data, add it to scene
 									var pureXml = Xml.parse(finalString).firstElement(); //clone
 									
-									Display.error("SPRITE XML: " + pureXml);
+									Display.error("SPRITE XML: " + Logic.xmlToString(pureXml));
 									
 									
 									var childExtendsXml = Xml.createElement('Extends');

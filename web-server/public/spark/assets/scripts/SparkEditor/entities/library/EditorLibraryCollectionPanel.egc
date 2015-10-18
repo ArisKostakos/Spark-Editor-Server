@@ -40,6 +40,8 @@
 						newItem.setState('width',Std.string(me.getState('tileWidth')));
 						newItem.setState('height',Std.string(me.getState('tileHeight')));
 						newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+						//newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + 'THUMB.' + asset.fileExtension); //delete me
+						//newItem.setState('imageName',me.getState('tileUploadingImageName')); //delete me
 						newItem.setState('asset',asset);
 						//newItem.setState('name',asset.name);
 						

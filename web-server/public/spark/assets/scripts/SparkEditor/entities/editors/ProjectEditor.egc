@@ -25,7 +25,6 @@
 					
 					
 					//The proccess will be:
-					
 					//*Get Module Assets and Flambe Load them*
 					//*Create Library Categories*
 					//Get Project Assets (& Get Include Assets), and distribute them to Library Categories
@@ -56,7 +55,7 @@
 							
 							//Initiate Load
 							Assets.initiateBatch();
-							
+
 							var i = 0;
 							while (data.assets.length>i)
 							{
@@ -110,14 +109,17 @@
 							
 							//Event Listener
 							Assets.successSignal.connect(function () {
+							
 								//Start up Scene Editor
 								Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
 								
 								//Start up EventSheet Editor
 								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
 								
+								
 								//Get Library Collections for this project
 								Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
+								
 							}).once();
 							
 							//Load

@@ -56,7 +56,7 @@
 					
 					//give it snapshot xml
 					editScene.setState('xmlData',pureXml);
-					
+					/*
 					//check for [form.space.entities]
 					if (formXml!=null)
 					{
@@ -148,7 +148,7 @@
 							}
 						}
 					}
-
+					*/
 						
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(editScene);

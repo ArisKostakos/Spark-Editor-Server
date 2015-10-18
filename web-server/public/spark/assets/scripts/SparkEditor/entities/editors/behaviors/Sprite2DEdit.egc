@@ -473,7 +473,7 @@
 
 					var dir = me.getAction('Clone').getState('dir');
 					
-					var entityChildXml = Xml.parse(me.getState('xmlData').toString()).firstElement();
+					var entityChildXml = Xml.parse(Logic.xmlToString(me.getState('xmlData'))).firstElement();
 					
 					var shiftX=0;
 					var shiftY=0;
@@ -511,7 +511,7 @@
 							stateValueXml.removeChild(stateValueXml.firstChild());
 							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX')+shiftX)).firstChild());
 
-							Display.error("new spaceX: " + stateValueXml.firstChild().toString());
+							//Display.error("new spaceX: " + stateValueXml.firstChild().toString());
 						}
 						else if (stateChildXml.get("id")=="spaceY")
 						{
@@ -521,7 +521,7 @@
 							stateValueXml.removeChild(stateValueXml.firstChild());
 							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY')+shiftY)).firstChild());
 
-							Display.error("new spaceY: " + stateValueXml.firstChild().toString());
+							//Display.error("new spaceY: " + stateValueXml.firstChild().toString());
 						}
 					}
 					
@@ -530,8 +530,8 @@
 					
 					Display.error("Found child: " + entityChildXml.get('extends'));
 					//take snapshot
-					var pureChildXml = Xml.parse(entityChildXml.toString()).firstElement();
-					Display.error("Displaying Child: " + pureChildXml.toString());
+					var pureChildXml = Xml.parse(Logic.xmlToString(entityChildXml)).firstElement();
+					Display.error("Displaying Child: " + Logic.xmlToString(pureChildXml));
 					
 					//Remove [extends]
 					var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
