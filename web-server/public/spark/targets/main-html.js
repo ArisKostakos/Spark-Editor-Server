@@ -25672,6 +25672,7 @@ tools_spark_sliced_services_std_logic_gde_core_GameClassParser.prototype = {
 		} catch( err ) {
 			if (err instanceof js__$Boot_HaxeError) err = err.val;
 			tools_spark_framework_Console.error(Std.string(err));
+			tools_spark_framework_Console.error("Spark Parser Error: Entity [" + p_stringAssetUrl + "] has not been loaded!");
 			return null;
 		}
 	}
