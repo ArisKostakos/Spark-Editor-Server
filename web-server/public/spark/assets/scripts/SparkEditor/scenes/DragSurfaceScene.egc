@@ -232,7 +232,7 @@
 											var assetId2 = 'image_' + asset2.name;
 											Assets.addFile(assetUrl2, assetId2);
 											
-											Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id, asset._id, asset2._id]}, "whatever dude...");
+											Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id, asset2._id]}, "whatever dude...");
 											Display.error("**************************YOYOYOYOYO*****************");
 											
 											var oldMe = me;
