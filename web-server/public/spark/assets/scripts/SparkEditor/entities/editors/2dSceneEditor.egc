@@ -178,7 +178,7 @@
 					var scene = me.getState('target');
 					
 					//Add Scene's Xml to Doc
-					var sceneXml = Xml.parse(scene.getState('xmlData').toString()).firstElement(); //clone it
+					var sceneXml = Xml.parse(Logic.xmlToString(scene.getState('xmlData'))).firstElement(); //clone it
 					sceneFileXml.addChild(sceneXml);
 					
 					//Create [Form.Space.Entities]
@@ -202,7 +202,7 @@
 						}
 					}
 					
-					var finalString = sceneFileXml.toString();
+					var finalString = Logic.xmlToString(sceneFileXml);
 					Display.error("sceneXml: " + finalString);
 					
 					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
