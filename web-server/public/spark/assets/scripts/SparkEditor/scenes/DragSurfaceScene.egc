@@ -217,7 +217,6 @@
 											//maybe, don't always load the texture, if it's already loaded..
 											
 											//Flambe Load Object Class egc
-											
 											var asset = data.asset;
 											var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 											var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
@@ -225,7 +224,7 @@
 											me.setState('temp_newAsset',asset);
 											//Display.error("**" + assetUrl);
 											//Display.error("**" + assetId);
-											Comms.request("assets.updateHandler.addProjectMainModuleAssetReference", {assetId: asset}, "whatever dude...");
+											
 											
 											
 											var asset2 = parent.getState('assetBeingDragged');
@@ -233,6 +232,7 @@
 											var assetId2 = 'image_' + asset2.name;
 											Assets.addFile(assetUrl2, assetId2);
 											
+											Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id, asset2._id]}, "whatever dude...");
 											Display.error("**************************YOYOYOYOYO*****************");
 											
 											var oldMe = me;
