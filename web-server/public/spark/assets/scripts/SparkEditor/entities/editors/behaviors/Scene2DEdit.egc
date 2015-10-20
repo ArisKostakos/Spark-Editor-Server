@@ -173,10 +173,14 @@
 					
 					
 					//Now we Move the Scene Camera to show all MaxBounds
-					camera.setState('captureAreaX',maxBoundsX);
-					camera.setState('captureAreaY',maxBoundsY);
-					camera.setState('captureAreaWidth',maxBoundsWidth);
-					camera.setState('captureAreaHeight',maxBoundsHeight);
+					//Some offsets, to show some outside area as well
+					var outsideAreaOffsetWidth = maxBoundsWidth*0.1;
+					var outsideAreaOffsetHeight = maxBoundsHeight*0.1;
+					
+					camera.setState('captureAreaX',maxBoundsX-outsideAreaOffsetWidth);
+					camera.setState('captureAreaY',maxBoundsY-outsideAreaOffsetHeight);
+					camera.setState('captureAreaWidth',maxBoundsWidth+outsideAreaOffsetWidth*2);
+					camera.setState('captureAreaHeight',maxBoundsHeight+outsideAreaOffsetHeight*2);
 					
 					//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan, Sprite2DEdit scrolling, etc)
 					var editView = Logic.getEntityByName('Main View 2D');

@@ -283,6 +283,11 @@
 					Logic.getEntityByName('Main View 2D Run').setState('scene',editScene);
 					Logic.getEntityByName('Main View 2D Run').setState('visible',true);
 					
+					//Init Run View's Camera (in the future, this needs to happen probably on the scene code or camera code..
+					//so camera is inited even if game doesn't run from the editor.. can't do it yet, cause we don't create a new camera yet, just use the same one
+					//from the editor's..
+					Logic.getEntityByName('Editor Scene Run Camera').startAction('Camera Init');
+					
 					//Hide Edit View
 					Logic.getEntityByName('Main View 2D').setState('visible',false);
 					Display.error("DEBUG LOG: Run: 77777777777777");
