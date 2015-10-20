@@ -61,8 +61,17 @@ handler.addProjectMainModuleAssetReferences = function(msg, session, next) {
                 }
             }
 
-            //Handle Success
-            next(null, {code: "success"});
+            module_found.markModified('assets');
+            module_found.save(function (err) {
+                //Handle Error
+                if (err) {
+                    next(null, {code: "error"});
+                    return console.error(err);
+                }
+
+                //Handle Success
+                next(null, {code: "success"});
+            });
         }
     );
 };
