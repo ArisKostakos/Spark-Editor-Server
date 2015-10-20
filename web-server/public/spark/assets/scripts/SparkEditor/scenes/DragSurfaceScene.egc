@@ -225,6 +225,7 @@
 											me.setState('temp_newAsset',asset);
 											//Display.error("**" + assetUrl);
 											//Display.error("**" + assetId);
+											Comms.request("assets.updateHandler.addProjectMainModuleAssetReference", {assetId: asset}, "whatever dude...");
 											
 											
 											var asset2 = parent.getState('assetBeingDragged');
