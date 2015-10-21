@@ -125,9 +125,10 @@
 							//var objText = me.getState('obj_text');
 							//objText.setState('opacity','1');
 						
-							//Progress Bar
+							//Remove Progress Bar
 							var objProgressBar = me.getState('progressBar');
-							objProgressBar.setState('opacity','0');
+							me.removeChild(objProgressBar);
+							//objProgressBar.setState('opacity','0');
 							
 							//Clear Border
 							me.setState('border','0px');
