@@ -184,7 +184,7 @@
 					
 					//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan, Sprite2DEdit scrolling, etc)
 					var editView = Logic.getEntityByName('Main View 2D');
-					camera.setState('scaleX',editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'));
+					camera.setState('scaleX', Math.min(editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'),editView.getState('feedbackHeight') / camera.getState('captureAreaHeight')));
 					
 					/*
 					//set thing to update
@@ -462,7 +462,7 @@
 						
 						//Store Scale, for Misc reasons (not used in the engine) (used in CameraPan above though..)
 						var editView = Logic.getEntityByName('Main View 2D');
-						camera.setState('scaleX',editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'));
+						camera.setState('scaleX', Math.min(editView.getState('feedbackWidth') / camera.getState('captureAreaWidth'),editView.getState('feedbackHeight') / camera.getState('captureAreaHeight')));
 					}
 				</Script>
 			</Scripts>
