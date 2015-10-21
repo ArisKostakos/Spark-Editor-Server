@@ -72,13 +72,13 @@
 		<State>
 			<Id>minBoundsHorizontalAlign</Id>
 			<Type>Text</Type>
-			<Value>Left</Value>
+			<Value>Center</Value>
 		</State>
 		
 		<State>
 			<Id>minBoundsVerticalAlign</Id>
 			<Type>Text</Type>
-			<Value>Top</Value>
+			<Value>Middle</Value>
 		</State>
 	</_States>
 </Entity>
