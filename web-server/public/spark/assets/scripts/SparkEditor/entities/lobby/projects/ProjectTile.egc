@@ -53,7 +53,7 @@
 					<_State id="backgroundColor"><Value>rgb(41, 58, 76)</Value></_State>
 					<_State id="width"><Value>100%</Value></_State>
 					<_State id="height"><Value>100%</Value></_State>
-					</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+					</_States><_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 					<Script>
 						parent.startAction('ButtonClicked');
 					</Script>

@@ -115,7 +115,7 @@
 					<_State id="fontSize"><Value>15px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 				<Script>
 					
 					var file = Logic.getEntityByName('Asset Uploader').getState('file');
@@ -158,7 +158,7 @@
 							<_State id="cursor"><Value>pointer</Value></_State>
 							<_State id="fontSize"><Value>1px</Value></_State>
 						</_States>
-						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 						<Script>
 						if (me.getState('files')==null) 
 						{
@@ -200,6 +200,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 				if (me.getState('file')!=null)
@@ -243,6 +244,7 @@
 		
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 				if (me.getState('file')!=null)

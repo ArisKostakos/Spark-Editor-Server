@@ -28,6 +28,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.file_getSendFileRequestData(me.getState('name'))!=null)
@@ -70,6 +71,7 @@
 		
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.getRequestData(me.getState('name'))!=null)

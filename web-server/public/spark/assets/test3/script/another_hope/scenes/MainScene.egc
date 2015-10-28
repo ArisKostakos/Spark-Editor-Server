@@ -11,7 +11,6 @@
 	<Extends>
 		<Entity extends="std.behaviors.input.KeyboardInputHorizontal"/>
 		<Entity extends="std.behaviors.movement.InputMoveHorizontal"/>
-		<Entity extends="lib.2d.physics.behaviors.entity.Dynamic"/>
 	</Extends>
 	
 	<_States>

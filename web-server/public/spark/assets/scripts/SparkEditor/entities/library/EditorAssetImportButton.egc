@@ -32,7 +32,7 @@
 						<_State id="accept"><Value>.png, .jpg, .plist, .scml, .ogg, .mp3, .m4a, .mp4, .egc</Value></_State>
 					</_States>
 					
-					<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 						<Script>
 						if (me.getState('files')==null) 
 						{

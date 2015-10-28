@@ -47,7 +47,7 @@
 							<_State id="fontColor"><Value>white</Value></_State>
 							<_State id="text"><Value>Add New Condition</Value></_State>
 							<_State id="textAlign"><Value>center</Value></_State>
-							</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+							</_States><_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
 								//create an conditionEdit
 								var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
@@ -90,7 +90,7 @@
 							<_State id="fontColor"><Value>white</Value></_State>
 							<_State id="text"><Value>Add New Action</Value></_State>
 							<_State id="textAlign"><Value>center</Value></_State>
-							</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+							</_States><_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
 								//create an actionEdit
 								var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');

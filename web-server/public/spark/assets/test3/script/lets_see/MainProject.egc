@@ -13,7 +13,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="this_game_is_cool.MainSpace"/>
+				<Entity extends="lets_see.MainSpace"/>
 			</Entities>
 		</Space>
 	</Form>

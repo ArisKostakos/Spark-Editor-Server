@@ -43,7 +43,7 @@
 	
 	<_Triggers>
 		<Trigger>
-			<Event>MouseLeftClicked</Event>
+			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
 					Display.error("resize clicked");

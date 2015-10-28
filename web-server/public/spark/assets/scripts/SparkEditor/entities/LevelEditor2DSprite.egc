@@ -17,7 +17,7 @@
 	
 	<_Triggers>
 		<Trigger>
-			<Event>MouseLeftClicked</Event>
+			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
 					if (Input.keyboard.isKeyDown(Key.Alt))

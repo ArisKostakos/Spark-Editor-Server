@@ -90,6 +90,12 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Group Button");
+					var hash = Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash');
+					
+					for (asset in hash)
+					{
+						Display.error("asset.name: " + asset.name);
+					}
 				</Script></_Scripts></_Action></_Actions></Entity>
 			</Entities>
 		</Space>

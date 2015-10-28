@@ -41,7 +41,7 @@
 					<_State id="fontSize"><Value>15px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 				<Script>
 					//Log In...
 					Logic.getEntityByName('Dashboard Output Text').setState('text', 'Connecting to Project: ' + parent.getState('project').name);
@@ -62,7 +62,7 @@
 					<_State id="fontSize"><Value>15px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 				<Script>
 					//Log In Admin...
 					Logic.getEntityByName('Dashboard Output Text').setState('text', 'Connecting to Project: ' + parent.getState('project').name);
@@ -76,6 +76,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.getRequestData("Connect To " + me.getState('project').name)!=null)

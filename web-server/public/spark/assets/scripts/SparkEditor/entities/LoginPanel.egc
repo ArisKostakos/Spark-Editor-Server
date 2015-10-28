@@ -60,7 +60,7 @@
 							<_State id="fontSize"><Value>30px</Value></_State>
 							<_State id="fontColor"><Value>white</Value></_State>
 						</_States>
-						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 						<Script>
 							var loginPanel = Logic.getEntityByName('Login Panel');
 							
@@ -257,7 +257,7 @@
 							<_State id="fontSize"><Value>30px</Value></_State>
 							<_State id="fontColor"><Value>white</Value></_State>
 						</_States>
-						<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 						<Script>
 							var loginPanel = Logic.getEntityByName('Login Panel');
 							var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
@@ -345,6 +345,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.getRequestData("Log In Request")!=null)

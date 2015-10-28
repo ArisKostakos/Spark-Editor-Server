@@ -41,7 +41,7 @@
 							<_State id="fontSize"><Value>15px</Value></_State>
 							<_State id="fontColor"><Value>white</Value></_State>
 							<_State id="textAlign"><Value>center</Value></_State>
-							</_States><_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+							</_States><_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
 								//create an eventedit
 								var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');

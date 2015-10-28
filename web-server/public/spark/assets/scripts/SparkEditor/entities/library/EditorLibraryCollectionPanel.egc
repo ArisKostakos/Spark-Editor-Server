@@ -104,6 +104,7 @@
 				<!-- List -->
 				<Entity extends="std.display.Group">
 					<_States>
+						<_State id="name"><Value>IamContainer</Value></_State>
 						<_State id="layout"><Value>Tile</Value></_State>
 						<_State id="horizontalAlign"><Value>justify</Value></_State>
 						<_State id="verticalAlign"><Value>justify</Value></_State>
@@ -124,6 +125,7 @@
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
 						//parent.setState('imageObject',me);
 						parent.setState('containerPanel',me);
+						Display.error("**************SETTING CONTAINER PANELLLLLLLLLLLLLLLLL****************");
 					</Script></_Scripts></_Action></_Actions>
 				</Entity>
 			</Entities>

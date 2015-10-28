@@ -1,0 +1,14 @@
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Main Scene</Value>
+		</_State>
+	</_States>
+	
+	
+	<Form><Space><Entities>
+
+	</Entities></Space></Form>
+
+</Entity>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Event</Value></_State>
+		<State><Id>conditionsTriggered</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>conditions</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>actions</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.setState('conditions',[]);
+					me.setState('actions',[]);
+				
+					for (child in me.getChildren())
+					{
+						if (child.getState('name')=='Condition')
+						{
+							//Display.error('Condition found');
+							me.getState('conditions').push(child);
+						}
+						else if (child.getState('name')=='Action')
+						{
+							//Display.error('Action found');
+							me.getState('actions').push(child);
+						}
+					}
+					
+					me.startAction('Update');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>CheckConditions</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//me.stopAction('CheckConditions');
+					//Display.error("Check Conditions Happened: "+ me.getState('conditionsTriggered') + ', ' + me.getState('conditions').length);
+					
+					//If this Action has been called at least once, check if all behaviors have been triggered
+					if (me.getState('conditionsTriggered')==me.getState('conditions').length)
+					{
+						//if yes, do actions
+						for (child in me.getState('actions'))
+						{
+							child.startAction('Run');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//finally, set triggered to 0,
+					me.setState('conditionsTriggered',0);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

@@ -20,6 +20,7 @@
 		<!-- Networking -->
 		<Trigger>
 			<Event>NetworkConnected</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					Display.error("CONNECTED TO: " + Comms.connectedServerName);
@@ -37,6 +38,7 @@
 		</Trigger>
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					Display.error("Received Request...");
@@ -113,6 +115,7 @@
 		
 		<Trigger>
 			<Event>NetworkServerEvent</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					Display.error("Received Server Event...");
@@ -125,6 +128,7 @@
 		<!-- File Transfer -->
 		<Trigger>
 			<Event>FileTransferConnected</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					Display.error("FILE SERVER CONNECTED TO: " + Comms.file_connectedServerName);
@@ -139,6 +143,7 @@
 		
 		<Trigger>
 			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					//Display.error("Received File Transfer Request...");

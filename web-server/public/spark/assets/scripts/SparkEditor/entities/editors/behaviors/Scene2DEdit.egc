@@ -74,7 +74,7 @@
 						<_State id="touchable"><Value>true</Value></_State>
 						<_State id="name"><Value>SceneBackground</Value></_State>
 					</_States>
-					<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts><Script>
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts><Script>
 						var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
 						leveleditor2d.getAction('EntityClicked').setState('entity',null);
 						leveleditor2d.startAction('EntityClicked');

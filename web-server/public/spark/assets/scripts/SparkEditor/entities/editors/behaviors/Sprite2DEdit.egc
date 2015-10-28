@@ -20,7 +20,7 @@
 	
 	<_Triggers>
 		<Trigger>
-			<Event>MouseLeftClicked</Event>
+			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
 					if (Input.mouse.isDown(MouseButton.Right))
@@ -36,7 +36,7 @@
 				</Script>
 			</Scripts>
 		</Trigger>
-		<Trigger>
+		<!--<Trigger>
 			<Event>KeyPressed_W</Event>
 			<Scripts>
 				<Script>
@@ -190,7 +190,7 @@
 					}
 				</Script>
 			</Scripts>
-		</Trigger>
+		</Trigger>-->
 	</_Triggers>
 	
 	<_Actions>

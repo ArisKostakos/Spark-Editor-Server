@@ -22,7 +22,7 @@
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
 						//parent.parentEntity.setState('objSelectedImage',me);
 					</Script></_Scripts></_Action></_Actions>
-					<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 					<Script>
 							if (me.getState('demoCounter')==1)
 							{

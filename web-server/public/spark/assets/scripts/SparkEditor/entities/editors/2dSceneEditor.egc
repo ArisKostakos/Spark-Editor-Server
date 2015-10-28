@@ -340,6 +340,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.file_getSendFileRequestData("updatedAsset")!=null)
@@ -374,6 +375,7 @@
 		
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.getRequestData("updatedAsset")!=null)

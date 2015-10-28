@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.core.Base">
 	<_States>
-		<_State id="name"><Value>Action</Value></_State>
-		<State><Id>parameter</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>EventChild</Id><Type>Text</Type><Value>Action</Value></State>
+		<State><Id>actionTarget</Id><Type>Text</Type><Value>None</Value></State>
 	</_States>
-	
-	<_Triggers>
 		
-	</_Triggers>
-	
 	<_Actions>
 		<Action>
-			<Id>Run</Id>
+			<Id>Execute</Id>
 			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					me.stopAction('Run');
-					
-
-					//Display.error("Action Run Happened");
-
-				</Script>
-			</Scripts>
+			<Scripts/>
 		</Action>
 	</_Actions>
 </Entity>

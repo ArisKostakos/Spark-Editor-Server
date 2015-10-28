@@ -141,7 +141,7 @@
 					<_State id="fontSize"><Value>15px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 				<Script>
 					var updatedString = Logic.getEntityByName('Code Editor').getState('aceObject').getValue();
 					
@@ -212,6 +212,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.file_getSendFileRequestData("updatedAssetPr")!=null)
@@ -248,6 +249,7 @@
 		
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.getRequestData("updatedAssetPr")!=null)

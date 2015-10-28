@@ -321,7 +321,7 @@
 										<_State id="fontSize"><Value>23px</Value></_State>
 										<_State id="fontColor"><Value>white</Value></_State>
 									</_States>
-									<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+									<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 									<Script>
 										Display.warn("Create Project");
 										if (me.getState('text')!="Create") return;
@@ -362,7 +362,7 @@
 										<_State id="fontSize"><Value>23px</Value></_State>
 										<_State id="fontColor"><Value>white</Value></_State>
 									</_States>
-									<_Triggers><Trigger><Event>MouseLeftClicked</Event><Scripts>
+									<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 									<Script>
 										Display.warn("Cancel");
 										Logic.getEntityByName('Pop Up Area').setState('display','none');
@@ -386,6 +386,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (Comms.getRequestData("Check if Project Exists")!=null)

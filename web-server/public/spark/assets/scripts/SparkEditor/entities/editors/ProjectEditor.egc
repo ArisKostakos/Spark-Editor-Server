@@ -2,9 +2,18 @@
 <Entity extends="SparkEditor.entities.editors.Editor">
 	<_States>
 		<_State id="name"><Value>Project Editor</Value></_State>
+		<State><Id>ClassObjectsDBbyNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.setState('ClassObjectsDBbyNameHash',new StringMap());
+				</Script>
+			</_Scripts>
+		</_Action>
+
 		<Action>
 			<Id>RequestProjectDbAssets</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -39,6 +48,7 @@
 	<_Triggers>
 		<Trigger>
 			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					//Get Module Assets and Flambe Load them
@@ -87,6 +97,10 @@
 										eventsheetEditor.setState('assetUserName', asset.owner.user.name);
 										eventsheetEditor.setState('assetType',asset.type);
 										eventsheetEditor.setState('assetName',asset.name);
+									}
+									else if (asset.componentType=="Object Class")
+									{
+										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
 									}
 								}
 								else if (asset.type=="image")
