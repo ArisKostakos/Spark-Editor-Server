@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>2</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Save -->
+				<Entity extends="SparkEditor.entities.BlueButton"><_States>
+					<_State id="buttonText"><Value>Save</Value></_State>
+					<_State id="imageName"><Value>editor_save</Value></_State>
+					<_State id="imageWidth"><Value>15</Value></_State>
+					<_State id="imageHeight"><Value>15</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Logic.getEntityByName('2d Scene Editor').startAction('Save');
+					//Logic.getEntityByName('Event Collection Editor').startAction('Save');
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Play -->
+				<Entity extends="SparkEditor.entities.BlueButton"><_States>
+					<_State id="buttonText"><Value>Play</Value></_State>
+					<_State id="imageName"><Value>editor_play</Value></_State>
+					<_State id="imageWidth"><Value>11</Value></_State>
+					<_State id="imageHeight"><Value>15</Value></_State>
+					<_State id="imageHorCenter"><Value>1</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					var imageObject = me.getState('imageObject');
+					
+					if (imageObject.getState('src')=="editor_play")
+					{
+						imageObject.setState('src',"editor_stop");
+						imageObject.setState('width',"11");
+						imageObject.setState('height',"11");
+						imageObject.setState('horizontalCenter',-1);
+						imageObject.setState('verticalCenter',0);
+						Logic.getEntityByName('2d Scene Editor').startAction('Run');
+						//Logic.getEntityByName('Event Collection Editor').startAction('Run');
+					}
+					else
+					{
+						imageObject.setState('src',"editor_play");
+						imageObject.setState('width',"11");
+						imageObject.setState('height',"15");
+						imageObject.setState('horizontalCenter',1);
+						imageObject.setState('verticalCenter',0);
+						Logic.getEntityByName('2d Scene Editor').startAction('Stop');
+						//Logic.getEntityByName('Event Collection Editor').startAction('Stop');
+					}
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="width"><Value>40</Value></_State></_States></Entity>
+				
+				<!-- Export -->
+				<Entity extends="SparkEditor.entities.BlueButton"><_States>
+					<_State id="buttonText"><Value>Export</Value></_State>
+					<_State id="imageName"><Value>editor_export</Value></_State>
+					<_State id="imageWidth"><Value>20</Value></_State>
+					<_State id="imageHeight"><Value>15</Value></_State>
+					<_State id="imageHorCenter"><Value>3</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Export Button");
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Publish -->
+				<Entity extends="SparkEditor.entities.BlueButton"><_States>
+					<_State id="buttonText"><Value>Publish</Value></_State>
+					<_State id="imageName"><Value>editor_publish</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>17</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>-1</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Publish Button");
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Share -->
+				<Entity extends="SparkEditor.entities.BlueButton"><_States>
+					<_State id="buttonText"><Value>Share</Value></_State>
+					<_State id="imageName"><Value>editor_share</Value></_State>
+					<_State id="imageWidth"><Value>15</Value></_State>
+					<_State id="imageHeight"><Value>15</Value></_State>
+					<_State id="imageHorCenter"><Value>-1</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Share Button");
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

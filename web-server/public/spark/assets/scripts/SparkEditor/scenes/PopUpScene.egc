@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>PopUp Scene</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="touchable"><Value>true</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+					</_States>
+				
+					<Form><Space><Entities>
+				
+					</Entities></Space></Form>
+				
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								Logic.getEntityByName('PopUp View').setState("visible",false);
+							</Script>
+						</Scripts></Trigger>
+					</_Triggers>
+				</Entity>
+				
+				
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="name"><Value>PopUpContainer</Value></_State>
+						<_State id="top"><Value>0</Value></_State>
+						<_State id="left"><Value>0</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<Entity extends="std.display.Div">
+						<_States>
+							<_State id="top"><Value>-20</Value></_State>
+							<_State id="left"><Value>20</Value></_State>
+							<_State id="width"><Value>0</Value></_State>
+							<_State id="height"><Value>0</Value></_State>
+							<_State id="borderStyle"><Value>solid</Value></_State>
+							<_State id="borderWidth"><Value>0 20px 20px 20px</Value></_State>
+							<_State id="borderColor"><Value>transparent transparent rgb(59, 185, 176) transparent</Value></_State>
+						</_States>
+					</Entity>
+						
+						<!-- List -->
+					<Entity extends="std.display.Group">
+						<_States>
+							<_State id="name"><Value>PopUpTargetsContainer</Value></_State>
+							<_State id="layout"><Value>Tile</Value></_State>
+							<_State id="horizontalAlign"><Value>justify</Value></_State>
+							<_State id="verticalAlign"><Value>justify</Value></_State>
+								
+							<_State id="horizontalGap"><Value>6</Value></_State>
+							<_State id="verticalGap"><Value>6</Value></_State>
+								
+							<_State id="paddingLeft"><Value>6</Value></_State>
+							<_State id="paddingRight"><Value>6</Value></_State>
+							<_State id="paddingTop"><Value>6</Value></_State>
+							<_State id="paddingBottom"><Value>6</Value></_State>
+							<!--<_State id="overflow"><Value>scroll</Value></_State>-->
+						</_States>
+						<_Actions>
+							<Action>
+								<Id>AddAssetsDB</Id>
+								<Concurrency>Persistent</Concurrency>
+								<Scripts>
+									<Script>
+										me.stopAction("AddAssetsDB");
+										
+										var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+										
+										var containerPanel = me;//me.getState('containerPanel');
+										
+										var assets = me.getAction('AddAssetsDB').getState('assets');
+										
+										for (asset in assets)
+										{
+											Display.error("AddAssetsDB: FOUND: " + asset.name);
+											
+											//var containerPanel = me.getState('containerPanel');
+											
+											var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
+											
+											var thumbUrl="";
+											if (asset.tags.length>1)
+												thumbUrl = asset.tags[1];
+											
+											newItem.setState('width',Std.string(64));
+											newItem.setState('height',Std.string(64));
+											newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + thumbUrl);
+											newItem.setState('asset',asset);
+											//newItem.setState('name',asset.name);
+											
+											
+											containerPanel.addChild(newItem);
+										}
+										
+										Display.invalidateLayout();
+									</Script>
+								</Scripts>
+								<States>
+									<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+								</States>
+							</Action>
+						</_Actions>
+					</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.View">
+	<_States>
+		<_State id="name">
+			<Value>PopUp View</Value>
+		</_State>
+		
+		<_State id="zIndex">
+			<Value>2</Value>
+		</_State>
+		
+		<_State id="initSceneName">
+			<Value>PopUp Scene</Value>
+		</_State>
+		
+		<_State id="initCameraName">
+			<Value>Dummy Camera</Value>
+		</_State>
+		
+		<_State id="width">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="height">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="visible">
+			<Value>false</Value>
+		</_State>
+		
+		<_State id="renderer">
+			<Value>NativeControls</Value>
+		</_State>
+		
+	</_States>
+</Entity>

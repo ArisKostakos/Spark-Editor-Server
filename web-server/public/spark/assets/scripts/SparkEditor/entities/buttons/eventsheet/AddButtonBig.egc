@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<!--<_State id="backgroundColor"><Value>rgb(87,92,102)</Value></_State>-->
+		<_State id="borderRadius"><Value>30%</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="gap"><Value>8</Value></_State>
+		<State><Id>buttonText</Id><Type>Text</Type><Value>Add Event</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Circle Image -->
+				<Entity extends="std.display.Div"><_States>
+					<_State id="width"><Value>25</Value></_State>
+					<_State id="height"><Value>25</Value></_State>
+					<_State id="borderRadius"><Value>50%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(33, 49, 62)</Value></_State></_States>
+				<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+						<_State id="width"><Value>15</Value></_State>
+						<_State id="height"><Value>15</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="src"><Value>events_addbutton</Value></_State>
+				</_States></Entity></Entities></Space></Form></Entity>
+				
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>70</Value></_State>
+					<_State id="height"><Value>16</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('buttonText'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
