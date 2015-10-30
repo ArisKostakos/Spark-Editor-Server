@@ -240,6 +240,7 @@
 											//Hash the newly created Asset
 											//These may fit better inside the 'whatever dude' callback...
 											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset2._id,asset2);
 											Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
 											//Display.error("**************************YOYOYOYOYO*****************");
 											
