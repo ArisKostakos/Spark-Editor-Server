@@ -75,6 +75,13 @@
 									<Script>
 										me.stopAction("AddAssetsDB");
 										
+										var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
+										
+										for (hoho in ModuleAssetsDBbyAssetIdHash)
+										{
+											Display.error('hoho.name: ' + hoho.name);
+										}
+										
 										var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
 										
 										var containerPanel = me;//me.getState('containerPanel');
@@ -85,17 +92,19 @@
 										{
 											Display.error("AddAssetsDB: FOUND: " + asset.name);
 											
-											//var containerPanel = me.getState('containerPanel');
-											
 											var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
 											
-											var thumbUrl="";
+											var thumbUrl="NotFound";
 											if (asset.tags.length>1)
-												thumbUrl = asset.tags[1];
+											{
+												var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+												thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+												
+											}
 											
 											newItem.setState('width',Std.string(64));
 											newItem.setState('height',Std.string(64));
-											newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + thumbUrl);
+											newItem.setState('imageName',thumbUrl);
 											newItem.setState('asset',asset);
 											//newItem.setState('name',asset.name);
 											

@@ -76,12 +76,6 @@
 									PopUpTargetsContainer.startAction("AddAssetsDB");
 									
 					
-					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
-					for (hoho in ModuleAssetsDBbyAssetIdHash)
-					{
-						Display.error('hoho.name: ' + hoho.name);
-					}
-					
 					//Display.invalidateLayout();
 					/*
 					while (gameEntity.parentEntity!=null)
