@@ -234,8 +234,13 @@
 											var assetId2 = 'image_' + asset2.name;
 											Assets.addFile(assetUrl2, assetId2);
 											
+											
 											Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id, asset2._id]}, "whatever dude...");
-											Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash').set(asset.name,asset); //This may fit better inside the 'whatever dude' callback...
+											
+											//Hash the newly created Asset
+											//These may fit better inside the 'whatever dude' callback...
+											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+											Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
 											//Display.error("**************************YOYOYOYOYO*****************");
 											
 											var oldMe = me;
