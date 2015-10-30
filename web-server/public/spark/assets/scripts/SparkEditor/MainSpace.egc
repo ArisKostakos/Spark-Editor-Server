@@ -25,8 +25,8 @@
 				<Entity extends="SparkEditor.scenes.EditorBottomScene"/>
 				<Entity extends="SparkEditor.scenes.EditorViewportScene"/>
 				<Entity extends="SparkEditor.scenes.DomScene"/>
+				<Entity extends="SparkEditor.scenes.PopUpScene"/>
 				<Entity extends="SparkEditor.scenes.DragSurfaceScene"/>
-					<!--<Entity extends="SparkEditor.scenes.EditorLeftBarScene"/>-->
 				<Entity extends="SparkEditor.scenes.EditorTopBarScene"/>
 				
 				<Entity extends="SparkEditor.scenes.DashboardScene"/>

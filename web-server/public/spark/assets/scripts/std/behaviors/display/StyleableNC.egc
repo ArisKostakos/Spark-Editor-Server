@@ -24,6 +24,24 @@
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
+	
+		<State>
+			<Id>borderStyle</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>borderWidth</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>borderColor</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
 		
 		<State>
 			<Id>boxShadow</Id>

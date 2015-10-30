@@ -99,7 +99,7 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					//Display.error('clicked tab: ' + me.getState('caption') + ' for: ' + parent.parentEntity.getState('name'));
+					Display.error('clicked tab: ' + me.getState('caption') + ' for: ' + parent.parentEntity.getState('name'));
 					parent.parentEntity.getAction('SelectWindow').setState('windowName',me.getState('caption'));
 					parent.parentEntity.startAction('SelectWindow');
 				</Script>

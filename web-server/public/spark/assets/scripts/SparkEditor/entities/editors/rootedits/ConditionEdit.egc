@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Div">
+<Entity extends="std.display.Button">
 	<_States>
 		<_State id="name"><Value>Condition</Value></_State>
 		<_State id="width"><Value>100%</Value></_State>
-		<_State id="height"><Value>16</Value></_State>
-		<_State id="border"><Value>2px solid black</Value></_State>
-		<_State id="borderRadius"><Value>0px</Value></_State>
+		<_State id="height"><Value>30</Value></_State>
+		<!--<_State id="border"><Value>2px solid black</Value></_State>
+		<_State id="borderRadius"><Value>0px</Value></_State>-->
 		<_State id="layout"><Value>Horizontal</Value></_State>
 		<_State id="verticalAlign"><Value>middle</Value></_State>
-		<_State id="backgroundColor"><Value>rgb(50,110,27)</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(138,181,46)</Value></_State>
+			
 		<State><Id>xmlScript</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>xmlParameter</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>inputEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
-		
-		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
+	
 		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
+		<_State id="paddingLeft"><Value>4</Value></_State>
 	</_States>
 	
 	<_Form>
@@ -24,69 +23,89 @@
 			<_Entities>
 				<!-- Code Image -->
 				<Entity extends="std.display.Image"><_States>
-					<_State id="width"><Value>16</Value></_State>
-					<_State id="height"><Value>12</Value></_State>
-					<_State id="src"><Value>codeIcon</Value></_State>
+					<_State id="width"><Value>20</Value></_State>
+					<_State id="height"><Value>20</Value></_State>
+					<_State id="src"><Value>events_tempThumb</Value></_State>
 				</_States></Entity>
 				
-				<!-- Input -->
-				<Entity extends="std.display.Input"><_States>
+				<!-- Some Text -->
+				<Entity extends="std.display.Text"><_States>
 					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>100%</Value></_State>
-					<_State id="backgroundColor"><Value>rgba(0, 0, 0, 0)</Value></_State>
-					<_State id="border"><Value>0px</Value></_State>
-					<_State id="placeholder"><Value>Type Condition</Value></_State>
+					<_State id="height"><Value>17</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
 					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>13px</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textIndent"><Value>4px</Value></_State>
-				</_States>
-				<_Actions><_Action id="Constructor"><_Scripts><Script>
-					parent.setState('inputEntity',me);
-				</Script></_Scripts></_Action></_Actions>
-				<_Triggers>
-					<Trigger>
-						<Event>Changed</Event>
-						<Scripts>
-							<Script>
-								Display.error('Input Changed: ' + me.getState('text'));
-
-								var xmlScript = parent.getState('xmlScript');
-								var xmlParameter = parent.getState('xmlParameter');
-								var inputText = me.getState('text');
-								
-								if (inputText=='') inputText='Undefined';
-								
-								//Store this
-								xmlParameter.removeChild(xmlParameter.firstChild());
-								xmlParameter.addChild(Xml.parse(inputText).firstChild());
-								
-								//write the condition
-								var actualCondition="";
-								
-								if (inputText=='Undefined')
-									actualCondition = "false";
-								else
-								{
-									//Here, we go crazy
-									actualCondition=inputText;
-								}
-								
-								var fullCondition="if (" + actualCondition + ") me.forceAction('Triggered');";
-								
-								xmlScript.removeChild(xmlScript.firstChild());
-								xmlScript.addChild(Xml.parse(fullCondition).firstChild());
-							</Script>
-						</Scripts>
-					</Trigger>
-				</_Triggers>
+					<_State id="textAlign"><Value>left</Value></_State>
+					<_State id="text"><Value>Condition Text</Value></_State>
+					</_States>
 				</Entity>
 			</_Entities>
 		</_Space>
 	</_Form>
 	
 	<_Triggers>
-		
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					Display.error("CLICKED CONDITION-> X: " + me.getState('feedbackX') + ", Y: " + me.getState('feedbackY') + ", WIDTH: " + me.getState('feedbackWidth') + ", HEIGHT: " + me.getState('feedbackHeight'));
+					
+					//var globalX =me.getState('feedbackX');
+					//var globalY = me.getState('feedbackY');
+					//var gameEntity = me;
+					
+					var globalPos = Logic.queryGameEntity(me, "globalPosition");
+					Display.error("Logic.queryGameEntity(me, 'globalPosition'): " + globalPos);
+					
+					Logic.getEntityByName('PopUp View').setState("visible",true);
+					
+					Logic.getEntityByName('PopUpContainer').setState("top",globalPos.y+50);
+					Logic.getEntityByName('PopUpContainer').setState("left",globalPos.x);
+					
+					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+					
+					var arrayOfAssets = [];
+					for (lala in ClassObjectsDBbyNameHash)
+					{
+						arrayOfAssets.push(lala);
+					}
+					
+					var PopUpTargetsContainer = Logic.getEntityByName('PopUpTargetsContainer');
+									PopUpTargetsContainer.getAction('AddAssetsDB').setState('assets',arrayOfAssets);
+									PopUpTargetsContainer.startAction("AddAssetsDB");
+									
+					
+					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
+					for (hoho in ModuleAssetsDBbyAssetIdHash)
+					{
+						Display.error('hoho.name: ' + hoho.name);
+					}
+					
+					//Display.invalidateLayout();
+					/*
+					while (gameEntity.parentEntity!=null)
+					{
+						gameEntity=gameEntity.parentEntity;
+						Display.error("gameEntity.getState('name'): " + gameEntity.getState("name"));
+						Display.error("gameEntity.getState('parent'): " + gameEntity.getState("parent"));
+						//if (gameEntity.getState("displayType")=="Scene")
+						
+						
+						if (gameEntity.getState("feedbackX")!=null)
+						{
+							globalX += gameEntity.getState("feedbackX");
+							globalY += gameEntity.getState("feedbackY");
+						}
+						else break;
+					}
+					
+					Display.error("globalX: " + globalX);
+					Display.error("globalY: " + globalY);
+					*/
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
@@ -182,326 +201,6 @@
 			<States>
 				<State><Id>importedXml</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
-		</Action>
-									
-		<!-- AddBehavior -->
-		<Action>
-			<Id>AddBehavior</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					me.stopAction("AddBehavior");
-					
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
-				
-					var behaviorXml = me.getAction('AddBehavior').getState('behaviorXml');
-					var asset = me.getAction('AddBehavior').getState('asset');
-				
-					Display.error("Adding Behavior to: " + me.getState('name') + ' called: ' + behaviorXml);
-					
-					var pureXml = me.getState('xmlData').firstElement();
-					
-					//	if no [extends] in its xml, create it
-					var childExtendsXml = firstElementNamed(pureXml,'Extends');
-					if (childExtendsXml==null)
-					{
-						childExtendsXml = Xml.createElement('Extends');
-						pureXml.insertChild(childExtendsXml,0);
-					}
-					
-					
-					var extendsXmlString = '&#060;Entity extends="' + asset.name + '">&#060;_States>';
-					
-					var states = firstElementNamed(behaviorXml,'_States');
-					
-					for (state in states.elementsNamed('State'))
-					{
-						var id = firstElementNamed(state,'Id');
-						var value = firstElementNamed(state,'Value');
-						
-						extendsXmlString+='&#060;_State id="' + id.firstChild().toString() + '">&#060;Value>' + value.firstChild().toString() + '&#060;/Value>&#060;/_State>';
-					}
-					extendsXmlString+='&#060;/_States>&#060;/Entity>';
-					
-					//  add [behavior entity] in extends
-					var physicsEntityXml = Xml.parse(extendsXmlString).firstElement();
-					childExtendsXml.addChild(physicsEntityXml);
-					
-					Display.error("Adding Behavior to: " + pureXml);
-					
-					//set thing to update
-					var propertiesWindow = Logic.getEntityByName('Properties Window');
-					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
-					propertiesWindow.startAction('Update');
-				</Script>
-			</Scripts>
-			<_States>
-				<State><Id>behaviorXml</Id><Type>Dynamic</Type><Value>null</Value></State>
-				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
-			</_States>
-		</Action>
-		
-		<!-- Select -->
-		<Action>
-			<Id>Select</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					if (me.getState('selector')==null)
-					{
-						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.behaviors.Sprite2DEditSelector');
-						myNewItem.setState('selectRect', me.getState('boundsRect'));
-						
-						me.addChild(myNewItem);
-						me.setState('selector',myNewItem);
-					}
-					else
-					{
-						me.getState('selector').startAction('show');
-					}
-					
-					//set thing to update
-					var propertiesWindow = Logic.getEntityByName('Properties Window');
-					propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
-					propertiesWindow.startAction('Update');
-					
-					me.setState('selected',true);
-					me.stopAction("Select");
-				</Script>
-			</Scripts>
-		</Action>
-
-		<!-- Deselect -->
-		<Action>
-			<Id>Deselect</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					if (me.getState('selector')!=null)
-					{
-						me.getState('selector').startAction('hide');
-					}
-					
-					me.setState('selected',false);
-					me.stopAction("Deselect");
-				</Script>
-			</Scripts>
-		</Action>
-		
-		<!-- Drag -->
-		<Action>
-			<Id>Drag</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					if (Input.pointer.isDown())
-					{
-						me.setState('spaceX',me.getState('spaceX')+Input.pointer.distX());
-						me.setState('spaceY',me.getState('spaceY')+Input.pointer.distY());
-					}
-					else
-					{
-						//We will need this function...
-						function firstElementNamed(p_xmlNode, p_elementName)
-						{
-							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-							{
-								return p_xmlNode.elementsNamed(p_elementName).next();
-							}
-							else
-							{
-								return null;
-							}
-						}
-						
-						//Save changes to xmlData
-						var xmlData = me.getState("xmlData");
-						//Display.error(xmlData);
-						var entityXml = xmlData.elementsNamed('Entity').next();
-						
-						//if no [_States], create it
-						var statesXml = firstElementNamed(entityXml,'_States');
-						if (statesXml==null)
-						{
-							statesXml = Xml.createElement('_States');
-							entityXml.addChild(statesXml);
-						}
-						
-						var states = statesXml.elementsNamed('_State');
-						//for each [_state] in [_states]
-						while (states.hasNext())
-						{
-							var stateChildXml = states.next();
-
-							if (stateChildXml.get("id")=="spaceX")
-							{
-								//Remove previous Value Node
-								var stateValueXml = firstElementNamed(stateChildXml,'Value');
-								stateChildXml.removeChild(stateValueXml);
-								
-								//Create New Value Node, correct its value
-								stateValueXml = Xml.createElement('Value');
-								stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX'))));
-								stateChildXml.addChild(stateValueXml);
-								Display.error("spaceX: " + stateValueXml.firstChild().toString());
-							}
-							else if (stateChildXml.get("id")=="spaceY")
-							{
-								//Remove previous Value Node
-								var stateValueXml = firstElementNamed(stateChildXml,'Value');
-								stateChildXml.removeChild(stateValueXml);
-								
-								//Create New Value Node, correct its value
-								stateValueXml = Xml.createElement('Value');
-								stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY'))));
-								stateChildXml.addChild(stateValueXml);
-								Display.error("spaceY: " + stateValueXml.firstChild().toString());
-							}
-						}
-						
-						
-						me.stopAction("Drag");
-					}
-				</Script>
-			</Scripts>
-		</Action>
-		
-		<!-- Clone -->
-		<Action>
-			<Id>Clone</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					//We will need this function...
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
-					
-					me.stopAction("Clone");
-
-					var dir = me.getAction('Clone').getState('dir');
-					
-					var entityChildXml = Xml.parse(me.getState('xmlData').toString()).firstElement();
-					
-					var shiftX=0;
-					var shiftY=0;
-					
-					//Change Position
-					
-					//Scale Width
-					var realWidth = me.getState('boundsRect').width * me.getState('scaleX');
-					var realHeight = me.getState('boundsRect').height * me.getState('scaleY');
-						
-					if (dir=='left') shiftX-=realWidth;
-					else if (dir=='right') shiftX+=realWidth;
-					else if (dir=='up') shiftY-=realHeight;
-					else if (dir=='down') shiftY+=realHeight;
-					
-					//if no [_States], create it
-					var statesXml = firstElementNamed(entityChildXml,'_States');
-					if (statesXml==null)
-					{
-						statesXml = Xml.createElement('_States');
-						entityXml.addChild(statesXml);
-					}
-					
-					var states = statesXml.elementsNamed('_State');
-					//for each [_state] in [_states]
-					while (states.hasNext())
-					{
-						var stateChildXml = states.next();
-
-						if (stateChildXml.get("id")=="spaceX")
-						{
-							//Remove previous Value Node
-							var stateValueXml = firstElementNamed(stateChildXml,'Value');
-
-							stateValueXml.removeChild(stateValueXml.firstChild());
-							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX')+shiftX)).firstChild());
-
-							Display.error("new spaceX: " + stateValueXml.firstChild().toString());
-						}
-						else if (stateChildXml.get("id")=="spaceY")
-						{
-							//Remove previous Value Node
-							var stateValueXml = firstElementNamed(stateChildXml,'Value');
-
-							stateValueXml.removeChild(stateValueXml.firstChild());
-							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY')+shiftY)).firstChild());
-
-							Display.error("new spaceY: " + stateValueXml.firstChild().toString());
-						}
-					}
-					
-					
-					
-					
-					Display.error("Found child: " + entityChildXml.get('extends'));
-					//take snapshot
-					var pureChildXml = Xml.parse(entityChildXml.toString());
-					Display.error("Displaying Child: " + pureChildXml.toString());
-					
-					//Remove [extends]
-					var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
-					if (childExtendsXml!=null)
-						entityChildXml.removeChild(childExtendsXml);
-						
-					//if no [extends], create it
-					//var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
-					//if (childExtendsXml==null)
-					//{
-						childExtendsXml = Xml.createElement('Extends');
-						entityChildXml.insertChild(childExtendsXml,0);
-					//}
-					
-					
-					//add [entity] Sprite2DEdit in [extends]
-					var sceneEditXml = Xml.createElement('Entity');
-					sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
-					childExtendsXml.addChild(sceneEditXml);
-					
-					//instantiate, add to scene
-					var editScene = Logic.getEntityByName('2d Scene Editor').getState('target');
-					
-					var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
-					editScene.addChild(childEntity);
-					
-					//give it snapshot xml
-					childEntity.setState('xmlData',pureChildXml);
-					
-					/*
-					me.startAction('Deselect');
-					
-					childEntity.setState('boundsRect',me.getState('boundsRect'));
-					childEntity.startAction('Select');
-					*/
-
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
-					leveleditor2d.getAction('EntityClicked').setState('entity',childEntity);
-					leveleditor2d.startAction('EntityClicked');
-				</Script>
-			</Scripts>
-			<_States>
-				<State><Id>dir</Id><Type>Text</Type><Value>none</Value></State>
-			</_States>
 		</Action>
 	</_Actions>
 </Entity>

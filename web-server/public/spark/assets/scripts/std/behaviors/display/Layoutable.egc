@@ -208,5 +208,27 @@
 			<Type>Text</Type>
 			<Value>rows</Value>
 		</State>
+	
+		<!-- Feedback -->
+		<State>
+			<Id>feedbackX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State>
+			<Id>feedbackY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State>
+			<Id>feedbackWidth</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State>
+			<Id>feedbackHeight</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
 	</_States>
 </Entity>

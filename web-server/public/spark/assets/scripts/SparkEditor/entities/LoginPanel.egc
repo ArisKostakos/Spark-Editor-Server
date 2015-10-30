@@ -323,23 +323,49 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					/*
-						//enter project gui
-						Logic.getEntityByName('Dom View').setState('visible',false);
-
-						Logic.getEntityByName('Navigation Bar View').setState('visible',true);
-						Logic.getEntityByName('Editor Left View').setState('visible',true);
-						//Logic.getEntityByName('Editor Bottom View').setState('visible',true);
-						//Logic.getEntityByName('Editor Right View').setState('visible',true);
-						//Logic.getEntityByName('Editor Viewport View').setState('visible',true);
-						
-						Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
-						Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
-						Logic.getEntityByName('NavigationBar').setState('height','74');
-					*/
+					return;
+					//enter project gui
+					Logic.getEntityByName('Dom View').setState('visible',false);
+					Logic.getEntityByName('Navigation Bar View').setState('visible',true);
+					Logic.getEntityByName('Dashboard View').setState('visible',false);
+					Logic.getEntityByName('Editor Left View').setState('visible',true);
+					Logic.getEntityByName('Editor Bottom View').setState('visible',true);
+					
+					Logic.getEntityByName('Editor Viewport View').setState('visible',true);
+					
+					Logic.getEntityByName('Editor Top Bar Panel').setState('display','inline');
+					Logic.getEntityByName('Lobby Mode Panel').setState('display','none');
+					Logic.getEntityByName('NavigationBar').setState('height','74');
+					
+					me.startAction('StartEventSheets');
 				</Script>
 			</_Scripts>
 		</_Action>
+			
+		<Action>
+			<Id>StartEventSheets</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Logic.getEntityByName('Events Window')!=null)
+					{
+						//Init EventSheet Editor
+						var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+						var eventCollectionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventCollectionEdit');
+						Logic.getEntityByName('Events Window').addChild(eventCollectionEdit);
+						
+						
+						Logic.getEntityByName('WorkTabControl').getAction('SelectWindow').setState('windowName','Events');
+						Logic.getEntityByName('WorkTabControl').startAction('SelectWindow');
+						
+						
+						Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+						me.stopAction('StartEventSheets');
+					}
+				</Script>
+			</Scripts>
+		</Action>	
+			
 	</_Actions>
 	
 	<_Triggers>

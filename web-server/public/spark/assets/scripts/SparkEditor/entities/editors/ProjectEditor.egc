@@ -3,6 +3,7 @@
 	<_States>
 		<_State id="name"><Value>Project Editor</Value></_State>
 		<State><Id>ClassObjectsDBbyNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ModuleAssetsDBbyAssetIdHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -10,6 +11,7 @@
 			<_Scripts>
 				<Script>
 					me.setState('ClassObjectsDBbyNameHash',new StringMap());
+					me.setState('ModuleAssetsDBbyAssetIdHash',new StringMap());
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -108,6 +110,12 @@
 									assetId = 'image_' + asset.name;
 								}
 								
+								//Store the AssetDB
+								me.getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+								Display.error('asset.id: ' + asset._id);
+								Display.error('asset.name: ' + asset.name);
+								
+								//Add file to Flambe Loader
 								Assets.addFile(assetUrl, assetId);
 								
 								

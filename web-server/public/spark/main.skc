@@ -81,6 +81,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/ace/Event.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/ace/Condition.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/ace/Action.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/ace/TriggerBase.tgc</Asset>
 		</Module>
 
 		<Module id="SparkEditor" executeEntity="SparkEditor.MainProject">
@@ -138,6 +139,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GreyButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/PanelTester.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/PopUpScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/SceneTester.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorRightScene.egc</Asset>
@@ -146,10 +148,10 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DashboardScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/ProgrammerEditorScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DragSurfaceScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSprite.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/FullScreenView.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DashboardView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/ProgrammerEditorView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/NavigationBarView.egc</Asset>
@@ -161,30 +163,18 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/SignupPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/LobbyModePanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorTopBarPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarFileSection.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarEditSection.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarPropertiesSection.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarRunSection.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/TopBarSeparator.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLeftBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/EditorTopBarPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/TopBarFileSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/TopBarEditSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/TopBarPropertiesSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/TopBarRunSection.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/navigationBar/TopBarSeparator.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetUploaderPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetPropertiesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/AssetExplorerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorCodePanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorProjectPanelContainer.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryButton.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySubCategoryItem.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorIconTextHorizontalButton.egc</Asset>
-			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryShapesPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryObjectsPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryBehaviorsPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryLightsPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryTexturesPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibrarySkiesPanel.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorLibraryAudioPanel.egc</Asset>-->
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorAssetImport.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackground.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Networking.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/Editor.egc</Asset>
@@ -202,6 +192,10 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/EventEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ConditionEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ActionEdit.egc</Asset>
+			
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/buttons/eventsheet/AddButtonBig.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/buttons/eventsheet/AddButtonSmall.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/DashboardNormal.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/lobby/DashboardAdmin.egc</Asset>
@@ -303,7 +297,10 @@
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_import_mikro" bytes='35672' forceLoadAsData='true'>editor/leftbar/import_mikro.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="events_addbutton" bytes='35672' forceLoadAsData='true'>editor/events/AddButton.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="events_tempThumb" bytes='35672' forceLoadAsData='true'>editor/events/tempThumb.png</Asset>
 			
+
 			<!-- Lobby, Projects -->
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Platform_Thumb" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTilePlatform_Thumb.png</Asset>
 			
