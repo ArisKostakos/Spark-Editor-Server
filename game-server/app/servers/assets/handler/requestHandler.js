@@ -91,7 +91,7 @@ handler.getProjectIncludeAssets = function(msg, session, next) {
 
 
                 //Find Assets
-                database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", {$or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' } ]}   }, "owner.user",
+                database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", $or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' } ]}   , "owner.user",
                     function (err, objects_found) {
                         //Handle Error
                         if (err) {
