@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+		<State><Id>targetLayerName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>argA</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>cb_caller</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>cb_actionName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<_State id="display"><Value>none</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.setState('display',"inline");
+				</Script>
+			</_Scripts>
+		</_Action>
+	
+		<Action>
+			<Id>ClickedOutside</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//force
+					
+					//Default is close with CANCEL
+					me.startAction('Close');
+					
+					//Run Callback with CANCEL
+					var cb_caller = me.getState('cb_caller');
+					var cb_action = cb_caller.getAction(me.getState('cb_actionName'));
+					cb_action.setState('cb_result',"CANCEL");
+					
+					cb_caller.forceAction(me.getState('cb_actionName'));
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Close</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Close');
+					
+					//Default is close
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					popUpManager.getAction('Close PopUp').setState('popUp',me);
+					popUpManager.forceAction('Close PopUp');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

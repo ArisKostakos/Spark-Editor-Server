@@ -355,8 +355,8 @@
 						Logic.getEntityByName('Events Window').addChild(eventCollectionEdit);
 						
 						
-						Logic.getEntityByName('WorkTabControl').getAction('SelectWindow').setState('windowName','Events');
-						Logic.getEntityByName('WorkTabControl').startAction('SelectWindow');
+						Logic.getEntityByName('Viewport Tab').getAction('SelectWindow').setState('windowName','Events');
+						Logic.getEntityByName('Viewport Tab').startAction('SelectWindow');
 						
 						
 						Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;

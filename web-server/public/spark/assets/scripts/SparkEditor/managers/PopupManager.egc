@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name">
+			<Value>PopUp Manager</Value>
+		</_State>
+	</_States>
+	
+
+	<_Actions>
+		<Action>
+			<Id>Open PopUp</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//force
+					
+					//Create PopUp
+					var popUp = Logic.gameFactory.createGameEntity(this.getState('popupName'));
+					popUp.addToState('left',this.getState('popupPosX'));
+					popUp.addToState('top',this.getState('popupPosY'));
+					popUp.setState('argA',this.getState('argA'));
+					popUp.setState('cb_caller',this.getState('cb_caller'));
+					popUp.setState('cb_actionName',this.getState('cb_actionName'));
+					
+					//Find Popup's Scene
+					var targetLayerScene = Logic.getEntityByName(popUp.getState('targetLayerName'));
+					targetLayerScene.setState('popupObject',popUp);
+					
+					//Find Scene's View
+					var targetLayerView = Logic.getEntityByName(targetLayerScene.getState('layerViewName'));
+					
+					//Add popup to scene
+					targetLayerScene.addChild(popUp);
+					
+					//Show View
+					targetLayerView.setState('visible',true);
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>popupName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>popupPosX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>popupPosY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>argA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cb_caller</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cb_actionName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</_States>
+		</Action>
+	
+		<Action>
+			<Id>Close PopUp</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//force
+					
+					//Create PopUp
+					var popUp = this.getState('popUp');
+					
+					//Find Popup's Scene
+					var targetLayerScene = Logic.getEntityByName(popUp.getState('targetLayerName'));
+					targetLayerScene.setState('popupObject',null);
+					
+					//Find Scene's View
+					var targetLayerView = Logic.getEntityByName(targetLayerScene.getState('layerViewName'));
+					
+					//Add popup to scene
+					//targetLayerScene.removeChild(popUp);
+					targetLayerScene.removeChildren(true); //remove all but the first child
+					
+					//Show View
+					targetLayerView.setState('visible',false);
+					
+					//Invalidate Layout
+					//Display.invalidateLayout();
+					
+					//MUST ALSO COMPLETELY DESTROY POP UP OBJECT OF COURSE..
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>popUp</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</Action>
+	</_Actions>
+</Entity>

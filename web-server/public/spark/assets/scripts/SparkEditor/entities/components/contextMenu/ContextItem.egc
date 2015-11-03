@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<State><Id>targetLayerName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>data</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>caption</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>posXOffset</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>posYOffset</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>ContextListObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Thumb Image -->
+				<Entity extends="std.display.Image"><_States>
+					<_State id="width"><Value>16</Value></_State>
+					<_State id="height"><Value>16</Value></_State>
+					<_State id="src"><Value>events_tempThumb</Value></_State>
+				</_States>
+				<_Actions><_Action id="Constructor"><_Scripts><Script>
+					//parent.setState("imageObj",me);
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
+	
+				<!-- Some Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>16</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>left</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState("text",parent.getState('caption'));
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+		
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseEntered</Event>
+			<Scripts>
+				<Script>
+					me.setState('backgroundColor','rgb(43,132,125)');
+					if (me.getState('ContextListObject')!=null)
+						me.getState('ContextListObject').setState('display','inline');
+					
+					parent.getAction('ChildMouseEntered').setState('child',me);
+					parent.forceAction('ChildMouseEntered');
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseLeft</Event>
+			<Scripts>
+				<Script>
+					//Deprecated for now
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					if (me.getState('ContextListObject')==null)
+						parent.getState('parentPopUp').forceAction('ItemSelected');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.setState('display',"inline");
+					var data = me.getState('data');
+					if (data.children.length>0)
+					{
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.contextMenu.ContextList');
+						//myNewItem.setState('selectRect', me.getState('boundsRect'));
+						myNewItem.setState('targetLayerName',me.getState('targetLayerName'));
+						myNewItem.setState('data',data);
+						myNewItem.setState('left', me.getState('posXOffset'));
+						myNewItem.setState('top', me.getState('posYOffset'));
+						myNewItem.setState('posXOffset',me.getState('posXOffset'));
+						myNewItem.setState('posYOffset',me.getState('posYOffset'));
+						myNewItem.setState('parentPopUp',parent.getState('parentPopUp'));
+						me.setState('ContextListObject',myNewItem);
+						
+						Logic.getEntityByName(me.getState('targetLayerName')).addChild(myNewItem);
+						Display.error("YOOOOOOOO CREATING SUB EVENT THINGIEEE");
+						
+					}
+
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Select');
+					
+					
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Deselect');
+					
+					me.setState('backgroundColor','transparent');
+					if (me.getState('ContextListObject')!=null)
+						me.getState('ContextListObject').forceAction('Hide');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

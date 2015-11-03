@@ -9,13 +9,19 @@
 		<_State id="layout"><Value>Horizontal</Value></_State>
 		<_State id="verticalAlign"><Value>middle</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(138,181,46)</Value></_State>
-			
+		<_State id="paddingLeft"><Value>4</Value></_State>
+		
 		<State><Id>xmlScript</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>xmlParameter</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>inputEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
 	
 		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<_State id="paddingLeft"><Value>4</Value></_State>
+		
+		<State><Id>conditionTarget_asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>imageObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>textObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>wizardInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Form>
@@ -25,8 +31,11 @@
 				<Entity extends="std.display.Image"><_States>
 					<_State id="width"><Value>20</Value></_State>
 					<_State id="height"><Value>20</Value></_State>
-					<_State id="src"><Value>events_tempThumb</Value></_State>
-				</_States></Entity>
+				</_States>
+				<_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState("imageObj",me);
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
 				
 				<!-- Some Text -->
 				<Entity extends="std.display.Text"><_States>
@@ -37,8 +46,10 @@
 					<_State id="fontSize"><Value>15px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 					<_State id="textAlign"><Value>left</Value></_State>
-					<_State id="text"><Value>Condition Text</Value></_State>
 					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState("textObj",me);
+					</Script></_Scripts></_Action></_Actions>
 				</Entity>
 			</_Entities>
 		</_Space>
@@ -49,60 +60,203 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					Display.error("CLICKED CONDITION-> X: " + me.getState('feedbackX') + ", Y: " + me.getState('feedbackY') + ", WIDTH: " + me.getState('feedbackWidth') + ", HEIGHT: " + me.getState('feedbackHeight'));
-					
-					//var globalX =me.getState('feedbackX');
-					//var globalY = me.getState('feedbackY');
-					//var gameEntity = me;
-					
-					var globalPos = Logic.queryGameEntity(me, "globalPosition");
-					Display.error("Logic.queryGameEntity(me, 'globalPosition'): " + globalPos);
-					
-					Logic.getEntityByName('PopUp View').setState("visible",true);
-					
-					Logic.getEntityByName('PopUpContainer').setState("top",globalPos.y+50);
-					Logic.getEntityByName('PopUpContainer').setState("left",globalPos.x);
-					
-					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
-					
-					var arrayOfAssets = [];
-					for (lala in ClassObjectsDBbyNameHash)
-					{
-						arrayOfAssets.push(lala);
-					}
-					
-					var PopUpTargetsContainer = Logic.getEntityByName('PopUpTargetsContainer');
-									PopUpTargetsContainer.getAction('AddAssetsDB').setState('assets',arrayOfAssets);
-									PopUpTargetsContainer.startAction("AddAssetsDB");
-									
-					
-					//Display.invalidateLayout();
-					/*
-					while (gameEntity.parentEntity!=null)
-					{
-						gameEntity=gameEntity.parentEntity;
-						Display.error("gameEntity.getState('name'): " + gameEntity.getState("name"));
-						Display.error("gameEntity.getState('parent'): " + gameEntity.getState("parent"));
-						//if (gameEntity.getState("displayType")=="Scene")
-						
-						
-						if (gameEntity.getState("feedbackX")!=null)
-						{
-							globalX += gameEntity.getState("feedbackX");
-							globalY += gameEntity.getState("feedbackY");
-						}
-						else break;
-					}
-					
-					Display.error("globalX: " + globalX);
-					Display.error("globalY: " + globalY);
-					*/
+					//Display.error("CLICKED CONDITION-> X: " + me.getState('feedbackX') + ", Y: " + me.getState('feedbackY') + ", WIDTH: " + me.getState('feedbackWidth') + ", HEIGHT: " + me.getState('feedbackHeight'));
 				</Script>
 			</Scripts>
 		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
+		<Action>
+			<Id>StartConditionWizard</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('StartConditionWizard');
+					
+					me.setState('wizardInProgress',true);
+					me.forceAction('ChooseTarget');
+				</Script>
+			</Scripts>
+		</Action>
+		<Action>
+			<Id>ChooseTarget</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var globalPos = Logic.queryGameEntity(me, "globalPosition");
+					
+					//Get Assets we Want to display
+					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+					var arrayOfAssets = [];
+					for (asset in ClassObjectsDBbyNameHash)
+						arrayOfAssets.push(asset);
+						
+					
+					//Open Popup [CHOOSE TARGET]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.ChooseTargetPopUp");
+					popUpAction.setState('popupPosX',globalPos.x+13);
+					popUpAction.setState('popupPosY',globalPos.y+30);
+					popUpAction.setState('argA',arrayOfAssets);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Create new Condition');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Callback: Select Condition</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select Condition: OK");
+					}
+					else
+					{
+						Display.error("Callback: Select Condition: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Callback: Create new Condition</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						me.getAction('Set New Target').setState('asset',cb_Arg1);
+						me.startAction('Set New Target');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Set New Target</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Set New Target');
+					var asset = this.getState('asset');
+					
+					//Store
+					me.setState('conditionTarget_asset',asset);
+					
+					//Get
+					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
+					
+					//Change Thumbnail
+					var thumbUrl="NotFound";
+					if (asset.tags.length>1)
+					{
+						var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+						thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+					}
+					
+					me.getState("imageObj").setState('src',thumbUrl);
+					
+					if (me.getState('wizardInProgress'))
+						me.startAction('ChooseCondition');
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>ChooseCondition</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('ChooseCondition');
+					
+					var mainList = {};
+					mainList.name="lalala";
+					//object.asset=
+					mainList.children = [];
+					
+					var child1 = {};
+					child1.name="Child 1";
+					//object.asset=
+					child1.children = [];
+					
+					var child2 = {};
+					child2.name="Child 2";
+					//object.asset=
+					child2.children = [];
+					
+					var subChild1 = {};
+					subChild1.name = "Sub Child 1";
+					//object.asset=
+					subChild1.children = [];
+					
+					var subsubChild1 = {};
+					subsubChild1.name = "Sub Sub Child 1";
+					//object.asset=
+					subsubChild1.children = [];
+					
+					var subsubChild2 = {};
+					subsubChild2.name = "Sub Sub Child 2";
+					//object.asset=
+					subsubChild2.children = [];
+					
+					mainList.children.push(child1);
+					mainList.children.push(child2);
+					
+					child2.children.push(subChild1);
+					subChild1.children.push(subsubChild1);
+					subChild1.children.push(subsubChild2);
+					
+					//Either it will have children, or it will have an asset...
+					//if it has children, it's not clickable
+					//if it doesn't, it is..
+					//They all have names apart from the root one..
+					//it will do.. i can create this from quering the Hashes of conditions.. checking their groups and such... no problem..
+					var globalPos = Logic.queryGameEntity(me, "globalPosition");
+					
+					//Open Popup [CHOOSE CONDITION]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUp");
+					popUpAction.setState('popupPosX',globalPos.x+33);
+					popUpAction.setState('popupPosY',globalPos.y+30);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Select Condition');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Action>
+				
 		<!-- CreateNewXml -->
 		<Action>
 			<Id>CreateNewXml</Id>
@@ -143,6 +297,8 @@
 					me.setState('xmlData',entityXml);
 					
 					Display.error('xml data created fine!');
+					
+					me.startAction('StartConditionWizard');
 				</Script>
 			</Scripts>
 		</Action>

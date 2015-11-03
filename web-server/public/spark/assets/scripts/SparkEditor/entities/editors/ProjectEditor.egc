@@ -124,7 +124,7 @@
 							}
 							
 							
-							var assetUserName = me.getState('assetUserName');
+							//var assetUserName = me.getState('assetUserName');
 							
 							var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
 							Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
@@ -139,6 +139,96 @@
 								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
 								
 								
+								//TEMP: Get ACE Lib stuff (to be replaced with Project Include assets, but not flambe load them, and distribute to libraries too)
+								//so this might not be the place for it...
+								Comms.request("assets.requestHandler.getProjectIncludeAssets", {}, "ACE Assets Request");
+								
+							}).once();
+							
+							//Load
+							Assets.loadBatch();
+						}
+						else
+						{
+							Display.error('Error Requesting Main Module Assets!');
+						}
+					}
+					else //TEMP: Get ACE Assets and Flambe Load them
+					if (Comms.getRequestData("ACE Assets Request")!=null)
+					{
+						var data = Comms.getRequestData("ACE Assets Request");
+						
+						if (data.code=="success")
+						{
+							Display.error('Requesting ACE Assets success!');
+							
+							//Get Username
+							//var userName = me.getState('assetUserName');
+							
+							//Initiate Load
+							Assets.initiateBatch();
+
+							var i = 0;
+							while (data.assets.length>i)
+							{
+								//Get AssetDb
+								var asset = data.assets[i];
+								
+								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								Display.error("asset.owner.user.name: " + asset.owner.user.name);
+								Display.error("assetUrl: " + assetUrl);
+								var assetId;
+								
+								//If Asset is Script
+								if (asset.type=="script")
+								{
+									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+									
+									if (asset.componentType=="Condition")
+									{
+										//Init Scene Editor
+										Display.error(asset.componentType+" Found!");
+									}
+									else if (asset.componentType=="Action")
+									{
+										Display.error(asset.componentType+" Found!");
+									}
+									else if (asset.componentType=="Expression")
+									{
+										//me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										Display.error(asset.componentType+" Found!");
+									}
+								}
+								/*
+								//Store the AssetDB
+								me.getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+								Display.error('asset.id: ' + asset._id);
+								Display.error('asset.name: ' + asset.name);
+								*/
+								//Add file to Flambe Loader
+								Assets.addFile(assetUrl, assetId);
+								
+								
+								Display.error(data.assets[i].name);
+								i+=1;
+							}
+							
+							
+							//var assetUserName = me.getState('assetUserName');
+							
+							//var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
+							//Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
+							
+							//Event Listener
+							Assets.successSignal.connect(function () {
+							
+								//Start up Scene Editor
+								//Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
+								
+								//Start up EventSheet Editor
+								//Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+								
+								
 								//Get Library Collections for this project
 								Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
 								
@@ -149,7 +239,7 @@
 						}
 						else
 						{
-							Display.error('Error Requesting Main Module Assets!');
+							Display.error('Error Requesting ACE Assets!');
 						}
 					}
 					//Create Library Categories

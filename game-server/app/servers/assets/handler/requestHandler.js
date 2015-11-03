@@ -65,6 +65,49 @@ handler.getProjectAssets = function(msg, session, next) {
 
 };
 
+//This will temp load all lib Conditions, Actions and Expressions..
+//Later we an make it look up the project's include queries, and include those instead..
+handler.getProjectIncludeAssets = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //get user spark
+    database.findOne(database.User, {name: 'spark'},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            if (object_found) {
+                var sparkDeveloperId = object_found.developerReference;
+
+
+                //Find Assets
+                database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", {$or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' } ]}   }, "owner.user",
+                    function (err, objects_found) {
+                        //Handle Error
+                        if (err) {
+                            next(null, {code: "error"});
+                            return console.error(err);
+                        }
+
+                        //Handle Success
+                        next(null, {code: "success", assets: objects_found});
+                    }
+                );
+            }
+        }
+    );
+};
+
 //Get all assets referenced in the main module of this project
 handler.getProjectMainModuleAssets = function(msg, session, next) {
     var self = this;

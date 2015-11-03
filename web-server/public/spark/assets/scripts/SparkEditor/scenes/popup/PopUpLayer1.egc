@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.scenes.popup.PopUpLayerBase">
+
+	<_States>
+		<_State id="name"><Value>PopUp Layer 1 Scene</Value></_State>
+		<_State id="layerViewName"><Value>PopUp Layer 1 View</Value></_State>
+	</_States>
+</Entity>

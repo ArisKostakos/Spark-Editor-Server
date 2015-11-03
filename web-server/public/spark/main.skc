@@ -125,6 +125,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/EventsWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/properties/Category.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/properties/State.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/eventsheet/ChooseTargetThumb.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/contextMenu/ContextList.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/contextMenu/ContextItem.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndValue.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndValueSmall.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LabelAndInput.egc</Asset>
@@ -139,7 +142,10 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/GreyButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/PanelTester.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DomScene.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/PopUpScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayerBase.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer1.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer2.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer3.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/SceneTester.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorRightScene.egc</Asset>
@@ -151,7 +157,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DragSurfaceScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSprite.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/FullScreenView.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpView.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer1View.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer2View.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer3View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DashboardView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/ProgrammerEditorView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/NavigationBarView.egc</Asset>
@@ -210,6 +218,13 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorAssetImportButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryItem.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryItemUpload.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/managers/PopupManager.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/PopUpBase.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/PopUpBaseWithArrow.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/ChooseTargetPopUp.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUp.egc</Asset>
+			
 			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPropsPanel.egc</Asset>
@@ -298,7 +313,7 @@
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="events_addbutton" bytes='35672' forceLoadAsData='true'>editor/events/AddButton.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="events_tempThumb" bytes='35672' forceLoadAsData='true'>editor/events/tempThumb.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="events_tempThumb" bytes='35672' forceLoadAsData='true'>codeIcon.png</Asset>
 			
 
 			<!-- Lobby, Projects -->

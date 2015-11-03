@@ -177,7 +177,7 @@
 						actionEdit.startAction('CreateNewXml');
 						
 						
-						Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+						Display.invalidateLayout();
 					}
 				</Script>
 			</Scripts>
