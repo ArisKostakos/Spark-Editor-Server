@@ -145,11 +145,15 @@
 							//Event Listener
 							Assets.successSignal.connect(function () {
 							
+								//Normaly, I create the scene and eventsheet here
+								//but because I temp flambe load behjaviors etc later on for now(although they should have
+								//been included in the projet's main module, but they didn't so i flamb load them at the include query..
+								//so I will temporarily create the scene etc later on too
 								//Start up Scene Editor
-								Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
+								//Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
 								
 								//Start up EventSheet Editor
-								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+								//Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
 								
 								
 								//TEMP: Get ACE Lib stuff (to be replaced with Project Include assets, but not flambe load them, and distribute to libraries too)
@@ -246,11 +250,12 @@
 							//Event Listener
 							Assets.successSignal.connect(function () {
 							
+								//load them here for now...
 								//Start up Scene Editor
-								//Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
+								Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
 								
 								//Start up EventSheet Editor
-								//Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+								Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
 								
 								
 								//Get Library Collections for this project
