@@ -7,6 +7,7 @@
 		<State><Id>cb_caller</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>cb_actionName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<_State id="display"><Value>none</Value></_State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
 	</_States>
 		
 	<_Actions>

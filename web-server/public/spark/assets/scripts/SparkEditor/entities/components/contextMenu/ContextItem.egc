@@ -73,7 +73,7 @@
 				<Script>
 					if (me.getState('ContextListObject')==null)
 					{
-						parent.getState('parentPopUp').getAction('ItemSelected').setState('asset',me.getState('data').asset);
+						parent.getState('parentPopUp').getAction('ItemSelected').setState('itemObject',me.getState('data'));
 						parent.getState('parentPopUp').forceAction('ItemSelected');
 					}
 				</Script>

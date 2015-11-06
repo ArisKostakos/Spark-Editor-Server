@@ -130,7 +130,7 @@
 					
 					if (cb_result=="OK")
 					{
-						me.getAction('Set New AC').setState('asset',cb_Arg1);
+						me.getAction('Set New AC').setState('asset',cb_Arg1.asset);
 						me.startAction('Set New AC');
 					}
 					else

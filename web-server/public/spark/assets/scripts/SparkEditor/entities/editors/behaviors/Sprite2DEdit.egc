@@ -8,6 +8,8 @@
 		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>spriteGridLock</Id><Type>Integer</Type><Value>8</Value></State> <!--64-->
+		<State><Id>tempClassAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tempUploading</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Form>
@@ -23,9 +25,6 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					if (Input.mouse.isDown(MouseButton.Right))
-						return;
-					
 					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
 					leveleditor2d.getAction('EntityClicked').setState('entity',me);
 					leveleditor2d.startAction('EntityClicked');
@@ -33,6 +32,92 @@
 					me.getAction('Drag').setState('dragX',me.getState('spaceX'));
 					me.getAction('Drag').setState('dragY',me.getState('spaceY'));
 					me.startAction('Drag');
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseRightClick</Event>
+			<Scripts>
+				<Script>
+					function getListChild(node,childName)
+					{
+						for (child in node.children)
+						{
+							if (child.name==childName)
+								return child;
+						}
+						
+						return null;
+					}
+					
+					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					leveleditor2d.getAction('EntityClicked').setState('entity',me);
+					leveleditor2d.startAction('EntityClicked');
+					
+					var target_asset = me.getState('target_asset');
+					
+					var acHash = Logic.getEntityByName('Project Editor').getState('BehaviorAssetsDBbyTargets');
+					
+					//Check hash to pick up it's classes
+					//for now, assume std.display.Image2D
+					var type = "std.display.Image2D"; //only 1 type supported for now
+					
+					
+					//Support Only 1 level of grouping for now. and all ACE MUST have exactly 1 group (no zero groups either)
+					var mainList = {};
+					mainList.children = [];
+					
+					var behaviors = {};
+					behaviors.name="Add Behavior";
+					behaviors.children = [];
+					mainList.children.push(behaviors);
+					
+					var properties = {};
+					properties.name="Properties";
+					properties.children = [];
+					properties.type="Properties"; //if it's clickable (no children) we need to define a type for it.. for when it gets back in the callback
+					mainList.children.push(properties);
+					
+					if (acHash.exists(type))
+					{
+						for (asset in acHash.get(type))
+						{
+							Display.error("FOUND AC: " + asset.name);
+							var group = getListChild(behaviors,asset.tags[1]);
+							
+							//If null, create it
+							if (group==null)
+							{
+								group = {};
+								group.name=asset.tags[1];
+								group.children = [];
+								behaviors.children.push(group);
+							}
+							
+							//Create listObject and add it to group
+							var childAsset = {};
+							childAsset.name=asset.title;
+							childAsset.asset=asset;
+							childAsset.type="Behavior";
+							childAsset.children = [];
+							
+							group.children.push(childAsset);
+						}
+					}
+					
+					var mousePosX = Input.pointer.currentX;
+					var mousePosY = Input.pointer.currentY;
+					
+					//Open Popup [CHOOSE AC]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+					popUpAction.setState('popupPosX',mousePosX);
+					popUpAction.setState('popupPosY',mousePosY);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Entity Context Menu');
+					popUpManager.forceAction('Open PopUp');
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -217,9 +302,156 @@
 				</Script>
 			</Scripts>
 		</Trigger>
+				
+		<!-- Update Class Object Asset-->
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData("updatedClassAsset")!=null)
+					{
+						if (me.getState('tempUploading')) //if it's me who's uploading this..
+						{
+							var data = Comms.file_getSendFileRequestData("updatedClassAsset");
+							
+							Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+							
+							if (data.progress==1)
+							{
+								Display.error("FILE: " + 'File Uploaded!');
+								
+								var asset = me.getState('tempClassAsset');
+								Display.error("FILE: " + asset.name);
+								//incomingFileName
+								var incomingFileName = "updatedClassAsset";
+								
+								Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: asset.owner.user.name, assetType:asset.type, assetName:asset.name, incomingFileName:incomingFileName}, "updatedClassAsset");
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("updatedClassAsset")!=null)
+					{
+						if (me.getState('tempUploading')) //if it's me who's uploading this..
+						{
+							var data = Comms.getRequestData("updatedClassAsset");
+							
+							if (data.code=="success")
+							{
+								Display.error('Updated Class Asset fucking success!');
+								Logic.getEntityByName('Editor Output').setState('text','Almost done!');
+								
+								//Ok here's the thing.. If I were to override flambe Asset system a bit I could directly update the Class File (you change the asset._content String)
+								//But i don't wanna do that just yet.. so I'll do the dump thing and RELOAD the asset back from the server...
+								//Initiate Load
+								Assets.initiateBatch();
+								
+								var asset = me.getState('tempClassAsset');
+								
+								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								
+								
+								//Add file to Flambe Loader
+								Assets.addFile(assetUrl, assetId);
+								
+								var oldMe = me;
+								
+								//Event Listener
+								Assets.successSignal.connect(function () {
+									Display.error("My uploading is: " + oldMe.getState('tempUploading'));
+									oldMe.setState('tempUploading',false);
+									Display.error("My uploading is: " + oldMe.getState('tempUploading'));
+									Logic.getEntityByName('Editor Output').setState('text','All done yo!');
+									
+								}).once();
+								
+								//Load
+								Assets.loadBatch();
+							}
+							else
+							{
+								Display.error('Updated Class Asset error!');
+								Logic.getEntityByName('Editor Output').setState('text','Error Updating Entity :(');
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
+		<Action>
+			<Id>Callback: Entity Context Menu</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						Display.error("Got: " + cb_Arg1.name);
+						
+						//Temp way to figure out if this context item was a behavior
+						if (cb_Arg1.type=="Behavior")
+						{
+							//Find class name
+							var xmlData = me.getState('xmlData');
+							var className = xmlData.get("extends");
+							//Display.error("My Class is: " + className);
+							
+							//Now let's get the asset for that class
+							var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+							var asset = ClassObjectsDBbyNameHash.get(className);
+							
+							//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+							
+							//Get the ASSET'S XML.. doihh..
+							var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+							
+							
+							//Add the extend node to asset xml
+							Logic.xml_entity_addExtend(asset_xml, {ext: cb_Arg1.asset.name});
+							Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+							
+							//Get me ready to upload stuff
+							me.setState('tempClassAsset',asset); //Store it for upload trigger
+							me.setState('tempUploading',true);
+							
+							//Upload it
+							var finalString = Logic.xmlToString(asset_xml);
+							var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+							Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+							Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+						}
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
 		<!-- AddBehavior -->
 		<Action>
 			<Id>AddBehavior</Id>

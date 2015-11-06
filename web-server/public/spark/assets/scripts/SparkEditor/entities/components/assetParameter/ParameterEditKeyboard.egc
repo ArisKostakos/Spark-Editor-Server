@@ -17,6 +17,7 @@
 					<State><Id>btnTextObj</Id><Type>Dynamic</Type><Value>null</Value></State>
 					<State><Id>listensForKey</Id><Type>Boolean</Type><Value>false</Value></State>
 					<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+					<_State id="preventDefaultEvents"><Value>true</Value></_State>
 					</_States>
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
 						//me.setState("text","Click to choose");

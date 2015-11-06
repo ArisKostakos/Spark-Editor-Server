@@ -8,6 +8,7 @@
 		<State><Id>ConditionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>ActionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>ExpressionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>BehaviorAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -20,6 +21,7 @@
 					me.setState('ConditionAssetsDBbyTargets',new StringMap());
 					me.setState('ActionAssetsDBbyTargets',new StringMap());
 					me.setState('ExpressionAssetsDBbyTargets',new StringMap());
+					me.setState('BehaviorAssetsDBbyTargets',new StringMap());
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -208,6 +210,10 @@
 									else if (asset.componentType=="Expression")
 									{
 										aceHashByTarget = me.getState('ExpressionAssetsDBbyTargets');
+									}
+									else if (asset.componentType=="Behavior")
+									{
+										aceHashByTarget = me.getState('BehaviorAssetsDBbyTargets');
 									}
 									
 									//Insert asset

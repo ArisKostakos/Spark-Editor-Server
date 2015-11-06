@@ -228,6 +228,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/ChooseTargetPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/ChooseParametersPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUp.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUpNoArrow.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditBase.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditKeyboard.egc</Asset>

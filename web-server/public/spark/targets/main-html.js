@@ -1645,6 +1645,10 @@ flambe_display_Sprite.prototype = $extend(flambe_Component.prototype,{
 		if(this._pointerMove == null) this._pointerMove = new flambe_util_Signal1();
 		return this._pointerMove;
 	}
+	,get_pointerUp: function() {
+		if(this._pointerUp == null) this._pointerUp = new flambe_util_Signal1();
+		return this._pointerUp;
+	}
 	,get_pointerIn: function() {
 		if(this._pointerIn == null) this._pointerIn = new flambe_util_Signal1();
 		return this._pointerIn;
@@ -1719,7 +1723,7 @@ flambe_display_Sprite.prototype = $extend(flambe_Component.prototype,{
 		if(this._pointerUp != null) this._pointerUp.emit(event);
 	}
 	,__class__: flambe_display_Sprite
-	,__properties__: $extend(flambe_Component.prototype.__properties__,{get_pointerOut:"get_pointerOut",get_pointerIn:"get_pointerIn",get_pointerMove:"get_pointerMove",get_pointerDown:"get_pointerDown",set_pointerEnabled:"set_pointerEnabled",get_pixelSnapping:"get_pixelSnapping",set_visible:"set_visible",get_visible:"get_visible"})
+	,__properties__: $extend(flambe_Component.prototype.__properties__,{get_pointerOut:"get_pointerOut",get_pointerIn:"get_pointerIn",get_pointerUp:"get_pointerUp",get_pointerMove:"get_pointerMove",get_pointerDown:"get_pointerDown",set_pointerEnabled:"set_pointerEnabled",get_pixelSnapping:"get_pixelSnapping",set_visible:"set_visible",get_visible:"get_visible"})
 });
 var flambe_display_FillSprite = function(color,width,height) {
 	flambe_display_Sprite.call(this);
@@ -15413,13 +15417,16 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 		if(l_instance != null) {
 			if(p_touchableFlag) {
 				l_instance.onclick = $bind(this,this._onPointerClick);
+				l_instance.oncontextmenu = $bind(this,this._onMouseRightClick);
 				l_instance.onmousedown = $bind(this,this._onMouseDown);
 				l_instance.onmouseup = $bind(this,this._onMouseUp);
 				l_instance.onmouseenter = $bind(this,this._onMouseEnter);
 				l_instance.onmouseleave = $bind(this,this._onMouseLeave);
-			} else {
-			}
+			} else if(this.gameEntity.getState("preventDefaultEvents")) l_instance.oncontextmenu = $bind(this,this._preventDefault);
 		}
+	}
+	,_preventDefault: function() {
+		return false;
 	}
 	,_updateAcceptsKeyboardInput: function(p_acceptsKeyboardInputFlag,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
@@ -15499,22 +15506,27 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 	}
 	,_onKeyPress: function(p_event) {
 		this.gameEntity.setState("eventObjectKeyPress",p_event);
-		p_event.preventDefault();
+		if(this.gameEntity.getState("preventDefaultEvents")) p_event.preventDefault();
 		tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_PRESSED_LOCAL,this.gameEntity);
 	}
 	,_onKeyRelease: function(p_event) {
 		this.gameEntity.setState("eventObjectKeyRelease",p_event);
-		p_event.preventDefault();
+		if(this.gameEntity.getState("preventDefaultEvents")) p_event.preventDefault();
 		tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_RELEASED_LOCAL,this.gameEntity);
 	}
 	,_onKeyDown: function(p_event) {
 		this.gameEntity.setState("eventObjectKeyDown",p_event);
-		p_event.preventDefault();
+		if(this.gameEntity.getState("preventDefaultEvents")) p_event.preventDefault();
 		tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.KEY_DOWN_LOCAL,this.gameEntity);
 	}
 	,_onPointerClick: function(p_event) {
 		this.gameEntity.setState("eventObject",p_event);
 		tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK,this.gameEntity);
+	}
+	,_onMouseRightClick: function(p_event) {
+		if(this.gameEntity.getState("preventDefaultEvents")) p_event.preventDefault();
+		this.gameEntity.setState("eventObject",p_event);
+		tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK,this.gameEntity);
 	}
 	,_onMouseDown: function(p_event) {
 		this.gameEntity.setState("eventObject",p_event);
@@ -16196,6 +16208,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 				if(!l_mesh.get_pointerMove().hasListeners()) l_mesh.get_pointerMove().connect($bind(this,this._onPointerMove));
 				if(!l_mesh.get_pointerOut().hasListeners()) l_mesh.get_pointerOut().connect($bind(this,this._onPointerOut));
 				if(!l_mesh.get_pointerDown().hasListeners()) l_mesh.get_pointerDown().connect($bind(this,this._onPointerDown));
+				if(!l_mesh.get_pointerUp().hasListeners()) l_mesh.get_pointerUp().connect($bind(this,this._onPointerUp));
 			} else {
 			}
 		}
@@ -16210,7 +16223,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT,this.gameEntity);
 	}
 	,_onPointerDown: function(p_pointerEvent) {
-		tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK,this.gameEntity);
+		if(tools_spark_sliced_core_Sliced.input.mouse.isDown(flambe_input_MouseButton.Left)) tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_LEFT_CLICK,this.gameEntity);
+	}
+	,_onPointerUp: function(p_pointerEvent) {
+		if(tools_spark_sliced_core_Sliced.input.mouse.lastMouseButton == flambe_input_MouseButton.Right) tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK,this.gameEntity);
 	}
 	,setPosSize: function(p_x,p_y,p_width,p_height,p_view) {
 		var l_mesh = this._instancesMesh.get(p_view);
@@ -21030,6 +21046,7 @@ tools_spark_sliced_services_std_input_devices_core_MouseDevice.prototype = {
 	}
 	,_onMouseButtonDown: function(p_mouseEvent) {
 		if(p_mouseEvent.button == flambe_input_MouseButton.Left) this._mouseLeftDown = true; else if(p_mouseEvent.button == flambe_input_MouseButton.Right) this._mouseRightDown = true;
+		this.lastMouseButton = p_mouseEvent.button;
 	}
 	,registerTrigger: function(p_eventType,p_eventFilter) {
 	}
@@ -21199,6 +21216,19 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 		var l_xml = Xml.createElement(p_xmlNode);
 		l_xml.set(p_attrName,p_attrValue);
 		return l_xml;
+	}
+	,xml_entity_addExtend: function(p_EntityXml,p_Entity) {
+		var l_groupName = "Extends";
+		var l_group;
+		var l_elements = p_EntityXml.elementsNamed(l_groupName);
+		if(l_elements.hasNext()) l_group = l_elements.next(); else {
+			l_group = Xml.createElement(l_groupName);
+			p_EntityXml.addChild(l_group);
+		}
+		var l_entity = Xml.createElement("Entity");
+		l_group.addChild(l_entity);
+		if(p_Entity.ext != null) l_entity.set("extends",p_Entity.ext);
+		return l_entity;
 	}
 	,xml_entity_addMState: function(p_EntityXml,p_State,p_merge) {
 		var l_groupName;
