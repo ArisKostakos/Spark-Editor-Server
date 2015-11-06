@@ -23,6 +23,7 @@
 						<State><Id>temp_dropX</Id><Type>Integer</Type><Value>0</Value></State>
 						<State><Id>temp_dropY</Id><Type>Integer</Type><Value>0</Value></State>
 						<State><Id>temp_newAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+						<State><Id>omg_counter</Id><Type>Integer</Type><Value>1</Value></State>
 					</_States>
 					<_Triggers>
 						<Trigger>
@@ -74,8 +75,14 @@
 									
 									//Ok, here we go
 									
+									//Ok this counter needs to be done properly, with save/load, etc..
+									//if you try to put new assets, after a load it will do bad things right now..
+									var omg_counter = me.getState('omg_counter');
+									
 									//let's name it
-									var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									//var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									var newClassName = "Sprite_" + Std.string(omg_counter); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									me.addToState('omg_counter',1);
 									
 									//check how i add things now.. plan how i'll do it differently
 									
@@ -94,6 +101,12 @@
 									stateName_Xml.set('id', 'name');
 									var stateName_ValueXml = Xml.createElement('Value');
 									stateName_ValueXml.addChild(Xml.createPCData(newClassName));
+									
+									//State Touchable
+									var stateTouchable_Xml = Xml.createElement('_State');
+									stateTouchable_Xml.set('id', 'touchable');
+									var stateTouchable_ValueXml = Xml.createElement('Value');
+									stateTouchable_ValueXml.addChild(Xml.createPCData('true'));
 									
 									//2d mesh image form
 									var stateMesh_Xml = Xml.createElement('_State');
@@ -116,6 +129,8 @@
 									entityXml.addChild(statesXml);
 										statesXml.addChild(stateName_Xml);
 											stateName_Xml.addChild(stateName_ValueXml);
+										statesXml.addChild(stateTouchable_Xml);
+											stateTouchable_Xml.addChild(stateTouchable_ValueXml);
 										statesXml.addChild(stateMesh_Xml);
 											stateMesh_Xml.addChild(stateMesh_ValueXml);
 											

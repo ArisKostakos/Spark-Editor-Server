@@ -72,7 +72,10 @@
 			<Scripts>
 				<Script>
 					if (me.getState('ContextListObject')==null)
+					{
+						parent.getState('parentPopUp').getAction('ItemSelected').setState('asset',me.getState('data').asset);
 						parent.getState('parentPopUp').forceAction('ItemSelected');
+					}
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -98,8 +101,6 @@
 						me.setState('ContextListObject',myNewItem);
 						
 						Logic.getEntityByName(me.getState('targetLayerName')).addChild(myNewItem);
-						Display.error("YOOOOOOOO CREATING SUB EVENT THINGIEEE");
-						
 					}
 
 				</Script>

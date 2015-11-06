@@ -12,9 +12,14 @@
 	
 		<State><Id>conditionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>actionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>connectingLineGroup</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>actionsContainerGroup</Id><Type>Dynamic</Type><Value>null</Value></State>
 		
-		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
 		<_State id="gap"><Value>0</Value></_State>
+		<State><Id>eventWzardInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Form>
@@ -51,7 +56,6 @@
 								<_State id="gap"><Value>1</Value></_State>
 							</_States>
 							<_Actions><_Action id="Constructor"><_Scripts><Script>
-								Display.error("conditions container constructor");
 								parent.parentEntity.setState('conditionsContainer',me);
 							</Script></_Scripts></_Action></_Actions>
 						</Entity>
@@ -60,13 +64,7 @@
 						<Entity extends="SparkEditor.entities.buttons.eventsheet.AddButtonSmall">
 							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 								<Script>
-									//create an conditionEdit
-									var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
-									
-									//add it as child to me
-									parent.parentEntity.getState('conditionsContainer').addChild(conditionEdit);
-									conditionEdit.startAction('CreateNewXml');
-									Display.invalidateLayout();
+									parent.parentEntity.startAction("Create New Condition");
 								</Script>
 							</Scripts></Trigger></_Triggers>
 						</Entity>
@@ -78,7 +76,11 @@
 					<_States>
 						<_State id="width"><Value>10</Value></_State>
 						<_State id="height"><Value>30</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
 					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('connectingLineGroup',me);
+					</Script></_Scripts></_Action></_Actions>
 					<Form><Space><Entities>
 						<Entity extends="std.display.Div">
 							<_States>
@@ -96,7 +98,11 @@
 					<_States>
 						<_State id="width"><Value>60%</Value></_State>
 						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
 					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('actionsContainerGroup',me);
+					</Script></_Scripts></_Action></_Actions>
 					<Form><Space><Entities>
 						<!-- Actions Container -->
 						<Entity extends="std.display.VGroup">
@@ -105,7 +111,6 @@
 								<_State id="gap"><Value>1</Value></_State>
 							</_States>
 							<_Actions><_Action id="Constructor"><_Scripts><Script>
-								Display.error("actions container constructor");
 								parent.parentEntity.setState('actionsContainer',me);
 							</Script></_Scripts></_Action></_Actions>
 						</Entity>
@@ -114,13 +119,7 @@
 						<Entity extends="SparkEditor.entities.buttons.eventsheet.AddButtonSmall">
 							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 								<Script>
-									//create an actionEdit
-									var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
-									
-									//add it as child to me
-									parent.parentEntity.getState('actionsContainer').addChild(actionEdit);
-									actionEdit.startAction('CreateNewXml');
-									Display.invalidateLayout();
+									parent.parentEntity.startAction("Create New Action");
 								</Script>
 							</Scripts></Trigger></_Triggers>
 						</Entity>
@@ -144,38 +143,99 @@
 				</Script>
 			</_Scripts>
 		</_Action>
-		
-		<!-- CreateNewXml -->
+	
+		<!-- Export Xml -->
 		<Action>
-			<Id>CreateNewXml</Id>
+			<Id>Export Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Create the event
+					var eventXml = Logic.xml_createElementAttr('Entity','extends','std.ace.Event');
+					
+					//First, we determine from the conditions, what trigger to create..
+					var firstCondition=eventChild.getState('conditionsContainer').getChildren()[0]; //for now, consider first condition
+					
+					//By checking all conditions for this event, determine an appropriate trigger
+					//Set Up Trigger Event Node
+					var conditionTarget_asset = firstCondition.getState('target_asset');
+					var condition_asset = firstCondition.getState('ac_asset');
+					var condition_par1 = firstCondition.getState('par1');
+					var condition_par2 = firstCondition.getState('par2');
+					var condition_par3 = firstCondition.getState('par3');
+					var condition_par4 = firstCondition.getState('par4');
+					
+					
+					//Determine Trigger Based on 'chosen' condition
+					var triggerEvent="NotFound";
+					if (condition_asset.fileName=="MouseLeftClick")
+						triggerEvent="MouseLeftClick";
+					if (condition_asset.fileName=="KeyPressed")
+						triggerEvent="KeyPressed";
+					
+					
+					//Set Up Trigger Target Node
+					var triggerTarget;
+					if (triggerEvent=="KeyPressed") //hack to set no target for keyboard
+						triggerTarget="TargetNone";
+					else
+						triggerTarget= conditionTarget_asset.fileName;
+					
+					//Set Up Trigger Parameter
+					var triggerParameter=null;
+					if (triggerEvent=="KeyPressed")
+					{
+						triggerParameter = condition_par1.object;
+					}
+					
+					//Create the trigger
+					Logic.xml_entity_addTrigger(eventXml, {ext:"std.ace.TriggerBase", event:triggerEvent, target:triggerTarget, parameter:triggerParameter},true);
+					
+					//Create entities node (children)
+					var entities = Logic.xml_createElements(['Form','Space','Entities']);
+					eventXml.addChild(entities.first);
+					
+					//Add Children Conditions
+					for (conditionChild in eventChild.getState('conditionsContainer').getChildren())
+					{
+						conditionChild.forceAction('Export Xml');
+						entities.last.addChild(conditionChild.getState('xmlExport'));
+					}
+					
+					//Add Children Events
+					for (actionChild in eventChild.getState('actionsContainer').getChildren())
+					{
+						actionChild.forceAction('Export Xml');
+						entities.last.addChild(actionChild.getState('xmlExport'));
+					}
+					
+					//Store
+					me.setState('xmlExport',eventXml);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<!-- Create New Instance -->
+		<Action>
+			<Id>Create New Instance</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
 					if (me.getState('conditionsContainer')!=null && me.getState('actionsContainer')!=null)
 					{
-						me.stopAction("CreateNewXml");
+						me.stopAction("Create New Instance");
 						
-						//Create new entity Xml
-						var entityXml = Xml.createElement('Entity');
-						entityXml.set('extends','std.ace.Event');
-
-						me.setState('xmlData',entityXml);
+						me.setState('eventWzardInProgress',true);
 						
 						//create an conditionEdit
 						var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+						conditionEdit.setState('parentEvent',me);
 						
 						//add it as child to conditions
 						me.getState('conditionsContainer').addChild(conditionEdit);
-						conditionEdit.startAction('CreateNewXml');
-
-							
-						//create an actionEdit
-						var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
-						
-						//add it as child to actions
-						me.getState('actionsContainer').addChild(actionEdit);
-						actionEdit.startAction('CreateNewXml');
-						
+						conditionEdit.startAction('Create New Instance');
 						
 						Display.invalidateLayout();
 					}
@@ -183,78 +243,56 @@
 			</Scripts>
 		</Action>
 
+		<Action>
+			<Id>Create New Condition</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Create New Condition");
+					
+					//create an conditionEdit
+					var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+					conditionEdit.setState('parentEvent',me);
+					
+					//add it as child to me
+					me.getState('conditionsContainer').addChild(conditionEdit);
+					conditionEdit.startAction('Create New Instance');
+					
+					Display.invalidateLayout();
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Create New Action</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Create New Action");
+					
+					//create an actionEdit
+					var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+					actionEdit.setState('parentEvent',me);
+					
+					//add it as child to me
+					me.getState('actionsContainer').addChild(actionEdit);
+					actionEdit.startAction('Create New Instance');
+					Display.invalidateLayout();
+					
+					
+					me.getState('connectingLineGroup').setState('display','inline');
+					me.getState('actionsContainerGroup').setState('display','inline');
+				</Script>
+			</Scripts>
+		</Action>
+				
 		<!-- ImportXml -->
 		<Action>
 			<Id>ImportXml</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					if (me.getState('conditionsContainer')!=null && me.getState('actionsContainer')!=null)
-					{
-						me.stopAction("ImportXml");
-						
-						function firstElementNamed(p_xmlNode, p_elementName)
-						{
-							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-							{
-								return p_xmlNode.elementsNamed(p_elementName).next();
-							}
-							else
-							{
-								return null;
-							}
-						}
-						
-						//Create new entity Xml
-						var entityXml = me.getAction('ImportXml').getState('importedXml');
-						me.setState('xmlData',entityXml);
-						
-						//remove Form
-						var formXml = firstElementNamed(entityXml,'Form');
-						if (formXml!=null)
-						{
-							entityXml.removeChild(formXml);
-						
-							var formSpaceXml = firstElementNamed(formXml,'Space');
-							if (formSpaceXml!=null)
-							{
-								var formSpaceEntitiesXml = firstElementNamed(formSpaceXml,'Entities');
-								if (formSpaceEntitiesXml!=null)
-								{
-									var entities = formSpaceEntitiesXml.elementsNamed('Entity');
-									//for each [entity] in [form.space.entities]
-									while (entities.hasNext())
-									{
-										var entityChildXml = entities.next();
-										
-										if (entityChildXml.get('extends')=='std.ace.Condition')
-										{
-											Display.error("XML IMPORT: FOUND CONDITION");
-											//create an conditionEdit
-											var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
-											
-											//add it as child to conditions
-											me.getState('conditionsContainer').addChild(conditionEdit);
-											conditionEdit.getAction('ImportXml').setState('importedXml',entityChildXml);
-											conditionEdit.startAction('ImportXml');
-										}
-										else if (entityChildXml.get('extends')=='std.ace.Action')
-										{
-											Display.error("XML IMPORT: FOUND ACTION");
-											//create an actionEdit
-											var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
-											
-											//add it as child to actions
-											me.getState('actionsContainer').addChild(actionEdit);
-											actionEdit.getAction('ImportXml').setState('importedXml',entityChildXml);
-											actionEdit.startAction('ImportXml');
-										}
-									}
-									Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
-								}
-							}
-						}
-					}
+					//import
 				</Script>
 			</Scripts>
 			<States>

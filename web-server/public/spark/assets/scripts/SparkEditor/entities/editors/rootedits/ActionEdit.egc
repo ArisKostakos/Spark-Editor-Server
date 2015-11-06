@@ -1,150 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Div">
+<Entity extends="SparkEditor.entities.editors.rootedits.ACBaseEdit">
 	<_States>
 		<_State id="name"><Value>Action</Value></_State>
 		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>30</Value></_State>
-		<!-- <_State id="border"><Value>2px solid black</Value></_State> 
-		<_State id="borderRadius"><Value>0px</Value></_State>-->
 		<_State id="layout"><Value>Horizontal</Value></_State>
 		<_State id="verticalAlign"><Value>middle</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(51,127,131)</Value></_State>
-			
-		<State><Id>xmlScript</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>xmlParameter</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>inputEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
-	
-		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<_State id="paddingLeft"><Value>4</Value></_State>
-			
-		<State><Id>imageObj</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>textObj</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
-	<_Form>
-		<_Space>
-			<_Entities>
-				<!-- Code Image -->
-				<Entity extends="std.display.Image"><_States>
-					<_State id="width"><Value>20</Value></_State>
-					<_State id="height"><Value>20</Value></_State>
-				</_States>
-				<_Actions><_Action id="Constructor"><_Scripts><Script>
-					parent.setState("imageObj",me);
-				</Script></_Scripts></_Action></_Actions>
-				</Entity>
-				
-				<!-- Some Text -->
-				<Entity extends="std.display.Text"><_States>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>17</Value></_State>
-					<_State id="fontWeight"><Value>300</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>15px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textAlign"><Value>left</Value></_State>
-					</_States>
-					<_Actions><_Action id="Constructor"><_Scripts><Script>
-						parent.setState("textObj",me);
-					</Script></_Scripts></_Action></_Actions>
-				</Entity>
-			</_Entities>
-		</_Space>
-	</_Form>
-	
-	<_Triggers>
-		
-	</_Triggers>
 	
 	<_Actions>
-		<!-- CreateNewXml -->
-		<Action>
-			<Id>CreateNewXml</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					me.stopAction("CreateNewXml");
-
-					//Create new entity Xml
-					var entityXml = Xml.createElement('Entity');
-					entityXml.set('extends','std.ace.Action');
-					
-					//Create [_Actions._Action._Scripts.Script.DATA]
-					var actionsXml = Xml.createElement('_Actions');
-					entityXml.addChild(actionsXml);
-					var actionXml = Xml.createElement('_Action');
-					actionXml.set('id','Run');
-					actionsXml.addChild(actionXml);
-					var scriptsXml = Xml.createElement('_Scripts');
-					actionXml.addChild(scriptsXml);
-					var scriptXml = Xml.createElement('Script');
-					scriptsXml.addChild(scriptXml);
-					
-					//Create [_States._State.Value.DATA]
-					var statesXml = Xml.createElement('_States');
-					entityXml.addChild(statesXml);
-					var stateXml = Xml.createElement('_State');
-					stateXml.set('id','parameter');
-					statesXml.addChild(stateXml);
-					var valueXml = Xml.createElement('Value');
-					stateXml.addChild(valueXml);
-					
-					//stateValueXml.removeChild(stateValueXml.firstChild());
-					scriptXml.addChild(Xml.parse("//Empty;").firstChild());
-					valueXml.addChild(Xml.parse("Undefined").firstChild());
-					
-					me.setState('xmlParameter',valueXml);
-					me.setState('xmlScript',scriptXml);
-					me.setState('xmlData',entityXml);
-					
-					Display.error('xml data created fine!');
-				</Script>
-			</Scripts>
-		</Action>
-		
 		<!-- ImportXml -->
 		<Action>
 			<Id>ImportXml</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					if (me.getState('inputEntity')!=null)
-					{
-						me.stopAction("ImportXml");
-						
-						function firstElementNamed(p_xmlNode, p_elementName)
-						{
-							if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-							{
-								return p_xmlNode.elementsNamed(p_elementName).next();
-							}
-							else
-							{
-								return null;
-							}
-						}
-						
-						//Create new entity Xml
-						var entityXml = me.getAction('ImportXml').getState('importedXml');
-						
-						//Get scriptXml
-						var actionsXml = firstElementNamed(entityXml,'_Actions');
-						var actionXml = firstElementNamed(actionsXml,'_Action');
-						var scriptsXml = firstElementNamed(actionXml,'_Scripts');
-						var scriptXml = firstElementNamed(scriptsXml,'Script');
-						
-						//get valueXml
-						var statesXml = firstElementNamed(entityXml,'_States');
-						var stateXml = firstElementNamed(statesXml,'_State');
-						var valueXml = firstElementNamed(stateXml,'Value');
-						
-						//Store Xmls
-						me.setState('xmlParameter',valueXml);
-						me.setState('xmlScript',scriptXml);
-						me.setState('xmlData',entityXml);
-						
-						me.getState('inputEntity').setState('text',valueXml.firstChild());
-					}
+					//From importedXml, create my thing 
 				</Script>
 			</Scripts>
 			<States>

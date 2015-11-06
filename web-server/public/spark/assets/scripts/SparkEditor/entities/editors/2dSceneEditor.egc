@@ -101,7 +101,7 @@
 									var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
 									
 									//add to scene
-									if (childEntity.getState('name')=="Background") //background entity
+									if (childEntity.getState('name')=="Background") //background entity //THIS IS NOT GONNA WORK ANYMORE, CAUSE SPRITE2DEDIT CHANGES THE NAME
 									{
 										//add to SceneBoundsDisplay edit object
 										Logic.getEntityByName('SceneBoundsDisplay').addChild(childEntity);

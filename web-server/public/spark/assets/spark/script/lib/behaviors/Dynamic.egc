@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<_State id="physicsType"><Value>Dynamic</Value></_State>
+	</_States>
+</Entity>

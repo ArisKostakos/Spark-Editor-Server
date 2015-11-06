@@ -424,12 +424,13 @@
 	<_Triggers>
 		<Trigger>
 			<Event>MouseScroll</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
-				var dir=0.05;
-				
-				if (Input.mouse.getScroll()>0)
-					dir *= -1;
+					var dir=0.05;
+					
+					if (Input.mouse.getScroll()>0)
+						dir *= -1;
 					
 					//Display.error("scrolly scrolyyyyy: " + Input.mouse.getScroll());
 					
@@ -470,6 +471,7 @@
 		
 		<Trigger>
 			<Event>MouseRightDown</Event>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					me.startAction("CameraPan");

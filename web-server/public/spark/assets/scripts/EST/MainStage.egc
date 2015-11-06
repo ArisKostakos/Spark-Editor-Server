@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Stage">
+	<_States>
+		<_State id="name">
+			<Value>Main Stage</Value>
+		</_State>
+		
+		
+		<_State id="layout">
+			<Value>Basic</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="EST.views.MainView2D"></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

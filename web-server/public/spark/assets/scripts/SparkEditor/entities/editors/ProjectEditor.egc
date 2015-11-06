@@ -4,6 +4,10 @@
 		<_State id="name"><Value>Project Editor</Value></_State>
 		<State><Id>ClassObjectsDBbyNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>ModuleAssetsDBbyAssetIdHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>ConditionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ActionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ExpressionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -12,6 +16,10 @@
 				<Script>
 					me.setState('ClassObjectsDBbyNameHash',new StringMap());
 					me.setState('ModuleAssetsDBbyAssetIdHash',new StringMap());
+					
+					me.setState('ConditionAssetsDBbyTargets',new StringMap());
+					me.setState('ActionAssetsDBbyTargets',new StringMap());
+					me.setState('ExpressionAssetsDBbyTargets',new StringMap());
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -91,6 +99,9 @@
 										sceneEditor.setState('assetUserName', asset.owner.user.name);
 										sceneEditor.setState('assetType',asset.type);
 										sceneEditor.setState('assetName',asset.name);
+										
+										//Let's see what happens if we store the Scene as well
+										//me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
 									}
 									else if (asset.componentType=="EventSheet")
 									{
@@ -153,7 +164,7 @@
 							Display.error('Error Requesting Main Module Assets!');
 						}
 					}
-					else //TEMP: Get ACE Assets and Flambe Load them
+					else //TEMP: Get ACE Assets and Flambe Load them (also get behaviors)
 					if (Comms.getRequestData("ACE Assets Request")!=null)
 					{
 						var data = Comms.getRequestData("ACE Assets Request");
@@ -184,27 +195,34 @@
 								{
 									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 									
+									var aceHashByTarget;
+									
 									if (asset.componentType=="Condition")
 									{
-										//Init Scene Editor
-										Display.error(asset.componentType+" Found!");
+										aceHashByTarget = me.getState('ConditionAssetsDBbyTargets');
 									}
 									else if (asset.componentType=="Action")
 									{
-										Display.error(asset.componentType+" Found!");
+										aceHashByTarget = me.getState('ActionAssetsDBbyTargets');
 									}
 									else if (asset.componentType=="Expression")
 									{
-										//me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
-										Display.error(asset.componentType+" Found!");
+										aceHashByTarget = me.getState('ExpressionAssetsDBbyTargets');
 									}
+									
+									//Insert asset
+									if (aceHashByTarget.exists(asset.tags[2])==false)
+										aceHashByTarget.set(asset.tags[2],[]);
+										
+									aceHashByTarget.get(asset.tags[2]).push(asset); //only 1 target supported for now
 								}
-								/*
+								
+								
 								//Store the AssetDB
 								me.getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
 								Display.error('asset.id: ' + asset._id);
 								Display.error('asset.name: ' + asset.name);
-								*/
+								
 								//Add file to Flambe Loader
 								Assets.addFile(assetUrl, assetId);
 								
@@ -234,8 +252,16 @@
 								
 							}).once();
 							
-							//Load
-							Assets.loadBatch();
+							if (data.assets.length>0)
+							{
+								//Load
+								Assets.loadBatch();
+							}
+							else
+							{
+								//Get Library Collections for this project
+								Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
+							}
 						}
 						else
 						{

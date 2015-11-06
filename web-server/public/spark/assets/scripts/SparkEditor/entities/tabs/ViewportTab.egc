@@ -61,8 +61,10 @@
 						
 						
 						//Create it, don't add it
-						Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.EventsWindow');
-						
+						//Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.EventsWindow');
+						//So, we do add it.. for one reason. so events is on active space, which allows its constructor to run
+						//so it gets the eventsContainer pointer set.. that is all..  not sure how it doesn't show at the beginning, or whatever.. but.. it works..
+						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.EventsWindow'));
 						
 						////container.addChild();
 						

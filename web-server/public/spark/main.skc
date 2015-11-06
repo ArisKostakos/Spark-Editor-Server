@@ -35,6 +35,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/StageArea.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Scene2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Scene2DPhysics.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Scene3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Camera2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Camera3D.egc</Asset>
@@ -66,6 +67,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/ShowFPS.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Layoutable.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Renderable2D.egc</Asset>
@@ -198,6 +200,7 @@
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/EventCollectionEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/EventEdit.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ACBaseEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ConditionEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ActionEdit.egc</Asset>
 			
@@ -223,7 +226,13 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/PopUpBase.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/PopUpBaseWithArrow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/ChooseTargetPopUp.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/ChooseParametersPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUp.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditBase.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditKeyboard.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditExpression.egc</Asset>
+			
 			
 			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryTilesPanel.egc</Asset>

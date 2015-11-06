@@ -2,7 +2,7 @@
 <Entity>
 	<_States>
 		<_State id="touchable"><Value>true</Value></_State>
-		
+		<_State id="name"><Value>Sprite 2D Edit</Value></_State> <!--Nesseccery to change the name of entities on the editor, so evensheets don't control them with their picker-->
 		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
@@ -36,8 +36,10 @@
 				</Script>
 			</Scripts>
 		</Trigger>
-		<!--<Trigger>
-			<Event>KeyPressed_W</Event>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>W</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -49,7 +51,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_S</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>S</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -61,7 +65,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_A</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>A</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -73,7 +79,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_D</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>D</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -85,7 +93,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_Delete</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>Delete</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -96,7 +106,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_Up</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -108,7 +120,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_Down</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -120,7 +134,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_Left</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>Left</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -132,7 +148,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyPressed_Right</Event>
+			<Event>KeyPressed</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -144,7 +162,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyReleased_Up</Event>
+			<Event>KeyReleased</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -156,7 +176,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyReleased_Down</Event>
+			<Event>KeyReleased</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -168,7 +190,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyReleased_Left</Event>
+			<Event>KeyReleased</Event>
+			<Parameter>Left</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -180,7 +204,9 @@
 			</Scripts>
 		</Trigger>
 		<Trigger>
-			<Event>KeyReleased_Right</Event>
+			<Event>KeyReleased</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
 					if (me.getState('selected'))
@@ -190,7 +216,7 @@
 					}
 				</Script>
 			</Scripts>
-		</Trigger>-->
+		</Trigger>
 	</_Triggers>
 	
 	<_Actions>

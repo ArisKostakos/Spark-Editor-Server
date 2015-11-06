@@ -3,6 +3,7 @@
 	<Extends>
 		<Entity extends="std.behaviors.display.Renderable2D"/>
 		<!--<Entity extends="std.behaviors.display.Renderable3D"/>-->
+		<Entity extends="std.behaviors.display.PhysicsEntity2D"/>
 	</Extends>
 
 	<_States>

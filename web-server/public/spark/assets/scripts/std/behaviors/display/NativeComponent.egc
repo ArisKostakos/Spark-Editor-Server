@@ -6,5 +6,11 @@
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
+	
+		<State>
+			<Id>display</Id>
+			<Type>Text</Type>
+			<Value>inline</Value>
+		</State>
 	</_States>
 </Entity>

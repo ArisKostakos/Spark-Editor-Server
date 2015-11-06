@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.ace.Condition">
+	<_States>
+		<_State id="EventType"><Value>MouseLeftClick</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Evaluate">
+			<_Scripts>
+				<Script>
+					//Always true
+					parent.getAction('ConditionCallback').setState('feedback',true);
+					parent.forceAction('ConditionCallback');
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

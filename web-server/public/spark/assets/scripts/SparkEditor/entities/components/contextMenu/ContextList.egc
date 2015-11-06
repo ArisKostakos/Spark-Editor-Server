@@ -110,10 +110,9 @@
 					//forced
 					var children = me.getState('ContextItemObjects');
 					
-					for (child in children)
-					{
-						child.startAction('Deselect');
-					}
+					if (children!=null) //i put this here cause i got 'children is null' run-time errors
+						for (child in children)
+							child.startAction('Deselect');
 					
 					me.setState('display','none');
 				</Script>

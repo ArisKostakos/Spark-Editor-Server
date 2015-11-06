@@ -3,6 +3,7 @@
 	<_States>
 		<_State id="name"><Value>Event Collection Editor</Value></_State>
 		<State><Id>eventSheetRun</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -152,74 +153,55 @@
 		</Action>
 		
 		<Action>
+			<Id>Export Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Sheet
+					var eventCollection = me.getState('target');
+					
+					//Create Save File Xml
+					//var eventCollectionFileXml = Logic.xml_createDocument();
+					
+					//Add eventCollection's Xml to Doc
+					var eventCollectionXml = Logic.xml_clone(eventCollection.getState('xmlData'));
+					//eventCollectionFileXml.addChild(eventCollectionXml);
+					
+					//Create entities node
+					var entities = Logic.xml_createElements(['Form','Space','Entities']);
+					eventCollectionXml.addChild(entities.first);
+					
+					
+					//For eventCollection's Children
+					for (eventChild in eventCollection.getState('eventsContainer').getChildren())
+					{
+						eventChild.forceAction('Export Xml');
+						entities.last.addChild(eventChild.getState('xmlExport'));
+					}
+					
+					//Store
+					me.setState('xmlExport',eventCollectionXml);
+					
+					Display.error("SUCCESS: " + Logic.xmlToString(eventCollectionXml));
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
 			<Id>Run</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
 					me.stopAction("Run");
 					
+					me.forceAction("Export Xml");
 					
-					var pureXml = me.getState('xmlPure');
-					
-					//Get Sheet
-					var eventCollection = me.getState('target');
-					
-					//Create Save File Xml
-					var eventCollectionFileXml = Xml.createDocument();
-					
-					//Add eventCollection's Xml to Doc
-					var eventCollectionXml = Xml.parse(Logic.xmlToString(eventCollection.getState('xmlData'))).firstElement(); //clone it
-					eventCollectionFileXml.addChild(eventCollectionXml);
-					
-					//Create [Form.Space.Entities]
-					var formXml = Xml.createElement('Form');
-					eventCollectionXml.addChild(formXml);
-					var spaceXml = Xml.createElement('Space');
-					formXml.addChild(spaceXml);
-					var entitiesXml = Xml.createElement('Entities');
-					spaceXml.addChild(entitiesXml);
-					
-					//For eventCollection's Children
-					for (child in eventCollection.getChildren())
-					{
-						if (child.getState('name')!='Event Sheet Controls')
-						{
-							var eventChildXml = Xml.parse(Logic.xmlToString(child.getState('xmlData'))).firstElement(); //clone it
-							
-							entitiesXml.addChild(eventChildXml);
-							
-							//Create [Form.Space.Entities]
-							var eventFormXml = Xml.createElement('Form');
-							eventChildXml.addChild(eventFormXml);
-							var eventSpaceXml = Xml.createElement('Space');
-							eventFormXml.addChild(eventSpaceXml);
-							var eventEntitiesXml = Xml.createElement('Entities');
-							eventSpaceXml.addChild(eventEntitiesXml);
-							
-							
-							
-							//conditions
-							for (conditionChild in child.getState('conditionsContainer').getChildren())
-							{
-								eventEntitiesXml.addChild(conditionChild.getState('xmlData'));
-							}
-							
-							//actions
-							for (actionChild in child.getState('actionsContainer').getChildren())
-							{
-								eventEntitiesXml.addChild(actionChild.getState('xmlData'));
-							}
-						}
-					}
-					
-					
-					var finalString = Logic.xmlToString(eventCollectionFileXml);
-					//Display.error("eventCollectionXml: " + finalString);
-					
-					var eventSheetBakedXml = Xml.parse(finalString).firstElement(); //bake it?
+					var ecExport = me.getState('xmlExport');
 					
 					//Instantiate
-					var eventSheetRun = Logic.gameFactory.createGameEntityByXml(eventSheetBakedXml);
+					var eventSheetRun = Logic.gameFactory.createGameEntityByXml(ecExport);
 					
 					me.setState('eventSheetRun',eventSheetRun);
 					

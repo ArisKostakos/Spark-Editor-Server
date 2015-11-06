@@ -57,7 +57,7 @@
 									
 									//add it as child to eventWindow
 									parent.parentEntity.getState('eventsContainer').addChild(eventEdit);
-									eventEdit.startAction('CreateNewXml');
+									eventEdit.startAction('Create New Instance');
 									Display.invalidateLayout();
 								</Script>
 							</Scripts></Trigger></_Triggers>

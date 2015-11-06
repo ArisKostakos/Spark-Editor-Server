@@ -43,7 +43,7 @@
 						imageObject.setState('horizontalCenter',-1);
 						imageObject.setState('verticalCenter',0);
 						Logic.getEntityByName('2d Scene Editor').startAction('Run');
-						//Logic.getEntityByName('Event Collection Editor').startAction('Run');
+						Logic.getEntityByName('Event Collection Editor').startAction('Run');
 					}
 					else
 					{
@@ -53,7 +53,7 @@
 						imageObject.setState('horizontalCenter',1);
 						imageObject.setState('verticalCenter',0);
 						Logic.getEntityByName('2d Scene Editor').startAction('Stop');
-						//Logic.getEntityByName('Event Collection Editor').startAction('Stop');
+						Logic.getEntityByName('Event Collection Editor').startAction('Stop');
 					}
 				</Script></_Scripts></_Action></_Actions></Entity>
 				

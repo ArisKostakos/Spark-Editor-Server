@@ -1,4 +1,4 @@
-<Entity extends="std.display.Scene2D">
+<Entity extends="std.display.Scene2DPhysics">
 
 	<_States>
 		<_State id="name">
