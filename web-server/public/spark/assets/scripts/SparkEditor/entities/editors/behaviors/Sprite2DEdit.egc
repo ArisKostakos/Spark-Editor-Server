@@ -325,8 +325,8 @@
 								Display.error("FILE: " + asset.name);
 								//incomingFileName
 								var incomingFileName = "updatedClassAsset";
-								
-								Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: asset.owner.user.name, assetType:asset.type, assetName:asset.name, incomingFileName:incomingFileName}, "updatedClassAsset");
+								var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+								Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: connectedUserName, assetType:asset.type, assetName:asset.name, incomingFileName:incomingFileName}, "updatedClassAsset");
 							}
 						}
 					}
@@ -356,8 +356,8 @@
 								Assets.initiateBatch();
 								
 								var asset = me.getState('tempClassAsset');
-								
-								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+								var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								
 								
@@ -368,9 +368,7 @@
 								
 								//Event Listener
 								Assets.successSignal.connect(function () {
-									Display.error("My uploading is: " + oldMe.getState('tempUploading'));
 									oldMe.setState('tempUploading',false);
-									Display.error("My uploading is: " + oldMe.getState('tempUploading'));
 									Logic.getEntityByName('Editor Output').setState('text','All done yo!');
 									
 								}).once();

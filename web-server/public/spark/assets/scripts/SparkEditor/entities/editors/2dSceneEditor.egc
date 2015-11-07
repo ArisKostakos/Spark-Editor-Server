@@ -100,6 +100,9 @@
 									var isSpriter = (entityChildXml.get('extends').substr(entityChildXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
 									var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
 									
+									//Now, disable things you don't want happening on Edit.. like physicsEntity
+									childEntity.setState('physicsEntity',false);
+									
 									//add to scene
 									if (childEntity.getState('name')=="Background") //background entity //THIS IS NOT GONNA WORK ANYMORE, CAUSE SPRITE2DEDIT CHANGES THE NAME
 									{

@@ -322,6 +322,10 @@
 												Display.error("creatiinnggggg");
 												//instantiate, add to scene
 												var childEntity = Logic.gameFactory.createGameEntityByXml(entityXml);
+												
+												//Now, disable things you don't want happening on Edit.. like physicsEntity
+												childEntity.setState('physicsEntity',false);
+									
 												var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
 												scene.addChild(childEntity);
 												Display.error("created and added!!!");
