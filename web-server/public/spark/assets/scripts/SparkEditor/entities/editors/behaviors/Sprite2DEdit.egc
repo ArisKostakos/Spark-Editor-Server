@@ -812,6 +812,10 @@
 					var editScene = Logic.getEntityByName('2d Scene Editor').getState('target');
 					
 					var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
+					
+					//Now, disable things you don't want happening on Edit.. like physicsEntity
+					childEntity.setState('physicsEntity',false);
+									
 					editScene.addChild(childEntity);
 					
 					//Stupid gridlock (redo me properly, with hash probably)
