@@ -347,6 +347,11 @@
 			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Events_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/events_selected.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Chat" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/chat.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="toolbarIcon_Chat_selected" bytes='35672' forceLoadAsData='true'>editor/toolbarIcons/chat_selected.png</Asset>
+			
+			<!-- Thumbnails by componentType -->
+			<Asset type="image" subtype="2D" location="local" id="thumb_Project" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Scene" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Camera" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
 		</Module>
 	</Assets>
 	

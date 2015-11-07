@@ -54,13 +54,34 @@
 					leveleditor2d.getAction('EntityClicked').setState('entity',me);
 					leveleditor2d.startAction('EntityClicked');
 					
-					var target_asset = me.getState('target_asset');
 					
 					var acHash = Logic.getEntityByName('Project Editor').getState('BehaviorAssetsDBbyTargets');
 					
+					//Figure out class object asset (I also do it in the context call back.. store it from here so you dont do it twice)
+					
+					//Find class name
+					var xmlData = me.getState('xmlData');
+					var className = xmlData.get("extends");
+					Display.error("My Class is: " + className);
+					
+					//Now let's get the asset for that class
+					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+					var asset = ClassObjectsDBbyNameHash.get(className);
+					Display.error("My Asset.name is: " + asset.name);
+					
 					//Check hash to pick up it's classes
+					var InheritanceHashByName = Logic.getEntityByName('Project Editor').getState("InheritanceHashByName");
+					var inheritanceMap = InheritanceHashByName.get(asset.name);
+					
+					var typesFound = [];
+					for (classType in inheritanceMap.keys())
+					{
+						Display.error("FOUND TYPE!!!!: " + classType);
+						typesFound.push(classType);
+					}
+					
 					//for now, assume std.display.Image2D
-					var type = "std.display.Image2D"; //only 1 type supported for now
+					//var type = "std.display.Image2D"; //only 1 type supported for now
 					
 					
 					//Support Only 1 level of grouping for now. and all ACE MUST have exactly 1 group (no zero groups either)
@@ -78,30 +99,33 @@
 					properties.type="Properties"; //if it's clickable (no children) we need to define a type for it.. for when it gets back in the callback
 					mainList.children.push(properties);
 					
-					if (acHash.exists(type))
+					for (type in typesFound)
 					{
-						for (asset in acHash.get(type))
+						if (acHash.exists(type))
 						{
-							Display.error("FOUND AC: " + asset.name);
-							var group = getListChild(behaviors,asset.tags[1]);
-							
-							//If null, create it
-							if (group==null)
+							for (asset in acHash.get(type))
 							{
-								group = {};
-								group.name=asset.tags[1];
-								group.children = [];
-								behaviors.children.push(group);
+								Display.error("FOUND AC: " + asset.name);
+								var group = getListChild(behaviors,asset.tags[1]);
+								
+								//If null, create it
+								if (group==null)
+								{
+									group = {};
+									group.name=asset.tags[1];
+									group.children = [];
+									behaviors.children.push(group);
+								}
+								
+								//Create listObject and add it to group
+								var childAsset = {};
+								childAsset.name=asset.title;
+								childAsset.asset=asset;
+								childAsset.type="Behavior";
+								childAsset.children = [];
+								
+								group.children.push(childAsset);
 							}
-							
-							//Create listObject and add it to group
-							var childAsset = {};
-							childAsset.name=asset.title;
-							childAsset.asset=asset;
-							childAsset.type="Behavior";
-							childAsset.children = [];
-							
-							group.children.push(childAsset);
 						}
 					}
 					

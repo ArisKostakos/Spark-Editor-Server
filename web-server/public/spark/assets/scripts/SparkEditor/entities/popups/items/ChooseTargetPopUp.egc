@@ -39,13 +39,22 @@
 									{
 										var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.eventsheet.ChooseTargetThumb');
 										
+										//Figure out Thumbnail
 										var thumbUrl="NotFound";
-										if (asset.tags.length>1)
+										
+										if (asset.componentType=="Project") //maybe do this for sounds, etc..
 										{
-											var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
-											thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
-											
+											thumbUrl = "thumb_" + asset.componentType;
 										}
+										else //but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+										{
+											if (asset.tags.length>1)
+											{
+												var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+												thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+											}
+										}
+										
 										
 										newItem.setState('width',Std.string(64));
 										newItem.setState('height',Std.string(64));

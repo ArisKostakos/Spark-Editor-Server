@@ -250,13 +250,22 @@
 					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
 					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
 					
-					//Change Thumbnail
+					//Figure out Thumbnail
 					var thumbUrl="NotFound";
-					if (asset.tags.length>1)
+					
+					if (asset.componentType=="Project") //maybe do this for sounds, etc..
 					{
-						var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
-						thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+						thumbUrl = "thumb_" + asset.componentType;
 					}
+					else //but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+					{
+						if (asset.tags.length>1)
+						{
+							var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+							thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+						}
+					}
+					
 					
 					me.getState("imageObj").setState('src',thumbUrl);
 					
@@ -380,38 +389,49 @@
 					else
 						acHash = Logic.getEntityByName('Project Editor').getState('ActionAssetsDBbyTargets');
 					
+					
 					//Check hash to pick up it's classes
-					//for now, assume std.display.Image2D
-					var type = "std.display.Image2D"; //only 1 type supported for now
+					var InheritanceHashByName = Logic.getEntityByName('Project Editor').getState("InheritanceHashByName");
+					var inheritanceMap = InheritanceHashByName.get(target_asset.name);
+					
+					var typesFound = [];
+					for (classType in inheritanceMap.keys())
+					{
+						Display.error("FOUND TYPE!!!!: " + classType);
+						typesFound.push(classType);
+					}
 					
 					
 					//Support Only 1 level of grouping for now. and all ACE MUST have exactly 1 group (no zero groups either)
 					var mainList = {};
 					mainList.children = [];
 					
-					if (acHash.exists(type))
+					for (type in typesFound)
 					{
-						for (asset in acHash.get(type))
+						if (acHash.exists(type))
 						{
-							Display.error("FOUND AC: " + asset.name);
-							var group = getListChild(mainList,asset.tags[1]);
-							
-							//If null, create it
-							if (group==null)
+							for (asset in acHash.get(type))
 							{
-								group = {};
-								group.name=asset.tags[1];
-								group.children = [];
-								mainList.children.push(group);
+								Display.error("FOUND AC: " + asset.name);
+								var group = getListChild(mainList,asset.tags[1]);
+								
+								//If null, create it
+								if (group==null)
+								{
+									group = {};
+									group.name=asset.tags[1];
+									group.children = [];
+									mainList.children.push(group);
+								}
+								
+								//Create listObject and add it to group
+								var childAsset = {};
+								childAsset.name=asset.title;
+								childAsset.asset=asset;
+								childAsset.children = [];
+								
+								group.children.push(childAsset);
 							}
-							
-							//Create listObject and add it to group
-							var childAsset = {};
-							childAsset.name=asset.title;
-							childAsset.asset=asset;
-							childAsset.children = [];
-							
-							group.children.push(childAsset);
 						}
 					}
 					
