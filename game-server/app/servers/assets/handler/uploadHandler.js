@@ -220,7 +220,7 @@ function createAsset(dependancies, msg, session, cb)
         tagsFinal=[project.name];
     else
     {
-        tagsFinal = tags.split(' ');
+        tagsFinal = tags.split('&');
         tagsFinal.unshift(project.name);
     }
 
