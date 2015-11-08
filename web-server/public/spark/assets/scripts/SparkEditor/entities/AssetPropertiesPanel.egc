@@ -21,6 +21,52 @@
 			<Entities>
 				<!-- Vgroup -->
 				<Entity extends="std.display.VGroup"><_States>
+					<_State id="width"><Value>20</Value></_State>
+					<_State id="height"><Value>100%</Value></_State></_States>
+					<Form><Space><Entities>
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Delete Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>100%</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(255, 0, 0)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="text"><Value>Del</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>13px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+						<Script>
+							var asset = me.getAction('showAsset').getState('asset');
+							Comms.request("assets.uploadHandler.deleteAsset", {assetName: asset.name}, "deleteAssetPr");
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+						
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Refresh Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>100%</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(0, 100, 100)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="text"><Value>Rfr</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>13px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+						<Script>
+							//Update Asset Explorer Panel
+							Logic.getEntityByName('Asset Explorer').startAction('requestAssets');
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+				</Entities></Space></Form></Entity>
+						
+				<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
 					<_State id="width"><Value>100%</Value></_State>
 					<_State id="height"><Value>100%</Value></_State>
 					<_State id="verticalAlign"><Value>middle</Value></_State>
@@ -127,7 +173,64 @@
 						</Entity>
 				</Entities></Space></Form></Entity>
 				
-				<!-- Submit Button -->
+				<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
+					<_State id="width"><Value>100</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					</_States><Form><Space><Entities>
+					
+						<!-- Filename Input -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>AU_createFileName</Value></_State>
+								<_State id="label"><Value>Fn:</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Create Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="name"><Value>Create Button</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>100%</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(31, 147, 87)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="text"><Value>Create</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>15px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+						<Script>
+							/*
+							var updatedString = Logic.getEntityByName('Code Editor').getState('aceObject').getValue();
+							
+							var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Updating Asset...');
+							Comms.file_sendFileRequest(updatedString, {name: "updatedAsset", size: updatedString.length, user: connectedUserName} , "updatedAssetPr");
+							*/
+							Display.error("CREATE BUTTON");
+							
+							var AU_createFileName = Logic.getEntityByName('AU_createFileName').getState('value').getState('text');
+							
+							
+							//Logic.getEntityByName('Asset Uploader').setState('file',file);
+							Logic.getEntityByName('AU_filename').getState('value').setState('text',AU_createFileName);
+							Logic.getEntityByName('AU_ext').getState('value').setState('text','egc');
+							Logic.getEntityByName('AU_filesize').getState('value').setState('text','100 Bytes');
+							Logic.getEntityByName('AU_output').getState('value').setState('text','File Created!');
+							
+							
+							Logic.getEntityByName('AU_type').getState('value').setState('text','script');
+								
+							
+							Logic.getEntityByName('AU_title').getState('value').setState('text',AU_createFileName);
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+				</Entities></Space></Form></Entity>
+				
+				<!-- Update Button -->
 				<Entity extends="std.display.Button"><_States>
 					<_State id="name"><Value>Update Button</Value></_State>
 					<_State id="width"><Value>100</Value></_State>
@@ -265,6 +368,21 @@
 						{
 							Display.error('Updated Asset error!');
 							Logic.getEntityByName('AU_output').getState('value').setState('text','Error Updating Asset :(');
+						}
+					}
+					else if (Comms.getRequestData("deleteAssetPr")!=null)
+					{
+						var data = Comms.getRequestData("deleteAssetPr");
+						
+						if (data.code=="success")
+						{
+							Display.error('Delete Asset fucking success!');
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Asset Deleted Successfully!');
+						}
+						else
+						{
+							Display.error('Delete Asset error!');
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Error Deleting Asset :(');
 						}
 					}
 				</Script>

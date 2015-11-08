@@ -34,8 +34,9 @@
 					
 					//url=url.substr(1);
 					
-					//var url = "/assets/spark/script/std/core/Base.egc";
-					var url = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+					////Temp thing for Cross Domain requests during TESTING //REMOVE ME ON RELEASE
+					var url = 'http://130.211.172.86/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+					//var url = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 					
 					var xmlhttp;
 					var text;
@@ -56,6 +57,40 @@
 			</Scripts>
 			<States>
 				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>showString</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var contentStr = this.getState('contentStr');
+				
+					var ace = me.getState('aceObject');
+					
+					ace.resize();
+					ace.setReadOnly(false);
+					ace.setShowPrintMargin(false);
+
+
+					var text;
+					
+					text = contentStr;
+
+					
+					
+					
+					ace.setValue(text, -1);
+					
+					//currentScriptUrl=url;
+
+					
+					me.stopAction("showString");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>contentStr</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
 	</_Actions>

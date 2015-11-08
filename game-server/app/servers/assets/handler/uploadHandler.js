@@ -75,6 +75,34 @@ handler.rawUpload = function(msg, session, next) {
 };
 
 
+handler.deleteAsset = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //Find Asset
+    database.findOne(database.Asset, {owner: developer._id, 'tags.0': project.name, name: msg.assetName},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Remove it
+            object_found.remove();
+
+            //Handle Success
+            next(null, {code: "success"});
+        }
+    );
+
+};
+
 handler.uploadAsset = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
@@ -254,7 +282,7 @@ function createAsset(dependancies, msg, session, cb)
                             return;
                         }
 
-                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetName, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
+                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetTitle, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
 
                     //Create Asset
                     database.create(database.Asset, raw_Asset,

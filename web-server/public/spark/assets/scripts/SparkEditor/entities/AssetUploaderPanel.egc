@@ -84,13 +84,25 @@
 							</_States>
 						</Entity>
 						
-						<!-- Component Input -->
-						<Entity extends="SparkEditor.entities.LabelAndInput">
-							<_States>
-								<_State id="name"><Value>AU_component</Value></_State>
-								<_State id="label"><Value>Component:</Value></_State>
-							</_States>
-						</Entity>
+						<!-- Hgroup -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							</_States><Form><Space><Entities>
+								<!-- Component Input -->
+								<Entity extends="SparkEditor.entities.LabelAndInput">
+									<_States>
+										<_State id="name"><Value>AU_component</Value></_State>
+										<_State id="label"><Value>Comp:</Value></_State>
+									</_States>
+								</Entity>
+								<!-- Title Input -->
+								<Entity extends="SparkEditor.entities.LabelAndInput">
+									<_States>
+										<_State id="name"><Value>AU_title</Value></_State>
+										<_State id="label"><Value>Title:</Value></_State>
+									</_States>
+								</Entity>
+						</Entities></Space></Form></Entity>
 						
 						<!-- Tags Input -->
 						<Entity extends="SparkEditor.entities.LabelAndInput">
@@ -101,39 +113,76 @@
 						</Entity>
 				</Entities></Space></Form></Entity>
 				
-				<!-- Submit Button -->
-				<Entity extends="std.display.Button"><_States>
-					<_State id="name"><Value>Submit Button</Value></_State>
+				
+					<!-- Vgroup -->
+				<Entity extends="std.display.VGroup"><_States>
 					<_State id="width"><Value>8%</Value></_State>
 					<_State id="height"><Value>100%</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
-					<_State id="border"><Value>0px</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="textVerticalAlign"><Value>middle</Value></_State>
-					<_State id="text"><Value>Submit</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>15px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-				</_States>
-				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
-				<Script>
+					</_States><Form><Space><Entities>
 					
-					var file = Logic.getEntityByName('Asset Uploader').getState('file');
+					<!-- Submit Button -->
+					<Entity extends="std.display.Button"><_States>
+						<_State id="name"><Value>Submit Button</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="textVerticalAlign"><Value>middle</Value></_State>
+						<_State id="text"><Value>Submit</Value></_State>
+						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+						<_State id="fontSize"><Value>15px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+					</_States>
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+					<Script>
+						
+						var file = Logic.getEntityByName('Asset Uploader').getState('file');
 
-					if (file==null)
-					{
-						Logic.getEntityByName('AU_output').getState('value').setState('text','No File Selected');
-					}
-					else
-					{
+						if (file==null)
+						{
+							Logic.getEntityByName('AU_output').getState('value').setState('text','No File Selected');
+						}
+						else
+						{
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Uploading 0%');
+							
+							var username = Logic.getEntityByName('Spark Editor').getState('username');
+
+							Comms.file_sendFileRequest(file, {name: file.name, size: file.size, user: username} , file.name);
+						}
+					</Script>
+					</Scripts></Trigger></_Triggers></Entity>
+					
+					<!-- Submit Create Button -->
+					<Entity extends="std.display.Button"><_States>
+						<_State id="name"><Value>Submit Create Button</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(31, 147, 87)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="textVerticalAlign"><Value>middle</Value></_State>
+						<_State id="text"><Value>Submit Create</Value></_State>
+						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+						<_State id="fontSize"><Value>15px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+					</_States>
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+					<Script>
+						var uploadStr = Logic.getEntityByName('Code Editor').getState('aceObject').getValue();
+						
 						Logic.getEntityByName('AU_output').getState('value').setState('text','Uploading 0%');
+						var AU_createFileName = Logic.getEntityByName('AU_createFileName').getState('value').getState('text') + '.egc';
 						
 						var username = Logic.getEntityByName('Spark Editor').getState('username');
-
-						Comms.file_sendFileRequest(file, {name: file.name, size: file.size, user: username} , file.name);
-					}
-				</Script>
-				</Scripts></Trigger></_Triggers></Entity>
+						
+						Comms.file_sendFileRequest(uploadStr, {name: AU_createFileName, size: uploadStr.length, user: username} , "SubmitCreate");
+						
+					</Script>
+					</Scripts></Trigger></_Triggers></Entity>
+				</Entities></Space></Form></Entity>
+				
 				
 				<!-- Trigger Button -->
 				<Entity extends="std.display.Button"><_States>
@@ -211,6 +260,9 @@
 									Logic.getEntityByName('AU_type').getState('value').setState('text','script');
 								else if (fileExtension=='png' || fileExtension=='jpg')
 									Logic.getEntityByName('AU_type').getState('value').setState('text','image');
+									
+								
+								Logic.getEntityByName('AU_title').getState('value').setState('text',fileName);
 							}
 						}
 						</Script>
@@ -226,7 +278,46 @@
 			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
-				if (me.getState('file')!=null)
+				if (Comms.file_getSendFileRequestData("SubmitCreate")!=null)
+				{
+					var data = Comms.file_getSendFileRequestData("SubmitCreate");
+						
+					Logic.getEntityByName('AU_output').getState('value').setState('text','Uploading ' + data.progressPercent+'%');
+					
+					if (data.progress==1)
+					{
+						Logic.getEntityByName('AU_output').getState('value').setState('text','File Uploaded!');
+						
+						var uploadStr = Logic.getEntityByName('Code Editor').getState('aceObject').getValue();
+						var AU_createFileName = Logic.getEntityByName('AU_createFileName').getState('value').getState('text') + '.egc';
+						
+						
+						//fileName
+						var fileName = AU_createFileName;
+						
+						//fileSize
+						var fileSize = uploadStr.length;
+						
+						//assetTitle.. 
+						var assetTitle=Logic.getEntityByName('AU_title').getState('value').getState('text');
+						
+						//Dir
+						var dir = Logic.getEntityByName('AU_dir').getState('value').getState('text');
+						
+						//type
+						var type = Logic.getEntityByName('AU_type').getState('value').getState('text');
+						
+						//componentType
+						var componentType = Logic.getEntityByName('AU_component').getState('value').getState('text');
+						
+						//tags
+						var tags = Logic.getEntityByName('AU_tags').getState('value').getState('text');
+						
+						Comms.request("assets.uploadHandler.rawUpload", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: dir, type: type, componentType: componentType, tags: tags}, "SubmitCreate");
+					}
+				}
+				else if (me.getState('file')!=null)
+				{
 					if (Comms.file_getSendFileRequestData(me.getState('file').name)!=null)
 					{
 						var data = Comms.file_getSendFileRequestData(me.getState('file').name);
@@ -244,7 +335,7 @@
 							var fileSize = me.getState('file').size;
 							
 							//assetTitle.. not being used currently
-							var assetTitle="";
+							var assetTitle=Logic.getEntityByName('AU_title').getState('value').getState('text');
 							
 							//Dir
 							var dir = Logic.getEntityByName('AU_dir').getState('value').getState('text');
@@ -261,6 +352,7 @@
 							Comms.request("assets.uploadHandler.rawUpload", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: dir, type: type, componentType: componentType, tags: tags}, me.getState('file').name);
 						}
 					}
+				}
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -270,10 +362,9 @@
 			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
-				if (me.getState('file')!=null)
-					if (Comms.getRequestData(me.getState('file').name)!=null)
+					if (Comms.getRequestData('SubmitCreate')!=null)
 					{
-						var data = Comms.getRequestData(me.getState('file').name);
+						var data = Comms.getRequestData('SubmitCreate');
 						
 						if (data.code=="success")
 						{
@@ -302,6 +393,42 @@
 						else
 						{
 							Logic.getEntityByName('AU_output').getState('value').setState('text','Error Creating Asset.');
+						}
+					}
+					else if (me.getState('file')!=null)
+					{
+						if (Comms.getRequestData(me.getState('file').name)!=null)
+						{
+							var data = Comms.getRequestData(me.getState('file').name);
+							
+							if (data.code=="success")
+							{
+								Logic.getEntityByName('AU_output').getState('value').setState('text','Asset Created: ' + data.assetName);
+							
+								//Deselect File
+								Logic.getEntityByName('Asset Uploader').setState('file',null);
+								
+								//Clear Panel
+								Logic.getEntityByName('AU_filename').getState('value').setState('text','');
+								Logic.getEntityByName('AU_ext').getState('value').setState('text','');
+								Logic.getEntityByName('AU_filesize').getState('value').setState('text','');
+								Logic.getEntityByName('AU_type').getState('value').setState('text','');
+								
+								//Update Asset Explorer Panel
+								Logic.getEntityByName('Asset Explorer').startAction('requestAssets');
+							}
+							else if (data.code=="dMissing")
+							{
+								Logic.getEntityByName('AU_output').getState('value').setState('text','Missing: ' + data.dependancyName);
+							}
+							else if (data.code=="exists")
+							{
+								Logic.getEntityByName('AU_output').getState('value').setState('text','Already exists: ' + data.assetName);
+							}
+							else
+							{
+								Logic.getEntityByName('AU_output').getState('value').setState('text','Error Creating Asset.');
+							}
 						}
 					}
 				</Script>

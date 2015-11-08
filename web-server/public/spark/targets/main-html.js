@@ -14031,6 +14031,8 @@ tools_spark_framework_Assets.initiateBatch = function() {
 tools_spark_framework_Assets.addFile = function(p_url,p_name,p_forceLoadAsData) {
 	if(p_forceLoadAsData == null) p_forceLoadAsData = false;
 	if(p_name == null) p_name = p_url;
+	if(p_url.indexOf("/assets") != -1) p_url = "http://130.211.172.86" + p_url;
+	tools_spark_framework_Console.error("LOADER: " + p_url);
 	tools_spark_framework_Assets._loader.addFile(p_name,p_url,p_forceLoadAsData);
 };
 tools_spark_framework_Assets.loadBatch = function() {
@@ -15444,7 +15446,7 @@ tools_spark_framework_dom2_$5D_DomEntity2_$5D.prototype = $extend(tools_spark_fr
 				var this1 = tools_spark_framework_Project.modules.get("DoNotLoad").assets;
 				l_asset = this1.get(p_src);
 				l_instance.src = tools_spark_framework_Project.getPath(l_asset.location,l_asset.type) + l_asset.url;
-			} else l_instance.src = "../" + p_src;
+			} else l_instance.src = "http://130.211.172.86" + p_src;
 		}
 	}
 	,_updateWidth: function(p_width,p_view2_5D) {
