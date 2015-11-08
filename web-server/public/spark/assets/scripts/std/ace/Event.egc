@@ -12,6 +12,7 @@
 		<State><Id>actionExecuted</Id><Type>Integer</Type><Value>0</Value></State>
 	
 		<State><Id>picked</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>triggeringEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>

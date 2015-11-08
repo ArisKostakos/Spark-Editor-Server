@@ -12,6 +12,8 @@
 				pickedObjects.set(myTarget,new Array());
 			
 			pickedObjects.get(myTarget).push(myPickedObject);
+			
+			me.setState('triggeringEntity',myPickedObject);
 				
 			me.startAction('Trigger');
 		</Script>
