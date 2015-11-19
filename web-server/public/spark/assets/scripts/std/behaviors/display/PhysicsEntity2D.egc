@@ -31,6 +31,26 @@
 			<Type>Boolean</Type>
 			<Value>true</Value>
 		</State>
+		<State><!--export-->
+			<Id>applyImpulseX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State><!--export-->
+			<Id>applyImpulseY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State><!--export-->
+			<Id>velocityX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State><!--export-->
+			<Id>velocityY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
 		<State><!--import (physics engine feedback)-->
 			<Id>physicsBody</Id>
 			<Type>Dynamic</Type>

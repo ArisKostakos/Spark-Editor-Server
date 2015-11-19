@@ -13,8 +13,6 @@
 		
 		<State><Id>eventsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>EventsCount</Id><Type>Integer</Type><Value>0</Value></State>
-	
-		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<Form>
@@ -69,7 +67,48 @@
 	</Form>
 	
 	<_Actions>
-		
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('eventsContainer')!=null)
+					{
+						me.stopAction('Import Xml');
+						
+						var importXml = this.getState('importXml');
+						
+						var eventsContainer = me.getState('eventsContainer');
+						var EventsCount = me.getState('EventsCount');
+						
+						//for each [entity] in [form.space.entities]
+						var l_entitiesNode = Logic.xml_getElements(importXml,["Form","Space","Entities"]);
+						var entities = l_entitiesNode.elementsNamed('Entity');
+						while (entities.hasNext())
+						{
+							var entityChildXml = entities.next();
+							
+							EventsCount += 1;
+							//create an eventedit
+							var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');
+							eventEdit.setState('EventId',EventsCount);
+							
+							//add it as child to eventWindow
+							eventsContainer.addChild(eventEdit);
+							eventEdit.getAction('Import Xml').setState('importXml',entityChildXml);
+							eventEdit.startAction('Import Xml');
+							
+						}
+						
+						me.setState('EventsCount',EventsCount);
+						//Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 	</_Actions>
 	
 	<_Triggers>

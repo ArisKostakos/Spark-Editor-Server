@@ -12,6 +12,10 @@
 		<_State id="opacity">
 			<Value>0.3</Value>
 		</_State>
+			
+		<_State id="physicsEntity">
+			<Value>false</Value>
+		</_State>
 	</_States>
 	
 	<_Form>

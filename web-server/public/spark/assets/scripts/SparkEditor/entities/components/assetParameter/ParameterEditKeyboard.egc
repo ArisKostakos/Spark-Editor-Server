@@ -19,10 +19,6 @@
 					<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
 					<_State id="preventDefaultEvents"><Value>true</Value></_State>
 					</_States>
-					<_Actions><_Action id="Constructor"><_Scripts><Script>
-						//me.setState("text","Click to choose");
-					</Script></_Scripts></_Action></_Actions>
-				
 					<_Triggers>
 						<Trigger>
 							<Event>MouseLeftClick</Event>

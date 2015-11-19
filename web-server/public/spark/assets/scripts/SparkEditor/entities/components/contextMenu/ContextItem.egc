@@ -9,11 +9,26 @@
 		<State><Id>posXOffset</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>posYOffset</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>ContextListObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>MouseOverObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Form>
 		<_Space>
 			<_Entities>
+				<!-- MouseOver Visual -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>5</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(147, 194, 43)</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('MouseOverObject',me);
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+				
 				<!-- Thumb Image -->
 				<Entity extends="std.display.Image"><_States>
 					<_State id="width"><Value>16</Value></_State>
@@ -49,7 +64,7 @@
 			<Event>MouseEntered</Event>
 			<Scripts>
 				<Script>
-					me.setState('backgroundColor','rgb(43,132,125)');
+					me.setState('backgroundColor','rgb(66,83,102)');
 					if (me.getState('ContextListObject')!=null)
 						me.getState('ContextListObject').setState('display','inline');
 					

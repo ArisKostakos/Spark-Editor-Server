@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.display.Div">
 	<_States>
-		<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(52, 69, 89)</Value></_State>
+		<_State id="border"><Value>1px solid rgb(41, 57, 75)</Value></_State>
 		<State><Id>targetLayerName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>argA</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>cb_caller</Id><Type>Dynamic</Type><Value>null</Value></State>

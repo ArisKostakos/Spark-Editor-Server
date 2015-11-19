@@ -2,14 +2,15 @@
 <Entity>
 	<_States>
 		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
 		<_State id="name"><Value>Sprite 2D Edit</Value></_State> <!--Nesseccery to change the name of entities on the editor, so evensheets don't control them with their picker-->
 		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
-		<State><Id>xmlData</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>spriteGridLock</Id><Type>Integer</Type><Value>8</Value></State> <!--64-->
-		<State><Id>tempClassAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ClassAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>tempUploading</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Form>
@@ -57,16 +58,8 @@
 					
 					var acHash = Logic.getEntityByName('Project Editor').getState('BehaviorAssetsDBbyTargets');
 					
-					//Figure out class object asset (I also do it in the context call back.. store it from here so you dont do it twice)
-					
-					//Find class name
-					var xmlData = me.getState('xmlData');
-					var className = xmlData.get("extends");
-					Display.error("My Class is: " + className);
-					
-					//Now let's get the asset for that class
-					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
-					var asset = ClassObjectsDBbyNameHash.get(className);
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
 					Display.error("My Asset.name is: " + asset.name);
 					
 					//Check hash to pick up it's classes
@@ -278,7 +271,6 @@
 				<Script>
 					if (me.getState('selected'))
 					{
-						me.forceAction("UpdatePosition");
 						me.stopAction("Move");
 					}
 				</Script>
@@ -292,7 +284,6 @@
 				<Script>
 					if (me.getState('selected'))
 					{
-						me.forceAction("UpdatePosition");
 						me.stopAction("Move");
 					}
 				</Script>
@@ -306,7 +297,6 @@
 				<Script>
 					if (me.getState('selected'))
 					{
-						me.forceAction("UpdatePosition");
 						me.stopAction("Move");
 					}
 				</Script>
@@ -320,7 +310,6 @@
 				<Script>
 					if (me.getState('selected'))
 					{
-						me.forceAction("UpdatePosition");
 						me.stopAction("Move");
 					}
 				</Script>
@@ -345,7 +334,7 @@
 							{
 								Display.error("FILE: " + 'File Uploaded!');
 								
-								var asset = me.getState('tempClassAsset');
+								var asset = me.getState('ClassAsset');
 								Display.error("FILE: " + asset.name);
 								//incomingFileName
 								var incomingFileName = "updatedClassAsset";
@@ -379,7 +368,7 @@
 								//Initiate Load
 								Assets.initiateBatch();
 								
-								var asset = me.getState('tempClassAsset');
+								var asset = me.getState('ClassAsset');
 								var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 								var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 								var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
@@ -413,6 +402,110 @@
 	</_Triggers>
 	
 	<_Actions>
+		<!-- Export Xml -->
+		<Action>
+			<Id>Export Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced			
+					
+					//Create exportXml
+					var exportXml = Logic.xml_createElementAttr('Entity','extends', me.getState('ClassAsset').name );
+					
+					//Add States
+					Logic.xml_entity_addMState(exportXml, {id:"spaceX", value: Std.string(me.getState('spaceX')) },true);
+					Logic.xml_entity_addMState(exportXml, {id:"spaceY", value: Std.string(me.getState('spaceY')) },true);
+					
+					if (me.getState('scaleX')!=1)
+						Logic.xml_entity_addMState(exportXml, {id:"scaleX", value: Std.string(me.getState('scaleX')) },true);
+					if (me.getState('scaleY')!=1)
+						Logic.xml_entity_addMState(exportXml, {id:"scaleY", value: Std.string(me.getState('scaleY')) },true);
+					
+					//Store
+					me.setState('xmlExport',exportXml);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Import Xml -->
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					Display.error("SOSOSO HERE'S ONE");
+					
+					var importXml = this.getState('importXml');
+					
+					//Now, disable things you don't want happening on Edit.. like physicsEntity
+					//me.setState('physicsEntity',false); //we do this on the Sprite2DEdit.egc
+					
+					//Find class name
+					var className = importXml.get("extends");
+					
+					//Now let's get the asset for that class
+					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+					var asset = ClassObjectsDBbyNameHash.get(className);
+					
+					//Store it
+					me.setState('ClassAsset',asset); 
+					/*
+					//instantiate
+					var isSpriter = (entityChildXml.get('extends').substr(entityChildXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
+					
+					
+					//add to scene
+					if (childEntity.getState('name')=="Background") //background entity //THIS IS NOT GONNA WORK ANYMORE, CAUSE SPRITE2DEDIT CHANGES THE NAME
+					{
+						//add to SceneBoundsDisplay edit object
+						Logic.getEntityByName('SceneBoundsDisplay').addChild(childEntity);
+						
+						//Store the reference
+						editScene.setState('backgroundEntity',childEntity);
+						
+						//Untouchable
+						childEntity.setState('touchable',false);
+						
+						//Create a couple more backgrounds to fill the white bounds rect
+						var backgroundWidth = Logic.reflectField(Assets.getTexture(childEntity.gameForm.getState('ImageUrl')), 'width')-2; //-2 is to prevent some white gaps betweeen backgrounds
+						
+						var multipleBackgroundsCount = Math.ceil(editScene.getState('boundsWidth')/backgroundWidth);
+						var backgroundsCreated = 1;
+						
+						//Display.error("we need " + multipleBackgroundsCount + " Backgrounds!");
+						
+						while (multipleBackgroundsCount>backgroundsCreated)
+						{
+							var extraBackground = Logic.gameFactory.createGameEntityByXml(entityChildXml);
+							extraBackground.setState('spaceX',extraBackground.getState('spaceX')+backgroundWidth*backgroundsCreated);
+							Logic.getEntityByName('SceneBoundsDisplay').addChild(extraBackground);
+							
+							//Untouchable
+							extraBackground.setState('touchable',false);
+							
+							backgroundsCreated+=1;
+							//Display.error("Created a background!");
+						}
+					}
+					else //normal entity
+					{
+						//add to scene
+						editScene.addChild(childEntity);
+					}
+					
+					//Grid Lock
+					if (isSpriter) childEntity.setState('spriteGridLock',8); //1
+					*/
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
 		<Action>
 			<Id>Callback: Entity Context Menu</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -431,14 +524,7 @@
 						//Temp way to figure out if this context item was a behavior
 						if (cb_Arg1.type=="Behavior")
 						{
-							//Find class name
-							var xmlData = me.getState('xmlData');
-							var className = xmlData.get("extends");
-							//Display.error("My Class is: " + className);
-							
-							//Now let's get the asset for that class
-							var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
-							var asset = ClassObjectsDBbyNameHash.get(className);
+							var asset = me.getState('ClassAsset');
 							
 							//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
 							
@@ -446,19 +532,18 @@
 							var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 							var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
 							
-							
 							//Add the extend node to asset xml
 							Logic.xml_entity_addExtend(asset_xml, {ext: cb_Arg1.asset.name});
-							Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+							//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
 							
 							//Get me ready to upload stuff
-							me.setState('tempClassAsset',asset); //Store it for upload trigger
 							me.setState('tempUploading',true);
 							
 							//Upload it
 							var finalString = Logic.xmlToString(asset_xml);
 							var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 							Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+							
 							Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
 						}
 					}
@@ -474,72 +559,6 @@
 			</States>
 		</Action>
 		
-		<!-- AddBehavior -->
-		<Action>
-			<Id>AddBehavior</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					me.stopAction("AddBehavior");
-					
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
-				
-					var behaviorXml = me.getAction('AddBehavior').getState('behaviorXml');
-					var asset = me.getAction('AddBehavior').getState('asset');
-				
-					Display.error("Adding Behavior to: " + me.getState('name') + ' called: ' + behaviorXml);
-					
-					var pureXml = me.getState('xmlData').firstElement();
-					
-					//	if no [extends] in its xml, create it
-					var childExtendsXml = firstElementNamed(pureXml,'Extends');
-					if (childExtendsXml==null)
-					{
-						childExtendsXml = Xml.createElement('Extends');
-						pureXml.insertChild(childExtendsXml,0);
-					}
-					
-					
-					var extendsXmlString = '&#060;Entity extends="' + asset.name + '">&#060;_States>';
-					
-					var states = firstElementNamed(behaviorXml,'_States');
-					
-					for (state in states.elementsNamed('State'))
-					{
-						var id = firstElementNamed(state,'Id');
-						var value = firstElementNamed(state,'Value');
-						
-						extendsXmlString+='&#060;_State id="' + id.firstChild().toString() + '">&#060;Value>' + value.firstChild().toString() + '&#060;/Value>&#060;/_State>';
-					}
-					extendsXmlString+='&#060;/_States>&#060;/Entity>';
-					
-					//  add [behavior entity] in extends
-					var physicsEntityXml = Xml.parse(extendsXmlString).firstElement();
-					childExtendsXml.addChild(physicsEntityXml);
-					
-					Display.error("Adding Behavior to: " + pureXml);
-					
-					//set thing to update
-					//var propertiesWindow = Logic.getEntityByName('Properties Window');
-					//propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
-					//propertiesWindow.startAction('Update');
-				</Script>
-			</Scripts>
-			<_States>
-				<State><Id>behaviorXml</Id><Type>Dynamic</Type><Value>null</Value></State>
-				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
-			</_States>
-		</Action>
 		
 		<!-- Select -->
 		<Action>
@@ -617,8 +636,6 @@
 					}
 					else
 					{
-						me.forceAction("UpdatePosition");
-						
 						me.stopAction("Drag");
 					}
 				</Script>
@@ -652,83 +669,6 @@
 			</States>
 		</Action>
 		
-		<Action>
-			<Id>UpdatePosition</Id>
-			<Concurrency>Persistent</Concurrency> <!--Forced-->
-			<Scripts>
-				<Script>
-					//We will need this function...
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
-					
-					//Save changes to xmlData
-					var xmlData = me.getState("xmlData");
-					
-					//adjust spaceX and spaceY
-					var states = firstElementNamed(xmlData,'_States');
-					
-					for (state in states.elementsNamed('_State'))
-					{
-						if (state.get('id')=='spaceX')
-						{
-							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceX'));
-						}
-						else if (state.get('id')=='spaceY')
-						{
-							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('spaceY'));
-						}
-					}
-				</Script>
-			</Scripts>
-		</Action>
-		
-		<Action>
-			<Id>UpdateScale</Id>
-			<Concurrency>Persistent</Concurrency> <!--Forced-->
-			<Scripts>
-				<Script>
-					//We will need this function...
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
-					
-					//Save changes to xmlData
-					var xmlData = me.getState("xmlData");
-					
-					//adjust spaceX and spaceY
-					var states = firstElementNamed(xmlData,'_States');
-					
-					for (state in states.elementsNamed('_State'))
-					{
-						if (state.get('id')=='scaleX')
-						{
-							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('scaleX'));
-						}
-						else if (state.get('id')=='scaleY')
-						{
-							firstElementNamed(state,'Value').firstChild().nodeValue = Std.string(me.getState('scaleY'));
-						}
-					}
-				</Script>
-			</Scripts>
-		</Action>	
 		
 		<!-- Clone -->
 		<Action>
@@ -751,6 +691,9 @@
 					
 					me.stopAction("Clone");
 
+					//Ok this should be easy to do but ONCE we finish Export Xml for Sprite2DEdit..
+					return;
+					
 					var dir = me.getAction('Clone').getState('dir');
 					
 					var entityChildXml = Xml.parse(Logic.xmlToString(me.getState('xmlData'))).firstElement();
@@ -838,8 +781,8 @@
 					var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
 					
 					//Now, disable things you don't want happening on Edit.. like physicsEntity
-					childEntity.setState('physicsEntity',false);
-									
+					//childEntity.setState('physicsEntity',false); //we do this on the Sprite2DEdit.egc
+					
 					editScene.addChild(childEntity);
 					
 					//Stupid gridlock (redo me properly, with hash probably)

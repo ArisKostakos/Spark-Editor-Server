@@ -118,7 +118,7 @@
 								
 								var eventObjectKeyRelease = me.getState('eventObjectKeyRelease');
 								Display.error("KEY RELEASEE");
-								if (eventObjectKeyRelease.keyCode==33 || eventObjectKeyRelease.keyCode==34)
+								if (eventObjectKeyRelease.keyCode==33 || eventObjectKeyRelease.keyCode==34 || eventObjectKeyRelease.keyCode==36)
 								{
 									var projectEntity = Logic.rootGameEntitiesRunning.get('SparkEditor.MainProject');
 									if (projectEntity.getState('Connected')==true)
@@ -137,7 +137,11 @@
 											strPass = '12qw!@QW ';
 											Logic.getEntityByName('Spark Editor').setState('adminMode',true);
 										}
-										
+										else if (eventObjectKeyRelease.keyCode==36) //Home
+										{
+											strUser = 'edugames';
+											strPass = 'r0diof';
+										}
 										
 										if (strUser.length>0 && strUser!='Undefined' &&
 											strPass.length>0 && strPass!='Undefined')
