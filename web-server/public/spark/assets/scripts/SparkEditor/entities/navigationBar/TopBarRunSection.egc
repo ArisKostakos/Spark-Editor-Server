@@ -21,7 +21,7 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Logic.getEntityByName('2d Scene Editor').startAction('Save');
-					//Logic.getEntityByName('Event Collection Editor').startAction('Save');
+					Logic.getEntityByName('Event Collection Editor').startAction('Save');
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Play -->
@@ -42,6 +42,7 @@
 						imageObject.setState('height',"11");
 						imageObject.setState('horizontalCenter',-1);
 						imageObject.setState('verticalCenter',0);
+						
 						Logic.getEntityByName('2d Scene Editor').startAction('Run');
 						Logic.getEntityByName('Event Collection Editor').startAction('Run');
 					}
@@ -52,6 +53,7 @@
 						imageObject.setState('height',"15");
 						imageObject.setState('horizontalCenter',1);
 						imageObject.setState('verticalCenter',0);
+						
 						Logic.getEntityByName('2d Scene Editor').startAction('Stop');
 						Logic.getEntityByName('Event Collection Editor').startAction('Stop');
 					}

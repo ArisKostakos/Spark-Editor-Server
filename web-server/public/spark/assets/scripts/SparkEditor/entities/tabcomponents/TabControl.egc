@@ -48,18 +48,24 @@
 					if (activeWindow!=null)
 					{
 						activeWindow.setState('display','none');
-						me.getState('container').removeChild(activeWindow);
+						activeWindow.setState('width','0');
+						activeWindow.setState('height','0');
+						//me.getState('container').removeChild(activeWindow);
+						//Display.error('Removing: ' + activeWindow.getState('name'));
 					}
 				
 					//really crappy..
-					var window = Logic.getEntityByName(windowName + ' Window');
-					if (window!=null)
+					var l_window = Logic.getEntityByName(windowName + ' Window');
+					if (l_window!=null)
 					{
-						window.setState('display','inline');
-						me.getState('container').addChild(window);
+						l_window.setState('display','inline');
+						l_window.setState('width','100%');
+						l_window.setState('height','100%');
+						//me.getState('container').addChild(l_window);
+						//Display.error('Adding: ' + l_window.getState('name'));
 					}
 					
-					me.setState('activeWindow',window);
+					me.setState('activeWindow',l_window);
 					
 					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
 				</Script>

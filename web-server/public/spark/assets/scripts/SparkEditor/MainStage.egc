@@ -38,9 +38,9 @@
 				</Entity>
 				<!--Full Screen View-->
 				<Entity extends="SparkEditor.views.FullScreenView"><_States><_State id="parent"><Value>Main</Value></_State></_States></Entity>
-				<Entity extends="SparkEditor.views.PopUpLayer1View"><_States><_State id="parent"><Value>Main</Value></_State></_States></Entity>
-				<Entity extends="SparkEditor.views.PopUpLayer2View"><_States><_State id="parent"><Value>Main</Value></_State></_States></Entity>
 				<Entity extends="SparkEditor.views.PopUpLayer3View"><_States><_State id="parent"><Value>Main</Value></_State></_States></Entity>
+				<Entity extends="SparkEditor.views.PopUpLayer2View"><_States><_State id="parent"><Value>Main</Value></_State></_States></Entity>
+				<Entity extends="SparkEditor.views.PopUpLayer1View"><_States><_State id="parent"><Value>Main</Value></_State></_States></Entity>
 				
 				
 				<!-- StageArea: Main_Vgroup -->

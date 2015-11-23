@@ -39,8 +39,10 @@
 						</_States>
 						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 						<Script>
-							var asset = me.getAction('showAsset').getState('asset');
-							Comms.request("assets.uploadHandler.deleteAsset", {assetName: asset.name}, "deleteAssetPr");
+							//AP_assetname
+							var assetName = Logic.getEntityByName('AP_assetname').getState('value').getState('text');
+					
+							Comms.request("assets.uploadHandler.deleteAsset", {assetName: assetName}, "deleteAssetPr");
 						</Script>
 						</Scripts></Trigger></_Triggers></Entity>
 						
@@ -161,6 +163,7 @@
 							<_States>
 								<_State id="name"><Value>AP_tags</Value></_State>
 								<_State id="label"><Value>Tags:</Value></_State>
+								<_State id="height"><Value>50</Value></_State>
 							</_States>
 						</Entity>
 						
@@ -278,7 +281,7 @@
 					Logic.getEntityByName('AP_dir').getState('value').setState('text',asset.dir);
 					
 					//AP_filename
-					Logic.getEntityByName('AP_filename').getState('value').setState('text',asset.fileName);
+					Logic.getEntityByName('AP_filename').getState('value').setState('text',asset.fileName + ' / ' + asset.title);
 					
 					//AP_ext
 					Logic.getEntityByName('AP_ext').getState('value').setState('text',asset.fileExtension);

@@ -100,8 +100,61 @@ handler.deleteAsset = function(msg, session, next) {
             next(null, {code: "success"});
         }
     );
-
 };
+
+handler.deleteAssets = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+
+    deleteAssetsById( msg.assetIds, 0, function (err, data) {
+            if (err) {
+                next(null, data);
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success"});
+        }
+    );
+};
+
+function deleteAssetsById(assetIds, index, cb)
+{
+    if (index<assetIds.length)
+    {
+        database.findOne(database.Asset, {_id: assetIds[index]},
+            function (err, object_found) {
+                //Handle Error
+                if (err) {
+                    cb(err, {code: "error"});
+                    return;
+                }
+
+                //Handle Success
+                if (object_found)
+                {
+                    //Remove it
+                    object_found.remove();
+
+                    deleteAssetsById(assetIds, index+1, cb);
+                }
+                else
+                {
+                    //dependancy not found. exiting...
+                    cb("dMissing", {code: "dMissing"});
+                }
+            }
+        );
+    }
+    else
+    {
+        //Handle Success
+        cb(null, {code: "success"});
+    }
+}
+
+
 
 handler.uploadAsset = function(msg, session, next) {
     var self = this;

@@ -5913,6 +5913,13 @@ haxe_ds_ObjectMap.prototype = {
 	,exists: function(key) {
 		return this.h.__keys__[haxe_ds_ObjectMap.getId(key)] != null;
 	}
+	,remove: function(key) {
+		var id = haxe_ds_ObjectMap.getId(key);
+		if(this.h.__keys__[id] == null) return false;
+		delete(this.h[id]);
+		delete(this.h.__keys__[id]);
+		return true;
+	}
 	,keys: function() {
 		var a = [];
 		for( var key in this.h.__keys__ ) {
@@ -8761,7 +8768,6 @@ $hxClasses["nape.Config"] = nape_Config;
 nape_Config.__name__ = true;
 var nape_callbacks_Callback = function() {
 	this.zpp_inner = null;
-	if(!zpp_$nape_callbacks_ZPP_$Callback.internal) throw new js__$Boot_HaxeError("Error: Callback cannot be instantiated derp!");
 };
 $hxClasses["nape.callbacks.Callback"] = nape_callbacks_Callback;
 nape_callbacks_Callback.__name__ = true;
@@ -8797,7 +8803,6 @@ nape_callbacks_BodyCallback.prototype = $extend(nape_callbacks_Callback.prototyp
 });
 var nape_callbacks_Listener = function() {
 	this.zpp_inner = null;
-	if(!zpp_$nape_callbacks_ZPP_$Listener.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate Listener derp!");
 };
 $hxClasses["nape.callbacks.Listener"] = nape_callbacks_Listener;
 nape_callbacks_Listener.__name__ = true;
@@ -8846,7 +8851,6 @@ nape_callbacks_BodyListener.prototype = $extend(nape_callbacks_Listener.prototyp
 	,__properties__: {get_options:"get_options"}
 });
 var nape_callbacks_CbEvent = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "CbEvent" + " derp!");
 };
 $hxClasses["nape.callbacks.CbEvent"] = nape_callbacks_CbEvent;
 nape_callbacks_CbEvent.__name__ = true;
@@ -8948,7 +8952,6 @@ var nape_callbacks_CbTypeIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$CbTypeList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "CbType" + "Iterator derp!");
 };
 $hxClasses["nape.callbacks.CbTypeIterator"] = nape_callbacks_CbTypeIterator;
 nape_callbacks_CbTypeIterator.__name__ = true;
@@ -9013,7 +9016,6 @@ nape_callbacks_CbTypeList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -9046,7 +9048,6 @@ nape_callbacks_CbTypeList.prototype = {
 		return this.zpp_inner.at_ite.elem().outer;
 	}
 	,push: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "CbType" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -9062,7 +9063,6 @@ nape_callbacks_CbTypeList.prototype = {
 		return cont;
 	}
 	,unshift: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "CbType" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -9165,13 +9165,10 @@ nape_callbacks_InteractionCallback.prototype = $extend(nape_callbacks_Callback.p
 var nape_callbacks_InteractionListener = function(event,interactionType,options1,options2,handler,precedence) {
 	if(precedence == null) precedence = 0;
 	this.zpp_inner_zn = null;
-	zpp_$nape_callbacks_ZPP_$Listener.internal = true;
 	nape_callbacks_Listener.call(this);
-	zpp_$nape_callbacks_ZPP_$Listener.internal = false;
-	if(handler == null) throw new js__$Boot_HaxeError("Error: InteractionListener::handler cannot be null");
-	if(event == null) throw new js__$Boot_HaxeError("Error: CbEvent cannot be null for InteractionListener");
 	var xevent = -1;
-	if(event == nape_callbacks_CbEvent.get_BEGIN()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_BEGIN; else if(event == nape_callbacks_CbEvent.get_END()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_END; else if(event == nape_callbacks_CbEvent.get_ONGOING()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_ONGOING; else throw new js__$Boot_HaxeError("Error: CbEvent '" + event.toString() + "' is not a valid event type for InteractionListener");
+	if(event == nape_callbacks_CbEvent.get_BEGIN()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_BEGIN; else if(event == nape_callbacks_CbEvent.get_END()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_END; else if(event == nape_callbacks_CbEvent.get_ONGOING()) xevent = zpp_$nape_util_ZPP_$Flags.id_CbEvent_ONGOING; else {
+	}
 	this.zpp_inner_zn = new zpp_$nape_callbacks_ZPP_$InteractionListener(zpp_$nape_callbacks_ZPP_$OptionType.argument(options1),zpp_$nape_callbacks_ZPP_$OptionType.argument(options2),xevent,zpp_$nape_util_ZPP_$Flags.id_ListenerType_INTERACTION);
 	this.zpp_inner = this.zpp_inner_zn;
 	this.zpp_inner.outer = this;
@@ -9195,7 +9192,6 @@ nape_callbacks_InteractionListener.prototype = $extend(nape_callbacks_Listener.p
 		if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION) return nape_callbacks_InteractionType.get_COLLISION(); else if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR) return nape_callbacks_InteractionType.get_SENSOR(); else if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID) return nape_callbacks_InteractionType.get_FLUID(); else if(ret == zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY) return nape_callbacks_InteractionType.get_ANY(); else return null;
 	}
 	,set_interactionType: function(interactionType) {
-		if(interactionType == null) throw new js__$Boot_HaxeError("Error: Cannot set listener interaction type to null");
 		if(this.get_interactionType() != interactionType) {
 			var xtype;
 			if(interactionType == nape_callbacks_InteractionType.get_COLLISION()) xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_COLLISION; else if(interactionType == nape_callbacks_InteractionType.get_SENSOR()) xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_SENSOR; else if(interactionType == nape_callbacks_InteractionType.get_FLUID()) xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_FLUID; else xtype = zpp_$nape_util_ZPP_$Flags.id_InteractionType_ANY;
@@ -9207,7 +9203,6 @@ nape_callbacks_InteractionListener.prototype = $extend(nape_callbacks_Listener.p
 	,__properties__: {set_interactionType:"set_interactionType",get_interactionType:"get_interactionType",get_options2:"get_options2",get_options1:"get_options1"}
 });
 var nape_callbacks_InteractionType = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "InteractionType" + " derp!");
 };
 $hxClasses["nape.callbacks.InteractionType"] = nape_callbacks_InteractionType;
 nape_callbacks_InteractionType.__name__ = true;
@@ -9255,7 +9250,6 @@ var nape_callbacks_ListenerIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$ListenerList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Listener" + "Iterator derp!");
 };
 $hxClasses["nape.callbacks.ListenerIterator"] = nape_callbacks_ListenerIterator;
 nape_callbacks_ListenerIterator.__name__ = true;
@@ -9320,7 +9314,6 @@ nape_callbacks_ListenerList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -9353,7 +9346,6 @@ nape_callbacks_ListenerList.prototype = {
 		return this.zpp_inner.at_ite.elem().outer;
 	}
 	,push: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Listener" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -9369,7 +9361,6 @@ nape_callbacks_ListenerList.prototype = {
 		return cont;
 	}
 	,unshift: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Listener" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -9388,7 +9379,6 @@ nape_callbacks_ListenerList.prototype = {
 		if(this.zpp_inner.reverse_flag) return this.push(obj); else return this.unshift(obj);
 	}
 	,remove: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Listener" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var ret;
@@ -9432,7 +9422,6 @@ nape_callbacks_ListenerList.prototype = {
 	,__properties__: {get_length:"get_length"}
 };
 var nape_callbacks_ListenerType = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "ListenerType" + " derp!");
 };
 $hxClasses["nape.callbacks.ListenerType"] = nape_callbacks_ListenerType;
 nape_callbacks_ListenerType.__name__ = true;
@@ -9536,7 +9525,6 @@ nape_callbacks_PreCallback.prototype = $extend(nape_callbacks_Callback.prototype
 	,__properties__: $extend(nape_callbacks_Callback.prototype.__properties__,{get_int2:"get_int2",get_int1:"get_int1",get_arbiter:"get_arbiter"})
 });
 var nape_callbacks_PreFlag = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "PreFlag" + " derp!");
 };
 $hxClasses["nape.callbacks.PreFlag"] = nape_callbacks_PreFlag;
 nape_callbacks_PreFlag.__name__ = true;
@@ -9609,7 +9597,6 @@ var nape_constraint_ConstraintIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$ConstraintList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Constraint" + "Iterator derp!");
 };
 $hxClasses["nape.constraint.ConstraintIterator"] = nape_constraint_ConstraintIterator;
 nape_constraint_ConstraintIterator.__name__ = true;
@@ -9674,7 +9661,6 @@ nape_constraint_ConstraintList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -9707,7 +9693,6 @@ nape_constraint_ConstraintList.prototype = {
 		return this.zpp_inner.at_ite.elem().outer;
 	}
 	,remove: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Constraint" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var ret;
@@ -9749,7 +9734,8 @@ nape_constraint_ConstraintList.prototype = {
 };
 var nape_dynamics_Arbiter = function() {
 	this.zpp_inner = null;
-	if(!zpp_$nape_dynamics_ZPP_$Arbiter.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate Arbiter derp!");
+	if(!zpp_$nape_dynamics_ZPP_$Arbiter.internal) {
+	}
 };
 $hxClasses["nape.dynamics.Arbiter"] = nape_dynamics_Arbiter;
 nape_dynamics_Arbiter.__name__ = true;
@@ -9761,15 +9747,12 @@ nape_dynamics_Arbiter.prototype = {
 		return this.zpp_inner.type == zpp_$nape_dynamics_ZPP_$Arbiter.FLUID;
 	}
 	,get_shape1: function() {
-		if(this.zpp_inner.inactiveme()) throw new js__$Boot_HaxeError("Error: Arbiter not currently in use");
 		if(this.zpp_inner.ws1.id > this.zpp_inner.ws2.id) return this.zpp_inner.ws2.outer; else return this.zpp_inner.ws1.outer;
 	}
 	,get_shape2: function() {
-		if(this.zpp_inner.inactiveme()) throw new js__$Boot_HaxeError("Error: Arbiter not currently in use");
 		if(this.zpp_inner.ws1.id > this.zpp_inner.ws2.id) return this.zpp_inner.ws1.outer; else return this.zpp_inner.ws2.outer;
 	}
 	,get_state: function() {
-		if(this.zpp_inner.inactiveme()) throw new js__$Boot_HaxeError("Error: Arbiter not currently in use");
 		var _g = this.zpp_inner.immState;
 		var x = _g;
 		if(x == (zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS)) return nape_callbacks_PreFlag.get_ACCEPT(); else {
@@ -9795,7 +9778,6 @@ var nape_dynamics_ArbiterIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$ArbiterList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Arbiter" + "Iterator derp!");
 };
 $hxClasses["nape.dynamics.ArbiterIterator"] = nape_dynamics_ArbiterIterator;
 nape_dynamics_ArbiterIterator.__name__ = true;
@@ -9866,7 +9848,6 @@ nape_dynamics_ArbiterList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_vm();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!true) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -9918,7 +9899,6 @@ nape_dynamics_ArbiterList.prototype = {
 	,__properties__: {get_length:"get_length"}
 };
 var nape_dynamics_ArbiterType = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "ArbiterType" + " derp!");
 };
 $hxClasses["nape.dynamics.ArbiterType"] = nape_dynamics_ArbiterType;
 nape_dynamics_ArbiterType.__name__ = true;
@@ -9954,7 +9934,6 @@ nape_dynamics_ArbiterType.prototype = {
 	,__class__: nape_dynamics_ArbiterType
 };
 var nape_dynamics_CollisionArbiter = function() {
-	if(!zpp_$nape_dynamics_ZPP_$Arbiter.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate CollisionArbiter derp!");
 	nape_dynamics_Arbiter.call(this);
 };
 $hxClasses["nape.dynamics.CollisionArbiter"] = nape_dynamics_CollisionArbiter;
@@ -9965,7 +9944,6 @@ nape_dynamics_CollisionArbiter.prototype = $extend(nape_dynamics_Arbiter.prototy
 });
 var nape_dynamics_Contact = function() {
 	this.zpp_inner = null;
-	if(!zpp_$nape_dynamics_ZPP_$Contact.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate Contact derp!");
 };
 $hxClasses["nape.dynamics.Contact"] = nape_dynamics_Contact;
 nape_dynamics_Contact.__name__ = true;
@@ -9980,7 +9958,6 @@ var nape_dynamics_ContactIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$ContactList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Contact" + "Iterator derp!");
 };
 $hxClasses["nape.dynamics.ContactIterator"] = nape_dynamics_ContactIterator;
 nape_dynamics_ContactIterator.__name__ = true;
@@ -10043,7 +10020,6 @@ nape_dynamics_ContactList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!true) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -10095,7 +10071,6 @@ nape_dynamics_ContactList.prototype = {
 	,__properties__: {get_length:"get_length"}
 };
 var nape_dynamics_FluidArbiter = function() {
-	if(!zpp_$nape_dynamics_ZPP_$Arbiter.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate FluidArbiter derp!");
 	nape_dynamics_Arbiter.call(this);
 };
 $hxClasses["nape.dynamics.FluidArbiter"] = nape_dynamics_FluidArbiter;
@@ -10214,7 +10189,6 @@ var nape_dynamics_InteractionGroupIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$InteractionGroupList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "InteractionGroup" + "Iterator derp!");
 };
 $hxClasses["nape.dynamics.InteractionGroupIterator"] = nape_dynamics_InteractionGroupIterator;
 nape_dynamics_InteractionGroupIterator.__name__ = true;
@@ -10277,7 +10251,6 @@ nape_dynamics_InteractionGroupList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -10347,15 +10320,12 @@ $hxClasses["nape.geom.ConvexResult"] = nape_geom_ConvexResult;
 nape_geom_ConvexResult.__name__ = true;
 nape_geom_ConvexResult.prototype = {
 	get_toi: function() {
-		this.zpp_inner.disposed();
 		return this.zpp_inner.toiDistance;
 	}
 	,get_shape: function() {
-		this.zpp_inner.disposed();
 		return this.zpp_inner.shape;
 	}
 	,toString: function() {
-		this.zpp_inner.disposed();
 		return "{ shape: " + Std.string(this.get_shape()) + " toi: " + this.get_toi() + " }";
 	}
 	,__class__: nape_geom_ConvexResult
@@ -10366,7 +10336,6 @@ var nape_geom_ConvexResultIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$ConvexResultList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "ConvexResult" + "Iterator derp!");
 };
 $hxClasses["nape.geom.ConvexResultIterator"] = nape_geom_ConvexResultIterator;
 nape_geom_ConvexResultIterator.__name__ = true;
@@ -10429,7 +10398,6 @@ nape_geom_ConvexResultList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -10508,7 +10476,6 @@ var nape_geom_GeomPolyIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$GeomPolyList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "GeomPoly" + "Iterator derp!");
 };
 $hxClasses["nape.geom.GeomPolyIterator"] = nape_geom_GeomPolyIterator;
 nape_geom_GeomPolyIterator.__name__ = true;
@@ -10571,7 +10538,6 @@ nape_geom_GeomPolyList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -10665,7 +10631,6 @@ nape_geom_MatMN.prototype = {
 		return this.zpp_inner.n;
 	}
 	,x: function(row,col) {
-		if(row < 0 || col < 0 || row >= this.get_rows() || col >= this.get_cols()) throw new js__$Boot_HaxeError("Error: MatMN indices out of range");
 		return this.zpp_inner.x[row * this.get_cols() + col];
 	}
 	,toString: function() {
@@ -10697,19 +10662,15 @@ $hxClasses["nape.geom.RayResult"] = nape_geom_RayResult;
 nape_geom_RayResult.__name__ = true;
 nape_geom_RayResult.prototype = {
 	get_distance: function() {
-		this.zpp_inner.disposed();
 		return this.zpp_inner.toiDistance;
 	}
 	,get_inner: function() {
-		this.zpp_inner.disposed();
 		return this.zpp_inner.inner;
 	}
 	,get_shape: function() {
-		this.zpp_inner.disposed();
 		return this.zpp_inner.shape;
 	}
 	,toString: function() {
-		this.zpp_inner.disposed();
 		return "{ shape: " + Std.string(this.get_shape()) + " distance: " + this.get_distance() + " ?inner: " + Std.string(this.get_inner()) + " }";
 	}
 	,__class__: nape_geom_RayResult
@@ -10720,7 +10681,6 @@ var nape_geom_RayResultIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$RayResultList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "RayResult" + "Iterator derp!");
 };
 $hxClasses["nape.geom.RayResultIterator"] = nape_geom_RayResultIterator;
 nape_geom_RayResultIterator.__name__ = true;
@@ -10783,7 +10743,6 @@ nape_geom_RayResultList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -10839,7 +10798,6 @@ var nape_geom_Vec2 = function(x,y) {
 	if(x == null) x = 0;
 	this.zpp_pool = null;
 	this.zpp_inner = null;
-	if(x != x || y != y) throw new js__$Boot_HaxeError("Error: Vec2 components cannot be NaN");
 	this.zpp_inner = zpp_$nape_geom_ZPP_$Vec2.get(x,y);
 	this.zpp_inner.outer = this;
 };
@@ -10854,14 +10812,11 @@ nape_geom_Vec2.get = function(x,y,weak) {
 	if(weak == null) weak = false;
 	if(y == null) y = 0;
 	if(x == null) x = 0;
-	if(x != x || y != y) throw new js__$Boot_HaxeError("Error: Vec2 components cannot be NaN");
 	var ret;
 	if(zpp_$nape_util_ZPP_$PubPool.poolVec2 == null) ret = new nape_geom_Vec2(); else {
 		ret = zpp_$nape_util_ZPP_$PubPool.poolVec2;
 		zpp_$nape_util_ZPP_$PubPool.poolVec2 = ret.zpp_pool;
 		ret.zpp_pool = null;
-		ret.zpp_disp = false;
-		if(ret == zpp_$nape_util_ZPP_$PubPool.nextVec2) zpp_$nape_util_ZPP_$PubPool.nextVec2 = null;
 	}
 	if(ret.zpp_inner == null) {
 		ret.zpp_inner = zpp_$nape_geom_ZPP_$Vec2.get(x,y);
@@ -10872,17 +10827,13 @@ nape_geom_Vec2.get = function(x,y,weak) {
 };
 nape_geom_Vec2.prototype = {
 	dispose: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.immutable();
-		if(this.zpp_inner._inuse) throw new js__$Boot_HaxeError("Error: This Vec2 is not disposable");
 		var inner = this.zpp_inner;
 		this.zpp_inner.outer = null;
 		this.zpp_inner = null;
 		var o = this;
-		o.zpp_pool = null;
-		if(zpp_$nape_util_ZPP_$PubPool.nextVec2 != null) zpp_$nape_util_ZPP_$PubPool.nextVec2.zpp_pool = o; else zpp_$nape_util_ZPP_$PubPool.poolVec2 = o;
-		zpp_$nape_util_ZPP_$PubPool.nextVec2 = o;
-		o.zpp_disp = true;
+		o.zpp_pool = zpp_$nape_util_ZPP_$PubPool.poolVec2;
+		zpp_$nape_util_ZPP_$PubPool.poolVec2 = o;
 		var o1 = inner;
 		o1.free();
 		o1.next = zpp_$nape_geom_ZPP_$Vec2.zpp_pool;
@@ -10890,44 +10841,34 @@ nape_geom_Vec2.prototype = {
 	}
 	,copy: function(weak) {
 		if(weak == null) weak = false;
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		return nape_geom_Vec2.get(this.get_x(),this.get_y(),weak);
 	}
 	,get_x: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.validate();
 		return this.zpp_inner.x;
 	}
 	,set_x: function(x) {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.immutable();
 		if(this.get_x() != x) {
-			if(x != x) throw new js__$Boot_HaxeError("Error: Vec2::" + "x" + " cannot be NaN");
 			this.zpp_inner.x = x;
 			this.zpp_inner.invalidate();
 		}
 		return this.get_x();
 	}
 	,get_y: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.validate();
 		return this.zpp_inner.y;
 	}
 	,set_y: function(y) {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.immutable();
 		if(this.get_y() != y) {
-			if(y != y) throw new js__$Boot_HaxeError("Error: Vec2::" + "y" + " cannot be NaN");
 			this.zpp_inner.y = y;
 			this.zpp_inner.invalidate();
 		}
 		return this.get_y();
 	}
 	,set: function(vector) {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
-		if(vector != null && vector.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.immutable();
-		if(vector == null) throw new js__$Boot_HaxeError("Error: Cannot assign null Vec2");
 		var ret = this.setxy(vector.get_x(),vector.get_y());
 		if(vector.zpp_inner.weak) {
 			vector.dispose();
@@ -10936,9 +10877,7 @@ nape_geom_Vec2.prototype = {
 		return ret;
 	}
 	,setxy: function(x,y) {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.immutable();
-		if(x != x || y != y) throw new js__$Boot_HaxeError("Error: Vec2 components cannot be NaN");
 		if(!(this.get_x() == x && this.get_y() == y)) {
 			this.zpp_inner.x = x;
 			this.zpp_inner.y = y;
@@ -10947,7 +10886,6 @@ nape_geom_Vec2.prototype = {
 		return this;
 	}
 	,toString: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.validate();
 		return this.zpp_inner.toString();
 	}
@@ -10959,7 +10897,6 @@ var nape_geom_Vec2Iterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$Vec2List.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Vec2" + "Iterator derp!");
 };
 $hxClasses["nape.geom.Vec2Iterator"] = nape_geom_Vec2Iterator;
 nape_geom_Vec2Iterator.__name__ = true;
@@ -11030,7 +10967,6 @@ nape_geom_Vec2List.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_vm();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -11063,7 +10999,6 @@ nape_geom_Vec2List.prototype = {
 		return this.zpp_inner.at_ite.elem().wrapper();
 	}
 	,push: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Vec2" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_vm();
 		var cont;
@@ -11107,29 +11042,24 @@ $hxClasses["nape.geom.Vec3"] = nape_geom_Vec3;
 nape_geom_Vec3.__name__ = true;
 nape_geom_Vec3.prototype = {
 	get_x: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec3" + " has been disposed and cannot be used!");
 		this.zpp_inner.validate();
 		return this.zpp_inner.x;
 	}
 	,get_y: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec3" + " has been disposed and cannot be used!");
 		this.zpp_inner.validate();
 		return this.zpp_inner.y;
 	}
 	,get_z: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec3" + " has been disposed and cannot be used!");
 		this.zpp_inner.validate();
 		return this.zpp_inner.z;
 	}
 	,toString: function() {
-		if(this != null && this.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec3" + " has been disposed and cannot be used!");
 		return "{ x: " + this.get_x() + " y: " + this.get_y() + " z: " + this.get_z() + " }";
 	}
 	,__class__: nape_geom_Vec3
 	,__properties__: {get_z:"get_z",get_y:"get_y",get_x:"get_x"}
 };
 var nape_geom_Winding = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Winding" + " derp!");
 };
 $hxClasses["nape.geom.Winding"] = nape_geom_Winding;
 nape_geom_Winding.__name__ = true;
@@ -11166,7 +11096,6 @@ nape_geom_Winding.prototype = {
 };
 var nape_phys_Interactor = function() {
 	this.zpp_inner_i = null;
-	if(!nape_phys_Interactor.zpp_internalAlloc) throw new js__$Boot_HaxeError("Error: Cannot instantiate an Interactor, only Shape/Body/Compound");
 };
 $hxClasses["nape.phys.Interactor"] = nape_phys_Interactor;
 nape_phys_Interactor.__name__ = true;
@@ -11196,15 +11125,12 @@ nape_phys_Interactor.prototype = {
 };
 var nape_phys_Body = function(type,position) {
 	this.zpp_inner = null;
-	nape_phys_Interactor.zpp_internalAlloc = true;
 	nape_phys_Interactor.call(this);
-	nape_phys_Interactor.zpp_internalAlloc = false;
 	this.zpp_inner = new zpp_$nape_phys_ZPP_$Body();
 	this.zpp_inner.outer = this;
 	this.zpp_inner.outer_i = this;
 	this.zpp_inner_i = this.zpp_inner;
 	if(position != null) {
-		if(position != null && position.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.posx = position.get_x();
 		this.zpp_inner.posy = position.get_y();
 	} else {
@@ -11229,9 +11155,7 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 	}
 	,set_type: function(type) {
 		this.zpp_inner.immutable_midstep("Body::type");
-		if(this.zpp_inner.world) throw new js__$Boot_HaxeError("Error: Space::world is immutable");
 		if(this.get_type() != type) {
-			if(type == null) throw new js__$Boot_HaxeError("Error: Cannot use null BodyType");
 			var ntype;
 			if(type == nape_phys_BodyType.get_DYNAMIC()) ntype = zpp_$nape_util_ZPP_$Flags.id_BodyType_DYNAMIC; else if(type == nape_phys_BodyType.get_KINEMATIC()) ntype = zpp_$nape_util_ZPP_$Flags.id_BodyType_KINEMATIC; else ntype = zpp_$nape_util_ZPP_$Flags.id_BodyType_STATIC;
 			if(ntype == zpp_$nape_util_ZPP_$Flags.id_BodyType_STATIC && this.zpp_inner.space != null) {
@@ -11257,9 +11181,7 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 		if(this.zpp_inner.space == null) return null; else return this.zpp_inner.space.outer;
 	}
 	,set_space: function(space) {
-		if(this.zpp_inner.compound != null) throw new js__$Boot_HaxeError("Error: Cannot set the space of a Body belonging to a Compound, only the root Compound space can be set");
 		this.zpp_inner.immutable_midstep("Body::space");
-		if(this.zpp_inner.world) throw new js__$Boot_HaxeError("Error: Space::world is immutable");
 		if(this.get_space() != space) {
 			if(this.get_space() != null) this.zpp_inner.component.woken = false;
 			if(this.get_space() != null) this.get_space().get_bodies().remove(this);
@@ -11268,7 +11190,6 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 		return this.get_space();
 	}
 	,get_isSleeping: function() {
-		if(this.zpp_inner.space == null) throw new js__$Boot_HaxeError("Error: isSleeping makes no sense if the object is not contained within a Space");
 		return this.zpp_inner.component.sleeping;
 	}
 	,get_position: function() {
@@ -11276,8 +11197,6 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 		return this.zpp_inner.wrap_pos;
 	}
 	,set_position: function(position) {
-		if(position != null && position.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
-		if(position == null) throw new js__$Boot_HaxeError("Error: Body::" + "position" + " cannot be null");
 		this.get_position().set(position);
 		return this.get_position();
 	}
@@ -11286,8 +11205,6 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 		return this.zpp_inner.wrap_vel;
 	}
 	,set_velocity: function(velocity) {
-		if(velocity != null && velocity.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
-		if(velocity == null) throw new js__$Boot_HaxeError("Error: Body::" + "velocity" + " cannot be null");
 		this.get_velocity().set(velocity);
 		return this.get_velocity();
 	}
@@ -11307,10 +11224,6 @@ nape_phys_Body.prototype = $extend(nape_phys_Interactor.prototype,{
 	}
 	,applyImpulse: function(impulse,pos,sleepable) {
 		if(sleepable == null) sleepable = false;
-		if(impulse != null && impulse.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
-		if(pos != null && pos.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
-		if(this.zpp_inner.world) throw new js__$Boot_HaxeError("Error: Space::world is immutable");
-		if(impulse == null) throw new js__$Boot_HaxeError("Error: Cannot apply null impulse to Body");
 		if(sleepable && this.get_isSleeping()) {
 			if(impulse.zpp_inner.weak) {
 				impulse.dispose();
@@ -11360,7 +11273,6 @@ var nape_phys_BodyIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$BodyList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Body" + "Iterator derp!");
 };
 $hxClasses["nape.phys.BodyIterator"] = nape_phys_BodyIterator;
 nape_phys_BodyIterator.__name__ = true;
@@ -11425,7 +11337,6 @@ nape_phys_BodyList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -11458,7 +11369,6 @@ nape_phys_BodyList.prototype = {
 		return this.zpp_inner.at_ite.elem().outer;
 	}
 	,push: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Body" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -11474,7 +11384,6 @@ nape_phys_BodyList.prototype = {
 		return cont;
 	}
 	,unshift: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Body" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -11493,7 +11402,6 @@ nape_phys_BodyList.prototype = {
 		if(this.zpp_inner.reverse_flag) return this.push(obj); else return this.unshift(obj);
 	}
 	,remove: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Body" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var ret;
@@ -11537,7 +11445,6 @@ nape_phys_BodyList.prototype = {
 	,__properties__: {get_length:"get_length"}
 };
 var nape_phys_BodyType = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "BodyType" + " derp!");
 };
 $hxClasses["nape.phys.BodyType"] = nape_phys_BodyType;
 nape_phys_BodyType.__name__ = true;
@@ -11589,7 +11496,6 @@ var nape_phys_CompoundIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$CompoundList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Compound" + "Iterator derp!");
 };
 $hxClasses["nape.phys.CompoundIterator"] = nape_phys_CompoundIterator;
 nape_phys_CompoundIterator.__name__ = true;
@@ -11654,7 +11560,6 @@ nape_phys_CompoundList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -11687,7 +11592,6 @@ nape_phys_CompoundList.prototype = {
 		return this.zpp_inner.at_ite.elem().outer;
 	}
 	,remove: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Compound" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var ret;
@@ -11749,7 +11653,6 @@ nape_phys_FluidProperties.prototype = {
 	,__properties__: {get_gravity:"get_gravity",get_viscosity:"get_viscosity",get_density:"get_density"}
 };
 var nape_phys_GravMassMode = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "GravMassMode" + " derp!");
 };
 $hxClasses["nape.phys.GravMassMode"] = nape_phys_GravMassMode;
 nape_phys_GravMassMode.__name__ = true;
@@ -11785,7 +11688,6 @@ nape_phys_GravMassMode.prototype = {
 	,__class__: nape_phys_GravMassMode
 };
 var nape_phys_InertiaMode = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "InertiaMode" + " derp!");
 };
 $hxClasses["nape.phys.InertiaMode"] = nape_phys_InertiaMode;
 nape_phys_InertiaMode.__name__ = true;
@@ -11817,7 +11719,6 @@ var nape_phys_InteractorIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$InteractorList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Interactor" + "Iterator derp!");
 };
 $hxClasses["nape.phys.InteractorIterator"] = nape_phys_InteractorIterator;
 nape_phys_InteractorIterator.__name__ = true;
@@ -11880,7 +11781,6 @@ nape_phys_InteractorList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -11932,7 +11832,6 @@ nape_phys_InteractorList.prototype = {
 	,__properties__: {get_length:"get_length"}
 };
 var nape_phys_MassMode = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "MassMode" + " derp!");
 };
 $hxClasses["nape.phys.MassMode"] = nape_phys_MassMode;
 nape_phys_MassMode.__name__ = true;
@@ -12005,9 +11904,6 @@ nape_phys_Material.prototype = {
 	}
 	,set_elasticity: function(elasticity) {
 		if(elasticity != this.get_elasticity()) {
-			if(elasticity != elasticity) throw new js__$Boot_HaxeError("Error: Material::" + "elasticity" + " cannot be NaN");
-			if("elasticity" == "density" && elasticity < 0) throw new js__$Boot_HaxeError("Error: Material::density must be positive");
-			if("elasticity" != "elasticity" && elasticity < 0) throw new js__$Boot_HaxeError("Error: Material::" + "elasticity" + " cannot be negative");
 			this.zpp_inner.elasticity = elasticity / ("elasticity" == "density"?1000:1);
 			this.zpp_inner.invalidate(zpp_$nape_phys_ZPP_$Material.WAKE | zpp_$nape_phys_ZPP_$Material.ARBITERS);
 		}
@@ -12018,9 +11914,6 @@ nape_phys_Material.prototype = {
 	}
 	,set_dynamicFriction: function(dynamicFriction) {
 		if(dynamicFriction != this.get_dynamicFriction()) {
-			if(dynamicFriction != dynamicFriction) throw new js__$Boot_HaxeError("Error: Material::" + "dynamicFriction" + " cannot be NaN");
-			if("dynamicFriction" == "density" && dynamicFriction < 0) throw new js__$Boot_HaxeError("Error: Material::density must be positive");
-			if("dynamicFriction" != "elasticity" && dynamicFriction < 0) throw new js__$Boot_HaxeError("Error: Material::" + "dynamicFriction" + " cannot be negative");
 			this.zpp_inner.dynamicFriction = dynamicFriction / ("dynamicFriction" == "density"?1000:1);
 			this.zpp_inner.invalidate(zpp_$nape_phys_ZPP_$Material.WAKE | zpp_$nape_phys_ZPP_$Material.ANGDRAG | zpp_$nape_phys_ZPP_$Material.ARBITERS);
 		}
@@ -12031,9 +11924,6 @@ nape_phys_Material.prototype = {
 	}
 	,set_staticFriction: function(staticFriction) {
 		if(staticFriction != this.get_staticFriction()) {
-			if(staticFriction != staticFriction) throw new js__$Boot_HaxeError("Error: Material::" + "staticFriction" + " cannot be NaN");
-			if("staticFriction" == "density" && staticFriction < 0) throw new js__$Boot_HaxeError("Error: Material::density must be positive");
-			if("staticFriction" != "elasticity" && staticFriction < 0) throw new js__$Boot_HaxeError("Error: Material::" + "staticFriction" + " cannot be negative");
 			this.zpp_inner.staticFriction = staticFriction / ("staticFriction" == "density"?1000:1);
 			this.zpp_inner.invalidate(zpp_$nape_phys_ZPP_$Material.WAKE | zpp_$nape_phys_ZPP_$Material.ARBITERS);
 		}
@@ -12044,9 +11934,6 @@ nape_phys_Material.prototype = {
 	}
 	,set_density: function(density) {
 		if(density != this.get_density()) {
-			if(density != density) throw new js__$Boot_HaxeError("Error: Material::" + "density" + " cannot be NaN");
-			if("density" == "density" && density < 0) throw new js__$Boot_HaxeError("Error: Material::density must be positive");
-			if("density" != "elasticity" && density < 0) throw new js__$Boot_HaxeError("Error: Material::" + "density" + " cannot be negative");
 			this.zpp_inner.density = density / ("density" == "density"?1000:1);
 			this.zpp_inner.invalidate(zpp_$nape_phys_ZPP_$Material.WAKE | zpp_$nape_phys_ZPP_$Material.PROPS);
 		}
@@ -12057,9 +11944,6 @@ nape_phys_Material.prototype = {
 	}
 	,set_rollingFriction: function(rollingFriction) {
 		if(rollingFriction != this.get_rollingFriction()) {
-			if(rollingFriction != rollingFriction) throw new js__$Boot_HaxeError("Error: Material::" + "rollingFriction" + " cannot be NaN");
-			if("rollingFriction" == "density" && rollingFriction < 0) throw new js__$Boot_HaxeError("Error: Material::density must be positive");
-			if("rollingFriction" != "elasticity" && rollingFriction < 0) throw new js__$Boot_HaxeError("Error: Material::" + "rollingFriction" + " cannot be negative");
 			this.zpp_inner.rollingFriction = rollingFriction / ("rollingFriction" == "density"?1000:1);
 			this.zpp_inner.invalidate(zpp_$nape_phys_ZPP_$Material.WAKE | zpp_$nape_phys_ZPP_$Material.ARBITERS);
 		}
@@ -12073,10 +11957,7 @@ nape_phys_Material.prototype = {
 };
 var nape_shape_Shape = function() {
 	this.zpp_inner = null;
-	nape_phys_Interactor.zpp_internalAlloc = true;
 	nape_phys_Interactor.call(this);
-	nape_phys_Interactor.zpp_internalAlloc = false;
-	if(!nape_shape_Shape.zpp_internalAlloc) throw new js__$Boot_HaxeError("Error: Shape cannot be instantiated derp!");
 };
 $hxClasses["nape.shape.Shape"] = nape_shape_Shape;
 nape_shape_Shape.__name__ = true;
@@ -12093,7 +11974,6 @@ nape_shape_Shape.prototype = $extend(nape_phys_Interactor.prototype,{
 	}
 	,set_material: function(material) {
 		this.zpp_inner.immutable_midstep("Shape::material");
-		if(material == null) throw new js__$Boot_HaxeError("Error: Cannot assign null as Shape material");
 		this.zpp_inner.setMaterial(material.zpp_inner);
 		return this.get_material();
 	}
@@ -12102,7 +11982,6 @@ nape_shape_Shape.prototype = $extend(nape_phys_Interactor.prototype,{
 	}
 	,set_filter: function(filter) {
 		this.zpp_inner.immutable_midstep("Shape::filter");
-		if(filter == null) throw new js__$Boot_HaxeError("Error: Cannot assign null as Shape filter");
 		this.zpp_inner.setFilter(filter.zpp_inner);
 		return this.get_filter();
 	}
@@ -12125,9 +12004,7 @@ nape_shape_Shape.prototype = $extend(nape_phys_Interactor.prototype,{
 });
 var nape_shape_Circle = function(radius,localCOM,material,filter) {
 	this.zpp_inner_zn = null;
-	nape_shape_Shape.zpp_internalAlloc = true;
 	nape_shape_Shape.call(this);
-	nape_shape_Shape.zpp_internalAlloc = false;
 	this.zpp_inner_zn = new zpp_$nape_shape_ZPP_$Circle();
 	this.zpp_inner_zn.outer = this;
 	this.zpp_inner_zn.outer_zn = this;
@@ -12139,7 +12016,6 @@ var nape_shape_Circle = function(radius,localCOM,material,filter) {
 		this.zpp_inner.localCOMx = 0;
 		this.zpp_inner.localCOMy = 0;
 	} else {
-		if(localCOM != null && localCOM.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 		this.zpp_inner.localCOMx = localCOM.get_x();
 		this.zpp_inner.localCOMy = localCOM.get_y();
 		if(localCOM.zpp_inner.weak) {
@@ -12174,11 +12050,7 @@ nape_shape_Circle.prototype = $extend(nape_shape_Shape.prototype,{
 	}
 	,set_radius: function(radius) {
 		this.zpp_inner.immutable_midstep("Circle::radius");
-		if(this.zpp_inner.body != null && this.zpp_inner.body.isStatic() && this.zpp_inner.body.space != null) throw new js__$Boot_HaxeError("Error: Cannot modifiy radius of Circle contained in static object once added to space");
 		if(radius != this.get_radius()) {
-			if(radius != radius) throw new js__$Boot_HaxeError("Error: Circle::radius cannot be NaN");
-			if(radius < nape_Config.epsilon) throw new js__$Boot_HaxeError("Error: Circle::radius (" + radius + ") must be > Config.epsilon");
-			if(radius > 1e100) throw new js__$Boot_HaxeError("Error: Circle::radius (" + radius + ") must be < PR(Const).FMAX");
 			this.zpp_inner_zn.radius = radius;
 			this.zpp_inner_zn.invalidate_radius();
 		}
@@ -12189,7 +12061,6 @@ nape_shape_Circle.prototype = $extend(nape_shape_Shape.prototype,{
 });
 var nape_shape_Edge = function() {
 	this.zpp_inner = null;
-	if(!zpp_$nape_shape_ZPP_$Edge.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate an Edge derp!");
 };
 $hxClasses["nape.shape.Edge"] = nape_shape_Edge;
 nape_shape_Edge.__name__ = true;
@@ -12210,7 +12081,6 @@ var nape_shape_EdgeIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$EdgeList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Edge" + "Iterator derp!");
 };
 $hxClasses["nape.shape.EdgeIterator"] = nape_shape_EdgeIterator;
 nape_shape_EdgeIterator.__name__ = true;
@@ -12273,7 +12143,6 @@ nape_shape_EdgeList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) if(index == this.get_length() - 1) index = index; else index = this.get_length() - 2 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -12326,10 +12195,7 @@ nape_shape_EdgeList.prototype = {
 };
 var nape_shape_Polygon = function(localVerts,material,filter) {
 	this.zpp_inner_zn = null;
-	nape_shape_Shape.zpp_internalAlloc = true;
 	nape_shape_Shape.call(this);
-	nape_shape_Shape.zpp_internalAlloc = false;
-	if(localVerts == null) throw new js__$Boot_HaxeError("Error: localVerts cannot be null");
 	this.zpp_inner_zn = new zpp_$nape_shape_ZPP_$Polygon();
 	this.zpp_inner_zn.outer = this;
 	this.zpp_inner_zn.outer_zn = this;
@@ -12342,10 +12208,7 @@ var nape_shape_Polygon = function(localVerts,material,filter) {
 		while(_g < lv.length) {
 			var vite = lv[_g];
 			++_g;
-			if(vite == null) throw new js__$Boot_HaxeError("Error: Array<Vec2> contains null objects");
-			if(!Std["is"](vite,nape_geom_Vec2)) throw new js__$Boot_HaxeError("Error: Array<Vec2> contains non Vec2 objects");
 			var x = vite;
-			if(x != null && x.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 			this.get_localVerts().push(x.copy());
 		}
 	} else if(false) {
@@ -12354,13 +12217,10 @@ var nape_shape_Polygon = function(localVerts,material,filter) {
 		var $it0 = lv1.iterator();
 		while( $it0.hasNext() ) {
 			var x1 = $it0.next();
-			if(x1 == null) throw new js__$Boot_HaxeError("Error: Vec2List contains null objects");
-			if(x1 != null && x1.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 			this.get_localVerts().push(x1.copy());
 		}
 	} else if(Std["is"](localVerts,nape_geom_GeomPoly)) {
 		var lv2 = localVerts;
-		if(lv2 != null && lv2.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "GeomPoly" + " has been disposed and cannot be used!");
 		var verts = lv2.zpp_inner.vertices;
 		if(verts != null) {
 			var vite1 = verts;
@@ -12371,7 +12231,8 @@ var nape_shape_Polygon = function(localVerts,material,filter) {
 				x2.dispose();
 			} while(vite1 != verts);
 		}
-	} else throw new js__$Boot_HaxeError("Error: Invalid type for polygon object, should be Array<Vec2>, Vec2List, GeomPoly or for flash10+ flash.Vector<Vec2>");
+	} else {
+	}
 	if(Std["is"](localVerts,Array)) {
 		var lv3 = localVerts;
 		var i = 0;
@@ -12431,12 +12292,10 @@ $hxClasses["nape.shape.Polygon"] = nape_shape_Polygon;
 nape_shape_Polygon.__name__ = true;
 nape_shape_Polygon.rect = function(x,y,width,height,weak) {
 	if(weak == null) weak = false;
-	if(x != x || y != y || width != width || height != height) throw new js__$Boot_HaxeError("Error: Polygon.rect cannot accept NaN arguments");
 	return [nape_geom_Vec2.get(x,y,weak),nape_geom_Vec2.get(x + width,y,weak),nape_geom_Vec2.get(x + width,y + height,weak),nape_geom_Vec2.get(x,y + height,weak)];
 };
 nape_shape_Polygon.box = function(width,height,weak) {
 	if(weak == null) weak = false;
-	if(width != width || height != height) throw new js__$Boot_HaxeError("Error: Polygon.box cannot accept NaN arguments");
 	return nape_shape_Polygon.rect(-width / 2,-height / 2,width,height,weak);
 };
 nape_shape_Polygon.__super__ = nape_shape_Shape;
@@ -12453,7 +12312,6 @@ var nape_shape_ShapeIterator = function() {
 	this.zpp_critical = false;
 	this.zpp_i = 0;
 	this.zpp_inner = null;
-	if(!zpp_$nape_util_ZPP_$ShapeList.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Shape" + "Iterator derp!");
 };
 $hxClasses["nape.shape.ShapeIterator"] = nape_shape_ShapeIterator;
 nape_shape_ShapeIterator.__name__ = true;
@@ -12518,7 +12376,6 @@ nape_shape_ShapeList.prototype = {
 	}
 	,at: function(index) {
 		this.zpp_inner.valmod();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(!false) {
 			if(index < this.zpp_inner.at_index || this.zpp_inner.at_ite == null) {
@@ -12551,7 +12408,6 @@ nape_shape_ShapeList.prototype = {
 		return this.zpp_inner.at_ite.elem().outer;
 	}
 	,push: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Shape" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -12567,7 +12423,6 @@ nape_shape_ShapeList.prototype = {
 		return cont;
 	}
 	,unshift: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Shape" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var cont;
@@ -12586,7 +12441,6 @@ nape_shape_ShapeList.prototype = {
 		if(this.zpp_inner.reverse_flag) return this.push(obj); else return this.unshift(obj);
 	}
 	,remove: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Shape" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_inner.valmod();
 		var ret;
@@ -12630,7 +12484,6 @@ nape_shape_ShapeList.prototype = {
 	,__properties__: {get_length:"get_length"}
 };
 var nape_shape_ShapeType = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "ShapeType" + " derp!");
 };
 $hxClasses["nape.shape.ShapeType"] = nape_shape_ShapeType;
 nape_shape_ShapeType.__name__ = true;
@@ -12658,7 +12511,6 @@ nape_shape_ShapeType.prototype = {
 	,__class__: nape_shape_ShapeType
 };
 var nape_shape_ValidationResult = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "ValidationResult" + " derp!");
 };
 $hxClasses["nape.shape.ValidationResult"] = nape_shape_ValidationResult;
 nape_shape_ValidationResult.__name__ = true;
@@ -12702,7 +12554,6 @@ nape_shape_ValidationResult.prototype = {
 	,__class__: nape_shape_ValidationResult
 };
 var nape_space_Broadphase = function() {
-	if(!zpp_$nape_util_ZPP_$Flags.internal) throw new js__$Boot_HaxeError("Error: Cannot instantiate " + "Broadphase" + " derp!");
 };
 $hxClasses["nape.space.Broadphase"] = nape_space_Broadphase;
 nape_space_Broadphase.__name__ = true;
@@ -12731,7 +12582,6 @@ nape_space_Broadphase.prototype = {
 };
 var nape_space_Space = function(gravity,broadphase) {
 	this.zpp_inner = null;
-	if(gravity != null && gravity.zpp_disp) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " has been disposed and cannot be used!");
 	this.zpp_inner = new zpp_$nape_space_ZPP_$Space(gravity == null?null:gravity.zpp_inner,broadphase);
 	this.zpp_inner.outer = this;
 	if(gravity != null) {
@@ -12756,10 +12606,6 @@ nape_space_Space.prototype = {
 	,step: function(deltaTime,velocityIterations,positionIterations) {
 		if(positionIterations == null) positionIterations = 10;
 		if(velocityIterations == null) velocityIterations = 10;
-		if(deltaTime != deltaTime) throw new js__$Boot_HaxeError("Error: deltaTime cannot be NaN");
-		if(deltaTime <= 0) throw new js__$Boot_HaxeError("Error: deltaTime must be strictly positive");
-		if(velocityIterations <= 0) throw new js__$Boot_HaxeError("Error: must use atleast one velocity iteration");
-		if(positionIterations <= 0) throw new js__$Boot_HaxeError("Error: must use atleast one position iteration");
 		this.zpp_inner.step(deltaTime,velocityIterations,positionIterations);
 	}
 	,__class__: nape_space_Space
@@ -15083,6 +14929,7 @@ tools_spark_framework_space2_$5D_interfaces_IObjectContainer2_$5D.__interfaces__
 var tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D = function(p_gameEntity) {
 	tools_spark_framework_space2_$5D_core_AObject2_$5D.call(this,p_gameEntity);
 	this.children = [];
+	this.childrenMap = new haxe_ds_ObjectMap();
 };
 $hxClasses["tools.spark.framework.space2_5D.core.AObjectContainer2_5D"] = tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D;
 tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.__name__ = true;
@@ -15090,10 +14937,15 @@ tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.__interfaces__ = [to
 tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.__super__ = tools_spark_framework_space2_$5D_core_AObject2_$5D;
 tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.prototype = $extend(tools_spark_framework_space2_$5D_core_AObject2_$5D.prototype,{
 	addChild: function(p_entity2_5D) {
-		this.children.push(p_entity2_5D);
+		if(this.childrenMap.exists(p_entity2_5D) == false) {
+			this.children.push(p_entity2_5D);
+			this.childrenMap.set(p_entity2_5D,true);
+			return true;
+		} else return false;
 	}
 	,removeChild: function(p_entity2_5D) {
 		HxOverrides.remove(this.children,p_entity2_5D);
+		this.childrenMap.remove(p_entity2_5D);
 	}
 	,__class__: tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D
 });
@@ -15178,13 +15030,15 @@ tools_spark_framework_space2_$5D_core_AInstantiable2_$5D.prototype = $extend(too
 	,update: function(p_view2_5D) {
 	}
 	,addChild: function(p_entity2_5D) {
-		tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.prototype.addChild.call(this,p_entity2_5D);
-		var $it0 = this._instances.keys();
-		while( $it0.hasNext() ) {
-			var f_view = $it0.next();
-			this._createChildOfInstance(p_entity2_5D,f_view);
-			p_entity2_5D.update(f_view);
-		}
+		if(tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.prototype.addChild.call(this,p_entity2_5D)) {
+			var $it0 = this._instances.keys();
+			while( $it0.hasNext() ) {
+				var f_view = $it0.next();
+				this._createChildOfInstance(p_entity2_5D,f_view);
+				p_entity2_5D.update(f_view);
+			}
+		} else tools_spark_framework_Console.warn("Child Already exists!");
+		return true;
 	}
 	,removeChild: function(p_entity2_5D) {
 		tools_spark_framework_space2_$5D_core_AObjectContainer2_$5D.prototype.removeChild.call(this,p_entity2_5D);
@@ -16433,7 +16287,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var l_instance = this._instances.get(p_view2_5D);
 		if(l_instance != null) {
 			if(this.gameEntity.getState("2DmeshType") == "Spriter") this.gameEntity.setState("boundsRect",new flambe_math_Rectangle(-55,-112,140,190)); else this.gameEntity.setState("boundsRect",flambe_display_Sprite.getBounds(l_instance));
-		}
+		} else tools_spark_framework_Console.error("Update Bounds: Instance is null");
 	}
 	,__class__: tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D
 });
@@ -17242,7 +17096,13 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._createChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
 	,_removeChildOfInstance: function(p_childEntity,p_view2_5D) {
-		this._instances.get(p_view2_5D).removeChild(js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , flambe_Entity));
+		var l_flambeEntity;
+		l_flambeEntity = js_Boot.__cast(p_childEntity.getInstance(p_view2_5D) , flambe_Entity);
+		var l_bodyComponent;
+		var component = l_flambeEntity.getComponent("BodyComponent_6");
+		l_bodyComponent = component;
+		if(l_bodyComponent != null) l_flambeEntity.remove(l_bodyComponent);
+		this._instances.get(p_view2_5D).removeChild(l_flambeEntity);
 		tools_spark_framework_space2_$5D_core_AScene2_$5D.prototype._removeChildOfInstance.call(this,p_childEntity,p_view2_5D);
 	}
 	,updateCamera: function(p_view,p_camera) {
@@ -17289,14 +17149,12 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 		if(cb.get_int1().get_userData().gameEntity != null && cb.get_int2().get_userData().gameEntity != null) {
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START,cb.get_int1().get_userData().gameEntity);
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_START,cb.get_int2().get_userData().gameEntity);
-			tools_spark_framework_Console.error("REAL COLLISION START!");
 		}
 	}
 	,_endHandlerCollision: function(cb) {
 		if(cb.get_int1().get_userData().gameEntity != null && cb.get_int2().get_userData().gameEntity != null) {
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END,cb.get_int1().get_userData().gameEntity);
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_COLLISION_END,cb.get_int2().get_userData().gameEntity);
-			tools_spark_framework_Console.error("REAL COLLISION END!");
 		}
 	}
 	,_beginHandlerSensor: function(cb) {
@@ -17305,14 +17163,12 @@ tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.prototype = $extend(tools_spa
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_START,cb.get_int2().get_userData().gameEntity);
 			cb.get_int1().get_userData().gameEntity.setState("collidedWith",cb.get_int2().get_userData().gameEntity);
 			cb.get_int2().get_userData().gameEntity.setState("collidedWith",cb.get_int1().get_userData().gameEntity);
-			tools_spark_framework_Console.error("SENSOR COLLISION START!");
 		}
 	}
 	,_endHandlerSensor: function(cb) {
 		if(cb.get_int1().get_userData().gameEntity != null && cb.get_int2().get_userData().gameEntity != null) {
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END,cb.get_int1().get_userData().gameEntity);
 			tools_spark_sliced_core_Sliced.event.raiseEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.PHYSICS_SENSOR_END,cb.get_int2().get_userData().gameEntity);
-			tools_spark_framework_Console.error("SENSOR COLLISION END!");
 		}
 	}
 	,_beginHandlerSensorFeet: function(cb) {
@@ -21367,6 +21223,38 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 	,xml_clone: function(p_xml) {
 		return Xml.parse(this.xmlToString(p_xml)).firstElement();
 	}
+	,xml_getElements: function(p_xml,p_xmlNodes) {
+		var l_xmlNode = p_xml;
+		var _g = 0;
+		while(_g < p_xmlNodes.length) {
+			var xmlNodeStr = p_xmlNodes[_g];
+			++_g;
+			l_xmlNode = this.xml_getElement(l_xmlNode,xmlNodeStr);
+			if(l_xmlNode == null) return null;
+		}
+		return l_xmlNode;
+	}
+	,xml_getAllMStates: function(p_xml,p_merge) {
+		var l_states = new haxe_ds_StringMap();
+		var l_groupName;
+		if(p_merge) l_groupName = "_States"; else l_groupName = "States";
+		var l_statesNode = this.xml_getElement(p_xml,l_groupName);
+		if(l_statesNode != null) {
+			var l_statesChildren = l_statesNode.elementsNamed("_State");
+			while(l_statesChildren.hasNext()) {
+				var f_state = l_statesChildren.next();
+				var f_value = this.xml_getElement(f_state,"Value");
+				var key = f_state.get("id");
+				var value = f_value.firstChild().toString();
+				l_states.set(key,value);
+			}
+			return l_states;
+		} else return null;
+	}
+	,xml_getElement: function(p_xml,p_xmlNode) {
+		var p_iterator = p_xml.elementsNamed(p_xmlNode);
+		if(p_iterator.hasNext()) return p_iterator.next(); else return null;
+	}
 	,xml_createElements: function(p_xmlNodes) {
 		var l_Return = { };
 		l_Return.first = null;
@@ -21388,6 +21276,11 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 		var l_xml = Xml.createElement(p_xmlNode);
 		l_xml.set(p_attrName,p_attrValue);
 		return l_xml;
+	}
+	,xml_entity_removeNode: function(p_EntityXml,p_xmlNodeName) {
+		var l_elements = p_EntityXml.elementsNamed(p_xmlNodeName);
+		if(l_elements.hasNext()) p_EntityXml.removeChild(l_elements.next());
+		return p_EntityXml;
 	}
 	,xml_entity_addExtend: function(p_EntityXml,p_Entity) {
 		var l_groupName = "Extends";
@@ -23015,9 +22908,15 @@ tools_spark_sliced_services_std_logic_gde_core_GameEntity.prototype = $extend(to
 		if(this.gameStateSet.get(p_stateId) == null) return null; else return this.gameStateSet.get(p_stateId).value;
 	}
 	,setState: function(p_stateId,p_value) {
-		this.gameStateSet.get(p_stateId).value = p_value;
-		tools_spark_sliced_core_Sliced.display.updateDisplayObjectState(this,p_stateId);
-		return this.gameStateSet.get(p_stateId).value;
+		try {
+			this.gameStateSet.get(p_stateId).value = p_value;
+			tools_spark_sliced_core_Sliced.display.updateDisplayObjectState(this,p_stateId);
+			return this.gameStateSet.get(p_stateId).value;
+		} catch( e ) {
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
+			tools_spark_framework_Console.error("Could not Set State " + p_stateId + " to: " + Std.string(p_value) + ", for entity: " + Std.string(this.getState("name")));
+			return null;
+		}
 	}
 	,addToState: function(p_stateId,p_value) {
 		this.gameStateSet.get(p_stateId).value += p_value;
@@ -24516,27 +24415,21 @@ zpp_$nape_callbacks_ZPP_$Callback.__name__ = true;
 zpp_$nape_callbacks_ZPP_$Callback.prototype = {
 	wrapper_body: function() {
 		if(this.outer_body == null) {
-			zpp_$nape_callbacks_ZPP_$Callback.internal = true;
 			this.outer_body = new nape_callbacks_BodyCallback();
-			zpp_$nape_callbacks_ZPP_$Callback.internal = false;
 			this.outer_body.zpp_inner = this;
 		}
 		return this.outer_body;
 	}
 	,wrapper_con: function() {
 		if(this.outer_con == null) {
-			zpp_$nape_callbacks_ZPP_$Callback.internal = true;
 			this.outer_con = new nape_callbacks_ConstraintCallback();
-			zpp_$nape_callbacks_ZPP_$Callback.internal = false;
 			this.outer_con.zpp_inner = this;
 		}
 		return this.outer_con;
 	}
 	,wrapper_int: function() {
 		if(this.outer_int == null) {
-			zpp_$nape_callbacks_ZPP_$Callback.internal = true;
 			this.outer_int = new nape_callbacks_InteractionCallback();
-			zpp_$nape_callbacks_ZPP_$Callback.internal = false;
 			this.outer_int.zpp_inner = this;
 		}
 		this.genarbs();
@@ -25464,7 +25357,6 @@ zpp_$nape_callbacks_ZPP_$OptionType.prototype = {
 		}
 	}
 	,append: function(list,val) {
-		if(val == null) throw new js__$Boot_HaxeError("Error: Cannot append null, only CbType and CbType list values");
 		if(Std["is"](val,nape_callbacks_CbType)) {
 			var cb = val;
 			this.append_type(list,cb.zpp_inner);
@@ -25482,11 +25374,11 @@ zpp_$nape_callbacks_ZPP_$OptionType.prototype = {
 			while(_g < cbs1.length) {
 				var cb2 = cbs1[_g];
 				++_g;
-				if(!Std["is"](cb2,nape_callbacks_CbType)) throw new js__$Boot_HaxeError("Error: Cannot append non-CbType or CbType list value");
 				var cbx = cb2;
 				this.append_type(list,cbx.zpp_inner);
 			}
-		} else throw new js__$Boot_HaxeError("Error: Cannot append non-CbType or CbType list value");
+		} else {
+		}
 	}
 	,__class__: zpp_$nape_callbacks_ZPP_$OptionType
 };
@@ -25570,8 +25462,6 @@ zpp_$nape_constraint_ZPP_$Constraint.prototype = {
 	}
 	,clearcache: function() {
 	}
-	,validate: function() {
-	}
 	,wake_connected: function() {
 	}
 	,forest: function() {
@@ -25639,9 +25529,6 @@ zpp_$nape_dynamics_ZPP_$Arbiter.prototype = {
 			zpp_$nape_dynamics_ZPP_$Arbiter.internal = false;
 		}
 		return this.outer;
-	}
-	,inactiveme: function() {
-		return !this.active;
 	}
 	,acting: function() {
 		return this.active && (this.immState & zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT) != 0;
@@ -25712,16 +25599,10 @@ zpp_$nape_dynamics_ZPP_$SensorArbiter.prototype = $extend(zpp_$nape_dynamics_ZPP
 		o.next = zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool;
 		zpp_$nape_dynamics_ZPP_$SensorArbiter.zpp_pool = o;
 	}
-	,makemutable: function() {
-	}
-	,makeimmutable: function() {
-	}
 	,__class__: zpp_$nape_dynamics_ZPP_$SensorArbiter
 });
 var zpp_$nape_dynamics_ZPP_$FluidArbiter = function() {
 	this.pre_dt = 0.0;
-	this.mutable = false;
-	this.wrap_position = null;
 	this.buoyy = 0.0;
 	this.buoyx = 0.0;
 	this.ny = 0.0;
@@ -25775,14 +25656,6 @@ zpp_$nape_dynamics_ZPP_$FluidArbiter.prototype = $extend(zpp_$nape_dynamics_ZPP_
 		o.next = zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool;
 		zpp_$nape_dynamics_ZPP_$FluidArbiter.zpp_pool = o;
 		this.pre_dt = -1.0;
-	}
-	,makemutable: function() {
-		this.mutable = true;
-		if(this.wrap_position != null) this.wrap_position.zpp_inner._immutable = false;
-	}
-	,makeimmutable: function() {
-		this.mutable = false;
-		if(this.wrap_position != null) this.wrap_position.zpp_inner._immutable = true;
 	}
 	,inject: function(area,cx,cy) {
 		this.overlap = area;
@@ -26071,7 +25944,6 @@ zpp_$nape_dynamics_ZPP_$FluidArbiter.prototype = $extend(zpp_$nape_dynamics_ZPP_
 });
 var zpp_$nape_dynamics_ZPP_$ColArbiter = function() {
 	this.pre_dt = 0.0;
-	this.mutable = false;
 	this.stat = false;
 	this.next = null;
 	this.hpc2 = false;
@@ -26111,11 +25983,9 @@ var zpp_$nape_dynamics_ZPP_$ColArbiter = function() {
 	this.kMassc = 0.0;
 	this.kMassb = 0.0;
 	this.kMassa = 0.0;
-	this.wrap_normal = null;
 	this.ny = 0.0;
 	this.nx = 0.0;
 	this.innards = null;
-	this.wrap_contacts = null;
 	this.contacts = null;
 	this.s2 = null;
 	this.s1 = null;
@@ -26221,16 +26091,6 @@ zpp_$nape_dynamics_ZPP_$ColArbiter.prototype = $extend(zpp_$nape_dynamics_ZPP_$A
 		o1.next = zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool;
 		zpp_$nape_dynamics_ZPP_$ColArbiter.zpp_pool = o1;
 		this.pre_dt = -1.0;
-	}
-	,makemutable: function() {
-		this.mutable = true;
-		if(this.wrap_normal != null) this.wrap_normal.zpp_inner._immutable = false;
-		if(this.wrap_contacts != null) this.wrap_contacts.zpp_inner.immutable = false;
-	}
-	,makeimmutable: function() {
-		this.mutable = false;
-		if(this.wrap_normal != null) this.wrap_normal.zpp_inner._immutable = true;
-		if(this.wrap_contacts != null) this.wrap_contacts.zpp_inner.immutable = true;
 	}
 	,cleanupContacts: function() {
 		var fst = true;
@@ -28979,17 +28839,13 @@ zpp_$nape_geom_ZPP_$Collide.flowCollide = function(s1,s2,arb) {
 };
 var zpp_$nape_geom_ZPP_$ConvexRayResult = function() {
 	this.toiDistance = 0.0;
-	this.next = null;
 	this.inner = false;
 	this.shape = null;
 };
 $hxClasses["zpp_nape.geom.ZPP_ConvexRayResult"] = zpp_$nape_geom_ZPP_$ConvexRayResult;
 zpp_$nape_geom_ZPP_$ConvexRayResult.__name__ = true;
 zpp_$nape_geom_ZPP_$ConvexRayResult.prototype = {
-	disposed: function() {
-		if(this.next != null) throw new js__$Boot_HaxeError("Error: This object has been disposed of and cannot be used");
-	}
-	,__class__: zpp_$nape_geom_ZPP_$ConvexRayResult
+	__class__: zpp_$nape_geom_ZPP_$ConvexRayResult
 };
 var zpp_$nape_geom_ZPP_$GeomVert = function() {
 	this.next = null;
@@ -29642,8 +29498,6 @@ zpp_$nape_geom_ZPP_$Vec2.prototype = {
 		if(this._invalidate != null) this._invalidate(this);
 	}
 	,immutable: function() {
-		if(this._immutable) throw new js__$Boot_HaxeError("Error: Vec2 is immutable");
-		if(this._isimmutable != null) this._isimmutable();
 	}
 	,wrapper: function() {
 		if(this.outer == null) {
@@ -29884,10 +29738,6 @@ zpp_$nape_phys_ZPP_$Interactor.prototype = {
 		this.wrap_cbTypes.zpp_inner.adder = $bind(this,this.wrap_cbTypes_adder);
 		this.wrap_cbTypes.zpp_inner.subber = $bind(this,this.wrap_cbTypes_subber);
 		this.wrap_cbTypes.zpp_inner.dontremove = true;
-		this.wrap_cbTypes.zpp_inner._modifiable = $bind(this,this.immutable_cbTypes);
-	}
-	,immutable_cbTypes: function() {
-		this.immutable_midstep("Interactor::cbTypes");
 	}
 	,wrap_cbTypes_subber: function(pcb) {
 		var cb = pcb.zpp_inner;
@@ -30078,7 +29928,6 @@ var zpp_$nape_phys_ZPP_$Body = function() {
 	this.wrap_shapes.zpp_inner.adder = $bind(this,this.shapes_adder);
 	this.wrap_shapes.zpp_inner.subber = $bind(this,this.shapes_subber);
 	this.wrap_shapes.zpp_inner._invalidate = $bind(this,this.shapes_invalidate);
-	this.wrap_shapes.zpp_inner._modifiable = $bind(this,this.shapes_modifiable);
 	this.kinematicDelaySleep = false;
 };
 $hxClasses["zpp_nape.phys.ZPP_Body"] = zpp_$nape_phys_ZPP_$Body;
@@ -30211,7 +30060,6 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 	}
 	,pos_invalidate: function(pos) {
 		this.immutable_midstep("Body::position");
-		if(this.isStatic() && this.space != null) throw new js__$Boot_HaxeError("Error: Cannot move a static object once inside a Space");
 		if(!(this.posx == pos.x && this.posy == pos.y)) {
 			this.posx = pos.x;
 			this.posy = pos.y;
@@ -30224,7 +30072,6 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 		this.wrap_pos.zpp_inner.y = this.posy;
 	}
 	,vel_invalidate: function(vel) {
-		if(this.isStatic()) throw new js__$Boot_HaxeError("Error: Static body cannot have its velocity set.");
 		this.velx = vel.x;
 		this.vely = vel.y;
 		this.invalidate_wake();
@@ -30364,7 +30211,6 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 		this.wake();
 	}
 	,validate_aabb: function() {
-		if(this.shapes.empty()) throw new js__$Boot_HaxeError("Error: Body bounds only makes sense if it contains shapes");
 		if(this.zip_aabb) {
 			this.zip_aabb = false;
 			this.aabb.minx = zpp_$nape_ZPP_$Const.POSINF();
@@ -30443,10 +30289,8 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 		}
 	}
 	,__immutable_midstep: function(name) {
-		if(this.space != null && this.space.midstep) throw new js__$Boot_HaxeError("Error: " + name + " cannot be set during a space step()");
 	}
 	,aabb_validate: function() {
-		if(this.shapes.empty()) throw new js__$Boot_HaxeError("Error: bounds only makes sense when Body has shapes");
 		this.validate_aabb();
 	}
 	,shapes_adder: function(s) {
@@ -30469,10 +30313,6 @@ zpp_$nape_phys_ZPP_$Body.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prot
 	}
 	,shapes_invalidate: function(_) {
 		this.invalidate_shapes();
-	}
-	,shapes_modifiable: function() {
-		this.immutable_midstep("Body::shapes");
-		if(this.isStatic() && this.space != null) throw new js__$Boot_HaxeError("Error: Cannot modifiy shapes of static object once added to Space");
 	}
 	,addedToSpace: function() {
 		if(zpp_$nape_space_ZPP_$Component.zpp_pool == null) this.component = new zpp_$nape_space_ZPP_$Component(); else {
@@ -30514,7 +30354,6 @@ zpp_$nape_phys_ZPP_$Compound.__name__ = true;
 zpp_$nape_phys_ZPP_$Compound.__super__ = zpp_$nape_phys_ZPP_$Interactor;
 zpp_$nape_phys_ZPP_$Compound.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.prototype,{
 	__imutable_midstep: function(name) {
-		if(this.space != null && this.space.midstep) throw new js__$Boot_HaxeError("Error: " + name + " cannot be set during space step()");
 	}
 	,addedToSpace: function() {
 		this.__iaddedToSpace();
@@ -30766,7 +30605,6 @@ zpp_$nape_shape_ZPP_$Shape.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.pr
 		this.wake();
 	}
 	,aabb_validate: function() {
-		if(this.body == null) throw new js__$Boot_HaxeError("Error: bounds only makes sense when Shape belongs to a Body");
 		this.validate_aabb();
 	}
 	,setMaterial: function(material) {
@@ -30791,7 +30629,6 @@ zpp_$nape_shape_ZPP_$Shape.prototype = $extend(zpp_$nape_phys_ZPP_$Interactor.pr
 		}
 	}
 	,__immutable_midstep: function(name) {
-		if(this.body != null && this.body.space != null && this.body.space.midstep) throw new js__$Boot_HaxeError("Error: " + name + " cannot be set during a space step()");
 	}
 	,addedToBody: function() {
 		this.invalidate_worldCOM();
@@ -30941,16 +30778,11 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 	lverts_pa_invalidate: function(x) {
 		this.invalidate_lverts();
 	}
-	,lverts_pa_immutable: function() {
-		if(this.body != null && this.body.isStatic() && this.body.space != null) throw new js__$Boot_HaxeError("Error: Cannot modify local vertex of Polygon added to a static body whilst within a Space");
-	}
 	,gverts_pa_validate: function() {
-		if(this.body == null) throw new js__$Boot_HaxeError("Error: World vertex only makes sense when Polygon is contained in a rigid body");
 		this.validate_gverts();
 	}
 	,lverts_post_adder: function(x) {
 		x.zpp_inner._invalidate = $bind(this,this.lverts_pa_invalidate);
-		x.zpp_inner._isimmutable = $bind(this,this.lverts_pa_immutable);
 		var ite = null;
 		var ite2 = null;
 		var cx_ite = this.lverts.begin();
@@ -31009,10 +30841,6 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 	,lverts_validate: function() {
 		this.validate_lverts();
 	}
-	,lverts_modifiable: function() {
-		this.immutable_midstep("Polygon::localVerts");
-		if(this.body != null && this.body.isStatic() && this.body.space != null) throw new js__$Boot_HaxeError("Error: Cannot modifiy shapes of static object once added to Space");
-	}
 	,getlverts: function() {
 		var me = this;
 		this.wrap_lverts = zpp_$nape_util_ZPP_$MixVec2List.get(this.lverts);
@@ -31020,7 +30848,6 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 		this.wrap_lverts.zpp_inner.subber = $bind(this,this.lverts_subber);
 		this.wrap_lverts.zpp_inner._invalidate = $bind(this,this.lverts_invalidate);
 		this.wrap_lverts.zpp_inner._validate = $bind(this,this.lverts_validate);
-		this.wrap_lverts.zpp_inner._modifiable = $bind(this,this.lverts_modifiable);
 		this.wrap_lverts.zpp_inner.reverse_flag = this.reverse_flag;
 	}
 	,invalidate_lverts: function() {
@@ -31045,240 +30872,6 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 	}
 	,invalidate_gaxi: function() {
 		this.zip_gaxi = true;
-	}
-	,valid: function() {
-		if(this.zip_valid) {
-			this.zip_valid = false;
-			this.splice_collinear();
-			if(this.lverts.size() < 3) return this.validation = nape_shape_ValidationResult.get_DEGENERATE(); else {
-				this.validate_lverts();
-				this.validate_area_inertia();
-				if(this.area < nape_Config.epsilon) return this.validation = nape_shape_ValidationResult.get_DEGENERATE(); else {
-					var neg = false;
-					var pos = false;
-					var cx_cont = true;
-					var cx_ite = this.lverts.begin();
-					var u = cx_ite.elem();
-					cx_ite = cx_ite.next;
-					var v = cx_ite.elem();
-					cx_ite = cx_ite.next;
-					while(cx_ite != null) {
-						var w = cx_ite.elem();
-						var ax = 0.0;
-						var ay = 0.0;
-						ax = w.x - v.x;
-						ay = w.y - v.y;
-						var bx = 0.0;
-						var by = 0.0;
-						bx = v.x - u.x;
-						by = v.y - u.y;
-						var dot = by * ax - bx * ay;
-						if(dot > nape_Config.epsilon) pos = true; else if(dot < -nape_Config.epsilon) neg = true;
-						if(pos && neg) {
-							cx_cont = false;
-							break;
-						}
-						u = v;
-						v = w;
-						cx_ite = cx_ite.next;
-					}
-					if(cx_cont) {
-						cx_ite = this.lverts.begin();
-						var w1 = cx_ite.elem();
-						do {
-							var ax1 = 0.0;
-							var ay1 = 0.0;
-							ax1 = w1.x - v.x;
-							ay1 = w1.y - v.y;
-							var bx1 = 0.0;
-							var by1 = 0.0;
-							bx1 = v.x - u.x;
-							by1 = v.y - u.y;
-							var dot1 = by1 * ax1 - bx1 * ay1;
-							if(dot1 > nape_Config.epsilon) pos = true; else if(dot1 < -nape_Config.epsilon) neg = true;
-							if(pos && neg) {
-								cx_cont = false;
-								break;
-							}
-						} while(false);
-						if(cx_cont) {
-							u = v;
-							v = w1;
-							cx_ite = cx_ite.next;
-							var w2 = cx_ite.elem();
-							do {
-								var ax2 = 0.0;
-								var ay2 = 0.0;
-								ax2 = w2.x - v.x;
-								ay2 = w2.y - v.y;
-								var bx2 = 0.0;
-								var by2 = 0.0;
-								bx2 = v.x - u.x;
-								by2 = v.y - u.y;
-								var dot2 = by2 * ax2 - bx2 * ay2;
-								if(dot2 > nape_Config.epsilon) pos = true; else if(dot2 < -nape_Config.epsilon) neg = true;
-								if(pos && neg) break;
-							} while(false);
-						}
-					}
-					if(pos && neg) return this.validation = nape_shape_ValidationResult.get_CONCAVE(); else {
-						var cont = true;
-						var cx_cont1 = true;
-						var cx_ite1 = this.lverts.begin();
-						var u1 = cx_ite1.elem();
-						cx_ite1 = cx_ite1.next;
-						while(cx_ite1 != null) {
-							var v1 = cx_ite1.elem();
-							if(!cont) {
-								cx_cont1 = false;
-								break;
-							}
-							var cx_cont2 = true;
-							var cx_ite2 = this.lverts.begin();
-							var a = cx_ite2.elem();
-							cx_ite2 = cx_ite2.next;
-							while(cx_ite2 != null) {
-								var b = cx_ite2.elem();
-								if(u1 == a || u1 == b || v1 == a || v1 == b) {
-									a = b;
-									cx_ite2 = cx_ite2.next;
-									continue;
-								}
-								var sx = 0.0;
-								var sy = 0.0;
-								sx = u1.x - a.x;
-								sy = u1.y - a.y;
-								var vx = 0.0;
-								var vy = 0.0;
-								vx = v1.x - u1.x;
-								vy = v1.y - u1.y;
-								var qx = 0.0;
-								var qy = 0.0;
-								qx = b.x - a.x;
-								qy = b.y - a.y;
-								var den = vy * qx - vx * qy;
-								if(den * den > nape_Config.epsilon) {
-									den = 1 / den;
-									var t = (qy * sx - qx * sy) * den;
-									if(t > nape_Config.epsilon && t < 1 - nape_Config.epsilon) {
-										var s = (vy * sx - vx * sy) * den;
-										if(s > nape_Config.epsilon && s < 1 - nape_Config.epsilon) {
-											cont = false;
-											cx_cont2 = false;
-											break;
-										}
-									}
-								}
-								a = b;
-								cx_ite2 = cx_ite2.next;
-							}
-							if(cx_cont2) do {
-								var b1 = this.lverts.front();
-								if(u1 == a || u1 == b1 || v1 == a || v1 == b1) break;
-								var sx1 = 0.0;
-								var sy1 = 0.0;
-								sx1 = u1.x - a.x;
-								sy1 = u1.y - a.y;
-								var vx1 = 0.0;
-								var vy1 = 0.0;
-								vx1 = v1.x - u1.x;
-								vy1 = v1.y - u1.y;
-								var qx1 = 0.0;
-								var qy1 = 0.0;
-								qx1 = b1.x - a.x;
-								qy1 = b1.y - a.y;
-								var den1 = vy1 * qx1 - vx1 * qy1;
-								if(den1 * den1 > nape_Config.epsilon) {
-									den1 = 1 / den1;
-									var t1 = (qy1 * sx1 - qx1 * sy1) * den1;
-									if(t1 > nape_Config.epsilon && t1 < 1 - nape_Config.epsilon) {
-										var s1 = (vy1 * sx1 - vx1 * sy1) * den1;
-										if(s1 > nape_Config.epsilon && s1 < 1 - nape_Config.epsilon) {
-											cont = false;
-											break;
-										}
-									}
-								}
-							} while(false);
-							u1 = v1;
-							cx_ite1 = cx_ite1.next;
-						}
-						if(cx_cont1) do {
-							var v2 = this.lverts.front();
-							if(!cont) break;
-							var cx_cont3 = true;
-							var cx_ite3 = this.lverts.begin();
-							var a1 = cx_ite3.elem();
-							cx_ite3 = cx_ite3.next;
-							while(cx_ite3 != null) {
-								var b2 = cx_ite3.elem();
-								if(u1 == a1 || u1 == b2 || v2 == a1 || v2 == b2) {
-									a1 = b2;
-									cx_ite3 = cx_ite3.next;
-									continue;
-								}
-								var sx2 = 0.0;
-								var sy2 = 0.0;
-								sx2 = u1.x - a1.x;
-								sy2 = u1.y - a1.y;
-								var vx2 = 0.0;
-								var vy2 = 0.0;
-								vx2 = v2.x - u1.x;
-								vy2 = v2.y - u1.y;
-								var qx2 = 0.0;
-								var qy2 = 0.0;
-								qx2 = b2.x - a1.x;
-								qy2 = b2.y - a1.y;
-								var den2 = vy2 * qx2 - vx2 * qy2;
-								if(den2 * den2 > nape_Config.epsilon) {
-									den2 = 1 / den2;
-									var t2 = (qy2 * sx2 - qx2 * sy2) * den2;
-									if(t2 > nape_Config.epsilon && t2 < 1 - nape_Config.epsilon) {
-										var s2 = (vy2 * sx2 - vx2 * sy2) * den2;
-										if(s2 > nape_Config.epsilon && s2 < 1 - nape_Config.epsilon) {
-											cont = false;
-											cx_cont3 = false;
-											break;
-										}
-									}
-								}
-								a1 = b2;
-								cx_ite3 = cx_ite3.next;
-							}
-							if(cx_cont3) do {
-								var b3 = this.lverts.front();
-								if(u1 == a1 || u1 == b3 || v2 == a1 || v2 == b3) break;
-								var sx3 = 0.0;
-								var sy3 = 0.0;
-								sx3 = u1.x - a1.x;
-								sy3 = u1.y - a1.y;
-								var vx3 = 0.0;
-								var vy3 = 0.0;
-								vx3 = v2.x - u1.x;
-								vy3 = v2.y - u1.y;
-								var qx3 = 0.0;
-								var qy3 = 0.0;
-								qx3 = b3.x - a1.x;
-								qy3 = b3.y - a1.y;
-								var den3 = vy3 * qx3 - vx3 * qy3;
-								if(den3 * den3 > nape_Config.epsilon) {
-									den3 = 1 / den3;
-									var t3 = (qy3 * sx3 - qx3 * sy3) * den3;
-									if(t3 > nape_Config.epsilon && t3 < 1 - nape_Config.epsilon) {
-										var s3 = (vy3 * sx3 - vx3 * sy3) * den3;
-										if(s3 > nape_Config.epsilon && s3 < 1 - nape_Config.epsilon) {
-											cont = false;
-											break;
-										}
-									}
-								}
-							} while(false);
-						} while(false);
-						if(!cont) return this.validation = nape_shape_ValidationResult.get_SELF_INTERSECTING(); else return this.validation = nape_shape_ValidationResult.get_VALID();
-					}
-				}
-			}
-		} else return this.validation;
 	}
 	,validate_lverts: function() {
 		if(this.zip_lverts) {
@@ -31531,7 +31124,6 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 	}
 	,__validate_aabb: function() {
 		this.validate_gverts();
-		if(this.lverts.empty()) throw new js__$Boot_HaxeError("Error: An empty polygon has no meaningful bounds");
 		var p0 = this.gverts.front();
 		this.aabb.minx = p0.x;
 		this.aabb.miny = p0.y;
@@ -31645,7 +31237,6 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 		}
 	}
 	,__validate_angDrag: function() {
-		if(this.lverts.size() < 3) throw new js__$Boot_HaxeError("Error: Polygon's with less than 3 vertices have no meaningful angDrag");
 		this.validate_area_inertia();
 		this.validate_laxi();
 		var accum = 0.0;
@@ -31746,7 +31337,6 @@ zpp_$nape_shape_ZPP_$Polygon.prototype = $extend(zpp_$nape_shape_ZPP_$Shape.prot
 		this.angDrag = accum / (this.inertia * perim);
 	}
 	,__validate_localCOM: function() {
-		if(this.lverts.empty()) throw new js__$Boot_HaxeError("Error: An empty polygon has no meaningful localCOM");
 		if(this.lverts.begin().next == null) {
 			this.localCOMx = this.lverts.front().x;
 			this.localCOMy = this.lverts.front().y;
@@ -32985,10 +32575,8 @@ var zpp_$nape_space_ZPP_$Space = function(gravity,broadphase) {
 	this.toiEvents = new zpp_$nape_util_ZNPList_$ZPP_$ToiEvent();
 	this.global_lin_drag = 0.015;
 	this.global_ang_drag = 0.015;
-	zpp_$nape_callbacks_ZPP_$Callback.internal = true;
 	this.precb = new nape_callbacks_PreCallback();
 	this.precb.zpp_inner = new zpp_$nape_callbacks_ZPP_$Callback();
-	zpp_$nape_callbacks_ZPP_$Callback.internal = false;
 	this.sortcontacts = true;
 	this.pre_dt = 0.0;
 	if(broadphase == null || broadphase == nape_space_Broadphase.get_DYNAMIC_AABB_TREE()) this.bphase = new zpp_$nape_space_ZPP_$DynAABBPhase(this); else if(broadphase == nape_space_Broadphase.get_SWEEP_AND_PRUNE()) this.bphase = new zpp_$nape_space_ZPP_$SweepPhase(this);
@@ -33005,12 +32593,10 @@ var zpp_$nape_space_ZPP_$Space = function(gravity,broadphase) {
 	this.wrap_bodies = zpp_$nape_util_ZPP_$BodyList.get(this.bodies);
 	this.wrap_bodies.zpp_inner.adder = $bind(this,this.bodies_adder);
 	this.wrap_bodies.zpp_inner.subber = $bind(this,this.bodies_subber);
-	this.wrap_bodies.zpp_inner._modifiable = $bind(this,this.bodies_modifiable);
 	this.compounds = new zpp_$nape_util_ZNPList_$ZPP_$Compound();
 	this.wrap_compounds = zpp_$nape_util_ZPP_$CompoundList.get(this.compounds);
 	this.wrap_compounds.zpp_inner.adder = $bind(this,this.compounds_adder);
 	this.wrap_compounds.zpp_inner.subber = $bind(this,this.compounds_subber);
-	this.wrap_compounds.zpp_inner._modifiable = $bind(this,this.compounds_modifiable);
 	this.kinematics = new zpp_$nape_util_ZNPList_$ZPP_$Body();
 	this.c_arbiters_true = new zpp_$nape_util_ZNPList_$ZPP_$ColArbiter();
 	this.c_arbiters_false = new zpp_$nape_util_ZNPList_$ZPP_$ColArbiter();
@@ -33024,7 +32610,6 @@ var zpp_$nape_space_ZPP_$Space = function(gravity,broadphase) {
 	this.wrap_constraints = zpp_$nape_util_ZPP_$ConstraintList.get(this.constraints);
 	this.wrap_constraints.zpp_inner.adder = $bind(this,this.constraints_adder);
 	this.wrap_constraints.zpp_inner.subber = $bind(this,this.constraints_subber);
-	this.wrap_constraints.zpp_inner._modifiable = $bind(this,this.constraints_modifiable);
 	this.live_constraints = new zpp_$nape_util_ZNPList_$ZPP_$Constraint();
 	this.wrap_livecon = zpp_$nape_util_ZPP_$ConstraintList.get(this.live_constraints,true);
 	this.__static = zpp_$nape_phys_ZPP_$Body.__static();
@@ -33035,7 +32620,6 @@ var zpp_$nape_space_ZPP_$Space = function(gravity,broadphase) {
 	this.wrap_listeners = zpp_$nape_util_ZPP_$ListenerList.get(this.listeners);
 	this.wrap_listeners.zpp_inner.adder = $bind(this,this.listeners_adder);
 	this.wrap_listeners.zpp_inner.subber = $bind(this,this.listeners_subber);
-	this.wrap_listeners.zpp_inner._modifiable = $bind(this,this.listeners_modifiable);
 	this.callbackset_list = new zpp_$nape_space_ZPP_$CallbackSet();
 	this.mrca1 = new zpp_$nape_util_ZNPList_$ZPP_$Interactor();
 	this.mrca2 = new zpp_$nape_util_ZNPList_$ZPP_$Interactor();
@@ -33046,7 +32630,6 @@ $hxClasses["zpp_nape.space.ZPP_Space"] = zpp_$nape_space_ZPP_$Space;
 zpp_$nape_space_ZPP_$Space.__name__ = true;
 zpp_$nape_space_ZPP_$Space.prototype = {
 	bodies_adder: function(x) {
-		if(x.zpp_inner.compound != null) throw new js__$Boot_HaxeError("Error: Cannot set the space of a Body belonging to a Compound, only the root Compound space can be set");
 		if(x.zpp_inner.space != this) {
 			if(x.zpp_inner.space != null) x.zpp_inner.space.outer.get_bodies().remove(x);
 			this.addBody(x.zpp_inner);
@@ -33056,11 +32639,7 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 	,bodies_subber: function(x) {
 		this.remBody(x.zpp_inner);
 	}
-	,bodies_modifiable: function() {
-		if(this.midstep) throw new js__$Boot_HaxeError("Error: Space::bodies cannot be set during space step()");
-	}
 	,compounds_adder: function(x) {
-		if(x.zpp_inner.compound != null) throw new js__$Boot_HaxeError("Error: Cannot set the space of an inner Compound, only the root Compound space can be set");
 		if(x.zpp_inner.space != this) {
 			if(x.zpp_inner.space != null) x.zpp_inner.space.wrap_compounds.remove(x);
 			this.addCompound(x.zpp_inner);
@@ -33070,11 +32649,7 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 	,compounds_subber: function(x) {
 		this.remCompound(x.zpp_inner);
 	}
-	,compounds_modifiable: function() {
-		if(this.midstep) throw new js__$Boot_HaxeError("Error: Space::compounds cannot be set during space step()");
-	}
 	,constraints_adder: function(x) {
-		if(x.zpp_inner.compound != null) throw new js__$Boot_HaxeError("Error: Cannot set the space of a Constraint belonging to a Compound, only the root Compound space can be set");
 		if(x.zpp_inner.space != this) {
 			if(x.zpp_inner.space != null) x.zpp_inner.space.outer.get_constraints().remove(x);
 			this.addConstraint(x.zpp_inner);
@@ -33083,9 +32658,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 	}
 	,constraints_subber: function(x) {
 		this.remConstraint(x.zpp_inner);
-	}
-	,constraints_modifiable: function() {
-		if(this.midstep) throw new js__$Boot_HaxeError("Error: Space::constraints cannot be set during space step()");
 	}
 	,listeners_adder: function(x) {
 		if(x.zpp_inner.space != this) {
@@ -33096,9 +32668,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 	}
 	,listeners_subber: function(x) {
 		this.remListener(x.zpp_inner);
-	}
-	,listeners_modifiable: function() {
-		if(this.midstep) throw new js__$Boot_HaxeError("Error: Space::listeners cannot be set during space step()");
 	}
 	,revoke_listener: function(x) {
 	}
@@ -33366,7 +32935,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 	}
 	,step: function(deltaTime,velocityIterations,positionIterations) {
 		var _g = this;
-		if(this.midstep) throw new js__$Boot_HaxeError("Error: ... REALLY?? you're going to call space.step() inside of space.step()? COME ON!!");
 		this.time += deltaTime;
 		this.pre_dt = deltaTime;
 		this.midstep = true;
@@ -34529,14 +34097,11 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 		if(!body.shapes.empty()) body.validate_aabb();
 		body.validate_mass();
 		body.validate_inertia();
-		if(body.velx != 0 || body.vely != 0 || body.angvel != 0) throw new js__$Boot_HaxeError("Error: Static body cannot have any real velocity, only kinematic or surface velocities");
 		var cx_ite = body.shapes.begin();
 		while(cx_ite != null) {
 			var s = cx_ite.elem();
 			if(s.isPolygon()) {
 				s.polygon.splice_collinear();
-				var res = s.polygon.valid();
-				if(res != nape_shape_ValidationResult.get_VALID()) throw new js__$Boot_HaxeError("Error: Cannot simulate with an invalid Polygon : " + s.polygon.outer.toString() + " is invalid : " + res.toString());
 				s.polygon.validate_gaxi();
 			}
 			cx_ite = cx_ite.next;
@@ -34554,8 +34119,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 				var s = cx_ite1.elem();
 				if(s.isPolygon()) {
 					s.polygon.splice_collinear();
-					var res = s.polygon.valid();
-					if(res != nape_shape_ValidationResult.get_VALID()) throw new js__$Boot_HaxeError("Error: Cannot simulate with an invalid Polygon : " + s.polygon.outer.toString() + " is invalid : " + res.toString());
 					s.polygon.validate_gaxi();
 				}
 				s.validate_sweepRadius();
@@ -34570,8 +34133,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			}
 			cur.validate_gravMass();
 			cur.validate_axis();
-			if(!cur.nomove && cur.isDynamic() && cur.mass == 0) throw new js__$Boot_HaxeError("Error: Dynamic Body cannot be simulated with 0 mass unless allowMovement is false");
-			if(!cur.norotate && cur.isDynamic() && cur.inertia == 0) throw new js__$Boot_HaxeError("Error: Dynamic Body cannot be simulated with 0 inertia unless allowRotation is false");
 			if(!false) {
 				if(cur.component.woken && cur.cbSet != null) {
 					var cx_ite2 = cur.cbSet.bodylisteners.begin();
@@ -34606,8 +34167,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 				var s1 = cx_ite5.elem();
 				if(s1.isPolygon()) {
 					s1.polygon.splice_collinear();
-					var res1 = s1.polygon.valid();
-					if(res1 != nape_shape_ValidationResult.get_VALID()) throw new js__$Boot_HaxeError("Error: Cannot simulate with an invalid Polygon : " + s1.polygon.outer.toString() + " is invalid : " + res1.toString());
 					s1.polygon.validate_gaxi();
 				}
 				s1.validate_sweepRadius();
@@ -34622,8 +34181,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 			}
 			cur1.validate_gravMass();
 			cur1.validate_axis();
-			if(!cur1.nomove && cur1.isDynamic() && cur1.mass == 0) throw new js__$Boot_HaxeError("Error: Dynamic Body cannot be simulated with 0 mass unless allowMovement is false");
-			if(!cur1.norotate && cur1.isDynamic() && cur1.inertia == 0) throw new js__$Boot_HaxeError("Error: Dynamic Body cannot be simulated with 0 inertia unless allowRotation is false");
 			if(!true) {
 				if(cur1.component.woken && cur1.cbSet != null) {
 					var cx_ite6 = cur1.cbSet.bodylisteners.begin();
@@ -34653,7 +34210,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 		while(cx_ite8 != null) {
 			var con = cx_ite8.elem();
 			if(con.active) {
-				con.validate();
 				if(con.component.woken && con.cbSet != null) {
 					var cx_ite9 = con.cbSet.conlisteners.begin();
 					while(cx_ite9 != null) {
@@ -35303,7 +34859,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 												cx_ite3 = cx_ite3.next;
 											}
 										}
-										arb.makemutable();
 										var pact = arb.active;
 										arb.active = true;
 										var emptycontacts = false;
@@ -35319,7 +34874,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 											if(ret2 != null) if(ret2 == nape_callbacks_PreFlag.get_ACCEPT()) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret2 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret2 == nape_callbacks_PreFlag.get_IGNORE()) arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
 											cx_ite4 = cx_ite4.next;
 										}
-										arb.makeimmutable();
 										arb.active = pact;
 										if(callbackset != null) {
 											var cx_ite5 = this.prelisteners.begin();
@@ -35527,7 +35081,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 												cx_ite9 = cx_ite9.next;
 											}
 										}
-										arb2.makemutable();
 										var pact1 = arb2.active;
 										arb2.active = true;
 										var emptycontacts1 = false;
@@ -35544,7 +35097,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 											if(ret4 != null) if(ret4 == nape_callbacks_PreFlag.get_ACCEPT()) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret4 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret4 == nape_callbacks_PreFlag.get_IGNORE()) arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb2.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
 											cx_ite10 = cx_ite10.next;
 										}
-										arb2.makeimmutable();
 										arb2.active = pact1;
 										if(callbackset1 != null) {
 											var cx_ite11 = this.prelisteners.begin();
@@ -35738,7 +35290,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 												cx_ite15 = cx_ite15.next;
 											}
 										}
-										arb4.makemutable();
 										var pact2 = arb4.active;
 										arb4.active = true;
 										var emptycontacts2 = false;
@@ -35754,7 +35305,6 @@ zpp_$nape_space_ZPP_$Space.prototype = {
 											if(ret6 != null) if(ret6 == nape_callbacks_PreFlag.get_ACCEPT()) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else if(ret6 == nape_callbacks_PreFlag.get_ACCEPT_ONCE()) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT; else if(ret6 == nape_callbacks_PreFlag.get_IGNORE()) arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE | zpp_$nape_util_ZPP_$Flags.id_ImmState_ALWAYS; else arb4.immState = zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE;
 											cx_ite16 = cx_ite16.next;
 										}
-										arb4.makeimmutable();
 										arb4.active = pact2;
 										if(callbackset2 != null) {
 											var cx_ite17 = this.prelisteners.begin();
@@ -37829,7 +37379,6 @@ zpp_$nape_util_ZPP_$MixVec2List.prototype = $extend(nape_geom_Vec2List.prototype
 	}
 	,at: function(index) {
 		this.zpp_vm();
-		if(index < 0 || index >= this.get_length()) throw new js__$Boot_HaxeError("Error: Index out of bounds");
 		if(this.zpp_inner.reverse_flag) index = this.get_length() - 1 - index;
 		if(index < this.at_index || this.at_ite == null) {
 			this.at_index = 0;
@@ -37852,10 +37401,8 @@ zpp_$nape_util_ZPP_$MixVec2List.prototype = $extend(nape_geom_Vec2List.prototype
 		return this.at_ite.elem().wrapper();
 	}
 	,push: function(obj) {
-		if(this.zpp_inner.immutable) throw new js__$Boot_HaxeError("Error: " + "Vec2" + "List is immutable");
 		this.zpp_inner.modify_test();
 		this.zpp_vm();
-		if(obj.zpp_inner._inuse) throw new js__$Boot_HaxeError("Error: " + "Vec2" + " is already in use");
 		var cont;
 		if(this.zpp_inner.adder != null) cont = this.zpp_inner.adder(obj); else cont = true;
 		if(cont) {
@@ -37880,7 +37427,6 @@ var zpp_$nape_util_ZPP_$ConstraintList = function() {
 	this.dontremove = false;
 	this.subber = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -37912,7 +37458,6 @@ zpp_$nape_util_ZPP_$ConstraintList.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -37937,7 +37482,6 @@ var zpp_$nape_util_ZPP_$BodyList = function() {
 	this.subber = null;
 	this.post_adder = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -37969,7 +37513,6 @@ zpp_$nape_util_ZPP_$BodyList.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -38025,7 +37568,6 @@ var zpp_$nape_util_ZPP_$CompoundList = function() {
 	this.dontremove = false;
 	this.subber = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -38057,7 +37599,6 @@ zpp_$nape_util_ZPP_$CompoundList.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -38082,7 +37623,6 @@ var zpp_$nape_util_ZPP_$ListenerList = function() {
 	this.subber = null;
 	this.post_adder = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -38114,7 +37654,6 @@ zpp_$nape_util_ZPP_$ListenerList.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -38139,7 +37678,6 @@ var zpp_$nape_util_ZPP_$CbTypeList = function() {
 	this.subber = null;
 	this.post_adder = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -38171,7 +37709,6 @@ zpp_$nape_util_ZPP_$CbTypeList.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -38195,7 +37732,6 @@ var zpp_$nape_util_ZPP_$Vec2List = function() {
 	this.subber = null;
 	this.post_adder = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -38219,7 +37755,6 @@ zpp_$nape_util_ZPP_$Vec2List.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -38372,7 +37907,6 @@ var zpp_$nape_util_ZPP_$ShapeList = function() {
 	this.subber = null;
 	this.post_adder = null;
 	this.adder = null;
-	this._modifiable = null;
 	this._validate = null;
 	this._invalidate = null;
 	this._invalidated = false;
@@ -38404,7 +37938,6 @@ zpp_$nape_util_ZPP_$ShapeList.prototype = {
 		}
 	}
 	,modify_test: function() {
-		if(this._modifiable != null) this._modifiable();
 	}
 	,validate: function() {
 		if(this._invalidated) {
@@ -38503,7 +38036,6 @@ var zpp_$nape_util_ZPP_$ContactList = function() {
 	this.reverse_flag = false;
 	this._validate = null;
 	this._invalidated = false;
-	this.immutable = false;
 	this.inner = null;
 };
 $hxClasses["zpp_nape.util.ZPP_ContactList"] = zpp_$nape_util_ZPP_$ContactList;
@@ -39068,8 +38600,6 @@ nape_Config.contactStaticBiasCoef = 0.6;
 nape_Config.contactContinuousBiasCoef = 0.4;
 nape_Config.contactContinuousStaticBiasCoef = 0.5;
 nape_Config.illConditionedThreshold = 2e+8;
-nape_phys_Interactor.zpp_internalAlloc = false;
-nape_shape_Shape.zpp_internalAlloc = false;
 tools_spark_framework_SparkLog.logger = flambe_System.createLogger("tools.spark.framework");
 zpp_$nape_callbacks_ZPP_$CbType.ANY_SHAPE = new nape_callbacks_CbType();
 zpp_$nape_callbacks_ZPP_$CbType.ANY_BODY = new nape_callbacks_CbType();
@@ -39081,7 +38611,6 @@ zpp_$nape_ZPP_$ID._CbSet = 0;
 zpp_$nape_ZPP_$ID._Listener = 0;
 tools_spark_framework_flambe2_$5D_FlambeScene2_$5D.BIPED_FEET = new nape_callbacks_CbType();
 tools_spark_framework_haxe_LooseCheck.blanks = new EReg("^[ \r\n\t]*$","");
-zpp_$nape_callbacks_ZPP_$Callback.internal = false;
 zpp_$nape_util_ZPP_$Flags.internal = false;
 zpp_$nape_util_ZPP_$Flags.id_ImmState_ACCEPT = 1;
 zpp_$nape_util_ZPP_$Flags.id_ImmState_IGNORE = 2;
@@ -39112,7 +38641,6 @@ zpp_$nape_util_ZPP_$Flags.id_CbEvent_BREAK = 4;
 zpp_$nape_util_ZPP_$Flags.id_CbEvent_PRE = 5;
 zpp_$nape_util_ZPP_$Flags.id_ShapeType_CIRCLE = 0;
 zpp_$nape_util_ZPP_$Flags.id_ShapeType_POLYGON = 1;
-zpp_$nape_callbacks_ZPP_$Listener.internal = false;
 zpp_$nape_callbacks_ZPP_$InteractionListener.UCbSet = new zpp_$nape_util_ZNPList_$ZPP_$CbSet();
 zpp_$nape_callbacks_ZPP_$InteractionListener.VCbSet = new zpp_$nape_util_ZNPList_$ZPP_$CbSet();
 zpp_$nape_callbacks_ZPP_$InteractionListener.WCbSet = new zpp_$nape_util_ZNPList_$ZPP_$CbSet();

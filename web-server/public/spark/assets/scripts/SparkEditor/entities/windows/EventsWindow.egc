@@ -4,6 +4,8 @@
 		<_State id="name"><Value>Events Window</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(66,84,102)</Value></_State>
 		<_State id="display"><Value>none</Value></_State>
+		<_State id="width"><Value>0</Value></_State>
+		<_State id="height"><Value>0</Value></_State>
 	</_States>
 	
 	<Form>

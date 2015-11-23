@@ -36,6 +36,31 @@ handler.listUserProjects = function(msg, session, next) {
     );
 };
 
+handler.deleteProject = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+   // var user = session.get('user');
+   // var developer = session.get('developer');
+
+  //This allows anyone to delete anyone's projects.. hmmmmm
+
+    //Find Projects
+    database.findOne(database.Project, {_id: msg.projectId},
+        function (err, object_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Remove it
+            object_found.remove();
+
+            //Handle Success
+            next(null, {code: "success"});
+        }
+    );
+};
 
 handler.fork = function(msg, session, next) {
     var self = this;

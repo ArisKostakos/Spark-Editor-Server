@@ -3,6 +3,7 @@
 	<_States>
 		<_State id="targetLayerName"><Value>PopUp Layer 3 Scene</Value></_State>
 		<State><Id>ContextListMainObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="border"><Value>0px</Value></_State>
 	</_States>
 
 	<_Form>

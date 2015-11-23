@@ -3,28 +3,27 @@
 	<_States>
 		<_State id="name"><Value>Event Collection Editor</Value></_State>
 		<State><Id>eventSheetRun</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
 		<_Action id="AssetLoaded">
 			<_Scripts>
 				<Script>
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
+					//Import XML
+					var importXml = this.getState('importXml');
 					
-					//PURE XML
-					var pureXml = me.getState('xmlPure');
-					Display.error("EVENT SHEET EDITOR LOADED: " + pureXml.toString());
+					me.getAction('Import Xml').setState('importXml',importXml);
+					me.forceAction('Import Xml');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
 					
 					//create an eventcollectionedit
 					var eventCollectionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventCollectionEdit');
@@ -33,54 +32,17 @@
 					//add it as child to eventWindow
 					Logic.getEntityByName('Events Window').addChild(eventCollectionEdit);
 					
-					
-					
-					
-					//remove Form
-					var formXml = firstElementNamed(pureXml,'Form');
-					if (formXml!=null)
-						pureXml.removeChild(formXml);
-						
-					//give it snapshot xml
-					eventCollectionEdit.setState('xmlData',pureXml);
-					
-					
-					//EDIT XML
-					var editXml = me.getState('xmlEdit');
-					formXml = firstElementNamed(editXml,'Form');
-					
-					//check for [form.space.entities]
-					if (formXml!=null)
-					{
-						var formSpaceXml = firstElementNamed(formXml,'Space');
-						if (formSpaceXml!=null)
-						{
-							var formSpaceEntitiesXml = firstElementNamed(formSpaceXml,'Entities');
-							if (formSpaceEntitiesXml!=null)
-							{
-								var entities = formSpaceEntitiesXml.elementsNamed('Entity');
-								//for each [entity] in [form.space.entities]
-								while (entities.hasNext())
-								{
-									var entityChildXml = entities.next();
-
-									//create an eventedit
-									var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');
-									
-									//add it as child to eventWindow
-									eventCollectionEdit.addChild(eventEdit);
-									eventEdit.getAction('ImportXml').setState('importedXml',entityChildXml);
-									eventEdit.startAction('ImportXml');
-									
-								}
-								Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
-							}
-						}
-					}
+					//start import for eventsheet
+					var importXml = this.getState('importXml');
+					eventCollectionEdit.getAction('Import Xml').setState('importXml',importXml);
+					eventCollectionEdit.startAction('Import Xml');
 				</Script>
-			</_Scripts>
-		</_Action>
-		
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+			
 		<Action>
 			<Id>Save</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -88,69 +50,28 @@
 				<Script>
 					me.stopAction("Save");
 					
-					var pureXml = me.getState('xmlPure');
-					
-					//Get Sheet
-					var eventCollection = me.getState('target');
-					
 					//Create Save File Xml
 					var eventCollectionFileXml = Xml.createDocument();
 					
+					//Export Event Sheet
+					me.forceAction("Export Xml");
+					var ecExport = me.getState('xmlExport');
+					
 					//Add eventCollection's Xml to Doc
-					var eventCollectionXml = Xml.parse(eventCollection.getState('xmlData').toString()).firstElement(); //clone it
-					eventCollectionFileXml.addChild(eventCollectionXml);
+					eventCollectionFileXml.addChild(ecExport);
 					
-					//Create [Form.Space.Entities]
-					var formXml = Xml.createElement('Form');
-					eventCollectionXml.addChild(formXml);
-					var spaceXml = Xml.createElement('Space');
-					formXml.addChild(spaceXml);
-					var entitiesXml = Xml.createElement('Entities');
-					spaceXml.addChild(entitiesXml);
-					
-					//For eventCollection's Children
-					for (child in eventCollection.getChildren())
-					{
-						if (child.getState('name')!='Event Sheet Controls')
-						{
-							var eventChildXml = Xml.parse(child.getState('xmlData').toString()).firstElement(); //clone it
-							
-							entitiesXml.addChild(eventChildXml);
-							
-							//Create [Form.Space.Entities]
-							var eventFormXml = Xml.createElement('Form');
-							eventChildXml.addChild(eventFormXml);
-							var eventSpaceXml = Xml.createElement('Space');
-							eventFormXml.addChild(eventSpaceXml);
-							var eventEntitiesXml = Xml.createElement('Entities');
-							eventSpaceXml.addChild(eventEntitiesXml);
-							
-							
-							
-							//conditions
-							for (conditionChild in child.getState('conditionsContainer').getChildren())
-							{
-								eventEntitiesXml.addChild(conditionChild.getState('xmlData'));
-							}
-							
-							//actions
-							for (actionChild in child.getState('actionsContainer').getChildren())
-							{
-								eventEntitiesXml.addChild(actionChild.getState('xmlData'));
-							}
-						}
-					}
-					
-					
-					var finalString = eventCollectionFileXml.toString();
+					//Save to String
+					var finalString = Logic.xmlToString(eventCollectionFileXml);
 					Display.error("eventCollectionXml: " + finalString);
 					
+					//Send
 					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
 					Comms.file_sendFileRequest(finalString, {name: "updatedAssetEC", size: finalString.length, user: connectedUserName} , "updatedAssetEC");
 				</Script>
 			</Scripts>
 		</Action>
+		
 		
 		<Action>
 			<Id>Export Xml</Id>
@@ -162,12 +83,9 @@
 					//Get Sheet
 					var eventCollection = me.getState('target');
 					
-					//Create Save File Xml
-					//var eventCollectionFileXml = Logic.xml_createDocument();
-					
 					//Add eventCollection's Xml to Doc
-					var eventCollectionXml = Logic.xml_clone(eventCollection.getState('xmlData'));
-					//eventCollectionFileXml.addChild(eventCollectionXml);
+					//var eventCollectionXml = Logic.xml_clone(eventCollection.getState('xmlData'));
+					var eventCollectionXml = Logic.xml_createElementAttr("Entity", "extends", "std.ace.EventCollection");
 					
 					//Create entities node
 					var entities = Logic.xml_createElements(['Form','Space','Entities']);
@@ -184,7 +102,7 @@
 					//Store
 					me.setState('xmlExport',eventCollectionXml);
 					
-					Display.error("SUCCESS: " + Logic.xmlToString(eventCollectionXml));
+					//Display.error("SUCCESS: " + Logic.xmlToString(eventCollectionXml));
 				</Script>
 			</Scripts>
 		</Action>

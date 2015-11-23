@@ -121,6 +121,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabs/ViewportTab.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabs/LibraryHeader.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/ProjectWindow.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/AreaWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/LibraryWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/PropertiesWindow.egc</Asset>
 			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/SceneWindow.egc</Asset>-->
@@ -233,6 +234,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditBase.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditKeyboard.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditExpression.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditObject.egc</Asset>
 			
 			
 			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>
@@ -323,7 +325,7 @@
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="events_addbutton" bytes='35672' forceLoadAsData='true'>editor/events/AddButton.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="events_tempThumb" bytes='35672' forceLoadAsData='true'>codeIcon.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="events_tempThumb" bytes='35672' forceLoadAsData='true'>editor/events/tempEventThumb.png</Asset>
 			
 
 			<!-- Lobby, Projects -->

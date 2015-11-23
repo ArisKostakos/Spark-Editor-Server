@@ -88,13 +88,13 @@
 					//Ok about this... WTF, if i don't put this measure in, it works on New Event calling create Condition
 					//but not from a Create New Condition button (so, bug when adds a second/third condition to an event)
 					//it is VERY weird... very.....weird..
-					if (globalPos==null)
+					if (globalPos==null) //is this still a thing?
 					{
 						Display.error("is nuuuullll oii");
 						return;
 					}
 					
-					me.stopAction("ChooseTarget");
+					me.stopAction("ChooseTarget"); //if it's forced, then..? remove this?
 					
 					Display.error("WTF NOW....: " + globalPos);
 					//Get Assets we Want to display
@@ -277,7 +277,7 @@
 				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
-		
+
 		<Action>
 			<Id>Set New AC</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -453,10 +453,11 @@
 		</Action>
 		
 		<Action>
-			<Id>ChooseParameters</Id>
+			<Id>CreateParams</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					//forced
 					function createParObject(parType)
 					{
 						var obj = {};
@@ -465,6 +466,8 @@
 						
 						if (objSplit[0]=="%Kb")
 							obj.type="Keyboard";
+						else if (objSplit[0]=="%Cn")
+							obj.type="Object";
 						else if (objSplit[0]=="%Ei")
 						{
 							obj.type="Expression";
@@ -473,8 +476,6 @@
 						
 						return obj;
 					}
-					
-					me.stopAction('ChooseParameters');
 					
 					var asset = me.getState('ac_asset');
 					var params = [];
@@ -485,6 +486,25 @@
 						params.push(createParObject(asset.tags[i]));
 						i +=1;
 					}
+					
+					this.setState('returnParams',params);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnParams</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+				
+		<Action>
+			<Id>ChooseParameters</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('ChooseParameters');
+					
+					me.forceAction('CreateParams');
+					var params = me.getAction('CreateParams').getState('returnParams');
 					
 					
 					var globalPos = Logic.queryGameEntity(me, "globalPosition");
@@ -548,6 +568,57 @@
 					me.setState('xmlExport',exportXml);
 				</Script>
 			</Scripts>
+		</Action>
+				
+		<!-- Import Xml -->
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('imageObj')!=null)
+					{
+						me.stopAction('Import Xml');
+						
+						var importXml = this.getState('importXml');
+						
+						var ClassObjectsDBbyFilenameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyFilenameHash");
+						
+						var states = Logic.xml_getAllMStates(importXml, true);
+						
+						var acTargetAsset = ClassObjectsDBbyFilenameHash.get(states.get('target'));
+						
+						//Set AC Target
+						me.getAction('Set New Target').setState('asset',acTargetAsset);
+						me.forceAction('Set New Target');
+						
+						//Set Ac
+						me.getAction('Set New AC').setState('asset',me.getState('ac_asset'));
+						me.forceAction('Set New AC');
+						
+						//Set Parameters
+						me.forceAction('CreateParams');
+						var params = me.getAction('CreateParams').getState('returnParams');
+						
+						var i=1;
+						while (4>=i)
+						{
+							if (states.exists('par' + Std.string(i)))
+							{
+								var param = params[i-1];
+								param.object = states.get('par' + Std.string(i));
+							}
+							i +=1;
+						}
+						
+						me.getAction('Set New Parameters').setState('parameters',params);
+						me.forceAction('Set New Parameters');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
 		</Action>
 	</_Actions>
 </Entity>
