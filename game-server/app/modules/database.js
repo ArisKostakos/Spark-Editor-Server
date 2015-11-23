@@ -103,8 +103,8 @@ var libraryCollectionSchema = mongoose.Schema({
                            //on the editor, we maintain a hash that links file extensions to importTypes, such as [image,spritesheet,spriter,sound,egc,..]
                            //Also, the editor knows how to handle an import type of say image (appropriate dialog, and also what asset to create on the DB, and what tags, etc..)
     //on drag to stage creation
-    baseClass: {type: Schema.Types.ObjectId, ref: 'Asset'}, // the base class extended when added to stage
-    behaviors: [{type: Schema.Types.ObjectId, ref: 'Asset'}], // (a list of behavior components that will be added automatically when thingie added to stage
+    baseClass: String, //{type: Schema.Types.ObjectId, ref: 'Asset'}, // the base class extended when added to stage
+    behaviors: [String], //[{type: Schema.Types.ObjectId, ref: 'Asset'}], // (a list of behavior components that will be added automatically when thingie added to stage
     //display
     tileWidth: Number, //64
     tileHeight: Number, //64
