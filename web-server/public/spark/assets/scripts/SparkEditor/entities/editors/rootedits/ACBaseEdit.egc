@@ -17,6 +17,8 @@
 		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
 	
 		<State><Id>wizardInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
+	
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
 	</_States>
 	
 	<_Form>
@@ -59,9 +61,79 @@
 				</Script>
 			</Scripts>
 		</Trigger>
+	
+		<Trigger>
+			<Event>MouseRightClick</Event>
+			<Scripts>
+				<Script>
+					function createContextNode(nodeName,nodeType,parentNode)
+					{
+						var node = {};
+						node.name=nodeName;
+						node.children = [];
+						node.type=nodeType;
+						parentNode.children.push(node);
+						
+						return node;
+					}
+					
+					var mainList = {};
+					mainList.children = [];
+					
+					createContextNode("Delete","Delete",mainList);
+					
+					var mousePosX = Input.pointer.currentX;
+					var mousePosY = Input.pointer.currentY;
+					
+					
+					//Open Popup [CHOOSE AC]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+					popUpAction.setState('popupPosX',mousePosX);
+					popUpAction.setState('popupPosY',mousePosY);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Ac Object Context Menu');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 	
 	<_Actions>
+		<!-- Callback: Ac Object Context Menu -->
+		<Action>
+			<Id>Callback: Ac Object Context Menu</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						if (cb_Arg1.type=="Delete")
+						{
+							parent.removeChild(me);
+							
+							me.getState('parentEvent').startAction('AC removed');
+						}
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
 		<Action>
 			<Id>StartWizard</Id>
 			<Concurrency>Persistent</Concurrency>

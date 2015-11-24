@@ -109,6 +109,13 @@
 						
 						var editChild = Logic.gameFactory.createGameEntityByXml(tempEntityChildXml);
 						
+						//CORRECTIONS for EDITOR
+						if (editChild.getState('visible')==false)
+						{
+							editChild.setState('visible',true);
+							editChild.setState('sprite2DVisibility',false);
+						}
+						
 						//EventsCount += 1;
 						//eventEdit.setState('EventId',EventsCount);
 						

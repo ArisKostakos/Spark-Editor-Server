@@ -245,7 +245,40 @@
 				</Script>
 			</Scripts>
 		</Action>
-
+		
+		<Action>
+			<Id>AC removed</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var counter = this.getState('counter');
+					if (counter==0)
+					{
+						if (me.getState('conditionsContainer').getChildren().length==0)
+						{
+							Display.error("REMOVING EVENT!!!!");
+							parent.removeChild(me);
+						}
+						//var item = this.getState('item');
+						
+						//me.removeChild(item);
+						counter+=1;
+					}
+					else if (counter==1) //Apparently, for this to work we need to do two invalidations, otherwise the Done Button gets left behind
+					{
+						me.stopAction('AC removed');
+						counter=0;
+					}
+					
+					Display.invalidateLayout();
+					this.setState('counter',counter);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
 		<Action>
 			<Id>Create New Condition</Id>
 			<Concurrency>Persistent</Concurrency>

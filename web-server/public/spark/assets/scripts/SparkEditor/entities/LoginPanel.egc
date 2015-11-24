@@ -386,6 +386,8 @@
 						{
 							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
 							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
+							
+							Logic.getEntityByName('Spark Editor').setState('developerAsset',data.developer);
 						}
 						else if (data.code=="nomatch")
 						{

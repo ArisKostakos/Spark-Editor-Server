@@ -13,6 +13,9 @@
 		<State><Id>BehaviorAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>null</Value></State>
 	
 		<State><Id>InheritanceHashByName</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Only for Class Objects? -->
+		<State><Id>StatesHashByName</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Only for Class Objects? -->
+	
+		<State><Id>tempIncludeAssets</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -30,41 +33,99 @@
 					me.setState('BehaviorAssetsDBbyTargets',new StringMap());
 					
 					me.setState('InheritanceHashByName',new StringMap());
+					me.setState('StatesHashByName',new StringMap());
 				</Script>
 			</_Scripts>
 		</_Action>
 
 		<Action>
-			<Id>RegisterInheritance</Id>
+			<Id>RegisterInheritanceMany</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					me.stopAction('RegisterInheritanceMany');
+					
+					for (classObject in this.getState('assets'))
+					{
+						me.getAction('RegisterInheritance').setState('asset',classObject);
+						me.forceAction('RegisterInheritance');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+			
+		<Action>
+			<Id>RegisterInheritance</Id> <!-- And States.. -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					function parseGameEntityFile(fileName, mapEntry, root)
+					{
+						//The Parsing here can be optimized by storing the parses somewhere, and checking there first
+						Display.error("Parsing: " + fileName);
+						
+						var asset_xml = Xml.parse(Assets.getFile(fileName).toString()).firstElement();
+						
+						//Store Main Extends
+						if (asset_xml.exists('extends'))
+						{
+							var extendFileId = asset_xml.get('extends');
+							mapEntry.set(extendFileId,false); //false means, NOT a behavior
+							
+							parseGameEntityFile(StringTools.replace(extendFileId,".","/") + ".egc", mapEntry, false);
+						}
+						
+						
+						
+						
+						//Store Extends Classes (Behaviors)
+						var extendEntities = Logic.xml_entity_getExtendsEntityNames(asset_xml);
+						for (extendEntity in extendEntities)
+						{
+							mapEntry.set(extendEntity,root); //true means, it's a behavior
+							parseGameEntityFile(StringTools.replace(extendEntity,".","/") + ".egc", mapEntry, false);
+						}
+					}
+					
 					//forced
 					
 					me.stopAction('RegisterInheritance'); //sometimes forced, sometimes not. (mixed)
 					
-					//Get Stuff
-					var InheritanceHashByName = me.getState('InheritanceHashByName');
+					//Get Asset
 					var asset = this.getState('asset');
-					Display.error("DOING SOME HASHING FOR: " + asset.name);
-					//Create New Entry (if previous exists, ditch it)
-					var mapEntry = new StringMap();
-					InheritanceHashByName.set(asset.name,mapEntry);
 					
 					
 					//Get the asset's xml
 					var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-					var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
 					
-					//Store Main Extends
-					mapEntry.set(asset_xml.get('extends'),true);
 					
-					//Store Extends Classes (Behaviors)
-					var extendEntities = Logic.xml_entity_getExtendsEntityNames(asset_xml);
-					for (extendEntity in extendEntities)
+					//DEEP INHERITANCE
+					var InheritanceHashByName = me.getState('InheritanceHashByName');
+					
+					//Create New Entry (if previous exists, ditch it)
+					var mapEntry = new StringMap();
+					InheritanceHashByName.set(asset.name,mapEntry);
+					
+					//Recursive Parse
+					parseGameEntityFile(assetId,mapEntry,true);
+					
+					
+					//LOG
+					Display.error("Asset: " + asset.name);
+					for (dep_entry in mapEntry.keys())
 					{
-						mapEntry.set(extendEntity,true);
+						Display.error("Dependancy: " + dep_entry + ", isBehavior: " + mapEntry.get(dep_entry));
 					}
+					
+					//SHALLOW STATES
+					var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement(); //Re-parse (ouch..)
+					var StatesHashByName = me.getState('StatesHashByName');
+					//Create New Entry (if previous exists, ditch it)
+					var statesMapEntry = Logic.xml_getAllStates(asset_xml,true); //Store States
+					StatesHashByName.set(asset.name,statesMapEntry);
 				</Script>
 			</Scripts>
 			<States>
@@ -234,11 +295,21 @@
 						{
 							Display.error('Requesting ACE Assets success!');
 							
-							//Before we get started with ACE, do some Inheritance Hashing on the main class modules (now that they have been flambe loaded)
+							//Store them for later
+							me.setState('tempIncludeAssets',data.assets);
+							
+							
 							for (classObject in me.getState('ClassObjectsDBbyNameHash'))
 							{
-								me.getAction('RegisterInheritance').setState('asset',classObject);
-								me.forceAction('RegisterInheritance');
+								//While we're here, also add Project Items
+								var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
+								if (classObject.componentType=="Project" || classObject.componentType=="Object Class")
+								{
+									//Add it to project panel( ehh)
+									projectPanelContainer.getAction('AddClassAssetDB').setState('asset',classObject);
+									projectPanelContainer.forceAction('AddClassAssetDB');
+								}
+								
 							}
 							
 							
@@ -283,11 +354,15 @@
 										aceHashByTarget = me.getState('BehaviorAssetsDBbyTargets');
 									}
 									
-									//Insert asset
-									if (aceHashByTarget.exists(asset.tags[2])==false)
-										aceHashByTarget.set(asset.tags[2],[]);
-										
-									aceHashByTarget.get(asset.tags[2]).push(asset); //only 1 target supported for now
+									//If script is ace object (and not Class)
+									if (aceHashByTarget!=null)
+									{
+										//Insert asset
+										if (aceHashByTarget.exists(asset.tags[2])==false)
+											aceHashByTarget.set(asset.tags[2],[]);
+											
+										aceHashByTarget.get(asset.tags[2]).push(asset); //only 1 target supported for now
+									}
 								}
 								
 								
@@ -311,6 +386,8 @@
 							//var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
 							//Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
 							
+							var oldMe = me;
+							
 							//Event Listener
 							Assets.successSignal.connect(function () {
 							
@@ -325,6 +402,9 @@
 								//Get Library Collections for this project
 								Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
 								
+								//Do some Inheritance Hashing on the main class modules (now that everything has been flambe loaded)
+								oldMe.getAction('RegisterInheritanceMany').setState('assets',oldMe.getState('ClassObjectsDBbyNameHash'));
+								oldMe.startAction('RegisterInheritanceMany');
 							}).once();
 							
 							if (data.assets.length>0)
@@ -386,7 +466,7 @@
 								libraryCollectionPanel.setState('tileHeight',libraryCollection.tileHeight);
 								libraryCollectionPanel.setState('tileUploadingImageName',libraryCollection.iconName);
 								libraryCollectionPanel.setState('tileUploadingBorderColor',libraryCollection.titleColor);
-								//myNewItem.setState('asset',asset); //asset or panel object
+								libraryCollectionPanel.setState('libraryObjectDB',libraryCollection); //asset
 								libraryCollectionPanelsContainer.addChild(libraryCollectionPanel);
 								
 								//Register In hash
@@ -431,12 +511,15 @@
 						{
 							Display.error('Distribute Assets to Library Collections success!');
 							
-							if (data.assets.length>0)
+							//Add old and new arrays together
+							var arraySum = data.assets.concat(me.getState('tempIncludeAssets'));
+							
+							if (arraySum.length>0)
 							{
 								//Send it to Library Collections
 								var libraryCollections = Logic.getEntityByName('Editor Library Collections');
 								
-								libraryCollections.getAction('ImportRequestAssetsDb').setState('assets', data.assets);
+								libraryCollections.getAction('ImportRequestAssetsDb').setState('assets', arraySum);
 								libraryCollections.startAction('ImportRequestAssetsDb');
 							}
 							else

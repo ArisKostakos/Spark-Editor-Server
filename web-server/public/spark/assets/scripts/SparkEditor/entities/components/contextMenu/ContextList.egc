@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.display.Div">
 	<_States>
-		<_State id="backgroundColor"><Value>rgb(52, 69, 89)</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(41, 57, 75)</Value></_State>
 		<_State id="display"><Value>none</Value></_State>
 		<_State id="layout"><Value>Vertical</Value></_State>
-		<_State id="gap"><Value>0</Value></_State>
+		<_State id="gap"><Value>1</Value></_State>
+		<_State id="paddingLeft"><Value>1</Value></_State>
+		<_State id="paddingRight"><Value>1</Value></_State>
+		<_State id="paddingTop"><Value>1</Value></_State>
+		<_State id="paddingBottom"><Value>1</Value></_State>
 		<State><Id>targetLayerName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>data</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>posXOffset</Id><Type>Decimal</Type><Value>0</Value></State>
@@ -14,7 +18,6 @@
 		<State><Id>ContextItemObjects</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>parentPopUp</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<_State id="preventDefaultEvents"><Value>true</Value></_State>
-		<_State id="border"><Value>1px solid rgb(41, 57, 75)</Value></_State>
 	</_States>
 		
 	<_Actions>
@@ -50,8 +53,8 @@
 						myNewItem.setState('caption', child.name);
 						myNewItem.setState('width', Std.string(me.getState('childWidth')));
 						myNewItem.setState('height', Std.string(me.getState('childHeight')));
-						myNewItem.setState('posXOffset', me.getState('posXOffset')+me.getState('childWidth'));
-						myNewItem.setState('posYOffset', me.getState('posYOffset')+me.getState('childHeight')*i);
+						myNewItem.setState('posXOffset', me.getState('posXOffset')+me.getState('childWidth')+1);
+						myNewItem.setState('posYOffset', me.getState('posYOffset')+(me.getState('childHeight')+1)*i);
 						me.addChild(myNewItem);
 						ContextItemObjects.push(myNewItem);
 						i += 1;

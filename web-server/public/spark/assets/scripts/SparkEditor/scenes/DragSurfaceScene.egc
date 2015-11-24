@@ -6,6 +6,7 @@
 			<Value>Drag Surface Scene</Value>
 		</_State>
 		<State><Id>assetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>libraryOfAssetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<Form>
@@ -58,6 +59,7 @@
 									
 									//Get the Asset & stuff
 									var asset = parent.getState('assetBeingDragged');
+									var assetLibrary = parent.getState('libraryOfAssetBeingDragged');
 									//var componentType = assetBeingDragged.componentType;
 									
 									Display.error('Dropping: ' + asset.name);
@@ -77,7 +79,13 @@
 									
 									//let's name it
 									//var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
-									var newClassName = "Sprite_" + Std.string(classObjectsCount); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									
+									var newClassName;
+									if (asset.componentType=="Class")
+										newClassName = asset.tags[1] + "_" + Std.string(classObjectsCount); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									else if (asset.componentType=="Image")
+										newClassName = "Sprite_" + Std.string(classObjectsCount); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+									
 									scene.setState('classObjectsCount',classObjectsCount);
 									
 									//check how i add things now.. plan how i'll do it differently
@@ -85,58 +93,37 @@
 									//create new xml based on library collection
 									var newXml = Xml.createDocument();
 									
-									var entityXml = Xml.createElement('Entity');
-									entityXml.set('extends' , 'std.display.Image2D'); //this should be replaced by the base class of the library collection used to drag the item
 									
-									var extendsXml = Xml.createElement('Extends');
-									
-									var statesXml = Xml.createElement('_States');
-									
-									//State Name
-									var stateName_Xml = Xml.createElement('_State');
-									stateName_Xml.set('id', 'name');
-									var stateName_ValueXml = Xml.createElement('Value');
-									stateName_ValueXml.addChild(Xml.createPCData(newClassName));
-									
-									//State Touchable
-									var stateTouchable_Xml = Xml.createElement('_State');
-									stateTouchable_Xml.set('id', 'touchable');
-									var stateTouchable_ValueXml = Xml.createElement('Value');
-									stateTouchable_ValueXml.addChild(Xml.createPCData('true'));
-									
-									//2d mesh image form
-									var stateMesh_Xml = Xml.createElement('_State');
-									stateMesh_Xml.set('id', '2DMeshImageForm');
-									var stateMesh_ValueXml = Xml.createElement('Value');
-									stateMesh_ValueXml.addChild(Xml.createPCData("ImageUrl"));
-									
-									var formXml = Xml.createElement('_Form');
-									var formStatesXml = Xml.createElement('_States');
-									var formStateXml = Xml.createElement('State');
-									var formStateIdXml = Xml.createElement('Id');
-									formStateIdXml.addChild(Xml.createPCData('ImageUrl'));
-									var formStateTypeXml = Xml.createElement('Type');
-									formStateTypeXml.addChild(Xml.createPCData('Text'));
-									var formStateValueXml = Xml.createElement('Value');
-									formStateValueXml.addChild(Xml.createPCData('image_' + asset.name));
-									
-									newXml.addChild(entityXml);
-									entityXml.addChild(extendsXml);
-									entityXml.addChild(statesXml);
-										statesXml.addChild(stateName_Xml);
-											stateName_Xml.addChild(stateName_ValueXml);
-										statesXml.addChild(stateTouchable_Xml);
-											stateTouchable_Xml.addChild(stateTouchable_ValueXml);
-										statesXml.addChild(stateMesh_Xml);
-											stateMesh_Xml.addChild(stateMesh_ValueXml);
-											
-									entityXml.addChild(formXml);
-										formXml.addChild(formStatesXml);
-											formStatesXml.addChild(formStateXml);
-												formStateXml.addChild(formStateIdXml);
-												formStateXml.addChild(formStateTypeXml);
-												formStateXml.addChild(formStateValueXml);
-									
+									if (asset.componentType=="Class")
+									{
+										//Get Class egc file
+										var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+										var entityXml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+										newXml.addChild(entityXml);
+										
+										entityXml.addChild(Logic.xml_createElement("Extends"));
+										
+										//Add States
+										Logic.xml_entity_addMState(entityXml, {id:"name", value: newClassName },true);
+									}
+									else if (asset.componentType=="Image")
+									{
+										//Create entityXml
+										var entityXml = Logic.xml_createElementAttr('Entity','extends', assetLibrary.baseClass );
+										newXml.addChild(entityXml);
+										
+										entityXml.addChild(Logic.xml_createElement("Extends"));
+										
+										//Add States
+										Logic.xml_entity_addMState(entityXml, {id:"name", value: newClassName },true);
+										Logic.xml_entity_addMState(entityXml, {id:"touchable", value: 'true' },true);
+										
+										if (assetLibrary.baseClass=="std.display.Image2D")
+										{
+											Logic.xml_entity_addMState(entityXml, {id:"2DMeshImageForm", value: 'ImageUrl' },true);
+											Logic.xml_entity_addFormState(entityXml, {id: 'ImageUrl', type: 'Text', value: 'image_' + asset.name}, true, true);
+										}
+									}
 									
 									
 									var finalString = Logic.xmlToString(newXml);
@@ -223,11 +210,10 @@
 											//Initiate Load
 											Assets.initiateBatch();
 											
+											var assetReferences = [];
 											
-											//Flambe Load Image Asset
-											////this should be determined by the base class of the library collection used to drag the item
-											//for now it always assumes Image
-											//maybe, don't always load the texture, if it's already loaded..
+											var assetBeingDragged = parent.getState('assetBeingDragged');
+											
 											
 											//Flambe Load Object Class egc
 											var asset = data.asset;
@@ -235,27 +221,41 @@
 											var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
 											Assets.addFile(assetUrl, assetId);
 											me.setState('temp_newAsset',asset);
-											//Display.error("**" + assetUrl);
-											//Display.error("**" + assetId);
+											
+											assetReferences.push(asset._id);
 											
 											
-											//The Image Asset
-											var asset2 = parent.getState('assetBeingDragged');
-											var assetUrl2 = '/assets/' + connectedUserName + '/' + asset2.type + '/' + asset2.dir + '/' + asset2.fileName + '.' + asset2.fileExtension;
-											var assetId2 = 'image_' + asset2.name;
-											Assets.addFile(assetUrl2, assetId2);
+											
+											//Flambe Load Image Asset
+											//maybe, don't always load the texture, if it's already loaded..
+											if (assetBeingDragged.componentType=="Image")
+											{
+												//The Dragged Asset (Image, Text.egc, etc)
+												var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + assetBeingDragged.type + '/' + assetBeingDragged.dir + '/' + assetBeingDragged.fileName + '.' + assetBeingDragged.fileExtension;
+												var assetBeingDraggedId = 'image_' + assetBeingDragged.name;
+												Assets.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
+												
+												assetReferences.push(assetBeingDragged._id);
+											}
 											
 											
-											Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id, asset2._id]}, "whatever dude...");
+											
+											
+											
+											Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: assetReferences}, "whatever dude...");
 											
 											//Hash the newly created Asset
 											//These may fit better inside the 'whatever dude' callback...
 											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
-											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset2._id,asset2);
 											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
-											Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset2.name,asset2);
 											Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
 											Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
+											
+											if (assetBeingDragged.componentType=="Image")
+											{
+												Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(assetBeingDragged.name,assetBeingDragged);
+												Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(assetBeingDragged._id,assetBeingDragged);
+											}
 											//Display.error("**************************YOYOYOYOYO*****************");
 											
 											var oldMe = me;
@@ -288,6 +288,11 @@
 												//Do some more hashing (needs asset to be flambe loaded to work, this one...)
 												Logic.getEntityByName('Project Editor').getAction('RegisterInheritance').setState('asset',asset);
 												Logic.getEntityByName('Project Editor').startAction('RegisterInheritance');
+												
+												//Add it to project panel( ehh)
+												var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
+												projectPanelContainer.getAction('AddClassAssetDB').setState('asset',asset);
+												projectPanelContainer.startAction('AddClassAssetDB');
 												
 												//add it as child
 												scene.addChild(editChild);

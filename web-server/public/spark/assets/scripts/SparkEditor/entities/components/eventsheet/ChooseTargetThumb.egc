@@ -68,7 +68,6 @@
 			<Event>MouseEntered</Event>
 			<Scripts>
 				<Script>
-					Display.error("MOUSE OVER");
 					me.getState('MouseOverObject').setState('display','inline');
 				</Script>
 			</Scripts>
@@ -78,7 +77,6 @@
 			<Event>MouseLeft</Event>
 			<Scripts>
 				<Script>
-					Display.error("MOUSE OUT");
 					me.getState('MouseOverObject').setState('display','none');
 				</Script>
 			</Scripts>

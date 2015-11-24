@@ -9,15 +9,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="std.display.Text"><_States>
-					<_State id="text"><Value>Project</Value></_State>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>49</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>22px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-				</_States></Entity>
+				<Entity extends="SparkEditor.entities.project.EditorProjectPanelContainer"/>
 			</Entities>
 		</Space>
 	</Form>

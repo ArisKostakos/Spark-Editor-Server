@@ -27,5 +27,12 @@
 		<_State id="NCmeshType">
 			<Value>Input</Value>
 		</_State>
+			
+		<_State id="backgroundColor"><Value>rgb(83, 98, 115)</Value></_State>
+		<_State id="border"><Value>0px</Value></_State>
+		<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+		<_State id="fontSize"><Value>16px</Value></_State>
+		<_State id="fontColor"><Value>white</Value></_State>
+		<_State id="textIndent"><Value>2px</Value></_State>
 	</_States>
 </Entity>

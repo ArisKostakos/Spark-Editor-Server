@@ -13,6 +13,7 @@
 		<State><Id>tileHeight</Id><Type>Integer</Type><Value>50</Value></State>
 		<State><Id>tileUploadingImageName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>tileUploadingBorderColor</Id><Type>Text</Type><Value>black</Value></State>
+		<State><Id>libraryObjectDB</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -37,10 +38,21 @@
 						
 						var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.library.EditorLibraryItem');
 						
+						if (asset.componentType=="Image")
+						{
+							newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+						}
+						else if (asset.componentType=="Class")
+						{
+							newItem.setState('caption',asset.title);
+							newItem.setState('skinType','imageAndText');
+							newItem.setState('imageName',"thumb_" + asset.tags[1]);
+						}
+						
 						newItem.setState('width',Std.string(me.getState('tileWidth')));
 						newItem.setState('height',Std.string(me.getState('tileHeight')));
-						newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
 						newItem.setState('asset',asset);
+						newItem.setState('libraryObjectDB',me.getState('libraryObjectDB'));
 						//newItem.setState('name',asset.name);
 						
 						
@@ -81,6 +93,8 @@
 					newItem.setState('componentType',componentType);
 					newItem.setState('assetType',assetType);
 					newItem.setState('tags',tags);
+					
+					newItem.setState('libraryObjectDB',me.getState('libraryObjectDB'));
 					
 					containerPanel.addChild(newItem);
 					

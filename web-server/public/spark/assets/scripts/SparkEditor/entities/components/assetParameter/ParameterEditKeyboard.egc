@@ -10,8 +10,8 @@
 				<!-- Button -->
 				<Entity extends="std.display.Button"><_States>
 					<_State id="width"><Value>200</Value></_State>
-					<_State id="height"><Value>100%</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(231,47,87)</Value></_State>
+					<_State id="height"><Value>80%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(83, 98, 115)</Value></_State>
 					<_State id="layout"><Value>Horizontal</Value></_State>
 					<_State id="verticalAlign"><Value>middle</Value></_State>
 					<State><Id>btnTextObj</Id><Type>Dynamic</Type><Value>null</Value></State>

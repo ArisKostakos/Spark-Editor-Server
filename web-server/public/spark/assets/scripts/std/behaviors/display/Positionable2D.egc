@@ -40,5 +40,11 @@
 		<_State id="coordinateSystem">
 			<Value>2D</Value>
 		</_State>
+			
+		<State>
+			<Id>command_zOrder</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
 	</_States>
 </Entity>

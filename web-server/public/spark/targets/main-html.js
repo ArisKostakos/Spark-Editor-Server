@@ -19,6 +19,13 @@ EReg.prototype = {
 		this.r.s = s;
 		return this.r.m != null;
 	}
+	,matched: function(n) {
+		if(this.r.m != null && n >= 0 && n < this.r.m.length) return this.r.m[n]; else throw new js__$Boot_HaxeError("EReg::matched");
+	}
+	,matchedPos: function() {
+		if(this.r.m == null) throw new js__$Boot_HaxeError("No string matched");
+		return { pos : this.r.m.index, len : this.r.m[0].length};
+	}
 	,replace: function(s,by) {
 		return s.replace(this.r,by);
 	}
@@ -518,6 +525,7 @@ flambe_Component.prototype = {
 	,__properties__: {get_name:"get_name"}
 };
 var flambe_Entity = function() {
+	this.zOrder = 0;
 	this.firstComponent = null;
 	this.next = null;
 	this.firstChild = null;
@@ -574,7 +582,7 @@ flambe_Entity.prototype = {
 	,getComponent: function(name) {
 		return this._compMap[name];
 	}
-	,addChild: function(entity,append) {
+	,addChild: function(entity,append,zOrder) {
 		if(append == null) append = true;
 		if(entity.parent != null) entity.parent.removeChild(entity);
 		entity.parent = this;
@@ -585,12 +593,42 @@ flambe_Entity.prototype = {
 				tail = p;
 				p = p.next;
 			}
-			if(tail != null) tail.next = entity; else this.firstChild = entity;
+			if(tail != null) {
+				if(zOrder == null) zOrder = tail.zOrder;
+				if(tail.zOrder <= zOrder) tail.next = entity; else {
+					var p1 = this.firstChild;
+					var pre = null;
+					while(p1 != null) if(p1.zOrder > zOrder) {
+						if(pre != null) {
+							pre.next = entity;
+							entity.next = p1;
+						} else {
+							entity.next = this.firstChild;
+							this.firstChild = entity;
+						}
+						break;
+					} else {
+						pre = p1;
+						p1 = p1.next;
+					}
+				}
+			} else {
+				this.firstChild = entity;
+				if(zOrder == null) zOrder = 0;
+			}
 		} else {
+			if(this.firstChild == null) zOrder = 0; else zOrder = this.firstChild.zOrder - 1;
 			entity.next = this.firstChild;
 			this.firstChild = entity;
 		}
+		entity.zOrder = zOrder;
 		return this;
+	}
+	,setZOrder: function(z) {
+		if(this.zOrder == z) return; else {
+			this.zOrder = z;
+			this.parent.addChild(this,true,this.zOrder);
+		}
 	}
 	,removeChild: function(entity) {
 		var prev = null;
@@ -1224,6 +1262,7 @@ flambe_asset_Asset.__name__ = true;
 flambe_asset_Asset.__interfaces__ = [flambe_util_Disposable];
 flambe_asset_Asset.prototype = {
 	__class__: flambe_asset_Asset
+	,__properties__: {get_reloadCount:"get_reloadCount"}
 };
 var flambe_asset_AssetFormat = $hxClasses["flambe.asset.AssetFormat"] = { __ename__ : true, __constructs__ : ["WEBP","JXR","PNG","JPG","GIF","DDS","PVR","PKM","MP3","M4A","OPUS","OGG","WAV","Data"] };
 flambe_asset_AssetFormat.WEBP = ["WEBP",0];
@@ -1756,6 +1795,354 @@ flambe_display_FillSprite.prototype = $extend(flambe_display_Sprite.prototype,{
 	}
 	,__class__: flambe_display_FillSprite
 });
+var flambe_display_Glyph = function(charCode) {
+	this._kernings = null;
+	this.xAdvance = 0;
+	this.yOffset = 0;
+	this.xOffset = 0;
+	this.page = null;
+	this.height = 0;
+	this.width = 0;
+	this.y = 0;
+	this.x = 0;
+	this.charCode = charCode;
+};
+$hxClasses["flambe.display.Glyph"] = flambe_display_Glyph;
+flambe_display_Glyph.__name__ = true;
+flambe_display_Glyph.prototype = {
+	draw: function(g,destX,destY) {
+		if(this.width > 0) g.drawSubTexture(this.page,destX + this.xOffset,destY + this.yOffset,this.x,this.y,this.width,this.height);
+	}
+	,getKerning: function(nextCharCode) {
+		if(this._kernings != null) return Std["int"](this._kernings.get(nextCharCode)); else return 0;
+	}
+	,setKerning: function(nextCharCode,amount) {
+		if(this._kernings == null) this._kernings = new haxe_ds_IntMap();
+		this._kernings.set(nextCharCode,amount);
+	}
+	,__class__: flambe_display_Glyph
+};
+var flambe_display_Font = function(pack,name) {
+	this.name = name;
+	this._pack = pack;
+	this._file = pack.getFile(name + ".fnt");
+	this.reload();
+	this._lastReloadCount = this._file.get_reloadCount().get__();
+};
+$hxClasses["flambe.display.Font"] = flambe_display_Font;
+flambe_display_Font.__name__ = true;
+flambe_display_Font.prototype = {
+	layoutText: function(text,align,wrapWidth,letterSpacing,lineSpacing) {
+		if(lineSpacing == null) lineSpacing = 0;
+		if(letterSpacing == null) letterSpacing = 0;
+		if(wrapWidth == null) wrapWidth = 0;
+		if(align == null) align = flambe_display_TextAlign.Left;
+		return new flambe_display_TextLayout(this,text,align,wrapWidth,letterSpacing,lineSpacing);
+	}
+	,getGlyph: function(charCode) {
+		return this._glyphs.get(charCode);
+	}
+	,checkReload: function() {
+		var reloadCount = this._file.get_reloadCount().get__();
+		if(this._lastReloadCount != reloadCount) {
+			this._lastReloadCount = reloadCount;
+			this.reload();
+		}
+		return reloadCount;
+	}
+	,reload: function() {
+		this._glyphs = new haxe_ds_IntMap();
+		this._glyphs.set(flambe_display_Font.NEWLINE.charCode,flambe_display_Font.NEWLINE);
+		var parser = new flambe_display__$Font_ConfigParser(this._file.toString());
+		var pages = new haxe_ds_IntMap();
+		var idx = this.name.lastIndexOf("/");
+		var basePath;
+		if(idx >= 0) basePath = HxOverrides.substr(this.name,0,idx + 1); else basePath = "";
+		var $it0 = parser.keywords();
+		while( $it0.hasNext() ) {
+			var keyword = $it0.next();
+			switch(keyword) {
+			case "info":
+				var $it1 = parser.pairs();
+				while( $it1.hasNext() ) {
+					var pair = $it1.next();
+					var _g = pair.key;
+					switch(_g) {
+					case "size":
+						this.size = pair.getInt();
+						break;
+					}
+				}
+				break;
+			case "common":
+				var $it2 = parser.pairs();
+				while( $it2.hasNext() ) {
+					var pair1 = $it2.next();
+					var _g1 = pair1.key;
+					switch(_g1) {
+					case "lineHeight":
+						this.lineHeight = pair1.getInt();
+						break;
+					}
+				}
+				break;
+			case "page":
+				var pageId = 0;
+				var file = null;
+				var $it3 = parser.pairs();
+				while( $it3.hasNext() ) {
+					var pair2 = $it3.next();
+					var _g2 = pair2.key;
+					switch(_g2) {
+					case "id":
+						pageId = pair2.getInt();
+						break;
+					case "file":
+						file = pair2.getString();
+						break;
+					}
+				}
+				var value = this._pack.getTexture(basePath + flambe_util_Strings.removeFileExtension(file));
+				pages.set(pageId,value);
+				break;
+			case "char":
+				var glyph = null;
+				var $it4 = parser.pairs();
+				while( $it4.hasNext() ) {
+					var pair3 = $it4.next();
+					var _g3 = pair3.key;
+					switch(_g3) {
+					case "id":
+						glyph = new flambe_display_Glyph(pair3.getInt());
+						break;
+					case "x":
+						glyph.x = pair3.getInt();
+						break;
+					case "y":
+						glyph.y = pair3.getInt();
+						break;
+					case "width":
+						glyph.width = pair3.getInt();
+						break;
+					case "height":
+						glyph.height = pair3.getInt();
+						break;
+					case "page":
+						var key = pair3.getInt();
+						glyph.page = pages.get(key);
+						break;
+					case "xoffset":
+						glyph.xOffset = pair3.getInt();
+						break;
+					case "yoffset":
+						glyph.yOffset = pair3.getInt();
+						break;
+					case "xadvance":
+						glyph.xAdvance = pair3.getInt();
+						break;
+					}
+				}
+				this._glyphs.set(glyph.charCode,glyph);
+				break;
+			case "kerning":
+				var first = null;
+				var second = 0;
+				var amount = 0;
+				var $it5 = parser.pairs();
+				while( $it5.hasNext() ) {
+					var pair4 = $it5.next();
+					var _g4 = pair4.key;
+					switch(_g4) {
+					case "first":
+						var key1 = pair4.getInt();
+						first = this._glyphs.get(key1);
+						break;
+					case "second":
+						second = pair4.getInt();
+						break;
+					case "amount":
+						amount = pair4.getInt();
+						break;
+					}
+				}
+				if(first != null && amount != 0) first.setKerning(second,amount);
+				break;
+			}
+		}
+	}
+	,__class__: flambe_display_Font
+};
+var flambe_display_TextAlign = $hxClasses["flambe.display.TextAlign"] = { __ename__ : true, __constructs__ : ["Left","Center","Right"] };
+flambe_display_TextAlign.Left = ["Left",0];
+flambe_display_TextAlign.Left.toString = $estr;
+flambe_display_TextAlign.Left.__enum__ = flambe_display_TextAlign;
+flambe_display_TextAlign.Center = ["Center",1];
+flambe_display_TextAlign.Center.toString = $estr;
+flambe_display_TextAlign.Center.__enum__ = flambe_display_TextAlign;
+flambe_display_TextAlign.Right = ["Right",2];
+flambe_display_TextAlign.Right.toString = $estr;
+flambe_display_TextAlign.Right.__enum__ = flambe_display_TextAlign;
+flambe_display_TextAlign.__empty_constructs__ = [flambe_display_TextAlign.Left,flambe_display_TextAlign.Center,flambe_display_TextAlign.Right];
+var flambe_display_TextLayout = function(font,text,align,wrapWidth,letterSpacing,lineSpacing) {
+	this.lines = 0;
+	var _g = this;
+	this._font = font;
+	this._glyphs = [];
+	this._offsets = [];
+	this._lineOffset = Math.round(font.lineHeight + lineSpacing);
+	this.bounds = new flambe_math_Rectangle();
+	var lineWidths = [];
+	var ll = text.length;
+	var _g1 = 0;
+	while(_g1 < ll) {
+		var ii2 = _g1++;
+		var charCode = StringTools.fastCodeAt(text,ii2);
+		var glyph = font.getGlyph(charCode);
+		if(glyph != null) this._glyphs.push(glyph); else flambe_Log.warn("Requested a missing character from font",["font",font.name,"charCode",charCode]);
+	}
+	var lastSpaceIdx = -1;
+	var lineWidth = 0.0;
+	var lineHeight = 0.0;
+	var newline = font.getGlyph(10);
+	var addLine = function() {
+		_g.bounds.width = flambe_math_FMath.max(_g.bounds.width,lineWidth);
+		_g.bounds.height += lineHeight;
+		lineWidths[_g.lines] = lineWidth;
+		lineWidth = 0;
+		lineHeight = 0;
+		++_g.lines;
+	};
+	var ii = 0;
+	while(ii < this._glyphs.length) {
+		var glyph1 = this._glyphs[ii];
+		this._offsets[ii] = Math.round(lineWidth);
+		var wordWrap = wrapWidth > 0 && lineWidth + glyph1.width > wrapWidth;
+		if(wordWrap || glyph1 == newline) {
+			if(wordWrap) {
+				if(lastSpaceIdx >= 0) {
+					this._glyphs[lastSpaceIdx] = newline;
+					lineWidth = this._offsets[lastSpaceIdx];
+					ii = lastSpaceIdx;
+				} else this._glyphs.splice(ii,0,newline);
+			}
+			lastSpaceIdx = -1;
+			lineHeight = this._lineOffset;
+			addLine();
+		} else {
+			if(glyph1.charCode == 32) lastSpaceIdx = ii;
+			lineWidth += glyph1.xAdvance + letterSpacing;
+			lineHeight = flambe_math_FMath.max(lineHeight,glyph1.height + glyph1.yOffset);
+			if(ii + 1 < this._glyphs.length) {
+				var nextGlyph = this._glyphs[ii + 1];
+				lineWidth += glyph1.getKerning(nextGlyph.charCode);
+			}
+		}
+		++ii;
+	}
+	addLine();
+	var lineY = 0.0;
+	var alignOffset = flambe_display_TextLayout.getAlignOffset(align,lineWidths[0],wrapWidth);
+	var top = 1.79769313486231e+308;
+	var bottom = -1.79769313486231e+308;
+	var line = 0;
+	var ii1 = 0;
+	var ll1 = this._glyphs.length;
+	while(ii1 < ll1) {
+		var glyph2 = this._glyphs[ii1];
+		if(glyph2.charCode == 10) {
+			lineY += this._lineOffset;
+			++line;
+			alignOffset = flambe_display_TextLayout.getAlignOffset(align,lineWidths[line],wrapWidth);
+		}
+		this._offsets[ii1] += alignOffset;
+		var glyphY = lineY + glyph2.yOffset;
+		top = flambe_math_FMath.min(top,glyphY);
+		bottom = flambe_math_FMath.max(bottom,glyphY + glyph2.height);
+		++ii1;
+	}
+	this.bounds.x = flambe_display_TextLayout.getAlignOffset(align,this.bounds.width,wrapWidth);
+	this.bounds.y = top;
+	this.bounds.height = bottom - top;
+};
+$hxClasses["flambe.display.TextLayout"] = flambe_display_TextLayout;
+flambe_display_TextLayout.__name__ = true;
+flambe_display_TextLayout.getAlignOffset = function(align,lineWidth,totalWidth) {
+	switch(Type.enumIndex(align)) {
+	case 0:
+		return 0;
+	case 2:
+		return totalWidth - lineWidth;
+	case 1:
+		return Math.round((totalWidth - lineWidth) / 2);
+	}
+};
+flambe_display_TextLayout.prototype = {
+	draw: function(g) {
+		var y = 0.0;
+		var ii = 0;
+		var ll = this._glyphs.length;
+		while(ii < ll) {
+			var glyph = this._glyphs[ii];
+			if(glyph.charCode == 10) y += this._lineOffset; else {
+				var x = this._offsets[ii];
+				glyph.draw(g,x,y);
+			}
+			++ii;
+		}
+	}
+	,__class__: flambe_display_TextLayout
+};
+var flambe_display__$Font_ConfigParser = function(config) {
+	this._configText = config;
+	this._keywordPattern = new EReg("([A-Za-z]+)(.*)","");
+	this._pairPattern = new EReg("([A-Za-z]+)=(\"[^\"]*\"|[^\\s]+)","");
+};
+$hxClasses["flambe.display._Font.ConfigParser"] = flambe_display__$Font_ConfigParser;
+flambe_display__$Font_ConfigParser.__name__ = true;
+flambe_display__$Font_ConfigParser.advance = function(text,expr) {
+	var m = expr.matchedPos();
+	return HxOverrides.substr(text,m.pos + m.len,text.length);
+};
+flambe_display__$Font_ConfigParser.prototype = {
+	keywords: function() {
+		var _g = this;
+		var text = this._configText;
+		return { next : function() {
+			text = flambe_display__$Font_ConfigParser.advance(text,_g._keywordPattern);
+			_g._pairText = _g._keywordPattern.matched(2);
+			return _g._keywordPattern.matched(1);
+		}, hasNext : function() {
+			return _g._keywordPattern.match(text);
+		}};
+	}
+	,pairs: function() {
+		var _g = this;
+		var text = this._pairText;
+		return { next : function() {
+			text = flambe_display__$Font_ConfigParser.advance(text,_g._pairPattern);
+			return new flambe_display__$Font_ConfigPair(_g._pairPattern.matched(1),_g._pairPattern.matched(2));
+		}, hasNext : function() {
+			return _g._pairPattern.match(text);
+		}};
+	}
+	,__class__: flambe_display__$Font_ConfigParser
+};
+var flambe_display__$Font_ConfigPair = function(key,value) {
+	this.key = key;
+	this._value = value;
+};
+$hxClasses["flambe.display._Font.ConfigPair"] = flambe_display__$Font_ConfigPair;
+flambe_display__$Font_ConfigPair.__name__ = true;
+flambe_display__$Font_ConfigPair.prototype = {
+	getInt: function() {
+		return Std.parseInt(this._value);
+	}
+	,getString: function() {
+		if(StringTools.fastCodeAt(this._value,0) != 34) return null;
+		return HxOverrides.substr(this._value,1,this._value.length - 2);
+	}
+	,__class__: flambe_display__$Font_ConfigPair
+};
 var flambe_display_Graphics = function() { };
 $hxClasses["flambe.display.Graphics"] = flambe_display_Graphics;
 flambe_display_Graphics.__name__ = true;
@@ -1801,6 +2188,68 @@ var flambe_display_SubTexture = function() { };
 $hxClasses["flambe.display.SubTexture"] = flambe_display_SubTexture;
 flambe_display_SubTexture.__name__ = true;
 flambe_display_SubTexture.__interfaces__ = [flambe_display_Texture];
+var flambe_display_TextSprite = function(font,text) {
+	if(text == null) text = "";
+	this._lastReloadCount = -1;
+	this._layout = null;
+	var _g = this;
+	flambe_display_Sprite.call(this);
+	this._font = font;
+	this._text = text;
+	this._align = flambe_display_TextAlign.Left;
+	this._flags = flambe_util_BitSets.add(this._flags,256);
+	var dirtyText = function(_,_1) {
+		_g._flags = flambe_util_BitSets.add(_g._flags,256);
+	};
+	this.wrapWidth = new flambe_animation_AnimatedFloat(0,dirtyText);
+	this.letterSpacing = new flambe_animation_AnimatedFloat(0,dirtyText);
+	this.lineSpacing = new flambe_animation_AnimatedFloat(0,dirtyText);
+};
+$hxClasses["flambe.display.TextSprite"] = flambe_display_TextSprite;
+flambe_display_TextSprite.__name__ = true;
+flambe_display_TextSprite.__super__ = flambe_display_Sprite;
+flambe_display_TextSprite.prototype = $extend(flambe_display_Sprite.prototype,{
+	draw: function(g) {
+		this.updateLayout();
+		this._layout.draw(g);
+	}
+	,getNaturalWidth: function() {
+		this.updateLayout();
+		if(this.wrapWidth.get__() > 0) return this.wrapWidth.get__(); else return this._layout.bounds.width;
+	}
+	,getNaturalHeight: function() {
+		this.updateLayout();
+		var paddedHeight = this._layout.lines * (this._font.lineHeight + this.lineSpacing.get__());
+		var boundsHeight = this._layout.bounds.height;
+		return flambe_math_FMath.max(paddedHeight,boundsHeight);
+	}
+	,containsLocal: function(localX,localY) {
+		this.updateLayout();
+		return this._layout.bounds.contains(localX,localY);
+	}
+	,get_font: function() {
+		return this._font;
+	}
+	,updateLayout: function() {
+		var reloadCount = this._font.checkReload();
+		if(reloadCount != this._lastReloadCount) {
+			this._lastReloadCount = reloadCount;
+			this._flags = flambe_util_BitSets.add(this._flags,256);
+		}
+		if(flambe_util_BitSets.contains(this._flags,256)) {
+			this._flags = flambe_util_BitSets.remove(this._flags,256);
+			this._layout = this.get_font().layoutText(this._text,this._align,this.wrapWidth.get__(),this.letterSpacing.get__(),this.lineSpacing.get__());
+		}
+	}
+	,onUpdate: function(dt) {
+		flambe_display_Sprite.prototype.onUpdate.call(this,dt);
+		this.wrapWidth.update(dt);
+		this.letterSpacing.update(dt);
+		this.lineSpacing.update(dt);
+	}
+	,__class__: flambe_display_TextSprite
+	,__properties__: $extend(flambe_display_Sprite.prototype.__properties__,{get_font:"get_font"})
+});
 var flambe_input_Key = $hxClasses["flambe.input.Key"] = { __ename__ : true, __constructs__ : ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Number0","Number1","Number2","Number3","Number4","Number5","Number6","Number7","Number8","Number9","Numpad0","Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8","Numpad9","NumpadAdd","NumpadDecimal","NumpadDivide","NumpadEnter","NumpadMultiply","NumpadSubtract","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","Left","Up","Right","Down","Alt","Backquote","Backslash","Backspace","CapsLock","Comma","Command","Control","Delete","End","Enter","Equals","Escape","Home","Insert","LeftBracket","Minus","PageDown","PageUp","Period","Quote","RightBracket","Semicolon","Shift","Slash","Space","Tab","Menu","Search","Unknown"] };
 flambe_input_Key.A = ["A",0];
 flambe_input_Key.A.toString = $estr;
@@ -15841,21 +16290,27 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		var v16 = $bind(this,this._update2DMeshImageForm);
 		this._updateStateFunctions.set("2DMeshImageForm",v16);
 		v16;
-		var v17 = $bind(this,this._update2DMeshSpriterForm);
-		this._updateStateFunctions.set("2DMeshSpriterForm",v17);
+		var v17 = $bind(this,this._update2DMeshTextForm);
+		this._updateStateFunctions.set("2DMeshTextForm",v17);
 		v17;
-		var v18 = $bind(this,this._update2DMeshSpritesheetForm);
-		this._updateStateFunctions.set("2DMeshSpritesheetForm",v18);
+		var v18 = $bind(this,this._update2DMeshSpriterForm);
+		this._updateStateFunctions.set("2DMeshSpriterForm",v18);
 		v18;
-		var v19 = $bind(this,this._update2DMeshFillRectForm);
-		this._updateStateFunctions.set("2DMeshFillRectForm",v19);
+		var v19 = $bind(this,this._update2DMeshSpritesheetForm);
+		this._updateStateFunctions.set("2DMeshSpritesheetForm",v19);
 		v19;
-		var v20 = $bind(this,this._update2DMeshSpriteForm);
-		this._updateStateFunctions.set("2DMeshSpriteForm",v20);
+		var v20 = $bind(this,this._update2DMeshFillRectForm);
+		this._updateStateFunctions.set("2DMeshFillRectForm",v20);
 		v20;
-		var v21 = $bind(this,this._update2DMeshSpriterAnimForm);
-		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v21);
+		var v21 = $bind(this,this._update2DMeshSpriteForm);
+		this._updateStateFunctions.set("2DMeshSpriteForm",v21);
 		v21;
+		var v22 = $bind(this,this._update2DMeshSpriterAnimForm);
+		this._updateStateFunctions.set("2DMeshSpriterAnimForm",v22);
+		v22;
+		var v23 = $bind(this,this._updateZOrder);
+		this._updateStateFunctions.set("command_zOrder",v23);
+		v23;
 	}
 	,createInstance: function(p_view2_5D) {
 		var v = new flambe_Entity();
@@ -15907,6 +16362,9 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		case "Sprite":
 			this._updateStateOfInstance("2DMeshSpriteForm",p_view2_5D);
 			break;
+		case "Text":
+			this._updateStateOfInstance("2DMeshTextForm",p_view2_5D);
+			break;
 		case "Undefined":
 			tools_spark_framework_Console.warn("Undefined 2DmeshType value");
 			break;
@@ -15930,6 +16388,26 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 				l_mesh;
 			}
 		} else l_mesh.texture = tools_spark_framework_Assets.getTexture(this.gameEntity.gameForm.getState(p_2DMeshImageForm));
+	}
+	,_update2DMeshTextForm: function(p_2DMeshTextForm,p_view2_5D) {
+		if(this.gameEntity.getState("2DmeshType") != "Text") return;
+		if(p_2DMeshTextForm == "Undefined") return;
+		var l_instance = this._instances.get(p_view2_5D);
+		var l_mesh;
+		if(this._instancesMesh.get(p_view2_5D) != null) l_mesh = js_Boot.__cast(this._instancesMesh.get(p_view2_5D) , flambe_display_TextSprite); else l_mesh = null;
+		if(l_mesh == null) {
+			var l_fontName = this.gameEntity.gameForm.getState(p_2DMeshTextForm);
+			tools_spark_framework_Console.error("ARE YOU TELLING ME THAT THIS IS: " + l_fontName);
+			var l_font = new flambe_display_Font(tools_spark_framework_Assets.getAssetPackOf(l_fontName + ".fnt"),l_fontName);
+			l_mesh = new flambe_display_TextSprite(l_font,this.gameEntity.getState("text"));
+			l_mesh.blendMode = flambe_display_BlendMode.Copy;
+			l_instance.add(l_mesh);
+			{
+				this._instancesMesh.set(p_view2_5D,l_mesh);
+				l_mesh;
+			}
+		} else {
+		}
 	}
 	,_update2DMeshSpriterForm: function(p_2DMeshSpriterForm,p_view2_5D) {
 		if(this.gameEntity.getState("2DmeshType") != "Spriter") return;
@@ -16045,6 +16523,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 	,_updateOpacity: function(p_opacity,p_view2_5D) {
 		var l_mesh = this._instancesMesh.get(p_view2_5D);
 		if(l_mesh != null) l_mesh.setAlpha(p_opacity);
+	}
+	,_updateZOrder: function(p_zOrder,p_view2_5D) {
+		var l_instance = this._instances.get(p_view2_5D);
+		l_instance.setZOrder(p_zOrder);
 	}
 	,_centerAnchor: function(p_centerAnchorFlag,p_view2_5D) {
 		var l_instance = this._instances.get(p_view2_5D);
@@ -19670,6 +20152,10 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 			true;
 		}
 		{
+			this._renderStateNames.set("2DMeshTextForm",true);
+			true;
+		}
+		{
 			this._renderStateNames.set("2DMeshSpriterForm",true);
 			true;
 		}
@@ -19751,6 +20237,10 @@ tools_spark_sliced_services_std_display_core_Display.prototype = $extend(tools_s
 		}
 		{
 			this._renderStateNames.set("borderColor",true);
+			true;
+		}
+		{
+			this._renderStateNames.set("command_zOrder",true);
 			true;
 		}
 		{
@@ -21234,6 +21724,23 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 		}
 		return l_xmlNode;
 	}
+	,xml_getAllStates: function(p_xml,p_merge) {
+		var l_states = new haxe_ds_StringMap();
+		var l_groupName;
+		if(p_merge) l_groupName = "_States"; else l_groupName = "States";
+		var l_statesNode = this.xml_getElement(p_xml,l_groupName);
+		if(l_statesNode != null) {
+			var l_statesChildren = l_statesNode.elementsNamed("State");
+			while(l_statesChildren.hasNext()) {
+				var f_state = l_statesChildren.next();
+				var f_id = this.xml_getElement(f_state,"Id").firstChild().toString();
+				var f_type = this.xml_getElement(f_state,"Type").firstChild().toString();
+				var f_value = this.xml_getElement(f_state,"Value").firstChild().toString();
+				l_states.set(f_id,{ id : f_id, type : f_type, value : f_value});
+			}
+			return l_states;
+		} else return null;
+	}
 	,xml_getAllMStates: function(p_xml,p_merge) {
 		var l_states = new haxe_ds_StringMap();
 		var l_groupName;
@@ -21282,6 +21789,11 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 		if(l_elements.hasNext()) p_EntityXml.removeChild(l_elements.next());
 		return p_EntityXml;
 	}
+	,xml_entity_removeAllNodes: function(p_EntityXml,p_xmlNodeName) {
+		var l_elements = p_EntityXml.elementsNamed(p_xmlNodeName);
+		while(l_elements.hasNext()) p_EntityXml.removeChild(l_elements.next());
+		return p_EntityXml;
+	}
 	,xml_entity_addExtend: function(p_EntityXml,p_Entity) {
 		var l_groupName = "Extends";
 		var l_group;
@@ -21309,6 +21821,45 @@ tools_spark_sliced_services_std_logic_core_Logic.prototype = $extend(tools_spark
 			}
 		}
 		return l_array;
+	}
+	,xml_entity_addFormState: function(p_EntityXml,p_State,p_mergeForm,p_mergeStates) {
+		var l_groupName;
+		if(p_mergeForm) l_groupName = "_Form"; else l_groupName = "Form";
+		var l_group;
+		var l_elements = p_EntityXml.elementsNamed(l_groupName);
+		if(l_elements.hasNext()) l_group = l_elements.next(); else {
+			l_group = Xml.createElement(l_groupName);
+			p_EntityXml.addChild(l_group);
+		}
+		return this.xml_entity_addState(l_group,p_State,p_mergeStates);
+	}
+	,xml_entity_addState: function(p_EntityXml,p_State,p_merge) {
+		var l_groupName;
+		if(p_merge) l_groupName = "_States"; else l_groupName = "States";
+		var l_group;
+		var l_elements = p_EntityXml.elementsNamed(l_groupName);
+		if(l_elements.hasNext()) l_group = l_elements.next(); else {
+			l_group = Xml.createElement(l_groupName);
+			p_EntityXml.addChild(l_group);
+		}
+		var l_state = Xml.createElement("State");
+		l_group.addChild(l_state);
+		if(p_State.id != null) {
+			var l_xml = Xml.createElement("Id");
+			l_state.addChild(l_xml);
+			l_xml.addChild(Xml.createPCData(p_State.id));
+		}
+		if(p_State.type != null) {
+			var l_xml1 = Xml.createElement("Type");
+			l_state.addChild(l_xml1);
+			l_xml1.addChild(Xml.createPCData(p_State.type));
+		}
+		if(p_State.value != null) {
+			var l_xml2 = Xml.createElement("Value");
+			l_state.addChild(l_xml2);
+			l_xml2.addChild(Xml.createPCData(p_State.value));
+		}
+		return l_state;
 	}
 	,xml_entity_addMState: function(p_EntityXml,p_State,p_merge) {
 		var l_groupName;
@@ -22932,6 +23483,32 @@ tools_spark_sliced_services_std_logic_gde_core_GameEntity.prototype = $extend(to
 		this.get_children().push(p_gameEntity);
 		p_gameEntity.parentEntity = this;
 		tools_spark_sliced_core_Sliced.display.addDisplayObjectChild(this,p_gameEntity);
+	}
+	,setZorder: function(p_location) {
+		var l_index = this.parentEntity.get_children().indexOf(this);
+		var _this = this.parentEntity.get_children();
+		HxOverrides.remove(_this,this);
+		tools_spark_framework_Console.error("MY INDEX IS: " + l_index);
+		switch(p_location) {
+		case "top":
+			this.parentEntity.get_children().push(this);
+			break;
+		case "oneUp":
+			var _this1 = this.parentEntity.get_children();
+			_this1.splice(l_index + 1,0,this);
+			break;
+		case "oneDown":
+			var _this2 = this.parentEntity.get_children();
+			var pos = Std["int"](Math.max(0,l_index - 1));
+			_this2.splice(pos,0,this);
+			break;
+		case "bottom":
+			var _this3 = this.parentEntity.get_children();
+			_this3.splice(0,0,this);
+			break;
+		default:
+		}
+		this.setState("command_zOrder",this.parentEntity.get_children().indexOf(this));
 	}
 	,insertChild: function(p_gameEntity,p_pos) {
 		var _this = this.get_children();
@@ -38540,6 +39117,7 @@ flambe_asset_Manifest._supportsCrossOrigin = (function() {
 	return detected;
 })();
 flambe_display_Sprite._scratchPoint = new flambe_math_Point();
+flambe_display_Font.NEWLINE = new flambe_display_Glyph(10);
 flambe_platform_BasicKeyboard._sharedEvent = new flambe_input_KeyboardEvent();
 flambe_platform_BasicMouse._sharedEvent = new flambe_input_MouseEvent();
 flambe_platform_BasicPointer._sharedEvent = new flambe_input_PointerEvent();

@@ -8,6 +8,12 @@
 		</State>
 		
 		<State>
+			<Id>2DMeshTextForm</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
 			<Id>2DMeshSpriterForm</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>

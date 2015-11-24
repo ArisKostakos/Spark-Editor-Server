@@ -10,14 +10,8 @@
 				<!-- Button -->
 				<Entity extends="std.display.Input"><_States>
 					<_State id="width"><Value>200</Value></_State>
-					<_State id="height"><Value>100%</Value></_State>
-					<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
-					<_State id="border"><Value>0px</Value></_State>
+					<_State id="height"><Value>80%</Value></_State>
 					<_State id="placeholder"><Value>Enter a Value</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>16px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textIndent"><Value>3px</Value></_State>
 					</_States>
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
 						//me.setState("text","Click to choose");

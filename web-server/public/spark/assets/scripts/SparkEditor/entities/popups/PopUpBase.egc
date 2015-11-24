@@ -2,9 +2,12 @@
 <Entity extends="std.display.Div">
 	<_States>
 		<_State id="backgroundColor"><Value>rgb(52, 69, 89)</Value></_State>
-		<_State id="border"><Value>1px solid rgb(41, 57, 75)</Value></_State>
+		<_State id="borderWidth"><Value>1px</Value></_State>
+		<_State id="borderColor"><Value>rgb(41, 57, 75)</Value></_State>
+		<_State id="borderStyle"><Value>solid</Value></_State>
 		<State><Id>targetLayerName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>argA</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>argB</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>cb_caller</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>cb_actionName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<_State id="display"><Value>none</Value></_State>

@@ -11,9 +11,131 @@
 		<State><Id>projectName</Id><Type>Text</Type><Value>Untitled Project</Value></State>
 		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>project</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+		<State><Id>tempDeleting</Id><Type>Boolean</Type><Value>false</Value></State>
+		<_State id="touchable"><Value>true</Value></_State>
 	</_States>
 	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseRightClick</Event>
+			<Scripts>
+				<Script>
+					function createContextNode(nodeName,nodeType,parentNode)
+					{
+						var node = {};
+						node.name=nodeName;
+						node.children = [];
+						node.type=nodeType;
+						parentNode.children.push(node);
+						
+						return node;
+					}
+					
+					var mainList = {};
+					mainList.children = [];
+					
+					createContextNode("Delete","Delete",mainList);
+					
+					var mousePosX = Input.pointer.currentX;
+					var mousePosY = Input.pointer.currentY;
+					
+					
+					//Open Popup [CHOOSE AC]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+					popUpAction.setState('popupPosX',mousePosX);
+					popUpAction.setState('popupPosY',mousePosY);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Project Context Menu');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("deleteProject")!=null)
+					{
+						if (me.getState('tempDeleting')) //if it's me who's getting removed..
+						{
+							var data = Comms.getRequestData("deleteProject");
+							
+							me.setState('tempDeleting',false);
+							
+							if (data.code=="success")
+							{
+								Display.error('Delete Project success!');
+								//Logic.getEntityByName('Editor Output').setState('text','Asset Removed Successfully!');
+								parent.removeChild(me);
+								Display.invalidateLayout();
+							}
+							else
+							{
+								Display.error('Delete Project error!');
+								//Logic.getEntityByName('Editor Output').setState('text','Error Removing Asset :(');
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+
 	<Actions>
+		<!-- Callback: Project Context Menu -->
+		<Action>
+			<Id>Callback: Project Context Menu</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						Display.error("Got: " + cb_Arg1.name);
+						
+						if (cb_Arg1.type=="Delete")
+						{
+							var asset = me.getState('project');
+							var developerAsset = Logic.getEntityByName('Spark Editor').getState('developerAsset');
+							
+							Display.error("This project is Owner: " + asset.owner);
+							Display.error("Found Developer with Id: " + developerAsset._id);
+							
+							if (asset.owner==developerAsset._id)
+							{
+								me.setState('tempDeleting',true);
+								Comms.request("lobby.projectHandler.deleteProject", {projectId: asset._id}, "deleteProject");
+							}
+							else
+							{
+								Display.error("Cannot Remove Project of different User");
+								//Logic.getEntityByName('Editor Output').setState('text','Failed to remove Item (no access)');
+							}
+						}
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
 		<Action>
 			<Id>ButtonClicked</Id>
 			<Concurrency>Persistent</Concurrency>

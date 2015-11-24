@@ -11,6 +11,10 @@
 		<State><Id>ClassAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>tempUploading</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tempContextPosX</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>tempContextPosY</Id><Type>Decimal</Type><Value>0</Value></State>
+	
+		<State><Id>sprite2DVisibility</Id><Type>Boolean</Type><Value>true</Value></State>
 	</_States>
 	
 	<_Form>
@@ -40,15 +44,15 @@
 			<Event>MouseRightClick</Event>
 			<Scripts>
 				<Script>
-					function getListChild(node,childName)
+					function createContextNode(nodeName,nodeType,parentNode)
 					{
-						for (child in node.children)
-						{
-							if (child.name==childName)
-								return child;
-						}
+						var node = {};
+						node.name=nodeName;
+						node.children = [];
+						node.type=nodeType;
+						parentNode.children.push(node);
 						
-						return null;
+						return node;
 					}
 					
 					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
@@ -56,74 +60,33 @@
 					leveleditor2d.startAction('EntityClicked');
 					
 					
-					var acHash = Logic.getEntityByName('Project Editor').getState('BehaviorAssetsDBbyTargets');
-					
-					//Get the class object asset
-					var asset = me.getState('ClassAsset');
-					Display.error("My Asset.name is: " + asset.name);
-					
-					//Check hash to pick up it's classes
-					var InheritanceHashByName = Logic.getEntityByName('Project Editor').getState("InheritanceHashByName");
-					var inheritanceMap = InheritanceHashByName.get(asset.name);
-					
-					var typesFound = [];
-					for (classType in inheritanceMap.keys())
-					{
-						Display.error("FOUND TYPE!!!!: " + classType);
-						typesFound.push(classType);
-					}
-					
-					//for now, assume std.display.Image2D
-					//var type = "std.display.Image2D"; //only 1 type supported for now
-					
-					
-					//Support Only 1 level of grouping for now. and all ACE MUST have exactly 1 group (no zero groups either)
 					var mainList = {};
 					mainList.children = [];
 					
-					var behaviors = {};
-					behaviors.name="Add Behavior";
-					behaviors.children = [];
-					mainList.children.push(behaviors);
+					createContextNode("Rename","Rename",mainList);
+					createContextNode("Clone","Clone",mainList);
 					
-					var properties = {};
-					properties.name="Properties";
-					properties.children = [];
-					properties.type="Properties"; //if it's clickable (no children) we need to define a type for it.. for when it gets back in the callback
-					mainList.children.push(properties);
+					var order = createContextNode("Order","Order",mainList);
+					createContextNode("On Top","On Top",order);
+					createContextNode("One Up","One Up",order);
+					createContextNode("One Down","One Down",order);
+					createContextNode("On Bottom","On Bottom",order);
 					
-					for (type in typesFound)
-					{
-						if (acHash.exists(type))
-						{
-							for (asset in acHash.get(type))
-							{
-								Display.error("FOUND AC: " + asset.name);
-								var group = getListChild(behaviors,asset.tags[1]);
-								
-								//If null, create it
-								if (group==null)
-								{
-									group = {};
-									group.name=asset.tags[1];
-									group.children = [];
-									behaviors.children.push(group);
-								}
-								
-								//Create listObject and add it to group
-								var childAsset = {};
-								childAsset.name=asset.title;
-								childAsset.asset=asset;
-								childAsset.type="Behavior";
-								childAsset.children = [];
-								
-								group.children.push(childAsset);
-							}
-						}
-					}
+					
+					var visibility = createContextNode("Visibility","Visibility",mainList);
+					createContextNode("Visible","Visible",visibility);
+					createContextNode("Invisible","Invisible",visibility);
+					
+					createContextNode("Behaviors","Behaviors",mainList);
+					createContextNode("States","States",mainList);
+					createContextNode("Delete","Delete",mainList);
 					
 					var mousePosX = Input.pointer.currentX;
 					var mousePosY = Input.pointer.currentY;
+					
+					//Store for later
+					me.setState('tempContextPosX',mousePosX);
+					me.setState('tempContextPosY',mousePosY);
 					
 					//Open Popup [CHOOSE AC]
 					var popUpManager = Logic.getEntityByName('PopUp Manager');
@@ -384,6 +347,10 @@
 									oldMe.setState('tempUploading',false);
 									Logic.getEntityByName('Editor Output').setState('text','All done yo!');
 									
+									//Update Inheritance
+									Logic.getEntityByName('Project Editor').getAction('RegisterInheritance').setState('asset',asset);
+									Logic.getEntityByName('Project Editor').startAction('RegisterInheritance');
+									
 								}).once();
 								
 								//Load
@@ -421,7 +388,8 @@
 						Logic.xml_entity_addMState(exportXml, {id:"scaleX", value: Std.string(me.getState('scaleX')) },true);
 					if (me.getState('scaleY')!=1)
 						Logic.xml_entity_addMState(exportXml, {id:"scaleY", value: Std.string(me.getState('scaleY')) },true);
-					
+					if (me.getState('sprite2DVisibility')!=true)
+						Logic.xml_entity_addMState(exportXml, {id:"visible", value: Std.string(me.getState('sprite2DVisibility')) },true);
 					//Store
 					me.setState('xmlExport',exportXml);
 				</Script>
@@ -451,7 +419,9 @@
 					var asset = ClassObjectsDBbyNameHash.get(className);
 					
 					//Store it
-					me.setState('ClassAsset',asset); 
+					me.setState('ClassAsset',asset);
+					
+					//sprite2DVisibility
 					/*
 					//instantiate
 					var isSpriter = (entityChildXml.get('extends').substr(entityChildXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
@@ -507,6 +477,63 @@
 		</Action>
 		
 		<Action>
+			<Id>CreateBehaviors</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
+					Display.error("My Asset.name is: " + asset.name);
+					
+					//Check hash to pick up it's classes
+					var InheritanceHashByName = Logic.getEntityByName('Project Editor').getState("InheritanceHashByName");
+					var inheritanceMap = InheritanceHashByName.get(asset.name);
+					
+					var behaviorsFound = [];
+					for (behaviorName in inheritanceMap.keys())
+					{
+						//Is it a behavior?
+						if (inheritanceMap.get(behaviorName)==true)
+						{
+							behaviorsFound.push(behaviorName);
+						}
+					}
+					
+					this.setState('returnBehaviors',behaviorsFound);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnBehaviors</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>CreateStates</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
+					Display.error("My Asset.name is: " + asset.name);
+					
+					//Check hash to pick up it's classes
+					var StatesHashByName = Logic.getEntityByName('Project Editor').getState("StatesHashByName");
+					var statesMap = StatesHashByName.get(asset.name);
+					Display.error(statesMap);
+					this.setState('returnStates',statesMap);	//statesMap is read only.. don't write to it..
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnStates</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: Entity Context Menu -->
+		<Action>
 			<Id>Callback: Entity Context Menu</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
@@ -521,30 +548,73 @@
 						Display.error("Callback: Select AC: OK");
 						Display.error("Got: " + cb_Arg1.name);
 						
-						//Temp way to figure out if this context item was a behavior
-						if (cb_Arg1.type=="Behavior")
+						if (cb_Arg1.type=="Delete")
 						{
-							var asset = me.getState('ClassAsset');
+							Logic.getEntityByName('Level Editor 2D Scene').startAction('DeleteSelected');
+						}
+						else if (cb_Arg1.type=="Clone")
+						{
+							me.getAction('Clone').setState('dir','right');
+							me.startAction('Clone');
+						}
+						else if (cb_Arg1.type=="Visible")
+						{
+							me.setState('sprite2DVisibility',true);
+						}
+						else if (cb_Arg1.type=="Invisible")
+						{
+							me.setState('sprite2DVisibility',false);
+						}
+						else if (cb_Arg1.type=="On Top")
+						{
+							//me.setState('xxxxxxx',false);
+							me.setZorder("top");
+						}
+						else if (cb_Arg1.type=="One Up")
+						{
+							me.setZorder("oneUp");
+						}
+						else if (cb_Arg1.type=="One Down")
+						{
+							me.setZorder("oneDown");
+						}
+						else if (cb_Arg1.type=="On Bottom")
+						{
+							me.setZorder("bottom");
+						}
+						else if (cb_Arg1.type=="Behaviors")
+						{
+							me.forceAction('CreateBehaviors');
+							var behaviors = me.getAction('CreateBehaviors').getState('returnBehaviors');
 							
-							//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
 							
-							//Get the ASSET'S XML.. doihh..
-							var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-							var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+							//Open Popup
+							var popUpManager = Logic.getEntityByName('PopUp Manager');
+							var popUpAction = popUpManager.getAction('Open PopUp');
+							popUpAction.setState('popupName',"SparkEditor.entities.popups.items.BehaviorsPopUp");
+							popUpAction.setState('popupPosX',me.getState('tempContextPosX'));
+							popUpAction.setState('popupPosY',me.getState('tempContextPosY'));
+							popUpAction.setState('argA',behaviors);
+							popUpAction.setState('cb_caller',me);
+							popUpAction.setState('cb_actionName','Callback: Behaviors Window');
+							popUpManager.forceAction('Open PopUp');
+						}
+						else if (cb_Arg1.type=="States")
+						{
+							me.forceAction('CreateStates');
+							var states = me.getAction('CreateStates').getState('returnStates');
 							
-							//Add the extend node to asset xml
-							Logic.xml_entity_addExtend(asset_xml, {ext: cb_Arg1.asset.name});
-							//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
 							
-							//Get me ready to upload stuff
-							me.setState('tempUploading',true);
-							
-							//Upload it
-							var finalString = Logic.xmlToString(asset_xml);
-							var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
-							Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
-							
-							Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+							//Open Popup
+							var popUpManager = Logic.getEntityByName('PopUp Manager');
+							var popUpAction = popUpManager.getAction('Open PopUp');
+							popUpAction.setState('popupName',"SparkEditor.entities.popups.items.StatesPopUp");
+							popUpAction.setState('popupPosX',me.getState('tempContextPosX'));
+							popUpAction.setState('popupPosY',me.getState('tempContextPosY'));
+							popUpAction.setState('argA',states);
+							popUpAction.setState('cb_caller',me);
+							popUpAction.setState('cb_actionName','Callback: States Window');
+							popUpManager.forceAction('Open PopUp');
 						}
 					}
 					else
@@ -559,6 +629,123 @@
 			</States>
 		</Action>
 		
+		<!-- Callback: Behaviors Window -->
+		<Action>
+			<Id>Callback: Behaviors Window</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						
+						
+						var asset = me.getState('ClassAsset');
+						
+						//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+						
+						//Get the ASSET'S XML.. doihh..
+						var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+						
+						Logic.xml_entity_removeNode(asset_xml,"Extends");
+						
+						for (item in cb_Arg1)
+						{
+							Display.error("Adding: " + item);
+							Logic.xml_entity_addExtend(asset_xml, {ext: item});
+						}
+						
+						//Add the extend node to asset xml
+						
+						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+						
+						//Get me ready to upload stuff
+						me.setState('tempUploading',true);
+						
+						//Upload it
+						var finalString = Logic.xmlToString(asset_xml);
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: States Window -->
+		<Action>
+			<Id>Callback: States Window</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = this.getState('cb_result');
+					var cb_Arg1 = this.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						
+						
+						var asset = me.getState('ClassAsset');
+						
+						//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+						
+						//Get the ASSET'S XML.. doihh..
+						var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+						
+						//Remove All Full States here
+						var statesNode = Logic.xml_getElement(asset_xml, "_States");
+						Logic.xml_entity_removeAllNodes(statesNode,"State");
+						
+						//Add new States
+						for (item in cb_Arg1)
+						{
+							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
+							Logic.xml_entity_addState(asset_xml, item, true);
+						}
+						
+						
+						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+						
+						//Get me ready to upload stuff
+						me.setState('tempUploading',true);
+						
+						//Upload it
+						var finalString = Logic.xmlToString(asset_xml);
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 		
 		<!-- Select -->
 		<Action>
@@ -676,34 +863,42 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					//We will need this function...
-					function firstElementNamed(p_xmlNode, p_elementName)
-					{
-						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
-						{
-							return p_xmlNode.elementsNamed(p_elementName).next();
-						}
-						else
-						{
-							return null;
-						}
-					}
-					
 					me.stopAction("Clone");
-
-					//Ok this should be easy to do but ONCE we finish Export Xml for Sprite2DEdit..
-					return;
 					
+					//Get Direction
 					var dir = me.getAction('Clone').getState('dir');
 					
-					var entityChildXml = Xml.parse(Logic.xmlToString(me.getState('xmlData'))).firstElement();
+					
+					//Export Xml from here
+					me.forceAction('Export Xml');
+					var entityChildXml = me.getState('xmlExport');
+					
+					
+					//Clone it and create the Edit Xml
+					var tempEntityChildXml = Logic.xml_clone(entityChildXml);
+					Logic.xml_entity_removeNode(tempEntityChildXml, "Form");
+					Logic.xml_entity_addExtend(tempEntityChildXml, {ext: 'SparkEditor.entities.editors.behaviors.Sprite2DEdit'});
+					
+					//Instantiate
+					var editChild = Logic.gameFactory.createGameEntityByXml(tempEntityChildXml);
+					
+					
+					
+					//add it as child
+					var editScene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					editScene.addChild(editChild);
+					
+					//Run Import
+					editChild.getAction('Import Xml').setState('importXml',entityChildXml);
+					editChild.forceAction('Import Xml');
+					
 					
 					var shiftX=0;
 					var shiftY=0;
 					
 					//Change Position
 					
-					//Scale Width
+						//Check Size
 					var realWidth = me.getState('boundsRect').width * me.getState('scaleX');
 					var realHeight = me.getState('boundsRect').height * me.getState('scaleY');
 						
@@ -712,84 +907,12 @@
 					else if (dir=='up') shiftY-=realHeight;
 					else if (dir=='down') shiftY+=realHeight;
 					
-					//if no [_States], create it
-					var statesXml = firstElementNamed(entityChildXml,'_States');
-					if (statesXml==null)
-					{
-						statesXml = Xml.createElement('_States');
-						entityXml.addChild(statesXml);
-					}
-					
-					var states = statesXml.elementsNamed('_State');
-					//for each [_state] in [_states]
-					while (states.hasNext())
-					{
-						var stateChildXml = states.next();
-
-						if (stateChildXml.get("id")=="spaceX")
-						{
-							//Remove previous Value Node
-							var stateValueXml = firstElementNamed(stateChildXml,'Value');
-
-							stateValueXml.removeChild(stateValueXml.firstChild());
-							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceX')+shiftX)).firstChild());
-
-							//Display.error("new spaceX: " + stateValueXml.firstChild().toString());
-						}
-						else if (stateChildXml.get("id")=="spaceY")
-						{
-							//Remove previous Value Node
-							var stateValueXml = firstElementNamed(stateChildXml,'Value');
-
-							stateValueXml.removeChild(stateValueXml.firstChild());
-							stateValueXml.addChild(Xml.parse(Std.string(me.getState('spaceY')+shiftY)).firstChild());
-
-							//Display.error("new spaceY: " + stateValueXml.firstChild().toString());
-						}
-					}
-					
-					
-					
-					
-					Display.error("Found child: " + entityChildXml.get('extends'));
-					//take snapshot
-					var pureChildXml = Xml.parse(Logic.xmlToString(entityChildXml)).firstElement();
-					Display.error("Displaying Child: " + Logic.xmlToString(pureChildXml));
-					
-					//Remove [extends]
-					var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
-					if (childExtendsXml!=null)
-						entityChildXml.removeChild(childExtendsXml);
-						
-					//if no [extends], create it
-					//var childExtendsXml = firstElementNamed(entityChildXml,'Extends');
-					//if (childExtendsXml==null)
-					//{
-						childExtendsXml = Xml.createElement('Extends');
-						entityChildXml.insertChild(childExtendsXml,0);
-					//}
-					
-					
-					//add [entity] Sprite2DEdit in [extends]
-					var sceneEditXml = Xml.createElement('Entity');
-					sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
-					childExtendsXml.addChild(sceneEditXml);
-					
-					//instantiate, add to scene
-					var editScene = Logic.getEntityByName('2d Scene Editor').getState('target');
-					
-					var childEntity = Logic.gameFactory.createGameEntityByXml(entityChildXml);
-					
-					//Now, disable things you don't want happening on Edit.. like physicsEntity
-					//childEntity.setState('physicsEntity',false); //we do this on the Sprite2DEdit.egc
-					
-					editScene.addChild(childEntity);
+					editChild.setState('spaceX',me.getState('spaceX')+shiftX);
+					editChild.setState('spaceY',me.getState('spaceY')+shiftY);
 					
 					//Stupid gridlock (redo me properly, with hash probably)
-					childEntity.setState('spriteGridLock',me.getState('spriteGridLock'));
+					//childEntity.setState('spriteGridLock',me.getState('spriteGridLock'));
 					
-					//give it snapshot xml
-					childEntity.setState('xmlData',pureChildXml);
 					
 					/*
 					me.startAction('Deselect');
@@ -799,7 +922,7 @@
 					*/
 
 					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
-					leveleditor2d.getAction('EntityClicked').setState('entity',childEntity);
+					leveleditor2d.getAction('EntityClicked').setState('entity',editChild);
 					leveleditor2d.startAction('EntityClicked');
 				</Script>
 			</Scripts>

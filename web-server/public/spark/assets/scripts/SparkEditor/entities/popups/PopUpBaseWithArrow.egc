@@ -8,7 +8,28 @@
 	<_Form>
 		<_Space>
 			<_Entities>
-					<!-- Arrow -->
+				<!-- Arrow Border -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="top"><Value>-11</Value></_State>
+						<_State id="left"><Value>8</Value></_State>
+						<_State id="width"><Value>0</Value></_State>
+						<_State id="height"><Value>0</Value></_State>
+						<_State id="borderStyle"><Value>solid</Value></_State>
+						<_State id="borderWidth"><Value>0 12px 11px 12px</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState("borderColor","transparent transparent " + parent.getState('borderColor') + " transparent");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Arrow -->
 				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="top"><Value>-10</Value></_State>

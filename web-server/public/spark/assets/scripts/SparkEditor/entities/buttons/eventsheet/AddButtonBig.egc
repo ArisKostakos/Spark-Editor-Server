@@ -28,7 +28,7 @@
 				
 				<!-- Text -->
 				<Entity extends="std.display.Text"><_States>
-					<_State id="width"><Value>70</Value></_State>
+					<_State id="width"><Value>100</Value></_State>
 					<_State id="height"><Value>16</Value></_State>
 					<_State id="fontWeight"><Value>300</Value></_State>
 					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>

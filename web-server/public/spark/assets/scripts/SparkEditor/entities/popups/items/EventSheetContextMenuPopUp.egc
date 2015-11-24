@@ -12,7 +12,7 @@
 				<!-- List -->
 				<Entity extends="SparkEditor.entities.components.contextMenu.ContextList">
 					<_States>
-
+						
 					</_States>
 					
 					<_Actions>
