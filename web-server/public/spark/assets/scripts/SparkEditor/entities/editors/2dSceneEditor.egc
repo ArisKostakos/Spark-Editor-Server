@@ -94,6 +94,7 @@
 					var sceneXml = Logic.xml_createElementAttr("Entity", "extends", "std.display.Scene2DPhysics"); //Should really keep DB asset for scene, and get this from there
 					
 					//Over here, save States, such as ClassObjects Count
+					Logic.xml_entity_addMState(sceneXml, {id:"name", value: 'Main Scene' },true);
 					Logic.xml_entity_addMState(sceneXml, {id:"classObjectsCount", value: Std.string(scene.getState('classObjectsCount')) },true);
 					
 					//Create entities node

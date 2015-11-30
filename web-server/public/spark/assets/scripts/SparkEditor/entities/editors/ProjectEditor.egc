@@ -173,15 +173,34 @@
 				<Script>
 					me.stopAction('Export Project');
 					
-					Display.error("Exporting Project: " + Project.main.name);
+					//Display.error("Exporting Project: " + Project.main.name);
+					var username = Logic.getEntityByName('Spark Editor').getState('username');
+					var projectname = Logic.getEntityByName('Spark Editor').getState('projectname');
 					
 					var exportProject = new Project();
 					
-					exportProject.name = Logic.getEntityByName('Spark Editor').getState('projectname');
+					exportProject.name = projectname;
 					exportProject.version = "0.1";
 					exportProject.executeModules.push("MainModule");
 					exportProject.sliced = Project.main.sliced;
-					exportProject.paths = Project.main.paths;
+					
+					//Paths
+					var iterator = Project.main.paths.keys();
+					while (iterator.hasNext())
+					{
+						var path = iterator.next();
+						exportProject.paths.set(path,Project.main.paths.get(path));
+					}
+					exportProject.setPath("project", "script", "/assets/"+username+"/script/");
+					exportProject.setPath("project", "image", "/assets/"+username+"/image/");
+					exportProject.setPath("project", "model", "/assets/"+username+"/model/");
+					exportProject.setPath("project", "sound", "/assets/"+username+"/sound/");
+					exportProject.setPath("project", "data", "/assets/"+username+"/data/");
+					exportProject.setPath("spark", "script", "/assets/spark/script/");
+					exportProject.setPath("spark", "image", "/assets/spark/image/");
+					exportProject.setPath("spark", "model", "/assets/spark/model/");
+					exportProject.setPath("spark", "sound", "/assets/spark/sound/");
+					exportProject.setPath("spark", "data", "/assets/spark/data/");
 					
 					//StandardLibrary Module
 					exportProject.modules.set("StandardLibrary", Project.main.modules.get("StandardLibrary"));
@@ -199,12 +218,21 @@
 						var assetDB = iterator.next();
 						var asset = new Asset(assetDB.name);
 						asset.type = assetDB.type;
-						asset.location = 'local';
+						
+						if (assetDB.owner.user.name=="spark")
+							asset.location = 'spark';
+						else
+							asset.location = 'project';
+							
 						asset.bytes = Std.string(assetDB.fileSize);
 						asset.url = assetDB.dir+'/'+assetDB.fileName+'.'+assetDB.fileExtension;
 						
 						mainModule.assets.set(asset.id,asset);
-						asset.id = null;
+						
+						if (asset.type=="image")
+							asset.id = 'image_' + assetDB.name;
+						else
+							asset.id = null;
 					}
 					
 					exportProject.modules.set(mainModule.id, mainModule);
@@ -218,7 +246,7 @@
 					
 					//Save to String
 					var finalString = Logic.xmlToString(clientFile);
-					//Display.error("clientFile: " + finalString);
+					Display.error("clientFile: " + finalString);
 					
 					//Upload
 					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
