@@ -16,6 +16,10 @@
 		<State><Id>libraryObjectDB</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
+	<Extends>
+		<Entity extends="SparkEditor.behaviors.Scrollable"/>
+	</Extends>
+		
 	<_Actions>
 		<Action>
 			<Id>AddAssetsDB</Id>
@@ -30,7 +34,7 @@
 					
 					var assets = me.getAction('AddAssetsDB').getState('assets');
 					
-					for (asset in assets)
+					for (asset of assets)
 					{
 						Display.error("AddAssetsDB: FOUND: " + asset.name);
 						

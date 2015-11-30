@@ -45,8 +45,10 @@
 				<Script>
 					me.stopAction('RegisterInheritanceMany');
 					
-					for (classObject in this.getState('assets'))
+					var iterator = it.getState('assets').iterator();
+					while (iterator.hasNext())
 					{
+						var classObject = iterator.next();
 						me.getAction('RegisterInheritance').setState('asset',classObject);
 						me.forceAction('RegisterInheritance');
 					}
@@ -83,7 +85,7 @@
 						
 						//Store Extends Classes (Behaviors)
 						var extendEntities = Logic.xml_entity_getExtendsEntityNames(asset_xml);
-						for (extendEntity in extendEntities)
+						for (extendEntity of extendEntities)
 						{
 							mapEntry.set(extendEntity,root); //true means, it's a behavior
 							parseGameEntityFile(StringTools.replace(extendEntity,".","/") + ".egc", mapEntry, false);
@@ -95,7 +97,7 @@
 					me.stopAction('RegisterInheritance'); //sometimes forced, sometimes not. (mixed)
 					
 					//Get Asset
-					var asset = this.getState('asset');
+					var asset = it.getState('asset');
 					
 					
 					//Get the asset's xml
@@ -115,8 +117,10 @@
 					
 					//LOG
 					Display.error("Asset: " + asset.name);
-					for (dep_entry in mapEntry.keys())
+					var keys = mapEntry.keys();
+					while (keys.hasNext())
 					{
+						var dep_entry = keys.next();
 						Display.error("Dependancy: " + dep_entry + ", isBehavior: " + mapEntry.get(dep_entry));
 					}
 					
@@ -162,6 +166,63 @@
 			</Scripts>
 		</Action>
 		
+		<Action>
+			<Id>Export Project</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Export Project');
+					
+					Display.error("Exporting Project: " + Project.main.name);
+					
+					var exportProject = new Project();
+					
+					exportProject.name = Logic.getEntityByName('Spark Editor').getState('projectname');
+					exportProject.version = "0.1";
+					exportProject.executeModules.push("MainModule");
+					exportProject.sliced = Project.main.sliced;
+					exportProject.paths = Project.main.paths;
+					
+					//StandardLibrary Module
+					exportProject.modules.set("StandardLibrary", Project.main.modules.get("StandardLibrary"));
+					
+					//Main Module
+					var mainModule = new Module("MainModule");
+					mainModule.executeEntity=exportProject.name + ".MainProject";
+					mainModule.requiresModules.push("StandardLibrary");
+					
+					//Assets
+					var ModuleAssetsDBbyNameHash = me.getState('ModuleAssetsDBbyNameHash');
+					var iterator = ModuleAssetsDBbyNameHash.iterator();
+					while (iterator.hasNext())
+					{
+						var assetDB = iterator.next();
+						var asset = new Asset(assetDB.name);
+						asset.type = assetDB.type;
+						asset.location = 'local';
+						asset.bytes = Std.string(assetDB.fileSize);
+						asset.url = assetDB.dir+'/'+assetDB.fileName+'.'+assetDB.fileExtension;
+						
+						mainModule.assets.set(asset.id,asset);
+						asset.id = null;
+					}
+					
+					exportProject.modules.set(mainModule.id, mainModule);
+					
+					//Export
+					var exportXml = exportProject.exportToXml();
+					
+					//Log
+					Display.error(Logic.xmlToString(exportXml));
+					
+					//Upload
+					//..
+					
+					//Open New Tab
+					//..
+				</Script>
+			</Scripts>
+		</Action>
 	</_Actions>
 	
 	<_Triggers>
@@ -298,11 +359,14 @@
 							//Store them for later
 							me.setState('tempIncludeAssets',data.assets);
 							
-							
-							for (classObject in me.getState('ClassObjectsDBbyNameHash'))
+							var _iterator = me.getState('ClassObjectsDBbyNameHash').iterator();
+							while (_iterator.hasNext())
 							{
+								var classObject = _iterator.next();
+								
 								//While we're here, also add Project Items
 								var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
+								
 								if (classObject.componentType=="Project" || classObject.componentType=="Object Class")
 								{
 									//Add it to project panel( ehh)
@@ -311,7 +375,6 @@
 								}
 								
 							}
-							
 							
 							//Get Username
 							//var userName = me.getState('assetUserName');

@@ -178,7 +178,9 @@
 						triggerEvent="KeyReleased";
 					else if (condition_asset.fileName=="Collided")
 						triggerEvent="PhysicsSensorStart";
-					
+					else if (condition_asset.fileName=="StateChanged")
+						triggerEvent="StateChanged";
+						
 					//Set Up Trigger Target Node
 					var triggerTarget;
 					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased") //hack to set no target for keyboard
@@ -188,7 +190,7 @@
 					
 					//Set Up Trigger Parameter
 					var triggerParameter=null;
-					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased")
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="StateChanged")
 					{
 						triggerParameter = condition_par1.object;
 					}
@@ -201,14 +203,14 @@
 					eventXml.addChild(entities.first);
 					
 					//Add Children Conditions
-					for (conditionChild in eventChild.getState('conditionsContainer').getChildren())
+					for (conditionChild of eventChild.getState('conditionsContainer').getChildren())
 					{
 						conditionChild.forceAction('Export Xml');
 						entities.last.addChild(conditionChild.getState('xmlExport'));
 					}
 					
 					//Add Children Events
-					for (actionChild in eventChild.getState('actionsContainer').getChildren())
+					for (actionChild of eventChild.getState('actionsContainer').getChildren())
 					{
 						actionChild.forceAction('Export Xml');
 						entities.last.addChild(actionChild.getState('xmlExport'));
@@ -251,7 +253,7 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					var counter = this.getState('counter');
+					var counter = it.getState('counter');
 					if (counter==0)
 					{
 						if (me.getState('conditionsContainer').getChildren().length==0)
@@ -259,7 +261,7 @@
 							Display.error("REMOVING EVENT!!!!");
 							parent.removeChild(me);
 						}
-						//var item = this.getState('item');
+						//var item = it.getState('item');
 						
 						//me.removeChild(item);
 						counter+=1;
@@ -271,7 +273,7 @@
 					}
 					
 					Display.invalidateLayout();
-					this.setState('counter',counter);
+					it.setState('counter',counter);
 				</Script>
 			</Scripts>
 			<States>
@@ -332,7 +334,7 @@
 					{
 						me.stopAction("Import Xml");
 						
-						var importXml = this.getState('importXml');
+						var importXml = it.getState('importXml');
 						
 						var l_entitiesNode = Logic.xml_getElements(importXml,["Form","Space","Entities"]);
 						

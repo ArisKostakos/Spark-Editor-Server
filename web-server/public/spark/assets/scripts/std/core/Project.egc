@@ -4,7 +4,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 					{
 						if (child.getState('name')==me.getState('initSpaceName'))
 						{
@@ -12,11 +12,11 @@
 							{
 								me.setState('space',child);
 								Display.setActiveSpace(child);
-								Console.debug("Display Space Entity Assigned Successfuly!");
+								Display.debug("Display Space Entity Assigned Successfuly!");
 							}
 							else
 							{
-								Console.warn("Incompatible Space Entity defined!");
+								Display.warn("Incompatible Space Entity defined!");
 							}
 							
 							break;

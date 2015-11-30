@@ -28,7 +28,7 @@
 												<Script>
 													var params = parent.parentEntity.getState('argA');
 												
-													for (param in params)
+													for (param of params)
 													{
 														Display.error("Name: " + param.name + ", Type: " + param.type);
 														var newItemParam = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.assetParameter.ParameterEdit' + param.type);

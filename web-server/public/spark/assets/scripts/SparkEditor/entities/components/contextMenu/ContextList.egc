@@ -45,7 +45,7 @@
 					
 					var ContextItemObjects = [];
 					var i = 0;
-					for (child in data.children)
+					for (child of data.children)
 					{
 						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.contextMenu.ContextItem');
 						myNewItem.setState('targetLayerName', me.getState('targetLayerName'));
@@ -73,10 +73,10 @@
 			<Scripts>
 				<Script>
 					//forced
-					var evokingChild = this.getState('child');
+					var evokingChild = it.getState('child');
 					var children = me.getState('ContextItemObjects');
 					
-					for (child in children)
+					for (child of children)
 					{
 						if (child!=evokingChild)
 						{
@@ -96,7 +96,7 @@
 			<Scripts>
 				<Script>
 					//forced
-					var evokingChild = this.getState('child');
+					var evokingChild = it.getState('child');
 					var children = me.getState('ContextItemObjects');
 					
 					//Not Implemented for now..
@@ -116,7 +116,7 @@
 					var children = me.getState('ContextItemObjects');
 					
 					if (children!=null) //i put this here cause i got 'children is null' run-time errors
-						for (child in children)
+						for (child of children)
 							child.startAction('Deselect');
 					
 					me.setState('display','none');

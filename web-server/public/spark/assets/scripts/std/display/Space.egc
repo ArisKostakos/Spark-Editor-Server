@@ -4,18 +4,18 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 					{
 						if (child.getState('name')==me.getState('initStageName'))
 						{
 							if (child.getState('displayType')=="Stage")
 							{
 								me.setState('stage',child);
-								Console.debug("Stage Entity assigned Successfuly!");
+								Display.debug("Stage Entity assigned Successfuly!");
 							}
 							else
 							{
-								Console.warn("Incompatible Stage Entity defined!");
+								Display.warn("Incompatible Stage Entity defined!");
 							}
 							
 							break;

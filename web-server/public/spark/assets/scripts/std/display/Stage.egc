@@ -8,7 +8,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					Console.debug("Stage Entity constructor!");
+					Display.debug("Stage Entity constructor!");
 					//Ask the platform to give us the actual platform's
 					//Stage width and height and set your states
 				</Script>

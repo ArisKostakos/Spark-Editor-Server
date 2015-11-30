@@ -35,7 +35,7 @@
 									
 									var assets = parent.getState('argA');
 									
-									for (asset in assets)
+									for (asset of assets)
 									{
 										var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.eventsheet.ChooseTargetThumb');
 										
@@ -46,9 +46,13 @@
 										{
 											thumbUrl = "thumb_" + asset.componentType;
 										}
-										else //but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+										else if (asset.componentType=="Object Class")//but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
 										{
-											if (asset.tags.length>1)
+											if (asset.tags[1]=="Text") //|| Sound, || ...
+											{
+												thumbUrl = "thumb_" + asset.tags[1];
+											}
+											else
 											{
 												var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
 												thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
@@ -83,7 +87,7 @@
 									var cb_caller = parent.getState('cb_caller');
 									var cb_action = cb_caller.getAction(parent.getState('cb_actionName'));
 									cb_action.setState('cb_result',"OK");
-									cb_action.setState('cb_Arg1',this.getState('asset'));
+									cb_action.setState('cb_Arg1',it.getState('asset'));
 									
 									cb_caller.forceAction(parent.getState('cb_actionName'));
 								</Script>

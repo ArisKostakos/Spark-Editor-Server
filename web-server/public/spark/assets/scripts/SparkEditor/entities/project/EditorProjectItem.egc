@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>50</Value></_State>
+		<_State id="height"><Value>50</Value></_State>
+		<_State id="border"><Value>0px</Value></_State>
+		<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>caption</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>skinType</Id><Type>Text</Type><Value>imageOnly</Value></State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Image -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="touchable"><Value>true</Value></_State>
+						<_State id="cursor"><Value>pointer</Value></_State>
+						<_State id="draggable"><Value>true</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<State><Id>tempDeleting</Id><Type>Boolean</Type><Value>false</Value></State>
+						<State><Id>tempAssetReferencesToDelete</Id><Type>Dynamic</Type><Value>null</Value></State>
+					</_States>
+						
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('imageObject',me);
+						me.setState('src',parent.getState('imageName'));
+						
+						if (parent.getState('skinType')=='imageOnly')
+						{
+							me.setState('width', '100%');
+							me.setState('height', '100%');
+						}
+						else if (parent.getState('skinType')=='imageAndText')
+						{
+							me.setState('width', '80%');
+							me.setState('height', '80%');
+						}
+					</Script></_Scripts></_Action></_Actions>
+						
+					<_Triggers>
+						<!--
+						<Trigger>
+							<Event>OnDragStart</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',true);				
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>OnDragEnd</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',false);
+									Display.error("DRAG ENDDD");
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>MouseDown</Event>
+							<Scripts>
+								<Script>
+									if (me.getState('eventObject').which==1) //Left Mouse Button
+									{
+										Display.error("Mouse Down LEFT!!!");
+										Logic.getEntityByName('Drag Surface View').setState('visible',true);
+										Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
+									}
+									
+									
+									//FINDS OFFSET FROM MOUSE CLICK TO IMAGE. I might need it later on..
+									//Display.error("Mouse Down!!!");
+									//var eventObject = me.getState('eventObject');
+									//var localX = eventObject.target.getBoundingClientRect().left;
+									//var localY = eventObject.target.getBoundingClientRect().top;
+									//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+									//.error("Mouse Global-> X: " + Input.pointer.currentX + ", Y: " + Input.pointer.currentY);
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>MouseUp</Event>
+							<Scripts>
+								<Script>
+									Logic.getEntityByName('Drag Surface View').setState('visible',false);
+								</Script>
+							</Scripts>
+						</Trigger>
+						-->
+						<Trigger>
+							<Event>MouseRightClick</Event>
+							<Scripts>
+								<Script>
+									function createContextNode(nodeName,nodeType,parentNode)
+									{
+										var node = {};
+										node.name=nodeName;
+										node.children = [];
+										node.type=nodeType;
+										parentNode.children.push(node);
+										
+										return node;
+									}
+									
+									var mainList = {};
+									mainList.children = [];
+									
+									createContextNode("Remove","Remove",mainList);
+									
+									var mousePosX = Input.pointer.currentX;
+									var mousePosY = Input.pointer.currentY;
+									
+									
+									//Open Popup [CHOOSE AC]
+									var popUpManager = Logic.getEntityByName('PopUp Manager');
+									var popUpAction = popUpManager.getAction('Open PopUp');
+									popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+									popUpAction.setState('popupPosX',mousePosX);
+									popUpAction.setState('popupPosY',mousePosY);
+									popUpAction.setState('argA',mainList);
+									popUpAction.setState('cb_caller',me);
+									popUpAction.setState('cb_actionName','Callback: ProjectItem Context Menu');
+									popUpManager.forceAction('Open PopUp');
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>NetworkRequest</Event>
+							<Target>TargetNone</Target>
+							<Scripts>
+								<Script>
+									if (Comms.getRequestData("deleteAssetProject")!=null)
+									{
+										if (me.getState('tempDeleting')) //if it's me who's getting removed..
+										{
+											var data = Comms.getRequestData("deleteAssetProject");
+											
+											me.setState('tempDeleting',false);
+											
+											if (data.code=="success")
+											{
+												Display.error('Remove Asset success!');
+												Logic.getEntityByName('Editor Output').setState('text','Asset Removed Successfully!');
+												parent.parentEntity.removeChild(parent);
+												
+												//Now, we need to remove them from ModuleThingie..
+												var assetReferences = me.getState('tempAssetReferencesToDelete');
+												Comms.request("assets.updateHandler.removeProjectMainModuleAssetReferences", {assetReferences: assetReferences}, "whatever dude...");
+											}
+											else
+											{
+												Display.error('Remove Asset error!');
+												Logic.getEntityByName('Editor Output').setState('text','Error Removing Asset :(');
+											}
+										}
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+						
+					<_Actions>
+						<!-- Callback: ProjectItem Context Menu -->
+						<Action>
+							<Id>Callback: ProjectItem Context Menu</Id>
+							<Concurrency>Persistent</Concurrency>
+							<Scripts>
+								<Script>
+									//forced
+									
+									var cb_result = it.getState('cb_result');
+									var cb_Arg1 = it.getState('cb_Arg1');
+									
+									if (cb_result=="OK")
+									{
+										Display.error("Callback: Select AC: OK");
+										Display.error("Got: " + cb_Arg1.name);
+										
+										if (cb_Arg1.type=="Remove")
+										{
+											var asset = parent.getState('asset');
+											
+											
+											//Figure out what we're trying to delete
+											if (asset.componentType=="Project")
+											{
+												Logic.getEntityByName('Editor Output').setState('text','Cannot remove Project');
+											}
+											else if (asset.componentType=="Object Class")//but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+											{
+												me.setState('tempDeleting',true);
+												
+												var assetIds=[];
+												assetIds.push(asset._id);
+												
+												if (asset.tags[1]=="Text") //|| Sound, || ...
+												{
+													Display.log("This Object Class has no dependancies");
+												}
+												else
+												{
+													//Assume for now it's an Image thing that has one dependancy only, stored on tag[1]
+													assetIds.push(asset.tags[1]);
+												}
+												
+												
+												//Store this, to remove the references from the main module as well
+												me.setState('tempAssetReferencesToDelete',assetIds);
+												
+												//Do the thing
+												Comms.request("assets.uploadHandler.deleteAssets", {assetIds: [asset._id]}, "deleteAssetProject");
+											}
+										}
+									}
+									else
+									{
+										Display.error("Callback: Select AC: CANCEL");
+									}
+								</Script>
+							</Scripts>
+							<States>
+								<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+								<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+							</States>
+						</Action>
+					</_Actions>
+				</Entity>
+					
+				<!-- Caption -->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="bottom"><Value>0</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="fontSize"><Value>12px</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						me.setState('text',parent.getState('caption'));
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

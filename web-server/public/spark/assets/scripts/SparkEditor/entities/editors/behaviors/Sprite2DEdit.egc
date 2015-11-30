@@ -345,7 +345,7 @@
 								//Event Listener
 								Assets.successSignal.connect(function () {
 									oldMe.setState('tempUploading',false);
-									Logic.getEntityByName('Editor Output').setState('text','All done yo!');
+									Logic.getEntityByName('Editor Output').setState('text','All done!');
 									
 									//Update Inheritance
 									Logic.getEntityByName('Project Editor').getAction('RegisterInheritance').setState('asset',asset);
@@ -406,7 +406,7 @@
 					
 					Display.error("SOSOSO HERE'S ONE");
 					
-					var importXml = this.getState('importXml');
+					var importXml = it.getState('importXml');
 					
 					//Now, disable things you don't want happening on Edit.. like physicsEntity
 					//me.setState('physicsEntity',false); //we do this on the Sprite2DEdit.egc
@@ -492,8 +492,11 @@
 					var inheritanceMap = InheritanceHashByName.get(asset.name);
 					
 					var behaviorsFound = [];
-					for (behaviorName in inheritanceMap.keys())
+					
+					var keys = inheritanceMap.keys();
+					while (keys.hasNext())
 					{
+						var behaviorName = keys.next();
 						//Is it a behavior?
 						if (inheritanceMap.get(behaviorName)==true)
 						{
@@ -501,7 +504,7 @@
 						}
 					}
 					
-					this.setState('returnBehaviors',behaviorsFound);
+					it.setState('returnBehaviors',behaviorsFound);
 				</Script>
 			</Scripts>
 			<States>
@@ -524,7 +527,7 @@
 					var StatesHashByName = Logic.getEntityByName('Project Editor').getState("StatesHashByName");
 					var statesMap = StatesHashByName.get(asset.name);
 					Display.error(statesMap);
-					this.setState('returnStates',statesMap);	//statesMap is read only.. don't write to it..
+					it.setState('returnStates',statesMap);	//statesMap is read only.. don't write to it..
 				</Script>
 			</Scripts>
 			<States>
@@ -540,8 +543,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -637,8 +640,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -655,7 +658,7 @@
 						
 						Logic.xml_entity_removeNode(asset_xml,"Extends");
 						
-						for (item in cb_Arg1)
+						for (item of cb_Arg1)
 						{
 							Display.error("Adding: " + item);
 							Logic.xml_entity_addExtend(asset_xml, {ext: item});
@@ -695,8 +698,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -716,7 +719,7 @@
 						Logic.xml_entity_removeAllNodes(statesNode,"State");
 						
 						//Add new States
-						for (item in cb_Arg1)
+						for (item of cb_Arg1)
 						{
 							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
 							Logic.xml_entity_addState(asset_xml, item, true);

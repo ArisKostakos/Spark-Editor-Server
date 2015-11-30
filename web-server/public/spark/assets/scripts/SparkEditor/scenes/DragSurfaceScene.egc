@@ -180,7 +180,17 @@
 											var componentType = "Object Class"; //This should be determined by Library Collection stuff!!!!
 											
 											//tags
-											var tags =  libraryAsset._id; //(second tag of Object Class is the asset used to display ThumbNail. later add option to use lib_name for thumb too. This should be determined by Library Collection stuff!!!!
+											//(second tag of Object Class is the asset used to display ThumbNail. added option to use lib_name for thumb too. This should be determined by Library Collection stuff!!!!
+											if (libraryAsset.componentType=="Class")
+												var tags = libraryAsset.tags[1];
+											else if (libraryAsset.componentType=="Image")
+												var tags =  libraryAsset._id;
+											else
+											{
+												var tags = ""; //Should not really go there, ever!
+												Display.error("ERROR!!!!! UNKNOWN COMPONENT TYPE: " + asset.componentType);
+											}
+											
 											
 											Comms.request("assets.uploadHandler.rawUpload", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: dir, type: type, componentType: componentType, tags: tags}, "DragSurface Creating Asset Step 2");
 										}
@@ -444,7 +454,7 @@
 									//adjust spaceX and spaceY
 									var states = firstElementNamed(pureXml,'_States');
 									
-									for (state in states.elementsNamed('_State'))
+									for (state of states.elementsNamed('_State'))
 									{
 										if (state.get('id')=='spaceX')
 										{
@@ -462,7 +472,7 @@
 									
 									if (displayTypeData == "Image")
 									{
-										for (state in formStates.elementsNamed('State'))
+										for (state of formStates.elementsNamed('State'))
 										{
 											if (firstElementNamed(state,'Id').firstChild().nodeValue=='ImageUrl')
 											{
@@ -472,7 +482,7 @@
 									}
 									else if (displayTypeData=='Spriter')
 									{
-										for (state in formStates.elementsNamed('State'))
+										for (state of formStates.elementsNamed('State'))
 										{
 											if (firstElementNamed(state,'Id').firstChild().nodeValue=='SpriterMain')
 											{
@@ -482,7 +492,7 @@
 									}
 									else if (displayTypeData=='Spritesheet')
 									{
-										for (state in formStates.elementsNamed('State'))
+										for (state of formStates.elementsNamed('State'))
 										{
 											if (firstElementNamed(state,'Id').firstChild().nodeValue=='SpritesheetMain')
 											{
@@ -498,7 +508,7 @@
 									var extendsNode = firstElementNamed(realXml,'Extends');
 									
 									//Clean Extends
-									for (entity in extendsNode.elementsNamed('Entity'))
+									for (entity of extendsNode.elementsNamed('Entity'))
 									{
 										extendsNode.removeChild(entity);
 									}

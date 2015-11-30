@@ -23,7 +23,7 @@
 					me.setState('actions',[]);
 					me.setState('subevents',[]);
 					
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 					{
 						if (child.getState('EventChild')=='Condition')
 						{
@@ -67,7 +67,7 @@
 			<Scripts>
 				<Script>
 					//forced
-					if (this.getState('feedback'))
+					if (it.getState('feedback'))
 					{
 						//Display.error("feedback True");
 						me.setState('conditionChecked',me.getState('conditionChecked')+1);

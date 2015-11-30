@@ -312,12 +312,12 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 					{
 						if (child.getState('name')=='Output Text')
 									me.setState('outputText',child);
 								
-						for (grandchild in child.getChildren())
+						for (grandchild of child.getChildren())
 							if (grandchild.getState('name')=='Name Input')
 								me.setState('nameInput',grandchild);
 							else if (grandchild.getState('name')=='Email Input')

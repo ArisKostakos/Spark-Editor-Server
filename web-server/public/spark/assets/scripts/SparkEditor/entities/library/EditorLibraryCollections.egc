@@ -72,7 +72,7 @@
 						Display.error('ImportRequest: ' + fileName + ", of size: " + file.size + ", with extension: " + fileExtension + ", and importType: " + importType);
 						
 						var collectionsFound = [];
-						for (collection in collectionsHash)
+						for (collection of collectionsHash)
 						{
 							if (collection.getState('importTypes')[0]==importType)
 								collectionsFound.push(collection);
@@ -146,7 +146,7 @@
 					var scriptAssets = [];
 					
 					//Again, here comes a moronic simplified versin to replace the advanced way of checking every asset against all collection's filtering system..
-					for (asset in assets)
+					for (asset of assets)
 					{
 						if (asset.type=="image")
 						{
@@ -177,8 +177,10 @@
 						else
 						{
 							var collectionsFound = [];
-							for (collection in collectionsHash)
+							var itr = collectionsHash.iterator();
+							while (itr.hasNext())
 							{
+								var collection = itr.next();
 								if (collection.getState('importTypes')[0]==importType)
 									collectionsFound.push(collection);
 							}
@@ -216,8 +218,10 @@
 						else
 						{
 							var collectionsFound = [];
-							for (collection in collectionsHash)
+							var itr = collectionsHash.iterator();
+							while (itr.hasNext())
 							{
+								var collection = itr.next();
 								if (collection.getState('importTypes')[0]==importType)
 									collectionsFound.push(collection);
 							}
@@ -289,12 +293,14 @@
 		<Space>
 			<Entities>
 				<!-- Categories -->
-				<Entity extends="std.display.VGroup">
+				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="name"><Value>Editor Library Collections Buttons Container</Value></_State>
 						<_State id="gap"><Value>0</Value></_State><!--3-->
 						<_State id="width"><Value>85</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
 					</_States>
 					<Form><Space><Entities>
 
@@ -302,11 +308,12 @@
 				</Entity>
 				
 				<!-- Sub-Categories -->
-				<Entity extends="std.display.Group">
+				<Entity extends="std.display.Div"> <!-- Group-->
 					<_States>
 						<_State id="name"><Value>Editor Library Collections Panels Container</Value></_State>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
+						<_State id="overflow"><Value>hidden</Value></_State>
 					</_States>
 					<Form><Space><Entities>
 					

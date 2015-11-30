@@ -72,6 +72,7 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Export Button");
+					Logic.getEntityByName('Project Editor').startAction('Export Project');
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				<!-- Publish -->

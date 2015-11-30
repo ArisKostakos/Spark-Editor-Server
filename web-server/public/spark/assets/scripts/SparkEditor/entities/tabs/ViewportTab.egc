@@ -18,13 +18,21 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					me.stopAction('Initialize');
+					
 					var bar = me.getState('bar');
 					var container = me.getState('container');
 					
+					
+					
 					if (bar!=null && container!=null)
 					{
+					
+						
+					
 						bar.setState('backgroundColor','rgb(41,59,77)');
 					
+						
 						//Scene Editor Header
 						
 						var sceneEditorHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.WorkTabBarHeader');
@@ -39,6 +47,10 @@
 						sceneEditorHeader.setState('selectedTextColor','rgb(88,162,184)');
 						//sceneEditorHeader.setState('labelLeft','22');
 						//sceneEditorHeader.setState('backgroundColor','rgb(76,143,165)');
+						
+						Display.error("Trialaro");
+						Display.error("HAHAHA: " + bar.getState('backgroundColor'));
+						
 						bar.addChild(sceneEditorHeader);
 						//sceneEditorHeader.startAction('Selected');
 						

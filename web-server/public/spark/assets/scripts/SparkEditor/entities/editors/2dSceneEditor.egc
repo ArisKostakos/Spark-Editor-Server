@@ -9,7 +9,7 @@
 			<_Scripts>
 				<Script>
 					//Import XML
-					var importXml = this.getState('importXml');
+					var importXml = it.getState('importXml');
 					
 					me.getAction('Import Xml').setState('importXml',importXml);
 					me.forceAction('Import Xml');
@@ -25,7 +25,7 @@
 					//forced
 					
 					//create an SceneEdit
-					var importXml = this.getState('importXml');
+					var importXml = it.getState('importXml');
 					var tempImportXml = Logic.xml_clone(importXml);
 					Logic.xml_entity_removeNode(tempImportXml, "Form");
 					Logic.xml_entity_addExtend(tempImportXml, {ext: 'SparkEditor.entities.editors.behaviors.Scene2DEdit'});
@@ -105,7 +105,7 @@
 					//	entitiesXml.addChild(scene.getState('backgroundEntity').getState('xmlData'));
 					
 					//For Scene's Children
-					for (sceneChild in scene.getChildren())
+					for (sceneChild of scene.getChildren())
 					{
 						if (sceneChild.getState('sceneEditObject')==null)
 						{
