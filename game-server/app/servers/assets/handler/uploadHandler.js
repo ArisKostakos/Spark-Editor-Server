@@ -155,6 +155,47 @@ function deleteAssetsById(assetIds, index, cb)
 }
 
 
+handler.uploadProjectFile = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //fileName
+    var fileName = msg.fileName;
+
+    //Asset Path
+    var assetPath = path.resolve("../web-server/public") + '/assets';
+
+    //User Path
+    var userPath = assetPath + '/' + user.name;
+
+    //get finalDir
+    var finalDir = project.name;
+
+    //Asset Source Path
+    var assetSource = userPath + '/incoming/' + fileName;
+
+    //Asset Target Path
+    fs.ensureDirSync(userPath + '/project/' + finalDir);
+    var assetTarget = userPath + '/project/' + finalDir + '/' + fileName;
+
+
+    //Move Asset File
+    fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
+        if (err) {
+            next(null, {code: "error"});
+            return console.error(err);
+        }
+
+        //Handle Success
+        next(null, {code: "success"});
+
+    });
+}
 
 handler.uploadAsset = function(msg, session, next) {
     var self = this;
