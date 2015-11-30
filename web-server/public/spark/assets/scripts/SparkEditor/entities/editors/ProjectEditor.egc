@@ -212,11 +212,18 @@
 					//Export
 					var exportXml = exportProject.exportToXml();
 					
-					//Log
-					Display.error(Logic.xmlToString(exportXml));
+					//Prepare File
+					var clientFile = Logic.xml_createDocument();
+					clientFile.addChild(exportXml);
+					
+					//Save to String
+					var finalString = Logic.xmlToString(clientFile);
+					//Display.error("clientFile: " + finalString);
 					
 					//Upload
-					//..
+					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+					Comms.file_sendFileRequest(finalString, {name: "main.skc", size: finalString.length, user: connectedUserName} , "uploadProjectFile");
 					
 					//Open New Tab
 					//..
@@ -226,6 +233,29 @@
 	</_Actions>
 	
 	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData("uploadProjectFile")!=null)
+					{
+						var data = Comms.file_getSendFileRequestData("uploadProjectFile");
+						
+						Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+						Logic.getEntityByName('Editor Output').setState('text','Uploading ' + data.progressPercent+'%');
+						if (data.progress==1)
+						{
+							Display.error("FILE: " + 'File Uploaded!');
+							Logic.getEntityByName('Editor Output').setState('text','Project Uploaded!');
+							
+							Comms.request("assets.uploadHandler.uploadProjectFile", {fileName: "main.skc"}, "projectFileCreated");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
 		<Trigger>
 			<Event>NetworkRequest</Event>
 			<Target>TargetNone</Target>
@@ -593,6 +623,21 @@
 						else
 						{
 							Display.error('Error Distribute Assets to Library Collections!');
+						}
+					}
+					else if (Comms.getRequestData("projectFileCreated")!=null)
+					{
+						var data = Comms.getRequestData("projectFileCreated");
+						
+						if (data.code=="success")
+						{
+							Display.error('Project Export Success!');
+							Logic.getEntityByName('Editor Output').setState('text','Project Export Success!');
+						}
+						else
+						{
+							Display.error('Project Export Error!');
+							Logic.getEntityByName('Editor Output').setState('text','Project Export Error!');
 						}
 					}
 				</Script>
