@@ -32,6 +32,8 @@
 					
 					Display.error("SCENE XML: " + Logic.xmlToString(tempImportXml));
 					var editScene = Logic.gameFactory.createGameEntityByXml(tempImportXml);
+					editScene.setState('name','Level Editor 2D Scene');
+					Logic.registerEntityByName(editScene); //quick fix
 					me.setState('target',editScene);
 					
 					
