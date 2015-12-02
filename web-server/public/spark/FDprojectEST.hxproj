@@ -42,7 +42,8 @@
   <preBuildCommand />
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False">xcopy /E /Y "$(ProjectDir)\main.skc" "C:\Users\Aris\spark\build\web\main.skc"
-xcopy /E /Y "$(ProjectDir)\assets\scripts" "C:\Users\Aris\spark\build\web\assets\scripts\"</postBuildCommand>
+xcopy /E /Y "$(ProjectDir)\assets\scripts" "C:\Users\Aris\spark\build\web\assets\scripts\"
+xcopy /E /Y "$(ProjectDir)\assets\data" "C:\Users\Aris\spark\build\web\assets\data\"</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

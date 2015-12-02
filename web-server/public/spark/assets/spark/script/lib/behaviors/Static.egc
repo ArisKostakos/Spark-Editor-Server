@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<_State id="physicsType"><Value>Static</Value></_State>
+		<_State id="physicsSensorFlag"><Value>false</Value></_State>
+	</_States>
+</Entity>

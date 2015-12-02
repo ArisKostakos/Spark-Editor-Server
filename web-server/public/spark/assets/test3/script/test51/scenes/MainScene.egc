@@ -1,0 +1,12 @@
+<Entity extends="std.display.Scene2DPhysics">
+
+	<_States>
+		<_State id="name">
+			<Value>Main Scene</Value>
+		</_State>
+	</_States>
+	
+	
+	
+
+<Form><Space><Entities><Entity extends="test51.entities.Sprite_1"><_States><_State id="id"><Value>0</Value></_State><_State id="spaceX"><Value>1021</Value></_State><_State id="spaceY"><Value>920</Value></_State></_States></Entity><Entity extends="test51.entities.Sprite_2"><_States><_State id="id"><Value>0</Value></_State><_State id="spaceX"><Value>1016</Value></_State><_State id="spaceY"><Value>552</Value></_State></_States></Entity></Entities></Space></Form></Entity>
