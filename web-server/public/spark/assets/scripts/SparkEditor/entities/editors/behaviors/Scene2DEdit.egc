@@ -92,7 +92,7 @@
 			<Scripts>
 				<Script>
 					//forced
-					var importXml = this.getState('importXml');
+					var importXml = it.getState('importXml');
 					
 					
 					//for each [entity] in [form.space.entities]
@@ -348,11 +348,11 @@
 					
 					//solution to html5 bug
 					var sceneChildren = [];
-					for (child in scene.getChildren())
+					for (child of scene.getChildren())
 						sceneChildren.push(child);
 					
 					//For Scene's Children
-					for (child in sceneChildren)
+					for (child of sceneChildren)
 					{
 						if (child.getState('name')!='SceneBackground')
 						{

@@ -18,6 +18,8 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					me.stopAction('Initialize');
+				
 					var bar = me.getState('bar');
 					var container = me.getState('container');
 					

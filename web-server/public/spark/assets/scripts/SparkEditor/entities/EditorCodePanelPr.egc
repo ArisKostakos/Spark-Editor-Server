@@ -65,7 +65,7 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					var contentStr = this.getState('contentStr');
+					var contentStr = it.getState('contentStr');
 				
 					var ace = me.getState('aceObject');
 					

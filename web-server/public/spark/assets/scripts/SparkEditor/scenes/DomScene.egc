@@ -24,7 +24,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 						if (child.getState('name')=='Login Panel')
 							me.setState('loginPanel',child);
 						else if (child.getState('name')=='Signup Panel')

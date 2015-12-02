@@ -96,8 +96,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{

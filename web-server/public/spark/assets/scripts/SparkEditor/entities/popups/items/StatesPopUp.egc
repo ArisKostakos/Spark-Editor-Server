@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.popups.PopUpBaseWithArrow">
+	<_States>
+		<_State id="targetLayerName"><Value>PopUp Layer 1 Scene</Value></_State>
+		<State><Id>statesContainerObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- List -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="paddingLeft"><Value>6</Value></_State>
+						<_State id="paddingRight"><Value>6</Value></_State>
+						<_State id="paddingTop"><Value>6</Value></_State>
+						<_State id="paddingBottom"><Value>10</Value></_State>
+						<_State id="horizontalAlign"><Value>left</Value></_State>
+						<!--<_State id="overflow"><Value>scroll</Value></_State>-->
+					</_States>
+						
+					<_Form>
+						<_Space>
+							<_Entities>
+								<!-- States Container Title -->
+								<Entity extends="std.display.Text"><_States>
+									<_State id="width"><Value>150</Value></_State>
+									<_State id="text"><Value>States:</Value></_State>
+								</_States></Entity>
+								
+								<Entity extends="std.display.HGroup">
+									<Form><Space><Entities>
+										<Entity extends="std.display.Text"><_States>
+											<_State id="width"><Value>100</Value></_State>
+											<_State id="text"><Value>Name</Value></_State>
+										</_States></Entity>
+										<Entity extends="std.display.Text"><_States>
+											<_State id="width"><Value>80</Value></_State>
+											<_State id="text"><Value>Type</Value></_State>
+										</_States></Entity>
+										<Entity extends="std.display.Text"><_States>
+											<_State id="width"><Value>150</Value></_State>
+											<_State id="text"><Value>Initial Value</Value></_State>
+										</_States></Entity>
+									</Entities></Space></Form>
+								</Entity>
+					
+								<!-- States Container -->
+								<Entity extends="std.display.VGroup">
+									<_States>
+										<_State id="gap"><Value>1</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="Constructor">
+											<_Scripts>
+												<Script>
+													parent.parentEntity.setState('statesContainerObj',me);
+												
+													var states = parent.parentEntity.getState('argA');
+												
+													var iterator = states.iterator();
+													while (iterator.hasNext())
+													{
+														var state = iterator.next();
+														//Display.error("Id: " + state.id + ", Type: " + state.type + ", Value: " + state.value);
+														var newItemParam = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.popupListItems.StateEdit');
+														var newState = {id: state.id, type: state.type, value: state.value};
+														newItemParam.setState('stateObj',newState);
+														me.addChild(newItemParam);
+													}
+													
+													Display.invalidateLayout();
+													
+												</Script>
+											</_Scripts>
+										</_Action>
+										
+										<!-- Add Item -->
+										<Action>
+											<Id>Add Item</Id>
+											<Concurrency>Persistent</Concurrency>
+											<Scripts>
+												<Script>
+													var counter = it.getState('counter');
+													if (counter==0)
+													{
+														var item = it.getState('item');
+														
+														var newItemParam = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.popupListItems.StateEdit');
+														newItemParam.setState('stateObj',item);
+														newItemParam.setState('stateEdit',true);
+														me.addChild(newItemParam);
+														counter+=1;
+													}
+													else if (counter==1) //Apparently, for this to work we need to do two invalidations, otherwise the Done Button gets left behind
+													{
+														me.stopAction('Add Item');
+														counter=0;
+													}
+													
+													Display.invalidateLayout();
+													it.setState('counter',counter);
+												</Script>
+											</Scripts>
+											<States>
+												<State><Id>item</Id><Type>Dynamic</Type><Value>null</Value></State>
+												<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+											</States>
+										</Action>
+												
+										<!-- Remove Item -->
+										<Action>
+											<Id>Remove Item</Id>
+											<Concurrency>Persistent</Concurrency>
+											<Scripts>
+												<Script>
+													var counter = it.getState('counter');
+													if (counter==0)
+													{
+														var item = it.getState('item');
+														
+														me.removeChild(item);
+														counter+=1;
+													}
+													else if (counter==1) //Apparently, for this to work we need to do two invalidations, otherwise the Done Button gets left behind
+													{
+														me.stopAction('Remove Item');
+														counter=0;
+													}
+													
+													Display.invalidateLayout();
+													it.setState('counter',counter);
+												</Script>
+											</Scripts>
+											<States>
+												<State><Id>item</Id><Type>Dynamic</Type><Value>null</Value></State>
+												<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+											</States>
+										</Action>
+									</_Actions>
+								</Entity>
+								
+								<!-- Add New Button -->
+								<Entity extends="SparkEditor.entities.buttons.eventsheet.AddButtonBig">
+								<_States>
+									<!--<_State id="backgroundColor"><Value>rgb(87,92,102)</Value></_State>-->
+									<_State id="buttonText"><Value>Add State</Value></_State>
+								</_States>
+									<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+										<Script>
+											function createContextNode(nodeName,parentNode)
+											{
+												var node = {};
+												node.name=nodeName;
+												node.children = [];
+												parentNode.children.push(node);
+												
+												return node;
+											}
+											
+											
+											var mainList = {};
+											mainList.children = [];
+											
+											createContextNode("Integer",mainList);
+											createContextNode("Decimal",mainList);
+											createContextNode("Text",mainList);
+											createContextNode("Boolean",mainList);
+											//createContextNode("Object",mainList); //much later.. will pick a class name
+											
+											var globalPos = Logic.queryGameEntity(me, "globalPosition");
+											
+											//Open Popup [CHOOSE AC]
+											var popUpManager = Logic.getEntityByName('PopUp Manager');
+											var popUpAction = popUpManager.getAction('Open PopUp');
+											popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUp");
+											popUpAction.setState('popupPosX',globalPos.x+14);
+											popUpAction.setState('popupPosY',globalPos.y+25);
+											popUpAction.setState('argA',mainList);
+											popUpAction.setState('cb_caller',me);
+											popUpAction.setState('cb_actionName','Callback: Add A New Item');
+											popUpManager.forceAction('Open PopUp');
+											
+											//Display.invalidateLayout();
+										</Script>
+									</Scripts></Trigger></_Triggers>
+										
+									<_Actions>
+										<Action>
+											<Id>Callback: Add A New Item</Id>
+											<Concurrency>Persistent</Concurrency>
+											<Scripts>
+												<Script>
+													//forced
+													
+													var cb_result = it.getState('cb_result');
+													var cb_Arg1 = it.getState('cb_Arg1');
+													
+													if (cb_result=="OK")
+													{
+														Display.error("Callback: Select AC: OK");
+														Display.error("Got: " + cb_Arg1.name);
+														
+														var newState = {id: '', type: cb_Arg1.name, value: ''};
+														
+														var statesContainerObj = parent.parentEntity.getState('statesContainerObj');
+														statesContainerObj.getAction('Add Item').setState('item',newState);
+														statesContainerObj.startAction('Add Item');
+													}
+													else
+													{
+														Display.error("Callback: Select AC: CANCEL");
+													}
+												</Script>
+											</Scripts>
+											<States>
+												<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+												<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+											</States>
+										</Action>
+									</_Actions>
+								</Entity>
+								
+								<Entity extends="std.display.Group">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+									</_States>
+									<Form><Space><Entities>
+										<Entity extends="std.display.Button">
+											<_States>
+												<_State id="right"><Value>0</Value></_State>
+												<_State id="width"><Value>60</Value></_State>
+												<_State id="height"><Value>18</Value></_State>
+												<_State id="backgroundColor"><Value>rgb(123,168,25)</Value></_State>
+												<_State id="layout"><Value>Horizontal</Value></_State>
+												<_State id="verticalAlign"><Value>middle</Value></_State>
+												<State><Id>buttonText</Id><Type>Text</Type><Value>Done</Value></State>
+											</_States>
+											
+											<Form>
+												<Space>
+													<Entities>
+														<!-- Text -->
+														<Entity extends="std.display.Text"><_States>
+															<_State id="width"><Value>100%</Value></_State>
+															<_State id="height"><Value>16</Value></_State>
+															<_State id="fontWeight"><Value>300</Value></_State>
+															<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+															<_State id="fontSize"><Value>14px</Value></_State>
+															<_State id="fontColor"><Value>white</Value></_State>
+															<_State id="textAlign"><Value>center</Value></_State>
+															</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+															me.setState('text',parent.getState('buttonText'));
+														</Script></_Scripts></_Action></_Actions></Entity>
+													</Entities>
+												</Space>
+											</Form>
+											
+											<_Triggers>
+												<Trigger>
+													<Event>MouseLeftClick</Event>
+													<Scripts>
+														<Script>
+															//Close PopUp
+															parent.parentEntity.parentEntity.startAction('Close');
+															
+															//Hash Current Behaviors
+															var returnItems = [];
+															var statesContainerObj = parent.parentEntity.parentEntity.getState('statesContainerObj');
+															for (stateEdit of statesContainerObj.getChildren())
+															{
+																returnItems.push(stateEdit.getState('stateObj'));
+															}
+															
+															//Run Callback with OK
+															var cb_caller = parent.parentEntity.parentEntity.getState('cb_caller');
+															var cb_action = cb_caller.getAction(parent.parentEntity.parentEntity.getState('cb_actionName'));
+															cb_action.setState('cb_result',"OK");
+															cb_action.setState('cb_Arg1',returnItems);
+															
+															cb_caller.forceAction(parent.parentEntity.parentEntity.getState('cb_actionName'));
+														</Script>
+													</Scripts>
+												</Trigger>
+											</_Triggers>
+										</Entity>
+									</Entities></Space></Form>
+								</Entity>
+							</_Entities>
+						</_Space>
+					</_Form>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

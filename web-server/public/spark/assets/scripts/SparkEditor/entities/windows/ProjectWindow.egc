@@ -4,6 +4,7 @@
 		<_State id="name"><Value>Project Window</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>
 		<_State id="display"><Value>none</Value></_State>
+		<_State id="overflow"><Value>hidden</Value></_State>
 	</_States>
 	
 	<Form>

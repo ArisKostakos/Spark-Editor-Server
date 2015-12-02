@@ -44,12 +44,12 @@
 					//solution to html5 bug
 					var childrenArray = [];
 					
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 					{
 						childrenArray.push(child);
 					}
 					
-					for (child in childrenArray)
+					for (child of childrenArray)
 					{
 						me.removeChild(child);
 					}
@@ -96,7 +96,7 @@
 					var statesXml = firstElementNamed(xmlData,'_States');
 
 					var states = statesXml.elementsNamed('_State');
-					for (stateChildXml in states)
+					for (stateChildXml of states)
 					{
 						var stateObject = Logic.gameFactory.createGameEntity('SparkEditor.entities.components.properties.State');
 						stateObject.setState('stateXml',stateChildXml);

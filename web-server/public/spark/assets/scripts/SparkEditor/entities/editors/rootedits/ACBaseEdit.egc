@@ -110,8 +110,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -172,9 +172,13 @@
 					//Get Assets we Want to display
 					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
 					var arrayOfAssets = [];
-					for (asset in ClassObjectsDBbyNameHash)
+					
+					var iterator = ClassObjectsDBbyNameHash.iterator();
+					while (iterator.hasNext())
+					{
+						var asset = iterator.next();
 						arrayOfAssets.push(asset);
-						
+					}
 					
 					//Open Popup [CHOOSE TARGET]
 					var popUpManager = Logic.getEntityByName('PopUp Manager');
@@ -197,8 +201,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -225,8 +229,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -252,8 +256,8 @@
 				<Script>
 					//forced
 					
-					var cb_result = this.getState('cb_result');
-					var cb_Arg1 = this.getState('cb_Arg1');
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
 					
 					if (cb_result=="OK")
 					{
@@ -278,7 +282,7 @@
 			<Scripts>
 				<Script>
 					me.stopAction('Set New Parameters');
-					var parameters = this.getState('parameters');
+					var parameters = it.getState('parameters');
 					
 					var acAsset = me.getState('ac_asset');
 					
@@ -313,7 +317,7 @@
 			<Scripts>
 				<Script>
 					me.stopAction('Set New Target');
-					var asset = this.getState('asset');
+					var asset = it.getState('asset');
 					
 					//Store
 					me.setState('target_asset',asset);
@@ -329,9 +333,13 @@
 					{
 						thumbUrl = "thumb_" + asset.componentType;
 					}
-					else //but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+					else if (asset.componentType=="Object Class")//but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
 					{
-						if (asset.tags.length>1)
+						if (asset.tags[1]=="Text") //|| Sound, || ...
+						{
+							thumbUrl = "thumb_" + asset.tags[1];
+						}
+						else
 						{
 							var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
 							thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
@@ -373,7 +381,7 @@
 					for (i in 1...4)
 						me.setState('condition_par' + Std.string(i),null);
 					*/
-					var asset = this.getState('asset');
+					var asset = it.getState('asset');
 					
 					//Store
 					me.setState('ac_asset',asset);
@@ -441,7 +449,7 @@
 				<Script>
 					function getListChild(node,childName)
 					{
-						for (child in node.children)
+						for (child of node.children)
 						{
 							if (child.name==childName)
 								return child;
@@ -467,8 +475,11 @@
 					var inheritanceMap = InheritanceHashByName.get(target_asset.name);
 					
 					var typesFound = [];
-					for (classType in inheritanceMap.keys())
+					
+					var keys = inheritanceMap.keys();
+					while (keys.hasNext())
 					{
+						var classType = keys.next();
 						Display.error("FOUND TYPE!!!!: " + classType);
 						typesFound.push(classType);
 					}
@@ -478,11 +489,11 @@
 					var mainList = {};
 					mainList.children = [];
 					
-					for (type in typesFound)
+					for (type of typesFound)
 					{
 						if (acHash.exists(type))
 						{
-							for (asset in acHash.get(type))
+							for (asset of acHash.get(type))
 							{
 								Display.error("FOUND AC: " + asset.name);
 								var group = getListChild(mainList,asset.tags[1]);
@@ -545,7 +556,21 @@
 							obj.type="Expression";
 							obj.expType="Integer";
 						}
-						
+						else if (objSplit[0]=="%Ed")
+						{
+							obj.type="Expression";
+							obj.expType="Decimal";
+						}
+						else if (objSplit[0]=="%Eb")
+						{
+							obj.type="Expression";
+							obj.expType="Boolean";
+						}
+						else if (objSplit[0]=="%Et")
+						{
+							obj.type="Expression";
+							obj.expType="Text";
+						}
 						return obj;
 					}
 					
@@ -559,7 +584,7 @@
 						i +=1;
 					}
 					
-					this.setState('returnParams',params);
+					it.setState('returnParams',params);
 				</Script>
 			</Scripts>
 			<States>
@@ -652,7 +677,7 @@
 					{
 						me.stopAction('Import Xml');
 						
-						var importXml = this.getState('importXml');
+						var importXml = it.getState('importXml');
 						
 						var ClassObjectsDBbyFilenameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyFilenameHash");
 						

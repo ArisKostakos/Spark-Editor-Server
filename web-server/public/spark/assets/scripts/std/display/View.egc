@@ -8,7 +8,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child in parent.parentEntity.getChildren()) //parent.parent of a View should always be it's space
+					for (child of parent.parentEntity.getChildren()) //parent.parent of a View should always be it's space
 					{
 						//Find Scene
 						if (child.getState('name')==me.getState('initSceneName'))
@@ -16,11 +16,11 @@
 							if (child.getState('displayType')=="Scene")
 							{
 								me.setState('scene',child);
-								//Console.debug("Display Scene Entity Set Successfuly to View!");
+								//Display.debug("Display Scene Entity Set Successfuly to View!");
 							}
 							else
 							{
-								Console.warn("Incompatible Scene Entity defined!");
+								Display.warn("Incompatible Scene Entity defined!");
 							}
 						}
 						
@@ -30,11 +30,11 @@
 							if (child.getState('displayType')=="Camera")
 							{
 								me.setState('camera',child);
-								//Console.debug("Display Camera Entity Set Successfuly to View!");
+								//Display.debug("Display Camera Entity Set Successfuly to View!");
 							}
 							else
 							{
-								Console.warn("Incompatible Camera Entity defined!");
+								Display.warn("Incompatible Camera Entity defined!");
 							}
 						}
 					}

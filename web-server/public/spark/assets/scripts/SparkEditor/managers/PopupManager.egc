@@ -16,12 +16,12 @@
 					//force
 					
 					//Create PopUp
-					var popUp = Logic.gameFactory.createGameEntity(this.getState('popupName'));
-					popUp.addToState('left',this.getState('popupPosX'));
-					popUp.addToState('top',this.getState('popupPosY'));
-					popUp.setState('argA',this.getState('argA'));
-					popUp.setState('cb_caller',this.getState('cb_caller'));
-					popUp.setState('cb_actionName',this.getState('cb_actionName'));
+					var popUp = Logic.gameFactory.createGameEntity(it.getState('popupName'));
+					popUp.addToState('left',it.getState('popupPosX'));
+					popUp.addToState('top',it.getState('popupPosY'));
+					popUp.setState('argA',it.getState('argA'));
+					popUp.setState('cb_caller',it.getState('cb_caller'));
+					popUp.setState('cb_actionName',it.getState('cb_actionName'));
 					
 					//Find Popup's Scene
 					var targetLayerScene = Logic.getEntityByName(popUp.getState('targetLayerName'));
@@ -55,7 +55,7 @@
 					//force
 					
 					//Create PopUp
-					var popUp = this.getState('popUp');
+					var popUp = it.getState('popUp');
 					
 					//Find Popup's Scene
 					var targetLayerScene = Logic.getEntityByName(popUp.getState('targetLayerName'));

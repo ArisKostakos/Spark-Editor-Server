@@ -89,6 +89,12 @@
 			
 			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
+			
+			<Asset type="data" location="local" bytes='35672' id="fontRed.fnt">std/fontRed.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="fontRed">std/fontRed.png</Asset>
+			
+			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
 		</Module>
 
 		<Module id="SparkEditor" executeEntity="SparkEditor.MainProject">
@@ -191,6 +197,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/EditorCodePanelPr.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LoginBackground.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Networking.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/behaviors/Scrollable.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/Editor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/ProjectEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/SceneEditor.egc</Asset>
@@ -366,6 +373,7 @@
 			<Asset type="image" subtype="2D" location="local" id="thumb_Scene" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Camera" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Text" bytes='35672' forceLoadAsData='true'>editor/thumbs/Text.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Sound" bytes='35672' forceLoadAsData='true'>editor/thumbs/Sound.png</Asset>
 		</Module>
 	</Assets>
 	

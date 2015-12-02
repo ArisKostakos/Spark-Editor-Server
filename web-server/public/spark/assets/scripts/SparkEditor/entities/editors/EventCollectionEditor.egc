@@ -10,7 +10,7 @@
 			<_Scripts>
 				<Script>
 					//Import XML
-					var importXml = this.getState('importXml');
+					var importXml = it.getState('importXml');
 					
 					me.getAction('Import Xml').setState('importXml',importXml);
 					me.forceAction('Import Xml');
@@ -33,7 +33,7 @@
 					Logic.getEntityByName('Events Window').addChild(eventCollectionEdit);
 					
 					//start import for eventsheet
-					var importXml = this.getState('importXml');
+					var importXml = it.getState('importXml');
 					eventCollectionEdit.getAction('Import Xml').setState('importXml',importXml);
 					eventCollectionEdit.startAction('Import Xml');
 				</Script>
@@ -93,7 +93,7 @@
 					
 					
 					//For eventCollection's Children
-					for (eventChild in eventCollection.getState('eventsContainer').getChildren())
+					for (eventChild of eventCollection.getState('eventsContainer').getChildren())
 					{
 						eventChild.forceAction('Export Xml');
 						entities.last.addChild(eventChild.getState('xmlExport'));

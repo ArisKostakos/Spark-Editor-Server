@@ -118,10 +118,19 @@
 							//for now, just change the icon here
 							var username = Logic.getEntityByName('Spark Editor').getState('username');
 						
-							//Image
+							//Thumbnail
 							var imageObject = me.getState('imageObject');
 							
-							imageObject.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+							//If Asset is Image
+							if (asset.type=="image")
+							{
+								imageObject.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+							}
+							//If Asset is Sound
+							else if (asset.type=="sound")
+							{
+								imageObject.setState('src',"thumb_" + asset.componentType);
+							}
 							
 							//Text //ONLY IF ITEM IS captionType enabled...
 							//var objText = me.getState('obj_text');

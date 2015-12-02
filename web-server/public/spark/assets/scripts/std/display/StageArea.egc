@@ -8,7 +8,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					//Console.debug("StageArea Entity constructor!");
+					//Display.debug("StageArea Entity constructor!");
 				</Script>
 			</_Scripts>
 		</_Action>

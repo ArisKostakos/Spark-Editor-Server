@@ -16,6 +16,10 @@
 		<State><Id>libraryObjectDB</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
+	<Extends>
+		<Entity extends="SparkEditor.behaviors.Scrollable"/>
+	</Extends>
+		
 	<_Actions>
 		<Action>
 			<Id>AddAssetsDB</Id>
@@ -30,7 +34,7 @@
 					
 					var assets = me.getAction('AddAssetsDB').getState('assets');
 					
-					for (asset in assets)
+					for (asset of assets)
 					{
 						Display.error("AddAssetsDB: FOUND: " + asset.name);
 						
@@ -41,6 +45,12 @@
 						if (asset.componentType=="Image")
 						{
 							newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+						}
+						else if (asset.componentType=="Sound")
+						{
+							newItem.setState('caption',asset.title);
+							newItem.setState('skinType','imageAndText');
+							newItem.setState('imageName',"thumb_" + asset.componentType);
 						}
 						else if (asset.componentType=="Class")
 						{
@@ -88,6 +98,7 @@
 					newItem.setState('height',Std.string(me.getState('tileHeight')));
 					newItem.setState('name',file.name);
 					
+					//need to check type here to decide Text or no text
 					
 					newItem.setState('fileSize',file.size);
 					newItem.setState('componentType',componentType);

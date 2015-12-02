@@ -90,12 +90,24 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Group Button");
-					var hash = Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash');
 					
-					for (asset in hash)
-					{
-						Display.error("asset.name: " + asset.name);
-					}
+					//Initiate Load
+					Assets.initiateBatch();
+					
+					var assetId = 'lib/behaviors/QuizLogic.egc';
+					var assetUrl = '/assets/spark/script/lib/behaviors/QuizLogic.egc';
+					
+					//Add file to Flambe Loader
+					Assets.addFile(assetUrl, assetId);
+					
+					//Event Listener
+					Assets.successSignal.connect(function () {
+						Logic.getEntityByName('Editor Output').setState('text','Behavior Refreshed!');
+					}).once();
+					
+					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+					//Load
+					Assets.loadBatch();
 				</Script></_Scripts></_Action></_Actions></Entity>
 			</Entities>
 		</Space>

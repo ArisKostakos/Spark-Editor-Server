@@ -18,7 +18,7 @@
 					me.setState('conditions',[]);
 					me.setState('actions',[]);
 				
-					for (child in me.getChildren())
+					for (child of me.getChildren())
 					{
 						if (child.getState('name')=='Condition')
 						{
@@ -49,7 +49,7 @@
 					if (me.getState('conditionsTriggered')==me.getState('conditions').length)
 					{
 						//if yes, do actions
-						for (child in me.getState('actions'))
+						for (child of me.getState('actions'))
 						{
 							child.startAction('Run');
 						}

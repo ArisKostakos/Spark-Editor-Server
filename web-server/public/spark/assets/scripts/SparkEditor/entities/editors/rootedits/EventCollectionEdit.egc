@@ -10,11 +10,14 @@
 		<_State id="paddingTop"><Value>16</Value></_State>
 		<_State id="paddingBottom"><Value>16</Value></_State>
 		<_State id="gap"><Value>4</Value></_State>
-		
 		<State><Id>eventsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>EventsCount</Id><Type>Integer</Type><Value>0</Value></State>
 	</_States>
 	
+	<Extends>
+		<Entity extends="SparkEditor.behaviors.Scrollable"/>
+	</Extends>
+		
 	<Form>
 		<Space>
 			<Entities>
@@ -76,7 +79,7 @@
 					{
 						me.stopAction('Import Xml');
 						
-						var importXml = this.getState('importXml');
+						var importXml = it.getState('importXml');
 						
 						var eventsContainer = me.getState('eventsContainer');
 						var EventsCount = me.getState('EventsCount');
@@ -110,8 +113,4 @@
 			</States>
 		</Action>
 	</_Actions>
-	
-	<_Triggers>
-		
-	</_Triggers>
 </Entity>

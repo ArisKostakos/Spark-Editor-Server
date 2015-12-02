@@ -6,6 +6,10 @@
 		<_State id="display"><Value>none</Value></_State>
 		<_State id="width"><Value>0</Value></_State>
 		<_State id="height"><Value>0</Value></_State>
+		<_State id="overflow"><Value>hidden</Value></_State>
+		<!--<_State id="width"><Value>500</Value></_State>
+		<_State id="height"><Value>500</Value></_State>
+		<_State id="overflow"><Value>scroll</Value></_State>-->
 	</_States>
 	
 	<Form>

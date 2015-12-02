@@ -8,6 +8,8 @@
 		<State><Id>selectedCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>collectionsHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>importTypesHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>importTypeToAssetTypeHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>importTypeToComponentTypeHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -20,23 +22,32 @@
 					
 					importTypesHash.set('png','image');
 					importTypesHash.set('jpg','image');
-					
 					importTypesHash.set('scml','spriter');
-					
 					importTypesHash.set('plist','spritesheet');
-					
 					importTypesHash.set('ogg','sound');
 					importTypesHash.set('mp3','sound');
 					importTypesHash.set('m4a','sound');
-					
 					importTypesHash.set('mp4','video');
-					
 					importTypesHash.set('egc','data');//behavior?
 					
-					//Create hash: Import Type to Asset Type
-					//..
-					
 					me.setState('importTypesHash',importTypesHash);
+					
+					
+					//Create hash: Import Type to Asset Type
+					var importTypeToAssetTypeHash = new StringMap();
+					
+					importTypeToAssetTypeHash.set('image','image');
+					importTypeToAssetTypeHash.set('sound','sound');
+					
+					me.setState('importTypeToAssetTypeHash',importTypeToAssetTypeHash);
+					
+					//Create hash: Import Type to Component Type
+					var importTypeToComponentTypeHash = new StringMap();
+					
+					importTypeToComponentTypeHash.set('image','Image');
+					importTypeToComponentTypeHash.set('sound','Sound');
+					
+					me.setState('importTypeToComponentTypeHash',importTypeToComponentTypeHash);
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -52,6 +63,8 @@
 					//Get Hashes
 					var collectionsHash = me.getState('collectionsHash');
 					var importTypesHash = me.getState('importTypesHash');
+					var importTypeToAssetTypeHash = me.getState('importTypeToAssetTypeHash');
+					var importTypeToComponentTypeHash = me.getState('importTypeToComponentTypeHash');
 					
 					//Get File
 					var file = me.getAction('ImportRequest').getState('file');
@@ -72,7 +85,7 @@
 						Display.error('ImportRequest: ' + fileName + ", of size: " + file.size + ", with extension: " + fileExtension + ", and importType: " + importType);
 						
 						var collectionsFound = [];
-						for (collection in collectionsHash)
+						for (collection of collectionsHash)
 						{
 							if (collection.getState('importTypes')[0]==importType)
 								collectionsFound.push(collection);
@@ -109,8 +122,8 @@
 								
 								//Send UploadItem to the collection
 								collectionsFound[0].getAction('UploadFile').setState('file',file);
-								collectionsFound[0].getAction('UploadFile').setState('componentType','Image'); //later, you use a hash to translate importType to componentType
-								collectionsFound[0].getAction('UploadFile').setState('assetType','image'); //later, you use a hash to translate importType to assetType
+								collectionsFound[0].getAction('UploadFile').setState('componentType',importTypeToComponentTypeHash.get(importType));
+								collectionsFound[0].getAction('UploadFile').setState('assetType',importTypeToAssetTypeHash.get(importType));
 								collectionsFound[0].getAction('UploadFile').setState('tags',''); //later, figure out tags too
 								collectionsFound[0].startAction('UploadFile');
 							}
@@ -143,27 +156,35 @@
 					
 					
 					var imageAssets = [];
+					var soundAssets = [];
 					var scriptAssets = [];
 					
-					//Again, here comes a moronic simplified versin to replace the advanced way of checking every asset against all collection's filtering system..
-					for (asset in assets)
+					//Again, here comes a moronic simplified version to replace the advanced way of checking every asset against all collection's filtering system..
+					for (asset of assets)
 					{
 						if (asset.type=="image")
 						{
 							imageAssets.push(asset);
-							Display.error("Yeah boyyy: " + asset.name);
+							Display.error("Yeah boyyy image: " + asset.name);
+						}
+						else if (asset.type=="sound")
+						{
+							soundAssets.push(asset);
+							Display.error("Yeah boyyy sound: " + asset.name);
 						}
 						else if (asset.type=="script")
 						{
 							if (asset.componentType=="Class")
 							{
 								scriptAssets.push(asset);
-								Display.error("Yeah boyyy: " + asset.name);
+								Display.error("Yeah boyyy script: " + asset.name);
 							}
 						}
 					}
 					Display.error("imageAssets: length: " + imageAssets.length);
 					
+					
+					//So.. this... not too proud :P..
 					if (imageAssets.length>0)
 					{
 						//Determine Import Type
@@ -177,8 +198,10 @@
 						else
 						{
 							var collectionsFound = [];
-							for (collection in collectionsHash)
+							var itr = collectionsHash.iterator();
+							while (itr.hasNext())
 							{
+								var collection = itr.next();
 								if (collection.getState('importTypes')[0]==importType)
 									collectionsFound.push(collection);
 							}
@@ -203,6 +226,47 @@
 						}
 					}
 					
+					if (soundAssets.length>0)
+					{
+						//Determine Import Type
+						var importType = 'sound'; //find collections that accept image importTypes... later on, do the hash legwork
+						
+						//Check which of are collections would be interested in this importType
+						if (importType==null)
+						{
+							Display.error("ERROR: Could not deduce importType from given file extension!");
+						}
+						else
+						{
+							var collectionsFound = [];
+							var itr = collectionsHash.iterator();
+							while (itr.hasNext())
+							{
+								var collection = itr.next();
+								if (collection.getState('importTypes')[0]==importType)
+									collectionsFound.push(collection);
+							}
+							
+							if (collectionsFound.length==0)
+							{
+								Display.error("ERROR: No collection likes this import type!");
+							}
+							else
+							{
+								if (collectionsFound.length>1)
+								{
+									Display.error("ERROR: It becomes a bit tricky when more than one collections want this, because we don't know what tags and what componentType to upload this asset with!");
+								}
+								else
+								{
+									//Send asset to the collection
+									collectionsFound[0].getAction('AddAssetsDB').setState('assets',soundAssets);
+									collectionsFound[0].startAction('AddAssetsDB');
+								}
+							}
+						}
+					}
+					
 					if (scriptAssets.length>0)
 					{
 						//Determine Import Type
@@ -216,8 +280,10 @@
 						else
 						{
 							var collectionsFound = [];
-							for (collection in collectionsHash)
+							var itr = collectionsHash.iterator();
+							while (itr.hasNext())
 							{
+								var collection = itr.next();
 								if (collection.getState('importTypes')[0]==importType)
 									collectionsFound.push(collection);
 							}
@@ -289,12 +355,14 @@
 		<Space>
 			<Entities>
 				<!-- Categories -->
-				<Entity extends="std.display.VGroup">
+				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="name"><Value>Editor Library Collections Buttons Container</Value></_State>
 						<_State id="gap"><Value>0</Value></_State><!--3-->
 						<_State id="width"><Value>85</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
 					</_States>
 					<Form><Space><Entities>
 
@@ -302,11 +370,12 @@
 				</Entity>
 				
 				<!-- Sub-Categories -->
-				<Entity extends="std.display.Group">
+				<Entity extends="std.display.Div"> <!-- Group-->
 					<_States>
 						<_State id="name"><Value>Editor Library Collections Panels Container</Value></_State>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
+						<_State id="overflow"><Value>hidden</Value></_State>
 					</_States>
 					<Form><Space><Entities>
 					

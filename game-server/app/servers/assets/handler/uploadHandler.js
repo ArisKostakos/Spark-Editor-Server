@@ -160,8 +160,7 @@ handler.uploadAsset = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
 
-    if (msg.type=='image')
-    {
+
         createAsset([], msg, session, function (err, data) {
             if (err) {
                 next(null, data);
@@ -169,35 +168,41 @@ handler.uploadAsset = function(msg, session, next) {
             }
 
             //Handle Success
-            var user = session.get('user');
+            if (msg.type=='image')
+            {
+                var user = session.get('user');
 
-            //Asset Path
-            var assetPath = path.resolve("../web-server/public") + '/assets';
+                //Asset Path
+                var assetPath = path.resolve("../web-server/public") + '/assets';
 
-            //User Path
-            var userPath = assetPath + '/' + user.name;
+                //User Path
+                var userPath = assetPath + '/' + user.name;
 
-            //Source Url
-            var assetUrl = userPath + '/' + data.asset.type + '/' + data.asset.dir + '/' + data.asset.fileName +  '.' + data.asset.fileExtension;
+                //Source Url
+                var assetUrl = userPath + '/' + data.asset.type + '/' + data.asset.dir + '/' + data.asset.fileName + '.' + data.asset.fileExtension;
 
-            //Target Url
-            fs.ensureDirSync(userPath + '/' + 'thumbnail' + '/' + data.asset.dir);
-            var thumbnailUrl = userPath + '/' + 'thumbnail' + '/' + data.asset.dir + '/' + data.asset.fileName +  '.' + data.asset.fileExtension;
+                //Target Url
+                fs.ensureDirSync(userPath + '/' + 'thumbnail' + '/' + data.asset.dir);
+                var thumbnailUrl = userPath + '/' + 'thumbnail' + '/' + data.asset.dir + '/' + data.asset.fileName + '.' + data.asset.fileExtension;
 
-            //create thumbnail
-            createThumbnail(assetUrl, thumbnailUrl, 128, function(err) {
-                if (err) {
-                    next(null, {code: "error"});
-                    return console.error(err);
-                }
+                //create thumbnail
+                createThumbnail(assetUrl, thumbnailUrl, 128, function (err) {
+                    if (err) {
+                        next(null, {code: "error"});
+                        return console.error(err);
+                    }
 
-                //Handle Success
+                    //Handle Success
+                    next(null, {code: data.code, asset: data.asset});
+                });
+            }
+            else
+            {
+                //Don't create Thumbnail
                 next(null, {code: data.code, asset: data.asset});
-            });
+            }
         });
     }
-    //
-    //..
 
 };
 

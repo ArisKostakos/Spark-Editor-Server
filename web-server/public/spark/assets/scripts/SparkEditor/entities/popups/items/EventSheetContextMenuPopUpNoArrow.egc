@@ -51,7 +51,7 @@
 					var cb_caller = me.getState('cb_caller');
 					var cb_action = cb_caller.getAction(me.getState('cb_actionName'));
 					cb_action.setState('cb_result',"OK");
-					cb_action.setState('cb_Arg1',this.getState('itemObject'));
+					cb_action.setState('cb_Arg1',it.getState('itemObject'));
 					
 					cb_caller.forceAction(me.getState('cb_actionName'));
 				</Script>
