@@ -149,7 +149,7 @@
 						}
 						else
 						{
-							Display.error("Error uploading asset.");
+							Display.error("Error uploading asset. Code: " + data.code);
 							//remove uploading item here (me) or something..
 						}
 					}

@@ -180,10 +180,12 @@
 						triggerEvent="PhysicsSensorStart";
 					else if (condition_asset.fileName=="StateChanged")
 						triggerEvent="StateChanged";
+					else if (condition_asset.fileName=="OnSceneCreated")
+						triggerEvent="SceneCreated";
 						
 					//Set Up Trigger Target Node
 					var triggerTarget;
-					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased") //hack to set no target for keyboard
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated") //hack to set no target for keyboard
 						triggerTarget="TargetNone";
 					else
 						triggerTarget= conditionTarget_asset.fileName;

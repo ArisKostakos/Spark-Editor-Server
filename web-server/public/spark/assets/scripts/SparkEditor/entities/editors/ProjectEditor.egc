@@ -231,6 +231,8 @@
 						
 						if (asset.type=="image")
 							asset.id = 'image_' + assetDB.name;
+						if (asset.type=="sound")
+							asset.id = 'sound_' + assetDB.name;
 						else
 							asset.id = null;
 					}
@@ -354,6 +356,14 @@
 								else if (asset.type=="image")
 								{
 									assetId = 'image_' + asset.name;
+								}
+								else if (asset.type=="sound")
+								{
+									assetId = 'sound_' + asset.name;
+									//Add it to project panel( ehh)
+									var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
+									projectPanelContainer.getAction('AddClassAssetDB').setState('asset',asset);
+									projectPanelContainer.forceAction('AddClassAssetDB');
 								}
 								
 								//Store the AssetDB

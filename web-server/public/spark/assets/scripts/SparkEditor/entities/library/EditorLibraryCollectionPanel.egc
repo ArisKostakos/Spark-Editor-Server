@@ -48,7 +48,7 @@
 						}
 						else if (asset.componentType=="Sound")
 						{
-							newItem.setState('caption',asset.title);
+							newItem.setState('caption',asset.fileName);
 							newItem.setState('skinType','imageAndText');
 							newItem.setState('imageName',"thumb_" + asset.componentType);
 						}
@@ -99,6 +99,12 @@
 					newItem.setState('name',file.name);
 					
 					//need to check type here to decide Text or no text
+					if (componentType=="Sound")
+					{
+						var fileName = file.name.substring(0,file.name.lastIndexOf(".")); //temp name thing
+						newItem.setState('caption',fileName);
+						newItem.setState('skinType','imageAndText');
+					}
 					
 					newItem.setState('fileSize',file.size);
 					newItem.setState('componentType',componentType);

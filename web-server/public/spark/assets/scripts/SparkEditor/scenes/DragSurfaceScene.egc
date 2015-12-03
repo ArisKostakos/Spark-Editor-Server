@@ -64,6 +64,44 @@
 									
 									Display.error('Dropping: ' + asset.name);
 									
+									
+									if (asset.componentType=="Sound")
+									{
+										Display.error("It's a sound!");
+										Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id]}, "whatever dude...");
+										Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
+										Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+										
+										//Initiate Load
+										Assets.initiateBatch();
+										
+										//The Dragged Asset (Image, Text.egc, etc)
+										var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+										var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+										var assetBeingDraggedId = 'sound_' + asset.name;
+										Display.error(assetBeingDraggedUrl);
+										Display.error(assetBeingDraggedId);
+										Assets.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
+										
+										Logic.getEntityByName('Editor Output').setState('text',"Please Wait...!");
+										
+										//Event Listener
+										Assets.successSignal.connect(function () {
+											Logic.getEntityByName('Editor Output').setState('text',"Sound Loaded!");
+											//Add it to project panel( ehh)
+											var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
+											projectPanelContainer.getAction('AddClassAssetDB').setState('asset',asset);
+											projectPanelContainer.forceAction('AddClassAssetDB');
+											
+										}).once();
+										
+										//Load
+										Assets.loadBatch();
+										
+										return;
+									}
+									
+									
 									var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
 									
 									var pureXml;

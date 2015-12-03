@@ -85,8 +85,10 @@
 						Display.error('ImportRequest: ' + fileName + ", of size: " + file.size + ", with extension: " + fileExtension + ", and importType: " + importType);
 						
 						var collectionsFound = [];
-						for (collection of collectionsHash)
+						var iterator = collectionsHash.iterator();
+						while (iterator.hasNext())
 						{
+							var collection = iterator.next();
 							if (collection.getState('importTypes')[0]==importType)
 								collectionsFound.push(collection);
 						}

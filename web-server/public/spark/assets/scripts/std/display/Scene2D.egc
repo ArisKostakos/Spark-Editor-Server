@@ -39,4 +39,15 @@
 			<Value>null</Value>
 		</State>
 	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Display.warn("Created Scene: " + me.getState('name'));
+					Event.raiseEvent(EEventType.SCENE_CREATED);
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
 </Entity>
