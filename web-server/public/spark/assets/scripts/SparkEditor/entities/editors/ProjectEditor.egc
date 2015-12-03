@@ -231,7 +231,7 @@
 						
 						if (asset.type=="image")
 							asset.id = 'image_' + assetDB.name;
-						if (asset.type=="sound")
+						else if (asset.type=="sound")
 							asset.id = 'sound_' + assetDB.name;
 						else
 							asset.id = null;
