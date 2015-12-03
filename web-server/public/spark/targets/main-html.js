@@ -12911,16 +12911,40 @@ tools_spark_framework_Assets.loadBatch = function() {
 	tools_spark_framework_Assets._loader.initiateLoad();
 };
 tools_spark_framework_Assets.getAssetPackOf = function(p_name) {
-	return tools_spark_framework_Assets._loader.getAssetPackOf(p_name);
+	try {
+		return tools_spark_framework_Assets._loader.getAssetPackOf(p_name);
+	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
+		tools_spark_framework_Console.error("ERROR: Could not find assetPack of: " + p_name);
+		return null;
+	}
 };
 tools_spark_framework_Assets.getFile = function(p_name) {
-	return tools_spark_framework_Assets._loader.getFile(p_name);
+	try {
+		return tools_spark_framework_Assets._loader.getFile(p_name);
+	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
+		tools_spark_framework_Console.error("ERROR: Could not find file: " + p_name);
+		return null;
+	}
 };
 tools_spark_framework_Assets.getTexture = function(p_name) {
-	return tools_spark_framework_Assets._loader.getTexture(p_name);
+	try {
+		return tools_spark_framework_Assets._loader.getTexture(p_name);
+	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
+		tools_spark_framework_Console.error("ERROR: Could not find texture: " + p_name);
+		return null;
+	}
 };
 tools_spark_framework_Assets.getSound = function(p_name) {
-	return tools_spark_framework_Assets._loader.getSound(p_name);
+	try {
+		return tools_spark_framework_Assets._loader.getSound(p_name);
+	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
+		tools_spark_framework_Console.error("ERROR: Could not find sound: " + p_name);
+		return null;
+	}
 };
 var tools_spark_framework_Console = function() { };
 $hxClasses["tools.spark.framework.Console"] = tools_spark_framework_Console;
