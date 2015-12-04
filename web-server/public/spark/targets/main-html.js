@@ -15571,6 +15571,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		if(Type.enumConstructor(p_pointerEvent.source) == "Mouse") {
 			if(tools_spark_sliced_core_Sliced.input.mouse.lastMouseButton == flambe_input_MouseButton.Right) tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK,this.gameEntity);
 		}
+		tools_spark_sliced_core_Sliced.sound.playSound("sound_quiz_game_2.timeout");
 	}
 	,setPosSize: function(p_x,p_y,p_width,p_height,p_view) {
 		var l_mesh = this._instancesMesh.get(p_view);
@@ -18707,6 +18708,9 @@ var tools_spark_sliced_interfaces_ISound = function() { };
 $hxClasses["tools.spark.sliced.interfaces.ISound"] = tools_spark_sliced_interfaces_ISound;
 tools_spark_sliced_interfaces_ISound.__name__ = true;
 tools_spark_sliced_interfaces_ISound.__interfaces__ = [tools_spark_sliced_interfaces_IService];
+tools_spark_sliced_interfaces_ISound.prototype = {
+	__class__: tools_spark_sliced_interfaces_ISound
+};
 var tools_spark_sliced_services_std_comms_core_Comms = function() {
 	tools_spark_sliced_core_AService.call(this);
 	this._init();

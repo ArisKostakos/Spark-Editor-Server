@@ -219,10 +219,20 @@
 						var asset = new Asset(assetDB.name);
 						asset.type = assetDB.type;
 						
-						if (assetDB.owner.user.name=="spark")
-							asset.location = 'spark';
+						//Bug here.. when I just created the asset, and try to export, it doesn't have owner..
+						//workaround for now... default to project
+						//test if it works!
+						if (assetDB.owner.user!=null)
+						{
+							if (assetDB.owner.user.name=="spark")
+								asset.location = 'spark';
+							else
+								asset.location = 'project';
+						}
 						else
+						{
 							asset.location = 'project';
+						}
 							
 						asset.bytes = Std.string(assetDB.fileSize);
 						asset.url = assetDB.dir+'/'+assetDB.fileName+'.'+assetDB.fileExtension;
