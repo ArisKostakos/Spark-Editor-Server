@@ -426,8 +426,50 @@
 						{
 							var entity = selectedEntities[0];
 							
-							entity.setState('scaleX',entity.getState('scaleX')-dir);
-							entity.setState('scaleY',entity.getState('scaleY')-dir);
+							entity.setState('scaleX',entity.getState('scaleX')-dir/2);
+							entity.setState('scaleY',entity.getState('scaleY')-dir/2);
+						}
+					}
+					else if (Input.keyboard.isKeyDown(Key.Shift))
+					{
+						var selectedEntities = me.getState('selectedEntities');
+					
+						//Get Scene
+						var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+						
+						if (selectedEntities.length==1)
+						{
+							var entity = selectedEntities[0];
+							
+							entity.setState('scaleY',entity.getState('scaleY')-dir/2);
+						}
+					}
+					else if (Input.keyboard.isKeyDown(Key.Alt))
+					{
+						var selectedEntities = me.getState('selectedEntities');
+					
+						//Get Scene
+						var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+						
+						if (selectedEntities.length==1)
+						{
+							var entity = selectedEntities[0];
+							
+							entity.setState('scaleX',entity.getState('scaleX')-dir/2);
+						}
+					}
+					else if (Input.keyboard.isKeyDown(Key.Space))
+					{
+						var selectedEntities = me.getState('selectedEntities');
+					
+						//Get Scene
+						var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+						
+						if (selectedEntities.length==1)
+						{
+							var entity = selectedEntities[0];
+							
+							entity.setState('rotation',entity.getState('rotation')-dir*10);
 						}
 					}
 					else //zoom camera in out

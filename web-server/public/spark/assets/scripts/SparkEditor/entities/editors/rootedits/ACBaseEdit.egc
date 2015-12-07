@@ -80,6 +80,9 @@
 					var mainList = {};
 					mainList.children = [];
 					
+					createContextNode("Replace with new","Replace",mainList);
+					createContextNode("Change " + me.getState('name'),"changeAC",mainList);
+					createContextNode("Edit Parameters","changeParameters",mainList);
 					createContextNode("Delete","Delete",mainList);
 					
 					var mousePosX = Input.pointer.currentX;
@@ -115,7 +118,25 @@
 					
 					if (cb_result=="OK")
 					{
-						if (cb_Arg1.type=="Delete")
+						if (cb_Arg1.type=="Replace")
+						{
+							me.setState('wizardInProgress',true);
+							me.getState("imageObj").setState('src',"codeIcon");
+							me.getState("textObj").setState('text',"");
+							me.startAction('ChooseTarget');
+						}
+						else if (cb_Arg1.type=="changeAC")
+						{
+							me.setState('wizardInProgress',true);
+							me.getState("textObj").setState('text',"");
+							me.startAction('ChooseAC');
+						}
+						else if (cb_Arg1.type=="changeParameters")
+						{
+							me.setState('wizardInProgress',true);
+							me.startAction('ChooseParameters');
+						}
+						else if (cb_Arg1.type=="Delete")
 						{
 							parent.removeChild(me);
 							

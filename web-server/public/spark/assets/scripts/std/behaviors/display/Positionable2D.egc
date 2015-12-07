@@ -26,6 +26,12 @@
 		</State>
 		
 		<State>
+			<Id>rotation</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
 			<Id>spaceWidth</Id>
 			<Type>Decimal</Type>
 			<Value>50</Value>

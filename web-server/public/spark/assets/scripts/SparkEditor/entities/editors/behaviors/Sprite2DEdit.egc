@@ -388,6 +388,8 @@
 						Logic.xml_entity_addMState(exportXml, {id:"scaleX", value: Std.string(me.getState('scaleX')) },true);
 					if (me.getState('scaleY')!=1)
 						Logic.xml_entity_addMState(exportXml, {id:"scaleY", value: Std.string(me.getState('scaleY')) },true);
+					if (me.getState('rotation')!=0)
+						Logic.xml_entity_addMState(exportXml, {id:"rotation", value: Std.string(me.getState('rotation')) },true);
 					if (me.getState('sprite2DVisibility')!=true)
 						Logic.xml_entity_addMState(exportXml, {id:"visible", value: Std.string(me.getState('sprite2DVisibility')) },true);
 					//Store

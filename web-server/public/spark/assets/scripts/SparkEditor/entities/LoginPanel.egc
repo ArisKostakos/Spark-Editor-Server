@@ -128,8 +128,8 @@
 									
 										if (eventObjectKeyRelease.keyCode==33) //Page Up
 										{
-											strUser = 'test3';
-											strPass = 'lala3';
+											strUser = 'test2';
+											strPass = 'lala2';
 										}
 										else if (eventObjectKeyRelease.keyCode==34) //Page Down
 										{
@@ -269,13 +269,6 @@
 							{
 								var strUser =loginPanel.getState('userInput').getState('text');
 								var strPass =loginPanel.getState('passwordInput').getState('text');
-								//strUser = 'aris';
-								//strPass = 'r0diof';
-								//strUser = 'test3';
-								//strPass = 'lala3';
-								//strUser = 'spark';
-								//strPass = '12qw!@QW ';
-								
 								
 								if (strUser.length>0 && strUser!='Undefined' &&
 									strPass.length>0 && strPass!='Undefined')

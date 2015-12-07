@@ -48,8 +48,8 @@
 						//sceneEditorHeader.setState('labelLeft','22');
 						//sceneEditorHeader.setState('backgroundColor','rgb(76,143,165)');
 						
-						Display.error("Trialaro");
-						Display.error("HAHAHA: " + bar.getState('backgroundColor'));
+						//Display.error("Trialaro");
+						//Display.error("HAHAHA: " + bar.getState('backgroundColor'));
 						
 						bar.addChild(sceneEditorHeader);
 						//sceneEditorHeader.startAction('Selected');

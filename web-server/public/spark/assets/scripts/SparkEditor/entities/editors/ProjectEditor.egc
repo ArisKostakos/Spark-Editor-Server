@@ -264,9 +264,6 @@
 					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
 					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
 					Comms.file_sendFileRequest(finalString, {name: "main.skc", size: finalString.length, user: connectedUserName} , "uploadProjectFile");
-					
-					//Open New Tab
-					//..
 				</Script>
 			</Scripts>
 		</Action>
@@ -679,13 +676,14 @@
 						
 						if (data.code=="success")
 						{
+							//Open New Tab
 							Display.error('Project Export Success!');
 							Logic.getEntityByName('Editor Output').setState('text','Project Export Success!');
 							
 							var username = Logic.getEntityByName('Spark Editor').getState('username');
 							var projectname = Logic.getEntityByName('Spark Editor').getState('projectname');
 					
-							window.open("http://130.211.172.86/spark/run.html?user="+username+"&project="+projectname,"previewTab");
+							window.open("http://sparkgamengine.com/spark/run.html?user="+username+"&project="+projectname,"previewTab");
 						}
 						else
 						{

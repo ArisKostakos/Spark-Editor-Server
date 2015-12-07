@@ -31,6 +31,7 @@
 					<_State id="imageWidth"><Value>11</Value></_State>
 					<_State id="imageHeight"><Value>15</Value></_State>
 					<_State id="imageHorCenter"><Value>1</Value></_State>
+					<State><Id>oldTab</Id><Type>Text</Type><Value>null</Value></State>
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					var imageObject = me.getState('imageObject');
@@ -45,6 +46,13 @@
 						
 						Logic.getEntityByName('2d Scene Editor').startAction('Run');
 						Logic.getEntityByName('Event Collection Editor').startAction('Run');
+						
+						//Save Current Tab
+						me.setState('oldTab',Logic.getEntityByName('Viewport Tab').getAction('SelectWindow').getState('windowName'));
+						
+						//Show Scene
+						Logic.getEntityByName('Viewport Tab').getAction('SelectWindow').setState('windowName','Scene');
+						Logic.getEntityByName('Viewport Tab').startAction('SelectWindow');
 					}
 					else
 					{
@@ -56,6 +64,13 @@
 						
 						Logic.getEntityByName('2d Scene Editor').startAction('Stop');
 						Logic.getEntityByName('Event Collection Editor').startAction('Stop');
+						
+						//Restore to previous Tab
+						Logic.getEntityByName('Viewport Tab').getAction('SelectWindow').setState('windowName',me.getState('oldTab'));
+						Logic.getEntityByName('Viewport Tab').startAction('SelectWindow');
+						
+						//Stop All Sounds
+						Sound.stopAllSounds(1);
 					}
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
