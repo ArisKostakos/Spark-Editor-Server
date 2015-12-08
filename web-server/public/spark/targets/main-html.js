@@ -15591,7 +15591,10 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		if(Type.enumConstructor(p_pointerEvent.source) == "Mouse") {
 			if(tools_spark_sliced_core_Sliced.input.mouse.lastMouseButton == flambe_input_MouseButton.Right) tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK,this.gameEntity);
 		}
-		tools_spark_sliced_core_Sliced.sound.playSound("_blankSound",0);
+		if(tools_spark_sliced_core_Sliced.sound.iOSPlayedBlankSound == false) {
+			tools_spark_framework_Console.warn("Playing Blank Sound");
+			tools_spark_sliced_core_Sliced.sound.iOSPlayBlankSound();
+		} else tools_spark_framework_Console.warn("Blank Sound already played");
 	}
 	,setPosSize: function(p_x,p_y,p_width,p_height,p_view) {
 		var l_mesh = this._instancesMesh.get(p_view);
@@ -23251,6 +23254,7 @@ tools_spark_sliced_services_std_sound_core_Sound.prototype = $extend(tools_spark
 	_init: function() {
 		tools_spark_framework_Console.log("Init Sound std Service...");
 		this._playBacks = new haxe_ds_StringMap();
+		this.iOSPlayedBlankSound = false;
 	}
 	,playSound: function(p_soundName,volume) {
 		var l_playback = tools_spark_framework_Assets.getSound(p_soundName).play(volume);
@@ -23267,6 +23271,10 @@ tools_spark_sliced_services_std_sound_core_Sound.prototype = $extend(tools_spark
 			l_playback;
 		}
 		return l_playback;
+	}
+	,iOSPlayBlankSound: function() {
+		this.playSound("_blankSound",0);
+		this.iOSPlayedBlankSound = true;
 	}
 	,stopAllSounds: function(p_fadeOut) {
 		var $it0 = this._playBacks.iterator();
