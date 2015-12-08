@@ -95,6 +95,8 @@
 			
 			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
+			
+			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound</Asset>
 		</Module>
 
 		<Module id="SparkEditor" executeEntity="SparkEditor.MainProject">
