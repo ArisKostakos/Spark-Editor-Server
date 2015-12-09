@@ -2,7 +2,7 @@
 <Entity extends="std.display.Div">
 	<_States>
 		<_State id="name"><Value>Event</Value></_State>
-		<_State id="width"><Value>500</Value></_State><!-- 100% -->
+		<_State id="width"><Value>100%</Value></_State><!-- 100% -->
 		<!--<_State id="border"><Value>1px dashed black</Value></_State>
 		<_State id="borderRadius"><Value>5px</Value></_State>-->
 		<_State id="layout"><Value>Horizontal</Value></_State>

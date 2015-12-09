@@ -562,7 +562,7 @@
 			<Scripts>
 				<Script>
 					//forced
-					function createParObject(parType)
+					function createParObject(parType, currentPar)
 					{
 						var obj = {};
 						var objSplit = parType.split(":");
@@ -592,6 +592,11 @@
 							obj.type="Expression";
 							obj.expType="Text";
 						}
+						
+						//Get Current Value (If any)
+						if (currentPar!=null)
+							obj.object=currentPar.object;
+							
 						return obj;
 					}
 					
@@ -601,7 +606,7 @@
 					var i=4;
 					while (asset.tags.length>i)
 					{
-						params.push(createParObject(asset.tags[i]));
+						params.push(createParObject(asset.tags[i],me.getState('par' + Std.string(i-3))));
 						i +=1;
 					}
 					
@@ -613,7 +618,7 @@
 			</States>
 		</Action>
 		
-				
+		
 		<Action>
 			<Id>ChooseParameters</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -623,7 +628,6 @@
 					
 					me.forceAction('CreateParams');
 					var params = me.getAction('CreateParams').getState('returnParams');
-					
 					
 					var globalPos = Logic.queryGameEntity(me, "globalPosition");
 					

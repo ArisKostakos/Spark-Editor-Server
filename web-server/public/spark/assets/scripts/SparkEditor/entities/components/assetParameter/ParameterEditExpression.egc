@@ -9,12 +9,13 @@
 			<_Entities>
 				<!-- Button -->
 				<Entity extends="std.display.Input"><_States>
-					<_State id="width"><Value>200</Value></_State>
+					<_State id="width"><Value>400</Value></_State>
 					<_State id="height"><Value>80%</Value></_State>
 					<_State id="placeholder"><Value>Enter a Value</Value></_State>
 					</_States>
 					<_Actions><_Action id="Constructor"><_Scripts><Script>
-						//me.setState("text","Click to choose");
+						if (parent.getState('parObj').object!=null)
+							me.setState("text",parent.getState('parObj').object);
 					</Script></_Scripts></_Action></_Actions>
 					<_Triggers>
 						<Trigger>

@@ -1,4 +1,4 @@
-(function ($hx_exports, $global) { "use strict";
+(function ($hx_exports) { "use strict";
 var $hxClasses = {},$estr = function() { return js_Boot.__string_rec(this,''); };
 function $extend(from, fields) {
 	function Inherit() {} Inherit.prototype = from; var proto = new Inherit();
@@ -7588,7 +7588,7 @@ js_Boot.__isNativeObj = function(o) {
 	return js_Boot.__nativeClassName(o) != null;
 };
 js_Boot.__resolveNativeClass = function(name) {
-	return $global[name];
+	return (Function("return typeof " + name + " != \"undefined\" ? " + name + " : null"))();
 };
 var js_html__$CanvasElement_CanvasUtil = function() { };
 $hxClasses["js.html._CanvasElement.CanvasUtil"] = js_html__$CanvasElement_CanvasUtil;
@@ -15591,10 +15591,7 @@ tools_spark_framework_flambe2_$5D_FlambeEntity2_$5D.prototype = $extend(tools_sp
 		if(Type.enumConstructor(p_pointerEvent.source) == "Mouse") {
 			if(tools_spark_sliced_core_Sliced.input.mouse.lastMouseButton == flambe_input_MouseButton.Right) tools_spark_sliced_core_Sliced.input.pointer.submitPointerEvent(tools_spark_sliced_services_std_logic_gde_interfaces_EEventType.MOUSE_RIGHT_CLICK,this.gameEntity);
 		}
-		if(tools_spark_sliced_core_Sliced.sound.iOSPlayedBlankSound == false) {
-			tools_spark_framework_Console.warn("Playing Blank Sound");
-			tools_spark_sliced_core_Sliced.sound.iOSPlayBlankSound();
-		} else tools_spark_framework_Console.warn("Blank Sound already played");
+		if(tools_spark_sliced_core_Sliced.sound.iOSPlayedBlankSound == false) tools_spark_sliced_core_Sliced.sound.iOSPlayBlankSound();
 	}
 	,setPosSize: function(p_x,p_y,p_width,p_height,p_view) {
 		var l_mesh = this._instancesMesh.get(p_view);
@@ -18670,19 +18667,6 @@ tools_spark_sliced_core_Sliced.assignServices = function(p_sound,p_logic,p_input
 	tools_spark_sliced_core_Sliced.comms = p_comms;
 	tools_spark_sliced_core_Sliced.event = p_event;
 	tools_spark_sliced_core_Sliced.display = p_display;
-	tools_spark_sliced_core_Sliced._Std = Std;
-	tools_spark_sliced_core_Sliced._StringMap = haxe_ds_StringMap;
-	tools_spark_sliced_core_Sliced._IntMap = haxe_ds_IntMap;
-	tools_spark_sliced_core_Sliced._ObjectMap = haxe_ds_ObjectMap;
-	tools_spark_sliced_core_Sliced._Assets = tools_spark_framework_Assets;
-	tools_spark_sliced_core_Sliced._StringTools = StringTools;
-	tools_spark_sliced_core_Sliced._Xml = Xml;
-	tools_spark_sliced_core_Sliced._MouseButton = flambe_input_MouseButton;
-	tools_spark_sliced_core_Sliced._EEventType = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
-	tools_spark_sliced_core_Sliced._Key = flambe_input_Key;
-	tools_spark_sliced_core_Sliced._Project = tools_spark_framework_Project;
-	tools_spark_sliced_core_Sliced._Module = tools_spark_framework_assets_Module;
-	tools_spark_sliced_core_Sliced._Asset = tools_spark_framework_assets_Asset;
 };
 tools_spark_sliced_core_Sliced.update = function(p_dt) {
 	tools_spark_sliced_core_Sliced.dt = p_dt;
@@ -22377,6 +22361,9 @@ tools_spark_sliced_services_std_logic_gde_core_GameEntity.prototype = $extend(to
 	,getState: function(p_stateId) {
 		if(this.gameStateSet.get(p_stateId) == null) return null; else return this.gameStateSet.get(p_stateId).value;
 	}
+	,s: function(p_stateId) {
+		if(this.gameStateSet.get(p_stateId) == null) return null; else return this.gameStateSet.get(p_stateId).value;
+	}
 	,getStateType: function(p_stateId) {
 		if(this.gameStateSet.get(p_stateId) == null) return null; else {
 			var e = this.gameStateSet.get(p_stateId).type;
@@ -23183,25 +23170,28 @@ tools_spark_sliced_services_std_logic_interpreter_core_platform_html_HaxeJsInter
 	_init: function() {
 		var dummy = Std.random(1);
 		this._hashTable = new haxe_ds_IntMap();
-		window.Sound = Sliced.sound;;
-		window.Logic = Sliced.logic;;
-		window.Input = Sliced.input;;
-		window.Comms = Sliced.comms;;
-		window.Event = Sliced.event;;
-		window.Display = Sliced.display;;
-		window.Project = Sliced._Project;;
-		window.Module = Sliced._Module;;
-		window.Asset = Sliced._Asset;;
-		window.Std = Sliced._Std;;
-		window.StringMap = Sliced._StringMap;;
-		window.IntMap = Sliced._IntMap;;
-		window.ObjectMap = Sliced._ObjectMap;;
-		window.Assets = Sliced._Assets;;
-		window.StringTools = Sliced._StringTools;;
-		window.Xml = Sliced._Xml;;
-		window.MouseButton = Sliced._MouseButton;;
-		window.EEventType = Sliced._EEventType;;
-		window.Key = Sliced._Key;;
+		window.Sound = tools_spark_sliced_core_Sliced.sound;
+		window.Logic = tools_spark_sliced_core_Sliced.logic;
+		window.Input = tools_spark_sliced_core_Sliced.input;
+		window.Comms = tools_spark_sliced_core_Sliced.comms;
+		window.Event = tools_spark_sliced_core_Sliced.event;
+		window.Display = tools_spark_sliced_core_Sliced.display;
+		window.Project = tools_spark_framework_Project;
+		window.Module = tools_spark_framework_assets_Module;
+		window.Asset = tools_spark_framework_assets_Asset;
+		window.Std = Std;
+		window.StringMap = haxe_ds_StringMap;
+		window.IntMap = haxe_ds_IntMap;
+		window.ObjectMap = haxe_ds_ObjectMap;
+		window.Assets = tools_spark_framework_Assets;
+		window.StringTools = StringTools;
+		window.Xml = Xml;
+		window.MouseButton = flambe_input_MouseButton;
+		window.EEventType = tools_spark_sliced_services_std_logic_gde_interfaces_EEventType;
+		window.Key = flambe_input_Key;
+		window.expr = $bind(this,this.runExpr);
+		window.e = ($_=tools_spark_sliced_core_Sliced.logic,$bind($_,$_.getEntityByName));
+		window.string = Std.string;
 	}
 	,run: function(hashId,parameters) {
 		var program = this._get(hashId);
@@ -23215,6 +23205,22 @@ tools_spark_sliced_services_std_logic_interpreter_core_platform_html_HaxeJsInter
 			flambe_System.get_external().call("console.log",[program]);
 			return false;
 		}
+	}
+	,runExpr: function(hashId,p_me,p_parent,p_it) {
+		var program = this._get(hashId);
+		try {
+			return program(p_me,p_parent,p_it);
+		} catch( e ) {
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
+			tools_spark_framework_Console.error("<<<<<SPARK EXPRESSION RUN-TIME JS ERROR>>>>>: " + Std.string(e));
+			flambe_System.get_external().call("console.log",[e]);
+			flambe_System.get_external().call("console.log",[program]);
+			return null;
+		}
+	}
+	,hashExpr: function(script) {
+		var l_script = "(function(me,parent,it){return(" + script + ");})";
+		return this._store(l_script,haxe_crypto_Crc32.make(haxe_io_Bytes.ofString(l_script)));
 	}
 	,hash: function(script) {
 		var l_script = "(function(me,parent,it){" + script + "})";
@@ -37414,10 +37420,10 @@ Bool.__ename__ = ["Bool"];
 var Class = $hxClasses.Class = { __name__ : ["Class"]};
 var Enum = { };
 var __map_reserved = {}
-var ArrayBuffer = $global.ArrayBuffer || js_html_compat_ArrayBuffer;
+var ArrayBuffer = (Function("return typeof ArrayBuffer != 'undefined' ? ArrayBuffer : null"))() || js_html_compat_ArrayBuffer;
 if(ArrayBuffer.prototype.slice == null) ArrayBuffer.prototype.slice = js_html_compat_ArrayBuffer.sliceImpl;
-var DataView = $global.DataView || js_html_compat_DataView;
-var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
+var DataView = (Function("return typeof DataView != 'undefined' ? DataView : null"))() || js_html_compat_DataView;
+var Uint8Array = (Function("return typeof Uint8Array != 'undefined' ? Uint8Array : null"))() || js_html_compat_Uint8Array._new;
 Xml.Element = 0;
 Xml.PCData = 1;
 Xml.CData = 2;
@@ -37583,6 +37589,6 @@ zpp_$nape_util_ZPP_$InteractionGroupList.internal = false;
 zpp_$nape_util_ZPP_$ArbiterList.internal = false;
 zpp_$nape_util_ZPP_$ContactList.internal = false;
 tools_spark_Main.main();
-})(typeof window != "undefined" ? window : exports, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
+})(typeof window != "undefined" ? window : exports);
 
 //# sourceMappingURL=main-html.js.map
