@@ -30,13 +30,25 @@
 	  background: rgb(66,84,102);
     }
 
+	
+	#loadingImg {
+		position:absolute;
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		margin:auto;
+	}
    
   </style>
 </head>
 <body>
-
+	
 <!-- Main Content Div -->
 <div id="content"></div>
+	
+<!-- Loading Image -->
+<img id="loadingImg" src="Loading.png"/>
 
 <!-- js Tree -->
 <link rel="stylesheet" href="jstree/themes/default/style.min.css" />
@@ -61,6 +73,12 @@
 var queryDict = {};
 location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
 return queryDict.skc;} </script>
+
+<!-- remove Loading Image -->
+<script>function hideLoadingImage(){
+var element = document.getElementById("loadingImg");
+element.parentNode.removeChild(element);
+} </script>
 
 <!-- Flambe -->
 <script src="flambe.js"></script>

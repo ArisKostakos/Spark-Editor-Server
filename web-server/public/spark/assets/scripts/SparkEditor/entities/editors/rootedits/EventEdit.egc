@@ -182,17 +182,23 @@
 						triggerEvent="StateChanged";
 					else if (condition_asset.fileName=="OnSceneCreated")
 						triggerEvent="SceneCreated";
+					else if (condition_asset.fileName=="CustomTrigger")
+						triggerEvent="CustomTrigger";
+					else if (condition_asset.fileName=="ProjectPaused")
+						triggerEvent="ProjectPaused";
+					else if (condition_asset.fileName=="ProjectResumed")
+						triggerEvent="ProjectResumed";
 						
 					//Set Up Trigger Target Node
 					var triggerTarget;
-					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated") //hack to set no target for keyboard
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated" || triggerEvent=="CustomTrigger" || triggerEvent=="ProjectPaused" || triggerEvent=="ProjectResumed") //hack to set no target for keyboard
 						triggerTarget="TargetNone";
 					else
 						triggerTarget= conditionTarget_asset.fileName;
 					
 					//Set Up Trigger Parameter
 					var triggerParameter=null;
-					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="StateChanged")
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="StateChanged" || triggerEvent=="CustomTrigger")
 					{
 						triggerParameter = condition_par1.object;
 					}
