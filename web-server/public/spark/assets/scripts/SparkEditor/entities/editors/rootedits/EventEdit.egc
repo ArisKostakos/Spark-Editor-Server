@@ -9,6 +9,7 @@
 		<!--<_State id="backgroundColor"><Value>rgb(0,160,227)</Value></_State>-->
 		<State><Id>EventId</Id><Type>Integer</Type><Value>0</Value></State>
 		<State><Id>EventIdDisplay</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>parentEventSheet</Id><Type>Dynamic</Type><Value>null</Value></State>
 	
 		<State><Id>conditionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>actionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
@@ -301,12 +302,21 @@
 					conditionEdit.setState('parentEvent',me);
 					
 					//add it as child to me
-					me.getState('conditionsContainer').addChild(conditionEdit);
+					if (it.getState('index')==-1)
+						me.getState('conditionsContainer').addChild(conditionEdit);
+					else
+						me.getState('conditionsContainer').insertChild(conditionEdit, it.getState('index'));
+						
 					conditionEdit.startAction('Create New Instance');
 					
 					Display.invalidateLayout();
+					
+					it.setState('index',-1);
 				</Script>
 			</Scripts>
+			<States>
+				<State><Id>index</Id><Type>Integer</Type><Value>-1</Value></State>
+			</States>
 		</Action>
 				
 		<Action>
@@ -321,15 +331,24 @@
 					actionEdit.setState('parentEvent',me);
 					
 					//add it as child to me
-					me.getState('actionsContainer').addChild(actionEdit);
+					if (it.getState('index')==-1)
+						me.getState('actionsContainer').addChild(actionEdit);
+					else
+						me.getState('actionsContainer').insertChild(actionEdit, it.getState('index'));
+						
 					actionEdit.startAction('Create New Instance');
 					Display.invalidateLayout();
 					
 					
 					me.getState('connectingLineGroup').setState('display','inline');
 					me.getState('actionsContainerGroup').setState('display','inline');
+					
+					it.setState('index',-1);
 				</Script>
 			</Scripts>
+			<States>
+				<State><Id>index</Id><Type>Integer</Type><Value>-1</Value></State>
+			</States>
 		</Action>
 				
 		<!-- Import Xml -->

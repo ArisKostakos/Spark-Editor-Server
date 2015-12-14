@@ -53,9 +53,24 @@
 						//Show Scene
 						Logic.getEntityByName('Viewport Tab').getAction('SelectWindow').setState('windowName','Scene');
 						Logic.getEntityByName('Viewport Tab').startAction('SelectWindow');
+						
+						//Create New One
+						Logic.gameEntitiesByNameBackup = new StringMap();
+						
+						//Push required entities in it
+						Logic.registerToBackupActive=true;
+						Logic.registerEntityByName(Logic.getEntityByName('Main View 2D Run'));
+						Logic.registerToBackupActive=false;
+						
+						//Switch entity hashes next frame
+						me.startAction('SwitchGameEntityHashes');
 					}
 					else
 					{
+						//Restore Editor's gameEntities Hash
+						Logic.gameEntitiesByName = Logic.gameEntitiesByNameBackup;
+						Logic.gameEntitiesByNameBackup = null;
+						
 						imageObject.setState('src',"editor_play");
 						imageObject.setState('width',"11");
 						imageObject.setState('height',"15");
@@ -72,7 +87,39 @@
 						//Stop All Sounds
 						Sound.stopAllSounds(1);
 					}
-				</Script></_Scripts></_Action></_Actions></Entity>
+				</Script></_Scripts></_Action>
+					
+				<Action>
+					<Id>SwitchGameEntityHashes</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							var counter = it.getState('counter');
+							
+							if (counter==1)
+							{
+								me.stopAction('SwitchGameEntityHashes');
+								
+								//Do the Switch
+								var l_hash = Logic.gameEntitiesByName;
+								Logic.gameEntitiesByName = Logic.gameEntitiesByNameBackup;
+								Logic.gameEntitiesByNameBackup = l_hash;
+								
+								it.setState('counter',0); //Reset for next time
+								Display.error("Hashes switched");
+							}
+							else
+							{
+								it.setState('counter',counter+1);
+							}
+						</Script>
+					</Scripts>
+					<States>
+						<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+					</States>
+				</Action>
+					
+				</_Actions></Entity>
 				
 				<!-- Spacer -->
 				<Entity extends="std.display.Group"><_States><_State id="width"><Value>40</Value></_State></_States></Entity>

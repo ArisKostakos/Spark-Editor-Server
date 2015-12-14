@@ -119,12 +119,16 @@
 					var ecExport = me.getState('xmlExport');
 					
 					//Instantiate
+					Logic.registerToBackupActive=true;
 					var eventSheetRun = Logic.gameFactory.createGameEntityByXml(ecExport);
+					Logic.registerToBackupActive=false;
 					
 					me.setState('eventSheetRun',eventSheetRun);
 					
 					//Move it to active space so it runs
 					Logic.getEntityByName('Main Space').addChild(eventSheetRun);
+					
+					Display.error("2d event editor Run Finished");
 				</Script>
 			</Scripts>
 		</Action>

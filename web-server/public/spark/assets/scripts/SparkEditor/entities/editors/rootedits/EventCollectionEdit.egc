@@ -55,6 +55,7 @@
 									//create an eventedit
 									var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');
 									eventEdit.setState('EventId',parent.parentEntity.getState('EventsCount'));
+									eventEdit.setState('parentEventSheet',parent.parentEntity);
 									
 									//add it as child to eventWindow
 									parent.parentEntity.getState('eventsContainer').addChild(eventEdit);
@@ -95,6 +96,7 @@
 							//create an eventedit
 							var eventEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.EventEdit');
 							eventEdit.setState('EventId',EventsCount);
+							eventEdit.setState('parentEventSheet',me);
 							
 							//add it as child to eventWindow
 							eventsContainer.addChild(eventEdit);

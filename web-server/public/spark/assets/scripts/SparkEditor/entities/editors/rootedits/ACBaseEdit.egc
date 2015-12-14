@@ -80,9 +80,16 @@
 					var mainList = {};
 					mainList.children = [];
 					
+					var eventNode = createContextNode("Event","Event",mainList);
+					createContextNode("Clone Event","CloneEvent",eventNode);
+					var createNewNode = createContextNode("Create new " + me.getState('name'),"Create",mainList);
+					createContextNode("Insert Above","InsertAbove",createNewNode);
+					createContextNode("Insert Below","InsertBelow",createNewNode);
 					createContextNode("Replace with new","Replace",mainList);
+					createContextNode("Change Target","changeTarget",mainList);
 					createContextNode("Change " + me.getState('name'),"changeAC",mainList);
 					createContextNode("Edit Parameters","changeParameters",mainList);
+					createContextNode("Clone " + me.getState('name'),"Clone",mainList);
 					createContextNode("Delete","Delete",mainList);
 					
 					var mousePosX = Input.pointer.currentX;
@@ -118,11 +125,44 @@
 					
 					if (cb_result=="OK")
 					{
-						if (cb_Arg1.type=="Replace")
+						if (cb_Arg1.type=="CloneEvent")
+						{
+							var parentEvent = me.getState("parentEvent");
+							
+							var parentEventSheet = parentEvent.getState("parentEventSheet");
+							parentEventSheet.addToState('EventsCount',1);
+							
+							var clonedEvent = parentEvent.clone();
+							clonedEvent.setState('EventId',parentEventSheet.getState('EventsCount'));
+							
+							parentEvent.parentEntity.addChild(clonedEvent);
+							
+							Display.invalidateLayout();
+						}
+						else if (cb_Arg1.type=="InsertAbove")
+						{
+							Display.error("Insert Above!");
+							var parentEvent = me.getState("parentEvent");
+							parentEvent.getAction("Create New " + me.getState('name')).setState('index',me.get_zIndex());
+							parentEvent.startAction("Create New " + me.getState('name'));
+						}
+						else if (cb_Arg1.type=="InsertBelow")
+						{
+							Display.error("Insert Below!");
+							var parentEvent = me.getState("parentEvent");
+							parentEvent.getAction("Create New " + me.getState('name')).setState('index',me.get_zIndex()+1);
+							parentEvent.startAction("Create New " + me.getState('name'));
+						}
+						else if (cb_Arg1.type=="Replace")
 						{
 							me.setState('wizardInProgress',true);
 							me.getState("imageObj").setState('src',"codeIcon");
 							me.getState("textObj").setState('text',"");
+							me.startAction('ChooseTarget');
+						}
+						else if (cb_Arg1.type=="changeTarget")
+						{
+							me.setState('wizardInProgress',false);
 							me.startAction('ChooseTarget');
 						}
 						else if (cb_Arg1.type=="changeAC")
@@ -135,6 +175,11 @@
 						{
 							me.setState('wizardInProgress',true);
 							me.startAction('ChooseParameters');
+						}
+						else if (cb_Arg1.type=="Clone")
+						{
+							parent.addChild(me.clone());
+							Display.invalidateLayout();
 						}
 						else if (cb_Arg1.type=="Delete")
 						{

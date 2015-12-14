@@ -68,6 +68,8 @@
 					me.setState('activeWindow',l_window);
 					
 					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					
+					Display.error("Select Window Finished");
 				</Script>
 			</Scripts>
 			<_States>
