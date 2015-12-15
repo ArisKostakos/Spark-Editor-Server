@@ -54,6 +54,12 @@
 			<Type>Dynamic</Type>
 			<Value>null</Value>
 		</State>
+	
+		<State>
+			<Id>scissorRect</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
 		
 		<State>
 			<Id>opacity</Id>

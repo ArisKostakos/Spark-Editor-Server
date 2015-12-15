@@ -31,7 +31,7 @@
 					var i=1;
 					while (4>=i)
 					{
-						if (me.getState('type' + Std.string(i))=="Et")
+						if (me.getState('type' + Std.string(i))=="Et" || me.getState('type' + Std.string(i))=="Ed" || me.getState('type' + Std.string(i))=="Ei")
 						{
 							me.setState('obj' + Std.string(i), Logic.scriptInterpreter.hashExpr(me.getState('par' + Std.string(i))) );
 						}

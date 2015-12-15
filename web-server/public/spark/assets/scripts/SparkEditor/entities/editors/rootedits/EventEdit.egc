@@ -189,6 +189,8 @@
 						triggerEvent="ProjectPaused";
 					else if (condition_asset.fileName=="ProjectResumed")
 						triggerEvent="ProjectResumed";
+					else if (condition_asset.fileName=="Created")
+						triggerEvent="Created";
 						
 					//Set Up Trigger Target Node
 					var triggerTarget;

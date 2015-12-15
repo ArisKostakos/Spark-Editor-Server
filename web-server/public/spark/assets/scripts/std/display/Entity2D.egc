@@ -17,10 +17,18 @@
 			<Scripts>
 				<Script>
 					var opacity = me.getState('opacity');
+					
 					if (1>opacity)
 					{
+						var moveX = it.getState('moveX')*Logic.getDt();
+						var moveY = it.getState('moveY')*Logic.getDt();
+						
 						opacity = Math.min(1,opacity+it.getState('speed')*Logic.getDt());
 						me.setState('opacity',opacity);
+						if (moveX!=0)
+							me.addToState('spaceX',moveX);
+						if (moveY!=0)
+							me.addToState('spaceY',moveY);
 					}
 					
 					if (opacity==1)
@@ -30,7 +38,9 @@
 				</Script>
 			</Scripts>
 			<States>
-				<State><Id>speed</Id><Type>Integer</Type><Value>0</Value></State>
+				<State><Id>speed</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
 			</States>
 		</Action>
 				
@@ -40,10 +50,18 @@
 			<Scripts>
 				<Script>
 					var opacity = me.getState('opacity');
+					
 					if (opacity>0)
 					{
+						var moveX = it.getState('moveX')*Logic.getDt();
+						var moveY = it.getState('moveY')*Logic.getDt();
+						
 						opacity = Math.max(0,opacity-it.getState('speed')*Logic.getDt());
 						me.setState('opacity',opacity);
+						if (moveX!=0)
+							me.addToState('spaceX',moveX);
+						if (moveY!=0)
+							me.addToState('spaceY',moveY);
 					}
 					
 					if (opacity==0)
@@ -54,7 +72,9 @@
 				</Script>
 			</Scripts>
 			<States>
-				<State><Id>speed</Id><Type>Integer</Type><Value>0</Value></State>
+				<State><Id>speed</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
 			</States>
 		</Action>
 	</_Actions>
