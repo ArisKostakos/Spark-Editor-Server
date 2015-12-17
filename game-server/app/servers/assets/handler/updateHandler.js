@@ -127,3 +127,34 @@ handler.removeProjectMainModuleAssetReferences = function(msg, session, next) {
         }
     );
 };
+
+handler.updateAssetEntry = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    database.findOne(database.Asset, {_id: msg.assetId},
+        function (err, asset_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Reflect this??
+            if (msg.field=="tags")
+                asset_found.tags=msg.newValue;
+
+            asset_found.markModified(msg.field);
+            asset_found.save(function (err) {
+                //Handle Error
+                if (err) {
+                    next(null, {code: "error"});
+                    return console.error(err);
+                }
+
+                //Handle Success
+                next(null, {code: "success"});
+            });
+        }
+    );
+};
