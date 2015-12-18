@@ -271,13 +271,19 @@
 						i+=1;
 					}
 				
+					
 					//Select new clicked one
 					if (entityClicked!=null)
 					{
 						//Remember Selected Entity
 						me.setState('selectedEntities', [entityClicked]);
-
+						
 						entityClicked.startAction('Select');
+						
+						//Show Properties
+						var itemProperties = Logic.getEntityByName('Editor Item Properties');
+						itemProperties.getAction('Display Item').setState('gameEntity',entityClicked);
+						itemProperties.startAction('Display Item');
 					}
 					else
 					{

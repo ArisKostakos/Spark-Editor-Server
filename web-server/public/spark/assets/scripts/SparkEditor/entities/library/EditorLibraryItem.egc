@@ -114,7 +114,8 @@
 									var mainList = {};
 									mainList.children = [];
 									
-									createContextNode("Remove","Remove",mainList);
+									createContextNode("Paste (alpha)","PasteImage",mainList);
+									createContextNode("Remove (alpha)","Remove",mainList);
 									
 									var mousePosX = Input.pointer.currentX;
 									var mousePosY = Input.pointer.currentY;
@@ -199,6 +200,60 @@
 											{
 												Display.error("Cannot Remove Library Item of different User");
 												Logic.getEntityByName('Editor Output').setState('text','Failed to remove Item (no access)');
+											}
+										}
+										else if (cb_Arg1.type=="PasteImage")
+										{
+											var selectedEntities = Logic.getEntityByName('Level Editor 2D Scene').getState('selectedEntities');
+											if (selectedEntities.length==1)
+											{
+												var objectEntity = selectedEntities[0];
+												var objectClassAsset = objectEntity.getState('ClassAsset');
+												var libraryImageAsset = parent.getState('asset');
+												
+												
+												//Get Object Class egc
+												var objectClassXml = Logic.xml_parseAsset(objectClassAsset);
+												
+												//Change ImageUrl Value to name of new image
+												Logic.xml_entity_updateFormState(objectClassXml, {id:"ImageUrl",value:"image_"+libraryImageAsset.name}, true, true);
+												
+												//Upload new egc file (send request to Sprite2DEdit)
+												objectEntity.setState('tempUploading',true);
+												
+												//Upload it
+												var finalString = Logic.xmlToString(objectClassXml);
+												var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+												Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+												
+												Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+												
+												//add new image to Modules
+												Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [libraryImageAsset._id]}, "whatever dude...");
+												
+												//remove old image from Modules (later: except maybe if used by smth else)
+												Comms.request("assets.updateHandler.removeProjectMainModuleAssetReferences", {assetReferences: [objectClassAsset.tags[1]]}, "whatever dude...");
+												
+												//Change asset's tag[1] to id of new image
+												objectClassAsset.tags[1] = libraryImageAsset._id;
+												
+												//update assetDb
+												Comms.request("assets.updateHandler.updateAssetEntry", {assetId:objectClassAsset._id, field:"tags", newValue:objectClassAsset.tags}, "whatever...");
+												
+												//later: flambe load new image
+												
+												
+												//Next
+												//display x,y,scale,rotation,etc (thumbnail too?) on bar
+												//change scene size
+												//add graphics
+												//do background stuff
+												//sound End trigger
+												//sound service to know if music,sfx, etc
+												//pausing for snowglobes
+												//font
+												//the fadeIn fadeOut bug (stopallactions, change persistent to... transient?..)
+												//....
 											}
 										}
 									}

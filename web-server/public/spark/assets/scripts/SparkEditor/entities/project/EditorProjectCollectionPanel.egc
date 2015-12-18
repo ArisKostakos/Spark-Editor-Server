@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State> <!-- this keeps it from growing very tall otuside the view.. should really be 100%.. overflow visible lets things outside 500 height to keep showing-->
+		<!--<_State id="overflow"><Value>scroll</Value></_State>-->
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>componentTypes</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>containerPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tileWidth</Id><Type>Integer</Type><Value>50</Value></State>
+		<State><Id>tileHeight</Id><Type>Integer</Type><Value>50</Value></State>
+	</_States>
+	
+	<Extends>
+		<Entity extends="SparkEditor.behaviors.Scrollable"/>
+	</Extends>
+		
+	<_Actions>
+		<Action>
+			<Id>AddAssetsDB</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("AddAssetsDB");
+					
+					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
+					
+					var containerPanel = me.getState('containerPanel');
+					
+					var assets = me.getAction('AddAssetsDB').getState('assets');
+					
+					for (asset of assets)
+					{
+						Display.error("AddAssetsDB: FOUND: " + asset.name);
+						
+						var containerPanel = me.getState('containerPanel');
+						
+						var newItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.project.EditorProjectItem');
+						
+						//Figure out Thumbnail
+						var thumbUrl="NotFound";
+						
+						if (asset.componentType=="Image")
+						{
+							thumbUrl = '/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						}
+						else if (asset.componentType=="Sound" || asset.componentType=="Project" || asset.componentType=="Scene")
+						{
+							thumbUrl = "thumb_" + asset.componentType;
+						}
+						else if (asset.componentType=="Class")
+						{
+							thumbUrl = "thumb_" + asset.tags[1];
+						}
+						else if (asset.componentType=="Object Class")//but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+						{
+							if (asset.tags[1]=="Text") //|| Sound, || ...
+							{
+								thumbUrl = "thumb_" + asset.tags[1];
+							}
+							else
+							{
+								var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+								thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+							}
+						}
+					
+						newItem.setState('caption',asset.fileName);
+						newItem.setState('skinType','imageAndText');
+						newItem.setState('imageName',thumbUrl);
+							
+						newItem.setState('width',Std.string(me.getState('tileWidth')));
+						newItem.setState('height',Std.string(me.getState('tileHeight')));
+						newItem.setState('asset',asset);
+						//newItem.setState('projectObjectDB',me.getState('projectObjectDB'));
+						//newItem.setState('name',asset.name);
+						
+						
+						containerPanel.addChild(newItem);
+					}
+					
+					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- List -->
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="name"><Value>IamContainer</Value></_State>
+						<_State id="layout"><Value>Tile</Value></_State>
+						<_State id="horizontalAlign"><Value>justify</Value></_State>
+						<_State id="verticalAlign"><Value>justify</Value></_State>
+							
+						<!-- hating this....-->
+						<_State id="requestedColumnCount"><Value>3</Value></_State>
+							
+						<_State id="horizontalGap"><Value>6</Value></_State>
+						<_State id="verticalGap"><Value>6</Value></_State>
+							
+						<_State id="paddingLeft"><Value>6</Value></_State>
+						<_State id="paddingRight"><Value>6</Value></_State>
+						<_State id="paddingTop"><Value>6</Value></_State>
+						<_State id="paddingBottom"><Value>6</Value></_State>
+						<!--<_State id="overflow"><Value>scroll</Value></_State>-->
+					</_States>
+						
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						//parent.setState('imageObject',me);
+						parent.setState('containerPanel',me);
+						Display.error("**************SETTING PROJECT CONTAINER PANELLLLLLLLLLLLLLLLL****************");
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

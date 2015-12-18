@@ -88,10 +88,14 @@
 										//Event Listener
 										Assets.successSignal.connect(function () {
 											Logic.getEntityByName('Editor Output').setState('text',"Sound Loaded!");
-											//Add it to project panel( ehh)
-											var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
-											projectPanelContainer.getAction('AddClassAssetDB').setState('asset',asset);
-											projectPanelContainer.forceAction('AddClassAssetDB');
+											
+											//Send it to Project Collections
+											var projectCollections = Logic.getEntityByName('Editor Project Collections');
+											
+											var moduleAssetsToAdd = new StringMap();
+											moduleAssetsToAdd.set(asset.name,asset);
+											projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
+											projectCollections.startAction('ImportRequestAssetsDb');
 											
 										}).once();
 										
@@ -337,10 +341,19 @@
 												Logic.getEntityByName('Project Editor').getAction('RegisterInheritance').setState('asset',asset);
 												Logic.getEntityByName('Project Editor').startAction('RegisterInheritance');
 												
-												//Add it to project panel( ehh)
-												var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
-												projectPanelContainer.getAction('AddClassAssetDB').setState('asset',asset);
-												projectPanelContainer.startAction('AddClassAssetDB');
+												
+												//Send them to Project Collections
+												var projectCollections = Logic.getEntityByName('Editor Project Collections');
+												
+												var moduleAssetsToAdd = new StringMap();
+												moduleAssetsToAdd.set(asset.name,asset); //Object Class
+												
+												//Maybe don't add the image if already exists
+												if (assetBeingDragged.componentType=="Image")
+													moduleAssetsToAdd.set(assetBeingDragged.name,assetBeingDragged); //The Image Asset
+													
+												projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
+												projectCollections.startAction('ImportRequestAssetsDb');
 												
 												//add it as child
 												scene.addChild(editChild);

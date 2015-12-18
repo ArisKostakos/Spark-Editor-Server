@@ -367,10 +367,6 @@
 								else if (asset.type=="sound")
 								{
 									assetId = 'sound_' + asset.name;
-									//Add it to project panel( ehh)
-									var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
-									projectPanelContainer.getAction('AddClassAssetDB').setState('asset',asset);
-									projectPanelContainer.forceAction('AddClassAssetDB');
 								}
 								
 								//Store the AssetDB
@@ -433,23 +429,6 @@
 							
 							//Store them for later
 							me.setState('tempIncludeAssets',data.assets);
-							
-							var _iterator = me.getState('ClassObjectsDBbyNameHash').iterator();
-							while (_iterator.hasNext())
-							{
-								var classObject = _iterator.next();
-								
-								//While we're here, also add Project Items
-								var projectPanelContainer = Logic.getEntityByName('Editor Project Panel Container');
-								
-								if (classObject.componentType=="Project" || classObject.componentType=="Object Class")
-								{
-									//Add it to project panel( ehh)
-									projectPanelContainer.getAction('AddClassAssetDB').setState('asset',classObject);
-									projectPanelContainer.forceAction('AddClassAssetDB');
-								}
-								
-							}
 							
 							//Get Username
 							//var userName = me.getState('assetUserName');
@@ -664,6 +643,15 @@
 							{
 								Display.error('Error Distribute Assets Array is empty!');
 							}
+							
+							//Also, Distribute Module Assets To Project Collections!
+							var moduleAssets = me.getState('ModuleAssetsDBbyNameHash');
+							
+							//Send it to Project Collections
+							var projectCollections = Logic.getEntityByName('Editor Project Collections');
+							
+							projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssets);
+							projectCollections.startAction('ImportRequestAssetsDb');
 						}
 						else
 						{

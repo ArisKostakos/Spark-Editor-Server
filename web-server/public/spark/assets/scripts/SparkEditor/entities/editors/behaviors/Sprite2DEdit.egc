@@ -79,6 +79,7 @@
 					
 					createContextNode("Behaviors","Behaviors",mainList);
 					createContextNode("States","States",mainList);
+					createContextNode("eStates (alpha)","ExistingStates",mainList);
 					createContextNode("Delete","Delete",mainList);
 					
 					var mousePosX = Input.pointer.currentX;
@@ -556,6 +557,10 @@
 						if (cb_Arg1.type=="Delete")
 						{
 							Logic.getEntityByName('Level Editor 2D Scene').startAction('DeleteSelected');
+						}
+						else if (cb_Arg1.type=="ExistingStates")
+						{
+							Display.error("Existing States");
 						}
 						else if (cb_Arg1.type=="Clone")
 						{

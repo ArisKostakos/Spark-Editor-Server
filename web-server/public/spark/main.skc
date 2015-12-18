@@ -235,7 +235,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryItem.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/EditorLibraryItemUpload.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/project/EditorProjectPanelContainer.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/project/EditorProjectCollections.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/project/EditorProjectCollectionPanel.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/project/EditorProjectCollectionButton.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/project/EditorProjectItem.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/managers/PopupManager.egc</Asset>

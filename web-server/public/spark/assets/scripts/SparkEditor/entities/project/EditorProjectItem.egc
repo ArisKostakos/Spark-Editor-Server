@@ -114,7 +114,7 @@
 									var mainList = {};
 									mainList.children = [];
 									
-									createContextNode("Remove","Remove",mainList);
+									createContextNode("Remove (alpha)","Remove",mainList);
 									
 									var mousePosX = Input.pointer.currentX;
 									var mousePosY = Input.pointer.currentY;
@@ -219,6 +219,14 @@
 												
 												//Do the thing
 												Comms.request("assets.uploadHandler.deleteAssets", {assetIds: [asset._id]}, "deleteAssetProject");
+											}
+											else if (asset.componentType=="Image" || asset.componentType=="Sound")
+											{
+												Logic.getEntityByName('Editor Output').setState('text','Asset Removed Successfully!');
+												parent.parentEntity.removeChild(parent);
+												
+												//Now, we need to remove them from ModuleThingie..
+												Comms.request("assets.updateHandler.removeProjectMainModuleAssetReferences", {assetReferences: [asset._id]}, "whatever dude...");
 											}
 										}
 									}

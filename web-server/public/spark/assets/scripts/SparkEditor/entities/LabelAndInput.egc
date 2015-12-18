@@ -34,9 +34,25 @@
 					<_State id="textIndent"><Value>4px</Value></_State>
 				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
 					parent.setState('value',me);
-				</Script></_Scripts></_Action></_Actions></Entity>
-				
+				</Script></_Scripts></_Action></_Actions>
+				<_Triggers><Trigger><Event>Changed</Event><Scripts>
+					<Script>
+						parent.startAction("Changed");
+					</Script></Scripts></Trigger>
+				</_Triggers></Entity>
 			</Entities>
 		</Space>
 	</Form>
+	
+	<_Actions>
+		<Action>
+			<Id>Changed</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Changed");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
 </Entity>

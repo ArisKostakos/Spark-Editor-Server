@@ -10,7 +10,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<Entity extends="SparkEditor.entities.project.EditorProjectPanelContainer"/>
+				<Entity extends="SparkEditor.entities.project.EditorProjectCollections"/>
 			</Entities>
 		</Space>
 	</Form>
