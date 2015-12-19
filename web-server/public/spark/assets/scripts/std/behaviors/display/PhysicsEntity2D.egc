@@ -51,6 +51,11 @@
 			<Type>Decimal</Type>
 			<Value>0</Value>
 		</State>
+		<State><!--export-->
+			<Id>velocityAng</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
 		<State><!--import (physics engine feedback)-->
 			<Id>physicsBody</Id>
 			<Type>Dynamic</Type>
