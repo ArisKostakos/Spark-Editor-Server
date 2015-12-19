@@ -16,6 +16,14 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					if (it.getState('firstFrame'))
+					{
+						me.stopAction('Fade Out');
+						me.getAction('Fade Out').setState('firstFrame',true);
+						
+						it.setState('firstFrame',false);
+					}
+				
 					var opacity = me.getState('opacity');
 					
 					if (1>opacity)
@@ -34,6 +42,7 @@
 					if (opacity==1)
 					{
 						me.stopAction('Fade In');
+						it.setState('firstFrame',true);
 					}
 				</Script>
 			</Scripts>
@@ -41,6 +50,7 @@
 				<State><Id>speed</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>firstFrame</Id><Type>Boolean</Type><Value>true</Value></State>
 			</States>
 		</Action>
 				
@@ -49,6 +59,14 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					if (it.getState('firstFrame'))
+					{
+						me.stopAction('Fade In');
+						me.getAction('Fade In').setState('firstFrame',true);
+						
+						it.setState('firstFrame',false);
+					}
+					
 					var opacity = me.getState('opacity');
 					
 					if (opacity>0)
@@ -68,6 +86,7 @@
 					{
 						me.setState('visible',false);
 						me.stopAction('Fade Out');
+						it.setState('firstFrame',true);
 					}
 				</Script>
 			</Scripts>
@@ -75,6 +94,7 @@
 				<State><Id>speed</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>firstFrame</Id><Type>Boolean</Type><Value>true</Value></State>
 			</States>
 		</Action>
 	</_Actions>
