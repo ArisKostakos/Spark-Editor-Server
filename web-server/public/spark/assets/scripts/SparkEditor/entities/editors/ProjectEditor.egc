@@ -14,6 +14,7 @@
 	
 		<State><Id>InheritanceHashByName</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Only for Class Objects? -->
 		<State><Id>StatesHashByName</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Only for Class Objects? -->
+		<State><Id>MStatesHashByName</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Only for Class Objects? -->
 	
 		<State><Id>tempIncludeAssets</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
@@ -34,6 +35,7 @@
 					
 					me.setState('InheritanceHashByName',new StringMap());
 					me.setState('StatesHashByName',new StringMap());
+					me.setState('MStatesHashByName',new StringMap());
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -124,12 +126,20 @@
 						Display.error("Dependancy: " + dep_entry + ", isBehavior: " + mapEntry.get(dep_entry));
 					}
 					
+					//Re-parse (ouch..)
+					var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+					
 					//SHALLOW STATES
-					var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement(); //Re-parse (ouch..)
 					var StatesHashByName = me.getState('StatesHashByName');
 					//Create New Entry (if previous exists, ditch it)
 					var statesMapEntry = Logic.xml_getAllStates(asset_xml,true); //Store States
 					StatesHashByName.set(asset.name,statesMapEntry);
+					
+					//SHALLOW MSTATES
+					var MStatesHashByName = me.getState('MStatesHashByName');
+					//Create New Entry (if previous exists, ditch it)
+					var mstatesMapEntry = Logic.xml_getAllMStates(asset_xml,true); //Store MStates
+					MStatesHashByName.set(asset.name,mstatesMapEntry);
 				</Script>
 			</Scripts>
 			<States>

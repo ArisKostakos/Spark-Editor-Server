@@ -5,7 +5,7 @@
 		<_State id="horizontalAlign"><Value>center</Value></_State>
 		<_State id="verticalAlign"><Value>middle</Value></_State>
 		<_State id="height"><Value>100%</Value></_State>
-		<_State id="gap"><Value>2</Value></_State>
+		<_State id="gap"><Value>3</Value></_State>
 		<State><Id>displayedEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
@@ -16,29 +16,101 @@
 				<Entity extends="std.display.Text"><_States>
 					<_State id="name"><Value>NameLabel</Value></_State>
 					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>14</Value></_State>
-					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="height"><Value>16</Value></_State>
 					<_State id="fontSize"><Value>14px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
 					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="text"><Value>No Object Selected</Value></_State>
 				</_States></Entity>
 				
-				<Entity extends="SparkEditor.entities.LabelAndInput">
+				<Entity extends="std.display.HGroup">
 					<_States>
-						<_State id="name"><Value>ScaleLabel</Value></_State>
-						<_State id="label"><Value>Scale:</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
 					</_States>
-					<_Actions>
-						<_Action id="Changed">
-							<_Scripts>
-								<Script>
-									var scale=Std.parseFloat(me.getState('value').getState('text'));
-									parent.getState("displayedEntity").setState('scaleX',scale);
-									parent.getState("displayedEntity").setState('scaleY',scale);
-								</Script>
-							</_Scripts>
-						</_Action>
-					</_Actions>
+				
+					<Form><Space><Entities>
+						<!-- PosX -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>PosXLabel</Value></_State>
+								<_State id="label"><Value>PosX:</Value></_State>
+							</_States>
+							<_Actions><_Action id="Changed"><_Scripts><Script>
+								var value=Std.parseFloat(me.getState('value').getState('text'));
+								parent.parentEntity.getState("displayedEntity").setState('spaceX',value);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						<!-- ScaleX -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>ScaleXLabel</Value></_State>
+								<_State id="label"><Value>ScaleX:</Value></_State>
+							</_States>
+							<_Actions><_Action id="Changed"><_Scripts><Script>
+								var value=Std.parseFloat(me.getState('value').getState('text'));
+								parent.parentEntity.getState("displayedEntity").setState('scaleX',value);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+					</_States>
+				
+					<Form><Space><Entities>
+						<!-- PosY -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>PosYLabel</Value></_State>
+								<_State id="label"><Value>PosY:</Value></_State>
+							</_States>
+							<_Actions><_Action id="Changed"><_Scripts><Script>
+								var value=Std.parseFloat(me.getState('value').getState('text'));
+								parent.parentEntity.getState("displayedEntity").setState('spaceY',value);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						<!-- ScaleY -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>ScaleYLabel</Value></_State>
+								<_State id="label"><Value>ScaleY:</Value></_State>
+							</_States>
+							<_Actions><_Action id="Changed"><_Scripts><Script>
+								var value=Std.parseFloat(me.getState('value').getState('text'));
+								parent.parentEntity.getState("displayedEntity").setState('scaleY',value);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+					</_States>
+				
+					<Form><Space><Entities>
+						<!-- Rotation -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>RotationLabel</Value></_State>
+								<_State id="label"><Value>Rotation:</Value></_State>
+							</_States>
+							<_Actions><_Action id="Changed"><_Scripts><Script>
+								var value=Std.parseFloat(me.getState('value').getState('text'));
+								parent.parentEntity.getState("displayedEntity").setState('rotation',value);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						<!-- zOrder -->
+						<Entity extends="SparkEditor.entities.LabelAndInput">
+							<_States>
+								<_State id="name"><Value>zOrderLabel</Value></_State>
+								<_State id="label"><Value>zOrder:</Value></_State>
+							</_States>
+							<_Actions><_Action id="Changed"><_Scripts><Script>
+								var value=Std.parseFloat(me.getState('value').getState('text'));
+								//parent.parentEntity.getState("displayedEntity").setState('scaleX',value);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+					</Entities></Space></Form>
 				</Entity>
 			</Entities>
 		</Space>
@@ -56,7 +128,13 @@
 					me.setState("displayedEntity",gameEntity);
 					
 					Logic.getEntityByName('NameLabel').setState('text',gameEntity.getState('name'));
-					Logic.getEntityByName('ScaleLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
+					
+					Logic.getEntityByName('PosXLabel').getState('value').setState('text',gameEntity.getState('spaceX'));
+					Logic.getEntityByName('PosYLabel').getState('value').setState('text',gameEntity.getState('spaceY'));
+					Logic.getEntityByName('ScaleXLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
+					Logic.getEntityByName('ScaleYLabel').getState('value').setState('text',gameEntity.getState('scaleY'));
+					Logic.getEntityByName('RotationLabel').getState('value').setState('text',gameEntity.getState('rotation'));
+					//Logic.getEntityByName('zOrderLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
 				</Script>
 			</Scripts>
 			<States>

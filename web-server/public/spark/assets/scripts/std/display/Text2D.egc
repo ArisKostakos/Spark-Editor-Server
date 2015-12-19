@@ -16,8 +16,8 @@
 		</_State>-->
 	
 		<State><Id>text</Id><Type>Text</Type><Value>Undefined</Value></State>
-		<State><Id>font</Id><Type>Text</Type><Value>Undefined</Value></State>
-		<State><Id>align</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>font</Id><Type>Text</Type><Value>defaultFont</Value></State>
+		<State><Id>align</Id><Type>Text</Type><Value>Left</Value></State>
 		<State><Id>wrapWidth</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>letterSpacing</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>lineSpacing</Id><Type>Decimal</Type><Value>0</Value></State>

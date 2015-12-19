@@ -89,9 +89,12 @@
 			
 			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
-			
+			  
 			<Asset type="data" location="local" bytes='35672' id="fontRed.fnt">std/fontRed.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="fontRed">std/fontRed.png</Asset>
+			
+			<Asset type="data" location="local" bytes='35672' id="fontGreen.fnt">std/fontGreen.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="fontGreen">std/fontGreen.png</Asset>
 			
 			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
@@ -247,6 +250,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/ChooseParametersPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/BehaviorsPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/StatesPopUp.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/MStatesPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUpNoArrow.egc</Asset>
 			
@@ -257,6 +261,7 @@
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/popupListItems/BehaviorEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/popupListItems/StateEdit.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/popupListItems/MStateEdit.egc</Asset>
 			
 			
 			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/library/platform/subs/EditorLibraryPlayerPanel.egc</Asset>

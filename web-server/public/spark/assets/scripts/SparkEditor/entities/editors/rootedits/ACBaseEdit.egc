@@ -753,7 +753,7 @@
 						
 						var states = Logic.xml_getAllMStates(importXml, true);
 						
-						var acTargetAsset = ClassObjectsDBbyFilenameHash.get(states.get('target'));
+						var acTargetAsset = ClassObjectsDBbyFilenameHash.get(states.get('target').value);
 						
 						//Set AC Target
 						me.getAction('Set New Target').setState('asset',acTargetAsset);
@@ -773,7 +773,7 @@
 							if (states.exists('par' + Std.string(i)))
 							{
 								var param = params[i-1];
-								param.object = states.get('par' + Std.string(i));
+								param.object = states.get('par' + Std.string(i)).value;
 							}
 							i +=1;
 						}

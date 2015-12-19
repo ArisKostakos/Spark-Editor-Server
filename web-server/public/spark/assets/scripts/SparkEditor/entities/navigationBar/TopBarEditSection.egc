@@ -90,7 +90,7 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Group Button");
-					
+					/*
 					//Initiate Load
 					Assets.initiateBatch();
 					
@@ -108,6 +108,7 @@
 					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
 					//Load
 					Assets.loadBatch();
+					*/
 				</Script></_Scripts></_Action></_Actions></Entity>
 			</Entities>
 		</Space>

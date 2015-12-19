@@ -3,7 +3,7 @@
 	<_States>
 		<_State id="touchable"><Value>true</Value></_State>
 		<_State id="physicsEntity"><Value>false</Value></_State>
-		<_State id="name"><Value>Sprite 2D Edit</Value></_State> <!--Nesseccery to change the name of entities on the editor, so evensheets don't control them with their picker-->
+		<!--<_State id="name"><Value>Sprite 2D Edit</Value></_State>--> <!--Nesseccery to change the name of entities on the editor, so evensheets don't control them with their picker-->
 		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
@@ -538,6 +538,29 @@
 			</States>
 		</Action>
 		
+		<Action>
+			<Id>CreateMStates</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
+					Display.error("My Asset.name is: " + asset.name);
+					
+					//Check hash to pick up it's classes
+					var MStatesHashByName = Logic.getEntityByName('Project Editor').getState("MStatesHashByName");
+					var mstatesMap = MStatesHashByName.get(asset.name);
+					Display.error(mstatesMap);
+					it.setState('returnMStates',mstatesMap);	//mstatesMap is read only.. don't write to it..
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnMStates</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
 		<!-- Callback: Entity Context Menu -->
 		<Action>
 			<Id>Callback: Entity Context Menu</Id>
@@ -560,7 +583,20 @@
 						}
 						else if (cb_Arg1.type=="ExistingStates")
 						{
-							Display.error("Existing States");
+							me.forceAction('CreateMStates');
+							var mstates = me.getAction('CreateMStates').getState('returnMStates');
+							
+							
+							//Open Popup
+							var popUpManager = Logic.getEntityByName('PopUp Manager');
+							var popUpAction = popUpManager.getAction('Open PopUp');
+							popUpAction.setState('popupName',"SparkEditor.entities.popups.items.MStatesPopUp");
+							popUpAction.setState('popupPosX',me.getState('tempContextPosX'));
+							popUpAction.setState('popupPosY',me.getState('tempContextPosY'));
+							popUpAction.setState('argA',mstates);
+							popUpAction.setState('cb_caller',me);
+							popUpAction.setState('cb_actionName','Callback: MStates Window');
+							popUpManager.forceAction('Open PopUp');
 						}
 						else if (cb_Arg1.type=="Clone")
 						{
@@ -730,6 +766,70 @@
 						{
 							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
 							Logic.xml_entity_addState(asset_xml, item, true);
+						}
+						
+						
+						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+						
+						//Get me ready to upload stuff
+						me.setState('tempUploading',true);
+						
+						//Upload it
+						var finalString = Logic.xmlToString(asset_xml);
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: MStates Window -->
+		<Action>
+			<Id>Callback: MStates Window</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						
+						
+						var asset = me.getState('ClassAsset');
+						
+						//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+						
+						//Get the ASSET'S XML.. doihh..
+						var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+						
+						//Remove All Merge States here
+						var statesNode = Logic.xml_getElement(asset_xml, "_States");
+						Logic.xml_entity_removeAllNodes(statesNode,"_State");
+						
+						//Add new _States
+						for (item of cb_Arg1)
+						{
+							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
+							Logic.xml_entity_addMState(asset_xml, item, true);
+							
+							//Change "Dynamic" MStates on the spot!
+							if (item.id=="text" || item.id=="font" || item.id=="align" || item.id=="wrapWidth" || item.id=="letterSpacing" || item.id=="lineSpacing")
+								me.setState(item.id,item.value);
 						}
 						
 						

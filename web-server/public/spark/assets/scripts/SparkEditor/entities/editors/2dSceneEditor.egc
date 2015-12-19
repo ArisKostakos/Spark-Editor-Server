@@ -99,6 +99,9 @@
 					Logic.xml_entity_addMState(sceneXml, {id:"name", value: 'Main Scene' },true);
 					Logic.xml_entity_addMState(sceneXml, {id:"classObjectsCount", value: Std.string(scene.getState('classObjectsCount')) },true);
 					
+					//hmmm
+					Logic.xml_entity_addMState(sceneXml, {id:"gravityY", value: Std.string(scene.getState('gravityY')) },true);
+					
 					//Create entities node
 					var entities = Logic.xml_createElements(['Form','Space','Entities']);
 					sceneXml.addChild(entities.first);
