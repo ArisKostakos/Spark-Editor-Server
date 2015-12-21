@@ -92,7 +92,8 @@
 					Display.error("Clicked Group Button");
 					var behaviorName;
 					//behaviorName="QuizLogic";
-					behaviorName="Snowflake";
+					//behaviorName="Snowflake";
+					behaviorName="ClickerLogic";
 					
 					//Initiate Load
 					Assets.initiateBatch();
