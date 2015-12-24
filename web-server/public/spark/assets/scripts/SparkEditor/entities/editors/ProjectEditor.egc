@@ -684,7 +684,7 @@
 							var username = Logic.getEntityByName('Spark Editor').getState('username');
 							var projectname = Logic.getEntityByName('Spark Editor').getState('projectname');
 					
-							window.open("http://sparkgamengine.com/spark/run.html?user="+username+"&project="+projectname,"previewTab");
+							window.open("http://sparkgamengine.com/spark/start.html?user="+username+"&project="+projectname,"previewTab");
 						}
 						else
 						{
