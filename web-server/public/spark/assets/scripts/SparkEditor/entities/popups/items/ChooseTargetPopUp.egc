@@ -42,7 +42,7 @@
 										//Figure out Thumbnail
 										var thumbUrl="NotFound";
 										
-										if (asset.componentType=="Project") //maybe do this for sounds, etc..
+										if (asset.componentType=="Project" || asset.componentType=="Scene") //maybe do this for sounds, etc..
 										{
 											thumbUrl = "thumb_" + asset.componentType;
 										}

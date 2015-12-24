@@ -380,7 +380,7 @@
 			
 			<!-- Thumbnails by componentType -->
 			<Asset type="image" subtype="2D" location="local" id="thumb_Project" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
-			<Asset type="image" subtype="2D" location="local" id="thumb_Scene" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Scene" bytes='35672' forceLoadAsData='true'>editor/thumbs/Scene.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Camera" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Text" bytes='35672' forceLoadAsData='true'>editor/thumbs/Text.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Sound" bytes='35672' forceLoadAsData='true'>editor/thumbs/Sound.png</Asset>

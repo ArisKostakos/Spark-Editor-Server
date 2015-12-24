@@ -350,8 +350,8 @@
 											sceneEditor.setState('assetName',asset.name);
 										}
 										
-										//Let's see what happens if we store the Scene as well
-										//me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										me.getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
 									}
 									else if (asset.componentType=="EventSheet")
 									{

@@ -369,7 +369,10 @@
 					
 					if (me.getState('name')=="Condition")
 						if (me.getState('parentEvent').getState('eventWzardInProgress'))
+						{
 							me.getState('parentEvent').startAction('Create New Action');
+							me.getState('parentEvent').setState('eventWzardInProgress',false);
+						}
 				</Script>
 			</Scripts>
 			<States>
@@ -395,7 +398,7 @@
 					//Figure out Thumbnail
 					var thumbUrl="NotFound";
 					
-					if (asset.componentType=="Project") //maybe do this for sounds, etc..
+					if (asset.componentType=="Project" || asset.componentType=="Scene") //maybe do this for sounds, etc..
 					{
 						thumbUrl = "thumb_" + asset.componentType;
 					}
@@ -499,7 +502,10 @@
 						//wizard flag should go off
 						if (me.getState('name')=="Condition")
 							if (me.getState('parentEvent').getState('eventWzardInProgress'))
+							{
 								me.getState('parentEvent').startAction('Create New Action');
+								me.getState('parentEvent').setState('eventWzardInProgress',false);
+							}
 					}
 				</Script>
 			</Scripts>
