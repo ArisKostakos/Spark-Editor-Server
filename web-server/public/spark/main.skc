@@ -39,6 +39,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Scene2DPhysics.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Scene3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Camera2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/Camera2DStandard.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Camera3D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Entity2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Entity3D.egc</Asset>
