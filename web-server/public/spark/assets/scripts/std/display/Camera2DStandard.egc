@@ -17,7 +17,7 @@
 					me.stopAction('Camera Init');
 					
 					var view = Logic.getEntityByName('Main View');
-					
+					Display.error("View Name: " + view.getState('name'));
 					//CAMERA
 					var camera = me;
 					

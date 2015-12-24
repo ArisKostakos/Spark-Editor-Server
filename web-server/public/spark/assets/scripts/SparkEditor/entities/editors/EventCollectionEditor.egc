@@ -203,7 +203,7 @@
 						else
 						{
 							Display.error('Updated Asset EC error!');
-							Logic.getEntityByName('Editor Output').setState('text','Error Saving Project :(');
+							Logic.getEntityByName('Editor Output').setState('text','Project Saved with warnings!');
 						}
 					}
 				</Script>
