@@ -14,7 +14,7 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					if (view.getState('feedbackWidth')==0)
+					if (Logic.getEntityByName('Main View').getState('feedbackWidth')==0)
 						return;
 					
 					
