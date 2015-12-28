@@ -2,7 +2,6 @@
 <Entity>
 
 	<_States>
-		<_State id="name"><Value>Level Editor 2D Scene</Value></_State>
 		<State><Id>selectedEntities</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
@@ -74,7 +73,7 @@
 						<_State id="name"><Value>SceneBackground</Value></_State>
 					</_States>
 					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts><Script>
-						var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+						var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
 						leveleditor2d.getAction('EntityClicked').setState('entity',null);
 						leveleditor2d.startAction('EntityClicked');
 					</Script></Scripts></Trigger></_Triggers>

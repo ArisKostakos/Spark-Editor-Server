@@ -30,7 +30,7 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
 					leveleditor2d.getAction('EntityClicked').setState('entity',me);
 					leveleditor2d.startAction('EntityClicked');
 					
@@ -55,7 +55,7 @@
 						return node;
 					}
 					
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
 					leveleditor2d.getAction('EntityClicked').setState('entity',me);
 					leveleditor2d.startAction('EntityClicked');
 					
@@ -166,7 +166,7 @@
 				<Script>
 					if (me.getState('selected'))
 					{
-						Logic.getEntityByName('Level Editor 2D Scene').startAction('DeleteSelected');
+						Logic.getEntityByName('2d Scene Editor').getState('target').startAction('DeleteSelected');
 					}
 				</Script>
 			</Scripts>
@@ -579,7 +579,7 @@
 						
 						if (cb_Arg1.type=="Delete")
 						{
-							Logic.getEntityByName('Level Editor 2D Scene').startAction('DeleteSelected');
+							Logic.getEntityByName('2d Scene Editor').getState('target').startAction('DeleteSelected');
 						}
 						else if (cb_Arg1.type=="ExistingStates")
 						{
@@ -1031,7 +1031,7 @@
 					childEntity.startAction('Select');
 					*/
 
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
 					leveleditor2d.getAction('EntityClicked').setState('entity',editChild);
 					leveleditor2d.startAction('EntityClicked');
 				</Script>

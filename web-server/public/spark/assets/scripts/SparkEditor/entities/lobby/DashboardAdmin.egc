@@ -81,7 +81,7 @@
 										//Create New Project Code...
 										Logic.getEntityByName('Dashboard Output Text').setState('text', 'Please wait...');
 									
-										Comms.request("lobby.projectHandler.create", {projectName: strProjectName, tags: []}, "Create Project Request");
+										Comms.request("lobby.projectHandler.create", {projectName: strProjectName, tags: ['project','0']}, "Create Project Request");
 									}
 									else
 									{
@@ -112,7 +112,7 @@
 										//Create New Project Code...
 										Logic.getEntityByName('Dashboard Output Text').setState('text', 'Please wait...');
 									
-										Comms.request("lobby.projectHandler.create", {projectName: strProjectName, tags: ['template']}, "Create Project Request");
+										Comms.request("lobby.projectHandler.create", {projectName: strProjectName, tags: ['template','0']}, "Create Project Request");
 									}
 									else
 									{

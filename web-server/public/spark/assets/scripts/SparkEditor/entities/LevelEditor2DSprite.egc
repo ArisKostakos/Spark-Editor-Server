@@ -26,7 +26,7 @@
 					}
 					else
 					{
-						var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+						var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
 						leveleditor2d.getAction('EntityClicked').setState('entity',me);
 						leveleditor2d.startAction('EntityClicked');
 						me.startAction('Drag');
@@ -103,7 +103,7 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					var mainScene = Logic.getEntityByName('Level Editor 2D Scene');
+					var mainScene = Logic.getEntityByName('2d Scene Editor').getState('target');
 					var componentName = me.getState('componentName');
 
 					var myNewImage2D = Logic.gameFactory.createGameEntityExtended(componentName,'SparkEditor.entities.LevelEditor2DSprite');
@@ -115,7 +115,7 @@
 					mainScene.addChild(myNewImage2D);
 						
 					//Select and start dragging the new Entity
-					var leveleditor2d = Logic.getEntityByName('Level Editor 2D Scene');
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
 					leveleditor2d.getAction('EntityClicked').setState('entity',myNewImage2D);
 					leveleditor2d.startAction('EntityClicked');
 					myNewImage2D.startAction('Drag');

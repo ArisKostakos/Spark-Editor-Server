@@ -204,7 +204,7 @@
 										}
 										else if (cb_Arg1.type=="PasteImage")
 										{
-											var selectedEntities = Logic.getEntityByName('Level Editor 2D Scene').getState('selectedEntities');
+											var selectedEntities = Logic.getEntityByName('2d Scene Editor').getState('target').getState('selectedEntities');
 											if (selectedEntities.length==1)
 											{
 												var objectEntity = selectedEntities[0];
