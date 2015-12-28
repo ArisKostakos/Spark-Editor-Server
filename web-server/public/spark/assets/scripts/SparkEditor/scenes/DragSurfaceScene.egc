@@ -131,13 +131,12 @@
 									Logic.getEntityByName('Project Editor').setState('classObjectsCount',classObjectsCount);
 									
 									//Update Project Tags (not nice to do it here, but... oh well
-									var newTags = [];
 									var projectAsset = Logic.getEntityByName('Project Editor').getState('asset');
-									newTags.push(projectAsset.tags[0]); //0:  project/template
-									newTags.push(Std.string(classObjectsCount)); //1: objectsCount
+									var newTags = projectAsset.tags.slice(0); //clone
+									newTags[1]=Std.string(classObjectsCount); //1: objectsCount
 									
 									//update assetDb
-									Comms.request("lobby.projectHandler.updateProjectEntry", {projectId:projectAsset._id, field:"tags", newValue:newTags}, "whatever...");
+									Comms.request("assets.updateHandler.updateAssetEntry", {assetId:projectAsset._id, field:"tags", newValue:newTags}, "whatever...");
 									
 									//check how i add things now.. plan how i'll do it differently
 									
