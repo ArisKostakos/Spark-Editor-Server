@@ -175,6 +175,8 @@
 						triggerEvent="MouseLeftClick";
 					else if (condition_asset.fileName=="KeyPressed")
 						triggerEvent="KeyPressed";
+					else if (condition_asset.fileName=="KeyDown")
+						triggerEvent="KeyDown";
 					else if (condition_asset.fileName=="KeyReleased")
 						triggerEvent="KeyReleased";
 					else if (condition_asset.fileName=="Collided")
@@ -196,14 +198,14 @@
 						
 					//Set Up Trigger Target Node
 					var triggerTarget;
-					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted" || triggerEvent=="ProjectPaused" || triggerEvent=="ProjectResumed") //hack to set no target for keyboard
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyDown" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted" || triggerEvent=="ProjectPaused" || triggerEvent=="ProjectResumed") //hack to set no target for keyboard
 						triggerTarget="TargetNone";
 					else
 						triggerTarget= conditionTarget_asset.fileName;
 					
 					//Set Up Trigger Parameter
 					var triggerParameter=null;
-					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyReleased" || triggerEvent=="StateChanged" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted")
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyDown" || triggerEvent=="KeyReleased" || triggerEvent=="StateChanged" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted")
 					{
 						triggerParameter = condition_par1.object;
 					}
