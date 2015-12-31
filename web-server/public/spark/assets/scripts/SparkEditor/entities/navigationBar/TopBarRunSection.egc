@@ -20,6 +20,12 @@
 					<_State id="imageHorCenter"><Value>0</Value></_State>
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
+					ga('send', {
+                          hitType: 'event',
+                          eventCategory: 'Project',
+                          eventAction: 'Save'
+                        });
+						
 					Logic.getEntityByName('2d Scene Editor').startAction('Save');
 					Logic.getEntityByName('Event Collection Editor').startAction('Save');
 				</Script></_Scripts></_Action></_Actions></Entity>
@@ -34,6 +40,12 @@
 					<State><Id>oldTab</Id><Type>Text</Type><Value>null</Value></State>
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
+					ga('send', {
+                          hitType: 'event',
+                          eventCategory: 'Project',
+                          eventAction: 'Run'
+                        });
+						
 					var imageObject = me.getState('imageObject');
 					
 					if (imageObject.getState('src')=="editor_play")
@@ -133,6 +145,12 @@
 					<_State id="imageHorCenter"><Value>3</Value></_State>
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
+					ga('send', {
+                          hitType: 'event',
+                          eventCategory: 'Project',
+                          eventAction: 'Export'
+                        });
+						
 					Display.error("Clicked Export Button");
 					Logic.getEntityByName('Project Editor').startAction('Export Project');
 				</Script></_Scripts></_Action></_Actions></Entity>

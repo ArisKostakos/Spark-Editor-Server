@@ -327,7 +327,7 @@
                           eventCategory: 'Time',
                           eventAction: 'Update'
                         });
-    			    }, 120000);
+    			    }, 60000);
 				
 					return;
 					//enter project gui
