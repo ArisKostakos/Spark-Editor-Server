@@ -23,7 +23,8 @@
 					ga('send', {
                           hitType: 'event',
                           eventCategory: 'Project',
-                          eventAction: 'Save'
+                          eventAction: 'Save',
+						  eventLabel: e('Spark Editor').s('username') + '&' + e('Spark Editor').s('projectname')
                         });
 						
 					Logic.getEntityByName('2d Scene Editor').startAction('Save');
@@ -43,7 +44,8 @@
 					ga('send', {
                           hitType: 'event',
                           eventCategory: 'Project',
-                          eventAction: 'Run'
+                          eventAction: 'Run',
+						  eventLabel: e('Spark Editor').s('username') + '&' + e('Spark Editor').s('projectname')
                         });
 						
 					var imageObject = me.getState('imageObject');
@@ -148,8 +150,10 @@
 					ga('send', {
                           hitType: 'event',
                           eventCategory: 'Project',
-                          eventAction: 'Export'
+                          eventAction: 'Export',
+						  eventLabel: e('Spark Editor').s('username') + '&' + e('Spark Editor').s('projectname')
                         });
+						
 						
 					Display.error("Clicked Export Button");
 					Logic.getEntityByName('Project Editor').startAction('Export Project');

@@ -90,6 +90,7 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Group Button");
+					return;
 					var behaviorName;
 					//behaviorName="QuizLogic";
 					//behaviorName="Snowflake";

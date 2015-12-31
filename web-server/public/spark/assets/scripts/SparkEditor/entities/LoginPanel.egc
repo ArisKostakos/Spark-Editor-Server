@@ -321,11 +321,12 @@
 			<_Scripts>
 				<Script>
 				 setInterval(function(){
-        			    //Display.error("Reporting to google ti..");
+        			    Display.error("Reporting to google...");
         				ga('send', {
                           hitType: 'event',
                           eventCategory: 'Time',
-                          eventAction: 'Update'
+                          eventAction: 'Update',
+						  eventLabel: e('Spark Editor').s('username') + '&' + e('Spark Editor').s('projectname')
                         });
     			    }, 60000);
 				
