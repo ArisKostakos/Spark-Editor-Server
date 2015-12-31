@@ -321,7 +321,7 @@
 			<_Scripts>
 				<Script>
 				 setInterval(function(){
-        			    Display.error("Reporting to google...");
+        			    //Display.error("Reporting to google...");
         				ga('send', {
                           hitType: 'event',
                           eventCategory: 'Time',
