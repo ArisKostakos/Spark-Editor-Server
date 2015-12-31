@@ -387,6 +387,13 @@
 						
 						if (data.code=="match")
 						{
+							ga('send', {
+							  hitType: 'event',
+							  eventCategory: 'Project',
+							  eventAction: 'Login',
+							  eventLabel: e('Spark Editor').s('username')
+							});
+						
 							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
 							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
 							
