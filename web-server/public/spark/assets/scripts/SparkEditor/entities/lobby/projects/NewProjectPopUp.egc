@@ -108,12 +108,14 @@
 										<_State id="imageName"><Value>lobbyProjectTemplate_Platform</Value></_State>
 										<_State id="imageWidth"><Value>43</Value></_State>
 										<_State id="imageHeight"><Value>39</Value></_State>
+										<_State id="isDisabled"><Value>true</Value></_State>
 										<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
 									</_States>
 									<_Actions>
 										<_Action id="ButtonClicked">
 											<_Scripts>
 												<Script>
+													return;
 													Logic.getEntityByName('BlankTemplateTile').startAction('Deselect'); //terrible fix again..
 													me.startAction('Select');
 													Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
