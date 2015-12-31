@@ -320,6 +320,15 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
+				 setInterval(function(){
+        			    //Display.error("Reporting to google ti..");
+        				ga('send', {
+                          hitType: 'event',
+                          eventCategory: 'Time',
+                          eventAction: 'Update'
+                        });
+    			    }, 120000);
+				
 					return;
 					//enter project gui
 					Logic.getEntityByName('Dom View').setState('visible',false);
