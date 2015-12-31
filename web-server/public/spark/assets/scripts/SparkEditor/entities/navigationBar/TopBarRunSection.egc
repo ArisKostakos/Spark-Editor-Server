@@ -73,6 +73,7 @@
 						
 						//Push required entities in it
 						Logic.registerToBackupActive=true;
+						Logic.registerEntityByName(Logic.getEntityByName('Spark Editor'));
 						Logic.registerEntityByName(Logic.getEntityByName('Main View 2D Run'));
 						Logic.registerToBackupActive=false;
 						
