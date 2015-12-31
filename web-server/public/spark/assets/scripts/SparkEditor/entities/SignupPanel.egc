@@ -348,6 +348,13 @@
 						
 						if (data.code=="success")
 						{
+							ga('send', {
+							  hitType: 'event',
+							  eventCategory: 'Project',
+							  eventAction: 'Signup',
+							  eventLabel: e('Signup Panel').s('userInput').s('text')
+							});
+							
 							me.setState('display','none');
 							parent.getState('loginPanel').getState('userInput').setState('text',me.getState('userInput').getState('text'));
 							parent.getState('loginPanel').getState('passwordInput').setState('text','');
