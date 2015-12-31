@@ -87,7 +87,9 @@
 						me.setState('visible',false);
 						me.stopAction('Fade Out');
 						it.setState('firstFrame',true);
-						parent.removeChild(me);
+						
+						if (it.getState('moveX')!=0 || it.getState('moveY')!=0)
+							parent.removeChild(me);
 					}
 				</Script>
 			</Scripts>
