@@ -122,7 +122,7 @@ handler.fork = function(msg, session, next) {
                                         //Handle Success
 
                                         //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
-                                        var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_found._id], moduleMain: module_found._id, tags: [], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
+                                        var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_found._id], moduleMain: module_found._id, tags: ['project'], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
 
                                         //Create Project
                                         database.create(database.Project, raw_Project,
@@ -138,7 +138,7 @@ handler.fork = function(msg, session, next) {
                                                 //Create directories
                                                 createProjectDirectories(objCreated_Project.name, user.name);
 
-                                                // for all spark assetsDB with tag: blank
+                                                // for all spark assetsDB with tag: templateProject.name
                                                 database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
                                                     function (err, objects_found) {
                                                         //Handle Error
@@ -423,6 +423,36 @@ function bindProject(session, project)
     });
 }
 
+handler.updateProjectEntry = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    database.findOne(database.Project, {_id: msg.projectId},
+        function (err, project_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Reflect this??
+            if (msg.field=="tags")
+                project_found.tags=msg.newValue;
+
+            project_found.markModified(msg.field);
+            project_found.save(function (err) {
+                //Handle Error
+                if (err) {
+                    next(null, {code: "error"});
+                    return console.error(err);
+                }
+
+                //Handle Success
+                next(null, {code: "success"});
+            });
+        }
+    );
+};
 
 //THIS IS A REMOTE BUT LETS TRY I HERE
 handler.createIncludeQuery = function(msg, session, next) {
