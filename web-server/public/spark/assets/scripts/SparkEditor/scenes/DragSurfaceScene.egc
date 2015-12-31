@@ -64,6 +64,11 @@
 									
 									Display.error('Dropping: ' + asset.name);
 									
+									if (asset.componentType=="Object Class")
+									{
+										Display.error('Its an Object Class. Not ready yet. Quitting');
+										return;
+									}
 									
 									if (asset.componentType=="Sound")
 									{
@@ -117,7 +122,7 @@
 									
 									
 									//Ok, here we go
-									var classObjectsCount = scene.getState('classObjectsCount') + 1;
+									var classObjectsCount = Logic.getEntityByName('Project Editor').getState('classObjectsCount') + 1;
 									
 									//let's name it
 									//var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
@@ -128,7 +133,15 @@
 									else if (asset.componentType=="Image")
 										newClassName = "Sprite_" + Std.string(classObjectsCount); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
 									
-									scene.setState('classObjectsCount',classObjectsCount);
+									Logic.getEntityByName('Project Editor').setState('classObjectsCount',classObjectsCount);
+									
+									//Update Project Tags (not nice to do it here, but... oh well
+									var projectAsset = Logic.getEntityByName('Project Editor').getState('asset');
+									var newTags = projectAsset.tags.slice(0); //clone
+									newTags[1]=Std.string(classObjectsCount); //1: objectsCount
+									
+									//update assetDb
+									Comms.request("assets.updateHandler.updateAssetEntry", {assetId:projectAsset._id, field:"tags", newValue:newTags}, "whatever...");
 									
 									//check how i add things now.. plan how i'll do it differently
 									

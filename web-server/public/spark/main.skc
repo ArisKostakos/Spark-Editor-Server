@@ -114,8 +114,6 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/DummyCamera.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/EditorSceneEditCamera.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/cameras/EditorSceneRunCamera.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/LevelEditor2DScene.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/LevelEditor2DView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DummyScene2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/MainView2DRun.egc</Asset>

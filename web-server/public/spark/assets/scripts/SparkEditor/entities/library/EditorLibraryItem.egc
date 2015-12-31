@@ -70,6 +70,7 @@
 									if (me.getState('eventObject').which==1) //Left Mouse Button
 									{
 										Display.error("Mouse Down LEFT!!!");
+										
 										Logic.getEntityByName('Drag Surface View').setState('visible',true);
 										Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
 										Logic.getEntityByName('Drag Surface Scene').setState('libraryOfAssetBeingDragged',parent.getState('libraryObjectDB'));
@@ -204,7 +205,7 @@
 										}
 										else if (cb_Arg1.type=="PasteImage")
 										{
-											var selectedEntities = Logic.getEntityByName('Level Editor 2D Scene').getState('selectedEntities');
+											var selectedEntities = Logic.getEntityByName('2d Scene Editor').getState('target').getState('selectedEntities');
 											if (selectedEntities.length==1)
 											{
 												var objectEntity = selectedEntities[0];

@@ -45,7 +45,6 @@
 					</Script></_Scripts></_Action></_Actions>
 						
 					<_Triggers>
-						<!--
 						<Trigger>
 							<Event>OnDragStart</Event>
 							<Scripts>
@@ -72,8 +71,13 @@
 									if (me.getState('eventObject').which==1) //Left Mouse Button
 									{
 										Display.error("Mouse Down LEFT!!!");
-										Logic.getEntityByName('Drag Surface View').setState('visible',true);
-										Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
+										
+										if (asset.componentType=="Object Class")
+										{
+											Logic.getEntityByName('Drag Surface View').setState('visible',true);
+											Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
+											//Logic.getEntityByName('Drag Surface Scene').setState('libraryOfAssetBeingDragged',parent.getState('libraryObjectDB'));
+										}
 									}
 									
 									
@@ -96,7 +100,31 @@
 								</Script>
 							</Scripts>
 						</Trigger>
-						-->
+						
+						<Trigger>
+							<Event>MouseLeftClick</Event>
+							<Scripts>
+								<Script>
+									
+									Display.error("MouseLeftClick!!!");
+									var asset = parent.getState('asset');
+									
+									if (asset.componentType=="Scene")
+									{
+										//Init Scene Editor
+										var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+										
+										sceneEditor.setState('assetUserName', asset.owner.user.name);
+										sceneEditor.setState('assetType',asset.type);
+										sceneEditor.setState('assetName',asset.name);
+										
+										//Start up Scene Editor
+										sceneEditor.startAction('GetAsset');
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+					
 						<Trigger>
 							<Event>MouseRightClick</Event>
 							<Scripts>

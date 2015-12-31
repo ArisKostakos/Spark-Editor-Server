@@ -87,6 +87,8 @@
 						me.setState('visible',false);
 						me.stopAction('Fade Out');
 						it.setState('firstFrame',true);
+						parent.removeChild(me);
+						Display.error("Removed Child");
 					}
 				</Script>
 			</Scripts>
