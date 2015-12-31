@@ -21,7 +21,7 @@
 					<_States>
 						<_State id="touchable"><Value>true</Value></_State>
 						<_State id="cursor"><Value>pointer</Value></_State>
-						<_State id="draggable"><Value>true</Value></_State>
+						<_State id="draggable"><Value>false</Value></_State>
 						<_State id="horizontalCenter"><Value>0</Value></_State>
 						<State><Id>tempDeleting</Id><Type>Boolean</Type><Value>false</Value></State>
 						<State><Id>tempUploading</Id><Type>Boolean</Type><Value>false</Value></State>
@@ -45,6 +45,7 @@
 					</Script></_Scripts></_Action></_Actions>
 						
 					<_Triggers>
+						<!--
 						<Trigger>
 							<Event>OnDragStart</Event>
 							<Scripts>
@@ -124,7 +125,7 @@
 								</Script>
 							</Scripts>
 						</Trigger>
-					
+						-->
 						<Trigger>
 							<Event>MouseRightClick</Event>
 							<Scripts>
