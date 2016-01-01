@@ -98,6 +98,7 @@
 								</_States></Entity></Entities></Space></Form></Entity>
 								
 								<Entity extends="std.display.Input"><_States>
+									<_State id="name"><Value>Login Page User Input</Value></_State>
 									<_State id="width"><Value>100%</Value></_State>
 									<_State id="height"><Value>47</Value></_State>
 									<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -190,6 +191,7 @@
 							</_States></Entity></Entities></Space></Form></Entity>
 							
 							<Entity extends="std.display.Input"><_States>
+								<_State id="name"><Value>Login Page Password Input</Value></_State>
 								<_State id="width"><Value>100%</Value></_State>
 								<_State id="height"><Value>47</Value></_State>
 								<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
@@ -330,6 +332,11 @@
                         });
     			    }, 60000);
 				
+					if (Logic.getStorage().get('username')!=null)
+						e('Login Page User Input').setState('text',Logic.getStorage().get('username'));
+					if (Logic.getStorage().get('password')!=null)
+						e('Login Page Password Input').setState('text',Logic.getStorage().get('password'));
+					
 					return;
 					//enter project gui
 					Logic.getEntityByName('Dom View').setState('visible',false);
@@ -393,7 +400,13 @@
 							  eventAction: 'Login',
 							  eventLabel: e('Spark Editor').s('username')
 							});
-						
+							
+							var loginPanel = Logic.getEntityByName('Login Panel');
+							var strUser =loginPanel.getState('userInput').getState('text');
+							var strPass =loginPanel.getState('passwordInput').getState('text');
+							Logic.getStorage().set('username',strUser);
+							Logic.getStorage().set('password',strPass);
+							
 							me.getState('outputText').setState('text', 'Logged in. Entering lobby...');
 							Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects");
 							
