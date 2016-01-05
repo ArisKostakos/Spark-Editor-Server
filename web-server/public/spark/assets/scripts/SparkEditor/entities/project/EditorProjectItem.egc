@@ -21,7 +21,7 @@
 					<_States>
 						<_State id="touchable"><Value>true</Value></_State>
 						<_State id="cursor"><Value>pointer</Value></_State>
-						<_State id="draggable"><Value>false</Value></_State>
+						<_State id="draggable"><Value>true</Value></_State>
 						<_State id="horizontalCenter"><Value>0</Value></_State>
 						<State><Id>tempDeleting</Id><Type>Boolean</Type><Value>false</Value></State>
 						<State><Id>tempUploading</Id><Type>Boolean</Type><Value>false</Value></State>
@@ -45,12 +45,13 @@
 					</Script></_Scripts></_Action></_Actions>
 						
 					<_Triggers>
-						<!--
+						
 						<Trigger>
 							<Event>OnDragStart</Event>
 							<Scripts>
 								<Script>
-									Logic.getEntityByName('Drag Surface View').setState('visible',true);				
+									if (parent.s('asset').componentType=="Object Class")
+										Logic.getEntityByName('Drag Surface View').setState('visible',true);				
 								</Script>
 							</Scripts>
 						</Trigger>
@@ -59,8 +60,10 @@
 							<Event>OnDragEnd</Event>
 							<Scripts>
 								<Script>
-									Logic.getEntityByName('Drag Surface View').setState('visible',false);
-									Display.error("DRAG ENDDD");
+									if (parent.s('asset').componentType=="Object Class")
+										Logic.getEntityByName('Drag Surface View').setState('visible',false);
+									
+									//Display.error("DRAG ENDDD");
 								</Script>
 							</Scripts>
 						</Trigger>
@@ -73,7 +76,7 @@
 									{
 										Display.error("Mouse Down LEFT!!!");
 										
-										if (asset.componentType=="Object Class")
+										if (parent.s('asset').componentType=="Object Class")
 										{
 											Logic.getEntityByName('Drag Surface View').setState('visible',true);
 											Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
@@ -97,7 +100,8 @@
 							<Event>MouseUp</Event>
 							<Scripts>
 								<Script>
-									Logic.getEntityByName('Drag Surface View').setState('visible',false);
+									if (parent.s('asset').componentType=="Object Class")
+										Logic.getEntityByName('Drag Surface View').setState('visible',false);
 								</Script>
 							</Scripts>
 						</Trigger>
@@ -106,8 +110,8 @@
 							<Event>MouseLeftClick</Event>
 							<Scripts>
 								<Script>
-									
 									Display.error("MouseLeftClick!!!");
+									
 									var asset = parent.getState('asset');
 									
 									if (asset.componentType=="Scene")
@@ -115,17 +119,21 @@
 										//Init Scene Editor
 										var sceneEditor = Logic.getEntityByName('2d Scene Editor');
 										
-										sceneEditor.setState('assetUserName', asset.owner.user.name);
-										sceneEditor.setState('assetType',asset.type);
-										sceneEditor.setState('assetName',asset.name);
 										
-										//Start up Scene Editor
-										sceneEditor.startAction('GetAsset');
+										if (asset.name!=sceneEditor.s('assetName'))
+										{
+											sceneEditor.setState('assetUserName', asset.owner.user.name);
+											sceneEditor.setState('assetType',asset.type);
+											sceneEditor.setState('assetName',asset.name);
+											
+											//Start up Scene Editor
+											sceneEditor.startAction('GetAsset');
+										}
 									}
 								</Script>
 							</Scripts>
 						</Trigger>
-						-->
+						
 						<Trigger>
 							<Event>MouseRightClick</Event>
 							<Scripts>
