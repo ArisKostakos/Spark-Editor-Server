@@ -173,6 +173,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/ProgrammerEditorScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorTopBarScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/DragSurfaceScene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/nonvisual/SceneUploader.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/LevelEditor2DSprite.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/FullScreenView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer1View.egc</Asset>
