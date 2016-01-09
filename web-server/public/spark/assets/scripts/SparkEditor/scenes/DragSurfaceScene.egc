@@ -64,12 +64,38 @@
 									
 									Display.error('Dropping: ' + asset.name);
 									
+									//Exception (will return if inside)
 									if (asset.componentType=="Object Class")
 									{
-										Display.error('Its an Object Class. Not ready yet. Quitting');
+										//Step 4
+										//Create the instance XML
+										var entityXml = Logic.xml_createElementAttr('Entity','extends', asset.name );
+										
+										//Add States
+										Logic.xml_entity_addMState(entityXml, {id:"id", value: Std.string(0) },true); //incremental, like class, or unique for every class, or...?
+										Logic.xml_entity_addMState(entityXml, {id:"spaceX", value: Std.string(me.getState('temp_dropX')) },true);
+										Logic.xml_entity_addMState(entityXml, {id:"spaceY", value: Std.string(me.getState('temp_dropY')) },true);
+										
+										
+										//Step 5
+										//Create the GameObject, import it's xml data, add it to scene
+										var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+										
+										var tempEntityChildXml = Logic.xml_clone(entityXml);
+										Logic.xml_entity_addExtend(tempEntityChildXml, {ext: 'SparkEditor.entities.editors.behaviors.Sprite2DEdit'});
+										
+										var editChild = Logic.gameFactory.createGameEntityByXml(tempEntityChildXml);
+										
+										//add it as child
+										scene.addChild(editChild);
+										editChild.getAction('Import Xml').setState('importXml',entityXml);
+										editChild.forceAction('Import Xml');
+										Display.error("created and added!!!");
+										
 										return;
 									}
 									
+									//Exception (will return if inside)
 									if (asset.componentType=="Sound")
 									{
 										Display.error("It's a sound!");
