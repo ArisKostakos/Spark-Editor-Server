@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<State><Id>uploaderUID</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>newAssetName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>newAssetSize</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>dropX</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>dropY</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>newAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>assetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>libraryOfAssetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Generate a UID
+					me.setState('uploaderUID',Std.string(Std.random(999999)));
+					Display.error('uploaderUID: ' + me.s('uploaderUID'));
+					
+					//Get the Asset & stuff
+					var asset = me.getState('assetBeingDragged');
+					var assetLibrary = me.getState('libraryOfAssetBeingDragged');
+					//var componentType = assetBeingDragged.componentType;
+					
+					Display.error('Dropping: ' + asset.name);
+					
+					//Exception (will return if inside)
+					if (asset.componentType=="Object Class")
+					{
+						//Step 4
+						//Create the instance XML
+						var entityXml = Logic.xml_createElementAttr('Entity','extends', asset.name );
+						
+						//Add States
+						Logic.xml_entity_addMState(entityXml, {id:"id", value: Std.string(0) },true); //incremental, like class, or unique for every class, or...?
+						Logic.xml_entity_addMState(entityXml, {id:"spaceX", value: Std.string(me.getState('dropX')) },true);
+						Logic.xml_entity_addMState(entityXml, {id:"spaceY", value: Std.string(me.getState('dropY')) },true);
+						
+						
+						//Step 5
+						//Create the GameObject, import it's xml data, add it to scene
+						var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+						
+						var tempEntityChildXml = Logic.xml_clone(entityXml);
+						Logic.xml_entity_addExtend(tempEntityChildXml, {ext: 'SparkEditor.entities.editors.behaviors.Sprite2DEdit'});
+						
+						var editChild = Logic.gameFactory.createGameEntityByXml(tempEntityChildXml);
+						
+						//add it as child
+						scene.addChild(editChild);
+						editChild.getAction('Import Xml').setState('importXml',entityXml);
+						editChild.forceAction('Import Xml');
+						Display.error("created and added!!!");
+						
+						//Remove this NonVisual Element from Active Space
+						Display.error("Removing Visual Element From Active Space");
+						parent.removeChild(me);
+					}
+					//Exception (will return if inside)
+					else if (asset.componentType=="Sound")
+					{
+						Display.error("It's a sound!");
+						Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id]}, "whatever dude...");
+						Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
+						Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+						
+						//Initiate Load
+						var loader = Assets.initiateBatch();
+						
+						//The Dragged Asset (Image, Text.egc, etc)
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var assetBeingDraggedId = 'sound_' + asset.name;
+						Display.error(assetBeingDraggedUrl);
+						Display.error(assetBeingDraggedId);
+						loader.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
+						
+						Logic.getEntityByName('Editor Output').setState('text',"Please Wait...!");
+						
+						//Event Listener
+						loader.successSignal.connect(function () {
+							Logic.getEntityByName('Editor Output').setState('text',"Sound Loaded!");
+							
+							//Send it to Project Collections
+							var projectCollections = Logic.getEntityByName('Editor Project Collections');
+							
+							var moduleAssetsToAdd = new StringMap();
+							moduleAssetsToAdd.set(asset.name,asset);
+							projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
+							projectCollections.startAction('ImportRequestAssetsDb');
+							
+							//Remove this NonVisual Element from Active Space
+							Display.error("Removing Visual Element From Active Space");
+							parent.removeChild(me);
+						}).once();
+						
+						//Load
+						loader.start();
+					}
+					else
+					{
+						var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+						
+						var pureXml;
+						
+						var displayTypeData;
+						
+						var gridLock;
+						
+						
+						
+						//Ok, here we go
+						var classObjectsCount = Logic.getEntityByName('Project Editor').getState('classObjectsCount') + 1;
+						
+						//let's name it
+						//var newClassName = asset.fileName + "_" + Std.random(99); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+						
+						var newClassName;
+						if (asset.componentType=="Class")
+							newClassName = asset.tags[1] + "_" + Std.string(classObjectsCount); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+						else if (asset.componentType=="Image")
+							newClassName = "Sprite_" + Std.string(classObjectsCount); //I guess check the hash, if 1 exist, go to 2, etc, until u find a gap
+						
+						Logic.getEntityByName('Project Editor').setState('classObjectsCount',classObjectsCount);
+						
+						//Update Project Tags (not nice to do it here, but... oh well
+						var projectAsset = Logic.getEntityByName('Project Editor').getState('asset');
+						var newTags = projectAsset.tags.slice(0); //clone
+						newTags[1]=Std.string(classObjectsCount); //1: objectsCount
+						
+						//update assetDb
+						Comms.request("assets.updateHandler.updateAssetEntry", {assetId:projectAsset._id, field:"tags", newValue:newTags}, "whatever...");
+						
+						//check how i add things now.. plan how i'll do it differently
+						
+						//create new xml based on library collection
+						var newXml = Xml.createDocument();
+						
+						
+						if (asset.componentType=="Class")
+						{
+							//Get Class egc file
+							var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							var entityXml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+							newXml.addChild(entityXml);
+							
+							entityXml.addChild(Logic.xml_createElement("Extends"));
+							
+							//Add States
+							Logic.xml_entity_addMState(entityXml, {id:"name", value: newClassName },true);
+						}
+						else if (asset.componentType=="Image")
+						{
+							//Create entityXml
+							var entityXml = Logic.xml_createElementAttr('Entity','extends', assetLibrary.baseClass );
+							newXml.addChild(entityXml);
+							
+							entityXml.addChild(Logic.xml_createElement("Extends"));
+							
+							//Add States
+							Logic.xml_entity_addMState(entityXml, {id:"name", value: newClassName },true);
+							Logic.xml_entity_addMState(entityXml, {id:"touchable", value: 'true' },true);
+							
+							if (assetLibrary.baseClass=="std.display.Image2D")
+							{
+								Logic.xml_entity_addMState(entityXml, {id:"2DMeshImageForm", value: 'ImageUrl' },true);
+								Logic.xml_entity_addFormState(entityXml, {id: 'ImageUrl', type: 'Text', value: 'image_' + asset.name}, true, true);
+							}
+						}
+						
+						
+						var finalString = Logic.xmlToString(newXml);
+						Display.error("newXml: " + finalString);
+						
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						me.setState('newAssetName',newClassName);
+						me.setState('newAssetSize',finalString.length);
+						
+						Comms.file_sendFileRequest(finalString, {name: newClassName+'.egc', size: finalString.length, user: connectedUserName} , "Uploader #" +me.s('uploaderUID')+" Step 1");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData("Uploader #" +me.s('uploaderUID')+" Step 1")!=null)
+					{
+						var data = Comms.file_getSendFileRequestData("Uploader #" +me.s('uploaderUID')+" Step 1");
+						
+						Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+						
+						//Logic.getEntityByName('AU_output').getState('value').setState('text','Uploading ' + data.progressPercent+'%');
+		
+						if (data.progress==1)
+						{
+							Logic.getEntityByName('Editor Output').setState('text','File Uploaded!');
+							
+							var libraryAsset = me.getState('assetBeingDragged');
+							var newAssetName = me.getState('newAssetName');
+							var newAssetSize = me.getState('newAssetSize');
+							
+							//fileName
+							var fileName = newAssetName+'.egc';
+							
+							//fileSize
+							var fileSize = newAssetSize;
+							
+							//assetTitle.. not being used currently
+							var assetTitle=newAssetName;
+							
+							//Dir
+							var dir = "entities";
+							
+							//type
+							var type = "script";
+							
+							//componentType
+							var componentType = "Object Class"; //This should be determined by Library Collection stuff!!!!
+							
+							//tags
+							//(second tag of Object Class is the asset used to display ThumbNail. added option to use lib_name for thumb too. This should be determined by Library Collection stuff!!!!
+							if (libraryAsset.componentType=="Class")
+								var tags = libraryAsset.tags[1];
+							else if (libraryAsset.componentType=="Image")
+								var tags =  libraryAsset._id;
+							else
+							{
+								var tags = ""; //Should not really go there, ever!
+								Display.error("ERROR!!!!! UNKNOWN COMPONENT TYPE: " + asset.componentType);
+							}
+							
+							
+							Comms.request("assets.uploadHandler.rawUpload", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: dir, type: type, componentType: componentType, tags: tags}, "Uploader #" +me.s('uploaderUID')+" Step 2");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("Uploader #" +me.s('uploaderUID')+" Step 2")!=null)
+					{
+						var data = Comms.getRequestData("Uploader #" +me.s('uploaderUID')+" Step 2");
+						
+						if (data.code=="success")
+						{
+							Logic.getEntityByName('Editor Output').setState('text','Asset Created: ' + data.assetName);
+							
+							//Step 3
+							//Flambe Load the egc and if it's an image, flambe load the texture (and any other dependancies it has, later)
+							
+							var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+							
+							//Initiate Load
+							var loader = Assets.initiateBatch();
+							
+							var assetReferences = [];
+							
+							var assetBeingDragged = me.getState('assetBeingDragged');
+							
+							
+							//Flambe Load Object Class egc
+							var asset = data.asset;
+							var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							loader.addFile(assetUrl, assetId);
+							me.setState('newAsset',asset);
+							
+							assetReferences.push(asset._id);
+							
+							
+							
+							//Flambe Load Image Asset
+							//maybe, don't always load the texture, if it's already loaded..
+							if (assetBeingDragged.componentType=="Image")
+							{
+								//The Dragged Asset (Image, Text.egc, etc)
+								var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + assetBeingDragged.type + '/' + assetBeingDragged.dir + '/' + assetBeingDragged.fileName + '.' + assetBeingDragged.fileExtension;
+								var assetBeingDraggedId = 'image_' + assetBeingDragged.name;
+								loader.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
+								
+								assetReferences.push(assetBeingDragged._id);
+							}
+							
+							
+							
+							
+							
+							Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: assetReferences}, "whatever dude...");
+							
+							//Hash the newly created Asset
+							//These may fit better inside the 'whatever dude' callback...
+							Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+							Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
+							Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+							Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
+							
+							if (assetBeingDragged.componentType=="Image")
+							{
+								Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(assetBeingDragged.name,assetBeingDragged);
+								Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(assetBeingDragged._id,assetBeingDragged);
+							}
+							//Display.error("**************************YOYOYOYOYO*****************");
+							
+							var oldMe = me;
+							
+							//Event Listener
+							loader.successSignal.connect(function () {
+								Logic.getEntityByName('Editor Output').setState('text',"Everything Flambe Loaded!");
+								
+								
+								//Step 4
+								//Create the instance XML
+								var entityXml = Logic.xml_createElementAttr('Entity','extends', asset.name );
+								
+								//Add States
+								Logic.xml_entity_addMState(entityXml, {id:"id", value: Std.string(0) },true); //incremental, like class, or unique for every class, or...?
+								Logic.xml_entity_addMState(entityXml, {id:"spaceX", value: Std.string(oldMe.getState('dropX')) },true);
+								Logic.xml_entity_addMState(entityXml, {id:"spaceY", value: Std.string(oldMe.getState('dropY')) },true);
+								
+								
+								//Step 5
+								//Create the GameObject, import it's xml data, add it to scene
+								var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+								
+								var tempEntityChildXml = Logic.xml_clone(entityXml);
+								Logic.xml_entity_addExtend(tempEntityChildXml, {ext: 'SparkEditor.entities.editors.behaviors.Sprite2DEdit'});
+								
+								var editChild = Logic.gameFactory.createGameEntityByXml(tempEntityChildXml);
+								
+								
+								//Do some more hashing (needs asset to be flambe loaded to work, this one...)
+								Logic.getEntityByName('Project Editor').getAction('RegisterInheritance').setState('asset',asset);
+								Logic.getEntityByName('Project Editor').startAction('RegisterInheritance');
+								
+								
+								//Send them to Project Collections
+								var projectCollections = Logic.getEntityByName('Editor Project Collections');
+								
+								var moduleAssetsToAdd = new StringMap();
+								moduleAssetsToAdd.set(asset.name,asset); //Object Class
+								
+								//Maybe don't add the image if already exists
+								if (assetBeingDragged.componentType=="Image")
+									moduleAssetsToAdd.set(assetBeingDragged.name,assetBeingDragged); //The Image Asset
+									
+								projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
+								projectCollections.startAction('ImportRequestAssetsDb');
+								
+								//add it as child
+								scene.addChild(editChild);
+								editChild.getAction('Import Xml').setState('importXml',entityXml);
+								editChild.forceAction('Import Xml');
+								Display.error("created and added!!!");
+								
+								//Remove this NonVisual Element from Active Space
+								Display.error("Removing Visual Element From Active Space");
+								parent.removeChild(me);
+							}).once();
+							
+							//Load
+							loader.start();
+							
+						}
+						else if (data.code=="dMissing")
+						{
+							Logic.getEntityByName('Editor Output').setState('text','Missing: ' + data.dependancyName);
+						}
+						else if (data.code=="exists")
+						{
+							Logic.getEntityByName('Editor Output').setState('text','Already exists: ' + data.assetName);
+						}
+						else
+						{
+							Logic.getEntityByName('Editor Output').setState('text','Error Creating Asset.');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

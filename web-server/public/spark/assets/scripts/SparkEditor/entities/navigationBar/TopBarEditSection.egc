@@ -97,22 +97,22 @@
 					behaviorName="ClickerLogic";
 					
 					//Initiate Load
-					Assets.initiateBatch();
+					var loader = Assets.initiateBatch();
 					
 					var assetId = 'lib/behaviors/'+behaviorName+'.egc';
 					var assetUrl = '/assets/spark/script/lib/behaviors/'+behaviorName+'.egc';
 					
 					//Add file to Flambe Loader
-					Assets.addFile(assetUrl, assetId);
+					loader.addFile(assetUrl, assetId);
 					
 					//Event Listener
-					Assets.successSignal.connect(function () {
+					loader.successSignal.connect(function () {
 						Logic.getEntityByName('Editor Output').setState('text','Behavior '+behaviorName+' Refreshed!');
 					}).once();
 					
 					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
 					//Load
-					Assets.loadBatch();
+					loader.start();
 					
 				</Script></_Scripts></_Action></_Actions></Entity>
 			</Entities>

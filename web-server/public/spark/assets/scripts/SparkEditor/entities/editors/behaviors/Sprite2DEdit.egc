@@ -330,7 +330,7 @@
 								//Ok here's the thing.. If I were to override flambe Asset system a bit I could directly update the Class File (you change the asset._content String)
 								//But i don't wanna do that just yet.. so I'll do the dump thing and RELOAD the asset back from the server...
 								//Initiate Load
-								Assets.initiateBatch();
+								var loader = Assets.initiateBatch();
 								
 								var asset = me.getState('ClassAsset');
 								var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
@@ -339,12 +339,12 @@
 								
 								
 								//Add file to Flambe Loader
-								Assets.addFile(assetUrl, assetId);
+								loader.addFile(assetUrl, assetId);
 								
 								var oldMe = me;
 								
 								//Event Listener
-								Assets.successSignal.connect(function () {
+								loader.successSignal.connect(function () {
 									oldMe.setState('tempUploading',false);
 									Logic.getEntityByName('Editor Output').setState('text','All done!');
 									
@@ -355,7 +355,7 @@
 								}).once();
 								
 								//Load
-								Assets.loadBatch();
+								loader.start();
 							}
 							else
 							{

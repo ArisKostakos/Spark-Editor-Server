@@ -323,7 +323,7 @@
 							//var userName = me.getState('assetUserName');
 							
 							//Initiate Load
-							Assets.initiateBatch();
+							var loader = Assets.initiateBatch();
 
 							var i = 0;
 							while (data.assets.length>i)
@@ -398,7 +398,7 @@
 								Display.error('asset.name: ' + asset.name);
 								
 								//Add file to Flambe Loader
-								Assets.addFile(assetUrl, assetId);
+								loader.addFile(assetUrl, assetId);
 								
 								
 								Display.error(data.assets[i].name);
@@ -413,7 +413,7 @@
 							
 							
 							//Event Listener
-							Assets.successSignal.connect(function () {
+							loader.successSignal.connect(function () {
 								//Normaly, I create the scene and eventsheet here
 								//but because I temp flambe load behjaviors etc later on for now(although they should have
 								//been included in the projet's main module, but they didn't so i flamb load them at the include query..
@@ -432,7 +432,7 @@
 							}).once();
 							
 							//Load
-							Assets.loadBatch();
+							loader.start();
 						}
 						else
 						{
@@ -455,7 +455,7 @@
 							//var userName = me.getState('assetUserName');
 							
 							//Initiate Load
-							Assets.initiateBatch();
+							var loader = Assets.initiateBatch();
 
 							var i = 0;
 							while (data.assets.length>i)
@@ -511,7 +511,7 @@
 								Display.error('asset.name: ' + asset.name);
 								
 								//Add file to Flambe Loader
-								Assets.addFile(assetUrl, assetId);
+								loader.addFile(assetUrl, assetId);
 								
 								
 								Display.error(data.assets[i].name);
@@ -527,7 +527,7 @@
 							var oldMe = me;
 							
 							//Event Listener
-							Assets.successSignal.connect(function () {
+							loader.successSignal.connect(function () {
 							
 								//load them here for now...
 								//Start up Scene Editor
@@ -548,7 +548,7 @@
 							if (data.assets.length>0)
 							{
 								//Load
-								Assets.loadBatch();
+								loader.start();
 							}
 							else
 							{
