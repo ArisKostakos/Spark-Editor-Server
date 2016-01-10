@@ -821,17 +821,37 @@
 						var statesNode = Logic.xml_getElement(asset_xml, "_States");
 						Logic.xml_entity_removeAllNodes(statesNode,"_State");
 						
+						var objectRenamed = null;
+						
 						//Add new _States
 						for (item of cb_Arg1)
 						{
 							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
 							Logic.xml_entity_addMState(asset_xml, item, true);
 							
+							//Check for rename
+							if (item.id=="name")
+								if (item.value!=me.s('name'))
+									objectRenamed=item.value;
+							
 							//Change "Dynamic" MStates on the spot!
 							if (item.id=="text" || item.id=="font" || item.id=="align" || item.id=="wrapWidth" || item.id=="letterSpacing" || item.id=="lineSpacing")
 								me.setState(item.id,item.value);
 						}
 						
+						
+						//So.. over here we check if name has changed, cause this needs us to do a lot of stuff.. (renaming an object)
+						if (objectRenamed!=null)
+						{
+							//Find Class Object Project Item
+							for (projectChild of e('Editor Project Collections').s('collectionPanelsByNameHash').get('Objects').s('containerPanel').getChildren())
+								if (projectChild.s('asset')==asset)
+								{
+									projectChild.getAction('Rename').setState('newName',objectRenamed);
+									projectChild.forceAction('Rename');
+									break;
+								}
+						}
 						
 						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
 						

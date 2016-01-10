@@ -106,6 +106,31 @@
 				</Script>
 			</Scripts>
 		</Action>
+				
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Sheet
+					var eventCollection = me.getState('target');
+					
+					//For eventCollection's Children
+					for (eventChild of eventCollection.getState('eventsContainer').getChildren())
+					{
+						eventChild.getAction('Update').setState('renameObjectClass',it.getState('renameObjectClass'));
+						eventChild.forceAction('Update');
+					}
+					
+					Display.error("SUCCESS UPDATING EVENT SHEETS");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>renameObjectClass</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 		
 		<Action>
 			<Id>Run</Id>

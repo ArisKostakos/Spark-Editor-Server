@@ -3,7 +3,7 @@
 	<_States>
 		<_State id="name"><Value>Project Editor</Value></_State>
 		<State><Id>ClassObjectsDBbyNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
-		<State><Id>ClassObjectsDBbyFilenameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ClassObjectsDBbyTitleHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>ModuleAssetsDBbyAssetIdHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>ModuleAssetsDBbyNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 	
@@ -26,7 +26,7 @@
 			<_Scripts>
 				<Script>
 					me.setState('ClassObjectsDBbyNameHash',new StringMap());
-					me.setState('ClassObjectsDBbyFilenameHash',new StringMap());
+					me.setState('ClassObjectsDBbyTitleHash',new StringMap());
 					me.setState('ModuleAssetsDBbyAssetIdHash',new StringMap());
 					me.setState('ModuleAssetsDBbyNameHash',new StringMap());
 					
@@ -353,7 +353,7 @@
 										}
 										
 										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
-										me.getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
 									}
 									else if (asset.componentType=="EventSheet")
 									{
@@ -366,13 +366,13 @@
 									else if (asset.componentType=="Object Class")
 									{
 										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
-										me.getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
 									}
 									else if (asset.componentType=="Project")
 									{
 										//Let's see what happens if we store the Project as well
 										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
-										me.getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
 										
 										//Store the asset (maybe should be done earlier..)
 										me.setState('asset',asset);

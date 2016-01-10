@@ -7,6 +7,7 @@
 		<_State id="height"><Value>100%</Value></_State>
 		<State><Id>selectedCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>collectionsHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>collectionPanelsByNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -36,12 +37,17 @@
 						//Register In hash
 						hash.set(_button,_panel);
 						
+						//Register in name hash
+						me.s('collectionPanelsByNameHash').set(title,_panel);
+						
+						
 						Display.error("projectCollection.title: " + title);
 						
 						return {button:_button, panel:_panel};
 					}
 					
 					var projectCollectionsHash = new ObjectMap();
+					me.setState('collectionPanelsByNameHash',new StringMap());
 					
 					//Create Collections
 					var collectionFirst = createCollection("Objects", "libcat_image", "Object Class", "rgb(65,80,97)", "rgb(59,185,176)", 64, 64, projectCollectionsHash);

@@ -125,16 +125,20 @@
 					me.stopAction('Display Item');
 					
 					var gameEntity = it.getState("gameEntity");
-					me.setState("displayedEntity",gameEntity);
 					
-					Logic.getEntityByName('NameLabel').setState('text',gameEntity.getState('name'));
-					
-					Logic.getEntityByName('PosXLabel').getState('value').setState('text',gameEntity.getState('spaceX'));
-					Logic.getEntityByName('PosYLabel').getState('value').setState('text',gameEntity.getState('spaceY'));
-					Logic.getEntityByName('ScaleXLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
-					Logic.getEntityByName('ScaleYLabel').getState('value').setState('text',gameEntity.getState('scaleY'));
-					Logic.getEntityByName('RotationLabel').getState('value').setState('text',gameEntity.getState('rotation'));
-					//Logic.getEntityByName('zOrderLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
+					if (gameEntity!=null)
+					{
+						me.setState("displayedEntity",gameEntity);
+						
+						Logic.getEntityByName('NameLabel').setState('text',gameEntity.getState('name'));
+						
+						Logic.getEntityByName('PosXLabel').getState('value').setState('text',gameEntity.getState('spaceX'));
+						Logic.getEntityByName('PosYLabel').getState('value').setState('text',gameEntity.getState('spaceY'));
+						Logic.getEntityByName('ScaleXLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
+						Logic.getEntityByName('ScaleYLabel').getState('value').setState('text',gameEntity.getState('scaleY'));
+						Logic.getEntityByName('RotationLabel').getState('value').setState('text',gameEntity.getState('rotation'));
+						//Logic.getEntityByName('zOrderLabel').getState('value').setState('text',gameEntity.getState('scaleX'));
+					}
 				</Script>
 			</Scripts>
 			<States>

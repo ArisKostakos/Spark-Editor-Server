@@ -216,7 +216,7 @@
 							//fileSize
 							var fileSize = newAssetSize;
 							
-							//assetTitle.. not being used currently
+							//assetTitle.. not being used currently. jan-16 now, kinda does
 							var assetTitle=newAssetName;
 							
 							//Dir
@@ -308,7 +308,7 @@
 							Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
 							Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
 							Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
-							Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyFilenameHash').set(asset.fileName,asset);
+							Logic.getEntityByName('Project Editor').getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
 							
 							if (assetBeingDragged.componentType=="Image")
 							{

@@ -68,7 +68,7 @@
 							}
 						}
 					
-						newItem.setState('caption',asset.fileName);
+						newItem.setState('caption',asset.title);
 						newItem.setState('skinType','imageAndText');
 						newItem.setState('imageName',thumbUrl);
 							

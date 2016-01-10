@@ -58,8 +58,9 @@
 							var tags = me.getState('tags');
 							
 							
-							////Until we have a component loader window, assetName is always fileName
-							var assetTitle = me.getState('name');  //this is actually itemTitle, when i receive it..
+							////Until we have a component loader window, assetName is always fileName, and no ext
+							var justfileNameMoExt = fileName.substring(0,fileName.lastIndexOf("."));
+							var assetTitle = justfileNameMoExt;  //this is actually itemTitle, when i receive it..
 							//Display.error("Creating:::: fileName: " + fileName + ", fileSize: " + fileSize);
 							
 							Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: assetType, componentType: componentType, tags: tags}, me.getState('name'));

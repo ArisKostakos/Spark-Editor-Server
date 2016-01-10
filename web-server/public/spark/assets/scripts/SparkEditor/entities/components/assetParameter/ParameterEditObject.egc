@@ -102,11 +102,11 @@
 									{
 										//me.getAction('Set New Target').setState('asset',cb_Arg1);
 										//me.startAction('Set New Target');
-										Display.error("Selected a dude: " + cb_Arg1.fileName);
+										Display.error("Selected a dude: " + cb_Arg1.title);
 										
-										me.getState('btnTextObj').setState('text',cb_Arg1.fileName);
+										me.getState('btnTextObj').setState('text',cb_Arg1.title);
 										
-										parent.getState('parObj').object=cb_Arg1.fileName;
+										parent.getState('parObj').object=cb_Arg1.title;
 									}
 									else
 									{

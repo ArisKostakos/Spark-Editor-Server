@@ -201,7 +201,7 @@
 					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyDown" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted" || triggerEvent=="ProjectPaused" || triggerEvent=="ProjectResumed") //hack to set no target for keyboard
 						triggerTarget="TargetNone";
 					else
-						triggerTarget= conditionTarget_asset.fileName;
+						triggerTarget= conditionTarget_asset.title;
 					
 					//Set Up Trigger Parameter
 					var triggerParameter=null;
@@ -237,6 +237,35 @@
 			</Scripts>
 		</Action>
 	
+		<!-- Update -->
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Update Children Conditions
+					for (conditionChild of eventChild.getState('conditionsContainer').getChildren())
+					{
+						conditionChild.getAction('Update').setState('renameObjectClass',it.getState('renameObjectClass'));
+						conditionChild.forceAction('Update');
+					}
+					
+					//Update Children Events
+					for (actionChild of eventChild.getState('actionsContainer').getChildren())
+					{
+						actionChild.getAction('Update').setState('renameObjectClass',it.getState('renameObjectClass'));
+						actionChild.forceAction('Update');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>renameObjectClass</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		
 		<!-- Create New Instance -->
 		<Action>
 			<Id>Create New Instance</Id>
