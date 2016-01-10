@@ -143,6 +143,8 @@ handler.updateAssetEntry = function(msg, session, next) {
             //Reflect this??
             if (msg.field=="tags")
                 asset_found.tags=msg.newValue;
+            else if (msg.field=="title")
+                asset_found.title=msg.newValue;
 
             asset_found.markModified(msg.field);
             asset_found.save(function (err) {
