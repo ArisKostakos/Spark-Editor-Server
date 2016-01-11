@@ -355,8 +355,57 @@ function createAsset(dependancies, msg, session, cb)
     fs.ensureDirSync(userPath + '/' + type + '/' + finalDir);
     var assetTarget = userPath + '/' + type + '/' + finalDir + '/' + fileName;
 
+    //Ensure the Asset name doesn't exist, and rename otherwise
+    findNewNameForConflict(developer._id, type, assetName, 1,
+        function (err, feedback) {
+            //Handle Error
+            if (err) {
+                cb(err, {code: "error"});
+                return;
+            }
+
+            //Do renames
+            assetTarget+=feedback.conflictSufix;
+            assetName+=feedback.conflictSufix;
+            rawName+=feedback.conflictSufix;
+            assetTitle+=feedback.conflictSufix;
+
+            //Move Asset File
+            fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
+                if (err) {
+                    cb(err, {code: "error"});
+                    return;
+                }
+
+                var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetTitle, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
+
+                //Create Asset
+                database.create(database.Asset, raw_Asset,
+                    function (err, objCreated_Asset) {
+                        //Handle Error
+                        if (err) {
+                            cb(err, {code: "error"});
+                            return;
+                        }
+
+                        //Send Success Signal
+                        cb(null, {code: "success", asset:objCreated_Asset});
+                    });
+                }
+            );
+        }
+    );
+}
+
+function findSufixOnConflict(developerId, type, assetName, idSufix, cb)
+{
+    var newSufix = "";
+
+    if (idSufix>1)
+        newSufix = "_" + idSufix.toString();
+
     //Already exists?
-    database.findOne(database.Asset, {owner: developer._id, type: type, name: assetName},
+    database.findOne(database.Asset, {owner: developer._id, type: type, name: assetName+newSufix},
         function (err, object_found) {
             //Handle Error
             if (err) {
@@ -365,41 +414,17 @@ function createAsset(dependancies, msg, session, cb)
             }
 
             //Handle Success
-            if (object_found)
-            {
-                //If already exists, exit
-                cb("exists", {code: "exists", assetName: object_found.name});
+            if (object_found) {
+                //If already exists, try again
+                findNewNameForConflict(developerId, type, assetName, idSufix+1, cb);
             }
-            else
-            {
-                //Move Asset File
-                fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
-                        if (err) {
-                            cb(err, {code: "error"});
-                            return;
-                        }
-
-                    var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetTitle, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
-
-                    //Create Asset
-                    database.create(database.Asset, raw_Asset,
-                        function (err, objCreated_Asset) {
-                            //Handle Error
-                            if (err) {
-                                cb(err, {code: "error"});
-                                return;
-                            }
-
-                            //Send Success Signal
-                            cb(null, {code: "success", asset:objCreated_Asset});
-                        });
-                    }
-                );
+            else {
+                //Does not exist, quit successfully
+                cb(null,{code: "success", conflictSufix: newSufix});
             }
         }
     );
 }
-
 
 function createThumbnail(srcImageUrl, targetUrl, size, cb)
 {

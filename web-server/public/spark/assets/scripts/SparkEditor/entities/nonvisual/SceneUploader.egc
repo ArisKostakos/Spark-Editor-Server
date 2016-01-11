@@ -286,15 +286,18 @@
 							
 							
 							//Flambe Load Image Asset
-							//maybe, don't always load the texture, if it's already loaded..
 							if (assetBeingDragged.componentType=="Image")
 							{
-								//The Dragged Asset (Image, Text.egc, etc)
-								var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + assetBeingDragged.type + '/' + assetBeingDragged.dir + '/' + assetBeingDragged.fileName + '.' + assetBeingDragged.fileExtension;
-								var assetBeingDraggedId = 'image_' + assetBeingDragged.name;
-								loader.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
-								
-								assetReferences.push(assetBeingDragged._id);
+								//don't load the texture, if it's already loaded..
+								if (Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name)==false)
+								{
+									//The Dragged Asset (Image, Text.egc, etc)
+									var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + assetBeingDragged.type + '/' + assetBeingDragged.dir + '/' + assetBeingDragged.fileName + '.' + assetBeingDragged.fileExtension;
+									var assetBeingDraggedId = 'image_' + assetBeingDragged.name;
+									loader.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
+									
+									assetReferences.push(assetBeingDragged._id);
+								}
 							}
 							
 							
@@ -312,8 +315,12 @@
 							
 							if (assetBeingDragged.componentType=="Image")
 							{
-								Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(assetBeingDragged.name,assetBeingDragged);
-								Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(assetBeingDragged._id,assetBeingDragged);
+								//don't hash the texture, if it's already loaded..
+								if (Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name)==false)
+								{
+									Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(assetBeingDragged.name,assetBeingDragged);
+									Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(assetBeingDragged._id,assetBeingDragged);
+								}
 							}
 							//Display.error("**************************YOYOYOYOYO*****************");
 							
@@ -355,9 +362,15 @@
 								var moduleAssetsToAdd = new StringMap();
 								moduleAssetsToAdd.set(asset.name,asset); //Object Class
 								
-								//Maybe don't add the image if already exists
+								//Dependencies
 								if (assetBeingDragged.componentType=="Image")
-									moduleAssetsToAdd.set(assetBeingDragged.name,assetBeingDragged); //The Image Asset
+								{
+									//don't add the image if already exists
+									if (Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name)==false)
+									{
+										moduleAssetsToAdd.set(assetBeingDragged.name,assetBeingDragged); //The Image Asset
+									}
+								}
 									
 								projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
 								projectCollections.startAction('ImportRequestAssetsDb');
