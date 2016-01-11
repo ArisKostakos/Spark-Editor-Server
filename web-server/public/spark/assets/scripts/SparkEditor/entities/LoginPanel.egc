@@ -153,9 +153,6 @@
 											Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
 																								username: strUser, 
 																								password: strPass}, "Log In Request");
-																								
-											
-											Logic.getEntityByName('Spark Editor').setState('username',strUser);
 										}
 										else
 										{
@@ -232,8 +229,6 @@
 																								
 											if (eventObjectKeyPress.keyCode==10)
 												Logic.getEntityByName('Spark Editor').setState('adminMode',true);
-											
-											Logic.getEntityByName('Spark Editor').setState('username',strUser);
 										}
 										else
 										{
@@ -280,8 +275,6 @@
 									Comms.request("registration.loginHandler.login", { 	uid: projectEntity.getState('UniqueId'), 
 																						username: strUser, 
 																						password: strPass}, "Log In Request");
-																						
-									Logic.getEntityByName('Spark Editor').setState('username',strUser);
 								}
 								else
 								{
@@ -394,6 +387,8 @@
 						
 						if (data.code=="match")
 						{
+							e('Spark Editor').setState('username',data.user.name);
+						
 							ga('send', {
 							  hitType: 'event',
 							  eventCategory: 'Project',
