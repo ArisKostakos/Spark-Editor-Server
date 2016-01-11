@@ -45,6 +45,6 @@ handler.login = function(msg, session, next) {
                 });
             }
 
-            next(null, {code: code, developer:developer});
+            next(null, {code: code, developer:developer, user:user});
         });
 };
