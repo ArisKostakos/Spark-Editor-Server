@@ -87,6 +87,7 @@
 					var componentType = me.getAction('UploadFile').getState('componentType');
 					var assetType = me.getAction('UploadFile').getState('assetType');
 					var tags = me.getAction('UploadFile').getState('tags');
+					var uploadId = me.getAction('UploadFile').getState('uploadId');
 					
 					var containerPanel = me.getState('containerPanel');
 					
@@ -110,6 +111,7 @@
 					newItem.setState('componentType',componentType);
 					newItem.setState('assetType',assetType);
 					newItem.setState('tags',tags);
+					newItem.setState('uploadId',uploadId);
 					
 					newItem.setState('libraryObjectDB',me.getState('libraryObjectDB'));
 					
@@ -125,6 +127,7 @@
 				<State><Id>componentType</Id><Type>Text</Type><Value>Undefined</Value></State>
 				<State><Id>assetType</Id><Type>Text</Type><Value>Undefined</Value></State>
 				<State><Id>tags</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>uploadId</Id><Type>Text</Type><Value>Undefined</Value></State>
 			</States>
 		</Action>
 	</_Actions>

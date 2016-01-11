@@ -284,12 +284,14 @@
 							assetReferences.push(asset._id);
 							
 							
+							//This is.. ok, but what r u gonna do with multiple dependancies?
+							var ImageDependancyAlreadyExists = Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name);
 							
 							//Flambe Load Image Asset
 							if (assetBeingDragged.componentType=="Image")
 							{
 								//don't load the texture, if it's already loaded..
-								if (Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name)==false)
+								if (ImageDependancyAlreadyExists==false)
 								{
 									//The Dragged Asset (Image, Text.egc, etc)
 									var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + assetBeingDragged.type + '/' + assetBeingDragged.dir + '/' + assetBeingDragged.fileName + '.' + assetBeingDragged.fileExtension;
@@ -316,7 +318,7 @@
 							if (assetBeingDragged.componentType=="Image")
 							{
 								//don't hash the texture, if it's already loaded..
-								if (Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name)==false)
+								if (ImageDependancyAlreadyExists==false)
 								{
 									Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(assetBeingDragged.name,assetBeingDragged);
 									Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(assetBeingDragged._id,assetBeingDragged);
@@ -366,7 +368,7 @@
 								if (assetBeingDragged.componentType=="Image")
 								{
 									//don't add the image if already exists
-									if (Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').exists(assetBeingDragged.name)==false)
+									if (ImageDependancyAlreadyExists==false)
 									{
 										moduleAssetsToAdd.set(assetBeingDragged.name,assetBeingDragged); //The Image Asset
 									}

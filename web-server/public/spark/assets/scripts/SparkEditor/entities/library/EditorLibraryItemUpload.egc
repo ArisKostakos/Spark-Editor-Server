@@ -6,6 +6,7 @@
 		<State><Id>componentType</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>assetType</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>tags</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>uploadId</Id><Type>Text</Type><Value>Undefined</Value></State>
 	</_States>
 	
 	<_Form>
@@ -24,17 +25,17 @@
 			</_Entities>
 		</_Space>
 	</_Form>
-	
+		
 	<_Triggers>
 		<Trigger>
 			<Event>FileTransferRequest</Event>
 			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
-					if (Comms.file_getSendFileRequestData(me.getState('name'))!=null)
+					if (Comms.file_getSendFileRequestData(me.getState('uploadId'))!=null)
 					{
-						//Display.error("File Request Received Identified: " + me.getState('name'));
-						var data = Comms.file_getSendFileRequestData(me.getState('name'));
+						//Display.error("File Request Received Identified: " + me.getState('uploadId'));
+						var data = Comms.file_getSendFileRequestData(me.getState('uploadId'));
 						
 						Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
 						
@@ -63,7 +64,7 @@
 							var assetTitle = justfileNameMoExt;  //this is actually itemTitle, when i receive it..
 							//Display.error("Creating:::: fileName: " + fileName + ", fileSize: " + fileSize);
 							
-							Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: assetType, componentType: componentType, tags: tags}, me.getState('name'));
+							Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: assetType, componentType: componentType, tags: tags}, me.getState('uploadId'));
 						}
 					}
 				</Script>
@@ -75,10 +76,10 @@
 			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
-					if (Comms.getRequestData(me.getState('name'))!=null)
+					if (Comms.getRequestData(me.getState('uploadId'))!=null)
 					{
-						Display.error("Request Received Identified: " + me.getState('name'));
-						var data = Comms.getRequestData(me.getState('name'));
+						Display.error("Request Received Identified: " + me.getState('uploadId'));
+						var data = Comms.getRequestData(me.getState('uploadId'));
 						
 						if (data.code=="success")
 						{
@@ -147,6 +148,9 @@
 							
 							//Store asset db object
 							me.setState('asset',asset);
+							
+							//Rename me?
+							me.setState('name',"libraryAsset." + asset.title); //whatever.. never using this anyway.. jsut for fun..
 						}
 						else
 						{
