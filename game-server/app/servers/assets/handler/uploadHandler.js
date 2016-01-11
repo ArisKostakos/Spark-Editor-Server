@@ -356,7 +356,7 @@ function createAsset(dependancies, msg, session, cb)
     var assetTarget = userPath + '/' + type + '/' + finalDir + '/' + fileName;
 
     //Ensure the Asset name doesn't exist, and rename otherwise
-    findNewNameForConflict(developer._id, type, assetName, 1,
+    findSufixOnConflict(developer._id, type, assetName, 1,
         function (err, feedback) {
             //Handle Error
             if (err) {
@@ -416,7 +416,7 @@ function findSufixOnConflict(developerId, type, assetName, idSufix, cb)
             //Handle Success
             if (object_found) {
                 //If already exists, try again
-                findNewNameForConflict(developerId, type, assetName, idSufix+1, cb);
+                findSufixOnConflict(developerId, type, assetName, idSufix+1, cb);
             }
             else {
                 //Does not exist, quit successfully
