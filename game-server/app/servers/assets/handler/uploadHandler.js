@@ -365,10 +365,10 @@ function createAsset(dependancies, msg, session, cb)
             }
 
             //Do renames
-            assetTarget+=feedback.conflictSufix;
             assetName+=feedback.conflictSufix;
             rawName+=feedback.conflictSufix;
             assetTitle+=feedback.conflictSufix;
+            assetTarget = userPath + '/' + type + '/' + finalDir + '/' + rawName + '.' + rawExtension; //recreate this one..
 
             //Move Asset File
             fs.move(assetSource, assetTarget, {clobber:true}, function(err) {
