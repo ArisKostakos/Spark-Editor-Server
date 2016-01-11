@@ -405,7 +405,7 @@ function findSufixOnConflict(developerId, type, assetName, idSufix, cb)
         newSufix = "_" + idSufix.toString();
 
     //Already exists?
-    database.findOne(database.Asset, {owner: developer._id, type: type, name: assetName+newSufix},
+    database.findOne(database.Asset, {owner: developerId, type: type, name: assetName+newSufix},
         function (err, object_found) {
             //Handle Error
             if (err) {
