@@ -804,6 +804,56 @@
 			</States>
 		</Action>
 		
+		<!-- Query -->
+		<Action>
+			<Id>Query</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced			
+					var nameExists = it.getState('nameExists');
+					
+					if (nameExists!=null)
+					{
+						//Check Target Asset
+						if (me.s('target_asset').title==nameExists.query)
+							nameExists.feedback+=1;
+						
+						//Create Parameter objects again (maybe not so performance wise...)
+						me.forceAction('CreateParams');
+						var params = me.getAction('CreateParams').getState('returnParams');
+						
+						
+						//Check Parameters
+						for (param of params)
+						{
+							//Check, depending on parameter type
+							if (param.type=="Object")
+							{
+								//Check Object
+								if (nameExists.query==param.object)
+								{
+									nameExists.feedback+=1;
+								}
+							}
+							else if (param.type=="Expression")
+							{
+								//Check Expression
+								if (param.object.indexOf(nameExists.query)!=-1)
+								{
+									nameExists.feedback+=1;
+								}
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>nameExists</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		
 		<!-- Import Xml -->
 		<Action>
 			<Id>Import Xml</Id>

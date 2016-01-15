@@ -264,7 +264,34 @@
 				<State><Id>renameObjectClass</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
-				
+		
+		<!-- Query -->
+		<Action>
+			<Id>Query</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Update Children Conditions
+					for (conditionChild of eventChild.getState('conditionsContainer').getChildren())
+					{
+						conditionChild.getAction('Query').setState('nameExists',it.getState('nameExists'));
+						conditionChild.forceAction('Query');
+					}
+					
+					//Update Children Events
+					for (actionChild of eventChild.getState('actionsContainer').getChildren())
+					{
+						actionChild.getAction('Query').setState('nameExists',it.getState('nameExists'));
+						actionChild.forceAction('Query');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>nameExists</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 		
 		<!-- Create New Instance -->
 		<Action>

@@ -35,10 +35,13 @@
 					
 					//Run Callback with CANCEL
 					var cb_caller = me.getState('cb_caller');
-					var cb_action = cb_caller.getAction(me.getState('cb_actionName'));
-					cb_action.setState('cb_result',"CANCEL");
-					
-					cb_caller.forceAction(me.getState('cb_actionName'));
+					var cb_actionName = me.getState('cb_actionName');
+					if (cb_actionName!="Undefined")
+					{
+						var cb_action = cb_caller.getAction(cb_actionName);
+						cb_action.setState('cb_result',"CANCEL");
+						cb_caller.forceAction(cb_actionName);
+					}
 				</Script>
 			</Scripts>
 		</Action>

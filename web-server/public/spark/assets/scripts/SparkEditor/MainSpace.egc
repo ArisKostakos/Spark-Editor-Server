@@ -27,6 +27,7 @@
 				<Entity extends="SparkEditor.scenes.popup.PopUpLayer1"/>
 				<Entity extends="SparkEditor.scenes.popup.PopUpLayer2"/>
 				<Entity extends="SparkEditor.scenes.popup.PopUpLayer3"/>
+				<Entity extends="SparkEditor.scenes.popup.PopUpLayer4"/>
 				<Entity extends="SparkEditor.scenes.DragSurfaceScene"/>
 				<Entity extends="SparkEditor.scenes.EditorTopBarScene"/>
 				

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.scenes.popup.PopUpLayerBase">
+	<_States>
+		<_State id="name"><Value>PopUp Layer 4 Scene</Value></_State>
+		<_State id="layerViewName"><Value>PopUp Layer 4 View</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('ChangeBackgroundStyle');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>ChangeBackgroundStyle</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('backgroundObject')!=null)
+					{
+						me.stopAction('ChangeBackgroundStyle');
+						
+						var backgroundObject = me.s('backgroundObject');
+						
+						backgroundObject.setState('backgroundColor','black');
+						backgroundObject.setState('opacity','0.43');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

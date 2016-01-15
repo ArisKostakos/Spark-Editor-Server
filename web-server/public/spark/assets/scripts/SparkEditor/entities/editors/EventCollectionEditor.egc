@@ -131,6 +131,37 @@
 				<State><Id>renameObjectClass</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
+				
+		<Action>
+			<Id>Query</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Sheet
+					var eventCollection = me.getState('target');
+					
+					//Name Exists Query
+					var nameExists = it.getState('nameExists');
+					
+					//Defaults
+					if (nameExists!=null)
+						nameExists.feedback=0;
+					
+					
+					//For eventCollection's Children
+					for (eventChild of eventCollection.getState('eventsContainer').getChildren())
+					{
+						eventChild.getAction('Query').setState('nameExists',it.getState('nameExists'));
+						eventChild.forceAction('Query');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>nameExists</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 		
 		<Action>
 			<Id>Run</Id>

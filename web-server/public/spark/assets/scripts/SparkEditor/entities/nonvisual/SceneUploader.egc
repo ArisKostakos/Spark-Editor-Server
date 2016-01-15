@@ -27,7 +27,6 @@
 					
 					Display.error('Dropping: ' + asset.name);
 					
-					//Exception (will return if inside)
 					if (asset.componentType=="Object Class")
 					{
 						//Step 4
@@ -59,46 +58,54 @@
 						Display.error("Removing Visual Element From Active Space");
 						parent.removeChild(me);
 					}
-					//Exception (will return if inside)
 					else if (asset.componentType=="Sound")
 					{
 						Display.error("It's a sound!");
-						Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id]}, "whatever dude...");
-						Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
-						Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
 						
-						//Initiate Load
-						var loader = Assets.initiateBatch();
-						
-						//The Dragged Asset (Image, Text.egc, etc)
-						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
-						var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
-						var assetBeingDraggedId = 'sound_' + asset.name;
-						Display.error(assetBeingDraggedUrl);
-						Display.error(assetBeingDraggedId);
-						loader.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
-						
-						Logic.getEntityByName('Editor Output').setState('text',"Please Wait...!");
-						
-						//Event Listener
-						loader.successSignal.connect(function () {
-							Logic.getEntityByName('Editor Output').setState('text',"Sound Loaded!");
+						//If sound is already loaded on main module, don't do anything
+						if (e('Project Editor').s('ModuleAssetsDBbyAssetIdHash').exists(asset._id)==false)
+						{
+							Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [asset._id]}, "whatever dude...");
+							Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
+							Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
 							
-							//Send it to Project Collections
-							var projectCollections = Logic.getEntityByName('Editor Project Collections');
+							//Initiate Load
+							var loader = Assets.initiateBatch();
 							
-							var moduleAssetsToAdd = new StringMap();
-							moduleAssetsToAdd.set(asset.name,asset);
-							projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
-							projectCollections.startAction('ImportRequestAssetsDb');
+							//The Dragged Asset (Image, Text.egc, etc)
+							var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+							var assetBeingDraggedUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							var assetBeingDraggedId = 'sound_' + asset.name;
+							Display.error(assetBeingDraggedUrl);
+							Display.error(assetBeingDraggedId);
+							loader.addFile(assetBeingDraggedUrl, assetBeingDraggedId);
 							
-							//Remove this NonVisual Element from Active Space
-							Display.error("Removing Visual Element From Active Space");
-							parent.removeChild(me);
-						}).once();
-						
-						//Load
-						loader.start();
+							Logic.getEntityByName('Editor Output').setState('text',"Please Wait...!");
+							
+							//Event Listener
+							loader.successSignal.connect(function () {
+								Logic.getEntityByName('Editor Output').setState('text',"Sound Loaded!");
+								
+								//Send it to Project Collections
+								var projectCollections = Logic.getEntityByName('Editor Project Collections');
+								
+								var moduleAssetsToAdd = new StringMap();
+								moduleAssetsToAdd.set(asset.name,asset);
+								projectCollections.getAction('ImportRequestAssetsDb').setState('assets', moduleAssetsToAdd);
+								projectCollections.startAction('ImportRequestAssetsDb');
+								
+								//Remove this NonVisual Element from Active Space
+								Display.error("Removing Visual Element From Active Space");
+								parent.removeChild(me);
+							}).once();
+							
+							//Load
+							loader.start();
+						}
+						else
+						{
+							Logic.getEntityByName('Editor Output').setState('text',"Sound is already in project.");
+						}
 					}
 					else
 					{

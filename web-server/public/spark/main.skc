@@ -164,6 +164,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer1.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer2.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer3.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/popup/PopUpLayer4.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/SceneTester.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorLeftScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/scenes/EditorRightScene.egc</Asset>
@@ -179,6 +180,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer1View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer2View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer3View.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/PopUpLayer4View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/DashboardView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/ProgrammerEditorView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/views/NavigationBarView.egc</Asset>
@@ -253,6 +255,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/MStatesPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUp.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/EventSheetContextMenuPopUpNoArrow.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/popups/items/InfoPopUp.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditBase.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/components/assetParameter/ParameterEditKeyboard.egc</Asset>
@@ -383,6 +386,9 @@
 			<Asset type="image" subtype="2D" location="local" id="thumb_Camera" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Text" bytes='35672' forceLoadAsData='true'>editor/thumbs/Text.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Sound" bytes='35672' forceLoadAsData='true'>editor/thumbs/Sound.png</Asset>
+			
+			<!-- Misc -->
+			<Asset type="image" subtype="2D" location="local" id="misc_exclamation" bytes='35672' forceLoadAsData='true'>editor/misc/exclamation.png</Asset>
 		</Module>
 	</Assets>
 	

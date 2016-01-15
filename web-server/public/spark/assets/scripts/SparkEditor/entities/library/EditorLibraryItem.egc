@@ -112,26 +112,29 @@
 										return node;
 									}
 									
-									var mainList = {};
-									mainList.children = [];
-									
-									createContextNode("Paste (alpha)","PasteImage",mainList);
-									createContextNode("Remove (alpha)","Remove",mainList);
-									
-									var mousePosX = Input.pointer.currentX;
-									var mousePosY = Input.pointer.currentY;
-									
-									
-									//Open Popup [CHOOSE AC]
-									var popUpManager = Logic.getEntityByName('PopUp Manager');
-									var popUpAction = popUpManager.getAction('Open PopUp');
-									popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
-									popUpAction.setState('popupPosX',mousePosX);
-									popUpAction.setState('popupPosY',mousePosY);
-									popUpAction.setState('argA',mainList);
-									popUpAction.setState('cb_caller',me);
-									popUpAction.setState('cb_actionName','Callback: LibraryItem Context Menu');
-									popUpManager.forceAction('Open PopUp');
+									if (parent.s('asset').componentType!="Class")
+									{
+										var mainList = {};
+										mainList.children = [];
+										
+										//createContextNode("Paste (alpha)","PasteImage",mainList); //disabled.. enable it if U need it..
+										createContextNode("Remove","Remove",mainList);
+										
+										var mousePosX = Input.pointer.currentX;
+										var mousePosY = Input.pointer.currentY;
+										
+										
+										//Open Popup [CHOOSE AC]
+										var popUpManager = Logic.getEntityByName('PopUp Manager');
+										var popUpAction = popUpManager.getAction('Open PopUp');
+										popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+										popUpAction.setState('popupPosX',mousePosX);
+										popUpAction.setState('popupPosY',mousePosY);
+										popUpAction.setState('argA',mainList);
+										popUpAction.setState('cb_caller',me);
+										popUpAction.setState('cb_actionName','Callback: LibraryItem Context Menu');
+										popUpManager.forceAction('Open PopUp');
+									}
 								</Script>
 							</Scripts>
 						</Trigger>
@@ -154,6 +157,8 @@
 												Display.error('Remove Asset success!');
 												Logic.getEntityByName('Editor Output').setState('text','Asset Removed Successfully!');
 												parent.parentEntity.removeChild(parent);
+												
+												Display.invalidateLayout();
 											}
 											else
 											{
@@ -173,7 +178,7 @@
 							<Id>Callback: LibraryItem Context Menu</Id>
 							<Concurrency>Persistent</Concurrency>
 							<Scripts>
-								<Script>
+								<Script><![CDATA[
 									//forced
 									
 									var cb_result = it.getState('cb_result');
@@ -189,18 +194,35 @@
 											var asset = parent.getState('asset');
 											var developerAsset = Logic.getEntityByName('Spark Editor').getState('developerAsset');
 											
-											//Display.error("This asset is Owner: " + asset.owner);
-											//Display.error("Found Developer with Id: " + developerAsset._id);
-											
-											if (asset.owner==developerAsset._id)
+											//Check that we are not using this asset in our project
+											if (e('Project Editor').s('ModuleAssetsDBbyAssetIdHash').exists(asset._id)==false)
 											{
-												me.setState('tempDeleting',true);
-												Comms.request("assets.uploadHandler.deleteAsset", {assetName: asset.name}, "deleteAssetLibrary");
+												//Display.error("This asset is Owner: " + asset.owner);
+												//Display.error("Found Developer with Id: " + developerAsset._id);
+												
+												//Check if we own this asset
+												if (asset.owner==developerAsset._id)
+												{
+													me.setState('tempDeleting',true);
+													Comms.request("assets.uploadHandler.deleteAsset", {assetName: asset.name}, "deleteAssetLibrary");
+												}
+												else
+												{
+													Display.error("Cannot Remove Library Item of different User");
+													Logic.getEntityByName('Editor Output').setState('text','Failed to remove Item (no access)');
+												}
 											}
 											else
 											{
-												Display.error("Cannot Remove Library Item of different User");
-												Logic.getEntityByName('Editor Output').setState('text','Failed to remove Item (no access)');
+												//Open Info Popup
+												var popUpManager = e('PopUp Manager');
+												var popUpAction = popUpManager.getAction('Open PopUp');
+												popUpAction.setState('popupName',"SparkEditor.entities.popups.items.InfoPopUp");
+												popUpAction.setState('argA',"This asset is currently being used in your project!<br/>Remove it and try again!");
+												popUpAction.setState('argB',"Ooops!");
+												popUpAction.setState('cb_caller',me);
+												popUpAction.setState('cb_actionName','Undefined'); //No Callback
+												popUpManager.forceAction('Open PopUp');
 											}
 										}
 										else if (cb_Arg1.type=="PasteImage")
@@ -262,7 +284,7 @@
 									{
 										Display.error("Callback: Select AC: CANCEL");
 									}
-								</Script>
+								]]></Script>
 							</Scripts>
 							<States>
 								<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>

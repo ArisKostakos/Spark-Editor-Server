@@ -76,8 +76,9 @@
 						newItem.setState('height',Std.string(me.getState('tileHeight')));
 						newItem.setState('asset',asset);
 						//newItem.setState('projectObjectDB',me.getState('projectObjectDB'));
-						//newItem.setState('name',asset.name);
 						
+						newItem.setState('name',asset._id); //So yeah, this is a thing now..
+						Logic.registerEntityByName(newItem); //register
 						
 						containerPanel.addChild(newItem);
 					}

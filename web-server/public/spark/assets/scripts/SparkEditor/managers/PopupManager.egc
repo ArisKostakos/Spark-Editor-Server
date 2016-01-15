@@ -20,6 +20,7 @@
 					popUp.addToState('left',it.getState('popupPosX'));
 					popUp.addToState('top',it.getState('popupPosY'));
 					popUp.setState('argA',it.getState('argA'));
+					popUp.setState('argB',it.getState('argB'));
 					popUp.setState('cb_caller',it.getState('cb_caller'));
 					popUp.setState('cb_actionName',it.getState('cb_actionName'));
 					
@@ -42,6 +43,7 @@
 				<State><Id>popupPosX</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>popupPosY</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>argA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>argB</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>cb_caller</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>cb_actionName</Id><Type>Text</Type><Value>Undefined</Value></State>
 			</_States>

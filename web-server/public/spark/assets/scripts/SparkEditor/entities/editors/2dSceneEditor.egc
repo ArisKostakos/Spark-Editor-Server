@@ -196,6 +196,38 @@
 		</Action>
 		
 		<Action>
+			<Id>Query</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Scene
+					var scene = me.getState('target');
+					
+					//Name Exists Query
+					var nameExists = it.getState('nameExists');
+					
+					//Defaults
+					if (nameExists!=null)
+						nameExists.feedback=0;
+					
+					//For Scene's Children
+					//This will fail if children have children on their own.. would need to do deep search
+					for (sceneChild of scene.getChildren())
+					{
+						if (nameExists!=null)
+							if (sceneChild.s('name')==nameExists.query)
+								nameExists.feedback+=1;
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>nameExists</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
 			<Id>ImportAsset</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
