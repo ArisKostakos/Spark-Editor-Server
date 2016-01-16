@@ -19,7 +19,7 @@ var handler = Handler.prototype;
  *
  */
 handler.sendMessage = function(msg, session, next) {
-	var rid = session.get('rid');
+	var rid = session.get('uid');
 	//var username = session.uid.split('*')[0];
 	var channelService = this.app.get('channelService');
 	var user = session.get('user');
