@@ -39,25 +39,43 @@ handler.listUserProjects = function(msg, session, next) {
 handler.deleteProject = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
-   // var user = session.get('user');
-   // var developer = session.get('developer');
+    var user = session.get('user');
+    var developer = session.get('developer');
 
-  //This allows anyone to delete anyone's projects.. hmmmmm
 
     //Find Projects
-    database.findOne(database.Project, {_id: msg.projectId},
-        function (err, object_found) {
+    database.findOne(database.Project, {_id: msg.projectId, owner: developer._id},
+        function (err, project_found) {
             //Handle Error
             if (err) {
                 next(null, {code: "error"});
                 return console.error(err);
             }
 
-            //Remove it
-            object_found.remove();
+            var projectName = project_found.name;
 
-            //Handle Success
-            next(null, {code: "success"});
+            //Remove it
+            project_found.remove();
+
+            //Find Project Assets
+            database.find(database.Asset, {owner: developer._id, 'tags.0': projectName},
+                function (err, assets_found) {
+                    //Handle Error
+                    if (err) {
+                        next(null, {code: "error"});
+                        return console.error(err);
+                    }
+
+                    //Remove them
+                    for (var i=0; i<assets_found.length; i++)
+                        assets_found[i].remove();
+
+                    //Should also remove modules, actual files, etc, etc...
+
+                    //Handle Success
+                    next(null, {code: "success"});
+                }
+            );
         }
     );
 };
