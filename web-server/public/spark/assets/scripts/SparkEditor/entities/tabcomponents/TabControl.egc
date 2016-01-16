@@ -43,6 +43,33 @@
 							Logic.getEntityByName('ViewportTabEventHeader').startAction('Selected'); //quick fix
 						}
 					}
+					else if (me.getState('name')=='Bottom Tab')
+					{
+						//var view = Logic.getEntityByName('Editor Bottom View');
+						var bottomStageArea = Logic.getEntityByName('Bottom');
+						var expanded = me.s('expanded');
+						
+						if (windowName=="Chat")
+						{
+							Display.error('Toggle Chat');
+							Display.error('stageArea: ' + bottomStageArea.s('name'));
+							if (expanded)
+							{
+								bottomStageArea.setState('height','20');
+								me.setState('expanded',false);
+							}
+							else
+							{
+								bottomStageArea.setState('height','210');
+								me.setState('expanded',true);
+							}
+							
+							/*
+							Logic.getEntityByName('ViewportTabSceneHeader').startAction('Selected'); //quick fix
+							Logic.getEntityByName('ViewportTabEventHeader').startAction('Unselected'); //quick fix
+							*/
+						}
+					}
 					
 					//Crappy Window Selection
 					if (activeWindow!=null)
@@ -67,7 +94,7 @@
 					
 					me.setState('activeWindow',l_window);
 					
-					Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					Display.invalidateLayout();
 					
 					Display.error("Select Window Finished");
 				</Script>

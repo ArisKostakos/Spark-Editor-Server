@@ -18,13 +18,15 @@ var handler = Handler.prototype;
  * @param  {Function} next next stemp callback
  *
  */
-handler.send = function(msg, session, next) {
+handler.sendMessage = function(msg, session, next) {
 	var rid = session.get('rid');
-	var username = session.uid.split('*')[0];
+	//var username = session.uid.split('*')[0];
 	var channelService = this.app.get('channelService');
+	var user = session.get('user');
+
 	var param = {
 		msg: msg.content,
-		from: username,
+		from: user.name,
 		target: msg.target
 	};
 	channel = channelService.getChannel(rid, false);
@@ -33,6 +35,10 @@ handler.send = function(msg, session, next) {
 	if(msg.target == '*') {
 		channel.pushMessage('onChat', param);
 	}
+
+	console.warn('Done sending message: ' + msg.content);
+	console.warn('From: ' + user.name);
+	/*
 	//the target is specific user
 	else {
 		var tuid = msg.target + '*' + rid;
@@ -42,6 +48,7 @@ handler.send = function(msg, session, next) {
 			sid: tsid
 		}]);
 	}
+	*/
 	next(null, {
 		route: msg.route
 	});

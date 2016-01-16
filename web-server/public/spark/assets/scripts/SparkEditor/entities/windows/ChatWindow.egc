@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.TabWindow">
+	<_States>
+		<_State id="name"><Value>Chat Window</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				
+					<Form><Space><Entities>
+						<!-- Chat Area -->
+						<Entity extends="std.display.Div">
+							<_States>
+								<_State id="layout"><Value>Horizontal</Value></_State>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="paddingLeft"><Value>5</Value></_State>
+								<_State id="paddingRight"><Value>5</Value></_State>
+								<_State id="border"><Value>1px solid rgba(0,0,0,0.1)</Value></_State>
+							</_States>
+						
+							<Form><Space><Entities>
+								<Entity extends="std.display.Div">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="overflow"><Value>hidden</Value></_State>
+									</_States>
+								
+									<Form><Space><Entities>
+										<!-- Chat Text-->
+										<Entity extends="std.display.Text">
+											<Extends>
+												<Entity extends="SparkEditor.behaviors.Scrollable">
+													<_States>
+														<_State id="multiplier"><Value>0.2</Value></_State>
+													</_States>
+												</Entity>
+											</Extends>
+											<_States>
+												<_State id="name"><Value>Chatroom Text</Value></_State>
+												<_State id="width"><Value>100%</Value></_State>
+												<_State id="height"><Value>100%</Value></_State>
+												<_State id="top"><Value>5</Value></_State>
+												<_State id="left"><Value>0</Value></_State>
+												<_State id="fontSize"><Value>14px</Value></_State>
+												<_State id="fontColor"><Value>white</Value></_State>
+												<_State id="selectable"><Value>true</Value></_State>
+												<_State id="text"><Value>Logged into main channel.</Value></_State>
+												<State><Id>lines</Id><Type>Integer</Type><Value>1</Value></State>
+											</_States>
+											<_Actions>
+												<_Action id="Constructor"><_Scripts><Script>
+													//Logic.getEntityByName('Login Panel').setState('outputText',me);
+												</Script></_Scripts></_Action>
+												<Action>
+													<Id>WriteLine</Id>
+													<Concurrency>Persistent</Concurrency>
+													<Scripts>
+														<Script><![CDATA[
+															me.addToState('text','</br><b>' + it.getState('user')+':</b> ' + it.getState('message'));
+															me.addToState('lines',1);
+															
+															if (me.s('lines')>9)
+																me.addToState('top',-16);
+																
+															Comms.notify("chat.chatHandler.sendMessage", {content:it.getState('message'), target:'*'});
+														]]></Script>
+													</Scripts>
+													<States>
+														<State><Id>user</Id><Type>Text</Type><Value>Undefined</Value></State>
+														<State><Id>message</Id><Type>Text</Type><Value>Undefined</Value></State>
+													</States>
+												</Action>
+											</_Actions>
+										</Entity>
+									</Entities></Space></Form>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+						
+						<!-- Input Area -->
+						<Entity extends="std.display.HGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>25</Value></_State>
+								<_State id="gap"><Value>0</Value></_State>
+							</_States>
+						
+							<Form><Space><Entities>
+								<!-- Input -->
+								<Entity extends="std.display.Input">
+									<_States>
+										<_State id="name"><Value>Chatroom Input</Value></_State>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+										<_State id="border"><Value>0px</Value></_State>
+										<_State id="placeholder"><Value>Type Message...</Value></_State>
+										<_State id="fontSize"><Value>16px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="textIndent"><Value>5px</Value></_State>
+										<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+									</_States>
+									<_Actions><_Action id="Constructor"><_Scripts><Script>
+										//Logic.getEntityByName('Login Panel').setState('userInput',me);
+									</Script></_Scripts></_Action></_Actions>
+									<_Triggers><Trigger><Event>KeyReleasedLocal</Event><Scripts>
+										<Script>
+										var eventObjectKeyPress = me.getState('eventObjectKeyPress');
+										
+										//Enter Just Released
+										if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
+										{
+											if (me.s('text').length>0)
+											{
+												var chatroom = e('Chatroom Text');
+												chatroom.getAction('WriteLine').setState('user',e('Spark Editor').s('username'));
+												chatroom.getAction('WriteLine').setState('message',me.s('text'));
+												chatroom.forceAction('WriteLine');
+												
+												me.setState('text',"");
+											}
+										}
+										</Script></Scripts></Trigger>
+									</_Triggers>
+								</Entity>
+								
+								<!-- Send Message Button -->
+								<Entity extends="SparkEditor.entities.buttons.generic.IconTextHorizontal">
+									<_States>
+										<_State id="caption"><Value>Send</Value></_State>
+										<_State id="width"><Value>100</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+										<_State id="iconImage"><Value>misc_sendMsg</Value></_State>
+										<_State id="hasIcon"><Value>true</Value></_State>
+										<_State id="iconWidth"><Value>25</Value></_State>
+										<_State id="iconHeight"><Value>12</Value></_State>
+									</_States>
+									
+									<_Triggers>
+										<Trigger><Event>MouseLeftClick</Event><Scripts>
+											<Script>
+												var chatInput = e('Chatroom Input');
+												if (chatInput.s('text').length>0)
+												{
+													var chatroom = e('Chatroom Text');
+													chatroom.getAction('WriteLine').setState('user',e('Spark Editor').s('username'));
+													chatroom.getAction('WriteLine').setState('message',chatInput.s('text'));
+													chatroom.forceAction('WriteLine');
+													
+													chatInput.setState('text',"");
+												}
+											</Script>
+										</Scripts></Trigger>
+									</_Triggers>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

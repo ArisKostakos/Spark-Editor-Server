@@ -2,6 +2,7 @@
 <Entity extends="SparkEditor.entities.tabcomponents.ToolTabControl">
 	<_States>
 		<_State id="name"><Value>Bottom Tab</Value></_State>
+		<State><Id>expanded</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -26,8 +27,8 @@
 					if (bar!=null && container!=null)
 					{
 						bar.setState('backgroundColor','rgb(33,48,61)');
-						bar.setState('height','100%');
-						container.setState('height','0%');
+						bar.setState('height','20');
+						//container.setState('height','0%');
 						
 						//Chat
 						var chatHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
@@ -42,8 +43,10 @@
 						//chatHeader.setState('backgroundColor','rgb(1,84,239)');
 						bar.addChild(chatHeader);
 
-						//container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.PropertiesWindow'));
-
+						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ChatWindow'));
+						
+						//me.getAction('SelectWindow').setState('windowName','Chat');
+						//me.startAction('SelectWindow');
 						
 						me.stopAction('Initialize');
 					}

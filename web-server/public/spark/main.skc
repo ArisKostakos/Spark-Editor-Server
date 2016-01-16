@@ -138,6 +138,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/ProjectWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/AreaWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/LibraryWindow.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/ChatWindow.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/PropertiesWindow.egc</Asset>
 			<!--<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/SceneWindow.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/windows/EventsWindow.egc</Asset>
@@ -222,7 +223,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ConditionEdit.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/editors/rootedits/ActionEdit.egc</Asset>
 			
-			
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/buttons/generic/IconTextHorizontal.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/buttons/eventsheet/AddButtonBig.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/buttons/eventsheet/AddButtonSmall.egc</Asset>
 			
@@ -389,6 +390,7 @@
 			
 			<!-- Misc -->
 			<Asset type="image" subtype="2D" location="local" id="misc_exclamation" bytes='35672' forceLoadAsData='true'>editor/misc/exclamation.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="misc_sendMsg" bytes='35672' forceLoadAsData='true'>editor/misc/sendMsg.png</Asset>
 		</Module>
 	</Assets>
 	

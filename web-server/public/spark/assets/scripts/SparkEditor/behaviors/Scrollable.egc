@@ -3,6 +3,7 @@
 	<_States>
 		<_State id="touchable"><Value>true</Value></_State>
 		<_State id="top"><Value>0</Value></_State>
+		<State><Id>multiplier</Id><Type>Decimal</Type><Value>1</Value></State>
 	</_States>
 		
 	<_Triggers>
@@ -10,7 +11,7 @@
 			<Event>MouseScroll</Event>
 			<Scripts>
 				<Script>
-					var myTop = Math.min(0,me.getState('top')-(me.getState('eventObject').deltaY));
+					var myTop = Math.min(0,me.getState('top')-(me.getState('eventObject').deltaY*me.s('multiplier')));
 					me.setState('top',myTop);
 				</Script>
 			</Scripts>
