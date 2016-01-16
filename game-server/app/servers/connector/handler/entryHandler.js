@@ -42,17 +42,15 @@ handler.enter = function(msg, session, next) {
 
 
 	//session.on('closed', onUserLeave.bind(null, self.app));
-/*
-	//put user into channel
-	self.app.rpc.chat.chatRemote.add(session, uid, self.app.get('serverId'), "poutsas", true, function(users){
-		next(null, {
-			users:users
-		});
-	});
-	*/
 
-	next(null, {
-		code: "Connected to the Cloud"
+	//put user into channel
+	self.app.rpc.chat.chatRemote.add(session, uid, self.app.get('serverId'), "mainRoom", true, function(users){
+		next(null, {
+			code: "Connected to the Cloud"
+		});
+		/*next(null, {
+			users:users
+		});*/
 	});
 };
 
