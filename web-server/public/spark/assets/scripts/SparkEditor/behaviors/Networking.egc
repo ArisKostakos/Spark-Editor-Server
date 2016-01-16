@@ -78,6 +78,9 @@
 						me.setState('Connected',true);
 						Logic.getEntityByName('Login Connected Light').setState('backgroundColor','green');
 						
+						//Add Listener for onChat
+						Comms.addServerEvent('onChat');
+						
 						//Comms.request('lobby.projectHandler.createIncludeQuery', { includeTags: ['test'], includeQuery: {type: "script"} }, "CreateIncludeQuery");
 					}
 					else if (Comms.getRequestData("Sign Up Request")!=null)
@@ -118,7 +121,7 @@
 			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>
-					Display.error("Received Server Event...");
+					//Display.error("Received Server Event...");
 					
 				</Script>
 			</Scripts>

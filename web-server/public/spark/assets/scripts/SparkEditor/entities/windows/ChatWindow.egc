@@ -73,7 +73,9 @@
 															if (me.s('lines')>9)
 																me.addToState('top',-16);
 																
-															Comms.notify("chat.chatHandler.sendMessage", {content:it.getState('message'), target:'*'});
+															//If I'm the owner of this message, broadcast it to others
+															if (e('Spark Editor').s('username').localeCompare(it.getState('user'))==0)
+																Comms.notify("chat.chatHandler.sendMessage", {content:it.getState('message'), target:'*'});
 														]]></Script>
 													</Scripts>
 													<States>
@@ -172,4 +174,33 @@
 			</Entities>
 		</Space>
 	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					Display.error("Received Server Event...");
+					
+					if (Comms.getServerEventData("onChat")!=null)
+					{
+						var data = Comms.getServerEventData("onChat");
+						
+						Display.error('I AM: ' + e('Spark Editor').s('username'));
+						Display.error('AND I GOT MSG FROM: ' + data.from);
+						Display.error('Comparison is: ' + e('Spark Editor').s('username').localeCompare(data.from));
+						
+						if (e('Spark Editor').s('username').localeCompare(data.from)!=0)
+						{
+							var chatroom = e('Chatroom Text');
+							chatroom.getAction('WriteLine').setState('user',data.from);
+							chatroom.getAction('WriteLine').setState('message',data.msg);
+							chatroom.forceAction('WriteLine');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
 </Entity>

@@ -35,7 +35,7 @@ exp.chat = function(session, msg, app, cb) {
 		return;
 	}
 
-	var res = dispatcher.dispatch(session.get('uid'), chatServers);
+	var res = dispatcher.dispatch("mainRoom", chatServers);
 
 	cb(null, res.id);
 };
