@@ -16,15 +16,15 @@ var ChatRemote = function(app) {
  * @param {boolean} flag channel parameter
  *
  */
-ChatRemote.prototype.add = function(uid, sid, name, session, flag, cb) {
+ChatRemote.prototype.add = function(uid, sid, name, flag, cb) {
 	var channel = this.channelService.getChannel(name, flag);
 	var username = uid.split('*')[0];
-	var user = session.get('user');
+	//var user = session.get('user');
 	var param = {
 		route: 'onAdd',
-		user: user.name
+		user: username
 	};
-	channel.pushMessage(param);
+	channel.pushMessage('onAdd', param);
 
 	if( !! channel) {
 		channel.add(uid, sid);
@@ -62,9 +62,9 @@ ChatRemote.prototype.get = function(name, flag) {
  * @param {String} name channel name
  *
  */
-ChatRemote.prototype.kick = function(uid, sid, name, session, cb) {
+ChatRemote.prototype.kick = function(uid, sid, name, cb) {
 	var channel = this.channelService.getChannel(name, false);
-	var user = session.get('user');
+	//var user = session.get('user');
 	// leave channel
 	if( !! channel) {
 		channel.leave(uid, sid);
@@ -72,8 +72,8 @@ ChatRemote.prototype.kick = function(uid, sid, name, session, cb) {
 	var username = uid.split('*')[0];
 	var param = {
 		route: 'onLeave',
-		user: user.name
+		user: username
 	};
-	channel.pushMessage(param);
+	channel.pushMessage('onLeave', param);
 	cb();
 };
