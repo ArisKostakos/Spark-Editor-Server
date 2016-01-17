@@ -85,6 +85,22 @@
 														<State><Id>message</Id><Type>Text</Type><Value>Undefined</Value></State>
 													</States>
 												</Action>
+												<Action>
+													<Id>WriteMessage</Id>
+													<Concurrency>Persistent</Concurrency>
+													<Scripts>
+														<Script><![CDATA[
+															me.addToState('text','</br><b>' + it.getState('message')+'</b>');
+															me.addToState('lines',1);
+															
+															if (me.s('lines')>9)
+																me.addToState('top',-16);
+														]]></Script>
+													</Scripts>
+													<States>
+														<State><Id>message</Id><Type>Text</Type><Value>Undefined</Value></State>
+													</States>
+												</Action>
 											</_Actions>
 										</Entity>
 									</Entities></Space></Form>
@@ -208,6 +224,22 @@
 								me.forceAction('RefreshUnreadMessages');
 							}
 						}
+					}
+					else if (Comms.getServerEventData("onAdd")!=null)
+					{
+						var data = Comms.getServerEventData("onAdd");
+						
+						var chatroom = e('Chatroom Text');
+						chatroom.getAction('WriteMessage').setState('message',"Someone got in: " + data.user);
+						chatroom.forceAction('WriteMessage');
+					}
+					else if (Comms.getServerEventData("onLeave")!=null)
+					{
+						var data = Comms.getServerEventData("onLeave");
+						
+						var chatroom = e('Chatroom Text');
+						chatroom.getAction('WriteMessage').setState('message',"Someone left: " + data.user);
+						chatroom.forceAction('WriteMessage');
 					}
 				</Script>
 			</Scripts>
