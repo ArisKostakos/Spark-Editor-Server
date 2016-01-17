@@ -21,10 +21,10 @@ ChatRemote.prototype.add = function(uid, sid, name, session, flag, cb) {
 	var username = uid.split('*')[0];
 	var user = session.get('user');
 	var param = {
-		//route: 'onAdd',
+		route: 'onAdd',
 		user: user.name
 	};
-	channel.pushMessage('onAdd', param);
+	channel.pushMessage(param);
 
 	if( !! channel) {
 		channel.add(uid, sid);
@@ -71,9 +71,9 @@ ChatRemote.prototype.kick = function(uid, sid, name, session, cb) {
 	}
 	var username = uid.split('*')[0];
 	var param = {
-		//route: 'onLeave',
+		route: 'onLeave',
 		user: user.name
 	};
-	channel.pushMessage('onLeave', param);
+	channel.pushMessage(param);
 	cb();
 };
