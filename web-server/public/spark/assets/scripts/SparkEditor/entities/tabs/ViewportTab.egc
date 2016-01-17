@@ -66,7 +66,7 @@
 						eventEditorHeader.setState('iconWidth','21');
 						eventEditorHeader.setState('iconHeight','14');
 						eventEditorHeader.setState('selectedTextColor','rgb(88,162,184)');
-						eventEditorHeader.setState('width','80');
+						eventEditorHeader.setState('width','90');
 						//eventEditorHeader.setState('labelLeft','31');
 						//eventEditorHeader.setState('backgroundColor','rgb(46,113,135)');
 						bar.addChild(eventEditorHeader);

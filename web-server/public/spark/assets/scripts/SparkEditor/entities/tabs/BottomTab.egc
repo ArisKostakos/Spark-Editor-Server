@@ -3,6 +3,7 @@
 	<_States>
 		<_State id="name"><Value>Bottom Tab</Value></_State>
 		<State><Id>expanded</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>chatWindow</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -31,10 +32,10 @@
 						//container.setState('height','0%');
 						
 						//Chat
-						var chatHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeader');
+						var chatHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeaderExtended');
 						chatHeader.setState('caption','Chat');
 						chatHeader.setState('titleFontSize','15px');
-						chatHeader.setState('width','65');
+						chatHeader.setState('width','75');
 						chatHeader.setState('hasIcon',true);
 						chatHeader.setState('iconImage','toolbarIcon_Chat');
 						chatHeader.setState('iconWidth','19');
@@ -43,7 +44,10 @@
 						//chatHeader.setState('backgroundColor','rgb(1,84,239)');
 						bar.addChild(chatHeader);
 
-						container.addChild(Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ChatWindow'));
+						var chatWindow = Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ChatWindow');
+						chatWindow.setState('chatHeader',chatHeader);
+						container.addChild(chatWindow);
+						me.setState('chatWindow',chatWindow);
 						
 						//me.getAction('SelectWindow').setState('windowName','Chat');
 						//me.startAction('SelectWindow');

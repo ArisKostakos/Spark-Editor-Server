@@ -127,6 +127,7 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/WorkTabBar.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/TabBarHeader.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/ToolTabBarHeader.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/ToolTabBarHeaderExtended.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/WorkTabBarHeader.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/TabContainer.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/entities/tabcomponents/TabWindow.egc</Asset>

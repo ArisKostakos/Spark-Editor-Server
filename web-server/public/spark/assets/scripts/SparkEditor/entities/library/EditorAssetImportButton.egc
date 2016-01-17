@@ -5,6 +5,8 @@
 		<_State id="width"><Value>22</Value></_State>
 		<_State id="height"><Value>22</Value></_State>
 		<_State id="borderRadius"><Value>50%</Value></_State>
+		<_State id="right"><Value>7</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
 	</_States>
 	
 	<Form>
