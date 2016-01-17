@@ -18,7 +18,7 @@ var handler = Handler.prototype;
  * @param  {Function} next next stemp callback
  *
  */
-handler.sendMessage = function(msg, session) {
+handler.sendMessage = function(msg, session, next) {
 	//var rid = session.get('uid');
 	//var username = session.uid.split('*')[0];
 	var channelService = this.app.get('channelService');
@@ -51,9 +51,9 @@ handler.sendMessage = function(msg, session) {
 	*/
 
 	//This is a notify.. no response..
-	/*
+
 	next(null, {
-		route: msg.route
+		code: "success"
 	});
-	*/
+
 };

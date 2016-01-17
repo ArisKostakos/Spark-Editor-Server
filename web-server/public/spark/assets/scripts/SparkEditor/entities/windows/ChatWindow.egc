@@ -75,7 +75,7 @@
 																
 															//If I'm the owner of this message, broadcast it to others
 															if (e('Spark Editor').s('username').localeCompare(it.getState('user'))==0)
-																Comms.notify("chat.chatHandler.sendMessage", {content:it.getState('message'), target:'*'});
+																Comms.request("chat.chatHandler.sendMessage", {content:it.getState('message'), target:'*'});
 														]]></Script>
 													</Scripts>
 													<States>
