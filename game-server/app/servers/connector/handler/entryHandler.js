@@ -41,7 +41,7 @@ handler.enter = function(msg, session, next) {
 	});
 
 
-	//session.on('closed', onUserLeave.bind(null, self.app));
+	session.on('closed', onUserLeave.bind(null, self.app));
 
 	//put user into channel
 	self.app.rpc.chat.chatRemote.add(session, uid, self.app.get('serverId'), "mainRoom", true, function(users){
@@ -65,5 +65,5 @@ var onUserLeave = function(app, session) {
 	if(!session || !session.uid) {
 		return;
 	}
-	app.rpc.chat.chatRemote.kick(session, session.uid, app.get('serverId'), session.get('rid'), null);
+	app.rpc.chat.chatRemote.kick(session, session.uid, app.get('serverId'), "mainRoom", null);
 };
