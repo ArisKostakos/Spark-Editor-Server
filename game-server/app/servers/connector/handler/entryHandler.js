@@ -46,7 +46,7 @@ handler.enter = function(msg, session, next) {
 	//put user into channel
 	self.app.rpc.chat.chatRemote.add(session, uid, self.app.get('serverId'), "mainRoom", true, function(users){
 
-		self.app.rpc.chat.chatHandler.sendMessage({content:"someone entered", target:'*'},session,next);
+		//self.app.rpc.chat.chatHandler.sendMessage({content:"someone entered", target:'*'},session,next);
 		/*
 		next(null, {
 			code: "Connected to the Cloud"
