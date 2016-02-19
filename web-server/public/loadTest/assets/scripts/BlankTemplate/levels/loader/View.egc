@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.View">
+	<_States>
+		<_State id="zIndex">
+			<Value>1</Value>
+		</_State>
+		
+		<_State id="autoInit">
+			<Value>false</Value>
+		</_State>
+			
+		<_State id="initSceneName">
+			<Value>BlankTemplate.levels.loader.Scene</Value>
+		</_State>
+		
+		<_State id="initCameraName">
+			<Value>std.display.Camera2D</Value>
+		</_State>
+		
+		<_State id="width">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="height">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="renderer">
+			<Value>2D</Value>
+		</_State>
+	</_States>
+</Entity>

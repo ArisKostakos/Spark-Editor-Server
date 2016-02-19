@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<Extends>
+		<Entity extends="std.behaviors.display.Layoutable"/>
+	</Extends>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Display.debug("StageArea Entity constructor!");
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+	
+	<_States>
+		<_State id="displayType">
+			<Value>StageArea</Value>
+		</_State>
+	</_States>
+</Entity>

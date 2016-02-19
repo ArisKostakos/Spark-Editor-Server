@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Camera2D">
+	<_Actions>
+    	<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Camera Init');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Camera Init</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Logic.getEntityByName('Main View').getState('feedbackWidth')==0)
+						return;
+					
+					
+					me.stopAction('Camera Init');
+					
+					var view = Logic.getEntityByName('Main View');
+					Display.error("View Name: " + view.getState('name'));
+					//CAMERA
+					var camera = me;
+					
+					//maxBoundsX
+					var maxBoundsX = camera.getState('maxBoundsX'); 
+					//maxBoundsY
+					var maxBoundsY = camera.getState('maxBoundsY'); 
+					//maxBoundsWidth
+					var maxBoundsWidth = camera.getState('maxBoundsWidth'); 
+					//maxBoundsHeight
+					var maxBoundsHeight = camera.getState('maxBoundsHeight'); 
+					//minBoundsWidthRatio
+					var minBoundsWidthRatio = camera.getState('minBoundsWidthRatio'); 
+					//minBoundsHeightRatio
+					var minBoundsHeightRatio = camera.getState('minBoundsHeightRatio'); 
+					//minBoundsHorizontalAlign
+					var minBoundsHorizontalAlign = camera.getState('minBoundsHorizontalAlign'); 
+					//minBoundsVerticalAlign
+					var minBoundsVerticalAlign = camera.getState('minBoundsVerticalAlign'); 
+					
+					var minBoundsWidth = maxBoundsWidth*minBoundsWidthRatio;
+					var minBoundsHeight = maxBoundsHeight*minBoundsHeightRatio;
+
+					var viewWidth = view.getState('feedbackWidth');
+					var viewHeight = view.getState('feedbackHeight');
+					Display.error("View Width: " + viewWidth);
+					Display.error("View Height: " + viewHeight);
+					
+					
+					var viewAspectRatio = viewWidth/viewHeight;
+					Display.error("viewAspectRatio: " + viewAspectRatio);
+					var cameraCaptureAreaX = 0;
+					var cameraCaptureAreaY = 0;
+					var cameraCaptureAreaWidth =0;
+					var cameraCaptureAreaHeight =0;
+					
+					//if (scale between 4:3 and 16:9)
+					if (viewAspectRatio>1.777) //16:9
+					{
+						Display.error("SHIT! View is to looongish");
+						//For now, Assume 1.777
+						viewAspectRatio = 1.777;
+					}
+					else if (1.333>viewAspectRatio) //4:3
+					{
+						Display.error("SHIT! View is to squarish");
+						//For now, Assume 1.333
+						viewAspectRatio = 1.333;
+					}
+					
+					
+
+					//check if ratio is bigger or smaller than 3:2 (1.5)
+					if (viewAspectRatio>1.5) //if bigger
+					{
+						Display.error("GOOD! glueing HEIGHT");
+						//glue minBoundsHeight
+						cameraCaptureAreaHeight = minBoundsHeight;
+						cameraCaptureAreaWidth = Math.round(cameraCaptureAreaHeight*viewAspectRatio);
+						
+					}
+					else //if smaller or equal
+					{
+						Display.error("GOOD! glueing WIDTH");
+						//glue minBoundsWidth (this case)
+						cameraCaptureAreaWidth = minBoundsWidth;
+						cameraCaptureAreaHeight = Math.round(cameraCaptureAreaWidth/viewAspectRatio);
+					}
+						
+						
+					
+					//Later on if we assumed 1.333 or 1.777, instead do letterboxing like so:
+					//if we failed the test above we'll need to do letterboxing too
+					//after we're done we'll do letterbox centering (other options too later)
+					
+
+					//and at some point, we align..
+					//Horizontal Align
+					if (minBoundsHorizontalAlign=="Left")
+						cameraCaptureAreaX = maxBoundsX;
+					else if (minBoundsHorizontalAlign=="Center")
+						cameraCaptureAreaX = maxBoundsX + (maxBoundsWidth - cameraCaptureAreaWidth)/2;
+					else if (minBoundsHorizontalAlign=="Right")
+						cameraCaptureAreaX = maxBoundsX + (maxBoundsWidth - cameraCaptureAreaWidth);
+					
+					//Vertical Align
+					if (minBoundsVerticalAlign=="Top")
+						cameraCaptureAreaY = maxBoundsY;
+					else if (minBoundsVerticalAlign=="Middle")
+						cameraCaptureAreaY = maxBoundsY + (maxBoundsHeight - cameraCaptureAreaHeight)/2;
+					else if (minBoundsVerticalAlign=="Bottom")
+						cameraCaptureAreaY = maxBoundsY + (maxBoundsHeight - cameraCaptureAreaHeight);
+					
+					
+					//Move CAMERA
+					camera.setState('captureAreaX',cameraCaptureAreaX);
+					camera.setState('captureAreaY',cameraCaptureAreaY);
+					camera.setState('captureAreaWidth',cameraCaptureAreaWidth);
+					camera.setState('captureAreaHeight',cameraCaptureAreaHeight);
+					
+					//DEBUG:
+					//Display.error("cameraCaptureAreaX: " + cameraCaptureAreaX);
+					//Display.error("cameraCaptureAreaY: " + cameraCaptureAreaY);
+					//Display.error("cameraCaptureAreaWidth: " + cameraCaptureAreaWidth);
+					//Display.error("cameraCaptureAreaHeight: " + cameraCaptureAreaHeight);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

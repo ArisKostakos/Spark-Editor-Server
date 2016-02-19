@@ -1,0 +1,37 @@
+<Entity extends="std.display.Scene2DPhysics">
+
+	<_States>
+        <_State id="name">
+			<Value>Main Scene</Value>
+		</_State>
+	</_States>
+	
+	
+	<Form><Space><Entities>
+		<Entity extends="std.display.Image2D">
+			<Extends>
+				<Entity extends="std.behaviors.display.Layoutable"/>
+			</Extends>
+			<_States>
+				<_State id="2DMeshImageForm"><Value>myImage</Value></_State>
+				<_State id="horizontalCenter"><Value>0</Value></_State>
+				<_State id="verticalCenter"><Value>0</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+		
+			<_Form><_States>
+				<State><Id>myImage</Id><Type>Text</Type><Value>sparkLogo</Value></State>
+			</_States></_Form>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Display.invalidateLayout();
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>
