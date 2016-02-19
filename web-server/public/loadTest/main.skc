@@ -44,7 +44,7 @@
 			<Asset type="script" location="local" bytes='35672'>BlankTemplate/levels/loader/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>BlankTemplate/levels/loader/Scene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>BlankTemplate/levels/loader/Camera.egc</Asset>
-			<Asset type="image" location="local" bytes='35672' id="sparkLogo">BlankTemplate/sparkLogo.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="sparkLogo">BlankTemplate/sparklogo.png</Asset>
 		</Module>
 		
 		<Module id="Level1">

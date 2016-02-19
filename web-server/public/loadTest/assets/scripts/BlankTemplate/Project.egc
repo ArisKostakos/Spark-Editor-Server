@@ -26,6 +26,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
+					Logic.getExternal().call("setPreloaderText",["Retrieving Project Files..."]);
 					Logic.levelManager.runLevel("BlankTemplate.levels.loader.Level");
 				</Script>
 			</_Scripts>
