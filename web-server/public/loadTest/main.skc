@@ -28,7 +28,7 @@
 	<Assets>
 		<Module id="Main" executeEntity="BlankTemplate.Project">
 			<Requires>
-				<RequiresModule>Std_Basic</RequiresModule>
+				<RequiresModule>Std_Project</RequiresModule>
 			</Requires>
 			
 			<Asset type="script" location="local" bytes='35672'>BlankTemplate/Project.egc</Asset>
@@ -39,7 +39,8 @@
 		
 		<Module id="Loader">
 			<Requires>
-				<RequiresModule>Std_Basic</RequiresModule>
+				<RequiresModule>Std_Project</RequiresModule>
+				<RequiresModule>Std_Graphics</RequiresModule>
 			</Requires>
 			<Asset type="script" location="local" bytes='35672'>BlankTemplate/levels/loader/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>BlankTemplate/levels/loader/Scene.egc</Asset>
@@ -51,7 +52,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/core/Project.egc</Asset>
 		</Module>
 		
-		<Module id="Std_Basic">
+		<Module id="Std_Project">
 			<Asset type="script" location="local" bytes='35672'>std/core/Base.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/core/Project.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/core/Level.egc</Asset>
@@ -60,6 +61,15 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Base.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Space.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Stage.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Layoutable.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
+		</Module>
+		
+		<Module id="Std_Graphics">
+			<Requires>
+				<RequiresModule>Std_Project</RequiresModule>
+			</Requires>
 			<Asset type="script" location="local" bytes='35672'>std/display/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Scene2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Scene2DPhysics.egc</Asset>
@@ -68,8 +78,6 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Entity2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Layoutable.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Renderable2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
