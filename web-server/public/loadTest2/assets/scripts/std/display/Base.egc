@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<State>
+			<Id>displayType</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>coordinateSystem</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>2DmeshType</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>3DmeshType</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>NCmeshType</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>touchable</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>draggable</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+
+		<State>
+			<Id>dropTarget</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+
+		<State>
+			<Id>eventObject</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+</Entity>

@@ -1,0 +1,30 @@
+<Entity extends="std.display.Scene2DPhysics">
+	<Form><Space><Entities>
+		<Entity extends="std.display.Image2D">
+			<Extends>
+				<Entity extends="std.behaviors.display.Layoutable"/>
+			</Extends>
+			<_States>
+				<_State id="2DMeshImageForm"><Value>myImage</Value></_State>
+				<_State id="horizontalCenter"><Value>0</Value></_State>
+				<_State id="verticalCenter"><Value>0</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+		
+			<_Form><_States>
+				<State><Id>myImage</Id><Type>Text</Type><Value>level1Background</Value></State>
+			</_States></_Form>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Display.invalidateLayout();
+					//Logic.levelManager.runLevel("BlankTemplate.levels.level1.Level");
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

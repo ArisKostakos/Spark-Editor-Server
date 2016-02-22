@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<State><Id>VisualProgrammingType</Id><Type>Text</Type><Value>Event Sheet</Value></State>
+	</_States>
+</Entity>
