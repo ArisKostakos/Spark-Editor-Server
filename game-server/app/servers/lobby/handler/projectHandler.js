@@ -404,8 +404,7 @@ handler.connect = function(msg, session, next) {
                 //Bind it to session
                 bindProject(session, object_found);
 
-                //return project? hm
-                next(null, {code: "success"});
+                next(null, {code: "success", project:object_found});
             }
             else {
                 next(null, {code: "notfound"});
