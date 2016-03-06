@@ -167,6 +167,14 @@
 							</_States>
 						</Entity>
 						
+						<!-- Tags Value -->
+						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
+							<_States>
+								<_State id="name"><Value>AP_id</Value></_State>
+								<_State id="label"><Value>Id:</Value></_State>
+							</_States>
+						</Entity>
+						
 						<!-- Dependancies Value -->
 						<Entity extends="SparkEditor.entities.LabelAndValueSmall">
 							<_States>
@@ -294,6 +302,9 @@
 					
 					//AP_tags
 					Logic.getEntityByName('AP_tags').getState('value').setState('text',asset.tags.toString());
+					
+					//AP_id
+					Logic.getEntityByName('AP_id').getState('value').setState('text',asset._id.toString());
 					
 					//AP_assetDep
 					var depNames = "";
