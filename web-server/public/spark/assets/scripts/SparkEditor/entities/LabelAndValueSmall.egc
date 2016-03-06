@@ -29,6 +29,7 @@
 					<_State id="fontSize"><Value>12px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 					<_State id="textAlign"><Value>left</Value></_State>
+					<_State id="selectable"><Value>true</Value></_State>
 				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
 					parent.setState('value',me);
 				</Script></_Scripts></_Action></_Actions></Entity>
