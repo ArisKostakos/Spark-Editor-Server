@@ -270,7 +270,7 @@ function forkModule(self, msg, session, forkedModule, cb)
 
 
     //Create New Module
-    createModule(forkedModule.name, function (err, moduleCreated) {
+    createModule(self, forkedModule.name, function (err, moduleCreated) {
         //Handle Error
         if (err) {
             cb(err);
@@ -302,7 +302,7 @@ function forkModule(self, msg, session, forkedModule, cb)
     });
 }
 
-function createModule(moduleName, cb)
+function createModule(self, moduleName, cb)
 {
     //Create Main Module for this project
     self.app.rpc.assets.createRemote.createModule(session, moduleName, function(err, module_created) {
