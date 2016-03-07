@@ -121,7 +121,7 @@ handler.fork = function(msg, session, next) {
 
                             //Fork ALL modules of template Project
                             console.warn("Creating Modules for forked project...");
-                            forkModules(self, msg, session, templateProject, 0, [], function(err, modulesCreated) {
+                            forkModules(self, msg, session, templateProject, 0, [], null, function(err, modulesCreated, mainModule) {
                                 //Handle Error
                                 if (err) {
                                     next(null, {code: "error"});
@@ -235,7 +235,7 @@ handler.fork = function(msg, session, next) {
 }
 
 //Forks all modules of given project. (other conversion info is inside msg and session :/). Returns modulesCreated array
-function forkModules(self, msg, session, forkedProject, index, modulesCreated, cb)
+function forkModules(self, msg, session, forkedProject, index, modulesCreated, mainModule, cb)
 {
     if (index<forkedProject.modules.length)
     {
@@ -251,15 +251,24 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, c
             }
 
             //Handle Success
+
+            //Push Module to Collection
             modulesCreated.push(moduleCreated);
 
+            //If it's the mainModule, store it here too
+            if (forkedProject.moduleMain==forkedModule._id) {
+                console.warn('I FOUND MAIN MODULE! THE ONE FORKED IS: ' + forkedModule);
+                console.warn('I FOUND MAIN MODULE! THE ONE CREATED IS: ' + moduleCreated);
+                mainModule = moduleCreated;
+            }
+
             //Next
-            forkModules(self, msg, session, forkedProject, index+1, modulesCreated, cb);
+            forkModules(self, msg, session, forkedProject, index+1, modulesCreated, mainModule, cb);
         });
     }
     else //All done.. exiting, issuing real callback
     {
-        cb(null, modulesCreated);
+        cb(null, modulesCreated, mainModule);
     }
 }
 
