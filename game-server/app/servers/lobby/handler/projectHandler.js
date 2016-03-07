@@ -106,7 +106,7 @@ handler.fork = function(msg, session, next) {
                 var sparkDeveloperId = object_found.developerReference;
 
                 //Get Template
-                database.findOne(database.Project, {name: forkedProjectName, owner: sparkDeveloperId},
+                database.findOneAndPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules",
                     function (err, object_found) {
                         //Handle Error
                         if (err) {
@@ -118,7 +118,25 @@ handler.fork = function(msg, session, next) {
                         if (object_found) {
                             var templateProject = object_found;
 
-                            console.warn("Creating Main Module for forked project...");
+                            //Fork ALL modules of template Project
+                            console.warn("Creating Modules for forked project...");
+                            forkModules(self, msg, session, templateProject, function(err, modulesCreated) {
+                                //Handle Error
+                                if (err) {
+                                    next(null, {code: "error"});
+                                    return console.error(err);
+                                }
+
+                                //Handle Success
+                                console.warn("Success forking modules!");
+                            });
+
+                            //success
+                            next(null, {code: "success"});
+
+                           //fuck this..
+
+                            /*
                             //Create Main Module for this project
                             self.app.rpc.assets.createRemote.createModule(session, "Main", function(err, module_created){
                                 //Handle Error
@@ -197,6 +215,7 @@ handler.fork = function(msg, session, next) {
                                     }
                                 );
                             });
+                            */
                         }
                         else {
                             next(null, {code: "error"});    //notfound
@@ -209,6 +228,28 @@ handler.fork = function(msg, session, next) {
             }
         }
     );
+}
+
+//Forks all modules of given project. (other conversion info is inside msg and session :/). Returns forked Modules array
+function forkModules(self, msg, session, forkedProject, cb)
+{
+    var modulesCreated=[];
+
+    for (var i=0;i<forkedProject.modules.length;i++)
+    {
+        var forkedModule = forkedProject.modules[i];
+
+        console.warn("Found Module: " + forkedModule.name);
+
+    }
+
+    cb(null, modulesCreated);
+}
+
+//Forks a given module (other conversion info is inside msg and session :/) Returns forked Module
+function forkModule(self, msg, session, xx, cb)
+{
+
 }
 
 function forkAssets(self, msg, session, assets, index, moduleContainer, cb) {
