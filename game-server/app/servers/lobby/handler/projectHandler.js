@@ -259,7 +259,7 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, m
             //If it's the mainModule, store it here too
             console.warn("forkedProject.moduleMain: " + forkedProject.moduleMain);
             console.warn("forkedModule._id: " + forkedModule._id);
-            if (forkedProject.moduleMain==forkedModule._id) {
+            if (Std.string(forkedProject.moduleMain)==Std.string(forkedModule._id)) {
                 console.warn('I FOUND MAIN MODULE! THE ONE FORKED IS: ' + forkedModule);
                 console.warn('I FOUND MAIN MODULE! THE ONE CREATED IS: ' + moduleCreated);
                 mainModule = moduleCreated;
