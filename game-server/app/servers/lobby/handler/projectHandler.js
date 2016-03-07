@@ -120,7 +120,7 @@ handler.fork = function(msg, session, next) {
 
                             //Fork ALL modules of template Project
                             console.warn("Creating Modules for forked project...");
-                            forkModules(self, msg, session, templateProject, function(err, modulesCreated) {
+                            forkModules(self, msg, session, templateProject, 0, [], function(err, modulesCreated) {
                                 //Handle Error
                                 if (err) {
                                     next(null, {code: "error"});
@@ -230,26 +230,39 @@ handler.fork = function(msg, session, next) {
     );
 }
 
-//Forks all modules of given project. (other conversion info is inside msg and session :/). Returns forked Modules array
-function forkModules(self, msg, session, forkedProject, cb)
+//Forks all modules of given project. (other conversion info is inside msg and session :/). Returns modulesCreated array
+function forkModules(self, msg, session, forkedProject, index, modulesCreated, cb)
 {
-    var modulesCreated=[];
-
-    for (var i=0;i<forkedProject.modules.length;i++)
+    if (index<forkedProject.modules.length)
     {
-        var forkedModule = forkedProject.modules[i];
-
+        var forkedModule = forkedProject.modules[index];
         console.warn("Found Module: " + forkedModule.name);
 
-    }
+        //Fork it
+        forkModule(self, msg, session, forkedModule, function (err, moduleCreated){
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
 
-    cb(null, modulesCreated);
+            //Handle Success
+
+            //Next
+            forkModules(self, msg, session, forkedProject, index+1, modulesCreated, cb);
+        });
+    }
+    else //All done.. exiting, issuing real callback
+    {
+        cb(null, modulesCreated);
+    }
 }
 
-//Forks a given module (other conversion info is inside msg and session :/) Returns forked Module
-function forkModule(self, msg, session, xx, cb)
+//Forks a given module (other conversion info is inside msg and session :/) Returns moduleCreated
+function forkModule(self, msg, session, forkedModule, cb)
 {
-
+    console.warn("Forking Module: " + forkedModule.name);
+    cb(null, null);
 }
 
 function forkAssets(self, msg, session, assets, index, moduleContainer, cb) {
