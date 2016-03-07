@@ -107,7 +107,7 @@ handler.fork = function(msg, session, next) {
 
                 //Get Template
                // database.findOneAndPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules",
-                database.findAndDeepPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules.assets.owner modules.assets.owner.user modules.assets.assetDependancies", //all at once
+                database.findAndDeepPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules modules.assets modules.assets.owner modules.assets.owner.user modules.assets.assetDependancies", //all at once
                     function (err, object_found) {
                         //Handle Error
                         if (err) {
