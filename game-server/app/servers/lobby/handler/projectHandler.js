@@ -155,59 +155,6 @@ handler.fork = function(msg, session, next) {
                                     }
                                 );
                             });
-
-
-
-                           //fuck this..
-
-                            /*
-
-                                        //Handle Success
-
-
-
-                                                // for all spark assetsDB with tag: templateProject.name
-                                                database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
-                                                    function (err, objects_found) {
-                                                        //Handle Error
-                                                        if (err) {
-                                                            next(null, {code: "error"});
-                                                            return console.error(err);
-                                                        }
-
-                                                        //Handle Success
-                                                        forkAssets(self, msg, session, objects_found,0,module_found,
-                                                            function (err) {
-                                                                //Handle Error
-                                                                if (err) {
-                                                                    next(null, {code: "error"});
-                                                                    return console.error(err);
-                                                                }
-
-                                                                //Handle Success
-                                                                forkAssetDependancies(self, msg, session, objects_found,0,
-                                                                    function (err) {
-                                                                        //Handle Error
-                                                                        if (err) {
-                                                                            next(null, {code: "error"});
-                                                                            return console.error(err);
-                                                                        }
-
-
-                                                                        //success
-                                                                        next(null, {code: "success"});
-                                                                    }
-                                                                );
-                                                            }
-                                                        );
-                                                    }
-                                                );
-                                            }
-                                        );
-                                    }
-                                );
-                            });
-                            */
                         }
                         else {
                             next(null, {code: "error"});    //notfound
@@ -289,8 +236,17 @@ function forkModule(self, msg, session, forkedModule, cb)
                     return;
                 }
 
-                //Handle Success
-                cb(null, moduleCreated);
+                //Handle Success (update dependancies)
+                forkAssetDependancies(self, msg, session, forkedModule.assets,0, function (err) {
+                    //Handle Error
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+
+                    //Handle Success
+                    cb(null, moduleCreated);
+                });
             });
         });
     });
