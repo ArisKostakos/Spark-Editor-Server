@@ -129,31 +129,13 @@ handler.fork = function(msg, session, next) {
                                 }
 
                                 //Handle Success
-                                console.warn("Success forking modules! Here they are: ");
-                                console.warn(modulesCreated);
-                                console.warn("Main Module: " + mainModule);
 
-                                //success
-                                next(null, {code: "success"});
-                            });
+                                //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
+                                var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: modulesCreated, moduleMain: mainModule, tags: ['project'], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
 
-
-
-                           //fuck this..
-
-                            /*
-                            //Create Main Module for this project
-                            self.app.rpc.assets.createRemote.createModule(session, "Main", function(err, module_created){
-                                //Handle Error
-                                if (err) {
-                                    next(null, {code: "error"});
-                                    return console.error(err);
-                                }
-
-                                //Handle Success
-                                //Re-get Module. The one I get from rpc apparently is not a proper Mongoose document and lacks .save().. I don't know.... :/
-                                database.findOne(database.Module, {_id: module_created._id},
-                                    function (err, module_found) {
+                                //Create Project
+                                database.create(database.Project, raw_Project,
+                                    function (err, objCreated_Project) {
                                         //Handle Error
                                         if (err) {
                                             next(null, {code: "error"});
@@ -162,22 +144,27 @@ handler.fork = function(msg, session, next) {
 
                                         //Handle Success
 
-                                        //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
-                                        var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: [module_found._id], moduleMain: module_found._id, tags: ['project'], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
+                                        //Create directories
+                                        createProjectDirectories(objCreated_Project.name, user.name);
 
-                                        //Create Project
-                                        database.create(database.Project, raw_Project,
-                                            function (err, objCreated_Project) {
-                                                //Handle Error
-                                                if (err) {
-                                                    next(null, {code: "error"});
-                                                    return console.error(err);
-                                                }
+                                        console.warn("Success creating project! Here it is: ");
+                                        console.warn(objCreated_Project);
 
-                                                //Handle Success
+                                        //success
+                                        next(null, {code: "success"});
+                                    }
+                                );
+                            });
 
-                                                //Create directories
-                                                createProjectDirectories(objCreated_Project.name, user.name);
+
+
+                           //fuck this..
+
+                            /*
+
+                                        //Handle Success
+
+
 
                                                 // for all spark assetsDB with tag: templateProject.name
                                                 database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': templateProject.name}, "owner owner.user assetDependancies",
@@ -257,13 +244,8 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, m
             modulesCreated.push(moduleCreated);
 
             //If it's the mainModule, store it here too
-            console.warn("forkedProject.moduleMain: " + forkedProject.moduleMain);
-            console.warn("forkedModule._id: " + forkedModule._id);
-            if (forkedProject.moduleMain.toString()==forkedModule._id.toString()) {
-                console.warn('I FOUND MAIN MODULE! THE ONE FORKED IS: ' + forkedModule);
-                console.warn('I FOUND MAIN MODULE! THE ONE CREATED IS: ' + moduleCreated);
+            if (forkedProject.moduleMain.toString()==forkedModule._id.toString())
                 mainModule = moduleCreated;
-            }
 
             //Next
             forkModules(self, msg, session, forkedProject, index+1, modulesCreated, mainModule, cb);
