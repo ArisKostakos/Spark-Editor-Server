@@ -1,6 +1,7 @@
 var fs = require('fs-extra');
 var path = require('path');
 var database = require('../../../modules/database');
+var deepPopulate = require('mongoose-deep-populate');
 
 module.exports = function(app) {
     return new Handler(app);
@@ -266,7 +267,7 @@ function forkModule(self, msg, session, forkedModule, cb)
 
 
     //Populate assets of forked Module
-    forkedModule.populate('assets', function (err, forkedModule){
+    forkedModule.deepPopulate('assets assets.owner assets.owner.user assets.assetDependancies', function (err, forkedModule){
         var assets = forkedModule.assets;
 
         var firstAsset = assets[0];
