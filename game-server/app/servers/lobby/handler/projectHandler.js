@@ -265,15 +265,17 @@ function forkModule(self, msg, session, forkedModule, cb)
 
 
 
-    //Get assets of forked Module
-    var assets = forkedModule.assets;
+    //Populate assets of forked Module
+    forkedModule.populate('assets', function (err, forkedModule){
+        var assets = forkedModule.assets;
 
-    var firstAsset = assets[0];
-    console.warn("name of first asset of this module: " + firstAsset);
-    //console.warn("name of first asset of this module: " + firstAsset.name);
-    //console.warn("name of user of first asset of this module: " + firstAsset.owner.user.name)
+        var firstAsset = assets[0];
+        console.warn("name of first asset of this module: " + firstAsset);
+        //console.warn("name of first asset of this module: " + firstAsset.name);
+        //console.warn("name of user of first asset of this module: " + firstAsset.owner.user.name)
 
-    cb(null, null);
+        cb(null, null);
+    });
 }
 
 function forkAssets(self, msg, session, assets, index, moduleContainer, cb) {
