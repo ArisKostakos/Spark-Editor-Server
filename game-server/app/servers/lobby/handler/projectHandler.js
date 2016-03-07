@@ -129,11 +129,14 @@ handler.fork = function(msg, session, next) {
                                 }
 
                                 //Handle Success
-                                console.warn("Success forking modules!");
+                                console.warn("Success forking modules! Here they are: ");
+                                console.warn(modulesCreated);
+
+                                //success
+                                next(null, {code: "success"});
                             });
 
-                            //success
-                            next(null, {code: "success"});
+
 
                            //fuck this..
 
@@ -248,6 +251,7 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, c
             }
 
             //Handle Success
+            modulesCreated.push(moduleCreated);
 
             //Next
             forkModules(self, msg, session, forkedProject, index+1, modulesCreated, cb);
@@ -265,17 +269,63 @@ function forkModule(self, msg, session, forkedModule, cb)
     console.warn("Forking Module: " + forkedModule.name);
 
 
+    //Create New Module
+    createModule(forkedModule.name, function (err, moduleCreated) {
+        //Handle Error
+        if (err) {
+            cb(err);
+            return;
+        }
 
-    //Populate assets of forked Module
-    forkedModule.deepPopulate('assets assets.owner assets.owner.user assets.assetDependancies', function (err, forkedModule){
-        var assets = forkedModule.assets;
+        //Handle Success
 
-        var firstAsset = assets[0];
-        console.warn("name of first asset of this module: " + firstAsset);
-        //console.warn("name of first asset of this module: " + firstAsset.name);
-        //console.warn("name of user of first asset of this module: " + firstAsset.owner.user.name)
+        //Populate assets of forked Module
+        forkedModule.deepPopulate('assets assets.owner assets.owner.user assets.assetDependancies', function (err, forkedModule){
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
 
-        cb(null, null);
+            //Handle Success
+            forkAssets(self, msg, session, forkedModule.assets, 0, moduleCreated, function (err){
+                //Handle Error
+                if (err) {
+                    cb(err);
+                    return;
+                }
+
+                //Handle Success
+                cb(null, moduleCreated);
+            });
+        });
+    });
+}
+
+function createModule(moduleName, cb)
+{
+    //Create Main Module for this project
+    self.app.rpc.assets.createRemote.createModule(session, moduleName, function(err, module_created) {
+        //Handle Error
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        //Handle Success
+        //Re-get Module. The one I get from rpc apparently is not a proper Mongoose document and lacks .save().. I don't know.... :/
+        database.findOne(database.Module, {_id: module_created._id},
+            function (err, module_found) {
+                //Handle Error
+                if (err) {
+                    cb(err);
+                    return;
+                }
+
+                //Handle Success
+                cb(null, module_found);
+            }
+        );
     });
 }
 
