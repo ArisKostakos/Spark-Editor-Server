@@ -454,16 +454,18 @@ handler.getProjectLibraryCollections = function(msg, session, next) {
     var developer = session.get('developer');
     var project = session.get('project');
 
-    project.populate('libraryCollections', function (err, project) {
-        //Handle Error
-        if (err) {
-            next(null, {code: "error"});
-            return console.error(err);
-        }
+    database.findOneAndPopulate(database.Project, {_id: project._id}, "libraryCollections",
+        function (err, project_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
 
-        //Handle Success
-        next(null, {code: "success", libraryCollections: project.libraryCollections});
-    });
+            //Handle Success
+            next(null, {code: "success", libraryCollections: project_found.libraryCollections});
+        }
+    );
 };
 
 //Get all modules referenced in this project
@@ -476,16 +478,18 @@ handler.getProjectModulesPopulated = function(msg, session, next) {
     var developer = session.get('developer');
     var project = session.get('project');
 
-    project.deepPopulate('modules modules.assets', function (err, project) {
-        //Handle Error
-        if (err) {
-            cb(err);
-            return;
-        }
+    database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "modules modules.assets",
+        function (err, project_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
 
-        //Handle Success
-        next(null, {code: "success", modules: project.modules});
-    });
+            //Handle Success
+            next(null, {code: "success", modules: project_found.modules});
+        }
+    );
 };
 
 //todo: to connect to a project, user/team name is required as well. now it only connects to owner projects
