@@ -131,6 +131,7 @@ handler.fork = function(msg, session, next) {
                                 //Handle Success
                                 console.warn("Success forking modules! Here they are: ");
                                 console.warn(modulesCreated);
+                                console.warn("Main Module: " + mainModule);
 
                                 //success
                                 next(null, {code: "success"});
