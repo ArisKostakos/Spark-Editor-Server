@@ -106,7 +106,8 @@ handler.fork = function(msg, session, next) {
                 var sparkDeveloperId = object_found.developerReference;
 
                 //Get Template
-                database.findOneAndPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules",
+               // database.findOneAndPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules",
+                database.findAndDeepPopulate(database.Project, {name: forkedProjectName, owner: sparkDeveloperId}, "modules.assets.owner modules.assets.owner.user modules.assets.assetDependancies", //all at once
                     function (err, object_found) {
                         //Handle Error
                         if (err) {
@@ -262,6 +263,14 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, c
 function forkModule(self, msg, session, forkedModule, cb)
 {
     console.warn("Forking Module: " + forkedModule.name);
+
+    //Get assets of forked Module
+    var assets = forkedModule.assets;
+
+    var firstAsset = assets[0];
+    console.warn("name of first asset of this module: " + firstAsset.name);
+    console.warn("name of user of first asset of this module: " + firstAsset.owner.user.name)
+
     cb(null, null);
 }
 
