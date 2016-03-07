@@ -132,30 +132,6 @@ handler.getProjectMainModuleAssets = function(msg, session, next) {
     );
 };
 
-//Get all library collections referenced in this project
-handler.getProjectLibraryCollections = function(msg, session, next) {
-    var self = this;
-    var sessionService = self.app.get('sessionService');
-
-    //Session bindings
-    var user = session.get('user');
-    var developer = session.get('developer');
-    var project = session.get('project');
-
-    //database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "libraryCollections.baseClass libraryCollections.behaviors",
-    database.findOneAndPopulate(database.Project, {_id: project._id}, "libraryCollections",
-        function (err, project_found) {
-            //Handle Error
-            if (err) {
-                next(null, {code: "error"});
-                return console.error(err);
-            }
-
-            //Handle Success
-            next(null, {code: "success", libraryCollections: project_found.libraryCollections});
-        }
-    );
-};
 
 //temp load everything
 handler.getAssetsOf = function(msg, session, next) {

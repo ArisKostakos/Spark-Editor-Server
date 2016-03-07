@@ -444,6 +444,49 @@ handler.create = function(msg, session, next) {
     );
 };
 
+//Get all library collections referenced in this project
+handler.getProjectLibraryCollections = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    project.populate('libraryCollections', function (err, project) {
+        //Handle Error
+        if (err) {
+            next(null, {code: "error"});
+            return console.error(err);
+        }
+
+        //Handle Success
+        next(null, {code: "success", libraryCollections: project.libraryCollections});
+    });
+};
+
+//Get all modules referenced in this project
+handler.getProjectModulesPopulated = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    project.deepPopulate('modules modules.assets', function (err, project) {
+        //Handle Error
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        //Handle Success
+        next(null, {code: "success", modules: project.modules});
+    });
+};
 
 //todo: to connect to a project, user/team name is required as well. now it only connects to owner projects
 handler.connect = function(msg, session, next) {
