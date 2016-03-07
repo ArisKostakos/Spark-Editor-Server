@@ -264,14 +264,15 @@ function forkModule(self, msg, session, forkedModule, cb)
     console.warn("Forking Module: " + forkedModule.name);
 
 
-    /*
+
     //Get assets of forked Module
     var assets = forkedModule.assets;
 
     var firstAsset = assets[0];
-    console.warn("name of first asset of this module: " + firstAsset.name);
-    console.warn("name of user of first asset of this module: " + firstAsset.owner.user.name)
-*/
+    console.warn("name of first asset of this module: " + firstAsset);
+    //console.warn("name of first asset of this module: " + firstAsset.name);
+    //console.warn("name of user of first asset of this module: " + firstAsset.owner.user.name)
+
     cb(null, null);
 }
 
