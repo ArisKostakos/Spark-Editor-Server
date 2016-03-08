@@ -91,7 +91,9 @@ handler.getProjectIncludeAssets = function(msg, session, next) {
 
 
                 //Find Assets
+                //owner.user.. BAD.. fuck this, it's really wasteful u know what.. i'm removing it NOW. Actually I cant.. due to SparkOld :(
                 database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", $or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' }, { componentType: 'Behavior' }, { componentType: 'Class' } ]}   , "owner.user",
+                //database.find(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", $or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' }, { componentType: 'Behavior' }, { componentType: 'Class' } ]}   ,
                     function (err, objects_found) {
                         //Handle Error
                         if (err) {
@@ -108,7 +110,7 @@ handler.getProjectIncludeAssets = function(msg, session, next) {
     );
 };
 
-//Get all assets referenced in the main module of this project
+//Get all assets referenced in the main module of this project //DEPRECATED
 handler.getProjectMainModuleAssets = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
@@ -128,6 +130,32 @@ handler.getProjectMainModuleAssets = function(msg, session, next) {
 
             //Handle Success
             next(null, {code: "success", assets: module_found.assets});
+        }
+    );
+};
+
+
+//Get all library collections referenced in this project
+//ATTENTION... REMOVE ME... THIS IS FOR sparkOld only!!!
+handler.getProjectLibraryCollections = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    database.findOneAndPopulate(database.Project, {_id: project._id}, "libraryCollections",
+        function (err, project_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", libraryCollections: project_found.libraryCollections});
         }
     );
 };

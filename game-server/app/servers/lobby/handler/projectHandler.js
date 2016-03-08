@@ -478,7 +478,7 @@ handler.getProjectModulesPopulated = function(msg, session, next) {
     var developer = session.get('developer');
     var project = session.get('project');
 
-    database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "modules modules.assets",
+    database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "modules modules.assets", //no owner stuff.. good..
         function (err, project_found) {
             //Handle Error
             if (err) {
