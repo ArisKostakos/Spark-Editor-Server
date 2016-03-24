@@ -59,7 +59,7 @@ var projectSchema = mongoose.Schema({
     owner: {type: Schema.Types.ObjectId, ref: 'Developer'},
     sliced: {type: Schema.Types.ObjectId, ref: 'Sliced'},
     modules: [{type: Schema.Types.ObjectId, ref: 'Module'}],
-    moduleMain: {type: Schema.Types.ObjectId, ref: 'Module'},
+    moduleMain: {type: Schema.Types.ObjectId, ref: 'Module'},   //this might be more consistent (and better) weakly linked, as a String (by module name, project scope)
     tags: [String],	//template tag
     includes: [{type: Schema.Types.ObjectId, ref: 'IncludeQuery'}],
     libraryCollections: [{type: Schema.Types.ObjectId, ref: 'LibraryCollection'}],
@@ -72,10 +72,10 @@ exp.Project = Project;
 //Module
 var moduleSchema = mongoose.Schema({
     name: String,   //unique in project scope
-    requires: [{type: Schema.Types.ObjectId, ref: 'Module'}],
+    requires: [String], //Weak linking by ModuleName (project scope)
     assets: [{type: Schema.Types.ObjectId, ref: 'Asset'}],
     executeEntity: {type: Schema.Types.ObjectId, ref: 'Asset'},
-    tags: [String] //possible tags: level, character, weaponsystem, ..
+    tags: [String] //here as a tag (0) we can include the projectname that I was initially created for
 });
 moduleSchema.plugin(deepPopulate, {});
 var Module = mongoose.model('Module', moduleSchema);
