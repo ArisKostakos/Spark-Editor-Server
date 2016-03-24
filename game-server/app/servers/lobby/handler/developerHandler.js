@@ -19,7 +19,7 @@ handler.populateDevelopers = function(msg, session, next) {
     console.warn("Requesting: " + developerIds);
 
     //Find Developers
-    database.findAndPopulate(database.Developer, {owner: { $in: developerIds } }, "user team",
+    database.findAndPopulate(database.Developer, {_id: { $in: developerIds } }, "user team",
         function (err, developers_found) {
             //Handle Error
             if (err) {
