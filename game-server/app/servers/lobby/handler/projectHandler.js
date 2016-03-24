@@ -121,7 +121,7 @@ handler.fork = function(msg, session, next) {
 
                             //Fork ALL modules of template Project
                             console.warn("Creating Modules for forked project...");
-                            forkModules(self, msg, session, templateProject, 0, [], null, function(err, modulesCreated, mainModule) {
+                            forkModules(self, msg, session, templateProject, projectName, 0, [], null, function(err, modulesCreated, mainModule) {
                                 //Handle Error
                                 if (err) {
                                     next(null, {code: "error"});
@@ -170,7 +170,7 @@ handler.fork = function(msg, session, next) {
 }
 
 //Forks all modules of given project. (other conversion info is inside msg and session :/). Returns modulesCreated array
-function forkModules(self, msg, session, forkedProject, index, modulesCreated, mainModule, cb)
+function forkModules(self, msg, session, forkedProject, newProjectName, index, modulesCreated, mainModule, cb)
 {
     if (index<forkedProject.modules.length)
     {
@@ -178,7 +178,7 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, m
         console.warn("Found Module: " + forkedModule.name);
 
         //Fork it
-        forkModule(self, msg, session, forkedModule, function (err, moduleCreated){
+        forkModule(self, msg, session, forkedModule, newProjectName, function (err, moduleCreated){
             //Handle Error
             if (err) {
                 cb(err);
@@ -195,7 +195,7 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, m
                 mainModule = moduleCreated;
 
             //Next
-            forkModules(self, msg, session, forkedProject, index+1, modulesCreated, mainModule, cb);
+            forkModules(self, msg, session, forkedProject, newProjectName, index+1, modulesCreated, mainModule, cb);
         });
     }
     else //All done.. exiting, issuing real callback
@@ -205,13 +205,13 @@ function forkModules(self, msg, session, forkedProject, index, modulesCreated, m
 }
 
 //Forks a given module (other conversion info is inside msg and session :/) Returns moduleCreated
-function forkModule(self, msg, session, forkedModule, cb)
+function forkModule(self, msg, session, forkedModule, newProjectName, cb)
 {
     console.warn("Forking Module: " + forkedModule.name);
 
 
     //Create New Module
-    createModule(self, session, forkedModule.name, function (err, moduleCreated) {
+    createModule(self, session, forkedModule.name, forkedModule.requires, [newProjectName], function (err, moduleCreated) {
         //Handle Error
         if (err) {
             cb(err);
@@ -252,10 +252,10 @@ function forkModule(self, msg, session, forkedModule, cb)
     });
 }
 
-function createModule(self, session, moduleName, cb)
+function createModule(self, session, moduleName, moduleRequires, moduleTags, cb)
 {
     //Create Main Module for this project
-    self.app.rpc.assets.createRemote.createModule(session, moduleName, function(err, module_created) {
+    self.app.rpc.assets.createRemote.createModule(session, moduleName, moduleRequires, moduleTags, function(err, module_created) {
         //Handle Error
         if (err) {
             cb(err);

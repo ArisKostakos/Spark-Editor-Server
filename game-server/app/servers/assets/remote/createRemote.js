@@ -79,9 +79,9 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 };
 
 
-remote.createModule = function(moduleName, cb) {
+remote.createModule = function(moduleName, moduleRequires, moduleTags, cb) {
 	//create a new Module
-	var raw_Module = {name: moduleName, requires: [], assets: [], tags: []};
+	var raw_Module = {name: moduleName, requires: moduleRequires, assets: [], tags: moduleTags};
 
 	//Create Module
 	database.create(database.Module, raw_Module,
