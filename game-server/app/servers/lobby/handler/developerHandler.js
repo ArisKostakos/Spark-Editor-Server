@@ -27,6 +27,16 @@ handler.populateDevelopers = function(msg, session, next) {
                 return console.error(err);
             }
 
+            //Remove Sensitive Information
+            for (var i=0; i<developers_found.length; i++)
+            {
+                var f_developer = developers_found[i];
+                if (f_developer.isTeam==false)
+                {
+                    f_developer.user.key="";
+                    f_developer.user.password="";
+                }
+            }
             console.warn("Found: " + developers_found.length + " developers! yay!");
 
             //Handle Success
