@@ -59,7 +59,7 @@ var projectSchema = mongoose.Schema({
     owner: {type: Schema.Types.ObjectId, ref: 'Developer'},
     sliced: {type: Schema.Types.ObjectId, ref: 'Sliced'},
     modules: [{type: Schema.Types.ObjectId, ref: 'Module'}],
-    moduleMain: {type: Schema.Types.ObjectId, ref: 'Module'},   //this might be more consistent (and better) weakly linked, as a String (by module name, project scope)
+    moduleMain: String,   //name of the module from the modules array
     tags: [String],	//template tag
     includes: [{type: Schema.Types.ObjectId, ref: 'IncludeQuery'}],
     libraryCollections: [{type: Schema.Types.ObjectId, ref: 'LibraryCollection'}],

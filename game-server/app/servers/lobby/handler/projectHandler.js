@@ -121,7 +121,7 @@ handler.fork = function(msg, session, next) {
 
                             //Fork ALL modules of template Project
                             console.warn("Creating Modules for forked project...");
-                            forkModules(self, msg, session, templateProject, projectName, 0, [], null, function(err, modulesCreated, mainModule) {
+                            forkModules(self, msg, session, templateProject, projectName, 0, [], function(err, modulesCreated) {
                                 //Handle Error
                                 if (err) {
                                     next(null, {code: "error"});
@@ -131,7 +131,7 @@ handler.fork = function(msg, session, next) {
                                 //Handle Success
 
                                 //create new project (mark it forks ForkedProject, not a template, copy paste some ForkedProject stuff)
-                                var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: modulesCreated, moduleMain: mainModule, tags: ['project'], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
+                                var raw_Project = {name: projectName, version: '0.0.1', title: projectTitle, owner: developer._id, fork: templateProject._id, modules: modulesCreated, moduleMain: templateProject.moduleMain, tags: ['project'], includes: templateProject.includes, libraryCollections: templateProject.libraryCollections, accessControl: []};
 
                                 //Create Project
                                 database.create(database.Project, raw_Project,
@@ -170,7 +170,7 @@ handler.fork = function(msg, session, next) {
 }
 
 //Forks all modules of given project. (other conversion info is inside msg and session :/). Returns modulesCreated array
-function forkModules(self, msg, session, forkedProject, newProjectName, index, modulesCreated, mainModule, cb)
+function forkModules(self, msg, session, forkedProject, newProjectName, index, modulesCreated, cb)
 {
     if (index<forkedProject.modules.length)
     {
@@ -190,17 +190,13 @@ function forkModules(self, msg, session, forkedProject, newProjectName, index, m
             //Push Module to Collection
             modulesCreated.push(moduleCreated);
 
-            //If it's the mainModule, store it here too
-            if (forkedProject.moduleMain.toString()==forkedModule._id.toString())
-                mainModule = moduleCreated;
-
             //Next
-            forkModules(self, msg, session, forkedProject, newProjectName, index+1, modulesCreated, mainModule, cb);
+            forkModules(self, msg, session, forkedProject, newProjectName, index+1, modulesCreated, cb);
         });
     }
     else //All done.. exiting, issuing real callback
     {
-        cb(null, modulesCreated, mainModule);
+        cb(null, modulesCreated);
     }
 }
 
