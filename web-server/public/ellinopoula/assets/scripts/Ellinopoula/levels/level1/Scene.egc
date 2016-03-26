@@ -1,0 +1,42 @@
+<Entity extends="std.display.Scene2DPhysics">
+	<Form><Space><Entities>
+		<Entity extends="std.display.Base">
+			<_States>
+		
+			</_States>
+		
+			<Form><Space><Entities>
+		
+			</Entities></Space></Form>
+		
+			<_Triggers>
+		
+			</_Triggers>
+		
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							Display.de("Hi!");
+							
+							function httpGetAsync(theUrl, callback)
+							{
+								var xmlHttp = new XMLHttpRequest();
+								xmlHttp.onreadystatechange = function() { 
+									if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+										callback(xmlHttp.responseText);
+								}
+								xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+								xmlHttp.send(null);
+							}
+							
+							httpGetAsync("https://ellinopoula1.appspot.com/api/memory/?format=api&level=0", function () {
+								console.log("hi from callback");
+							});
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+</Entity>

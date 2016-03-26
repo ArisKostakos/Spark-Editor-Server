@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<Extends>
+		<Entity extends="std.behaviors.display.Layoutable"/>
+	</Extends>
+	
+	<_States>
+		<_State id="displayType">
+			<Value>View</Value>
+		</_State>
+		
+		<State>
+			<Id>initSceneUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>scene</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>initCameraUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>camera</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>active</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>zIndex</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>renderer</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>visible</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+	</_States>
+</Entity>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Level">
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>Module</Value></_State>
+						<_State id="url"><Value>Loader</Value></_State>
+					</_States>
+				</Entity>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>Ellinopoula.levels.loader.View</Value></_State>
+					</_States>
+				</Entity>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>EventSheet</Value></_State>
+						<_State id="url"><Value>Ellinopoula.levels.loader.EventSheet</Value></_State>
+					</_States>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

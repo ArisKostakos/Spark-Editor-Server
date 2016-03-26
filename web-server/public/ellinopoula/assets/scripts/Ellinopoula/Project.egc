@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Project">
+	<Extends>
+
+	</Extends>
+
+	<_States>
+		<_State id="name">
+			<Value>Ellinopoula</Value>
+		</_State>
+		
+		<_State id="initSpaceName">
+			<Value>Main Space</Value>
+		</_State>
+		
+		<_State id="loaderLevelUrl">
+			<Value>Ellinopoula.levels.loader.Level</Value>
+		</_State>
+			
+		<_State id="initLevelUrl">
+			<Value>Ellinopoula.levels.level1.Level</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="Ellinopoula.Space"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
