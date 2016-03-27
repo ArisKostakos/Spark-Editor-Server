@@ -15,12 +15,6 @@
 						<_State id="url"><Value>Ellinopoula.levels.loader.View</Value></_State>
 					</_States>
 				</Entity>
-				<Entity extends="std.core.LevelReference">
-					<_States>
-						<_State id="type"><Value>EventSheet</Value></_State>
-						<_State id="url"><Value>Ellinopoula.levels.loader.EventSheet</Value></_State>
-					</_States>
-				</Entity>
 			</Entities>
 		</Space>
 	</Form>

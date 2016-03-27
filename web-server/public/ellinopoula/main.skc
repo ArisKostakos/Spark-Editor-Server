@@ -45,36 +45,22 @@
 		<Module id="Loader">
 			<Requires>
 				<RequiresModule>Std:Base</RequiresModule>
-				<RequiresModule>Std:Ace</RequiresModule>
 				<RequiresModule>Std:Loader</RequiresModule>
 			</Requires>
 			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/loader/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/loader/Scene.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/loader/EventSheet.egc</Asset>
 			<Asset type="image" location="local" bytes='35672' id="sparkLogo">Ellinopoula/levels/loader/sparklogo.png</Asset>
 		</Module>
 		
-		<Module id="Common" executeEntity="Ellinopoula.levels.common.CommonSpace">
-			<Requires>
-				<RequiresModule>Std:Base</RequiresModule>
-				<RequiresModule>Std:Ace</RequiresModule>
-			</Requires>
-			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/common/CommonSpace.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/common/MainEventSheet.egc</Asset>
-		</Module>
 		
 		<Module id="Level1">
 			<Requires>
 				<RequiresModule>Std:Base</RequiresModule>
 				<RequiresModule>Std:Loader</RequiresModule>
-				<RequiresModule>Std:Ace</RequiresModule>
 				<RequiresModule>Std:Rest</RequiresModule>
-				<RequiresModule>Common</RequiresModule>
 			</Requires>
 			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/level1/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/level1/Scene.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>Ellinopoula/levels/level1/EventSheet.egc</Asset>
-			<!--<Asset type="image" location="local" bytes='3162734' id="level1Background">Ellinopoula/levels/level1/Level1Background.png</Asset>-->
 		</Module>
 		
 		
@@ -114,25 +100,8 @@
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/StyleableNC.egc</Asset>
 		</Module>
 		
-		<Module id="Std:Ace">
-			<Asset type="script" location="local" bytes='35672'>std/ace/EventCollection.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/ace/Event.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/ace/Condition.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/ace/Action.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/ace/TriggerBase.tgc</Asset>
-		</Module>
-		
 		<Module id="Std:Rest">
-			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Scene2DPhysics.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Camera2DStandard.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
-			
-			<Asset type="script" location="local" bytes='35672'>std/display/StageArea.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Scene3D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Camera3D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Entity3D.egc</Asset>
-			
 			
 			
 			<Asset type="script" location="local" bytes='35672'>std/display/FileInput.egc</Asset>
@@ -141,39 +110,6 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/TreeView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/CodeEditor.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Button.egc</Asset>
-			
-			<Asset type="script" location="local" bytes='35672'>std/display/Button2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Spriter2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Spritesheet2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Text2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Line2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Rectangle2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Layer2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/LayerScreen2D.egc</Asset>
-			
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/ShowFPS.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable3D.egc</Asset>
-			
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Renderable3D.egc</Asset>
-			
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/input/KeyboardInput.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/input/KeyboardInputHorizontal.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/movement/InputMove.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/movement/InputMoveHorizontal.egc</Asset>
-			
-			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
-			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
-			
-			<Asset type="data" location="local" bytes='35672' id="fontRed.fnt">std/fontRed.fnt</Asset>
-			<Asset type="data" location="local" bytes='35672' id="fontRed">std/fontRed.png</Asset>
-			
-			<Asset type="data" location="local" bytes='35672' id="fontGreen.fnt">std/fontGreen.fnt</Asset>
-			<Asset type="data" location="local" bytes='35672' id="fontGreen">std/fontGreen.png</Asset>
-			
-			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
-			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
 			
 			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound.mp3</Asset>
 		</Module>
