@@ -23,7 +23,7 @@
 		</_State>
 		
 		<_State id="renderer">
-			<Value>2D</Value>
+			<Value>NativeControls</Value>
 		</_State>
 	</_States>
 </Entity>

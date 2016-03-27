@@ -1,42 +1,112 @@
-<Entity extends="std.display.Scene2DPhysics">
+<Entity extends="std.display.Scene2D">
 	<Form><Space><Entities>
-		<Entity extends="std.display.Base">
+		
+		<Entity extends="std.display.VGroup">
 			<_States>
-		
+				<_State id="width"><Value>50%</Value></_State>
+				<_State id="height"><Value>60%</Value></_State>
+				<_State id="horizontalCenter"><Value>0</Value></_State>
+				<_State id="verticalCenter"><Value>0</Value></_State>
+				<_State id="gap"><Value>10</Value></_State>
+				<_State id="horizontalAlign"><Value>center</Value></_State>
+				<_State id="verticalAlign"><Value>middle</Value></_State>
 			</_States>
-		
+			
 			<Form><Space><Entities>
-		
+				<!-- Request Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="text"><Value>Click me!</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+				<Script>
+					Display.de("Hi!");
+					
+					function httpGetAsync(theUrl, callback)
+					{
+						var xmlHttp = new XMLHttpRequest();
+						xmlHttp.onreadystatechange = function() { 
+							if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+								callback(xmlHttp, xmlHttp.response);
+						}
+						xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+						xmlHttp.send(null);
+					}
+					
+					
+					
+					
+					httpGetAsync("https://ellinopoula1.appspot.com/api/memory/?level=0", function (xmlHttp, response) {
+						var obj = JSON.parse(response);
+						
+						e('Obj Image').setState('display',"inline");
+						e('Obj Image').setState('src',obj[0].image_url);
+						
+						e('Obj Text').setState('display',"inline");
+						e('Obj Text').setState('text',obj[0].title);
+						
+						e('Obj Play Sound Btn').setState('display',"inline");
+						e('Obj Play Sound Btn').setState('SoundUrl',obj[0].narration);
+					});
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+				
+				<!-- Text -->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="name"><Value>Obj Text</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>38</Value></_State>
+						<_State id="fontSize"><Value>22px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="text"><Value>Text here</Value></_State>
+						<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- Image -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="name"><Value>Obj Image</Value></_State>
+						<_State id="width"><Value>300</Value></_State>
+						<_State id="height"><Value>300</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- Play Sound Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="name"><Value>Obj Play Sound Btn</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(150, 147, 187)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="text"><Value>Play Sound</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<State><Id>SoundUrl</Id><Type>Text</Type><Value>Undefined</Value></State>
+					<_State id="display"><Value>none</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+				<Script>
+					var audio = new Audio(me.s('SoundUrl'));
+					audio.play();
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
 			</Entities></Space></Form>
-		
-			<_Triggers>
-		
-			</_Triggers>
-		
-			<_Actions>
-				<_Action id="Constructor">
-					<_Scripts>
-						<Script>
-							Display.de("Hi!");
-							
-							function httpGetAsync(theUrl, callback)
-							{
-								var xmlHttp = new XMLHttpRequest();
-								xmlHttp.onreadystatechange = function() { 
-									if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-										callback(xmlHttp.responseText);
-								}
-								xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-								xmlHttp.send(null);
-							}
-							
-							httpGetAsync("https://ellinopoula1.appspot.com/api/memory/?format=api&level=0", function () {
-								console.log("hi from callback");
-							});
-						</Script>
-					</_Scripts>
-				</_Action>
-			</_Actions>
 		</Entity>
 	</Entities></Space></Form>
 </Entity>
