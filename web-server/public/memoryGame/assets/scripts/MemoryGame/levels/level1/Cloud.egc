@@ -1,0 +1,11 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="2DMeshImageForm"><Value>cloud1</Value></_State>
+		<_State id="spaceX"><Value>1200</Value></_State>
+		<_State id="spaceY"><Value>500</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="velocityX"><Value>-20</Value></_State>
+		<!--<_State id="physicsEntity"><Value>false</Value></_State>-->
+	</_States>
+</Entity>

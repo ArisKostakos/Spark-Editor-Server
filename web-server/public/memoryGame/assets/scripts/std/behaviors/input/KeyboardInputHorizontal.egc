@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_Triggers>
+		<Trigger>
+			<Event>KeyPressed_Left</Event>
+			<Scripts>
+				<Script>
+					me.startAction("GoLeft");
+					if (me.getState('scaleX') > 0) me.setState('scaleX',me.getState('scaleX')*(-1));
+					if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed_Right</Event>
+			<Scripts>
+				<Script>
+					me.startAction("GoRight");
+					if (me.getState('scaleX') > 0) {} else me.setState('scaleX',me.getState('scaleX')*(-1));
+					if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		
+		<Trigger>
+			<Event>KeyPressed_Up</Event>
+			<Scripts>
+				<Script>
+					//me.startAction("GoLeft");
+					//if (me.getState('scaleX') > 0) me.setState('scaleX',me.getState('scaleX')*(-1));
+					//if (me.getState('2DMeshSpriterAnimForm')!="AnimationWalking") me.setState('2DMeshSpriterAnimForm',"AnimationWalking");
+					me.setState('applyImpulseY',-10000);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>KeyReleased_Left</Event>
+			<Scripts>
+				<Script>
+					me.stopAction("GoLeft");
+					me.setState('velocityX',0);
+					if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased_Right</Event>
+			<Scripts>
+				<Script>
+					me.stopAction("GoRight");
+					me.setState('velocityX',0);
+					if (me.getState('2DMeshSpriterAnimForm')!="AnimationStanding") me.setState('2DMeshSpriterAnimForm',"AnimationStanding");
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+	</_Triggers>
+</Entity>

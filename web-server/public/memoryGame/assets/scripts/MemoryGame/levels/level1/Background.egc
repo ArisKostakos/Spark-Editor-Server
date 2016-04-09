@@ -1,0 +1,82 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="2DMeshImageForm"><Value>background</Value></_State>
+		<_State id="spaceX"><Value>1200</Value></_State>
+		<_State id="spaceY"><Value>800</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Add Hot Air Balloon
+					var hotAirBalloon = Logic.create('MemoryGame.levels.level1.HotAirBalloon');
+					e('mainScene').insertChild(hotAirBalloon,3);
+					
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('spaceX',1200);
+					cloud.setState('spaceY',500);
+					cloud.setState('velocityX',-20);
+					e('mainScene').insertChild(cloud,3);
+					
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('spaceX',1800);
+					cloud.setState('spaceY',700);
+					cloud.setState('velocityX',-15);
+					e('mainScene').insertChild(cloud,3);
+					
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('spaceX',700);
+					cloud.setState('spaceY',400);
+					cloud.setState('velocityX',-10);
+					e('mainScene').insertChild(cloud,3);
+					
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('spaceX',1600);
+					cloud.setState('spaceY',1200);
+					cloud.setState('velocityX',-17);
+					cloud.setState('scaleX',1.3);
+					cloud.setState('scaleY',1.3);
+					e('mainScene').insertChild(cloud,3);
+					
+					//Add A Balloon
+					var balloon = Logic.create('MemoryGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon1");
+					balloon.setState('spaceX',1200);
+					balloon.setState('spaceY',1200);
+					balloon.setState('velocityY',-25);
+					e('mainScene').insertChild(balloon,3);
+					
+					//Add A Balloon
+					var balloon = Logic.create('MemoryGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon2");
+					balloon.setState('spaceX',500);
+					balloon.setState('spaceY',1000);
+					balloon.setState('velocityY',-22);
+					e('mainScene').insertChild(balloon,3);
+					
+					//Add A Balloon
+					var balloon = Logic.create('MemoryGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon3");
+					balloon.setState('spaceX',1900);
+					balloon.setState('spaceY',1100);
+					balloon.setState('velocityY',-15);
+					balloon.setState('scaleX',0.8);
+					balloon.setState('scaleY',0.8);
+					e('mainScene').insertChild(balloon,3);
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

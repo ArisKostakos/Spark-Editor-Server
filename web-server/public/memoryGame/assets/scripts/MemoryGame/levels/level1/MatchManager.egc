@@ -1,0 +1,73 @@
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Match Manager</Value></_State>
+		<State><Id>requestObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Get Next Match</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//So this is going to be asychronous.. So when we're done, we're going to just call another Action or something like that
+					//If we want to be fancy, we can just call a callback parameter function.. but whatevs
+					
+					//Fake obj we got from the "URL REQUEST"
+					var obj = {};
+					obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+									{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+									{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
+								];
+					me.setState('requestObj',obj);
+					
+					me.forceAction('Load Assets');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Load Assets</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var obj = me.s('requestObj');
+					
+					//Initiate Load
+					var loader = Assets.initiateBatch();
+					
+					for (item of obj.items)
+					{
+						//Display.de("Found item, loading its image: " + item.image);
+						//Add file to Flambe Loader
+						loader.addFile(item.image, "image_" + item.name);
+						loader.addFile(item.audio, "audio_" + item.name);
+					}
+					
+					
+					if (obj.items.length>0)
+					{
+						//Load
+						loader.start();
+					}
+					else
+					{
+						Display.de("There was like.. no items found! wtf..");
+						return;
+					}
+					
+					//var oldMe = me;
+					//Event Listener
+					loader.successSignal.connect(function () {
+						//Display.de("Done loading shit!");
+						e('Game Manager').fa('Create Match',{matchObj:obj});
+					}).once();
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

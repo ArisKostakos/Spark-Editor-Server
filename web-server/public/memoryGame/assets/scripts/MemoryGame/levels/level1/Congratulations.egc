@@ -1,0 +1,15 @@
+<Entity extends="std.display.Text2D">
+	<_States>
+		<_State id="name"><Value>Congratulations</Value></_State>
+		<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
+		<_State id="font"><Value>ComfortGreek</Value></_State>
+		<_State id="text"><Value>Μπράβο βρε μαλάκα!!!!!!</Value></_State>
+		<_State id="spaceX"><Value>1900</Value></_State>
+		<_State id="spaceY"><Value>700</Value></_State>
+		<_State id="align"><Value>Center</Value></_State>
+		<_State id="scaleX"><Value>3</Value></_State>
+		<_State id="scaleY"><Value>3</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="visible"><Value>false</Value></_State>
+	</_States>
+</Entity>

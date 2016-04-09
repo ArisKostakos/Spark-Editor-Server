@@ -1,0 +1,65 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="2DMeshImageForm"><Value>hotAirBalloon</Value></_State>
+		<_State id="spaceX"><Value>1900</Value></_State>
+		<_State id="spaceY"><Value>400</Value></_State>
+		<_State id="scaleX"><Value>0.8</Value></_State>
+		<_State id="scaleY"><Value>0.8</Value></_State>
+		<_State id="velocityX"><Value>-40</Value></_State>
+		<_State id="velocityAng"><Value>;Logic.random(-5,5)</Value></_State>
+		<_State id="physicsType"><Value>Dynamic</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.sa('Wooble');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Wooble</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					var x = query(me,'x');
+					var y = query(me,'y');
+					var angle = query(me,'angle');
+					
+					//Display.de('balloon y: ' + y);
+					
+					if (y>400)
+						me.setState('applyImpulseY',-300);
+					else
+						me.setState('applyImpulseY',-150);
+						
+					if (angle>5)
+					{
+						me.setState('applyImpulseAngle',-700);
+					}
+					else if (angle<-5)
+					{
+						me.setState('applyImpulseAngle',700);
+					}
+						
+				/*
+					//gfhfh
+					
+					//Display.de('balloon ang: ' + angle);
+					
+					if (angle>10)
+					{
+						me.setState('velocityAng',-6);
+					}
+					else if (angle<-10)
+					{
+						me.setState('velocityAng',6);
+					}
+					*/
+				]]></Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

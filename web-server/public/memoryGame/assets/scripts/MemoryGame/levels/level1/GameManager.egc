@@ -1,0 +1,229 @@
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Game Manager</Value></_State>
+		<State><Id>allCards</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>cardsFound</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>selectedCards</Id><Type>Dynamic</Type><Value>[]</Value></State>
+		<State><Id>matchStarted</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Create Match</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					function shuffle(array) {
+					  var currentIndex = array.length, temporaryValue, randomIndex;
+					  
+					  // While there remain elements to shuffle...
+					  while (0 !== currentIndex) {
+					  
+						// Pick a remaining element...
+						randomIndex = Math.floor(Math.random() * currentIndex);
+						currentIndex -= 1;
+						
+						// And swap it with the current element.
+						temporaryValue = array[currentIndex];
+						array[currentIndex] = array[randomIndex];
+						array[randomIndex] = temporaryValue;
+					  }
+					  
+					  return array;
+					}
+					
+					//STARTS HERE
+					me.setState('matchStarted',false);
+					me.setState('cardsFound',0);
+					var obj = it.s('matchObj');
+					var arrayOfCards = [];
+					
+					for (item of obj.items)
+					{
+						//Display.de("Game Manager: Found item " + item.name);
+						
+						for (var i=0;i<2;i++)
+						{
+							var card = Logic.create('MemoryGame.levels.level1.Card');
+							card.setState('cardName',item.name);
+							card.setState('physicsEntity',false);
+							
+							arrayOfCards.push(card);
+							//card.setState('spaceX',Logic.random(80,500));
+							//card.setState('spaceY',Logic.random(80,500));
+							
+							//e('Cards Area').addChild(card);
+						}
+					}
+					
+					//Maybe here, we change size (and pos?) of Cards Area, depending on number of cards
+					
+					//Store Cards
+					me.setState('allCards',arrayOfCards);
+					
+					//Add Cards
+					e('Cards Area').fa('Add Cards To Tile',{cards:shuffle(arrayOfCards)});
+					
+					me.sa('WaitFor',{delay:1,cbEntity:me,cbAction:"Show All Cards"});
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>matchObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Show All Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					for (card of me.s('allCards'))
+						card.fa('Show',{playSound:false});
+						
+					me.sa('WaitFor',{delay:3,cbEntity:me,cbAction:"Hide All Cards"});
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Hide All Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					for (card of me.s('allCards'))
+						card.fa('Hide');
+						
+					me.setState('matchStarted',true);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Card Clicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					if (me.s('matchStarted'))
+					{
+						var selectedCards = me.s('selectedCards');
+						var card = it.s('card');
+						//Display.de('Card Clicked: ' + it.s('card').s('cardName'));
+						
+						if (selectedCards.length<2)
+						{
+							selectedCards.push(card);
+							card.fa('Show',{playSound:true});
+						}
+						
+						if (selectedCards.length==2)
+							me.sa('WaitFor',{delay:1,cbEntity:me,cbAction:"Compare Cards"});
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>card</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Compare Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var selectedCards = me.s('selectedCards');
+					var l_cardA = selectedCards[0];
+					var l_cardB = selectedCards[1];
+					
+					if (l_cardA.s('cardName')==l_cardB.s('cardName'))
+					{
+						Display.de("WINRAR IS YOU!");
+						l_cardA.setState('visible',false);
+						l_cardB.setState('visible',false);
+						me.addToState('cardsFound',2);
+						me.fa('Check For Victory');
+					}
+					else
+					{
+						Display.de("You suck kid!");
+						l_cardA.fa('Hide');
+						l_cardB.fa('Hide');
+					}
+					
+					me.setState('selectedCards',[]);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Check For Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('cardsFound')>=me.s('allCards').length)
+						me.sa('WaitFor',{delay:0.5,cbEntity:me,cbAction:"Show Victory"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Show Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					e('Congratulations').setState('visible',true);
+					
+					me.sa('WaitFor',{delay:3,cbEntity:me,cbAction:"Hide Victory"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Hide Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					e('Congratulations').setState('visible',false);
+					
+					e('Match Manager').forceAction('Get Next Match');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    me.stopAction('WaitFor');
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

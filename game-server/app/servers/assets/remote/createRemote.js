@@ -25,8 +25,7 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 	console.log('Found Recursively Rpc: ' + asset.name);
 	console.log('assetSource: ' + assetSource);
 	console.log('assetTarget: ' + assetTarget);
-
-
+	
 
 	//copy assetFile to /user location
 	fs.copy(assetSource, assetTarget, function(err) {

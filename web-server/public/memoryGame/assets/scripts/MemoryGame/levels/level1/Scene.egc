@@ -1,0 +1,23 @@
+<Entity extends="std.display.Scene2DPhysics">
+	<_States>
+		<_State id="name"><Value>mainScene</Value></_State>
+	</_States>
+	<Form><Space><Entities>
+		<!-- Game Manager (non-visual) -->
+		<Entity extends="MemoryGame.levels.level1.GameManager"/>
+		
+		<!-- Match Manager (non-visual) -->
+		<Entity extends="MemoryGame.levels.level1.MatchManager"/>
+		
+		<!-- Background -->
+		<Entity extends="MemoryGame.levels.level1.Background"/>
+		
+		<!-- Logo -->
+		<Entity extends="MemoryGame.levels.level1.Logo"/>
+		
+		<Entity extends="MemoryGame.levels.level1.CardsArea"/>
+		<Entity extends="MemoryGame.levels.level1.PlayBtn"/>
+		<Entity extends="MemoryGame.levels.level1.Congratulations"/>
+		<Entity extends="MemoryGame.levels.level1.BlueBird"/>
+	</Entities></Space></Form>
+</Entity>

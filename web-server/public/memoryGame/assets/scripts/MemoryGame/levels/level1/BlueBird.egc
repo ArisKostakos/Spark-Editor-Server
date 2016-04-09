@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Spritesheet2D">
+	<_States>
+		<_State id="name"><Value>Blue Bird</Value></_State>
+		<_State id="spaceX"><Value>300</Value></_State>
+		<_State id="spaceY"><Value>80</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="2DMeshSpritesheetForm"><Value>SpritesheetMain</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>SpritesheetMain</Id>
+				<Type>Text</Type>
+				<Value>blueBird</Value>
+			</State>
+		</_States>
+	</_Form>
+</Entity>

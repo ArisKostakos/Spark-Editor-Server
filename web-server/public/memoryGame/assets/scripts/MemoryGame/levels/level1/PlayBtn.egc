@@ -1,0 +1,36 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="2DMeshImageForm"><Value>[ImageUrl]</Value></_State>
+		<_State id="spaceX"><Value>1200</Value></_State>
+		<_State id="spaceY"><Value>800</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<!--
+		<_State id="physicsType"><Value>Dynamic</Value></_State>-->
+			
+		<_State id="touchable"><Value>true</Value></_State>
+	</_States>
+	
+		
+	<_Form>
+		<_States>
+			<State><Id>ImageUrl</Id><Type>Text</Type><Value>playBtn</Value></State>
+		</_States>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					Display.de("Hi");
+					e('Match Manager').forceAction('Get Next Match');
+					me.sa("Fade Out",{speed:5});
+					e('Ellinopoula Logo').sa("Fade Out",{speed:3});
+					//parent.removeChild(me);
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

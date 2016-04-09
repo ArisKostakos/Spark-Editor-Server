@@ -1,0 +1,46 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="2DMeshImageForm"><Value>balloon1</Value></_State>
+		<_State id="spaceX"><Value>1200</Value></_State>
+		<_State id="spaceY"><Value>1200</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="velocityY"><Value>-10</Value></_State>
+		<_State id="velocityAng"><Value>;Logic.random(-5,5)</Value></_State>
+		<_State id="physicsType"><Value>Dynamic</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.sa('Wooble');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Wooble</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//gfhfh
+					var angle = query(me,'angle');
+					//Display.de('balloon ang: ' + angle);
+					
+					me.setState('velocityY',Logic.random(-30,-40));
+						
+					if (angle>7)
+					{
+						me.setState('applyImpulseAngle',-550);
+					}
+					else if (angle<-7)
+					{
+						me.setState('applyImpulseAngle',550);
+					}
+					
+				]]></Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
