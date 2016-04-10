@@ -49,7 +49,7 @@
 					{
 						//Display.de("Found item, loading its image: " + item.image);
 						//Add file to Flambe Loader
-						loader.addFile(item.image, "image_" + item.name);
+						//loader.addFile(item.image, "image_" + item.name);
 						loader.addFile(item.audio, "audio_" + item.name);
 					}
 					

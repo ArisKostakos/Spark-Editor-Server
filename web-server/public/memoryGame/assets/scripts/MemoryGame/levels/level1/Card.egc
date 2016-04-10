@@ -33,7 +33,8 @@
 					//Display.de("Hi from card! " + me.s('spaceX'));
 					
 					var cardImage = Logic.create('std.display.Image2D');
-					cardImage.setState('2DMeshImageForm',"image_" + me.s('cardName'));
+					//cardImage.setState('2DMeshImageForm',"image_" + me.s('cardName'));
+					cardImage.setState('2DMeshImageForm',"cloud1");
 					cardImage.setState('spaceX',110);
 					cardImage.setState('spaceY',150);
 					cardImage.setState('scaleX',0.6);
