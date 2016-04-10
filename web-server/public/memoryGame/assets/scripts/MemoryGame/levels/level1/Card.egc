@@ -34,7 +34,7 @@
 					
 					var cardImage = Logic.create('std.display.Image2D');
 					//cardImage.setState('2DMeshImageForm',"image_" + me.s('cardName'));
-					cardImage.setState('2DMeshImageForm',"cloud1");
+					cardImage.setState('2DMeshImageForm',"cloud1"); //YOOO
 					cardImage.setState('spaceX',110);
 					cardImage.setState('spaceY',150);
 					cardImage.setState('scaleX',0.6);
@@ -69,8 +69,8 @@
 				<Script>
 					//forced
 					
-					if (it.s('playSound'))
-						Sound.playSound("audio_" + me.s('cardName'));
+					//if (it.s('playSound'))
+						//Sound.playSound("audio_" + me.s('cardName'));  //YOOO
 						
 						
 					me.s('obj_image').setState('visible',true);
