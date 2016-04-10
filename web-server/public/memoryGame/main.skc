@@ -80,11 +80,14 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Balloon.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/HotAirBalloon.egc</Asset>
 			
+			
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedRect.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/GreenRect.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueRect.egc</Asset>
+			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueBird.egc</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="Coin_sheet">MemoryGame/levels/level1/Coin_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="Coin">MemoryGame/levels/level1/Coin.plist</Asset>
 			
 			<Asset type="image" location="local" bytes='3162734' id="background">MemoryGame/levels/level1/island.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="ellinopoulaLogo">MemoryGame/levels/level1/logo.png</Asset>
@@ -104,6 +107,16 @@
 			
 			<Asset type="data" location="local" bytes='35672' id="ComfortGreek.fnt">MemoryGame/ComfortGreek.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="ComfortGreek">MemoryGame/ComfortGreek.png</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/MyParticle.egc</Asset>
+			<Asset type="image" location="local" bytes='35672' id="snow">MemoryGame/levels/level1/particles/snow.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="snow.pex">MemoryGame/levels/level1/particles/snow.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="heart">MemoryGame/levels/level1/particles/heart.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="love.pex">MemoryGame/levels/level1/particles/love.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="spark">MemoryGame/levels/level1/particles/spark.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="explode.pex">MemoryGame/levels/level1/particles/explode.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="texture">MemoryGame/levels/level1/particles/texture.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="particle.pex">MemoryGame/levels/level1/particles/particle.pex</Asset>
 		</Module>
 		
 		
@@ -154,6 +167,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Text2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/display/ParticleEmitter2D.egc</Asset>
 			
 			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound.mp3</Asset>
 		</Module>

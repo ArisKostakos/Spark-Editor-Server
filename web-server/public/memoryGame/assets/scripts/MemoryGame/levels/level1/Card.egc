@@ -45,7 +45,22 @@
 				</Script>
 			</_Scripts>
 		</_Action>
-			
+		
+		<Action>
+			<Id>Found</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.setState('animate_rotation',{type:"by", by:600, seconds:1, easing:Ease.backOut});
+					me.setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+					me.setState('animate_scaleX',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+					me.setState('animate_scaleY',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+				</Script>
+			</Scripts>
+		</Action>
+		
 		<Action>
 			<Id>Show</Id>
 			<Concurrency>Persistent</Concurrency>

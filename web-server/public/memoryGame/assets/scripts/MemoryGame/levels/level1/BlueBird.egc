@@ -6,7 +6,7 @@
 		<_State id="spaceY"><Value>80</Value></_State>
 		<_State id="scaleX"><Value>1</Value></_State>
 		<_State id="scaleY"><Value>1</Value></_State>
-		<_State id="2DMeshSpritesheetForm"><Value>SpritesheetMain</Value></_State>
+		<_State id="2DMeshSpritesheetForm"><Value>[SpritesheetMain]</Value></_State>
 	</_States>
 	
 	<_Form>

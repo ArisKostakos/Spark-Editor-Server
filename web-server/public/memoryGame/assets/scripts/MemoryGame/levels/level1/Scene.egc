@@ -1,6 +1,7 @@
-<Entity extends="std.display.Scene2DPhysics">
+<Entity extends="std.display.Scene2D">
 	<_States>
 		<_State id="name"><Value>mainScene</Value></_State>
+		<State><Id>rectOpacity</Id><Type>Decimal</Type><Value>0</Value></State>
 	</_States>
 	<Form><Space><Entities>
 		<!-- Game Manager (non-visual) -->
@@ -9,11 +10,29 @@
 		<!-- Match Manager (non-visual) -->
 		<Entity extends="MemoryGame.levels.level1.MatchManager"/>
 		
+		<!-- Rects -->
+		<Entity extends="MemoryGame.levels.level1.RedRect"/>
+		<Entity extends="MemoryGame.levels.level1.GreenRect"/>
+		
 		<!-- Background -->
 		<Entity extends="MemoryGame.levels.level1.Background"/>
 		
 		<!-- Logo -->
 		<Entity extends="MemoryGame.levels.level1.Logo"/>
+		
+		<Entity extends="MemoryGame.levels.level1.BlueRect"/>
+		
+		<!-- Particle Emitters -->
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle1</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle2</Value></_State>
+			</_States>
+		</Entity>
 		
 		<Entity extends="MemoryGame.levels.level1.CardsArea"/>
 		<Entity extends="MemoryGame.levels.level1.PlayBtn"/>

@@ -11,7 +11,7 @@
 					me.stopAction('Camera Init');
 					
 					var view = it.s('view');
-					Display.error("View Name: " + view.getState('name'));
+					//Display.error("View Name: " + view.getState('name'));
 					//CAMERA
 					var camera = me;
 					
@@ -37,17 +37,18 @@
 
 					var viewWidth = view.getState('feedbackWidth');
 					var viewHeight = view.getState('feedbackHeight');
-					Display.error("View Width: " + viewWidth);
-					Display.error("View Height: " + viewHeight);
+					//Display.error("View Width: " + viewWidth);
+					//Display.error("View Height: " + viewHeight);
 					
 					
 					var viewAspectRatio = viewWidth/viewHeight;
-					Display.error("viewAspectRatio: " + viewAspectRatio);
+					//Display.error("viewAspectRatio: " + viewAspectRatio);
 					var cameraCaptureAreaX = 0;
 					var cameraCaptureAreaY = 0;
 					var cameraCaptureAreaWidth =0;
 					var cameraCaptureAreaHeight =0;
 					
+					/*
 					//if (scale between 4:3 and 16:9)
 					if (viewAspectRatio>1.777) //16:9
 					{
@@ -61,13 +62,13 @@
 						//For now, Assume 1.333
 						viewAspectRatio = 1.333;
 					}
-					
+					*/
 					
 
 					//check if ratio is bigger or smaller than 3:2 (1.5)
 					if (viewAspectRatio>1.5) //if bigger
 					{
-						Display.error("GOOD! glueing HEIGHT");
+						//Display.error("GOOD! glueing HEIGHT");
 						//glue minBoundsHeight
 						cameraCaptureAreaHeight = minBoundsHeight;
 						cameraCaptureAreaWidth = Math.round(cameraCaptureAreaHeight*viewAspectRatio);
@@ -75,7 +76,7 @@
 					}
 					else //if smaller or equal
 					{
-						Display.error("GOOD! glueing WIDTH");
+						//Display.error("GOOD! glueing WIDTH");
 						//glue minBoundsWidth (this case)
 						cameraCaptureAreaWidth = minBoundsWidth;
 						cameraCaptureAreaHeight = Math.round(cameraCaptureAreaWidth/viewAspectRatio);

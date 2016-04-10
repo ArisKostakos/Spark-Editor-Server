@@ -89,7 +89,7 @@
 			<Scripts>
 				<Script>
 					me.stopAction('Camera Init');
-					Display.de("Hi from camera: " + me.s('name') + " called from view: " + it.s('view'));
+					//Display.de("Hi from camera: " + me.s('name') + " called from view: " + it.s('view'));
 				</Script>
 			</Scripts>
 			<States>

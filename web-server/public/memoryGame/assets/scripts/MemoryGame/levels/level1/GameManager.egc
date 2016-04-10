@@ -120,7 +120,10 @@
 						}
 						
 						if (selectedCards.length==2)
+						{
+							me.fa("Compare Cards Effe");
 							me.sa('WaitFor',{delay:1,cbEntity:me,cbAction:"Compare Cards"});
+						}
 					}
 				]]></Script>
 			</Scripts>
@@ -129,6 +132,33 @@
 			</States>
 		</Action>
 		
+		<Action>
+			<Id>Compare Cards Effe</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var selectedCards = me.s('selectedCards');
+					var l_cardA = selectedCards[0];
+					var l_cardB = selectedCards[1];
+					
+					if (l_cardA.s('cardName')==l_cardB.s('cardName'))
+					{
+						//Card A
+						e('particle1').setState('emitX',l_cardA.s('spaceX')+e('Cards Area').s('spaceX'));
+						e('particle1').setState('emitY',l_cardA.s('spaceY')+e('Cards Area').s('spaceY'));
+						e('particle1').setState('action_fire',true);
+						
+						//Card B
+						e('particle2').setState('emitX',l_cardB.s('spaceX')+e('Cards Area').s('spaceX'));
+						e('particle2').setState('emitY',l_cardB.s('spaceY')+e('Cards Area').s('spaceY'));
+						e('particle2').setState('action_fire',true);
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
 		<Action>
 			<Id>Compare Cards</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -143,8 +173,8 @@
 					if (l_cardA.s('cardName')==l_cardB.s('cardName'))
 					{
 						Display.de("WINRAR IS YOU!");
-						l_cardA.setState('visible',false);
-						l_cardB.setState('visible',false);
+						l_cardA.fa('Found');
+						l_cardB.fa('Found');
 						me.addToState('cardsFound',2);
 						me.fa('Check For Victory');
 					}
