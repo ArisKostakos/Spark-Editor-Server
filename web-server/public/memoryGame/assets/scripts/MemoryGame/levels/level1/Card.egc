@@ -19,6 +19,8 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
+					Display.de("I AM CLICKED!" + me.s('isHidden'));
+					
 					if (me.s('isHidden'))
 						e('Game Manager').fa('Card Clicked',{card:me});
 				</Script>
@@ -33,13 +35,13 @@
 					//Display.de("Hi from card! " + me.s('spaceX'));
 					
 					var cardImage = Logic.create('std.display.Image2D');
-					//cardImage.setState('2DMeshImageForm',"image_" + me.s('cardName'));
-					cardImage.setState('2DMeshImageForm',"cloud1"); //YOOO
-					cardImage.setState('spaceX',110);
-					cardImage.setState('spaceY',150);
-					cardImage.setState('scaleX',0.6);
-					cardImage.setState('scaleY',0.6);
-					cardImage.setState('scaleY',0.6);
+					cardImage.setState('2DMeshImageForm',"image_" + me.s('cardName'));
+					//cardImage.setState('2DMeshImageForm',"cloud1"); //YOOO
+					cardImage.setState('spaceX',190);
+					cardImage.setState('spaceY',170);
+					cardImage.setState('scaleX',1);
+					cardImage.setState('scaleY',1);
+					cardImage.setState('physicsEntity',false);
 					cardImage.setState('visible',false);
 					me.setState('obj_image',cardImage);
 					me.addChild(cardImage);
@@ -58,6 +60,7 @@
 					me.setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 					me.setState('animate_scaleX',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 					me.setState('animate_scaleY',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+					me.setState('isHidden',false);
 				</Script>
 			</Scripts>
 		</Action>
@@ -101,15 +104,17 @@
 	</_Actions>
 		
 	<Form><Space><Entities>
+		
 		<Entity extends="std.display.FillRect2D">
 			<_States>
 				<_State id="2DMeshFillRectForm"><Value>0xFFFFFF</Value></_State>
-				<_State id="spaceWidth"><Value>300</Value></_State>
-				<_State id="spaceHeight"><Value>300</Value></_State>
-				<_State id="spaceX"><Value>110</Value></_State>
-				<_State id="spaceY"><Value>150</Value></_State>
-				<_State id="scaleX"><Value>0.6</Value></_State>
-				<_State id="scaleY"><Value>0.6</Value></_State>
+				<_State id="spaceWidth"><Value>330</Value></_State>
+				<_State id="spaceHeight"><Value>360</Value></_State>
+				<_State id="spaceX"><Value>190</Value></_State>
+				<_State id="spaceY"><Value>200</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
 				<_State id="visible"><Value>false</Value></_State>
 			</_States>
 			<_Actions>
@@ -123,16 +128,17 @@
 			</_Actions>
 		</Entity>
 		
+		
 		<Entity extends="std.display.Text2D">
 			<_States>
 				<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
 				<_State id="font"><Value>ComfortGreek</Value></_State>
 				<_State id="text"><Value>ΝΑ</Value></_State>
-				<_State id="spaceX"><Value>160</Value></_State>
-				<_State id="spaceY"><Value>250</Value></_State>
+				<_State id="spaceX"><Value>260</Value></_State>
+				<_State id="spaceY"><Value>350</Value></_State>
 				<_State id="align"><Value>Center</Value></_State>
-				<_State id="scaleX"><Value>1</Value></_State>
-				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="scaleX"><Value>1.7</Value></_State>
+				<_State id="scaleY"><Value>1.7</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
 				<_State id="visible"><Value>false</Value></_State>
 			</_States>

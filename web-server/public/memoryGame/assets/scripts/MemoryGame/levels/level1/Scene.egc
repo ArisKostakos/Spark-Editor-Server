@@ -37,6 +37,25 @@
 		<Entity extends="MemoryGame.levels.level1.CardsArea"/>
 		<Entity extends="MemoryGame.levels.level1.PlayBtn"/>
 		<Entity extends="MemoryGame.levels.level1.Congratulations"/>
+		
+		
 		<Entity extends="MemoryGame.levels.level1.BlueBird"/>
+		<Entity extends="MemoryGame.levels.level1.RedBird"/>
 	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					var fromY=1000;
+					var toY=500;
+					var secs=6;
+				
+					e('Blue Bird').setState('animate_y',{from:fromY, to:toY, seconds:secs, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_y',{from:fromY-80, to:toY-80, seconds:secs, easing:Ease.quadInOut});
+					e('Button Sprite').setState('animate_y',{from:fromY+188, to:toY+188, seconds:secs, easing:Ease.quadInOut});
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
 </Entity>

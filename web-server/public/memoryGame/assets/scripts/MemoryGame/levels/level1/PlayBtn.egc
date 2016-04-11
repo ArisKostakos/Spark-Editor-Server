@@ -1,36 +1,87 @@
-<Entity extends="std.display.Image2D">
+<Entity extends="std.display.Sprite2D">
 	<_States>
-		<_State id="2DMeshImageForm"><Value>[ImageUrl]</Value></_State>
+		<_State id="name"><Value>Button Sprite</Value></_State>
 		<_State id="spaceX"><Value>1200</Value></_State>
 		<_State id="spaceY"><Value>800</Value></_State>
-		<_State id="scaleX"><Value>1</Value></_State>
-		<_State id="scaleY"><Value>1</Value></_State>
-		<_State id="physicsEntity"><Value>false</Value></_State>
-		<!--
-		<_State id="physicsType"><Value>Dynamic</Value></_State>-->
-			
 		<_State id="touchable"><Value>true</Value></_State>
 	</_States>
-	
-		
-	<_Form>
-		<_States>
-			<State><Id>ImageUrl</Id><Type>Text</Type><Value>playBtn</Value></State>
-		</_States>
-	</_Form>
-	
-	<_Triggers>
-		<Trigger>
-			<Event>MouseLeftClick</Event>
-			<Scripts>
-				<Script>
-					Display.de("Hi");
-					e('Match Manager').forceAction('Get Next Match');
-					me.sa("Fade Out",{speed:5});
-					e('Ellinopoula Logo').sa("Fade Out",{speed:3});
-					//parent.removeChild(me);
-				</Script>
-			</Scripts>
-		</Trigger>
-	</_Triggers>
+
+	<Form><Space><Entities>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="2DMeshImageForm"><Value>[ImageUrl]</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="touchable"><Value>true</Value></_State>
+			</_States>
+			
+				
+			<_Form>
+				<_States>
+					<State><Id>ImageUrl</Id><Type>Text</Type><Value>playBtn</Value></State>
+				</_States>
+			</_Form>
+			
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							Display.de("Hi");
+							e('Match Manager').forceAction('Get Next Match');
+							me.sa("Fade Out",{speed:5});
+							e('Ellinopoula Logo').sa("Fade Out",{speed:3});
+							//parent.removeChild(me);
+							
+							
+							var secsBlue=3;
+							e('Blue Bird').setState('animate_x',{type:"to", to:250, seconds:secsBlue, easing:Ease.quadInOut});
+							e('Blue Bird').setState('animate_y',{type:"to", to:250, seconds:secsBlue, easing:Ease.quadInOut});
+							
+							var secsRed=3.8;
+							e('Blue Bird').setState('scaleX',-1);
+							e('Red Bird').setState('animate_x',{type:"to", to:450, seconds:secsRed, easing:Ease.quadInOut});
+							e('Red Bird').setState('animate_y',{type:"to", to:300, seconds:secsRed, easing:Ease.quadInOut});
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+				
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							me.sa('Shake');
+						</Script>
+					</_Scripts>
+				</_Action>
+				
+				<Action>
+					<Id>Shake</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							var deltas=[0,4,8,5,-2,-3,-8,-4];
+							
+							if (e('Blue Bird').s('obj_player')==null)
+								return;
+							
+							var frameIndex=e('Blue Bird').s('obj_player').currentIndex-1;
+							
+							if (frameIndex!=it.s('frame'))
+								me.addToState('spaceY',-deltas[frameIndex]);
+							
+							it.setState('frame',frameIndex);
+						</Script>
+					</Scripts>
+					<States>
+						<State><Id>frame</Id><Type>Integer</Type><Value>-1</Value></State>
+					</States>
+				</Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
 </Entity>

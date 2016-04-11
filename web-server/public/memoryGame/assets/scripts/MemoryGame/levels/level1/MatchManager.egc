@@ -2,6 +2,7 @@
 	<_States>
 		<_State id="name"><Value>Match Manager</Value></_State>
 		<State><Id>requestObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>matchNo</Id><Type>Integer</Type><Value>0</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -16,16 +17,48 @@
 					//If we want to be fancy, we can just call a callback parameter function.. but whatevs
 					
 					//Fake obj we got from the "URL REQUEST"
+					var matchNo = me.addToState('matchNo',1);
+					
 					var obj = {};
-					obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-									{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-									{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-									{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-									{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-									{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-									{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-									{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"}
-								];
+					
+					if (matchNo==1)
+					{
+						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
+									];
+					}
+					else if (matchNo==2)
+					{
+						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"}
+									];
+					}
+					else if (matchNo==3)
+					{
+						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
+									];
+					}
+					else
+					{
+						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"}
+									];
+					}
+					
 					me.setState('requestObj',obj);
 					
 					me.forceAction('Load Assets');
@@ -43,8 +76,8 @@
 					var obj = me.s('requestObj');
 					
 					//YOOO
-					e('Game Manager').fa('Create Match',{matchObj:obj});
-					return;
+					//e('Game Manager').fa('Create Match',{matchObj:obj});
+					//return;
 					
 					//Initiate Load
 					var loader = Assets.initiateBatch();

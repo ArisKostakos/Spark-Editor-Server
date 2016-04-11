@@ -2,9 +2,9 @@
 	<_States>
 		<_State id="2DMeshImageForm"><Value>background</Value></_State>
 		<_State id="spaceX"><Value>;2280/2</Value></_State>
-		<_State id="spaceY"><Value>;1440/2+120</Value></_State>
-		<_State id="scaleX"><Value>1.3</Value></_State>
-		<_State id="scaleY"><Value>1.3</Value></_State>
+		<_State id="spaceY"><Value>;1440/2+260</Value></_State>
+		<_State id="scaleX"><Value>1.5</Value></_State>
+		<_State id="scaleY"><Value>1.5</Value></_State>
 		<_State id="physicsEntity"><Value>false</Value></_State>
 	</_States>
 		

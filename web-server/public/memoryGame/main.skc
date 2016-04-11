@@ -89,6 +89,10 @@
 			<Asset type="image" location="local" bytes='3162734' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
 			
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedBird.egc</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="redBird_sheet">MemoryGame/levels/level1/redBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="redBird">MemoryGame/levels/level1/redBird.plist</Asset>
+			
 			<Asset type="image" location="local" bytes='3162734' id="background">MemoryGame/levels/level1/island.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="ellinopoulaLogo">MemoryGame/levels/level1/logo.png</Asset>
 			

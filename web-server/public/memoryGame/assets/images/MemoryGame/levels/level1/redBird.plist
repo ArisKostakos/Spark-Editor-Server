@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>final_bird_blue_1.png</key>
+            <key>final_bird_red_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{155,1},{152,174}}</string>
@@ -17,46 +17,46 @@
                 <key>sourceSize</key>
                 <string>{190,232}</string>
             </dict>
-            <key>final_bird_blue_2.png</key>
+            <key>final_bird_red_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{309,187},{182,128}}</string>
+                <string>{{309,187},{181,128}}</string>
                 <key>offset</key>
                 <string>{-2,-2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{2,54},{182,128}}</string>
+                <string>{{2,54},{181,128}}</string>
                 <key>sourceSize</key>
-                <string>{190,232}</string>
+                <string>{189,232}</string>
             </dict>
-            <key>final_bird_blue_3.png</key>
+            <key>final_bird_red_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{165,371},{154,138}}</string>
+                <string>{{165,370},{154,138}}</string>
                 <key>offset</key>
-                <string>{2,0}</string>
+                <string>{1,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{20,47},{154,138}}</string>
+                <string>{{19,47},{154,138}}</string>
                 <key>sourceSize</key>
                 <string>{190,232}</string>
             </dict>
-            <key>final_bird_blue_4.png</key>
+            <key>final_bird_red_4.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{155,177},{152,172}}</string>
                 <key>offset</key>
-                <string>{3,-13}</string>
+                <string>{2,-13}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{22,43},{152,172}}</string>
+                <string>{{21,43},{152,172}}</string>
                 <key>sourceSize</key>
                 <string>{190,232}</string>
             </dict>
-            <key>final_bird_blue_5.png</key>
+            <key>final_bird_red_5.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{152,184}}</string>
@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{190,232}</string>
             </dict>
-            <key>final_bird_blue_6.png</key>
+            <key>final_bird_red_6.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{309,1},{184,128}}</string>
@@ -82,10 +82,10 @@
                 <key>sourceSize</key>
                 <string>{190,232}</string>
             </dict>
-            <key>final_bird_blue_7.png</key>
+            <key>final_bird_red_7.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1,371},{162,138}}</string>
+                <string>{{1,370},{162,138}}</string>
                 <key>offset</key>
                 <string>{-2,2}</string>
                 <key>rotated</key>
@@ -95,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{190,232}</string>
             </dict>
-            <key>final_bird_blue_8.png</key>
+            <key>final_bird_red_8.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,187},{152,176}}</string>
@@ -114,13 +114,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>blueBird.png</string>
+            <string>redBird_sheet.png</string>
             <key>size</key>
-            <string>{438,510}</string>
+            <string>{438,509}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:1c355d012323060492571054584a55f4:adfb2c084ab2e868356d1a925ba6bd81:9b5af50a964e2c8c0c2b74743cc6eabf$</string>
+            <string>$TexturePacker:SmartUpdate:0a71ee9469ef3f52f98986f09928ba02:04c3eeada76be7b41a4aba4b9ea54546:ab9be0acab6b5dc47d0a5cdbcc67ad7f$</string>
             <key>textureFileName</key>
-            <string>blueBird.png</string>
+            <string>redBird_sheet.png</string>
         </dict>
     </dict>
 </plist>
