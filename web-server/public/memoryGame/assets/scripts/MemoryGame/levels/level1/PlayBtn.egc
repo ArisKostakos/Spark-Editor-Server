@@ -30,21 +30,13 @@
 					<Event>MouseLeftClick</Event>
 					<Scripts>
 						<Script>
-							Display.de("Hi");
-							e('Match Manager').forceAction('Get Next Match');
 							me.sa("Fade Out",{speed:5});
-							e('Ellinopoula Logo').sa("Fade Out",{speed:3});
 							//parent.removeChild(me);
 							
+							e('mainScene').fa('Birds Sit At Tree');
 							
-							var secsBlue=3;
-							e('Blue Bird').setState('animate_x',{type:"to", to:250, seconds:secsBlue, easing:Ease.quadInOut});
-							e('Blue Bird').setState('animate_y',{type:"to", to:250, seconds:secsBlue, easing:Ease.quadInOut});
 							
-							var secsRed=3.8;
-							e('Blue Bird').setState('scaleX',-1);
-							e('Red Bird').setState('animate_x',{type:"to", to:450, seconds:secsRed, easing:Ease.quadInOut});
-							e('Red Bird').setState('animate_y',{type:"to", to:300, seconds:secsRed, easing:Ease.quadInOut});
+							//e('Match Manager').fa('Get Next Match');//TEMP
 						</Script>
 					</Scripts>
 				</Trigger>
@@ -66,10 +58,10 @@
 						<Script>
 							var deltas=[0,4,8,5,-2,-3,-8,-4];
 							
-							if (e('Blue Bird').s('obj_player')==null)
+							if (e('Blue Bird Fly').s('obj_player')==null)
 								return;
 							
-							var frameIndex=e('Blue Bird').s('obj_player').currentIndex-1;
+							var frameIndex=e('Blue Bird Fly').s('obj_player').currentIndex-1;
 							
 							if (frameIndex!=it.s('frame'))
 								me.addToState('spaceY',-deltas[frameIndex]);

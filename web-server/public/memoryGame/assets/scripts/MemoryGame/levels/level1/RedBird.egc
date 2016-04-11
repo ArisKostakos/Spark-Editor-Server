@@ -1,21 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Spritesheet2D">
+<Entity extends="std.display.Sprite2D">
 	<_States>
 		<_State id="name"><Value>Red Bird</Value></_State>
 		<_State id="spaceX"><Value>1350</Value></_State>
 		<_State id="spaceY"><Value>540</Value></_State>
 		<_State id="scaleX"><Value>-1</Value></_State>
-		<_State id="scaleY"><Value>1</Value></_State>
-		<_State id="2DMeshSpritesheetForm"><Value>[SpritesheetMain]</Value></_State>
 	</_States>
+
+	<Form><Space><Entities>
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="name"><Value>Red Bird Fly</Value></_State>
+				<_State id="2DMeshSpritesheetForm"><Value>[SpritesheetMain]</Value></_State>
+			</_States>
+			
+			<_Form>
+				<_States>
+					<State>
+						<Id>SpritesheetMain</Id>
+						<Type>Text</Type>
+						<Value>redBird</Value>
+					</State>
+				</_States>
+			</_Form>
+		</Entity>
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="name"><Value>Red Bird Stand</Value></_State>
+				<_State id="2DMeshSpritesheetForm"><Value>[SpritesheetMain]</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="spaceX"><Value>-10</Value></_State>
+				<_State id="spaceY"><Value>25</Value></_State>
+				<_State id="AnimationSpeed"><Value>180</Value></_State>
+			</_States>
+			
+			<_Form>
+				<_States>
+					<State>
+						<Id>SpritesheetMain</Id>
+						<Type>Text</Type>
+						<Value>redBirdStand</Value>
+					</State>
+				</_States>
+			</_Form>
+		</Entity>
+	</Entities></Space></Form>
 	
-	<_Form>
-		<_States>
-			<State>
-				<Id>SpritesheetMain</Id>
-				<Type>Text</Type>
-				<Value>redBird</Value>
-			</State>
-		</_States>
-	</_Form>
+	<_Actions>
+		<Action>
+			<Id>Animate</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//force
+					
+					if (it.s('state')=="Stand")
+					{
+						e('Red Bird Fly').setState('visible',false);
+						e('Red Bird Stand').setState('visible',true);
+					}
+					else if (it.s('state')=="Fly")
+					{
+						e('Red Bird Fly').setState('visible',true);
+						e('Red Bird Stand').setState('visible',false);
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>state</Id><Type>Text</Type><Value>Stand</Value></State>
+			</States>
+		</Action>
+	</_Actions>
 </Entity>

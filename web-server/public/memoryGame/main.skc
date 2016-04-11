@@ -75,7 +75,8 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Congratulations.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Background.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Logo.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeFront.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeBack.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Cloud.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Balloon.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/HotAirBalloon.egc</Asset>
@@ -88,13 +89,18 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueBird.egc</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="blueBirdStand_sheet">MemoryGame/levels/level1/blueBirdStand_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="blueBirdStand">MemoryGame/levels/level1/blueBirdStand.plist</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedBird.egc</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="redBird_sheet">MemoryGame/levels/level1/redBird_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="redBird">MemoryGame/levels/level1/redBird.plist</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="redBirdStand_sheet">MemoryGame/levels/level1/redBirdStand_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="redBirdStand">MemoryGame/levels/level1/redBirdStand.plist</Asset>
 			
 			<Asset type="image" location="local" bytes='3162734' id="background">MemoryGame/levels/level1/island.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="ellinopoulaLogo">MemoryGame/levels/level1/logo.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="treeBack">MemoryGame/levels/level1/treeBack.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="treeFront">MemoryGame/levels/level1/treeFront.png</Asset>
 			
 			<Asset type="image" location="local" bytes='3162734' id="cloud1">MemoryGame/levels/level1/sinefo_1.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="cloud2">MemoryGame/levels/level1/sinefo_2.png</Asset>
