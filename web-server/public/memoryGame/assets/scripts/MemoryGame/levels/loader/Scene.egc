@@ -20,7 +20,7 @@
 					<_State id="fontSize"><Value>50px</Value></_State>
 					<_State id="fontColor"><Value>white</Value></_State>
 					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="text"><Value>Project Name Here</Value></_State>
+					<_State id="text"><Value>Memory Game</Value></_State>
 				</_States></Entity>
 				
 				<!-- Progress Bar -->

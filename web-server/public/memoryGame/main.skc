@@ -81,6 +81,9 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Balloon.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/HotAirBalloon.egc</Asset>
 			
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/AudioBtn.egc</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="audioBtn_On">MemoryGame/levels/level1/audioBtn_On.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="audioBtn_Off">MemoryGame/levels/level1/audioBtn_Off.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedRect.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/GreenRect.egc</Asset>
@@ -172,7 +175,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Camera2DStandard.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>std/display/Button2D.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='35672'>std/display/Button2D.egc</Asset>-->
 			<Asset type="script" location="local" bytes='35672'>std/display/Spritesheet2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/Text2D.egc</Asset>

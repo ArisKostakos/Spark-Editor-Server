@@ -10,7 +10,7 @@
 		<State><Id>percentX</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>percentY</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>MinSeconds</Id><Type>Decimal</Type><Value>50</Value></State>
-		<State><Id>MaxSeconds</Id><Type>Decimal</Type><Value>120</Value></State>
+		<State><Id>MaxSeconds</Id><Type>Decimal</Type><Value>270</Value></State>
 	</_States>
 		
 	<_Actions>
@@ -24,14 +24,21 @@
 					me.setState('spaceY',deltaDistancePos);
 					
 					//Determine Seconds
-					
 					me.setState('seconds',me.s('MinSeconds')+(me.s('MaxSeconds')-me.s('MinSeconds'))*me.s('percentY'));
 					
 					//Determine Scale
-					var scale = 0.5+(1-me.s('percentY'));
-					me.setState('scaleX',scale);
-					me.setState('scaleY',scale);
+					var scale = 0.3+1.4*(1-me.s('percentY'));
 					
+					if (Logic.random(0,1)==1)
+						me.setState('scaleX',scale);
+					else
+						me.setState('scaleX',-scale);
+						
+					if (Logic.random(0,1)==1 || me.s('2DMeshImageForm')=="cloud2")
+						me.setState('scaleY',scale);
+					else
+						me.setState('scaleY',-scale);
+						
 					//Start Floating
 					me.fa('Float Left Percent');
 				</Script>

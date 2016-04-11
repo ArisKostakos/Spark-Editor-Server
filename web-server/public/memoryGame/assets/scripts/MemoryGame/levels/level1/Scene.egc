@@ -36,7 +36,6 @@
 		
 		
 		<Entity extends="MemoryGame.levels.level1.PlayBtn"/>
-		<Entity extends="MemoryGame.levels.level1.Congratulations"/>
 		
 		
 		<Entity extends="MemoryGame.levels.level1.BlueBird"/>
@@ -45,6 +44,10 @@
 		<!-- Tree Front -->
 		<Entity extends="MemoryGame.levels.level1.TreeFront"/>
 		
+		<Entity extends="MemoryGame.levels.level1.Congratulations"/>
+		
+		<Entity extends="MemoryGame.levels.level1.AudioBtn"/>
+		
 		<Entity extends="MemoryGame.levels.level1.CardsArea"/>
 	</Entities></Space></Form>
 	
@@ -52,9 +55,9 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					var fromY=1000;
-					var toY=500;
-					var secs=6;
+					var fromY=1000; //1000,900
+					var toY=500; //500
+					var secs=6; //6,5
 				
 					e('Blue Bird').setState('animate_y',{from:fromY, to:toY, seconds:secs, easing:Ease.quadInOut});
 					e('Red Bird').setState('animate_y',{from:fromY-80, to:toY-80, seconds:secs, easing:Ease.quadInOut});
