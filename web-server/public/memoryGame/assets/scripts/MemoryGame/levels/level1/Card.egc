@@ -19,7 +19,7 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					Display.de("I AM CLICKED!" + me.s('isHidden'));
+					//Display.de("I ["+me.s('cardName')+"] AM CLICKED!" + me.s('isHidden'));
 					
 					if (me.s('isHidden'))
 						e('Game Manager').fa('Card Clicked',{card:me});
@@ -61,10 +61,24 @@
 					me.setState('animate_scaleX',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 					me.setState('animate_scaleY',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 					me.setState('isHidden',false);
+					me.setState('touchable',false);
+					me.sa('WaitFor',{delay:1, cbEntity:me, cbAction:"Remove Card"});
 				</Script>
 			</Scripts>
 		</Action>
 		
+		<Action>
+			<Id>Remove Card</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					parent.removeChild(me);
+				</Script>
+			</Scripts>
+		</Action>
+				
 		<Action>
 			<Id>Show</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -72,8 +86,9 @@
 				<Script>
 					//forced
 					
-					//if (it.s('playSound'))
-						//Sound.playSound("audio_" + me.s('cardName'));  //YOOO
+					if (it.s('playSound'))
+						Sound.playSound("audio_" + me.s('cardName'));  //YOOO
+						
 					me.setState('animate_scaleX',{type:"to", to:-me.s('scaleY'), seconds:0.2, easing:Ease.quadInOut});
 					me.sa('WaitFor',{delay:0.1, cbEntity:me, cbAction:"Switch Show"});
 					

@@ -107,7 +107,7 @@
 					e('Red Bird').setState('scaleX',1);
 					e('Red Bird').fa('Animate',{state:"Stand"});
 					
-					//return
+					//return;  //TEMP
 					e('Match Manager').fa('Get Next Match');
 				</Script>
 			</Scripts>
