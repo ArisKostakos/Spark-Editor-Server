@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_Actions>
+		<Action>
+			<Id>GoLeft</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('applyImpulseX',-300);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>GoRight</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('applyImpulseX',300);
+					
+					var skata = Logic.reflectFieldOfField(me.getState('physicsBody'),"velocity", "x");
+					
+					Display.error("MY X VELOCITY IS: " + skata);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

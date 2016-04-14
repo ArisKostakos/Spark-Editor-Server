@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Space">
+	<_States>
+		<_State id="name">
+			<Value>Main Space</Value>
+		</_State>
+		
+		<_State id="initStageName">
+			<Value>Main Stage</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Stage -->
+				<Entity extends="MultiplayerDemo.Stage"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

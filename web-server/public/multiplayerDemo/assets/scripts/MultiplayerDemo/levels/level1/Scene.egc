@@ -1,0 +1,116 @@
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<_State id="name"><Value>mainScene</Value></_State>
+	</_States>
+	<Form><Space><Entities>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>ClickButton</Value></_State>
+				<_State id="2DMeshImageForm"><Value>ClickMe</Value></_State>
+				<_State id="spaceX"><Value>;2280/2</Value></_State>
+				<_State id="spaceY"><Value>;1440/2</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="opacity"><Value>0.5</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="touchable"><Value>true</Value></_State>
+			</_States>
+				
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							Display.de("Clicked!");
+							if (me.s('opacity')==1)
+							{
+								Comms.request('multiplayer.multiplayerHandler.say', { message: Std.string(Logic.random(1,4)) }, "I Said Something", me);
+							}
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+				
+			<_Actions>
+				
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Comms.connectTo("130.211.172.86","3024", "multiplayerServer", me);
+					//Display.de("Connecting...");
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkConnected</Event>
+			<Parameter>multiplayerServer</Parameter>
+			<Scripts>
+				<Script>
+					//Display.de("Connected!");
+					Comms.request('multiplayer.multiplayerHandler.enter', { uid: Std.random(999999), username:"User" }, "Entered Channel", me);
+					//Display.de("Entering Default Channel...");
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Entered Channel</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Entered Channel");
+					Display.log("Received data from server (Entered Channel): " + data.code);
+					e('ClickButton').setState('opacity',1);
+					
+					//Add Listeners
+					Comms.addServerEvent('onAdd');
+					Comms.addServerEvent('onSay');
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>I Said Something</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("I Said Something");
+					//Display.log("Received data from server (I Said Something): " + data.code);
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					Display.error("received server EVEnt");
+					if (Comms.getServerEventData("onAdd")!=null)
+					{
+						var data = Comms.getServerEventData("onAdd");
+						
+						Display.error("onAdd: ",data);
+					}
+					else if (Comms.getServerEventData("onSay")!=null)
+					{
+						var data = Comms.getServerEventData("onSay");
+						
+						Display.error("onSay: "+data.message);
+						console.log(data);
+						
+						Sound.playSound("hello"+data.message);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

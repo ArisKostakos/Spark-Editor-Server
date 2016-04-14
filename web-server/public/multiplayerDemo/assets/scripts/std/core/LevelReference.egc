@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<States>
+		<State>
+			<Id>type</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>url</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>visibleAtStart</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		<!-- Maybe add more ways to reference than url.. like name, or whatever..-->
+	</States>
+	
+	<Form><Space/></Form>
+</Entity>
