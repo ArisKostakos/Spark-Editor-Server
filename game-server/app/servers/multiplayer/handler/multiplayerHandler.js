@@ -47,7 +47,10 @@ handler.saySomething = function(msg, session, next) {
 //self.app.rpc.chat.chatRemote.add(session, uid, self.app.get('serverId'), "mainRoom", true, function(users){
 //ChatRemote.prototype.add = function(uid, sid, name, flag, cb) {
 
+
+
 handler.enter = function(msg, session, next) {
+	var self = this;
 	var sessionService = self.app.get('sessionService');
 	var l_uid = msg.uid;
 	var l_sid = self.app.get('serverId');
