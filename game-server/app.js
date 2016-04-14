@@ -27,6 +27,14 @@ app.configure('production|development', 'gate', function(){
 		});
 });
 
+app.configure('production|development', 'multiplayer', function(){
+	app.set('connectorConfig',
+		{
+			connector : pomelo.connectors.hybridconnector,
+			useProtobuf : true
+		});
+});
+
 app.configure('production|development', 'registration|lobby|editor|assets', function(){
 	//connect to db
 	database.init();
