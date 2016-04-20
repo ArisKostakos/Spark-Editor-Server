@@ -70,7 +70,7 @@
 					if (me.s('Toggled')==false)
 					{
 						me.setState("2DMeshImageForm","[Button_Toggled]");
-						me.setState("VolumeVoice",0);
+						//me.setState("VolumeVoice",0);
 						me.setState("VolumeFX",0);
 						me.setState("VolumeMusic",0);
 						Sound.stopAllSounds(0.3);
@@ -80,7 +80,7 @@
 					else
 					{
 						me.setState("2DMeshImageForm","[Button_Normal]");
-						me.setState("VolumeVoice",0.5);
+						//me.setState("VolumeVoice",0.5);
 						me.setState("VolumeFX",1);
 						me.setState("VolumeMusic",0.6);
 						me.setState('Toggled',false);

@@ -277,6 +277,9 @@
 					e('CongratsBalloon1').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
 					e('CongratsBalloon2').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
 					e('CongratsSign').setState('animate_opacity',{type:"to", to:0, seconds:1.5, easing:Ease.quadInOut});
+					
+					e('CongratsBalloon1').setState('animate_opacity',{type:"to", to:0, seconds:3, easing:Ease.quintIn});
+					e('CongratsBalloon2').setState('animate_opacity',{type:"to", to:0, seconds:3, easing:Ease.quintIn});
 					//e('Congratulations').setState('visible',false);
 					
 					//e('Match Manager').forceAction('Get Next Match');
