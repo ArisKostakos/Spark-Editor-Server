@@ -10,7 +10,7 @@
 		</_State>
 		
 		<_State id="initCameraUrl">
-			<Value>std.display.Camera2D</Value>
+			<Value>std.display.Camera2DStandard</Value>
 		</_State>
 		
 		<_State id="width">
@@ -22,7 +22,7 @@
 		</_State>
 		
 		<_State id="renderer">
-			<Value>NativeControls</Value>
+			<Value>2D</Value>
 		</_State>
 	</_States>
 </Entity>

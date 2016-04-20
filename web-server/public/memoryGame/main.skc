@@ -45,10 +45,23 @@
 			<Requires>
 				<RequiresModule>Std:Base</RequiresModule>
 				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
 			</Requires>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/loader/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/loader/Scene.egc</Asset>
-			<Asset type="image" location="local" bytes='35672' id="sparkLogo">MemoryGame/levels/loader/sparklogo.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="redBird_sheet">MemoryGame/levels/level1/redBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="redBird">MemoryGame/levels/level1/redBird.plist</Asset>
+			
+			<Asset type="image" location="local" bytes='3162734' id="loadingBanner">MemoryGame/levels/loader/banner.png</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Cloud.egc</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="cloud1">MemoryGame/levels/level1/sinefo_1.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="cloud2">MemoryGame/levels/level1/sinefo_2.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="cloud3">MemoryGame/levels/level1/sinefo_3.png</Asset>
 		</Module>
 		
 		<Module id="Common" executeEntity="MemoryGame.levels.common.CommonSpace">
@@ -72,14 +85,21 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/PlayBtn.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/GameManager.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/MatchManager.egc</Asset>
+			
+			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Congratulations.egc</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="congrats_sign">MemoryGame/levels/level1/congrats.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="congrats_balloons1">MemoryGame/levels/level1/ballons_1.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="congrats_balloons2">MemoryGame/levels/level1/ballons_2.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Background.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeFront.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeBack.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Cloud.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Balloon.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/HotAirBalloon.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeEyes.egc</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="treeEyes">MemoryGame/levels/level1/matakia.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/AudioBtn.egc</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="audioBtn_On">MemoryGame/levels/level1/audioBtn_On.png</Asset>
@@ -90,14 +110,10 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueRect.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueBird.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBirdStand_sheet">MemoryGame/levels/level1/blueBirdStand_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="blueBirdStand">MemoryGame/levels/level1/blueBirdStand.plist</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedBird.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="redBird_sheet">MemoryGame/levels/level1/redBird_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="redBird">MemoryGame/levels/level1/redBird.plist</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="redBirdStand_sheet">MemoryGame/levels/level1/redBirdStand_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="redBirdStand">MemoryGame/levels/level1/redBirdStand.plist</Asset>
 			
@@ -105,13 +121,10 @@
 			<Asset type="image" location="local" bytes='3162734' id="treeBack">MemoryGame/levels/level1/treeBack.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="treeFront">MemoryGame/levels/level1/treeFront.png</Asset>
 			
-			<Asset type="image" location="local" bytes='3162734' id="cloud1">MemoryGame/levels/level1/sinefo_1.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="cloud2">MemoryGame/levels/level1/sinefo_2.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="cloud3">MemoryGame/levels/level1/sinefo_3.png</Asset>
-			
 			<Asset type="image" location="local" bytes='3162734' id="balloon1">MemoryGame/levels/level1/ballon_1.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="balloon2">MemoryGame/levels/level1/ballon_2.png</Asset>
 			<Asset type="image" location="local" bytes='3162734' id="balloon3">MemoryGame/levels/level1/ballon_3.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="balloon4">MemoryGame/levels/level1/ballon_4.png</Asset>
 			
 			<Asset type="image" location="local" bytes='3162734' id="hotAirBalloon">MemoryGame/levels/level1/air_balloon2.png</Asset>
 			
@@ -122,14 +135,24 @@
 			<Asset type="data" location="local" bytes='35672' id="ComfortGreek">MemoryGame/ComfortGreek.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/MyParticle.egc</Asset>
-			<Asset type="image" location="local" bytes='35672' id="snow">MemoryGame/levels/level1/particles/snow.png</Asset>
-			<Asset type="image" location="local" bytes='35672' id="snow.pex">MemoryGame/levels/level1/particles/snow.pex</Asset>
-			<Asset type="image" location="local" bytes='35672' id="heart">MemoryGame/levels/level1/particles/heart.png</Asset>
-			<Asset type="image" location="local" bytes='35672' id="love.pex">MemoryGame/levels/level1/particles/love.pex</Asset>
-			<Asset type="image" location="local" bytes='35672' id="spark">MemoryGame/levels/level1/particles/spark.png</Asset>
-			<Asset type="image" location="local" bytes='35672' id="explode.pex">MemoryGame/levels/level1/particles/explode.pex</Asset>
-			<Asset type="image" location="local" bytes='35672' id="texture">MemoryGame/levels/level1/particles/texture.png</Asset>
-			<Asset type="image" location="local" bytes='35672' id="particle.pex">MemoryGame/levels/level1/particles/particle.pex</Asset>
+			
+			<Asset type="image" location="local" bytes='35672' id="cardEffect.pex">MemoryGame/levels/level1/particles/particle.pex</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="texture">MemoryGame/levels/level1/particles/texture.png</Asset>
+			<Asset type="image" location="local" bytes='3162734' id="texture2">MemoryGame/levels/level1/particles/cardFXparticle.png</Asset>
+			
+			<Asset type="image" location="local" bytes='35672' id="balloon1.pex">MemoryGame/levels/level1/particles/balloon1.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="balloon2.pex">MemoryGame/levels/level1/particles/balloon2.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="balloon3.pex">MemoryGame/levels/level1/particles/balloon3.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="balloon4.pex">MemoryGame/levels/level1/particles/balloon4.pex</Asset>
+			
+			<Asset type="sound" location="local" bytes='5000000' id="m:Music">MemoryGame/music.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000000' id="m:Start Button">MemoryGame/startButton.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000000' id="m:Birds Long">MemoryGame/birdsIntro.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000000' id="m:Birds Match">MemoryGame/birdsMatch.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000000' id="m:Birds Complete">MemoryGame/birdsShudden.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000000' id="m:Wrong Answer">MemoryGame/wrongAnswer.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000000' id="m:Match Complete">MemoryGame/kidCheerLong.mp3</Asset>
+			
 		</Module>
 		
 		

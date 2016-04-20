@@ -2,6 +2,7 @@
 	<_States>
 		<_State id="name"><Value>mainScene</Value></_State>
 		<State><Id>rectOpacity</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>firstTimeAtTree</Id><Type>Boolean</Type><Value>true</Value></State>
 	</_States>
 	<Form><Space><Entities>
 		<!-- Game Manager (non-visual) -->
@@ -22,18 +23,6 @@
 		
 		<Entity extends="MemoryGame.levels.level1.BlueRect"/>
 		
-		<!-- Particle Emitters -->
-		<Entity extends="MemoryGame.levels.level1.MyParticle">
-			<_States>
-				<_State id="name"><Value>particle1</Value></_State>
-			</_States>
-		</Entity>
-		<Entity extends="MemoryGame.levels.level1.MyParticle">
-			<_States>
-				<_State id="name"><Value>particle2</Value></_State>
-			</_States>
-		</Entity>
-		
 		
 		<Entity extends="MemoryGame.levels.level1.PlayBtn"/>
 		
@@ -44,7 +33,76 @@
 		<!-- Tree Front -->
 		<Entity extends="MemoryGame.levels.level1.TreeFront"/>
 		
-		<Entity extends="MemoryGame.levels.level1.Congratulations"/>
+		<!-- Tree Eyes -->
+		<Entity extends="MemoryGame.levels.level1.TreeEyes"/>
+		
+		<!-- Card Particle Emitters -->
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle_c1</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>cardEffect</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle_c2</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>cardEffect</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Congrats Particle Emitters -->
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle_b1</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon1</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle_b2</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon2</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle_b3</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon3</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="MemoryGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>particle_b4</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon4</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Congratulations Stuff -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>CongratsSign</Value></_State>
+				<_State id="2DMeshImageForm"><Value>congrats_sign</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>CongratsBalloon1</Value></_State>
+				<_State id="2DMeshImageForm"><Value>congrats_balloons1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>CongratsBalloon2</Value></_State>
+				<_State id="2DMeshImageForm"><Value>congrats_balloons2</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+			</_States>
+		</Entity>
+		<!--
+		<Entity extends="MemoryGame.levels.level1.Congratulations"/>-->
 		
 		<Entity extends="MemoryGame.levels.level1.AudioBtn"/>
 		
@@ -55,6 +113,20 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
+				/*
+					//e('Game Manager').fa('Show Victory');
+					e('Match Manager').fa('Get Next Match');
+					
+					e('Blue Bird').setState('visible',false);
+					e('Red Bird').setState('visible',false);
+					e('Button Sprite').setState('visible',false);
+					
+					*/
+					
+					Sound.loopSound("m:Music",e('Audio Control').s('VolumeMusic'));
+					
+					Display.invalidateLayout();
+					//return;
 					var fromY=1000; //1000,900
 					var toY=500; //500
 					var secs=6; //6,5
@@ -80,9 +152,34 @@
 					me.sa('WaitFor',{delay:secsBlue, cbEntity:me, cbAction:"Blue Arrive"});
 					
 					var secsRed=3.2;
+					e('Red Bird').setState('scaleX',-1);
 					e('Red Bird').setState('animate_x',{type:"to", to:470, seconds:secsRed, easing:Ease.quadInOut});
 					e('Red Bird').setState('animate_y',{type:"to", to:318, seconds:secsRed, easing:Ease.quadInOut});
 					me.sa('WaitFor2',{delay:secsRed, cbEntity:me, cbAction:"Red Arrive"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Birds Celebrate</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var secsBlue=1.7;
+					e('Blue Bird').stopAction('WaitFor');
+					e('Blue Bird').fa('Animate',{state:"Fly"});
+					e('Blue Bird').setState('animate_x',{type:"to", to:710, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_y',{type:"to", to:390, seconds:secsBlue, easing:Ease.quadInOut});
+					//me.sa('WaitFor',{delay:secsBlue, cbEntity:me, cbAction:"Blue Arrive"});
+					
+					var secsRed=1.2;
+					e('Red Bird').stopAction('WaitFor');
+					e('Red Bird').fa('Animate',{state:"Fly"});
+					e('Red Bird').setState('animate_x',{type:"to", to:650, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_y',{type:"to", to:220, seconds:secsRed, easing:Ease.quadInOut});
+					//me.sa('WaitFor2',{delay:secsRed, cbEntity:me, cbAction:"Red Arrive"});
 				</Script>
 			</Scripts>
 		</Action>
@@ -111,7 +208,11 @@
 					e('Red Bird').fa('Animate',{state:"Stand"});
 					
 					//return;  //TEMP
-					e('Match Manager').fa('Get Next Match');
+					if (me.s('firstTimeAtTree')==true)
+					{
+						e('Match Manager').fa('Get Next Match');
+						me.setState('firstTimeAtTree',false);
+					}
 				</Script>
 			</Scripts>
 		</Action>

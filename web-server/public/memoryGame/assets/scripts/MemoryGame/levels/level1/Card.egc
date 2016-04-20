@@ -24,12 +24,32 @@
 					
 					if (me.s('isHidden'))
 						e('Game Manager').fa('Card Clicked',{card:me});
+					else
+					{
+						if (e('Game Manager').s('showingCards')==true)
+						{
+							//e('Game Manager').stopAction('WaitFor');
+							e('Game Manager').fa('Hide All Cards');
+							e('Game Manager').sa('WaitFor',{delay:0.001,cbEntity:me,cbAction:"dummy"});
+						}
+					}
 				</Script>
 			</Scripts>
 		</Trigger>
 	</_Triggers>
 		
 	<_Actions>
+		<Action>
+			<Id>dummy</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					Display.de("dummy action");
+				</Script>
+			</Scripts>
+		</Action>
+				
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
@@ -88,7 +108,7 @@
 					//forced
 					
 					if (it.s('playSound'))
-						Sound.playSound("audio_" + me.s('cardName'),e('Audio Control').s('Volume'));  //YOOO
+						Sound.playSound("audio_" + me.s('cardName'),e('Audio Control').s('VolumeVoice'));  //YOOO
 						
 					me.setState('animate_scaleX',{type:"to", to:-me.s('scaleY'), seconds:0.2, easing:Ease.quadInOut});
 					me.sa('WaitFor',{delay:0.1, cbEntity:me, cbAction:"Switch Show"});

@@ -33,7 +33,8 @@
 							me.setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 							me.sa('WaitFor',{delay:1, cbEntity:me, cbAction:"Destroy"});
 							me.setState('touchable',false);
-							
+							Sound.playSound("m:Start Button",e('Audio Control').s('VolumeFX'));
+							Sound.playSound("m:Birds Long",e('Audio Control').s('VolumeFX'));
 							e('mainScene').fa('Birds Sit At Tree');
 							
 							

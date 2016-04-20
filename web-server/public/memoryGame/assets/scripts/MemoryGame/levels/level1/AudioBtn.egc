@@ -10,7 +10,9 @@
 		<_State id="spaceY"><Value>180</Value></_State>
 		
 		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
-		<State><Id>Volume</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.5</Value></State>
+		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.6</Value></State>
 	
 	</_States>
 	
@@ -46,13 +48,19 @@
 		<Trigger>
 			<Event>MouseEntered</Event>
 			<Scripts>
-				<Script>//me.setState("2DMeshImageForm","Button_MouseOver");</Script>
+				<Script>
+				var a;
+				//me.setState("2DMeshImageForm","Button_MouseOver");
+				</Script>
 			</Scripts>
 		</Trigger>
 		<Trigger>
 			<Event>MouseLeft</Event>
 			<Scripts>
-				<Script>//me.setState("2DMeshImageForm","Button_Normal");</Script>
+				<Script>
+				var a;
+				//me.setState("2DMeshImageForm","Button_Normal");
+				</Script>
 			</Scripts>
 		</Trigger>
 		<Trigger>
@@ -62,7 +70,9 @@
 					if (me.s('Toggled')==false)
 					{
 						me.setState("2DMeshImageForm","[Button_Toggled]");
-						me.setState("Volume",0);
+						me.setState("VolumeVoice",0);
+						me.setState("VolumeFX",0);
+						me.setState("VolumeMusic",0);
 						Sound.stopAllSounds(0.3);
 						
 						me.setState('Toggled',true);
@@ -70,8 +80,12 @@
 					else
 					{
 						me.setState("2DMeshImageForm","[Button_Normal]");
-						me.setState("Volume",1);
+						me.setState("VolumeVoice",0.5);
+						me.setState("VolumeFX",1);
+						me.setState("VolumeMusic",0.6);
 						me.setState('Toggled',false);
+						
+						Sound.loopSound("m:Music",e('Audio Control').s('VolumeMusic'));
 					}
 				</Script>
 			</Scripts>

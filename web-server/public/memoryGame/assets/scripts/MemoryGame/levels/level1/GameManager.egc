@@ -5,6 +5,7 @@
 		<State><Id>cardsFound</Id><Type>Integer</Type><Value>0</Value></State>
 		<State><Id>selectedCards</Id><Type>Dynamic</Type><Value>[]</Value></State>
 		<State><Id>matchStarted</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>showingCards</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -82,7 +83,9 @@
 					for (card of me.s('allCards'))
 						card.fa('Show',{playSound:false});
 						
-					me.sa('WaitFor',{delay:3,cbEntity:me,cbAction:"Hide All Cards"});
+						
+					me.sa('WaitFor',{delay:me.s('allCards').length, cbEntity:me, cbAction:"Hide All Cards"});
+					me.setState('showingCards',true);
 				</Script>
 			</Scripts>
 		</Action>
@@ -92,10 +95,18 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					for (card of me.s('allCards'))
-						card.fa('Hide');
-						
-					me.setState('matchStarted',true);
+					//forced
+					
+					if (me.s('showingCards')==true)
+					{
+						Display.de("HIDING CAARDS!!!!");
+					
+						for (card of me.s('allCards'))
+							card.fa('Hide');
+							
+						me.setState('matchStarted',true);
+						me.setState('showingCards',false);
+					}
 				</Script>
 			</Scripts>
 		</Action>
@@ -144,15 +155,25 @@
 					
 					if (l_cardA.s('cardName')==l_cardB.s('cardName'))
 					{
+						var scale=1.3*l_cardA.s('scaleX');
+						
 						//Card A
-						e('particle1').setState('emitX',l_cardA.s('spaceX')+e('Cards Area').s('spaceX'));
-						e('particle1').setState('emitY',l_cardA.s('spaceY')+e('Cards Area').s('spaceY'));
-						e('particle1').setState('action_fire',true);
+						e('particle_c1').setState('emitX',(l_cardA.s('spaceX')+e('Cards Area').s('spaceX'))/scale);
+						e('particle_c1').setState('emitY',(l_cardA.s('spaceY')+e('Cards Area').s('spaceY'))/scale);
+						e('particle_c1').setState('scaleX',scale);
+						e('particle_c1').setState('scaleY',scale);
+						e('particle_c1').setState('action_fire',true);
 						
 						//Card B
-						e('particle2').setState('emitX',l_cardB.s('spaceX')+e('Cards Area').s('spaceX'));
-						e('particle2').setState('emitY',l_cardB.s('spaceY')+e('Cards Area').s('spaceY'));
-						e('particle2').setState('action_fire',true);
+						e('particle_c2').setState('emitX',(l_cardB.s('spaceX')+e('Cards Area').s('spaceX'))/scale);
+						e('particle_c2').setState('emitY',(l_cardB.s('spaceY')+e('Cards Area').s('spaceY'))/scale);
+						e('particle_c2').setState('scaleX',scale);
+						e('particle_c2').setState('scaleY',scale);
+						e('particle_c2').setState('action_fire',true);
+						
+						e('Blue Bird').fa('Jump Up');
+						e('Red Bird').fa('Jump Up');
+						Sound.playSound("m:Birds Match",e('Audio Control').s('VolumeFX'));
 					}
 				</Script>
 			</Scripts>
@@ -180,6 +201,9 @@
 					{
 						l_cardA.fa('Hide');
 						l_cardB.fa('Hide');
+						Sound.playSound("m:Wrong Answer",e('Audio Control').s('VolumeFX'));
+						e('Blue Bird').sa('WaitFor',{delay:0.1, cbEntity:e('Blue Bird'), cbAction:"Nod Up"});
+						e('Red Bird').fa('Nod Up');
 					}
 					
 					me.setState('selectedCards',[]);
@@ -207,9 +231,38 @@
 				<Script>
 					//forced
 					
-					e('Congratulations').setState('visible',true);
+					//e('Congratulations').setState('visible',true);
+					Sound.playSound("m:Match Complete",e('Audio Control').s('VolumeFX'));
+					Sound.playSound("m:Birds Complete",e('Audio Control').s('VolumeFX'));
+					var fromX=1200;
+					var fromY=500;
+					var toY=350;
+					var secs=5;
+					var secs2=5;
 					
-					me.sa('WaitFor',{delay:3,cbEntity:me,cbAction:"Hide Victory"});
+					e('CongratsSign').setState('spaceX',fromX);
+					e('CongratsSign').setState('animate_y',{from:fromY+382, to:toY+382, seconds:secs, easing:Ease.backOut});
+					e('CongratsSign').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					e('CongratsBalloon1').setState('spaceX',fromX-250);
+					e('CongratsBalloon1').setState('animate_y',{from:fromY, to:toY, seconds:secs, easing:Ease.backOut});
+					e('CongratsBalloon1').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					e('CongratsBalloon2').setState('spaceX',fromX+263);
+					e('CongratsBalloon2').setState('animate_y',{from:fromY-22, to:toY-22, seconds:secs, easing:Ease.backOut});
+					e('CongratsBalloon2').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					//Particles
+					e('particle_b1').setState('action_fire',true);
+					e('particle_b2').setState('action_fire',true);
+					e('particle_b3').setState('action_fire',true);
+					e('particle_b4').setState('action_fire',true);
+					
+					//Birds Celebrate
+					e('mainScene').fa('Birds Celebrate');
+					
+					me.sa('WaitFor',{delay:secs,cbEntity:me,cbAction:"Hide Victory"});
+					e('mainScene').sa('WaitFor',{delay:secs+0.3,cbEntity:e('mainScene'),cbAction:"Birds Sit At Tree"});
 				</Script>
 			</Scripts>
 		</Action>
@@ -221,16 +274,20 @@
 				<Script>
 					//forced
 					
-					e('Congratulations').setState('visible',false);
+					e('CongratsBalloon1').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
+					e('CongratsBalloon2').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
+					e('CongratsSign').setState('animate_opacity',{type:"to", to:0, seconds:1.5, easing:Ease.quadInOut});
+					//e('Congratulations').setState('visible',false);
 					
-					e('Match Manager').forceAction('Get Next Match');
+					//e('Match Manager').forceAction('Get Next Match');
+					me.sa('WaitFor',{delay:2,cbEntity:e('Match Manager'),cbAction:"Get Next Match"});
 				</Script>
 			</Scripts>
 		</Action>
 				
 		<Action>
 			<Id>WaitFor</Id>
-			<Concurrency>Persistent</Concurrency>
+			<Concurrency>Transient</Concurrency>
 			<Scripts>
 				<Script><![CDATA[
 				    it.addToState('delayCurrent',Logic.getDt());

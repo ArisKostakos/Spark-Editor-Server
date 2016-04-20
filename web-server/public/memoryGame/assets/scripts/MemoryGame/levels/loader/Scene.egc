@@ -1,100 +1,169 @@
 <Entity extends="std.display.Scene2D">
 	<Form><Space><Entities>
-		<Entity extends="std.display.VGroup">
+		<!-- Banner-->
+		<Entity extends="std.display.Image2D">
 			<_States>
-				<!--<_State id="backgroundColor"><Value>white</Value></_State>-->
-				<_State id="horizontalCenter"><Value>0</Value></_State>
-				<_State id="verticalCenter"><Value>0</Value></_State>
-				<_State id="width"><Value>500</Value></_State>
-				<_State id="height"><Value>200</Value></_State>
-				<_State id="gap"><Value>15</Value></_State>
-				<_State id="horizontalAlign"><Value>center</Value></_State>
+				<_State id="2DMeshImageForm"><Value>loadingBanner</Value></_State>
+				<_State id="spaceX"><Value>;2280/2+0</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+0</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
 			</_States>
 				
-			<Form><Space><Entities>
-				<!-- Project Name -->
-				<Entity extends="std.display.Text"><_States>
-					<_State id="name"><Value>Loader: Project Title Text</Value></_State>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>50</Value></_State>
-					<_State id="fontSize"><Value>50px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="text"><Value>Memory Game</Value></_State>
-				</_States></Entity>
 				
-				<!-- Progress Bar -->
-				<Entity extends="std.display.Div">
-					<_States>
-						<_State id="width"><Value>300</Value></_State>
-						<_State id="height"><Value>25</Value></_State>
-						<_State id="borderRadius"><Value>12px</Value></_State>
-						<_State id="borderColor"><Value>white</Value></_State>
-						<_State id="borderRadius"><Value>30px</Value></_State>
-						<_State id="borderWidth"><Value>2px</Value></_State>
-						<_State id="borderStyle"><Value>solid</Value></_State>
-					</_States>
-						
-					<Form><Space><Entities>
-						<!-- Progress Bar Fill Group -->
-						<Entity extends="std.display.Div">
-							<_States>
-								<_State id="name"><Value>Loader: Load Percentage</Value></_State>
-								<_State id="width"><Value>0</Value></_State>
-								<_State id="height"><Value>100%</Value></_State>
-								<_State id="overflow"><Value>hidden</Value></_State>
-							</_States>
-								
-							<Form><Space><Entities>
-								<!-- Progress Bar Fill -->
-								<Entity extends="std.display.Div">
-									<_States>
-										<_State id="backgroundColor"><Value>white</Value></_State>
-										<_State id="left"><Value>2</Value></_State>
-										<_State id="top"><Value>2</Value></_State>
-										<_State id="width"><Value>296</Value></_State>
-										<_State id="height"><Value>21</Value></_State>
-										<_State id="borderRadius"><Value>25px</Value></_State>
-									</_States>
-								</Entity>
-							</Entities></Space></Form>
-						</Entity>
-					</Entities></Space></Form>
-				</Entity>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							me.sa('Shake');
+						</Script>
+					</_Scripts>
+				</_Action>
 				
-				<!-- Loading Message -->
-				<Entity extends="std.display.Text"><_States>
-					<_State id="name"><Value>Loader: Message Output Text</Value></_State>
-					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>30</Value></_State>
-					<_State id="fontSize"><Value>30px</Value></_State>
-					<_State id="fontColor"><Value>white</Value></_State>
-					<_State id="textAlign"><Value>center</Value></_State>
-					<_State id="text"><Value>Loading..</Value></_State>
-				</_States></Entity>
-			</Entities></Space></Form>
+				<Action>
+					<Id>Shake</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							var deltas=[0,4,8,5,-2,-3,-8,-4];
+							
+							if (e('Blue Bird Fly Loading').s('obj_player')==null)
+								return;
+							
+							var frameIndex=e('Blue Bird Fly Loading').s('obj_player').currentIndex-1;
+							
+							if (frameIndex!=it.s('frame'))
+								me.addToState('spaceY',-deltas[frameIndex]);
+							
+							it.setState('frame',frameIndex);
+						</Script>
+					</Scripts>
+					<States>
+						<State><Id>frame</Id><Type>Integer</Type><Value>-1</Value></State>
+					</States>
+				</Action>
+			</_Actions>
 		</Entity>
 		
+		<!-- Blue Bird-->
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="name"><Value>Blue Bird Fly Loading</Value></_State>
+				<_State id="2DMeshSpritesheetForm"><Value>blueBird</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-435</Value></_State>
+				<_State id="spaceY"><Value>;1440/2-280</Value></_State>
+			</_States>
+		</Entity>
 		
+		<!-- Red Bird-->
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="name"><Value>Red Bird Fly Loading</Value></_State>
+				<_State id="2DMeshSpritesheetForm"><Value>redBird</Value></_State>
+				<_State id="spaceX"><Value>;2280/2+430</Value></_State>
+				<_State id="spaceY"><Value>;1440/2-280</Value></_State>
+				<_State id="scaleX"><Value>-1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Output Text-->
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="name"><Value>Loader Message Output Text</Value></_State>
+				<_State id="2DMeshTextForm"><Value>defaultFont</Value></_State>
+				<_State id="font"><Value>defaultFont</Value></_State>
+				<_State id="text"><Value>loading game ... 0%</Value></_State>
+				<_State id="spaceX"><Value>;2280/2</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+260</Value></_State>
+				<_State id="align"><Value>Left</Value></_State>
+				<_State id="scaleX"><Value>1.3</Value></_State>
+				<_State id="scaleY"><Value>1.3</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+		</Entity>
 	</Entities></Space></Form>
 	
 	<_Actions>
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.27);
+					cloud.setState('percentY',0.28);
+					me.insertChild(cloud,0);
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.45);
+					cloud.setState('percentY',0.22);
+					me.insertChild(cloud,0);
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.72);
+					cloud.setState('percentY',0.25);
+					me.insertChild(cloud,0);
+					
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.25);
+					cloud.setState('percentY',0.5);
+					me.insertChild(cloud,0);
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.74);
+					cloud.setState('percentY',0.48);
+					me.insertChild(cloud,0);
+					
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.31);
+					cloud.setState('percentY',0.78);
+					me.insertChild(cloud,0);
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.5);
+					cloud.setState('percentY',0.66);
+					me.insertChild(cloud,0);
+					//Add A Cloud
+					var cloud = Logic.create('MemoryGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('MinSeconds',150);
+					cloud.setState('MaxSeconds',350);
+					cloud.setState('percentX',0.7);
+					cloud.setState('percentY',0.74);
+					me.insertChild(cloud,0);
+					
 					function _onProgress(p_percDone, p_totalBytes)
 					{
 						//Display.warn("INTERP: Percent Loaded: " + p_percDone);
-						e('Loader: Message Output Text').setState('text','Loading... ' + p_percDone + '%');
+						e('Loader Message Output Text').setState('text','loading game ... ' + p_percDone + '%');
 						
 						var tempPerc = Std.int(p_percDone*300/100);
 						//Display.warn("INTERP: Percent2 Loaded: " + tempPerc);
-						e('Loader: Load Percentage').setState('width',Std.string(tempPerc));
+						//e('Loader: Load Percentage').setState('width',Std.string(tempPerc));
 						
-						//Should it dispose the signal here?
-						//If this loader remains on memory and is used for everything, then no
-						//if we create new loader everytime, then yes
-						//for now, we assume no..
 					}
 					
 					Display.invalidateLayout();

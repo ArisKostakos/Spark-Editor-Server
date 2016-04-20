@@ -25,14 +25,14 @@
 					{
 						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
 									];
 					}
 					else if (matchNo==2)
 					{
 						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
 										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"}
 									];
 					}
@@ -40,21 +40,21 @@
 					{
 						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
 										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
 									];
 					}
 					else
 					{
 						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
 										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-										{name:'Γώμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
+										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"}
 									];
 					}
