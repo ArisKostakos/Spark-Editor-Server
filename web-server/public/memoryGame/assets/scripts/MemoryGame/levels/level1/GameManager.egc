@@ -38,17 +38,17 @@
 					//STARTS HERE
 					me.setState('matchStarted',false);
 					me.setState('cardsFound',0);
-					var obj = it.s('matchObj');
+					var items = it.s('matchObj');
 					var arrayOfCards = [];
 					
-					for (item of obj.items)
+					for (item of items)
 					{
 						//Display.de("Game Manager: Found item " + item.name);
 						
 						for (var i=0;i<2;i++)
 						{
 							var card = Logic.create('MemoryGame.levels.level1.Card');
-							card.setState('cardName',item.name);
+							card.setState('cardName',item.text);
 							card.setState('physicsEntity',false);
 							
 							arrayOfCards.push(card);

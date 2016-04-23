@@ -18,7 +18,7 @@
 					
 					//Fake obj we got from the "URL REQUEST"
 					var matchNo = me.addToState('matchNo',1);
-					
+					/*
 					var obj = {};
 					
 					if (matchNo==1)
@@ -58,10 +58,43 @@
 										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"}
 									];
 					}
+					*/
+					Display.de("Hi! Requesting...");
 					
-					me.setState('requestObj',obj);
+					function httpGetAsync(theUrl, callback)
+					{
+						var xmlHttp = new XMLHttpRequest();
+						xmlHttp.onreadystatechange = function() { 
+							if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+								callback(xmlHttp, xmlHttp.response);
+						}
+						xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+						xmlHttp.send(null);
+					}
 					
-					me.forceAction('Load Assets');
+					
+					
+					
+					httpGetAsync("https://ellinopoula1.appspot.com/api/memory/", function (xmlHttp, response) {
+						var items = JSON.parse(response);
+						console.log("RETUrNED: ",items);
+						console.log("RETUrNED: ",items[0]);
+						//return;
+						
+						/*
+						e('Obj Image').setState('display',"inline");
+						e('Obj Image').setState('src',items[0].image_url);
+						
+						e('Obj Text').setState('display',"inline");
+						e('Obj Text').setState('text',items[0].title);
+						
+						e('Obj Play Sound Btn').setState('display',"inline");
+						e('Obj Play Sound Btn').setState('SoundUrl',items[0].narration);
+						*/
+						
+						me.setState('requestObj',items);
+						me.forceAction('Load Assets');
+					});
 				</Script>
 			</Scripts>
 		</Action>
@@ -73,7 +106,7 @@
 				<Script>
 					//forced
 					
-					var obj = me.s('requestObj');
+					var items = me.s('requestObj');
 					
 					//YOOO
 					//e('Game Manager').fa('Create Match',{matchObj:obj});
@@ -82,16 +115,16 @@
 					//Initiate Load
 					var loader = Assets.initiateBatch();
 					
-					for (item of obj.items)
+					for (item of items)
 					{
 						//Display.de("Found item, loading its image: " + item.image);
 						//Add file to Flambe Loader
-						loader.addFile(item.image, "image_" + item.name);
-						loader.addFile(item.audio, "audio_" + item.name);
+						loader.addFile(item.image_url, "image_" + item.text, AssetFormat.PNG);
+						loader.addFile(item.narration, "audio_" + item.text);
 					}
 					
 					
-					if (obj.items.length>0)
+					if (items.length>0)
 					{
 						//Load
 						loader.start();
@@ -106,7 +139,7 @@
 					//Event Listener
 					loader.successSignal.connect(function () {
 						//Display.de("Done loading shit!");
-						e('Game Manager').fa('Create Match',{matchObj:obj});
+						e('Game Manager').fa('Create Match',{matchObj:items});
 					}).once();
 				</Script>
 			</Scripts>
