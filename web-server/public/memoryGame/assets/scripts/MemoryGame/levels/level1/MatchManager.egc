@@ -38,7 +38,8 @@
 					
 					httpGetAsync("https://ellinopoula1.appspot.com/api/memory/", function (xmlHttp, response) {
 						var items = JSON.parse(response);
-						
+						Display.de("I GOT:");
+						console.log(items);
 						me.setState('requestObj',items);
 						me.forceAction('Load Assets');
 					});
