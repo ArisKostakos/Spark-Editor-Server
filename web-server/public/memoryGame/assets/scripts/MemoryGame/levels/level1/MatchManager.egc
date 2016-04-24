@@ -3,6 +3,7 @@
 		<_State id="name"><Value>Match Manager</Value></_State>
 		<State><Id>requestObj</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>matchNo</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>itemLoaded</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -18,47 +19,7 @@
 					
 					//Fake obj we got from the "URL REQUEST"
 					var matchNo = me.addToState('matchNo',1);
-					/*
-					var obj = {};
 					
-					if (matchNo==1)
-					{
-						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
-									];
-					}
-					else if (matchNo==2)
-					{
-						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"}
-									];
-					}
-					else if (matchNo==3)
-					{
-						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"}
-									];
-					}
-					else
-					{
-						obj.items = [	{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-										{name:'Άγγελος', image:"localAssets/aggelos.png", audio:"localAssets/A_Aggelos.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-										{name:'Γόμα', image:"localAssets/goma.png", audio:"localAssets/B_goma.mp3"},
-										{name:'Βρύση', image:"localAssets/vrisi.png", audio:"localAssets/B_brisi.mp3"}
-									];
-					}
-					*/
 					Display.de("Hi! Requesting...");
 					
 					function httpGetAsync(theUrl, callback)
@@ -77,20 +38,6 @@
 					
 					httpGetAsync("https://ellinopoula1.appspot.com/api/memory/", function (xmlHttp, response) {
 						var items = JSON.parse(response);
-						console.log("RETUrNED: ",items);
-						console.log("RETUrNED: ",items[0]);
-						//return;
-						
-						/*
-						e('Obj Image').setState('display',"inline");
-						e('Obj Image').setState('src',items[0].image_url);
-						
-						e('Obj Text').setState('display',"inline");
-						e('Obj Text').setState('text',items[0].title);
-						
-						e('Obj Play Sound Btn').setState('display',"inline");
-						e('Obj Play Sound Btn').setState('SoundUrl',items[0].narration);
-						*/
 						
 						me.setState('requestObj',items);
 						me.forceAction('Load Assets');
@@ -107,6 +54,8 @@
 					//forced
 					
 					var items = me.s('requestObj');
+					var itemLoaded = me.s('itemLoaded');
+					var itemsToBeLoaded=0;
 					
 					//YOOO
 					//e('Game Manager').fa('Create Match',{matchObj:obj});
@@ -117,28 +66,37 @@
 					
 					for (item of items)
 					{
-						//Display.de("Found item, loading its image: " + item.image);
-						//Add file to Flambe Loader
-						loader.addFile(item.image_url, "image_" + item.text, AssetFormat.PNG);
-						loader.addFile(item.narration, "audio_" + item.text);
+						if (itemLoaded.get(item.text)==null)
+						{
+							//Add file to Flambe Loader
+							loader.addFile(item.image_url, "image_" + item.text, AssetFormat.PNG);
+							loader.addFile(item.narration, "audio_" + item.text);
+							
+							itemLoaded.set(item.text,item);//true could have worked here as well
+							itemsToBeLoaded+=1;
+							
+							Display.de("Found item, loading it: " + item.text);
+						}
+						else 
+							Display.de("Found item, already loaded: " + item.text);
 					}
 					
 					
-					if (items.length>0)
+					if (itemsToBeLoaded>0)
 					{
 						//Load
 						loader.start();
 					}
 					else
 					{
-						Display.de("There was like.. no items found! wtf..");
+						Display.de("Done loading! [nothing loaded]");
+						e('Game Manager').fa('Create Match',{matchObj:items});
 						return;
 					}
 					
-					//var oldMe = me;
 					//Event Listener
 					loader.successSignal.connect(function () {
-						//Display.de("Done loading shit!");
+						Display.de("Done loading!");
 						e('Game Manager').fa('Create Match',{matchObj:items});
 					}).once();
 				</Script>
