@@ -70,7 +70,7 @@
 						if (itemLoaded.get(item.text)==null)
 						{
 							//Add file to Flambe Loader
-							loader.addFile(item.image_url, "image_" + item.text, AssetFormat.PNG);
+							loader.addFile(item.image, "image_" + item.text, AssetFormat.PNG);
 							loader.addFile(item.narration, "audio_" + item.text);
 							
 							itemLoaded.set(item.text,item);//true could have worked here as well
