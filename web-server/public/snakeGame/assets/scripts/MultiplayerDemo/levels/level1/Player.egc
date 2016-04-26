@@ -1,0 +1,12 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="name"><Value>PlayerXXX</Value></_State>
+		<State><Id>nickname</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>color</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>position</Id><Type>Integer</Type><Value>0</Value></State>
+		<_State id="scaleX"><Value>1.3</Value></_State>
+		<_State id="scaleY"><Value>1.3</Value></_State>
+	</_States>
+	
+</Entity>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="width"><Value>518</Value></_State>
+		<_State id="height"><Value>349</Value></_State>
+		<_State id="horizontalCenter"><Value>0</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
+		<_State id="name"><Value>Area 1</Value></_State>
+	</_States>
+	
+	<Form><Space><Entities>
+		<!--Background-->
+		<Entity extends="std.display.Image">
+			<_States>
+				<_State id="width"><Value>100%</Value></_State>
+				<_State id="height"><Value>100%</Value></_State>
+				<_State id="src"><Value>frame</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.VGroup">
+			<_States>
+				<_State id="width"><Value>100%</Value></_State>
+				<_State id="height"><Value>100%</Value></_State>
+				<_State id="paddingLeft"><Value>20</Value></_State>
+				<_State id="paddingRight"><Value>100</Value></_State>
+				<_State id="paddingTop"><Value>20</Value></_State>
+				<_State id="paddingBottom"><Value>20</Value></_State>
+				<_State id="gap"><Value>15</Value></_State>
+			</_States>
+				
+			<Form><Space><Entities>
+				<!--Name Label-->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="left"><Value>50</Value></_State>
+						<_State id="top"><Value>50</Value></_State>
+						<_State id="fontSize"><Value>32px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>34</Value></_State>
+						<_State id="text"><Value>Enter your Name:</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--Name Input-->
+				<Entity extends="std.display.Input">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>47</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<_State id="placeholder"><Value>User Name</Value></_State>
+						<_State id="fontSize"><Value>23px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textIndent"><Value>12px</Value></_State>
+						<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+						<_State id="name"><Value>nickInput</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>1</Value></_State></_States></Entity>
+				
+				<!--Choose Color Label-->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="fontSize"><Value>32px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>34</Value></_State>
+						<_State id="text"><Value>Choose your Color:</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="gap"><Value>40</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>44</Value></_State>
+								<_State id="height"><Value>54</Value></_State>
+								<_State id="src"><Value>pawn_blue</Value></_State>
+								<_State id="name"><Value>pawn_blue</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								e('pawn_green').setState('display','none');
+								e('pawn_purple').setState('display','none');
+								e('pawn_red').setState('display','none');
+								e('Networking').setState('color','blue');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>44</Value></_State>
+								<_State id="height"><Value>54</Value></_State>
+								<_State id="src"><Value>pawn_green</Value></_State>
+								<_State id="name"><Value>pawn_green</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								e('pawn_blue').setState('display','none');
+								e('pawn_purple').setState('display','none');
+								e('pawn_red').setState('display','none');
+								e('Networking').setState('color','green');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>44</Value></_State>
+								<_State id="height"><Value>54</Value></_State>
+								<_State id="src"><Value>pawn_purple</Value></_State>
+								<_State id="name"><Value>pawn_purple</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								e('pawn_green').setState('display','none');
+								e('pawn_blue').setState('display','none');
+								e('pawn_red').setState('display','none');
+								e('Networking').setState('color','purple');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>44</Value></_State>
+								<_State id="height"><Value>54</Value></_State>
+								<_State id="src"><Value>pawn_red</Value></_State>
+								<_State id="name"><Value>pawn_red</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								e('pawn_green').setState('display','none');
+								e('pawn_purple').setState('display','none');
+								e('pawn_blue').setState('display','none');
+								e('Networking').setState('color','red');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>1</Value></_State></_States></Entity>
+				
+				<!-- Start Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>49</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Join!</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+				<Script>
+					Display.de("Start!");
+					e('Area 1').setState('display','none');
+					e('Area 2').setState('display','inline');
+					
+					e('Networking').setState('nickname',e('nickInput').s('text'));
+					
+					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"greet", message: e('Networking').s('nickname')+" ("+e('Networking').s('color')+") has joined the game!" });
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+			</Entities></Space></Form>
+		</Entity>
+	</Entities></Space></Form>
+</Entity>

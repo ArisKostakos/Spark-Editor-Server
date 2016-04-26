@@ -1,0 +1,253 @@
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<_State id="name"><Value>mainScene</Value></_State>
+		<State><Id>path</Id><Type>Dynamic</Type><Value>[[434,227],[410,293],[375,347],[348,406],[355,467],[402,509],[462,518],[521,500],[567,457],[588,400],[592,338],[588,274],[597,213],[623,156],[669,110],[723,81],[783,70],[845,77],[900,105],[937,157],[937,219],[919,281]]</Value></State>
+	</_States>
+	<Form><Space><Entities>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="2DMeshImageForm"><Value>Background</Value></_State>
+				<_State id="spaceX"><Value>;2280/2</Value></_State>
+				<_State id="spaceY"><Value>;1440/2</Value></_State>
+				<_State id="scaleX"><Value>2.2</Value></_State>
+				<_State id="scaleY"><Value>2.2</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="name"><Value>Game Output Text</Value></_State>
+				<_State id="2DMeshTextForm"><Value>fontBlack</Value></_State>
+				<_State id="font"><Value>fontBlack</Value></_State>
+				<_State id="text"><Value>It's your Turn!</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2-200</Value></_State>
+				<_State id="align"><Value>Left</Value></_State>
+				<_State id="scaleX"><Value>2.3</Value></_State>
+				<_State id="scaleY"><Value>2.3</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice 1</Value></_State>
+				<_State id="2DMeshImageForm"><Value>dice1</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.8</Value></_State>
+				<_State id="scaleY"><Value>1.8</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice 2</Value></_State>
+				<_State id="2DMeshImageForm"><Value>dice2</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.8</Value></_State>
+				<_State id="scaleY"><Value>1.8</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice 3</Value></_State>
+				<_State id="2DMeshImageForm"><Value>dice3</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.8</Value></_State>
+				<_State id="scaleY"><Value>1.8</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice 4</Value></_State>
+				<_State id="2DMeshImageForm"><Value>dice4</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.8</Value></_State>
+				<_State id="scaleY"><Value>1.8</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice 5</Value></_State>
+				<_State id="2DMeshImageForm"><Value>dice5</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.8</Value></_State>
+				<_State id="scaleY"><Value>1.8</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice 6</Value></_State>
+				<_State id="2DMeshImageForm"><Value>dice6</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.8</Value></_State>
+				<_State id="scaleY"><Value>1.8</Value></_State>
+				<_State id="opacity"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Dice Button</Value></_State>
+				<_State id="2DMeshImageForm"><Value>diceButton</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
+				<_State id="spaceY"><Value>;1440/2+20</Value></_State>
+				<_State id="scaleX"><Value>1.7</Value></_State>
+				<_State id="scaleY"><Value>1.7</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+				<_State id="touchable"><Value>true</Value></_State>
+			</_States>
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							me.setState('visible',false);
+							
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"rolledDice", message: Logic.random(1,6) });
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					it.addToState('delayCurrent',Logic.getDt());
+					
+					if (it.getState('delayCurrent')>it.getState('delay'))
+					{
+						me.stopAction('WaitFor');
+						
+						//Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Dice Rolled</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var diceMessage = e('Networking').s('diceMessage');
+					
+					e('Dice ' + Std.string(diceMessage.message)).setState('visible',true);
+					
+					if (diceMessage.id==e('Networking').s('nickname'))
+					{
+						e('Game Output Text').setState('text',"You rolled a " + Std.string(diceMessage.message)+"!");
+					}
+					else
+					{
+						e('Game Output Text').setState('text',diceMessage.id+" rolled a " + Std.string(diceMessage.message)+"!");
+					}
+					
+					var playerPawn=e('Player:'+diceMessage.id);
+					
+					var path = me.s('path');
+					
+					var position = playerPawn.addToState('position',diceMessage.message);
+					
+					//Victory Condition
+					var hasWon=false;
+					
+					if (position>=path.length-1)
+					{
+						hasWon=true;
+						position = playerPawn.setState('position',path.length-1);
+					}
+					
+					var posX=path[position][0];
+					var posY=path[position][1];
+					
+					var calcX=2280/2-1024*2.2/2+posX*2.2;
+					var calcY=1440/2-582*2.2/2+posY*2.2;
+					
+					playerPawn.setState('animate_x',{type:"to", to:calcX+Logic.random(-12,12), seconds:2, easing:Ease.quadInOut});
+					playerPawn.setState('animate_y',{type:"to", to:calcY+Logic.random(-12,12), seconds:2, easing:Ease.quadInOut});
+					
+					if (hasWon==true)
+					{
+						me.sa('WaitFor',{delay:3, cbEntity:me, cbAction:"Someone Won"});
+					}
+					else
+					{
+						if (e('Networking').s('isMaster'))
+							e('Networking').sa('WaitFor',{delay:3, cbEntity:e('Networking'), cbAction:"Initiate Next Turn"});
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Someone Won</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var diceMessage=e('Networking').s('diceMessage');
+					
+					//Hide Previous Dice
+					e('Dice '+Std.string(diceMessage.message)).setState('visible',false);
+						
+					Sound.playSound("victory");
+					
+					if (diceMessage.id==e('Networking').s('nickname'))
+					{
+						e('Game Output Text').setState('text',"You won!!!");
+					}
+					else
+					{
+						e('Game Output Text').setState('text',diceMessage.id+" won!");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
