@@ -15,6 +15,8 @@ handler.say = function(msg, session, next) {
 
 	var channel = this.channelService.getChannel("mainRoom", true);
 	var param = {
+		id: msg.id,
+		type: msg.type,
 		message: msg.message
 	};
 	channel.pushMessage('onSay', param);
