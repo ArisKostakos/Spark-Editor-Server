@@ -37,7 +37,7 @@
 					  return array;
 					}
 					
-					//Sound.playSound('m:Debug');
+					Sound.playSound('m:Debug');
 					
 					//STARTS HERE
 					me.setState('matchStarted',false);
@@ -87,7 +87,7 @@
 					
 					//Add Cards
 					e('Cards Area').fa('Add Cards To Tile',{cards:shuffle(arrayOfCards)});
-					//Sound.playSound('m:Debug');
+					
 					me.sa('WaitFor',{delay:1, delayCurrent:0, cbEntity:me,cbAction:"Show All Cards"});
 				]]></Script>
 			</Scripts>
@@ -294,6 +294,9 @@
 					
 					//Analytics
 					me.s('analytics').duration=Math.floor(Logic.getTime()-me.s('timeStamp'));
+					
+					//Pre-Load the next match
+					e('Match Manager').fa('Load JSON',{ restart:false } );
 					
 					me.sa('WaitFor',{delay:secs,cbEntity:me,cbAction:"Hide Victory"});
 					e('mainScene').sa('WaitFor',{delay:secs+0.3,cbEntity:e('mainScene'),cbAction:"Birds Sit At Tree"});

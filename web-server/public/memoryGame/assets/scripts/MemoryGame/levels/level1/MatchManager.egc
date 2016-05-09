@@ -21,7 +21,7 @@
 					//Count Match Number (for some reason..)
 					me.addToState('matchNo',1);
 					
-					//Sound.playSound('m:Debug');
+					Sound.playSound('m:Debug');
 					
 					//Initiate
 					if (me.s('LoaderState')=="Idle")
