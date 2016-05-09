@@ -34,9 +34,9 @@
 		</State>
 		
 		<State>
-			<Id>backgroundEntity</Id>
-			<Type>Dynamic</Type>
-			<Value>null</Value>
+			<Id>backgroundColor</Id>
+			<Type>Text</Type>
+			<Value>0xFFFFFF</Value>
 		</State>
 	</_States>
 		

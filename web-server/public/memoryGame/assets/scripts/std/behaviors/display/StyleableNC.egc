@@ -116,7 +116,7 @@
 		</State>
 		
 		<State>
-			<Id>white-space</Id>
+			<Id>whiteSpace</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
@@ -125,6 +125,18 @@
 			<Id>selectable</Id>
 			<Type>Boolean</Type>
 			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>transform</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>transformScale</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
 		</State>
 	</_States>
 </Entity>

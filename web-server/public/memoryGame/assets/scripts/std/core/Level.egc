@@ -20,6 +20,12 @@
 		</State>
 		
 		<State>
+			<Id>stageAreaReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
 			<Id>created</Id>
 			<Type>Boolean</Type>
 			<Value>false</Value>

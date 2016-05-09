@@ -28,9 +28,10 @@
 					{
 						if (e('Game Manager').s('showingCards')==true)
 						{
-							//e('Game Manager').stopAction('WaitFor');
+							e('Game Manager').stopAction('WaitFor');
+							e('Game Manager').getAction('WaitFor').setState('delayCurrent',0);
 							e('Game Manager').fa('Hide All Cards');
-							e('Game Manager').sa('WaitFor',{delay:0.001,cbEntity:me,cbAction:"dummy"});
+							//e('Game Manager').sa('WaitFor',{delay:0.001,cbEntity:me,cbAction:"dummy"});
 						}
 					}
 				</Script>
@@ -39,6 +40,7 @@
 	</_Triggers>
 		
 	<_Actions>
+		<!--
 		<Action>
 			<Id>dummy</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -48,7 +50,7 @@
 					Display.de("dummy action");
 				</Script>
 			</Scripts>
-		</Action>
+		</Action>-->
 				
 		<_Action id="Constructor">
 			<_Scripts>
@@ -57,7 +59,6 @@
 					
 					var cardImage = Logic.create('std.display.Image2D');
 					cardImage.setState('2DMeshImageForm',"image_" + me.s('cardName'));
-					//cardImage.setState('2DMeshImageForm',"cloud1"); //YOOO
 					cardImage.setState('spaceX',190);
 					cardImage.setState('spaceY',170);
 					cardImage.setState('scaleX',-1);
@@ -172,7 +173,7 @@
 				    
 				    if (it.getState('delayCurrent')>it.getState('delay'))
 				    {
-					    me.stopAction('WaitFor');
+					    it.stop();
 					    
 					    //Callback (Action finished)
 						it.setState('delayCurrent',0);
@@ -220,9 +221,9 @@
 				<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
 				<_State id="font"><Value>ComfortGreek</Value></_State>
 				<_State id="text"><Value>ΝΑ</Value></_State>
-				<_State id="spaceX"><Value>100</Value></_State>
-				<_State id="spaceY"><Value>350</Value></_State>
 				<_State id="align"><Value>Center</Value></_State>
+				<_State id="spaceX"><Value>;330/2-20</Value></_State>
+				<_State id="spaceY"><Value>350</Value></_State>
 				<_State id="scaleX"><Value>-1.7</Value></_State>
 				<_State id="scaleY"><Value>1.7</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
@@ -234,9 +235,23 @@
 						<Script>
 							me.setState('text',parent.s('cardName'));
 							parent.setState('obj_text',me);
+							//me.sa('Find Dimension');
 						</Script>
 					</_Scripts>
 				</_Action>
+					
+				<Action>
+					<Id>Find Dimension</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							it.stop();
+							
+							Display.de('Text Width: ' + query(me,'realWidth'));
+							Display.de('Text Height: ' + query(me,'realHeight'));
+						</Script>
+					</Scripts>
+				</Action>
 			</_Actions>
 		</Entity>
 	</Entities></Space></Form>

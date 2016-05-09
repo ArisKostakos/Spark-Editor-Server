@@ -3,6 +3,7 @@
 		<_State id="name"><Value>mainScene</Value></_State>
 		<State><Id>rectOpacity</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>firstTimeAtTree</Id><Type>Boolean</Type><Value>true</Value></State>
+		<_State id="backgroundColor"><Value>Transparent</Value></_State>
 	</_States>
 	<Form><Space><Entities>
 		<!-- Game Manager (non-visual) -->
@@ -106,6 +107,43 @@
 		
 		<Entity extends="MemoryGame.levels.level1.AudioBtn"/>
 		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>Restart Button</Value></_State>
+				<_State id="2DMeshImageForm"><Value>restartBtn</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="touchable"><Value>true</Value></_State>
+				<_State id="spaceX"><Value>2040</Value></_State>
+				<_State id="spaceY"><Value>320</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							Display.de("Clicked restart");
+							
+							//Hide Restart Button
+							me.set('visible',false);
+					
+							//Remove All Cards
+							e('Cards Area').fa('Remove All Cards');
+							
+							//Analytics
+							e('Game Manager').s('analytics').duration=Math.floor(Logic.getTime()-e('Game Manager').s('timeStamp'));
+							e('Game Manager').s('analytics').clickedRestart=true;
+							
+							//Get Next Match
+							e('Match Manager').fa('Get Next Match',{restart:true});
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+		</Entity>
+		
 		<Entity extends="MemoryGame.levels.level1.CardsArea"/>
 	</Entities></Space></Form>
 	
@@ -123,7 +161,13 @@
 					
 					*/
 					
+					//Analytics
+					window.analytics=[];
+					
 					Sound.loopSound("m:Music",e('Audio Control').s('VolumeMusic'));
+					
+					//Pre-Load the first match
+					e('Match Manager').fa('Load JSON',{ restart:false } );
 					
 					Display.invalidateLayout();
 					//return;
@@ -169,6 +213,7 @@
 					
 					var secsBlue=1.7;
 					e('Blue Bird').stopAction('WaitFor');
+					e('Blue Bird').getAction('WaitFor').setState('delayCurrent',0);
 					e('Blue Bird').fa('Animate',{state:"Fly"});
 					e('Blue Bird').setState('animate_x',{type:"to", to:710, seconds:secsBlue, easing:Ease.quadInOut});
 					e('Blue Bird').setState('animate_y',{type:"to", to:390, seconds:secsBlue, easing:Ease.quadInOut});
@@ -176,6 +221,7 @@
 					
 					var secsRed=1.2;
 					e('Red Bird').stopAction('WaitFor');
+					e('Red Bird').getAction('WaitFor').setState('delayCurrent',0);
 					e('Red Bird').fa('Animate',{state:"Fly"});
 					e('Red Bird').setState('animate_x',{type:"to", to:650, seconds:secsRed, easing:Ease.quadInOut});
 					e('Red Bird').setState('animate_y',{type:"to", to:220, seconds:secsRed, easing:Ease.quadInOut});
@@ -226,7 +272,7 @@
 				    
 				    if (it.getState('delayCurrent')>it.getState('delay'))
 				    {
-					    me.stopAction('WaitFor');
+					    it.stop();
 					    
 					    //Callback (Action finished)
 						it.setState('delayCurrent',0);
@@ -251,7 +297,7 @@
 				    
 				    if (it.getState('delayCurrent')>it.getState('delay'))
 				    {
-					    me.stopAction('WaitFor2');
+					    it.stop();
 					    
 					    //Callback (Action finished)
 						it.setState('delayCurrent',0);

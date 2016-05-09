@@ -34,10 +34,7 @@
 					else
 						me.setState('scaleX',-scale);
 						
-					if (Logic.random(0,1)==1 || me.s('2DMeshImageForm')=="cloud2")
-						me.setState('scaleY',scale);
-					else
-						me.setState('scaleY',-scale);
+					me.setState('scaleY',scale);
 						
 					//Start Floating
 					me.fa('Float Left Percent');
@@ -55,7 +52,7 @@
 				    
 				    if (it.getState('delayCurrent')>it.getState('delay'))
 				    {
-					    me.stopAction('WaitFor');
+					    it.stop();
 					    
 					    //Callback (Action finished)
 						it.setState('delayCurrent',0);

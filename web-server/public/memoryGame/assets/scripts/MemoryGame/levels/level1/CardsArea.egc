@@ -126,5 +126,24 @@
 				<State><Id>cards</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
+	
+		<Action>
+			<Id>Remove All Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					//me.removeChildren();
+					
+					for (f_child of me.getChildren())
+					{
+						f_child.set('touchable',false);
+						f_child.set('visible',false);
+						//me.setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
 	</_Actions>
 </Entity>

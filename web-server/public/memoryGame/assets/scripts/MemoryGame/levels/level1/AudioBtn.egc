@@ -6,13 +6,15 @@
 		
 		<_State id="2DMeshImageForm"><Value>[Button_Normal]</Value></_State>
 			
-		<_State id="spaceX"><Value>2000</Value></_State>
+		<_State id="spaceX"><Value>2040</Value></_State>
 		<_State id="spaceY"><Value>180</Value></_State>
+		<_State id="scaleX"><Value>0.8</Value></_State>
+		<_State id="scaleY"><Value>0.8</Value></_State>
 		
 		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.5</Value></State>
 		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
-		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.6</Value></State>
+		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.4</Value></State>
 	
 	</_States>
 	
@@ -82,7 +84,7 @@
 						me.setState("2DMeshImageForm","[Button_Normal]");
 						//me.setState("VolumeVoice",0.5);
 						me.setState("VolumeFX",1);
-						me.setState("VolumeMusic",0.6);
+						me.setState("VolumeMusic",0.4);
 						me.setState('Toggled',false);
 						
 						Sound.loopSound("m:Music",e('Audio Control').s('VolumeMusic'));

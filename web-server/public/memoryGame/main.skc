@@ -26,7 +26,7 @@
 	
 	<Assets>
 		<Module id="Levels">
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/loader/Level.egc</Asset>
+			<Asset type="script" location="local" bytes='592'>MemoryGame/levels/loader/Level.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Level.egc</Asset>
 		</Module>
 		
@@ -36,9 +36,9 @@
 				<RequiresModule>Std:Base</RequiresModule>
 			</Requires>
 			
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/Project.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/Space.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/Stage.egc</Asset>
+			<Asset type="script" location="local" bytes='836'>MemoryGame/Project.egc</Asset>
+			<Asset type="script" location="local" bytes='393'>MemoryGame/Space.egc</Asset>
+			<Asset type="script" location="local" bytes='259'>MemoryGame/Stage.egc</Asset>
 		</Module>
 		
 		<Module id="Loader">
@@ -47,28 +47,28 @@
 				<RequiresModule>Std:Loader</RequiresModule>
 				<RequiresModule>Std:Rest</RequiresModule>
 			</Requires>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/loader/View.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/loader/Scene.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="redBird_sheet">MemoryGame/levels/level1/redBird_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="redBird">MemoryGame/levels/level1/redBird.plist</Asset>
+			<Asset type="script" location="local" bytes='556'>MemoryGame/levels/loader/View.egc</Asset>
+			<Asset type="script" location="local" bytes='6150'>MemoryGame/levels/loader/Scene.egc</Asset>
+			<Asset type="image" location="local" bytes='100000' id="blueBird_sheet">MemoryGame/levels/level1/blueBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='4540' id="blueBird">MemoryGame/levels/level1/blueBird.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="redBird_sheet">MemoryGame/levels/level1/redBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='4540' id="redBird">MemoryGame/levels/level1/redBird.plist</Asset>
 			
-			<Asset type="image" location="local" bytes='3162734' id="loadingBanner">MemoryGame/levels/loader/banner.png</Asset>
+			<Asset type="image" location="local" bytes='57200' id="loadingBanner">MemoryGame/levels/loader/banner.png</Asset>
 			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Cloud.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="cloud1">MemoryGame/levels/level1/sinefo_1.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="cloud2">MemoryGame/levels/level1/sinefo_2.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="cloud3">MemoryGame/levels/level1/sinefo_3.png</Asset>
+			<Asset type="image" location="local" bytes='31800' id="cloud1">MemoryGame/levels/level1/sinefo_1.png</Asset>
+			<Asset type="image" location="local" bytes='31800' id="cloud2">MemoryGame/levels/level1/sinefo_2.png</Asset>
+			<Asset type="image" location="local" bytes='31800' id="cloud3">MemoryGame/levels/level1/sinefo_3.png</Asset>
 		</Module>
 		
 		<Module id="Common" executeEntity="MemoryGame.levels.common.CommonSpace">
 			<Requires>
 				<RequiresModule>Std:Base</RequiresModule>
 			</Requires>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/common/CommonSpace.egc</Asset>
+			<Asset type="script" location="local" bytes='162'>MemoryGame/levels/common/CommonSpace.egc</Asset>
 		</Module>
 		
 		<Module id="Level1">
@@ -81,131 +81,135 @@
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Scene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/CardsArea.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Card.egc</Asset>
+			<Asset type="script" location="local" bytes='7670'>MemoryGame/levels/level1/Card.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/PlayBtn.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/GameManager.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/MatchManager.egc</Asset>
 			
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Congratulations.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="congrats_sign">MemoryGame/levels/level1/congrats.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="congrats_balloons1">MemoryGame/levels/level1/ballons_1.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="congrats_balloons2">MemoryGame/levels/level1/ballons_2.png</Asset>
+			<Asset type="image" location="local" bytes='53000' id="congrats_sign">MemoryGame/levels/level1/congrats.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="congrats_balloons1">MemoryGame/levels/level1/ballons_1.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="congrats_balloons2">MemoryGame/levels/level1/ballons_2.png</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Background.egc</Asset>
+			<Asset type="script" location="local" bytes='8650'>MemoryGame/levels/level1/Background.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeFront.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeBack.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/Balloon.egc</Asset>
+			<Asset type="script" location="local" bytes='3300'>MemoryGame/levels/level1/Balloon.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/HotAirBalloon.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/TreeEyes.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="treeEyes">MemoryGame/levels/level1/matakia.png</Asset>
+			<Asset type="image" location="local" bytes='4000' id="treeEyes">MemoryGame/levels/level1/matakia.png</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/AudioBtn.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="audioBtn_On">MemoryGame/levels/level1/audioBtn_On.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="audioBtn_Off">MemoryGame/levels/level1/audioBtn_Off.png</Asset>
+			<Asset type="script" location="local" bytes='2390'>MemoryGame/levels/level1/AudioBtn.egc</Asset>
+			<Asset type="image" location="local" bytes='75000' id="audioBtn_On">MemoryGame/levels/level1/audioBtn_On.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="audioBtn_Off">MemoryGame/levels/level1/audioBtn_Off.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="restartBtn">MemoryGame/levels/level1/restart_2.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedRect.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/GreenRect.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueRect.egc</Asset>
+			<Asset type="script" location="local" bytes='515'>MemoryGame/levels/level1/BlueRect.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/BlueBird.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="blueBirdStand_sheet">MemoryGame/levels/level1/blueBirdStand_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="blueBirdStand">MemoryGame/levels/level1/blueBirdStand.plist</Asset>
+			<Asset type="script" location="local" bytes='4300'>MemoryGame/levels/level1/BlueBird.egc</Asset>
+			<Asset type="image" location="local" bytes='100000' id="blueBirdStand_sheet">MemoryGame/levels/level1/blueBirdStand_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="blueBirdStand">MemoryGame/levels/level1/blueBirdStand.plist</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/RedBird.egc</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="redBirdStand_sheet">MemoryGame/levels/level1/redBirdStand_sheet.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="redBirdStand">MemoryGame/levels/level1/redBirdStand.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="redBirdStand_sheet">MemoryGame/levels/level1/redBirdStand_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="redBirdStand">MemoryGame/levels/level1/redBirdStand.plist</Asset>
 			
-			<Asset type="image" location="local" bytes='3162734' id="background">MemoryGame/levels/level1/island.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="treeBack">MemoryGame/levels/level1/treeBack.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="treeFront">MemoryGame/levels/level1/treeFront.png</Asset>
+			<Asset type="image" location="local" bytes='429000' id="background">MemoryGame/levels/level1/island.png</Asset>
+			<Asset type="image" location="local" bytes='169000' id="treeBack">MemoryGame/levels/level1/treeBack.png</Asset>
+			<Asset type="image" location="local" bytes='43000' id="treeFront">MemoryGame/levels/level1/treeFront.png</Asset>
 			
-			<Asset type="image" location="local" bytes='3162734' id="balloon1">MemoryGame/levels/level1/ballon_1.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="balloon2">MemoryGame/levels/level1/ballon_2.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="balloon3">MemoryGame/levels/level1/ballon_3.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="balloon4">MemoryGame/levels/level1/ballon_4.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon1">MemoryGame/levels/level1/ballon_1.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon2">MemoryGame/levels/level1/ballon_2.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon3">MemoryGame/levels/level1/ballon_3.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon4">MemoryGame/levels/level1/ballon_4.png</Asset>
 			
-			<Asset type="image" location="local" bytes='3162734' id="hotAirBalloon">MemoryGame/levels/level1/air_balloon2.png</Asset>
+			<Asset type="image" location="local" bytes='64000' id="hotAirBalloon">MemoryGame/levels/level1/air_balloon2.png</Asset>
 			
-			<Asset type="image" location="local" bytes='3162734' id="card">MemoryGame/levels/level1/karta.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="playBtn">MemoryGame/levels/level1/play2.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="card">MemoryGame/levels/level1/karta.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="playBtn">MemoryGame/levels/level1/play2.png</Asset>
 			
-			<Asset type="data" location="local" bytes='35672' id="ComfortGreek.fnt">MemoryGame/ComfortGreek.fnt</Asset>
-			<Asset type="data" location="local" bytes='35672' id="ComfortGreek">MemoryGame/ComfortGreek.png</Asset>
+			<Asset type="data" location="local" bytes='38900' id="ComfortGreek.fnt">MemoryGame/ComfortGreek.fnt</Asset>
+			<Asset type="data" location="local" bytes='12000' id="ComfortGreek">MemoryGame/ComfortGreek.png</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>MemoryGame/levels/level1/MyParticle.egc</Asset>
 			
 			<Asset type="image" location="local" bytes='35672' id="cardEffect.pex">MemoryGame/levels/level1/particles/particle.pex</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="texture">MemoryGame/levels/level1/particles/texture.png</Asset>
-			<Asset type="image" location="local" bytes='3162734' id="texture2">MemoryGame/levels/level1/particles/cardFXparticle.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="texture">MemoryGame/levels/level1/particles/texture.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="texture2">MemoryGame/levels/level1/particles/cardFXparticle.png</Asset>
 			
 			<Asset type="image" location="local" bytes='35672' id="balloon1.pex">MemoryGame/levels/level1/particles/balloon1.pex</Asset>
 			<Asset type="image" location="local" bytes='35672' id="balloon2.pex">MemoryGame/levels/level1/particles/balloon2.pex</Asset>
 			<Asset type="image" location="local" bytes='35672' id="balloon3.pex">MemoryGame/levels/level1/particles/balloon3.pex</Asset>
 			<Asset type="image" location="local" bytes='35672' id="balloon4.pex">MemoryGame/levels/level1/particles/balloon4.pex</Asset>
 			
-			<Asset type="sound" location="local" bytes='5000000' id="m:Music">MemoryGame/music.mp3</Asset>
-			<Asset type="sound" location="local" bytes='5000000' id="m:Start Button">MemoryGame/startButton.mp3</Asset>
-			<Asset type="sound" location="local" bytes='5000000' id="m:Birds Long">MemoryGame/birdsIntro.mp3</Asset>
-			<Asset type="sound" location="local" bytes='5000000' id="m:Birds Match">MemoryGame/birdsMatch.mp3</Asset>
-			<Asset type="sound" location="local" bytes='5000000' id="m:Birds Complete">MemoryGame/birdsShudden.mp3</Asset>
-			<Asset type="sound" location="local" bytes='5000000' id="m:Wrong Answer">MemoryGame/wrongAnswer.mp3</Asset>
-			<Asset type="sound" location="local" bytes='5000000' id="m:Match Complete">MemoryGame/kidCheerLong.mp3</Asset>
+			<Asset type="sound" location="local" bytes='3276014' id="m:Music">MemoryGame/music.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="m:Start Button">MemoryGame/startButton.mp3</Asset>
+			<Asset type="sound" location="local" bytes='26000' id="m:Birds Long">MemoryGame/birdsIntro.mp3</Asset>
+			<Asset type="sound" location="local" bytes='7000' id="m:Birds Match">MemoryGame/birdsMatch.mp3</Asset>
+			<Asset type="sound" location="local" bytes='32000' id="m:Birds Complete">MemoryGame/birdsShudden.mp3</Asset>
+			<Asset type="sound" location="local" bytes='10000' id="m:Wrong Answer">MemoryGame/wrongAnswer.mp3</Asset>
+			<Asset type="sound" location="local" bytes='73000' id="m:Match Complete">MemoryGame/kidCheerLong.mp3</Asset>
+			
+			
+			<Asset type="sound" location="local" bytes='73000' id="m:Debug">MemoryGame/debug.mp3</Asset>
 			
 		</Module>
 		
 		
 		<Module id="Std:Base">
-			<Asset type="script" location="local" bytes='35672'>std/core/Base.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/core/Project.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/core/Level.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/core/LevelReference.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/Base.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/Project.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/Level.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/LevelReference.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>std/display/Base.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Space.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Stage.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Base.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Space.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Stage.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Layoutable.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/core/Constructor.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/Layoutable.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/core/Constructor.egc</Asset>
 		</Module>
 		
 		<Module id="Std:Loader">
 			<Requires>
 				<RequiresModule>Std:Base</RequiresModule>
 			</Requires>
-			<Asset type="script" location="local" bytes='35672'>std/display/View.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Scene2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/View.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Scene2D.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>std/display/Camera2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Gui2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Group.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/VGroup.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/HGroup.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Div.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Entity2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Text.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Camera2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Gui2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Group.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/VGroup.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/HGroup.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Div.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Entity2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Text.egc</Asset>
 			
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Positionable2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/Renderable2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/NativeComponent.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/StyleableNC.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/Positionable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/Renderable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/NativeComponent.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/StyleableNC.egc</Asset>
 		</Module>
 		
 		<Module id="Std:Rest">
-			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Scene2DPhysics.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Camera2DStandard.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Image2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Scene2DPhysics.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Camera2DStandard.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
 			
-			<!--<Asset type="script" location="local" bytes='35672'>std/display/Button2D.egc</Asset>-->
-			<Asset type="script" location="local" bytes='35672'>std/display/Spritesheet2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/FillRect2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Text2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/Sprite2D.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>std/display/ParticleEmitter2D.egc</Asset>
+			<!--<Asset type="script" location="local" bytes='5000'>std/display/Button2D.egc</Asset>-->
+			<Asset type="script" location="local" bytes='5000'>std/display/Spritesheet2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/FillRect2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Text2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Sprite2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/ParticleEmitter2D.egc</Asset>
 			
-			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound.mp3</Asset>
+			<Asset type="sound" location="local" bytes='5000' id="_blankSound">std/blankSound.mp3</Asset>
 		</Module>
 	</Assets>
 </Client>

@@ -4,6 +4,7 @@
 		<State><Id>requestObj</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>matchNo</Id><Type>Integer</Type><Value>0</Value></State>
 		<State><Id>itemLoaded</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>LoaderState</Id><Type>Text</Type><Value>Idle</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -14,17 +15,57 @@
 				<Script>
 					//forced
 					
-					//So this is going to be asychronous.. So when we're done, we're going to just call another Action or something like that
-					//If we want to be fancy, we can just call a callback parameter function.. but whatevs
+					var l_restart = it.s('restart');
+					it.setState('restart',false);
 					
-					//Fake obj we got from the "URL REQUEST"
-					var matchNo = me.addToState('matchNo',1);
+					//Count Match Number (for some reason..)
+					me.addToState('matchNo',1);
+					
+					//Sound.playSound('m:Debug');
+					
+					//Initiate
+					if (me.s('LoaderState')=="Idle")
+						me.fa('Load JSON',{ restart:l_restart } );
+					
+					//Start when you're done
+					me.sa('Start When Loaded');
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>restart</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Start When Loaded</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('LoaderState')=="Loaded")
+					{
+						it.stop();
+						me.set('LoaderState',"Idle");
+						e('Game Manager').fa('Create Match',{matchObj: me.s('requestObj')});
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Load JSON</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('LoaderState',"Loading");
 					
 					Display.de("Hi! Requesting...");
 					
 					function httpGetAsync(theUrl, callback)
 					{
 						var xmlHttp = new XMLHttpRequest();
+						//xmlHttp.responseType='json';
 						xmlHttp.onreadystatechange = function() { 
 							if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 								callback(xmlHttp, xmlHttp.response);
@@ -34,19 +75,27 @@
 					}
 					
 					
+					var l_urlRequest=e('Memory Game').s('EllinopoulaDB');
 					
+					if (it.s('restart'))
+						l_urlRequest+="&restart=true";
 					
-					httpGetAsync("https://ellinopoula1.appspot.com/api/memory/", function (xmlHttp, response) {
+					Display.dw("l_urlRequest: "+l_urlRequest);
+						
+					httpGetAsync(l_urlRequest, function (xmlHttp, response) {
 						var items = JSON.parse(response);
 						Display.de("I GOT:");
-						console.log(items);
+						//console.log(items);
 						me.setState('requestObj',items);
 						me.forceAction('Load Assets');
 					});
 				</Script>
 			</Scripts>
+			<States>
+				<State><Id>restart</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
 		</Action>
-				
+		
 		<Action>
 			<Id>Load Assets</Id>
 			<Concurrency>Persistent</Concurrency>
@@ -58,10 +107,6 @@
 					var itemLoaded = me.s('itemLoaded');
 					var itemsToBeLoaded=0;
 					
-					//YOOO
-					//e('Game Manager').fa('Create Match',{matchObj:obj});
-					//return;
-					
 					//Initiate Load
 					var loader = Assets.initiateBatch();
 					
@@ -70,10 +115,10 @@
 						if (itemLoaded.get(item.text)==null)
 						{
 							//Add file to Flambe Loader
-							loader.addFile(item.image, "image_" + item.text, AssetFormat.PNG);
+							loader.addFile(item.image_url, "image_" + item.text, AssetFormat.PNG);
 							loader.addFile(item.narration, "audio_" + item.text);
 							
-							itemLoaded.set(item.text,item);//true could have worked here as well
+							itemLoaded.set(item.text,item); //true could have worked here as well
 							itemsToBeLoaded+=1;
 							
 							Display.de("Found item, loading it: " + item.text);
@@ -90,16 +135,29 @@
 					}
 					else
 					{
-						Display.de("Done loading! [nothing loaded]");
-						e('Game Manager').fa('Create Match',{matchObj:items});
+						Display.de("Done loading22! [nothing loaded]");
+						me.set('LoaderState',"Loaded");
 						return;
 					}
 					
-					//Event Listener
-					loader.successSignal.connect(function () {
-						Display.de("Done loading!");
-						e('Game Manager').fa('Create Match',{matchObj:items});
-					}).once();
+					var errorSignal;
+					var successSignal;
+					
+					//Error Event Listener
+					errorSignal=loader.errorSignal.connect(function () {
+						Display.de("EERrRRRooooorrr Loading stuff.. but whatever..");
+						me.set('LoaderState',"Loaded");
+						errorSignal.dispose();
+						successSignal.dispose();
+					});
+					
+					//Success Event Listener
+					successSignal=loader.successSignal.connect(function () {
+						Display.de("Done loading22!");
+						me.set('LoaderState',"Loaded");
+						errorSignal.dispose();
+						successSignal.dispose();
+					});
 				</Script>
 			</Scripts>
 		</Action>

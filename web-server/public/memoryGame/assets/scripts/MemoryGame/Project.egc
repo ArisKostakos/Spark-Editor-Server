@@ -20,6 +20,9 @@
 		<_State id="initLevelUrl">
 			<Value>MemoryGame.levels.level1.Level</Value>
 		</_State>
+			
+		<State><Id>EllinopoulaDB</Id><Type>Text</Type><Value>https://ellinopoula1.appspot.com/api/memory/?format=json</Value></State>
+		<!--<State><Id>EllinopoulaDB</Id><Type>Text</Type><Value>api/memory/?format=json</Value></State>-->
 	</_States>
 	
 	<Form>

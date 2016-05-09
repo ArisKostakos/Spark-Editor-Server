@@ -96,7 +96,7 @@
 							
 							if (it.getState('delayCurrent')>it.getState('delay'))
 							{
-								me.stopAction('WaitFor');
+								it.stop();
 								
 								//Callback (Action finished)
 								it.setState('delayCurrent',0);
