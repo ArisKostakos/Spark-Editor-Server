@@ -72,8 +72,7 @@
 			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/Area.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/Player.egc</Asset>
 			
-			<!--<Asset type="image" location="local" bytes='35672' id="Background">RTMultiplayerDemo/levels/level1/background.png</Asset>
-			<Asset type="image" location="local" bytes='35672' id="diceButton">RTMultiplayerDemo/levels/level1/dice-button.png</Asset>-->
+			<Asset type="image" location="local" bytes='35672' id="Background">RTMultiplayerDemo/levels/level1/tilegrass.png</Asset>
 			
 			<!-- Players -->
 			<Asset type="image" location="local" bytes='100000' id="p1_sheet">RTMultiplayerDemo/levels/level1/p1.png</Asset>
@@ -100,11 +99,6 @@
 			<Asset type="image" location="local" bytes='5000' id="m5">RTMultiplayerDemo/levels/level1/m5.plist</Asset>
 			<Asset type="image" location="local" bytes='100000' id="m6_sheet">RTMultiplayerDemo/levels/level1/m6.png</Asset>
 			<Asset type="image" location="local" bytes='5000' id="m6">RTMultiplayerDemo/levels/level1/m6.plist</Asset>
-			
-			<Asset type="image" location="local" id="pawn_blue" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_blue.png</Asset>
-			<Asset type="image" location="local" id="pawn_green" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_green.png</Asset>
-			<Asset type="image" location="local" id="pawn_purple" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_purple.png</Asset>
-			<Asset type="image" location="local" id="pawn_red" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_red.png</Asset>
 			
 			
 			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>

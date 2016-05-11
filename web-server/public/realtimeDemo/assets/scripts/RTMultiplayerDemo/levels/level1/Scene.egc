@@ -4,22 +4,31 @@
 		<_State id="backgroundColor"><Value>0x201E1F</Value></_State>
 	</_States>
 	<Form><Space><Entities>
-		<!--
-		<Entity extends="std.display.Image2D">
-			<_States>
-				<_State id="2DMeshImageForm"><Value>Background</Value></_State>
-				<_State id="spaceX"><Value>;2280/2</Value></_State>
-				<_State id="spaceY"><Value>;1440/2</Value></_State>
-				<_State id="scaleX"><Value>2.2</Value></_State>
-				<_State id="scaleY"><Value>2.2</Value></_State>
-				<_State id="opacity"><Value>1</Value></_State>
-				<_State id="physicsEntity"><Value>false</Value></_State>
-			</_States>
-		</Entity>
-		-->
+		
+
+		
 	</Entities></Space></Form>
 	
 	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script><![CDATA[
+					for (i=0;i<20;i++)
+					{
+						for (j=0;j<20;j++)
+						{
+							var tile = Logic.create('std.display.Image2D');
+							tile.set('2DMeshImageForm','Background');
+							tile.set('physicsEntity',false);
+							tile.set('spaceX',200*i-600);
+							tile.set('spaceY',200*j-600);
+							me.addChild(tile);
+						}
+					}
+				]]></Script>
+			</_Scripts>
+		</_Action>
+			
 		<Action>
 			<Id>WaitFor</Id>
 			<Concurrency>Persistent</Concurrency>
