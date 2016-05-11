@@ -2,7 +2,7 @@
 <Entity extends="std.display.Group">
 	<_States>
 		<_State id="width"><Value>518</Value></_State>
-		<_State id="height"><Value>349</Value></_State>
+		<_State id="height"><Value>410</Value></_State>
 		<_State id="horizontalCenter"><Value>0</Value></_State>
 		<_State id="verticalCenter"><Value>0</Value></_State>
 		<_State id="name"><Value>Area 1</Value></_State>
@@ -23,7 +23,7 @@
 				<_State id="width"><Value>100%</Value></_State>
 				<_State id="height"><Value>100%</Value></_State>
 				<_State id="paddingLeft"><Value>20</Value></_State>
-				<_State id="paddingRight"><Value>100</Value></_State>
+				<_State id="paddingRight"><Value>20</Value></_State>
 				<_State id="paddingTop"><Value>20</Value></_State>
 				<_State id="paddingBottom"><Value>20</Value></_State>
 				<_State id="gap"><Value>15</Value></_State>
@@ -71,7 +71,7 @@
 						<_State id="textAlign"><Value>center</Value></_State>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>34</Value></_State>
-						<_State id="text"><Value>Choose your Color:</Value></_State>
+						<_State id="text"><Value>Choose your Character:</Value></_State>
 					</_States>
 				</Entity>
 				
@@ -85,76 +85,230 @@
 						<!-- Pawn -->
 						<Entity extends="std.display.Image">
 							<_States>
-								<_State id="width"><Value>44</Value></_State>
-								<_State id="height"><Value>54</Value></_State>
-								<_State id="src"><Value>pawn_blue</Value></_State>
-								<_State id="name"><Value>pawn_blue</Value></_State>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_p1</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
 								<_State id="touchable"><Value>true</Value></_State>
 								<_State id="cursor"><Value>pointer</Value></_State>
 							</_States>
 							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
-								e('pawn_green').setState('display','none');
-								e('pawn_purple').setState('display','none');
-								e('pawn_red').setState('display','none');
-								e('Networking').setState('color','blue');
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','p1');
 							</Script>
 							</Scripts></Trigger></_Triggers>
 						</Entity>
 						<!-- Pawn -->
 						<Entity extends="std.display.Image">
 							<_States>
-								<_State id="width"><Value>44</Value></_State>
-								<_State id="height"><Value>54</Value></_State>
-								<_State id="src"><Value>pawn_green</Value></_State>
-								<_State id="name"><Value>pawn_green</Value></_State>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_p2</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
 								<_State id="touchable"><Value>true</Value></_State>
 								<_State id="cursor"><Value>pointer</Value></_State>
 							</_States>
 							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
-								e('pawn_blue').setState('display','none');
-								e('pawn_purple').setState('display','none');
-								e('pawn_red').setState('display','none');
-								e('Networking').setState('color','green');
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','p2');
 							</Script>
 							</Scripts></Trigger></_Triggers>
 						</Entity>
 						<!-- Pawn -->
 						<Entity extends="std.display.Image">
 							<_States>
-								<_State id="width"><Value>44</Value></_State>
-								<_State id="height"><Value>54</Value></_State>
-								<_State id="src"><Value>pawn_purple</Value></_State>
-								<_State id="name"><Value>pawn_purple</Value></_State>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_p3</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
 								<_State id="touchable"><Value>true</Value></_State>
 								<_State id="cursor"><Value>pointer</Value></_State>
 							</_States>
 							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
-								e('pawn_green').setState('display','none');
-								e('pawn_blue').setState('display','none');
-								e('pawn_red').setState('display','none');
-								e('Networking').setState('color','purple');
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','p3');
 							</Script>
 							</Scripts></Trigger></_Triggers>
 						</Entity>
 						<!-- Pawn -->
 						<Entity extends="std.display.Image">
 							<_States>
-								<_State id="width"><Value>44</Value></_State>
-								<_State id="height"><Value>54</Value></_State>
-								<_State id="src"><Value>pawn_red</Value></_State>
-								<_State id="name"><Value>pawn_red</Value></_State>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_p4</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
 								<_State id="touchable"><Value>true</Value></_State>
 								<_State id="cursor"><Value>pointer</Value></_State>
 							</_States>
 							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
 							<Script>
-								e('pawn_green').setState('display','none');
-								e('pawn_purple').setState('display','none');
-								e('pawn_blue').setState('display','none');
-								e('Networking').setState('color','red');
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','p4');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_p5</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','p5');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="gap"><Value>20</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_m1</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','m1');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_m2</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','m2');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_m3</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','m3');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_m4</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','m4');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_m5</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','m5');
+							</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+						<!-- Pawn -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>63</Value></_State>
+								<_State id="height"><Value>48</Value></_State>
+								<_State id="src"><Value>icon_m6</Value></_State>
+								<_State id="name"><Value>icon</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+							<Script>
+								for (entity of Logic.getAllEntitiesByName('icon'))
+									if (entity!=me)
+										entity.setState('display','none');
+								
+								e('Networking').setState('color','m6');
 							</Script>
 							</Scripts></Trigger></_Triggers>
 						</Entity>
@@ -191,15 +345,6 @@
 					if (e('Networking').s('color')=="Undefined")
 						e('Networking').setState('color',"blue");
 					
-					
-					//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"greet", message: e('Networking').s('nickname')+" ("+e('Networking').s('color')+") has joined the game!" });
-					
-					
-					/*
-					e('Networking').setState('isMaster',true);
-					//Comms.request('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"start", message: "Let's do this!" });
-					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"start", message: "Let's do this!" });
-					*/
 					
 					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"createMe", message: {x:Logic.random(300,1000), y:Logic.random(300,800), sprite:e('Networking').s('color')} });
 					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"who are you" });

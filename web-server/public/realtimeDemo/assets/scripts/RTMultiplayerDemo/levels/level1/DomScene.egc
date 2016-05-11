@@ -96,8 +96,7 @@
 						{
 							Display.de("Creating Player: " + data.id + " ("+data.message.sprite+")");
 							var player = Logic.create('RTMultiplayerDemo.levels.level1.Player');
-							player.setState('2DMeshImageForm',"pawn_"+data.message.sprite);
-							player.setState('name','Player:'+data.id);
+							//player.setState('2DMeshImageForm',"pawn_"+data.message.sprite);
 							player.setState('nickname',data.id);
 							player.setState('color',data.message.sprite);
 							player.setState('spaceX',data.message.x);

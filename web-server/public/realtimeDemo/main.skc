@@ -75,6 +75,31 @@
 			<!--<Asset type="image" location="local" bytes='35672' id="Background">RTMultiplayerDemo/levels/level1/background.png</Asset>
 			<Asset type="image" location="local" bytes='35672' id="diceButton">RTMultiplayerDemo/levels/level1/dice-button.png</Asset>-->
 			
+			<!-- Players -->
+			<Asset type="image" location="local" bytes='100000' id="p1_sheet">RTMultiplayerDemo/levels/level1/p1.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="p1">RTMultiplayerDemo/levels/level1/p1.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="p2_sheet">RTMultiplayerDemo/levels/level1/p2.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="p2">RTMultiplayerDemo/levels/level1/p2.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="p3_sheet">RTMultiplayerDemo/levels/level1/p3.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="p3">RTMultiplayerDemo/levels/level1/p3.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="p4_sheet">RTMultiplayerDemo/levels/level1/p4.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="p4">RTMultiplayerDemo/levels/level1/p4.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="p5_sheet">RTMultiplayerDemo/levels/level1/p5.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="p5">RTMultiplayerDemo/levels/level1/p5.plist</Asset>
+			
+			<!-- Monsters -->
+			<Asset type="image" location="local" bytes='100000' id="m1_sheet">RTMultiplayerDemo/levels/level1/m1.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="m1">RTMultiplayerDemo/levels/level1/m1.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="m2_sheet">RTMultiplayerDemo/levels/level1/m2.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="m2">RTMultiplayerDemo/levels/level1/m2.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="m3_sheet">RTMultiplayerDemo/levels/level1/m3.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="m3">RTMultiplayerDemo/levels/level1/m3.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="m4_sheet">RTMultiplayerDemo/levels/level1/m4.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="m4">RTMultiplayerDemo/levels/level1/m4.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="m5_sheet">RTMultiplayerDemo/levels/level1/m5.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="m5">RTMultiplayerDemo/levels/level1/m5.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="m6_sheet">RTMultiplayerDemo/levels/level1/m6.png</Asset>
+			<Asset type="image" location="local" bytes='5000' id="m6">RTMultiplayerDemo/levels/level1/m6.plist</Asset>
 			
 			<Asset type="image" location="local" id="pawn_blue" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_blue.png</Asset>
 			<Asset type="image" location="local" id="pawn_green" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_green.png</Asset>
@@ -88,10 +113,17 @@
 		
 		<Module id="SparkEditor:References">
 			<Asset type="image" location="local" id="frame" bytes='35672'>RTMultiplayerDemo/levels/level1/frame.png</Asset>
-			<Asset type="image" location="local" id="pawn_blue" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_blue.png</Asset>
-			<Asset type="image" location="local" id="pawn_green" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_green.png</Asset>
-			<Asset type="image" location="local" id="pawn_purple" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_purple.png</Asset>
-			<Asset type="image" location="local" id="pawn_red" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_red.png</Asset>
+			<Asset type="image" location="local" id="icon_p1" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_p1.png</Asset>
+			<Asset type="image" location="local" id="icon_p2" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_p2.png</Asset>
+			<Asset type="image" location="local" id="icon_p3" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_p3.png</Asset>
+			<Asset type="image" location="local" id="icon_p4" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_p4.png</Asset>
+			<Asset type="image" location="local" id="icon_p5" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_p5.png</Asset>
+			<Asset type="image" location="local" id="icon_m1" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_m1.png</Asset>
+			<Asset type="image" location="local" id="icon_m2" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_m2.png</Asset>
+			<Asset type="image" location="local" id="icon_m3" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_m3.png</Asset>
+			<Asset type="image" location="local" id="icon_m4" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_m4.png</Asset>
+			<Asset type="image" location="local" id="icon_m5" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_m5.png</Asset>
+			<Asset type="image" location="local" id="icon_m6" bytes='35672'>RTMultiplayerDemo/levels/level1/icon_m6.png</Asset>
 		</Module>
 		
 		<Module id="Std:Base">

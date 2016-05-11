@@ -1,7 +1,7 @@
 <Entity extends="std.display.Scene2D">
 	<_States>
 		<_State id="name"><Value>mainScene</Value></_State>
-		<_State id="backgroundColor"><Value>0x000000</Value></_State>
+		<_State id="backgroundColor"><Value>0x201E1F</Value></_State>
 	</_States>
 	<Form><Space><Entities>
 		<!--
