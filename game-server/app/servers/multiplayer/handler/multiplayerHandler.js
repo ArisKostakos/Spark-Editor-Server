@@ -13,7 +13,7 @@ var handler = Handler.prototype;
 
 handler.say = function(msg, session, next) {
 
-	var channel = this.channelService.getChannel("mainRoom", true);
+	var channel = this.channelService.getChannel(session.get('roomName'), true);
 	var param = {
 		id: msg.id,
 		type: msg.type,
@@ -34,8 +34,8 @@ handler.enter = function(msg, session, next) {
 	var l_sid = self.app.get('serverId');
 	var l_username = msg.username;
 	var l_roomName = "mainRoom";
-	session.bind(l_uid);
 
+	session.bind(l_uid);
 	session.set('uid', l_uid);
 	session.push('uid', function(err) {
 		if(err) {
@@ -46,9 +46,11 @@ handler.enter = function(msg, session, next) {
 	//session.on('closed', onUserLeave.bind(null, self.app));
 
 	if (msg.room!=null)
-	{
 		l_roomName = msg.room;
-	}
+
+	//ok I have comfused myself here, but..
+	session.bind(l_roomName);
+	session.set('roomName', l_roomName);
 
 	var channel = this.channelService.getChannel(l_roomName, true);
 	var param = {
