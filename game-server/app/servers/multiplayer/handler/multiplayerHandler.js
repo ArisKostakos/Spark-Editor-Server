@@ -19,6 +19,7 @@ handler.say = function(msg, session, next) {
 	if (msg.room!=null)
 		l_roomName=msg.room;
 
+	console.warn('my room name is: ' + l_roomName);
 	var channel = this.channelService.getChannel(l_roomName, true);
 	var param = {
 		id: msg.id,
