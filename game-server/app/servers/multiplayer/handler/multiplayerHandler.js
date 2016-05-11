@@ -13,7 +13,13 @@ var handler = Handler.prototype;
 
 handler.say = function(msg, session, next) {
 
-	var channel = this.channelService.getChannel(session.get('roomName'), true);
+	var l_roomName = session.get('roomName');
+
+	//For when we explicitly set room name
+	if (msg.room!=null)
+		l_roomName=msg.room;
+
+	var channel = this.channelService.getChannel(l_roomName, true);
 	var param = {
 		id: msg.id,
 		type: msg.type,
