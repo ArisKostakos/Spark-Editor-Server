@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<State>
+			<Id>rectColor</Id>
+			<Type>Integer</Type>
+			<Value>0xFF0000</Value>
+		</State>
+		<State>
+			<Id>rectThinkness</Id>
+			<Type>Decimal</Type>
+			<Value>2</Value>
+		</State>
+		<State>
+			<Id>lineTop</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		<State>
+			<Id>lineBottom</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		<State>
+			<Id>lineLeft</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		<State>
+			<Id>lineRight</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+	
+
+	
+	<_Form><Space><Entities>
+		<Entity extends="std.display.Line2D"><_Actions><_Action id="Constructor"><_Scripts><Script>parent.setState('lineTop',me);</Script></_Scripts></_Action></_Actions></Entity>
+		<Entity extends="std.display.Line2D"><_Actions><_Action id="Constructor"><_Scripts><Script>parent.setState('lineBottom',me);</Script></_Scripts></_Action></_Actions></Entity>
+		<Entity extends="std.display.Line2D"><_Actions><_Action id="Constructor"><_Scripts><Script>parent.setState('lineLeft',me);</Script></_Scripts></_Action></_Actions></Entity>
+		<Entity extends="std.display.Line2D"><_Actions><_Action id="Constructor"><_Scripts><Script>parent.setState('lineRight',me);</Script></_Scripts></_Action></_Actions></Entity>
+	</Entities></Space></_Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts><Script>
+				me.startAction('Update');
+			</Script></_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Update');
+					
+					var lineTop = me.getState('lineTop');
+					var lineBottom = me.getState('lineBottom');
+					var lineLeft = me.getState('lineLeft');
+					var lineRight = me.getState('lineRight');
+					
+					//Top
+					lineTop.setState('spaceWidth',me.getState('spaceWidth'));
+					lineTop.setState('spaceHeight',me.getState('rectThinkness'));
+					lineTop.setState('spaceX',lineTop.getState('spaceWidth')/2);
+					lineTop.setState('spaceY',lineTop.getState('spaceHeight')/2);
+					lineTop.gameForm.setState('LineColor',me.getState('rectColor'));
+					lineTop.setState('2DMeshFillRectForm','LineColor');
+					
+					
+					//Bottom
+					lineBottom.setState('spaceWidth',me.getState('spaceWidth'));
+					lineBottom.setState('spaceHeight',me.getState('rectThinkness'));
+					lineBottom.setState('spaceX',lineBottom.getState('spaceWidth')/2);
+					lineBottom.setState('spaceY',me.getState('spaceHeight')+lineBottom.getState('spaceHeight')/2);
+					lineBottom.gameForm.setState('LineColor',me.getState('rectColor'));
+					lineBottom.setState('2DMeshFillRectForm','LineColor');
+					
+					//Left
+					lineLeft.setState('spaceWidth',me.getState('rectThinkness'));
+					lineLeft.setState('spaceHeight',me.getState('spaceHeight'));
+					lineLeft.setState('spaceX',lineLeft.getState('spaceWidth')/2);
+					lineLeft.setState('spaceY',lineLeft.getState('spaceHeight')/2);
+					lineLeft.gameForm.setState('LineColor',me.getState('rectColor'));
+					lineLeft.setState('2DMeshFillRectForm','LineColor');
+					
+					//Right
+					lineRight.setState('spaceWidth',me.getState('rectThinkness'));
+					lineRight.setState('spaceHeight',me.getState('spaceHeight'));
+					lineRight.setState('spaceX',me.getState('spaceWidth')+lineRight.getState('spaceWidth')/2);
+					lineRight.setState('spaceY',lineRight.getState('spaceHeight')/2);
+					lineRight.gameForm.setState('LineColor',me.getState('rectColor'));
+					lineRight.setState('2DMeshFillRectForm','LineColor');
+				</Script>
+			</Scripts>
+		</Action>
+		
+	</_Actions>
+</Entity>

@@ -1,0 +1,150 @@
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<_State id="name"><Value>Networking</Value></_State>
+		<State><Id>nickname</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>color</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>players</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+	</_States>
+	<Form><Space><Entities>
+		<Entity extends="RTMultiplayerDemo.levels.level1.Area"/>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Comms.connectTo("130.211.172.86","3024", "multiplayerServer", me);
+					//Display.de("Connecting...");
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    me.stopAction('WaitFor');
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkConnected</Event>
+			<Parameter>multiplayerServer</Parameter>
+			<Scripts>
+				<Script>
+					//Display.de("Connected!");
+					Comms.request('multiplayer.multiplayerHandler.enter', { uid: Std.random(999999), username:"Player", room:"RTL Demo" }, "Entered Channel", me);
+					//Display.de("Entering Default Channel...");
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Entered Channel</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Entered Channel");
+					console.log("Received data from server (Entered Channel): ", data);
+					
+					//Add Listeners
+					Comms.addServerEvent('onSay');
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Parameter>onSay</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script><![CDATA[
+					var data = Comms.getServerEventData("onSay").shift();
+					
+					//Display.error("onSay: "+data.message);
+					//console.log(data);
+					//Display.de("onSAY triggered!");
+					
+					if (data.type=="createMe")
+					{
+						//Display.de("I got the test thing back!" + data.message.text);
+						
+						
+						
+						if (!me.s('players').exists(data.id))
+						{
+							Display.de("Creating Player: " + data.id + " ("+data.message.sprite+")");
+							var player = Logic.create('RTMultiplayerDemo.levels.level1.Player');
+							player.setState('2DMeshImageForm',"pawn_"+data.message.sprite);
+							player.setState('name','Player:'+data.id);
+							player.setState('nickname',data.id);
+							player.setState('color',data.message.sprite);
+							player.setState('spaceX',data.message.x);
+							player.setState('spaceY',data.message.y);
+							Logic.registerEntityByName(player);
+							e('mainScene').addChild(player);
+							
+							me.s('players').set(data.id, player);
+						}
+						else
+						{
+							Display.dl("Player " + data.id + " already exists!");
+						}
+					}
+					else if (data.type=="who are you")
+					{
+						//Ignore Self
+						if (data.id!=e('Networking').s('nickname'))
+						{
+							//Have I been created yet?
+							if (me.s('players').exists(e('Networking').s('nickname')))
+							{
+								var myPlayer=me.s('players').get(e('Networking').s('nickname'));
+								Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"createMe", message: {x:myPlayer.get('spaceX'), y:myPlayer.get('spaceY'), sprite:myPlayer.get('color')} });
+							}
+						}
+					}
+					else if (data.type=="my pos")
+					{
+						//Ignore Self
+						if (data.id!=e('Networking').s('nickname'))
+						{
+							//If i know the guy (had time to be created)
+							if (me.s('players').exists(data.id))
+							{
+								console.log("I AM UPDATING DATA FOR SOMEONE ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!");
+								var thatPlayer=me.s('players').get(data.id);
+								
+								if (data.message.x!=null)
+									thatPlayer.setState('spaceX', data.message.x);
+								
+								if (data.message.y!=null)
+									thatPlayer.setState('spaceY', data.message.y);
+							}
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

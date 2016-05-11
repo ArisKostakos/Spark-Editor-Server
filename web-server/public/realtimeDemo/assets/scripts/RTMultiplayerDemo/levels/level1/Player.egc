@@ -1,0 +1,78 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="name"><Value>PlayerXXX</Value></_State>
+		<State><Id>nickname</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>color</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>position</Id><Type>Integer</Type><Value>0</Value></State>
+		<_State id="scaleX"><Value>1.3</Value></_State>
+		<_State id="scaleY"><Value>1.3</Value></_State>
+		<State><Id>speed</Id><Type>Integer</Type><Value>2</Value></State>
+	</_States>
+		
+	<_Actions>
+
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>W</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>S</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>D</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>A</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>
