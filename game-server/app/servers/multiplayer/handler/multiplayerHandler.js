@@ -64,6 +64,15 @@ handler.enter = function(msg, session, next) {
 		}
 	});
 
+	//ok I have comfused myself here, but..
+	session.bind(l_username);
+	session.set('username', l_username);
+	session.push('username', function(err) {
+		if(err) {
+			console.error('set username for session service failed! error is : %j', err.stack);
+		}
+	});
+
 
 
 	var channel = this.channelService.getChannel(l_roomName, true);
@@ -77,9 +86,45 @@ handler.enter = function(msg, session, next) {
 		channel.add(l_uid, l_sid);
 	}
 
+	session.on('closed', onUserLeave.bind(null, self.app));
 
 	next(null, {
 		code: "success",
 		room: l_roomName
 	});
+};
+
+/**
+ * User log out handler
+ *
+ * @param {Object} app current application
+ * @param {Object} session current session object
+ *
+ */
+var onUserLeave = function(app, session) {
+	if(!session || !session.uid) {
+		return;
+	}
+
+
+	var l_roomName = session.get('roomName');
+	var l_username = session.get('username');
+
+	console.warn('onLeave: my room name is: ' + l_roomName + ', my username is: ' + l_username);
+	var channel = this.channelService.getChannel(l_roomName, false);
+
+	var l_uid = session.uid;
+	var l_sid = app.get('serverId');
+
+	// leave channel
+	if( !! channel) {
+		channel.leave(l_uid, l_sid);
+	}
+
+	var param = {
+		route: 'onLeave',
+		user: l_username
+	};
+	channel.pushMessage('onLeave', param);
+
 };
