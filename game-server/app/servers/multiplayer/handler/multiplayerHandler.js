@@ -58,6 +58,13 @@ handler.enter = function(msg, session, next) {
 	//ok I have comfused myself here, but..
 	session.bind(l_roomName);
 	session.set('roomName', l_roomName);
+	session.push('roomName', function(err) {
+		if(err) {
+			console.error('set roomName for session service failed! error is : %j', err.stack);
+		}
+	});
+
+
 
 	var channel = this.channelService.getChannel(l_roomName, true);
 	var param = {
