@@ -45,6 +45,11 @@ handler.enter = function(msg, session, next) {
 
 	//session.on('closed', onUserLeave.bind(null, self.app));
 
+	if (msg.room!=null)
+	{
+		l_roomName = msg.room;
+	}
+
 	var channel = this.channelService.getChannel(l_roomName, true);
 	var param = {
 		route: 'onAdd',
@@ -58,6 +63,7 @@ handler.enter = function(msg, session, next) {
 
 
 	next(null, {
-		code: "success"
+		code: "success",
+		room: l_roomName
 	});
 };
