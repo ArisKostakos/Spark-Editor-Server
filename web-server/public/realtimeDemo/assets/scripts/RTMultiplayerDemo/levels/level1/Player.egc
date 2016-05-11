@@ -14,6 +14,30 @@
 
 	</_Actions>
 		
+	<Form><Space><Entities>
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="2DMeshTextForm"><Value>defaultFont</Value></_State>
+				<_State id="font"><Value>defaultFont</Value></_State>
+				<_State id="spaceX"><Value>20</Value></_State>
+				<_State id="spaceY"><Value>-20</Value></_State>
+				<_State id="align"><Value>Left</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							me.set('text',parent.s('nickname') );
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+	
 	<_Triggers>
 		<Trigger>
 			<Event>KeyDown</Event>
@@ -63,6 +87,67 @@
 		<Trigger>
 			<Event>KeyDown</Event>
 			<Parameter>A</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<!--Arrow Keys-->
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Left</Parameter>
 			<Target>TargetNone</Target>
 			<Scripts>
 				<Script>

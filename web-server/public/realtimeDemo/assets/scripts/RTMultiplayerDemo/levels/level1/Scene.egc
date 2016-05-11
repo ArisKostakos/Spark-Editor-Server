@@ -17,21 +17,6 @@
 			</_States>
 		</Entity>
 		-->
-		<Entity extends="std.display.Text2D">
-			<_States>
-				<_State id="name"><Value>Game Output Text</Value></_State>
-				<_State id="2DMeshTextForm"><Value>fontBlack</Value></_State>
-				<_State id="font"><Value>fontBlack</Value></_State>
-				<_State id="text"><Value>It's your Turn!</Value></_State>
-				<_State id="spaceX"><Value>;2280/2-700</Value></_State>
-				<_State id="spaceY"><Value>;1440/2-200</Value></_State>
-				<_State id="align"><Value>Left</Value></_State>
-				<_State id="scaleX"><Value>2.3</Value></_State>
-				<_State id="scaleY"><Value>2.3</Value></_State>
-				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="visible"><Value>false</Value></_State>
-			</_States>
-		</Entity>
 	</Entities></Space></Form>
 	
 	<_Actions>

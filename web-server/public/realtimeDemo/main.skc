@@ -70,29 +70,20 @@
 			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/Scene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/DomScene.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/Area.egc</Asset>
-			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/Area2.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>RTMultiplayerDemo/levels/level1/Player.egc</Asset>
 			
-			<Asset type="image" location="local" bytes='35672' id="Background">RTMultiplayerDemo/levels/level1/background.png</Asset>
-			<Asset type="image" location="local" bytes='35672' id="diceButton">RTMultiplayerDemo/levels/level1/dice-button.png</Asset>
+			<!--<Asset type="image" location="local" bytes='35672' id="Background">RTMultiplayerDemo/levels/level1/background.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="diceButton">RTMultiplayerDemo/levels/level1/dice-button.png</Asset>-->
 			
-			<Asset type="sound" location="local" bytes='35672' id="diceroll">RTMultiplayerDemo/diceroll.mp3</Asset>
-			<Asset type="sound" location="local" bytes='35672' id="victory">RTMultiplayerDemo/victory.mp3</Asset>
 			
 			<Asset type="image" location="local" id="pawn_blue" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_blue.png</Asset>
 			<Asset type="image" location="local" id="pawn_green" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_green.png</Asset>
 			<Asset type="image" location="local" id="pawn_purple" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_purple.png</Asset>
 			<Asset type="image" location="local" id="pawn_red" bytes='35672'>RTMultiplayerDemo/levels/level1/pawn_red.png</Asset>
 			
-			<Asset type="image" location="local" id="dice1" bytes='35672'>RTMultiplayerDemo/levels/level1/zari-1.png</Asset>
-			<Asset type="image" location="local" id="dice2" bytes='35672'>RTMultiplayerDemo/levels/level1/zari-2.png</Asset>
-			<Asset type="image" location="local" id="dice3" bytes='35672'>RTMultiplayerDemo/levels/level1/zari-3.png</Asset>
-			<Asset type="image" location="local" id="dice4" bytes='35672'>RTMultiplayerDemo/levels/level1/zari-4.png</Asset>
-			<Asset type="image" location="local" id="dice5" bytes='35672'>RTMultiplayerDemo/levels/level1/zari-5.png</Asset>
-			<Asset type="image" location="local" id="dice6" bytes='35672'>RTMultiplayerDemo/levels/level1/zari-6.png</Asset>
 			
-			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
-			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
 		</Module>
 		
 		<Module id="SparkEditor:References">

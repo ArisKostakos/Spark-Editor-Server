@@ -201,7 +201,7 @@
 					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"start", message: "Let's do this!" });
 					*/
 					
-					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"createMe", message: {x:Logic.random(100,1000), y:Logic.random(100,800), sprite:e('Networking').s('color')} });
+					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"createMe", message: {x:Logic.random(300,1000), y:Logic.random(300,800), sprite:e('Networking').s('color')} });
 					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"who are you" });
 				</Script>
 				</Scripts></Trigger></_Triggers></Entity>

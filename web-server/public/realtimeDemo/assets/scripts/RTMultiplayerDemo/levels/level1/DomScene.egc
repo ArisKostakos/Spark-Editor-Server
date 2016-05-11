@@ -69,6 +69,7 @@
 					
 					//Add Listeners
 					Comms.addServerEvent('onSay');
+					Comms.addServerEvent('onLeave');
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -142,6 +143,29 @@
 									thatPlayer.setState('spaceY', data.message.y);
 							}
 						}
+					}
+				]]></Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Parameter>onLeave</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script><![CDATA[
+					var data = Comms.getServerEventData("onLeave").shift();
+					
+					console.log("I GOT onLeave", data);
+					
+					//If i know the guy (had time to be created)
+					if (me.s('players').exists(data.user))
+					{
+						var thatPlayer=me.s('players').get(data.user);
+						
+						thatPlayer.remove();
+						
+						me.s('players').remove(data.user);
 					}
 				]]></Script>
 			</Scripts>
