@@ -15,6 +15,8 @@
 				<Script>
 					Comms.connectTo("130.211.172.86","3024", "multiplayerServer", me);
 					//Display.de("Connecting...");
+					
+					me.sa('Check For Mouse Click');
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -44,6 +46,73 @@
 			</States>
 		</Action>
 	
+	
+		<Action>
+			<Id>Check For Mouse Click</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					if (Input.pointer.isDown() && me.s('players').exists( me.s('nickname') ))
+					{
+						//Display.de("Pointer is down");
+						
+						var myScene = e('mainScene');
+						var zoomX = query(myScene,'zoomX');
+						var zoomY = query(myScene,'zoomY');
+						var zoomScale = query(myScene,'zoomScale');
+						
+						//Display.de('zoomX: ' + zoomX);
+						//Display.de('zoomY: ' + zoomY);
+						//Display.de('zoomScale: ' + zoomScale);
+					
+						//Display.error('Input.pointer.currentX: ' + Input.pointer.currentX);
+						//Display.error('Input.pointer.currentY: ' + Input.pointer.currentY);
+						
+						var pointerX = (Input.pointer.currentX-zoomX)/zoomScale;
+						var pointerY = (Input.pointer.currentY-zoomY)/zoomScale;
+						
+						var myPlayer=me.s('players').get(me.s('nickname'));
+						var playerX=myPlayer.s('spaceX');
+						var playerY=myPlayer.s('spaceY');
+						
+						//myPlayer.set('spaceX', pointerX);
+						//myPlayer.set('spaceY', pointerY);
+						
+						if (Math.abs(playerX-pointerX)<myPlayer.s('speed'))
+						{
+							myPlayer.setState('spaceX', pointerX );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:myPlayer.s('spaceX')} });
+						}
+						else if (playerX<pointerX)
+						{
+							myPlayer.addToState('spaceX', myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:myPlayer.s('spaceX')} });
+						}
+						else if (playerX>pointerX)
+						{
+							myPlayer.addToState('spaceX', -myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:myPlayer.s('spaceX')} });
+						}
+						
+						if (Math.abs(playerY-pointerY)<myPlayer.s('speed'))
+						{
+							myPlayer.setState('spaceY', pointerY );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:myPlayer.s('spaceY')} });
+						}
+						else if (playerY<pointerY)
+						{
+							myPlayer.addToState('spaceY', myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:myPlayer.s('spaceY')} });
+						}
+						else if (playerY>pointerY)
+						{
+							myPlayer.addToState('spaceY', -myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:myPlayer.s('spaceY')} });
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
 	</_Actions>
 		
 	<_Triggers>

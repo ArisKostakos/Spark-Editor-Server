@@ -343,7 +343,7 @@
 						e('Networking').setState('nickname',"Player "+ Std.string(Logic.random(1,99)));
 						
 					if (e('Networking').s('color')=="Undefined")
-						e('Networking').setState('color',"blue");
+						e('Networking').setState('color',"p1");
 					
 					
 					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"createMe", message: {x:Logic.random(300,1000), y:Logic.random(300,800), sprite:e('Networking').s('color')} });
