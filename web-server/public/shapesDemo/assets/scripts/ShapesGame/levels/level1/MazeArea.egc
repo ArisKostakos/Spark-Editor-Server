@@ -1,11 +1,13 @@
 <Entity extends="std.display.Sprite2D">
 	<_States>
 		<_State id="name"><Value>Maze Area</Value></_State>
-		<_State id="spaceX"><Value>;2280/2-700/2</Value></_State>
+		<_State id="spaceX"><Value>;2280/2-700/2-200</Value></_State>
 		<_State id="spaceY"><Value>;1440/2-600/2</Value></_State>
 		<State><Id>maze</Id><Type>Dynamic</Type><Value>[]</Value></State>
-		<State><Id>mazeWidth</Id><Type>Integer</Type><Value>7</Value></State>
-		<State><Id>mazeHeight</Id><Type>Integer</Type><Value>6</Value></State>
+		<State><Id>mazeWidth</Id><Type>Integer</Type><Value>7</Value></State> <!-- 7 -->
+		<State><Id>mazeHeight</Id><Type>Integer</Type><Value>6</Value></State> <!-- 6 -->
+		<_State id="touchable"><Value>true</Value></_State>
+		<State><Id>Creating</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 
 	<Form><Space><Entities>
@@ -22,15 +24,12 @@
 				
 					for (var x=0;x<xSize;x++)
 					{
-						Display.de("x: " + x);
-						
 						l_maze.push([]);
 						for (var y=0;y<ySize;y++)
 						{
-							Display.de("y: " + y);
 							var l_tile = Logic.create('ShapesGame.levels.level1.MazeTile');
-							l_tile.set('spaceX',x*101);
-							l_tile.set('spaceY',y*101);
+							l_tile.set('mazeX',x);
+							l_tile.set('mazeY',y);
 							me.addChild(l_tile);
 							
 							l_maze[x].push(l_tile);
@@ -47,20 +46,238 @@
 				<Script><![CDATA[
 					//forced
 					
+					function getLegitNears(tile)
+					{
+						var legits = [];
+						
+						//Legit directions are determined as followed:
+						
+						//a)must be a block
+						for (nTile of tile.s('near'))
+						{
+							//b)block cannot be path
+							if (!nTile.s('path'))
+							{
+								
+								//b)block cannot a neighbor to the path
+								if (!nTile.s('dirty'))
+								{
+									
+									
+									/*
+									var clear=true;
+									for (nnTile of nTile.s('near'))
+									{
+										if (nnTile!=tile && nnTile.s('path'))
+										{
+											clear=false;
+											break;
+										}
+									}
+									
+									if (clear)
+									{*/
+										//c)block must pass the following algorithm test:
+											//find path from that block to goal block.
+												//algorithm considers only blocks that are not path, or neighbors of path.
+												//I guess this algorithm can be brute force? or dijkstra.. dijkstra I guess..
+												
+										
+										if (nTile.s('nick')=='x0y0')
+											legits.push(nTile);
+										else
+										{
+											me.fa('Dijkstra',{ p_examineTile:nTile, p_currentTile:tile } );
+											var dFeedback = me.getAction('Dijkstra').getState('feedback');
+											
+											if (dFeedback==true)
+												legits.push(nTile);
+										}
+									//}
+								}
+							}
+						}
+						
+						return legits;
+					}
+					
+					me.set('Creating',true);
+					Display.de("Creating...");
+					me.fa('Clear');
+					//me.fa('Dijkstra');
+					
+					var mazeWidth=me.s('mazeWidth');
+					var mazeHeight=me.s('mazeHeight');
+					var l_maze = me.s('maze');
+					
+					var currentX = mazeWidth-1;
+					var currentY = mazeHeight-1;
+					var currentTile = l_maze[currentX][currentY];
+					while (true)
+					{
+					
+						currentTile.set('path',true);
+						currentTile.fa('Select');
+						//Display.de("CURRENT TILE: " + currentTile.s('nick'));
+						
+						//a) determine how many directions are legit
+						var legitNears = getLegitNears(currentTile);
+						//Display.de('found nears: ' + legitNears.length);
+						
+						if (legitNears.length>0)
+							currentTile = legitNears[Logic.random(0, legitNears.length-1)];
+						
+						//Display.de("new CURRENT TILE: " + currentTile.s('nick'));
+						
+						//dirty the others
+						for (dTile of legitNears)
+						{
+							if (dTile!=currentTile)
+								dTile.set('dirty',true);
+						}
+						
+						if (legitNears.length==0)
+							break;
+							
+						if (currentTile.s('nick')=='x0y0')
+						{
+							currentTile.set('path',true);
+							currentTile.fa('Select');
+							//Display.de("CURRENT TILE: " + currentTile.s('nick'));
+							break;
+						}
+					}
+					
+					Display.de("Creation Complete");
+					me.set('Creating',false);
+				]]></Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Dijkstra</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					function isClear(cTile, exTile, curTile)
+					{
+						if (cTile.s('path')==false && cTile.s('dirty')==false)
+						{
+							if (cTile==exTile)
+								return true;
+							else
+							{
+								for (llTile of curTile.s('near'))
+								{
+									if (cTile==llTile)
+									{
+										return false;
+									}
+								}
+								
+								return true;
+							}
+						}
+						else
+							return false;
+					}
+					
+					//console.log(window.Dijkstras);
+					//return;
+					
+					var l_examineTile = it.s('p_examineTile');
+					var l_currentTile = it.s('p_currentTile');
+					
+					
+					var d = new Dijkstras();
+					
+					var l_graph = [];
+					
+					var mazeWidth=me.s('mazeWidth');
+					var mazeHeight=me.s('mazeHeight');
+					var l_maze = me.s('maze');
+					
+					var l_targetReachable=false;
+					
+					for (var x=0;x<mazeWidth;x++)
+						for (var y=0;y<mazeHeight;y++)
+						{
+							var f_tile = l_maze[x][y];
+							
+							if (isClear(f_tile,l_examineTile,l_currentTile))
+							{
+								var l_node = [];
+								
+								l_node.push( f_tile.s('nick') );
+								
+								if (f_tile.s('nick')=='x0y0')
+									l_targetReachable=true;
+								
+								var l_nodeConnections = [];
+								
+								l_node.push(l_nodeConnections);
+								
+								for (sTile of f_tile.s('near'))
+								{
+									if (isClear(sTile,l_examineTile,l_currentTile))
+										l_nodeConnections.push( [sTile.s('nick'),10] );
+								}
+								
+								
+								l_graph.push(l_node);
+							}
+						}
+					
+					d.setGraph( l_graph );
+					
+					//Display.de("Examining " + l_examineTile.s('nick'));
+					
+					
+					if (l_targetReachable)
+					{
+						var path = d.getPath(l_examineTile.s('nick'), 'x0y0');
+						
+						//console.log("dijkstra:",path);
+						
+						if (path.length>0)
+							it.set('feedback',true);
+						else
+							it.set('feedback',false);
+					}
+					else
+					{
+						it.set('feedback',false);
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>p_examineTile</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>p_currentTile</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>feedback</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+	
+	
+		<Action>
+			<Id>Clear</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
 					var xSize=me.s('mazeWidth');
 					var ySize=me.s('mazeHeight');
 					var l_maze = me.s('maze');
 					
 					for (var x=0;x<xSize;x++)
 						for (var y=0;y<ySize;y++)
+						{
 							l_maze[x][y].fa('Deselect');
-							
-					l_maze[Logic.random(0,6)][0].fa('Select');
-					l_maze[Logic.random(0,6)][1].fa('Select');
-					l_maze[Logic.random(0,6)][2].fa('Select');
-					l_maze[Logic.random(0,6)][3].fa('Select');
-					l_maze[Logic.random(0,6)][4].fa('Select');
-					l_maze[Logic.random(0,6)][5].fa('Select');
+							l_maze[x][y].set('path',false);
+							l_maze[x][y].set('dirty',false);
+						}
 				]]></Script>
 			</Scripts>
 		</Action>

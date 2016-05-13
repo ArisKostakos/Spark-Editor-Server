@@ -1,0 +1,150 @@
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="2DMeshFillRectForm"><Value>[normal]</Value></_State>
+		<_State id="spaceWidth"><Value>65</Value></_State>
+		<_State id="spaceHeight"><Value>65</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<State><Id>mazeX</Id><Type>Integer</Type><Value>-1</Value></State>
+		<State><Id>mazeY</Id><Type>Integer</Type><Value>-1</Value></State>
+	
+		<State><Id>near</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>dirs</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>path</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>dirty</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>nick</Id><Type>Text</Type><Value>Undefined</Value></State>
+	
+		<_State id="touchable"><Value>true</Value></_State>
+	</_States>
+	<_Form><_States><State><Id>normal</Id><Type>Integer</Type><Value>0xFFFFFF</Value></State></_States></_Form>
+	<_Form><_States><State><Id>selected</Id><Type>Integer</Type><Value>0xFF0000</Value></State></_States></_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					e('Maze Area').fa('Clear');
+					me.fa('Show Near');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script><![CDATA[
+					var x = me.s('mazeX');
+					var y = me.s('mazeY');
+					var near = [];
+					var dirs = new StringMap();
+					var mazeArea = e('Maze Area');
+					var maze = mazeArea.s('maze');
+					var mazeWidth=mazeArea.s('mazeWidth');
+					var mazeHeight=mazeArea.s('mazeHeight');
+					
+					var l_size = me.s('spaceWidth');
+					
+					me.set('spaceX',x*(l_size+1));
+					me.set('spaceY',y*(l_size+1));
+					
+					me.set('nick','x'+Std.string(x)+'y'+Std.string(y));
+					
+					
+					//Creating Neighbors
+					
+					//Left Neighbor
+					if (x>0)
+					{
+						var neighbor = maze[x-1][y];
+						
+						dirs.set('left',neighbor);
+						near.push(neighbor);
+					}
+					
+					//Right Neighbor
+					if (x<mazeWidth-1)
+					{
+						var neighbor = maze[x+1][y];
+						
+						dirs.set('right',neighbor);
+						near.push(neighbor);
+					}
+					
+					//Up Neighbor
+					if (y>0)
+					{
+						var neighbor = maze[x][y-1];
+						
+						dirs.set('up',neighbor);
+						near.push(neighbor);
+					}
+					
+					//Down Neighbor
+					if (y<mazeHeight-1)
+					{
+						var neighbor = maze[x][y+1];
+						
+						dirs.set('down',neighbor);
+						near.push(neighbor);
+					}
+					
+					me.set('near',near);
+					me.set('dirs',dirs);
+				]]></Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Show Near</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//for (tile of me.s('near'))
+					//	tile.fa('Select');
+					
+					var dirs = me.s('dirs');
+					
+					if (dirs.exists("left"))
+						dirs.get('left').fa('Select');
+						
+					if (dirs.exists("right"))
+						dirs.get('right').fa('Select');
+						
+					if (dirs.exists("up"))
+						dirs.get('up').fa('Select');
+						
+					if (dirs.exists("down"))
+						dirs.get('down').fa('Select');
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('2DMeshFillRectForm','[selected]');
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('2DMeshFillRectForm','[normal]');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

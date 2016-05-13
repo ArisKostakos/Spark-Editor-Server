@@ -1,0 +1,353 @@
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Game Manager</Value></_State>
+		<State><Id>allCards</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>cardsFound</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>selectedCards</Id><Type>Dynamic</Type><Value>[]</Value></State>
+		<State><Id>matchStarted</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>showingCards</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>analytics</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>timeStamp</Id><Type>Integer</Type><Value>0</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Create Match</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					function shuffle(array) {
+					  var currentIndex = array.length, temporaryValue, randomIndex;
+					  
+					  // While there remain elements to shuffle...
+					  while (0 !== currentIndex) {
+					  
+						// Pick a remaining element...
+						randomIndex = Math.floor(Math.random() * currentIndex);
+						currentIndex -= 1;
+						
+						// And swap it with the current element.
+						temporaryValue = array[currentIndex];
+						array[currentIndex] = array[randomIndex];
+						array[randomIndex] = temporaryValue;
+					  }
+					  
+					  return array;
+					}
+					
+					//Sound.playSound('m:Debug');
+					
+					//STARTS HERE
+					me.setState('matchStarted',false);
+					me.setState('cardsFound',0);
+					me.setState('showingCards',false);
+					me.setState('selectedCards',[]);
+					me.stopAction('WaitFor');
+					me.getAction('WaitFor').setState('delayCurrent',0);
+					
+					//Show Restart Button
+					e('Restart Button').set('visible',true);
+					
+					
+					var items = it.s('matchObj');
+					var arrayOfCards = [];
+					
+					for (item of items)
+					{
+						//Display.de("Game Manager: Found item " + item.name);
+						
+						for (var i=0;i<2;i++)
+						{
+							var card = Logic.create('ShapesGame.levels.level1.Card');
+							card.setState('cardName',item.text);
+							card.setState('physicsEntity',false);
+							
+							arrayOfCards.push(card);
+							//card.setState('spaceX',Logic.random(80,500));
+							//card.setState('spaceY',Logic.random(80,500));
+							
+							//e('Cards Area').addChild(card);
+						}
+					}
+					
+					
+					//Analytics
+					//console.log('analytics',window.analytics);
+					var l_analytics = {totalCards:items.length, mistakes:0, clickedRestart:false, duration:0};
+					window.analytics.push(l_analytics);
+					me.set('analytics',l_analytics);
+					
+					//Reset Time
+					me.set('timeStamp',Logic.getTime());
+					
+					//Store Cards
+					me.setState('allCards',arrayOfCards);
+					
+					//Add Cards
+					e('Cards Area').fa('Add Cards To Tile',{cards:shuffle(arrayOfCards)});
+					
+					me.sa('WaitFor',{delay:1, delayCurrent:0, cbEntity:me,cbAction:"Show All Cards"});
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>matchObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Show All Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					Display.de('----------------SHOWING ALL CARDS--------------');
+					
+					
+					for (card of me.s('allCards'))
+						card.fa('Show',{playSound:false});
+						
+						
+					me.sa('WaitFor',{delay:me.s('allCards').length, cbEntity:me, cbAction:"Hide All Cards"});
+					me.setState('showingCards',true);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Hide All Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('showingCards')==true)
+					{
+						Display.de("HIDING CAARDS!!!!");
+					
+						for (card of me.s('allCards'))
+							card.fa('Hide');
+							
+						me.setState('matchStarted',true);
+						me.setState('showingCards',false);
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Card Clicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					if (me.s('matchStarted'))
+					{
+						var selectedCards = me.s('selectedCards');
+						var card = it.s('card');
+						Display.de('Card Clicked: ' + it.s('card').s('cardName'));
+						
+						if (selectedCards.length<2)
+						{
+							selectedCards.push(card);
+							card.fa('Show',{playSound:true});
+						}
+						
+						if (selectedCards.length==2)
+						{
+							me.fa("Compare Cards Effe");
+							me.sa('WaitFor',{delay:1,cbEntity:me,cbAction:"Compare Cards"});
+						}
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>card</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Compare Cards Effe</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var selectedCards = me.s('selectedCards');
+					var l_cardA = selectedCards[0];
+					var l_cardB = selectedCards[1];
+					
+					if (l_cardA.s('cardName')==l_cardB.s('cardName'))
+					{
+						var scale=1.3*l_cardA.s('scaleX');
+						
+						//Card A
+						e('particle_c1').setState('emitX',(l_cardA.s('spaceX')+e('Cards Area').s('spaceX'))/scale);
+						e('particle_c1').setState('emitY',(l_cardA.s('spaceY')+e('Cards Area').s('spaceY'))/scale);
+						e('particle_c1').setState('scaleX',scale);
+						e('particle_c1').setState('scaleY',scale);
+						e('particle_c1').setState('action_fire',true);
+						
+						//Card B
+						e('particle_c2').setState('emitX',(l_cardB.s('spaceX')+e('Cards Area').s('spaceX'))/scale);
+						e('particle_c2').setState('emitY',(l_cardB.s('spaceY')+e('Cards Area').s('spaceY'))/scale);
+						e('particle_c2').setState('scaleX',scale);
+						e('particle_c2').setState('scaleY',scale);
+						e('particle_c2').setState('action_fire',true);
+						
+						e('Blue Bird').fa('Jump Up');
+						e('Red Bird').fa('Jump Up');
+						Sound.playSound("m:Birds Match",e('Audio Control').s('VolumeFX'));
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Compare Cards</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var selectedCards = me.s('selectedCards');
+					var l_cardA = selectedCards[0];
+					var l_cardB = selectedCards[1];
+					
+					if (l_cardA.s('cardName')==l_cardB.s('cardName'))
+					{
+						l_cardA.fa('Found');
+						l_cardB.fa('Found');
+						me.addToState('cardsFound',2);
+						me.fa('Check For Victory');
+					}
+					else
+					{
+						l_cardA.fa('Hide');
+						l_cardB.fa('Hide');
+						Sound.playSound("m:Wrong Answer",e('Audio Control').s('VolumeFX'));
+						e('Blue Bird').sa('WaitFor',{delay:0.1, cbEntity:e('Blue Bird'), cbAction:"Nod Up"});
+						e('Red Bird').fa('Nod Up');
+						
+						//Analytics
+						me.s('analytics').mistakes+=1;
+					}
+					
+					me.setState('selectedCards',[]);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Check For Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('cardsFound')>=me.s('allCards').length)
+						me.sa('WaitFor',{delay:0.5,cbEntity:me,cbAction:"Show Victory"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Show Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//e('Congratulations').setState('visible',true);
+					Sound.playSound("m:Match Complete",e('Audio Control').s('VolumeFX'));
+					Sound.playSound("m:Birds Complete",e('Audio Control').s('VolumeFX'));
+					var fromX=1200;
+					var fromY=500;
+					var toY=350;
+					var secs=5;
+					var secs2=5;
+					
+					e('CongratsSign').setState('spaceX',fromX);
+					e('CongratsSign').setState('animate_y',{from:fromY+382, to:toY+382, seconds:secs, easing:Ease.backOut});
+					e('CongratsSign').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					e('CongratsBalloon1').setState('spaceX',fromX-250);
+					e('CongratsBalloon1').setState('animate_y',{from:fromY, to:toY, seconds:secs, easing:Ease.backOut});
+					e('CongratsBalloon1').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					e('CongratsBalloon2').setState('spaceX',fromX+263);
+					e('CongratsBalloon2').setState('animate_y',{from:fromY-22, to:toY-22, seconds:secs, easing:Ease.backOut});
+					e('CongratsBalloon2').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					//Particles
+					e('particle_b1').setState('action_fire',true);
+					e('particle_b2').setState('action_fire',true);
+					e('particle_b3').setState('action_fire',true);
+					e('particle_b4').setState('action_fire',true);
+					
+					//Birds Celebrate
+					e('mainScene').fa('Birds Celebrate');
+					
+					//Hide Restart Button
+					e('Restart Button').set('visible',false);
+					
+					//Analytics
+					me.s('analytics').duration=Math.floor(Logic.getTime()-me.s('timeStamp'));
+					
+					//Pre-Load the next match
+					e('Match Manager').fa('Load JSON',{ restart:false } );
+					
+					me.sa('WaitFor',{delay:secs,cbEntity:me,cbAction:"Hide Victory"});
+					e('mainScene').sa('WaitFor',{delay:secs+0.3,cbEntity:e('mainScene'),cbAction:"Birds Sit At Tree"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Hide Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					e('CongratsBalloon1').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
+					e('CongratsBalloon2').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
+					e('CongratsSign').setState('animate_opacity',{type:"to", to:0, seconds:1.5, easing:Ease.quadInOut});
+					
+					e('CongratsBalloon1').setState('animate_opacity',{type:"to", to:0, seconds:3, easing:Ease.quintIn});
+					e('CongratsBalloon2').setState('animate_opacity',{type:"to", to:0, seconds:3, easing:Ease.quintIn});
+					//e('Congratulations').setState('visible',false);
+					
+					//e('Match Manager').forceAction('Get Next Match');
+					me.sa('WaitFor',{delay:2,cbEntity:e('Match Manager'),cbAction:"Get Next Match"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>
