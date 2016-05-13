@@ -1,0 +1,37 @@
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="2DMeshFillRectForm"><Value>[normal]</Value></_State>
+		<_State id="spaceWidth"><Value>100</Value></_State>
+		<_State id="spaceHeight"><Value>100</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+	</_States>
+	<_Form><_States><State><Id>normal</Id><Type>Integer</Type><Value>0xFFFFFF</Value></State></_States></_Form>
+	<_Form><_States><State><Id>selected</Id><Type>Integer</Type><Value>0xFF0000</Value></State></_States></_Form>
+		
+		
+	<_Actions>
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('2DMeshFillRectForm','[selected]');
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('2DMeshFillRectForm','[normal]');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

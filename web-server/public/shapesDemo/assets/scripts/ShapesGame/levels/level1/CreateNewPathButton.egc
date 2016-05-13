@@ -1,0 +1,24 @@
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="2DMeshFillRectForm"><Value>0x00FF00</Value></_State>
+		<_State id="spaceX"><Value>;2280/2-120</Value></_State>
+		<_State id="spaceY"><Value>300</Value></_State>
+		<_State id="spaceWidth"><Value>300</Value></_State>
+		<_State id="spaceHeight"><Value>100</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+	</_States>
+		
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					Display.de("CLICKED");
+					e('Maze Area').fa('Create Path');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

@@ -1,0 +1,229 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="2DMeshImageForm"><Value>background</Value></_State>
+		<_State id="spaceX"><Value>;2280/2+30</Value></_State>
+		<_State id="spaceY"><Value>;1440/2+490</Value></_State>
+		<_State id="scaleX"><Value>1.5</Value></_State>
+		<_State id="scaleY"><Value>1.5</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Add Hot Air Balloon
+					var hotAirBalloon = Logic.create('ShapesGame.levels.level1.HotAirBalloon');
+					e('mainScene').insertChild(hotAirBalloon,3);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('percentX',0.6);
+					cloud.setState('percentY',0.9);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('percentX',0.35);
+					cloud.setState('percentY',0.75);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('percentX',0.45);
+					cloud.setState('percentY',0.7);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('percentX',0.3);
+					cloud.setState('percentY',0.68);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('percentX',0.2);
+					cloud.setState('percentY',0.8);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('percentX',0.6);
+					cloud.setState('percentY',0.75);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('percentX',0.9);
+					cloud.setState('percentY',0.7);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('percentX',1);
+					cloud.setState('percentY',0.24);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('percentX',0.7);
+					cloud.setState('percentY',0.12);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('percentX',0.4);
+					cloud.setState('percentY',0.9);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('percentX',0.2);
+					cloud.setState('percentY',0.21);
+					//e('mainScene').insertChild(cloud,3);
+					e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('percentX',0.8);
+					cloud.setState('percentY',0.68);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('percentX',0.5);
+					cloud.setState('percentY',0.18);
+					//e('mainScene').insertChild(cloud,3);
+					e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud3");
+					cloud.setState('percentX',0.9);
+					cloud.setState('percentY',0.15);
+					//e('mainScene').insertChild(cloud,3);
+					e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud2");
+					cloud.setState('percentX',0.1);
+					cloud.setState('percentY',0.75);
+					e('mainScene').insertChild(cloud,3);
+					//e('mainScene').addChild(cloud);
+					
+					//Add A Cloud
+					var cloud = Logic.create('ShapesGame.levels.level1.Cloud');
+					cloud.setState('2DMeshImageForm',"cloud1");
+					cloud.setState('percentX',0.2);
+					cloud.setState('percentY',0);
+					//e('mainScene').insertChild(cloud,3);
+					e('mainScene').addChild(cloud);
+					
+					
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon2");
+					balloon.setState('percentX',0.6);
+					balloon.setState('percentY',0.8);
+					e('mainScene').insertChild(balloon,5);
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon1");
+					balloon.setState('percentX',0.63);
+					balloon.setState('percentY',0.2);
+					e('mainScene').insertChild(balloon,5);
+					
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon3");
+					balloon.setState('percentX',0.52);
+					balloon.setState('percentY',0.2);
+					e('mainScene').insertChild(balloon,5);
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon1");
+					balloon.setState('percentX',0.54);
+					balloon.setState('percentY',0.7);
+					e('mainScene').insertChild(balloon,5);
+					
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon2");
+					balloon.setState('percentX',0.5);
+					balloon.setState('percentY',0);
+					e('mainScene').insertChild(balloon,5);
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon3");
+					balloon.setState('percentX',0.47);
+					balloon.setState('percentY',0.5);
+					e('mainScene').insertChild(balloon,5);
+					
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon3");
+					balloon.setState('percentX',0.4);
+					balloon.setState('percentY',0.9);
+					e('mainScene').insertChild(balloon,5);
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon1");
+					balloon.setState('percentX',0.35);
+					balloon.setState('percentY',0.1);
+					e('mainScene').insertChild(balloon,5);
+					
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon2");
+					balloon.setState('percentX',0.29);
+					balloon.setState('percentY',0.4);
+					e('mainScene').insertChild(balloon,5);
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon3");
+					balloon.setState('percentX',0.2);
+					balloon.setState('percentY',0);
+					e('mainScene').insertChild(balloon,5);
+					
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon1");
+					balloon.setState('percentX',0.15);
+					balloon.setState('percentY',0.3);
+					e('mainScene').insertChild(balloon,5);
+					//Add A Balloon
+					var balloon = Logic.create('ShapesGame.levels.level1.Balloon');
+					balloon.setState('2DMeshImageForm',"balloon2");
+					balloon.setState('percentX',0.17);
+					balloon.setState('percentY',1);
+					e('mainScene').insertChild(balloon,5);
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

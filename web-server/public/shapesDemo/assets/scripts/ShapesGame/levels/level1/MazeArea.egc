@@ -1,0 +1,68 @@
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<_State id="name"><Value>Maze Area</Value></_State>
+		<_State id="spaceX"><Value>;2280/2-700/2</Value></_State>
+		<_State id="spaceY"><Value>;1440/2-600/2</Value></_State>
+		<State><Id>maze</Id><Type>Dynamic</Type><Value>[]</Value></State>
+		<State><Id>mazeWidth</Id><Type>Integer</Type><Value>7</Value></State>
+		<State><Id>mazeHeight</Id><Type>Integer</Type><Value>6</Value></State>
+	</_States>
+
+	<Form><Space><Entities>
+		
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script><![CDATA[
+					var xSize=me.s('mazeWidth');
+					var ySize=me.s('mazeHeight');
+					var l_maze = me.s('maze');
+				
+					for (var x=0;x<xSize;x++)
+					{
+						Display.de("x: " + x);
+						
+						l_maze.push([]);
+						for (var y=0;y<ySize;y++)
+						{
+							Display.de("y: " + y);
+							var l_tile = Logic.create('ShapesGame.levels.level1.MazeTile');
+							l_tile.set('spaceX',x*101);
+							l_tile.set('spaceY',y*101);
+							me.addChild(l_tile);
+							
+							l_maze[x].push(l_tile);
+						}
+					}
+				]]></Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Create Path</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					var xSize=me.s('mazeWidth');
+					var ySize=me.s('mazeHeight');
+					var l_maze = me.s('maze');
+					
+					for (var x=0;x<xSize;x++)
+						for (var y=0;y<ySize;y++)
+							l_maze[x][y].fa('Deselect');
+							
+					l_maze[Logic.random(0,6)][0].fa('Select');
+					l_maze[Logic.random(0,6)][1].fa('Select');
+					l_maze[Logic.random(0,6)][2].fa('Select');
+					l_maze[Logic.random(0,6)][3].fa('Select');
+					l_maze[Logic.random(0,6)][4].fa('Select');
+					l_maze[Logic.random(0,6)][5].fa('Select');
+				]]></Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
