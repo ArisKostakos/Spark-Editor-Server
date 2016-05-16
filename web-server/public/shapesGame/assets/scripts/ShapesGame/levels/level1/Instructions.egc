@@ -1,0 +1,139 @@
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<_State id="spaceX"><Value>;2280/2</Value></_State>
+		<_State id="spaceY"><Value>;1440/2</Value></_State>
+	</_States>
+	
+	<Form><Space><Entities>
+		<!-- Sea -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>false</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>sea</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>130</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Ice -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>false</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>ice</Value></_State>
+				<_State id="spaceX"><Value>550</Value></_State>
+				<_State id="spaceY"><Value>500</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Igloo -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>false</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>igloo</Value></_State>
+				<_State id="spaceX"><Value>-800</Value></_State>
+				<_State id="spaceY"><Value>-540</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Banner -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>false</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>banner</Value></_State>
+				<_State id="spaceX"><Value>83</Value></_State>
+				<_State id="spaceY"><Value>-494</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Instructions Α-->
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="name"><Value>Instructions Α</Value></_State>
+				<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
+				<_State id="font"><Value>ComfortGreek</Value></_State>
+				<_State id="text"><Value>Βοήθησε τον μικρό πιγκουίνο να πάει στην οικογένειά του!</Value></_State>
+				<_State id="align"><Value>Left</Value></_State> <!-- Left actually makes it CENTERED -->
+				<_State id="spaceX"><Value>70</Value></_State>
+				<_State id="spaceY"><Value>-530</Value></_State>
+				<_State id="scaleX"><Value>1.2</Value></_State>
+				<_State id="scaleY"><Value>1.2</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>true</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Instructions Β-->
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="name"><Value>Instructions B</Value></_State>
+				<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
+				<_State id="font"><Value>ComfortGreek</Value></_State>
+				<_State id="text"><Value>Undefined</Value></_State>
+				<_State id="align"><Value>Center</Value></_State> <!-- Center is actually RIGHT  (Right is fucked up)-->
+				<_State id="spaceX"><Value>-25</Value></_State> <!-- 330, 350 -->
+				<_State id="spaceY"><Value>-470</Value></_State>
+				<_State id="scaleX"><Value>1.2</Value></_State>
+				<_State id="scaleY"><Value>1.2</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="visible"><Value>true</Value></_State>
+			</_States>
+			<_Actions>
+				<Action>
+					<Id>Init</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							//forced
+							
+							var l_pathShape = e('Game Manager').s('currentGame');
+							var l_text="";
+							
+							var l_gamesSequence = ['','','','','',''];
+							
+							if (l_pathShape=="heart")
+								l_text="  Βρες το δρόμο με τις καρδιές σαν αυτήν";
+							else if (l_pathShape=="star")
+								l_text="    Βρες το δρόμο με τα αστέρια σαν αυτό";
+							else if (l_pathShape=="diamond")
+								l_text="Βρες το δρόμο με τους ρόμβους σαν αυτόν";
+							else if (l_pathShape=="triangle")
+								l_text="    Βρες το δρόμο με τα τρίγωνα σαν αυτό";
+							else if (l_pathShape=="square")
+								l_text="Βρες το δρόμο με τα τετράγωνα σαν αυτό";
+							else if (l_pathShape=="circle")
+								l_text="Βρες το δρόμο με τους κύκλους σαν αυτόν";
+							
+								
+							me.set('text',l_text);
+							
+							e('Audio Control').fa('Play Voice', { name:'s:intro_main' } );
+						</Script>
+					</Scripts>
+				</Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Hmmm..
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

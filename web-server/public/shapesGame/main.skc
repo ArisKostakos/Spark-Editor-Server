@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Client>
+	<Project>
+		<Name>Shapes Game</Name>
+		<Version>0.30</Version>
+		<ExecuteAtLaunch>
+			<ExecuteModule>Main</ExecuteModule>
+		</ExecuteAtLaunch>
+   </Project>
+
+	<Sliced>
+		<Sound>tools.spark.sliced.services.std.sound.core.Sound</Sound>
+		<Logic>tools.spark.sliced.services.std.logic.core.Logic</Logic>
+		<Input>tools.spark.sliced.services.std.input.core.Input</Input>
+		<Comms>tools.spark.sliced.services.std.comms.core.Comms</Comms>
+		<Event>tools.spark.sliced.services.std.event.core.Event</Event>
+		<Display>tools.spark.sliced.services.std.display.core.Display</Display>
+	</Sliced>
+	
+	<Paths>
+		<Path location="local" type="script">assets/scripts</Path>
+		<Path location="local" type="image">assets/images</Path>
+		<Path location="local" type="sound">assets/sounds</Path>
+		<Path location="local" type="data">assets/data</Path>
+	</Paths>
+	
+	<Assets>
+		<Module id="Levels">
+			<Asset type="script" location="local" bytes='592'>ShapesGame/levels/loader/Level.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/Level.egc</Asset>
+		</Module>
+		
+		<Module id="Main" executeEntity="ShapesGame.Project">
+			<Requires>
+				<RequiresModule>Levels</RequiresModule>
+				<RequiresModule>Std:Base</RequiresModule>
+			</Requires>
+			
+			<Asset type="script" location="local" bytes='836'>ShapesGame/Project.egc</Asset>
+			<Asset type="script" location="local" bytes='393'>ShapesGame/Space.egc</Asset>
+			<Asset type="script" location="local" bytes='259'>ShapesGame/Stage.egc</Asset>
+		</Module>
+		
+		<Module id="Loader">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
+			</Requires>
+			<Asset type="script" location="local" bytes='556'>ShapesGame/levels/loader/View.egc</Asset>
+			<Asset type="script" location="local" bytes='6150'>ShapesGame/levels/loader/Scene.egc</Asset>
+			<Asset type="image" location="local" bytes='100000' id="blueBird_sheet">ShapesGame/levels/level1/blueBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='4540' id="blueBird">ShapesGame/levels/level1/blueBird.plist</Asset>
+			<Asset type="image" location="local" bytes='100000' id="redBird_sheet">ShapesGame/levels/level1/redBird_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='4540' id="redBird">ShapesGame/levels/level1/redBird.plist</Asset>
+			
+			<Asset type="image" location="local" bytes='57200' id="loadingBanner">ShapesGame/levels/loader/banner.png</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/Cloud.egc</Asset>
+			<Asset type="image" location="local" bytes='31800' id="cloud1">ShapesGame/levels/level1/sinefo_1.png</Asset>
+			<Asset type="image" location="local" bytes='31800' id="cloud2">ShapesGame/levels/level1/sinefo_2.png</Asset>
+			<Asset type="image" location="local" bytes='31800' id="cloud3">ShapesGame/levels/level1/sinefo_3.png</Asset>
+		</Module>
+		
+		<Module id="Common" executeEntity="ShapesGame.levels.common.CommonSpace">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+			</Requires>
+			<Asset type="script" location="local" bytes='162'>ShapesGame/levels/common/CommonSpace.egc</Asset>
+		</Module>
+		
+		<Module id="Level1">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
+				<RequiresModule>Common</RequiresModule>
+			</Requires>
+			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/MazeArea.egc</Asset>
+			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/MazeTile.egc</Asset>
+			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/CreateNewPathButton.egc</Asset>
+			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/CreateNewPathButton2.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/GameManager.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/View.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/Scene.egc</Asset>
+			
+			<!-- Rects -->
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/RedRect.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/GreenRect.egc</Asset>
+			
+			<!-- Play Button And Birds-->
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/PlayBtn.egc</Asset>
+			<Asset type="image" location="local" bytes='10000' id="playBtn">ShapesGame/levels/level1/play2.png</Asset>
+			<Asset type="script" location="local" bytes='4300'>ShapesGame/levels/level1/BlueBird.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/RedBird.egc</Asset>
+			
+			<!-- Audio Button -->
+			<Asset type="script" location="local" bytes='2390'>ShapesGame/levels/level1/AudioBtn.egc</Asset>
+			<Asset type="image" location="local" bytes='75000' id="audioBtn_On">ShapesGame/levels/level1/buttons/music_on.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="audioBtn_Off">ShapesGame/levels/level1/buttons/music_off.png</Asset>
+			
+			<!-- Voice Button -->
+			<Asset type="script" location="local" bytes='2390'>ShapesGame/levels/level1/VoiceBtn.egc</Asset>
+			<Asset type="image" location="local" bytes='75000' id="voiceBtn_On">ShapesGame/levels/level1/buttons/sound_on.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="voiceBtn_Off">ShapesGame/levels/level1/buttons/sound_off.png</Asset>
+			
+			<!-- Tile -->
+			<Asset type="image" location="local" bytes='10000' id="tile">ShapesGame/levels/level1/tiles/tile.png</Asset>
+			
+			<!-- Shape Icon -->
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/ShapeIcon.egc</Asset>
+			
+			<!-- Circle Shape -->
+			<Asset type="image" location="local" bytes='10000' id="circle_s">ShapesGame/levels/level1/shapes/circle/circle_blue.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="circle_n">ShapesGame/levels/level1/shapes/circle/circle_orange.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="circle_i">ShapesGame/levels/level1/shapes/circle/circle_button.png</Asset>
+			
+			<!-- Square Shape -->
+			<Asset type="image" location="local" bytes='10000' id="square_s">ShapesGame/levels/level1/shapes/square/square_blue.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="square_n">ShapesGame/levels/level1/shapes/square/square_orange.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="square_i">ShapesGame/levels/level1/shapes/square/square_button.png</Asset>
+			
+			<!-- Heart Shape -->
+			<Asset type="image" location="local" bytes='10000' id="heart_s">ShapesGame/levels/level1/shapes/heart/heart_blue.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="heart_n">ShapesGame/levels/level1/shapes/heart/heart_orange.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="heart_i">ShapesGame/levels/level1/shapes/heart/heart_button.png</Asset>
+			
+			<!-- Diamond Shape -->
+			<Asset type="image" location="local" bytes='10000' id="diamond_s">ShapesGame/levels/level1/shapes/diamond/diamond_blue.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="diamond_n">ShapesGame/levels/level1/shapes/diamond/diamond_orange.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="diamond_i">ShapesGame/levels/level1/shapes/diamond/diamond_button.png</Asset>
+			
+			<!-- Triangle Shape -->
+			<Asset type="image" location="local" bytes='10000' id="triangle_s">ShapesGame/levels/level1/shapes/triangle/triangle_blue.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="triangle_n">ShapesGame/levels/level1/shapes/triangle/triangle_orange.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="triangle_i">ShapesGame/levels/level1/shapes/triangle/triangle_button.png</Asset>
+			
+			<!-- Star Shape -->
+			<Asset type="image" location="local" bytes='10000' id="star_s">ShapesGame/levels/level1/shapes/star/star_blue.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="star_n">ShapesGame/levels/level1/shapes/star/star_orange.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="star_i">ShapesGame/levels/level1/shapes/star/star_button.png</Asset>
+			
+			<!-- Banner -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Instructions.egc</Asset>
+			<Asset type="image" location="local" bytes='10000' id="banner">ShapesGame/levels/level1/tiles/ice_banner.png</Asset>
+			
+			
+			<!-- Background -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Background.egc</Asset>
+			<Asset type="image" location="local" bytes='10000' id="sea">ShapesGame/levels/level1/sea/sea.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="ice">ShapesGame/levels/level1/ice/ice.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="igloo">ShapesGame/levels/level1/ice/igloo.png</Asset>
+			
+			<!-- Font -->
+			<Asset type="data" location="local" bytes='38900' id="ComfortGreek.fnt">ShapesGame/ComfortGreek.fnt</Asset>
+			<Asset type="data" location="local" bytes='12000' id="ComfortGreek">ShapesGame/ComfortGreek.png</Asset>
+			
+			<!-- Voices -->
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_main">ShapesGame/intro_main.mp3</Asset>
+			
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_circle">ShapesGame/intro_circle.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_heart">ShapesGame/intro_heart.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_square">ShapesGame/intro_square.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_diamond">ShapesGame/intro_diamond.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_triangle">ShapesGame/intro_triangle.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:intro_star">ShapesGame/intro_star.mp3</Asset>
+			
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_first">ShapesGame/mpravo_first.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_second">ShapesGame/mpravo_second.mp3</Asset>
+			
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_circle">ShapesGame/mpravo_circle.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_heart">ShapesGame/mpravo_heart.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_square">ShapesGame/mpravo_square.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_diamond">ShapesGame/mpravo_diamond.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_triangle">ShapesGame/mpravo_triangle.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:mpravo_star">ShapesGame/mpravo_star.mp3</Asset>
+			
+			<Asset type="sound" location="local" bytes='53000' id="s:tile_circle">ShapesGame/tile_circle.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:tile_heart">ShapesGame/tile_heart.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:tile_square">ShapesGame/tile_square.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:tile_diamond">ShapesGame/tile_diamond.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:tile_triangle">ShapesGame/tile_triangle.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="s:tile_star">ShapesGame/tile_star.mp3</Asset>
+			
+			<!--
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/CardsArea.egc</Asset>
+			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/Card.egc</Asset>
+			
+			
+			
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/Congratulations.egc</Asset>
+			<Asset type="image" location="local" bytes='53000' id="congrats_sign">ShapesGame/levels/level1/congrats.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="congrats_balloons1">ShapesGame/levels/level1/ballons_1.png</Asset>
+			<Asset type="image" location="local" bytes='75000' id="congrats_balloons2">ShapesGame/levels/level1/ballons_2.png</Asset>
+			
+			
+			
+			<Asset type="image" location="local" bytes='75000' id="restartBtn">ShapesGame/levels/level1/restart_2.png</Asset>
+			
+
+			<Asset type="script" location="local" bytes='515'>ShapesGame/levels/level1/BlueRect.egc</Asset>
+			
+
+			
+			<Asset type="image" location="local" bytes='429000' id="background">ShapesGame/levels/level1/island.png</Asset>
+			<Asset type="image" location="local" bytes='169000' id="treeBack">ShapesGame/levels/level1/treeBack.png</Asset>
+			<Asset type="image" location="local" bytes='43000' id="treeFront">ShapesGame/levels/level1/treeFront.png</Asset>
+			
+			<Asset type="image" location="local" bytes='10000' id="balloon1">ShapesGame/levels/level1/ballon_1.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon2">ShapesGame/levels/level1/ballon_2.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon3">ShapesGame/levels/level1/ballon_3.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="balloon4">ShapesGame/levels/level1/ballon_4.png</Asset>
+			
+			<Asset type="image" location="local" bytes='64000' id="hotAirBalloon">ShapesGame/levels/level1/air_balloon2.png</Asset>
+			
+			<Asset type="image" location="local" bytes='10000' id="card">ShapesGame/levels/level1/karta.png</Asset>
+			
+			
+			
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/MyParticle.egc</Asset>
+			
+			<Asset type="image" location="local" bytes='35672' id="cardEffect.pex">ShapesGame/levels/level1/particles/particle.pex</Asset>
+			<Asset type="image" location="local" bytes='10000' id="texture">ShapesGame/levels/level1/particles/texture.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="texture2">ShapesGame/levels/level1/particles/cardFXparticle.png</Asset>
+			
+			<Asset type="image" location="local" bytes='35672' id="balloon1.pex">ShapesGame/levels/level1/particles/balloon1.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="balloon2.pex">ShapesGame/levels/level1/particles/balloon2.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="balloon3.pex">ShapesGame/levels/level1/particles/balloon3.pex</Asset>
+			<Asset type="image" location="local" bytes='35672' id="balloon4.pex">ShapesGame/levels/level1/particles/balloon4.pex</Asset>
+			
+			<Asset type="sound" location="local" bytes='3276014' id="m:Music">ShapesGame/music.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="m:Start Button">ShapesGame/startButton.mp3</Asset>
+			<Asset type="sound" location="local" bytes='26000' id="m:Birds Long">ShapesGame/birdsIntro.mp3</Asset>
+			<Asset type="sound" location="local" bytes='7000' id="m:Birds Match">ShapesGame/birdsMatch.mp3</Asset>
+			<Asset type="sound" location="local" bytes='32000' id="m:Birds Complete">ShapesGame/birdsShudden.mp3</Asset>
+			<Asset type="sound" location="local" bytes='10000' id="m:Wrong Answer">ShapesGame/wrongAnswer.mp3</Asset>
+			<Asset type="sound" location="local" bytes='73000' id="m:Match Complete">ShapesGame/kidCheerLong.mp3</Asset>
+			-->
+			
+			<Asset type="sound" location="local" bytes='73000' id="m:Debug">ShapesGame/debug.mp3</Asset>
+			
+		</Module>
+		
+		
+		<Module id="Std:Base">
+			<Asset type="script" location="local" bytes='5000'>std/core/Base.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/Project.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/Level.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/core/LevelReference.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='5000'>std/display/Base.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Space.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Stage.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/Layoutable.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/core/Constructor.egc</Asset>
+		</Module>
+		
+		<Module id="Std:Loader">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+			</Requires>
+			<Asset type="script" location="local" bytes='5000'>std/display/View.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Scene2D.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='5000'>std/display/Camera2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Gui2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Group.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/VGroup.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/HGroup.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Div.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Entity2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Text.egc</Asset>
+			
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/Positionable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/Renderable2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/NativeComponent.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/StyleableNC.egc</Asset>
+		</Module>
+		
+		<Module id="Std:Rest">
+			<Asset type="script" location="local" bytes='5000'>std/display/Image2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Scene2DPhysics.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Camera2DStandard.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/behaviors/display/PhysicsEntity2D.egc</Asset>
+			
+			<!--<Asset type="script" location="local" bytes='5000'>std/display/Button2D.egc</Asset>-->
+			<Asset type="script" location="local" bytes='5000'>std/display/Spritesheet2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/FillRect2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Text2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Sprite2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/ParticleEmitter2D.egc</Asset>
+			
+			<Asset type="sound" location="local" bytes='5000' id="_blankSound">std/blankSound.mp3</Asset>
+		</Module>
+	</Assets>
+</Client>

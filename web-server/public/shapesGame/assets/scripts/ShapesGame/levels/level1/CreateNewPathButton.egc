@@ -1,0 +1,38 @@
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="2DMeshFillRectForm"><Value>0x00FF00</Value></_State>
+		<_State id="spaceX"><Value>250</Value></_State>
+		<_State id="spaceY"><Value>170</Value></_State>
+		<_State id="spaceWidth"><Value>300</Value></_State>
+		<_State id="spaceHeight"><Value>100</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="opacity"><Value>0.1</Value></_State>
+	</_States>
+		
+	<Form><Space><Entities>
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="2DMeshTextForm"><Value>defaultFont</Value></_State>
+				<_State id="font"><Value>defaultFont</Value></_State>
+				<_State id="text"><Value>Click to Create!</Value></_State>
+				<_State id="align"><Value>Left</Value></_State>
+				<_State id="spaceX"><Value>150</Value></_State>
+				<_State id="spaceY"><Value>50</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="touchable"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+	</Entities></Space></Form>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					e('Game Manager').fa('Create Match');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

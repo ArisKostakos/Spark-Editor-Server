@@ -1,0 +1,11 @@
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="2DMeshFillRectForm"><Value>0x0000FF</Value></_State>
+		<_State id="opacity"><Value>;e('mainScene').s('rectOpacity')</Value></_State>
+		<_State id="spaceX"><Value>;2280/2+180</Value></_State>
+		<_State id="spaceY"><Value>;1440/2+1</Value></_State>
+		<_State id="spaceWidth"><Value>1450</Value></_State>
+		<_State id="spaceHeight"><Value>1150</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+	</_States>
+</Entity>

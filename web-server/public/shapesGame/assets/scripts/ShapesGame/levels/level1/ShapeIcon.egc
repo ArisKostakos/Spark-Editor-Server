@@ -1,0 +1,41 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		
+		<_State id="name"><Value>Shape Indicator</Value></_State>
+		<_State id="2DMeshImageForm"><Value>circle_i</Value></_State>
+		
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="opacity"><Value>0</Value></_State>
+		<_State id="spaceX"><Value>1540</Value></_State>
+		<_State id="spaceY"><Value>250</Value></_State>
+	</_States>
+	
+	
+	<_Actions>
+		<Action>
+			<Id>Init</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_pathShape = e('Game Manager').s('currentGame');
+					
+					me.set('2DMeshImageForm',l_pathShape+'_i');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Show</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('animate_opacity',{from:0, to:1, seconds:2, easing:Ease.quadInOut});
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
