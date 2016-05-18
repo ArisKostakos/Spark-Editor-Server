@@ -89,16 +89,15 @@
 					var l_currentGame = me.set('currentGame', l_gamesSequence.shift());
 					console.log('l_currentGame',l_currentGame);
 					
-					//Temp Show Indicator
-					e('Shape Indicator').fa('Init');
-					e('Shape Indicator').fa('Show');
-					
-					//Temp Change Instructions B
-					e('Instructions B').fa('Init');
+					//Show Instructions
+					e('Instructions').fa('Show');
 					
 					//Create Maze
 					if (e('Maze Area').s('Creating')==false)
 						e('Maze Area').fa('Create Path');
+					
+					//Init Player
+					e('Player').fa('Init');
 					
 					//Show Shapes
 					e('Maze Area').sa('Show Maze Shapes');

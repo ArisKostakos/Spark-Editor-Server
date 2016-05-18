@@ -15,10 +15,22 @@
 		<!-- Background -->
 		<Entity extends="ShapesGame.levels.level1.Background"/>
 		
+		<!-- Instructions -->
+		<Entity extends="ShapesGame.levels.level1.Instructions"/>
+		<Entity extends="ShapesGame.levels.level1.Banner"/>
+		
 		<!-- Maze Stuff -->
 		<Entity extends="ShapesGame.levels.level1.MazeArea"/>
 		<Entity extends="ShapesGame.levels.level1.CreateNewPathButton"/>
-		<Entity extends="ShapesGame.levels.level1.CreateNewPathButton2"/>
+		
+		<!-- Mommy -->
+		<Entity extends="ShapesGame.levels.level1.Mommy"/>
+		
+		<!-- Daddy -->
+		<Entity extends="ShapesGame.levels.level1.Daddy"/>
+		
+		<!-- Player -->
+		<Entity extends="ShapesGame.levels.level1.Player"/>
 		
 		<!-- Birds and Play Button -->
 		<Entity extends="ShapesGame.levels.level1.PlayBtn"/>
@@ -27,12 +39,6 @@
 		
 		<!-- Audio Button -->
 		<Entity extends="ShapesGame.levels.level1.AudioBtn"/>
-		
-		<!-- Voice Button -->
-		<Entity extends="ShapesGame.levels.level1.VoiceBtn"/>
-		
-		<!-- Shape Icon -->
-		<Entity extends="ShapesGame.levels.level1.ShapeIcon"/>
 	</Entities></Space></Form>
 	
 	<_Actions>
@@ -45,9 +51,12 @@
 					Display.invalidateLayout();
 					
 					
+					
 					e('Blue Bird').set('visible',false);
 					e('Red Bird').set('visible',false);
 					e('Button Sprite').set('visible',false);
+					e('Ellinopoula Banner').set('visible',false);
+					me.sa('WaitFor',{delay:0.7, cbEntity:e('Game Manager'), cbAction:"Create Match"});
 					return;
 					
 					
@@ -69,17 +78,23 @@
 				<Script>
 					//forced
 					
-					var secsBlue=2.8;
-					e('Blue Bird').setState('scaleX',-1);
-					e('Blue Bird').setState('animate_x',{type:"to", to:245, seconds:secsBlue, easing:Ease.quadInOut});
-					e('Blue Bird').setState('animate_y',{type:"to", to:268, seconds:secsBlue, easing:Ease.quadInOut});
+					var secsBlue=3;
+					e('Blue Bird').setState('animate_scaleX',{from:-1, to:-0.8, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_scaleY',{from:1, to:0.8, seconds:secsBlue, easing:Ease.quadInOut});
+					
+					e('Blue Bird').setState('animate_x',{type:"to", to:590, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_y',{type:"to", to:110, seconds:secsBlue, easing:Ease.quadInOut});
 					me.sa('WaitFor',{delay:secsBlue, cbEntity:me, cbAction:"Blue Arrive"});
 					
-					var secsRed=3.2;
-					e('Red Bird').setState('scaleX',-1);
-					e('Red Bird').setState('animate_x',{type:"to", to:470, seconds:secsRed, easing:Ease.quadInOut});
-					e('Red Bird').setState('animate_y',{type:"to", to:318, seconds:secsRed, easing:Ease.quadInOut});
+					var secsRed=3;
+					e('Red Bird').setState('animate_scaleX',{from:1, to:0.8, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_scaleY',{from:1, to:0.8, seconds:secsRed, easing:Ease.quadInOut});
+					
+					e('Red Bird').setState('animate_x',{type:"to", to:1840, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_y',{type:"to", to:110, seconds:secsRed, easing:Ease.quadInOut});
 					me.sa('WaitFor2',{delay:secsRed, cbEntity:me, cbAction:"Red Arrive"});
+					
+					e('Ellinopoula Banner').setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.quadInOut});
 				</Script>
 			</Scripts>
 		</Action>
@@ -91,7 +106,7 @@
 				<Script>
 					//forced
 					
-					e('Blue Bird').setState('scaleX',1);
+					e('Blue Bird').setState('scaleX',0.8);
 					//e('Blue Bird').fa('Animate',{state:"Stand"});
 				</Script>
 			</Scripts>
@@ -104,7 +119,7 @@
 				<Script>
 					//forced
 					
-					e('Red Bird').setState('scaleX',1);
+					e('Red Bird').setState('scaleX',-0.8);
 					
 					e('Game Manager').fa('Create Match');
 				</Script>

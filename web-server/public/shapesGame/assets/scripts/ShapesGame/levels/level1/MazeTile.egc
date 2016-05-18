@@ -17,6 +17,8 @@
 		<State><Id>path</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>dirty</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>nick</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>visited</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>firstTile</Id><Type>Boolean</Type><Value>false</Value></State>
 	
 		<_State id="physicsEntity"><Value>false</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
@@ -75,8 +77,35 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					e('Maze Area').fa('Clear');
-					me.fa('Show Near');
+					//e('Maze Area').fa('Clear');
+					//me.fa('Show Near');
+					
+					
+					//Get Characters current Tile
+					var l_character = e('Player');
+					var l_currentTile = l_character.s('currentTile');
+					var l_ctDirs = l_currentTile.s('dirs');
+					
+					if (me==l_ctDirs.get('left'))
+					{
+						l_character.fa('Move To Tile',{ tile:me, direction:'left' } );
+					}
+					else if (me==l_ctDirs.get('right'))
+					{
+						l_character.fa('Move To Tile',{ tile:me, direction:'right' } );
+					}
+					else if (me==l_ctDirs.get('up'))
+					{
+						l_character.fa('Move To Tile',{ tile:me, direction:'up' } );
+					}
+					else if (me==l_ctDirs.get('down'))
+					{
+						l_character.fa('Move To Tile',{ tile:me, direction:'down' } );
+					}
+					else
+					{
+						Display.de("Tile Clicked is not a neighbor tile.. play a noise or smth..");
+					}
 				</Script>
 			</Scripts>
 		</Trigger>
@@ -95,9 +124,12 @@
 					var mazeWidth=mazeArea.s('mazeWidth');
 					var mazeHeight=mazeArea.s('mazeHeight');
 					
-					//If I must last Tile, make me invisible
+					//If I am last Tile, make me invisible
 					if (x==mazeWidth-1 && y==mazeHeight-1)
+					{
 						me.set('visible',false);
+						me.set('firstTile',true);
+					}
 					
 					me.set('spaceX',x*(me.s('spaceWidth')));
 					me.set('spaceY',y*(me.s('spaceHeight')));
@@ -175,7 +207,23 @@
 				</Script>
 			</Scripts>
 		</Action>
-			
+		
+		<Action>
+			<Id>Visited</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('visited',true);
+					
+					var l_obj_shapeSelected = me.s('obj_shapeSelected');
+					
+					l_obj_shapeSelected.set('animate_opacity',{type:"to", to:1, seconds:0.4, easing:Ease.quadInOut});
+				</Script>
+			</Scripts>
+		</Action>
+		
 		<Action>
 			<Id>Select</Id>
 			<Concurrency>Persistent</Concurrency>

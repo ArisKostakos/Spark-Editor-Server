@@ -6,8 +6,8 @@
 		<_State id="physicsEntity"><Value>false</Value></_State>
 		<_State id="2DMeshImageForm"><Value>[Button_Normal]</Value></_State>
 			
-		<_State id="spaceX"><Value>1730</Value></_State>
-		<_State id="spaceY"><Value>245</Value></_State>
+		<_State id="spaceX"><Value>1130</Value></_State>
+		<_State id="spaceY"><Value>145</Value></_State>
 		<_State id="scaleX"><Value>1</Value></_State>
 		<_State id="scaleY"><Value>1</Value></_State>
 		
@@ -69,26 +69,8 @@
 			<Event>MouseLeftClick</Event>
 			<Scripts>
 				<Script>
-					if (me.s('Toggled')==false)
-					{
-						me.setState("2DMeshImageForm","[Button_Toggled]");
-						//me.setState("VolumeVoice",0);
-						me.setState("VolumeFX",0);
-						me.setState("VolumeMusic",0);
-						Sound.stopAllSounds(0.3);
-						
-						me.setState('Toggled',true);
-					}
-					else
-					{
-						me.setState("2DMeshImageForm","[Button_Normal]");
-						//me.setState("VolumeVoice",0.5);
-						me.setState("VolumeFX",1);
-						me.setState("VolumeMusic",0.4);
-						me.setState('Toggled',false);
-						
-						//Sound.loopSound("m:Music",e('Audio Control').s('VolumeMusic'));
-					}
+					//Show Instructions
+					e('Instructions').fa('Show');
 				</Script>
 			</Scripts>
 		</Trigger>

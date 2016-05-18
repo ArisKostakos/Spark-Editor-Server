@@ -146,13 +146,14 @@
 			<!-- Banner -->
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Instructions.egc</Asset>
 			<Asset type="image" location="local" bytes='10000' id="banner">ShapesGame/levels/level1/tiles/ice_banner.png</Asset>
-			
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Banner.egc</Asset>
 			
 			<!-- Background -->
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Background.egc</Asset>
 			<Asset type="image" location="local" bytes='10000' id="sea">ShapesGame/levels/level1/sea/sea.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="ice">ShapesGame/levels/level1/ice/ice.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="igloo">ShapesGame/levels/level1/ice/igloo.png</Asset>
+			
 			
 			<!-- Font -->
 			<Asset type="data" location="local" bytes='38900' id="ComfortGreek.fnt">ShapesGame/ComfortGreek.fnt</Asset>
@@ -185,6 +186,47 @@
 			<Asset type="sound" location="local" bytes='53000' id="s:tile_triangle">ShapesGame/tile_triangle.mp3</Asset>
 			<Asset type="sound" location="local" bytes='53000' id="s:tile_star">ShapesGame/tile_star.mp3</Asset>
 			
+			
+			
+			<!-- Baby Pengiun -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Player.egc</Asset>
+			<Asset type="image" location="local" id="baby_penguin" bytes='55000' forceLoadAsData='true'>ShapesGame/levels/level1/spriter/baby_penguin/baby_penguin.scml</Asset>
+			
+			<Asset type="image" location="local" id=".3-4_arm1" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/3-4_arm1.png</Asset>
+			<Asset type="image" location="local" id=".3-4_arm2" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/3-4_arm2.png</Asset>
+			<Asset type="image" location="local" id=".3-4_body" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/3-4_body.png</Asset>
+			<Asset type="image" location="local" id=".3-4_head" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/3-4_head.png</Asset>
+			<Asset type="image" location="local" id=".3-4_head_2" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/3-4_head_2.png</Asset>
+			<Asset type="image" location="local" id=".3-4_head_no_eyes" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/3-4_head_no_eyes.png</Asset>
+			<Asset type="image" location="local" id=".back_arm1" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/back_arm1.png</Asset>
+			<Asset type="image" location="local" id=".back_arm2" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/back_arm2.png</Asset>
+			<Asset type="image" location="local" id=".back_body" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/back_body.png</Asset>
+			<Asset type="image" location="local" id=".back_head" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/back_head.png</Asset>
+			<Asset type="image" location="local" id=".back_tale" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/back_tale.png</Asset>
+			<Asset type="image" location="local" id=".eyes" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/eyes.png</Asset>
+			<Asset type="image" location="local" id=".foot" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/foot.png</Asset>
+			<Asset type="image" location="local" id=".front_arm1" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/front_arm1.png</Asset>
+			<Asset type="image" location="local" id=".front_arm2" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/front_arm2.png</Asset>
+			<Asset type="image" location="local" id=".front_body" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/front_body.png</Asset>
+			<Asset type="image" location="local" id=".front_head" bytes='2000'>ShapesGame/levels/level1/spriter/baby_penguin/front_head.png</Asset>
+			
+			<!-- Mommy Pengiun -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Mommy.egc</Asset>
+			<Asset type="image" location="local" id="mother_penguin" bytes='55000' forceLoadAsData='true'>ShapesGame/levels/level1/spriter/mother_penguin/mother_penguin.scml</Asset>
+			
+			<Asset type="image" location="local" id=".mother_body" bytes='2000'>ShapesGame/levels/level1/spriter/mother_penguin/mother_body.png</Asset>
+			<Asset type="image" location="local" id=".mother_foot" bytes='2000'>ShapesGame/levels/level1/spriter/mother_penguin/mother_foot.png</Asset>
+			<Asset type="image" location="local" id=".mother_arm" bytes='2000'>ShapesGame/levels/level1/spriter/mother_penguin/mother_arm.png</Asset>
+			<Asset type="image" location="local" id=".mother_arm2" bytes='2000'>ShapesGame/levels/level1/spriter/mother_penguin/mother_arm2.png</Asset>
+			
+			<!-- Daddy -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Daddy.egc</Asset>
+			<Asset type="image" location="local" id="father_penguin" bytes='55000' forceLoadAsData='true'>ShapesGame/levels/level1/spriter/father_penguin/father_penguin.scml</Asset>
+			
+			<Asset type="image" location="local" id=".father_body" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_body.png</Asset>
+			<Asset type="image" location="local" id=".father_foot" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_foot.png</Asset>
+			<Asset type="image" location="local" id=".father_arm" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_arm.png</Asset>
+			<Asset type="image" location="local" id=".father_arm2" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_arm2.png</Asset>
 			<!--
 			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/CardsArea.egc</Asset>
 			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/Card.egc</Asset>
@@ -292,6 +334,7 @@
 			<Asset type="script" location="local" bytes='5000'>std/display/FillRect2D.egc</Asset>
 			<Asset type="script" location="local" bytes='5000'>std/display/Text2D.egc</Asset>
 			<Asset type="script" location="local" bytes='5000'>std/display/Sprite2D.egc</Asset>
+			<Asset type="script" location="local" bytes='5000'>std/display/Spriter2D.egc</Asset>
 			<Asset type="script" location="local" bytes='5000'>std/display/ParticleEmitter2D.egc</Asset>
 			
 			<Asset type="sound" location="local" bytes='5000' id="_blankSound">std/blankSound.mp3</Asset>

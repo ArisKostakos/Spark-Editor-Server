@@ -12,7 +12,7 @@
 		<_State id="scaleY"><Value>1</Value></_State>
 		
 		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
-		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.1</Value></State>
 		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
 		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.4</Value></State>
 	
@@ -95,6 +95,21 @@
 	</_Triggers>
 		
 	<_Actions>
+		<Action>
+			<Id>Play Music</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					Display.de("PLAYING Music");
+					Sound.playSound( it.s('name'), me.s('VolumeVoice') );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
 		<Action>
 			<Id>Play Voice</Id>
 			<Concurrency>Persistent</Concurrency>
