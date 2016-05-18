@@ -51,14 +51,14 @@
 					Display.invalidateLayout();
 					
 					
-					
+					/*
 					e('Blue Bird').set('visible',false);
 					e('Red Bird').set('visible',false);
 					e('Button Sprite').set('visible',false);
 					e('Ellinopoula Banner').set('visible',false);
 					me.sa('WaitFor',{delay:0.7, cbEntity:e('Game Manager'), cbAction:"Create Match"});
 					return;
-					
+					*/
 					
 					var fromY=1000;
 					var toY=500;
