@@ -21,7 +21,19 @@
 		
 		<!-- Maze Stuff -->
 		<Entity extends="ShapesGame.levels.level1.MazeArea"/>
-		<Entity extends="ShapesGame.levels.level1.CreateNewPathButton"/>
+		<!--<Entity extends="ShapesGame.levels.level1.CreateNewPathButton"/>-->
+		
+		<!-- Heart Particle Emitter -->
+		<Entity extends="ShapesGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>heartsEmitter</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>heart</Value></_State>
+				<_State id="emitX"><Value>;2280/2-765</Value></_State>
+				<_State id="emitY"><Value>250</Value></_State>
+				<_State id="particleEnabled"><Value>false</Value></_State>
+				<_State id="particleDuration"><Value>1</Value></_State>
+			</_States>
+		</Entity>
 		
 		<!-- Mommy -->
 		<Entity extends="ShapesGame.levels.level1.Mommy"/>
@@ -31,6 +43,16 @@
 		
 		<!-- Player -->
 		<Entity extends="ShapesGame.levels.level1.Player"/>
+		
+		<!-- Family -->
+		<Entity extends="ShapesGame.levels.level1.Family"/>
+		
+		<!-- Snow Particle Emitter -->
+		<Entity extends="ShapesGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="2DMeshParticleEmitterForm"><Value>snow</Value></_State>
+			</_States>
+		</Entity>
 		
 		<!-- Birds and Play Button -->
 		<Entity extends="ShapesGame.levels.level1.PlayBtn"/>
@@ -50,6 +72,11 @@
 					
 					Display.invalidateLayout();
 					
+					//Play Music
+					e('Audio Control').fa('Play Music', { name:"m:music1" } );
+					
+					//Change Background Color
+					Logic.getExternal().call("changeBgColor");
 					
 					/*
 					e('Blue Bird').set('visible',false);

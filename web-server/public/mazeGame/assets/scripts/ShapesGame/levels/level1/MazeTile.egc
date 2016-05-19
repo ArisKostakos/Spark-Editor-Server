@@ -19,6 +19,7 @@
 		<State><Id>nick</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>visited</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>firstTile</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>lastTile</Id><Type>Boolean</Type><Value>false</Value></State>
 	
 		<_State id="physicsEntity"><Value>false</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
@@ -80,6 +81,8 @@
 					//e('Maze Area').fa('Clear');
 					//me.fa('Show Near');
 					
+					if (e('Game Manager').s('gameRunning')==false)
+						return;
 					
 					//Get Characters current Tile
 					var l_character = e('Player');
@@ -105,6 +108,9 @@
 					else
 					{
 						Display.de("Tile Clicked is not a neighbor tile.. play a noise or smth..");
+						
+						//Play FX
+						e('Audio Control').fa('Play FX', { name:"fx:negative" } );
 					}
 				</Script>
 			</Scripts>
@@ -129,6 +135,10 @@
 					{
 						me.set('visible',false);
 						me.set('firstTile',true);
+					}
+					else if (x==0 && y==0)
+					{
+						me.set('lastTile',true);
 					}
 					
 					me.set('spaceX',x*(me.s('spaceWidth')));
@@ -318,6 +328,23 @@
 					
 					//me.s('obj_shapeNormal').set('opacity',1);
 					me.s('obj_shapeNormal').set('animate_opacity',{from:0, to:1, seconds:1, easing:Ease.backOut});
+					
+					//Play FX
+					e('Audio Control').fa('Play FX', { name:"fx:shapePop" } );
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Hide</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//me.s('obj_shapeNormal').set('opacity',1);
+					me.s('obj_shapeNormal').set('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+					me.s('obj_shapeSelected').set('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 				</Script>
 			</Scripts>
 		</Action>

@@ -8,6 +8,7 @@
 		<State><Id>mazeHeight</Id><Type>Integer</Type><Value>6</Value></State> <!-- 6 -->
 		<_State id="touchable"><Value>true</Value></_State>
 		<State><Id>Creating</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>pathLength</Id><Type>Integer</Type><Value>0</Value></State>
 	</_States>
 
 	<Form><Space><Entities>
@@ -86,6 +87,49 @@
 		</Action>
 			
 		<Action>
+			<Id>Hide Maze Shapes</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//e('Game Manager').s('currentGame')
+					
+					it.stop();
+					
+					var mazeWidth=me.s('mazeWidth');
+					var mazeHeight=me.s('mazeHeight');
+					var l_maze = me.s('maze');
+				
+					var count=0;
+					
+					/*
+					for (var x=0;x<mazeWidth;x++)
+						for (var y=0;y<mazeHeight;y++)
+						{
+							var l_tile = l_maze[x][y];
+							
+							count+=0.2;
+							
+							l_tile.fa('Init');
+							l_tile.s('obj_shapeNormal').set('animate_opacity',{from:0, to:1, seconds:1+count, easing:Ease.backOut});
+						}
+					*/
+					
+					for (var y=0;y<mazeHeight;y++)
+						for (var x=0;x<mazeWidth;x++)
+						{
+							var l_tile = l_maze[x][y];
+							
+							count+=0.03;
+							
+							
+							l_tile.sa('WaitFor',{delay:count, cbEntity:l_tile, cbAction:"Hide"});
+						}
+					
+				]]></Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
 			<Id>Create Path</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
@@ -134,6 +178,7 @@
 					//code
 					me.set('Creating',true);
 					Display.de("Creating...");
+					me.set('pathLength',0);
 					me.fa('Clear');
 					
 					var mazeWidth=me.s('mazeWidth');
@@ -147,6 +192,7 @@
 					{
 					
 						currentTile.set('path',true);
+						me.addToState('pathLength',1);
 						currentTile.fa('Select');
 						//Display.de("CURRENT TILE: " + currentTile.s('nick'));
 						
@@ -172,6 +218,7 @@
 						if (currentTile.s('nick')=='x0y0')
 						{
 							currentTile.set('path',true);
+							//me.addToState('pathLength',1);
 							currentTile.fa('Select');
 							//Display.de("CURRENT TILE: " + currentTile.s('nick'));
 							break;
@@ -307,6 +354,7 @@
 							l_maze[x][y].fa('Deselect');
 							l_maze[x][y].set('path',false);
 							l_maze[x][y].set('dirty',false);
+							l_maze[x][y].set('visited',false);
 						}
 				]]></Script>
 			</Scripts>

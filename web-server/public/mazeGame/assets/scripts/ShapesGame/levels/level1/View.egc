@@ -10,7 +10,7 @@
 		</_State>
 		
 		<_State id="initCameraUrl">
-			<Value>std.display.Camera2DStandard</Value>
+			<Value>ShapesGame.levels.level1.GameCamera</Value>
 		</_State>
 		
 		<_State id="width">

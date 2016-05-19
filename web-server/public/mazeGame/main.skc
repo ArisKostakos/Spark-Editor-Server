@@ -81,11 +81,11 @@
 			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/MazeArea.egc</Asset>
 			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/MazeTile.egc</Asset>
 			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/CreateNewPathButton.egc</Asset>
-			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/CreateNewPathButton2.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/GameManager.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/View.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/Scene.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/GameCamera.egc</Asset>
 			
 			<!-- Rects -->
 			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/RedRect.egc</Asset>
@@ -154,6 +154,15 @@
 			<Asset type="image" location="local" bytes='10000' id="ice">ShapesGame/levels/level1/ice/ice.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="igloo">ShapesGame/levels/level1/ice/igloo.png</Asset>
 			
+			<!-- Waves -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Waves.egc</Asset>
+			<Asset type="image" location="local" bytes='100000' id="waves_sheet">ShapesGame/levels/level1/spritesheets/waves_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='4540' id="waves">ShapesGame/levels/level1/spritesheets/waves.plist</Asset>
+			
+			<!-- Fish -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Fish.egc</Asset>
+			<Asset type="image" location="local" bytes='100000' id="fish_sheet">ShapesGame/levels/level1/spritesheets/fish_sheet.png</Asset>
+			<Asset type="image" location="local" bytes='4540' id="fish">ShapesGame/levels/level1/spritesheets/fish.plist</Asset>
 			
 			<!-- Font -->
 			<Asset type="data" location="local" bytes='38900' id="ComfortGreek.fnt">ShapesGame/ComfortGreek.fnt</Asset>
@@ -186,7 +195,27 @@
 			<Asset type="sound" location="local" bytes='53000' id="s:tile_triangle">ShapesGame/tile_triangle.mp3</Asset>
 			<Asset type="sound" location="local" bytes='53000' id="s:tile_star">ShapesGame/tile_star.mp3</Asset>
 			
+			<!-- Music -->
+			<Asset type="sound" location="local" bytes='1041000' id="m:music1">ShapesGame/music1.mp3</Asset>
+			<Asset type="sound" location="local" bytes='3260000' id="m:music2">ShapesGame/music2.mp3</Asset>
 			
+			<!-- FX -->
+			<Asset type="sound" location="local" bytes='97000' id="fx:startButton">ShapesGame/startButton.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="fx:jump">ShapesGame/jump.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="fx:shapePop">ShapesGame/shapePop.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="fx:shapeChange">ShapesGame/shapeChange.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="fx:negative">ShapesGame/negative.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="fx:step">ShapesGame/step.mp3</Asset>
+			<Asset type="sound" location="local" bytes='53000' id="fx:achievement">ShapesGame/achievementSound.mp3</Asset>
+			<Asset type="sound" location="local" bytes='120000' id="fx:victory">ShapesGame/Victory.mp3</Asset>
+			
+			<!-- Particles -->
+			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/MyParticle.egc</Asset>
+			<Asset type="image" location="local" bytes='35672' id="snow.pex">ShapesGame/levels/level1/particles/snow.pex</Asset>
+			<Asset type="image" location="local" bytes='10000' id="snow">ShapesGame/levels/level1/particles/snow.png</Asset>
+			
+			<Asset type="image" location="local" bytes='35672' id="heart.pex">ShapesGame/levels/level1/particles/heart.pex</Asset>
+			<Asset type="image" location="local" bytes='10000' id="heart">ShapesGame/levels/level1/particles/heart.png</Asset>
 			
 			<!-- Baby Pengiun -->
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Player.egc</Asset>
@@ -227,6 +256,11 @@
 			<Asset type="image" location="local" id=".father_foot" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_foot.png</Asset>
 			<Asset type="image" location="local" id=".father_arm" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_arm.png</Asset>
 			<Asset type="image" location="local" id=".father_arm2" bytes='2000'>ShapesGame/levels/level1/spriter/father_penguin/father_arm2.png</Asset>
+			
+			<!-- Whole Family -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Family.egc</Asset>
+			<Asset type="image" location="local" id="family_penguin" bytes='55000' forceLoadAsData='true'>ShapesGame/levels/level1/spriter/family/family.scml</Asset>
+			
 			<!--
 			<Asset type="script" location="local" bytes='35672'>ShapesGame/levels/level1/CardsArea.egc</Asset>
 			<Asset type="script" location="local" bytes='7670'>ShapesGame/levels/level1/Card.egc</Asset>

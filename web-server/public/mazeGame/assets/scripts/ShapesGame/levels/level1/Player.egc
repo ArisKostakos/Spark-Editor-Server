@@ -3,8 +3,8 @@
 	
 	<_States>
 		<_State id="name"><Value>Player</Value></_State>
-		<_State id="spaceX"><Value>1650</Value></_State>
-		<_State id="spaceY"><Value>1130</Value></_State>
+		<_State id="spaceX"><Value>1680</Value></_State>
+		<_State id="spaceY"><Value>1150</Value></_State>
 		<_State id="scaleX"><Value>1</Value></_State>
 		<_State id="scaleY"><Value>1</Value></_State>
 		<_State id="2DMeshSpriterForm"><Value>SpriterMain</Value></_State>
@@ -14,6 +14,10 @@
 		<State><Id>walkSeconds</Id><Type>Decimal</Type><Value>1</Value></State>
 		<State><Id>walkToTile</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>currentDirection</Id><Type>Text</Type><Value>Undefined</Value></State>
+	
+		<State><Id>originalBoundsWidth</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>originalBoundsHeight</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>progress</Id><Type>Integer</Type><Value>0</Value></State>
 	</_States>
 	
 	<_Form>
@@ -39,27 +43,15 @@
 		</_States>
 	</_Form>
 	
-	<_Triggers>
-		<Trigger>
-			<Event>KeyPressed</Event>
-			<Parameter>Space</Parameter>
-			<Target>TargetNone</Target>
-			<Scripts>
-				<Script>
-					//me.setState('newState',"jump");
-				</Script>
-			</Scripts>
-		</Trigger>
-	</_Triggers>
-		
 	<_Actions>
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					/*
-					me.startAction('Run');
-					me.startAction('FSM');
-					me.startAction('Update');*/
+				
+					var camera = e('Game Camera');
+					
+					me.set('originalBoundsWidth',camera.s('maxBoundsWidth'));
+					me.set('originalBoundsHeight',camera.s('maxBoundsHeight'));
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -70,8 +62,9 @@
 			<Scripts>
 				<Script>
 					//Set Init Pos
-					me.set('spaceX',1650);
-					me.set('spaceY',1130);
+					me.set('spaceX',1680);
+					me.set('spaceY',1150);
+					me.set('progress',0);
 					
 					var mazeArea = e('Maze Area');
 					var maze = mazeArea.s('maze');
@@ -80,10 +73,42 @@
 					
 					//My current position is the last Tile
 					var l_lastTile = maze[mazeWidth-1][mazeHeight-1];
+					
+					me.set('currentTile',l_lastTile);
+					me.set('walking',false);
+					
+					//Mark it as visited
+					l_lastTile.set('visited',true);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Init Temp</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Set Init Pos
+					//me.set('spaceX',1680);
+					me.set('spaceX',620); //temp
+					//me.set('spaceY',1150);
+					me.set('spaceY',460); //temp
+					
+					var mazeArea = e('Maze Area');
+					var maze = mazeArea.s('maze');
+					var mazeWidth=mazeArea.s('mazeWidth');
+					var mazeHeight=mazeArea.s('mazeHeight');
+					
+					//My current position is the last Tile
+					//var l_lastTile = maze[mazeWidth-1][mazeHeight-1];
+					var l_lastTile = maze[0][0]; //temp
+					
 					me.set('currentTile',l_lastTile);
 					
 					//Mark it as visited
 					l_lastTile.set('visited',true);
+					
+					me.fa('Victory'); //temp
 				</Script>
 			</Scripts>
 		</Action>
@@ -120,28 +145,21 @@
 						
 						
 						//and play a sound maybe
-						//..
+						//Play FX
+						e('Audio Control').fa('Play FX', { name:"fx:negative" } );
 					}
 					//If I can go there
 					else
 					{
+						me.set('walking',true);
+						me.set('walkToTile',l_tile);
+					
+					
 						//Jump
 						if (me.s('currentTile').s('firstTile'))
 						{
 							me.set('2DMeshSpriterAnimForm',"jump_"+l_direction);
-							//me.sa('WaitFor',{delay:me.s('walkSeconds'), cbEntity:me, cbAction:"Jump"});
-							if (l_direction=="right") me.set('scaleX',-1);
-								else me.set('scaleX',1);
-								
-							//Move There
-							me.set('walking',true);
-							me.set('walkToTile',l_tile);
-							
-							me.setState('animate_x',{type:"to", to:l_mazeArea.s('spaceX')+l_tile.s('spaceX'), seconds:me.s('walkSeconds'), easing:Ease.linear});
-							me.setState('animate_y',{type:"to", to:l_mazeArea.s('spaceY')+l_tile.s('spaceY')-50, seconds:me.s('walkSeconds'), easing:Ease.linear});
-							
-							//Listen to when I finished walking
-							me.sa('WaitFor',{delay:me.s('walkSeconds'), cbEntity:me, cbAction:"Finished Walking"});
+							me.sa('WaitFor',{delay:0.55, cbEntity:me, cbAction:"Jump"});
 						}
 						else
 						{
@@ -151,10 +169,10 @@
 							if (l_direction=="right") me.set('scaleX',-1);
 								else me.set('scaleX',1);
 								
-							//Move There
-							me.set('walking',true);
-							me.set('walkToTile',l_tile);
+							//Walking Sound
+							e('Audio Control').fa('Loop FX', { name:"fx:step" } );
 							
+							//Move There
 							me.setState('animate_x',{type:"to", to:l_mazeArea.s('spaceX')+l_tile.s('spaceX'), seconds:me.s('walkSeconds'), easing:Ease.linear});
 							me.setState('animate_y',{type:"to", to:l_mazeArea.s('spaceY')+l_tile.s('spaceY')-50, seconds:me.s('walkSeconds'), easing:Ease.linear});
 							
@@ -177,12 +195,22 @@
 				<Script>
 					//forced
 					
+					var l_tile = me.s('walkToTile');
+					var l_mazeArea = e('Maze Area');
 					
+					var l_seconds = 0.66; //0.633 - 0.737
+					
+					//Play FX
+					e('Audio Control').fa('Play FX', { name:"fx:jump" } );
+					
+					//Move There
+					me.setState('animate_x',{type:"to", to:l_mazeArea.s('spaceX')+l_tile.s('spaceX'), seconds:l_seconds, easing:Ease.linear});
+					me.setState('animate_y',{type:"to", to:l_mazeArea.s('spaceY')+l_tile.s('spaceY')-50, seconds:l_seconds, easing:Ease.linear});
+					
+					//Listen to when I finished walking
+					me.sa('WaitFor',{delay:1.849-0.55, cbEntity:me, cbAction:"Finished Walking"});
 				</Script>
 			</Scripts>
-			<States>
-				<State><Id>XXXXXXX</Id><Type>Dynamic</Type><Value>null</Value></State>
-			</States>
 		</Action>
 		
 		<Action>
@@ -195,6 +223,12 @@
 					var l_walkToTile = me.s('walkToTile');
 					var l_currentDirection = me.s('currentDirection');
 					
+					//Add to progress
+					me.addToState('progress',1);
+					
+					//Check For Progress
+					me.fa('Check For Progress');
+					
 					//Play Idle anim in that direction
 					me.set('2DMeshSpriterAnimForm',"idle_"+l_currentDirection);
 					
@@ -206,10 +240,267 @@
 					me.set('currentTile',l_walkToTile);
 					me.set('walking',false);
 					l_walkToTile.fa('Visited');
+					
+					//Stop Walking sound if it's playing
+					Sound.stopSound('fx:step',0.1);
+					
+					
+					//Play FX
+					e('Audio Control').fa('Play FX', { name:"fx:shapeChange" } );
+					
+					if (l_walkToTile.s('lastTile')==true)
+						me.fa('Victory');
 				</Script>
 			</Scripts>
 		</Action>
 		
+		<Action>
+			<Id>Check For Progress</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var progress = me.s('progress');
+					var pathLength = e('Maze Area').s('pathLength');
+					
+					
+					if (progress==Math.round(pathLength*0.3))
+					{
+						//Play 1/3 sound
+						e('Audio Control').fa('Play Voice', { name:'s:mpravo_first' , important: true } );
+						
+						//Play FX
+						e('Audio Control').fa('Play FX', { name:"fx:achievement" } );
+					}
+					else if (progress==Math.round(pathLength*0.6))
+					{
+						//Play 2/3 sound
+						e('Audio Control').fa('Play Voice', { name:'s:mpravo_second' , important: true } );
+						
+						//Play FX
+						e('Audio Control').fa('Play FX', { name:"fx:achievement" } );
+					}
+					else if (progress==1 || progress==Math.round(pathLength*0.5) || progress==Math.round(pathLength*0.85))
+					{
+						//Play shape sound
+						e('Audio Control').fa('Play Voice', { name:'s:tile_' + e('Game Manager').s('currentGame') , important: true } );
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Victory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('walking',true);
+					
+					//Look Left
+					me.set('2DMeshSpriterAnimForm',"idle_left");
+					me.set('scaleX',1);
+					
+					//Wait
+					me.sa('WaitFor',{delay:0.5, cbEntity:me, cbAction:"Victory 2"});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Victory 2</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Jump To Parents
+					me.set('2DMeshSpriterAnimForm',"jump_left");
+					me.sa('WaitFor',{delay:0.55, cbEntity:me, cbAction:"Victory 3"});
+					
+					
+					//Stop Parents from Waving anymore
+					e('Daddy').getAction('WaitFor').setState('delayCurrent',0);
+					e('Daddy').stopAction('WaitFor');
+					e('Mommy').getAction('WaitFor').setState('delayCurrent',0);
+					e('Mommy').stopAction('WaitFor');
+					
+					//Game Running
+					me.set('gameRunning',false);
+					
+					//Zoom Test
+					var camera = e('Game Camera');
+					me.sa('Zoom',{ speed:3, easing:Ease.quadOut, zoomIn:true });
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Victory 3</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_seconds = 0.66;
+					
+					//Play FX
+					e('Audio Control').fa('Play FX', { name:"fx:jump" } );
+							
+					//Move There
+					me.setState('animate_x',{type:"to", to:365, seconds:l_seconds, easing:Ease.linear});
+					me.setState('animate_y',{type:"to", to:387, seconds:l_seconds, easing:Ease.linear});
+					me.sa('WaitFor',{delay:1.849-0.45, cbEntity:me, cbAction:"Victory 4"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Victory 4</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//me.set('2DMeshSpriterAnimForm',"idle_up");
+					
+					me.set('visible',false);
+					e('Mommy').set('visible',false);
+					e('Daddy').set('visible',false);
+					
+					e('Family').set('visible',true);
+					e('Family').set('opacity',1);
+					e('Family').set('2DMeshSpriterAnimForm',"idle");
+					
+					//Play victory shape sound
+					e('Audio Control').fa('Play Voice', { name:'s:mpravo_' + e('Game Manager').s('currentGame') , important: true } );
+					
+					//Play FX
+					e('Audio Control').fa('Play FX', { name:"fx:victory" } );
+					
+					//Hearts Effect
+					e('heartsEmitter').setState('action_fire',true);
+					
+					me.sa('WaitFor',{delay:6, cbEntity:me, cbAction:"Victory 5"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Victory 5</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Zoom Test
+					var camera = e('Game Camera');
+					
+					me.sa('Zoom',{ speed:3, easing:Ease.quadOut, zoomIn:false });
+					
+					
+					//Hide Shapes
+					e('Maze Area').sa('Hide Maze Shapes');
+					
+					
+					me.sa('WaitFor',{delay:1.5, cbEntity:me, cbAction:"Victory 6"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Victory 6</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					e('Family').setState('animate_opacity',{type:"to", to:0, seconds:0.4, easing:Ease.backOut});
+					
+					me.sa('WaitFor',{delay:1.5, cbEntity:me, cbAction:"Victory 7"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Victory 7</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Start New Match
+					e('Game Manager').fa('Create Match');
+					
+					e('Mommy').set('visible',true);
+					e('Mommy').setState('animate_opacity',{from:0, to:1, seconds:1, easing:Ease.backOut});
+					e('Daddy').set('visible',true);
+					e('Daddy').setState('animate_opacity',{from:0, to:1, seconds:1, easing:Ease.backOut});
+					me.set('visible',true);
+					me.setState('animate_opacity',{from:0, to:1, seconds:1, easing:Ease.backOut});
+					//me.sa('WaitFor',{delay:1.5, cbEntity:me, cbAction:"Victory 7"});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Zoom</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					
+					
+					var tweenWidth = it.s('tweenWidth');
+					var tweenHeight = it.s('tweenHeight');
+					var l_speed = it.s('speed');
+					var l_easing = it.s('easing');
+					var camera = e('Game Camera');
+					
+					if (tweenWidth==null)
+					{
+						if (it.s('zoomIn'))
+						{
+							tweenWidth = it.set('tweenWidth', new Tween(me.s('originalBoundsWidth'), me.s('originalBoundsWidth')/1.85, l_speed, l_easing) );
+							tweenHeight = it.set('tweenHeight', new Tween(me.s('originalBoundsHeight'), me.s('originalBoundsHeight')/1.85, l_speed, l_easing) );
+						}
+						else
+						{
+							tweenWidth = it.set('tweenWidth', new Tween(me.s('originalBoundsWidth')/1.85, me.s('originalBoundsWidth'), l_speed, l_easing) );
+							tweenHeight = it.set('tweenHeight', new Tween(me.s('originalBoundsHeight')/1.85, me.s('originalBoundsHeight'), l_speed, l_easing) );
+						}
+					}
+					
+					var newWidth = tweenWidth.update( Logic.getDt() );
+					var newHeight = tweenHeight.update( Logic.getDt() );
+					
+					
+					
+					camera.set('maxBoundsWidth',newWidth);
+					camera.set('maxBoundsHeight',newHeight);
+						
+					camera.fa('Camera Init');
+					
+					Display.de("UPDATING CAMERA: " + me.s('originalBoundsWidth'));
+					
+					if (tweenWidth.isComplete())
+					{
+						it.set('tweenWidth',null);
+						it.set('tweenHeight',null);
+						it.stop();
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>speed</Id><Type>Decimal</Type><Value>5</Value></State>
+				<State><Id>easing</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>tweenWidth</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>tweenHeight</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>zoomIn</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+				
 		<Action>
 			<Id>WaitFor</Id>
 			<Concurrency>Persistent</Concurrency>

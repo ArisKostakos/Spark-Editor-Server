@@ -2,9 +2,9 @@
 <Entity extends="std.display.Spriter2D">
 	
 	<_States>
-		<_State id="name"><Value>Mommy</Value></_State>
+		<_State id="name"><Value>Daddy</Value></_State>
 		<_State id="spaceX"><Value>300</Value></_State>
-		<_State id="spaceY"><Value>300</Value></_State>
+		<_State id="spaceY"><Value>350</Value></_State>
 		<_State id="scaleX"><Value>1</Value></_State>
 		<_State id="scaleY"><Value>1</Value></_State>
 		<_State id="2DMeshSpriterForm"><Value>SpriterMain</Value></_State>
@@ -24,142 +24,45 @@
 		</_States>
 	</_Form>
 	
-	<_Triggers>
-		<Trigger>
-			<Event>KeyPressed</Event>
-			<Parameter>Space</Parameter>
-			<Target>TargetNone</Target>
-			<Scripts>
-				<Script>
-					//me.setState('newState',"jump");
-				</Script>
-			</Scripts>
-		</Trigger>
-	</_Triggers>
 		
 	<_Actions>
-		<_Action id="Constructor">
-			<_Scripts>
-				<Script>
-					/*
-					me.startAction('Run');
-					me.startAction('FSM');
-					me.startAction('Update');*/
-				</Script>
-			</_Scripts>
-		</_Action>
-			
 		<Action>
 			<Id>Init</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					//Set Init Pos
-					me.set('spaceX',1650);
-					me.set('spaceY',1130);
+					me.sa('WaitFor',{delay:0.3, cbEntity:me, cbAction:"Wave"});
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Wave</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
 					
-					var mazeArea = e('Maze Area');
-					var maze = mazeArea.s('maze');
-					var mazeWidth=mazeArea.s('mazeWidth');
-					var mazeHeight=mazeArea.s('mazeHeight');
+					me.set('2DMeshSpriterAnimForm',"wave");
+					me.sa('WaitFor',{delay:1, cbEntity:me, cbAction:"Wave End"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Wave End</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
 					
-					//My current position is the last Tile
-					var l_lastTile = maze[mazeWidth-1][mazeHeight-1];
-					me.set('currentTile',l_lastTile);
+					me.set('2DMeshSpriterAnimForm',"idle");
 					
-					//Mark it as visited
-					l_lastTile.set('visited',true);
+					me.sa('WaitFor',{delay:Logic.random(8,16), cbEntity:me, cbAction:"Wave"});
 				</Script>
 			</Scripts>
 		</Action>
 			
-		<Action>
-			<Id>Move To Tile</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					//forced
-					
-					if (me.s('walking')==true)
-						return;
-					
-					//So this will be called even if tile is not a path or if tile is visited..
-					var l_tile = it.s('tile');
-					var l_direction = it.s('direction');
-					var l_mazeArea = e('Maze Area');
-					
-					Display.de("I am requested to move " + l_direction);
-					
-					//This will be my new direction
-					me.set('currentDirection',l_direction);
-					
-					//If I can't go there
-					if (l_tile.s('path')==false || l_tile.s('visited')==true)
-					{
-						//Just look in the direction
-						me.set('2DMeshSpriterAnimForm',"idle_"+l_direction);
-						
-						//Set Direction Scale
-						if (l_direction=="right") me.set('scaleX',-1);
-							else me.set('scaleX',1);
-						
-						
-						//and play a sound maybe
-						//..
-					}
-					//If I can go there
-					else
-					{
-						//Play appropriate walk animation
-						me.set('2DMeshSpriterAnimForm',"walk_"+l_direction);
-						
-						//Set Direction Scale
-						if (l_direction=="right") me.set('scaleX',-1);
-							else me.set('scaleX',1);
-							
-						//Move There
-						me.set('walking',true);
-						me.set('walkToTile',l_tile);
-						
-						me.setState('animate_x',{type:"to", to:l_mazeArea.s('spaceX')+l_tile.s('spaceX'), seconds:me.s('walkSeconds'), easing:Ease.linear});
-						me.setState('animate_y',{type:"to", to:l_mazeArea.s('spaceY')+l_tile.s('spaceY')-50, seconds:me.s('walkSeconds'), easing:Ease.linear});
-						
-						//Listen to when I finished walking
-						me.sa('WaitFor',{delay:me.s('walkSeconds'), cbEntity:me, cbAction:"Finished Walking"});
-					}
-				</Script>
-			</Scripts>
-			<States>
-				<State><Id>tile</Id><Type>Dynamic</Type><Value>null</Value></State>
-				<State><Id>direction</Id><Type>Text</Type><Value>undefined</Value></State>
-			</States>
-		</Action>
-		
-		<Action>
-			<Id>Finished Walking</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					//forced
-					
-					var l_walkToTile = me.s('walkToTile');
-					var l_currentDirection = me.s('currentDirection');
-					
-					//Play Idle anim in that direction
-					me.set('2DMeshSpriterAnimForm',"idle_"+l_currentDirection);
-					
-					//Set Direction Scale
-					if (l_currentDirection=="right") me.set('scaleX',-1);
-						else me.set('scaleX',1);
-							
-					//Current Tile
-					me.set('currentTile',l_walkToTile);
-					me.set('walking',false);
-					l_walkToTile.set('visited',true);
-				</Script>
-			</Scripts>
-		</Action>
-		
 		<Action>
 			<Id>WaitFor</Id>
 			<Concurrency>Persistent</Concurrency>

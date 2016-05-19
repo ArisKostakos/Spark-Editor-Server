@@ -16,6 +16,25 @@
 				<_State id="scaleX"><Value>1</Value></_State>
 				<_State id="scaleY"><Value>1</Value></_State>
 			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script><![CDATA[
+							for (var i=0;i<40;i++)
+							{
+								var f_wave = Logic.create('ShapesGame.levels.level1.Waves');
+								me.addChild(f_wave);
+							}
+							
+							for (var i=0;i<5;i++)
+							{
+								var f_fish = Logic.create('ShapesGame.levels.level1.Fish');
+								me.addChild(f_fish);
+							}
+						]]></Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
 		</Entity>
 		
 		<!-- Ice -->
@@ -24,8 +43,8 @@
 				<_State id="touchable"><Value>false</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
 				<_State id="2DMeshImageForm"><Value>ice</Value></_State>
-				<_State id="spaceX"><Value>550</Value></_State>
-				<_State id="spaceY"><Value>500</Value></_State>
+				<_State id="spaceX"><Value>625</Value></_State>
+				<_State id="spaceY"><Value>510</Value></_State>
 				<_State id="scaleX"><Value>1</Value></_State>
 				<_State id="scaleY"><Value>1</Value></_State>
 			</_States>

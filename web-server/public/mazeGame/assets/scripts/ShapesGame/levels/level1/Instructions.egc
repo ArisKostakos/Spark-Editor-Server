@@ -120,7 +120,7 @@
 					e('Voice Control').set("2DMeshImageForm","[Button_Toggled]");
 					
 					//Play Main Sound
-					e('Audio Control').fa('Play Voice', { name:'s:intro_main' } );
+					e('Audio Control').fa('Play Voice', { name:'s:intro_main' , important: true } );
 					
 					//Play Shape Sound (later)
 					me.sa('WaitFor',{delay:4, delayCurrent:0, cbEntity:me,cbAction:"Play Shape Sound"});
@@ -135,7 +135,7 @@
 				<Script>
 					//forced
 					
-					e('Audio Control').fa('Play Voice', { name:'s:intro_' + e('Game Manager').s('currentGame') } );
+					e('Audio Control').fa('Play Voice', { name:'s:intro_' + e('Game Manager').s('currentGame')  , important: false } );
 					
 					//Turn Off Voice Icon
 					me.sa('WaitFor',{delay:4, delayCurrent:0, cbEntity:me,cbAction:"Turn Off Voice Icon"});
