@@ -1,0 +1,206 @@
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<_State id="name"><Value>mainScene</Value></_State>
+		<State><Id>rectOpacity</Id><Type>Decimal</Type><Value>0</Value></State>
+		<_State id="backgroundColor"><Value>Transparent</Value></_State>
+	</_States>
+	<Form><Space><Entities>
+		<!-- Game Manager (non-visual) -->
+		<Entity extends="ShapesGame.levels.level1.GameManager"/>
+		
+		<!-- Rects -->
+		<Entity extends="ShapesGame.levels.level1.RedRect"/>
+		<Entity extends="ShapesGame.levels.level1.GreenRect"/>
+		
+		<!-- Background -->
+		<Entity extends="ShapesGame.levels.level1.Background"/>
+		
+		<!-- Instructions -->
+		<Entity extends="ShapesGame.levels.level1.Instructions"/>
+		<Entity extends="ShapesGame.levels.level1.Banner"/>
+		
+		<!-- Maze Stuff -->
+		<Entity extends="ShapesGame.levels.level1.MazeArea"/>
+		<!--<Entity extends="ShapesGame.levels.level1.CreateNewPathButton"/>-->
+		
+		<!-- Heart Particle Emitter -->
+		<Entity extends="ShapesGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="name"><Value>heartsEmitter</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>heart</Value></_State>
+				<_State id="emitX"><Value>;2280/2-765</Value></_State>
+				<_State id="emitY"><Value>250</Value></_State>
+				<_State id="particleEnabled"><Value>false</Value></_State>
+				<_State id="particleDuration"><Value>1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Mommy -->
+		<Entity extends="ShapesGame.levels.level1.Mommy"/>
+		
+		<!-- Daddy -->
+		<Entity extends="ShapesGame.levels.level1.Daddy"/>
+		
+		<!-- Player -->
+		<Entity extends="ShapesGame.levels.level1.Player"/>
+		
+		<!-- Family -->
+		<Entity extends="ShapesGame.levels.level1.Family"/>
+		
+		<!-- Snow Particle Emitter -->
+		<Entity extends="ShapesGame.levels.level1.MyParticle">
+			<_States>
+				<_State id="2DMeshParticleEmitterForm"><Value>snow</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Birds and Play Button -->
+		<Entity extends="ShapesGame.levels.level1.PlayBtn"/>
+		<Entity extends="ShapesGame.levels.level1.BlueBird"/>
+		<Entity extends="ShapesGame.levels.level1.RedBird"/>
+		
+		<!-- Audio Button -->
+		<Entity extends="ShapesGame.levels.level1.AudioBtn"/>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Analytics
+					//window.analytics=[];
+					
+					Display.invalidateLayout();
+					
+					//Play Music
+					e('Audio Control').fa('Play Music', { name:"m:music1" } );
+					
+					//Change Background Color
+					Logic.getExternal().call("changeBgColor");
+					
+					/*
+					e('Blue Bird').set('visible',false);
+					e('Red Bird').set('visible',false);
+					e('Button Sprite').set('visible',false);
+					e('Ellinopoula Banner').set('visible',false);
+					me.sa('WaitFor',{delay:0.7, cbEntity:e('Game Manager'), cbAction:"Create Match"});
+					return;
+					*/
+					
+					var fromY=1000;
+					var toY=500;
+					var secs=6;
+				
+					e('Blue Bird').setState('animate_y',{from:fromY, to:toY, seconds:secs, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_y',{from:fromY-80, to:toY-80, seconds:secs, easing:Ease.quadInOut});
+					e('Button Sprite').setState('animate_y',{from:fromY+188, to:toY+188, seconds:secs, easing:Ease.quadInOut});
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Birds Sit At Tree</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var secsBlue=3;
+					e('Blue Bird').setState('animate_scaleX',{from:-1, to:-0.8, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_scaleY',{from:1, to:0.8, seconds:secsBlue, easing:Ease.quadInOut});
+					
+					e('Blue Bird').setState('animate_x',{type:"to", to:590, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_y',{type:"to", to:110, seconds:secsBlue, easing:Ease.quadInOut});
+					me.sa('WaitFor',{delay:secsBlue, cbEntity:me, cbAction:"Blue Arrive"});
+					
+					var secsRed=3;
+					e('Red Bird').setState('animate_scaleX',{from:1, to:0.8, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_scaleY',{from:1, to:0.8, seconds:secsRed, easing:Ease.quadInOut});
+					
+					e('Red Bird').setState('animate_x',{type:"to", to:1840, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_y',{type:"to", to:110, seconds:secsRed, easing:Ease.quadInOut});
+					me.sa('WaitFor2',{delay:secsRed, cbEntity:me, cbAction:"Red Arrive"});
+					
+					e('Ellinopoula Banner').setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.quadInOut});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Blue Arrive</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					e('Blue Bird').setState('scaleX',0.8);
+					//e('Blue Bird').fa('Animate',{state:"Stand"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Red Arrive</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					e('Red Bird').setState('scaleX',-0.8);
+					
+					e('Game Manager').fa('Create Match');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>WaitFor2</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

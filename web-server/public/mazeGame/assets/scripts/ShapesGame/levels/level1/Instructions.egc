@@ -1,29 +1,32 @@
 <Entity extends="std.display.Image2D">
 	<_States>
 		<_State id="name"><Value>Instructions</Value></_State>
-		<_State id="spaceX"><Value>;2280/2+83</Value></_State>
-		<_State id="spaceY"><Value>;1440/2-494</Value></_State>
+		<_State id="spaceX"><Value>;2280/2+33</Value></_State>
+		<_State id="spaceY"><Value>;1440/2-504</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
 		<_State id="physicsEntity"><Value>false</Value></_State>
 		<_State id="2DMeshImageForm"><Value>banner</Value></_State>
 		<_State id="opacity"><Value>0</Value></_State>
+		<_State id="scaleX"><Value>1.05</Value></_State>
+		<_State id="scaleY"><Value>1.05</Value></_State>
 		<State><Id>playing</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<Form><Space><Entities>
-		<!-- Instructions Α-->
+		<!-- Instructions A-->
 		<Entity extends="std.display.Text2D">
 			<_States>
-				<_State id="name"><Value>Instructions Α</Value></_State>
-				<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
-				<_State id="font"><Value>ComfortGreek</Value></_State>
+				<_State id="name"><Value>Instructions A</Value></_State>
+				<_State id="2DMeshTextForm"><Value>SegoeGreek</Value></_State>
+				<_State id="font"><Value>SegoeGreek</Value></_State>
 				<_State id="text"><Value>Βοήθησε τον μικρό πιγκουίνο να πάει στην οικογένειά του!</Value></_State>
 				<_State id="align"><Value>Left</Value></_State> <!-- Left actually makes it CENTERED -->
-				<_State id="spaceX"><Value>;1220/2</Value></_State>
-				<_State id="spaceY"><Value>80</Value></_State>
-				<_State id="scaleX"><Value>1.25</Value></_State>
-				<_State id="scaleY"><Value>1.25</Value></_State>
+				<_State id="spaceX"><Value>;1220/2+35</Value></_State>
+				<_State id="spaceY"><Value>71</Value></_State>
+				<_State id="scaleX"><Value>1.15</Value></_State>
+				<_State id="scaleY"><Value>1.15</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
 			</_States>
 		</Entity>
 		
@@ -31,15 +34,16 @@
 		<Entity extends="std.display.Text2D">
 			<_States>
 				<_State id="name"><Value>Instructions B</Value></_State>
-				<_State id="2DMeshTextForm"><Value>ComfortGreek</Value></_State>
-				<_State id="font"><Value>ComfortGreek</Value></_State>
+				<_State id="2DMeshTextForm"><Value>SegoeGreek</Value></_State>
+				<_State id="font"><Value>SegoeGreek</Value></_State>
 				<_State id="text"><Value>Undefined</Value></_State>
 				<_State id="align"><Value>Center</Value></_State> <!-- Center is actually RIGHT  (Right is fucked up)-->
-				<_State id="spaceX"><Value>;1220/2-120</Value></_State> <!-- 330, 350 -->
-				<_State id="spaceY"><Value>145</Value></_State>
-				<_State id="scaleX"><Value>1.25</Value></_State>
-				<_State id="scaleY"><Value>1.25</Value></_State>
+				<_State id="spaceX"><Value>;1220/2-110</Value></_State> <!-- 330, 350 -->
+				<_State id="spaceY"><Value>71</Value></_State>
+				<_State id="scaleX"><Value>1.22</Value></_State>
+				<_State id="scaleY"><Value>1.22</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
 			</_States>
 			<_Actions>
 				<Action>
@@ -49,6 +53,9 @@
 						<Script>
 							//forced
 							
+							//Show Instructions B
+							me.set('animate_opacity',{from:0, to:1, seconds:0.6, easing:Ease.quadInOut});
+					
 							var l_pathShape = e('Game Manager').s('currentGame');
 							var l_text="";
 							
@@ -106,24 +113,23 @@
 					
 					var l_shape = e('Game Manager').s('currentGame');
 					
+					//Show Instructions A
+					e('Instructions A').set('opacity',1);
+					
+					//Hide Instructions B
+					e('Instructions B').set('opacity',0);
+					e('Shape Indicator').set('opacity',0);
+					e('Voice Control').set('opacity',0);
+					
 					//If hidden, appear
 					if (me.s('opacity')==0)
 						me.set('animate_opacity',{type:"to", to:1, seconds:1, easing:Ease.backOut});
-					
-					//Set Correct Text
-					e('Instructions B').fa('Init');
-					
-					//Set Correct Shape Icon
-					e('Shape Indicator').fa('Init');
-					
-					//Set Voice Button On
-					e('Voice Control').set("2DMeshImageForm","[Button_Toggled]");
 					
 					//Play Main Sound
 					e('Audio Control').fa('Play Voice', { name:'s:intro_main' , important: true } );
 					
 					//Play Shape Sound (later)
-					me.sa('WaitFor',{delay:4, delayCurrent:0, cbEntity:me,cbAction:"Play Shape Sound"});
+					me.sa('WaitFor',{delay:4.5, delayCurrent:0, cbEntity:me,cbAction:"Play Shape Sound"});
 				</Script>
 			</Scripts>
 		</Action>
@@ -139,6 +145,21 @@
 					
 					//Turn Off Voice Icon
 					me.sa('WaitFor',{delay:4, delayCurrent:0, cbEntity:me,cbAction:"Turn Off Voice Icon"});
+					
+					//Hide Instructions A
+					e('Instructions A').set('opacity',0);
+					
+					//Set Correct Text
+					e('Instructions B').fa('Init');
+					
+					//Set Correct Shape Icon
+					e('Shape Indicator').fa('Init');
+					
+					//Show Voice Button
+					e('Voice Control').set('animate_opacity',{from:0, to:1, seconds:0.6, easing:Ease.quadInOut});
+					
+					//Game Running
+					e('Game Manager').set('gameRunning',true);
 				</Script>
 			</Scripts>
 		</Action>
@@ -149,9 +170,6 @@
 			<Scripts>
 				<Script>
 					//forced
-					
-					//Set Voice Button Off
-					e('Voice Control').set("2DMeshImageForm","[Button_Normal]");
 					
 					me.set('playing',false);
 				</Script>

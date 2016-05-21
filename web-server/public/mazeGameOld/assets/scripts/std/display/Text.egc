@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Gui2D">
+	<Extends>
+		<Entity extends="std.behaviors.display.NativeComponent"/>
+		<Entity extends="std.behaviors.display.StyleableNC"/>
+	</Extends>
+	
+	<_States>
+		<State>
+			<Id>text</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<_State id="NCmeshType">
+			<Value>Div</Value>
+		</_State>
+		
+		<!--<_State id="cursor">
+			<Value>default</Value>
+		</_State>-->
+	
+		<_State id="height"><Value>17</Value></_State>
+		<_State id="fontWeight"><Value>300</Value></_State>
+		<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+		<_State id="fontSize"><Value>15px</Value></_State>
+		<_State id="fontColor"><Value>white</Value></_State>
+		<_State id="textAlign"><Value>left</Value></_State>
+	</_States>
+</Entity>

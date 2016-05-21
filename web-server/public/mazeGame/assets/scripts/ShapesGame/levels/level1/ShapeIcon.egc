@@ -2,12 +2,14 @@
 	<_States>
 		
 		<_State id="name"><Value>Shape Indicator</Value></_State>
-		<_State id="2DMeshImageForm"><Value>circle_i</Value></_State>
+		<_State id="2DMeshImageForm"><Value>circle_n</Value></_State>
 		
 		<_State id="physicsEntity"><Value>false</Value></_State>
-		<_State id="opacity"><Value>1</Value></_State>
-		<_State id="spaceX"><Value>940</Value></_State>
-		<_State id="spaceY"><Value>145</Value></_State>
+		<_State id="opacity"><Value>0</Value></_State>
+		<_State id="spaceX"><Value>970</Value></_State>
+		<_State id="spaceY"><Value>71</Value></_State>
+		<_State id="scaleX"><Value>0.7</Value></_State>
+		<_State id="scaleY"><Value>0.7</Value></_State>
 	</_States>
 	
 	
@@ -21,20 +23,9 @@
 					
 					var l_pathShape = e('Game Manager').s('currentGame');
 					
-					me.set('2DMeshImageForm',l_pathShape+'_i');
-				</Script>
-			</Scripts>
-		</Action>
-		
-		<Action>
-			<Id>Show</Id>
-			<Concurrency>Persistent</Concurrency>
-			<Scripts>
-				<Script>
-					//forced
+					me.set('2DMeshImageForm',l_pathShape+'_n');
 					
-					//(not used)
-					me.set('animate_opacity',{from:0, to:1, seconds:2, easing:Ease.quadInOut});
+					me.set('animate_opacity',{from:0, to:1, seconds:0.6, easing:Ease.quadInOut});
 				</Script>
 			</Scripts>
 		</Action>

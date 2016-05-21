@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r7">
+    <folder id="0">
+        <file id="0" name="back_arm1.png" width="26" height="29" pivot_x="1" pivot_y="1"/>
+        <file id="1" name="back_arm2.png" width="26" height="29" pivot_x="0" pivot_y="1"/>
+        <file id="2" name="back_body.png" width="75" height="93" pivot_x="0.5" pivot_y="0"/>
+        <file id="3" name="back_head.png" width="66" height="70" pivot_x="0.5" pivot_y="0"/>
+        <file id="4" name="back_tale.png" width="25" height="20" pivot_x="0.5" pivot_y="1"/>
+        <file id="5" name="father_arm.png" width="42" height="65" pivot_x="0.13" pivot_y="0.84"/>
+        <file id="6" name="father_arm2.png" width="33" height="71" pivot_x="0.5" pivot_y="1"/>
+        <file id="7" name="mother_arm2.png" width="29" height="65" pivot_x="0.241379" pivot_y="0.923077"/>
+        <file id="8" name="mother_arm.png" width="37" height="59" pivot_x="0.13" pivot_y="0.84"/>
+        <file id="9" name="father_body.png" width="121" height="203" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="10" name="father_foot.png" width="37" height="29" pivot_x="0.5" pivot_y="1"/>
+        <file id="11" name="foot.png" width="25" height="16" pivot_x="0.5" pivot_y="1"/>
+        <file id="12" name="mother_body.png" width="108" height="184" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="13" name="mother_foot.png" width="33" height="26" pivot_x="0.5" pivot_y="1"/>
+    </folder>
+    <entity id="0" name="winning sceen">
+        <obj_info name="winning sceen_father_foot_000" realname="father_foot_000" type="sprite">
+            <frames>
+                <i folder="0" file="10"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_father_arm2" realname="father_arm2" type="sprite">
+            <frames>
+                <i folder="0" file="6"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_father_body" realname="father_body" type="sprite">
+            <frames>
+                <i folder="0" file="9"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_father_arm" realname="father_arm" type="sprite">
+            <frames>
+                <i folder="0" file="5"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_father_foot" realname="father_foot" type="sprite">
+            <frames>
+                <i folder="0" file="10"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_mother_foot_000" realname="mother_foot_000" type="sprite">
+            <frames>
+                <i folder="0" file="13"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_mother_arm2" realname="mother_arm2" type="sprite">
+            <frames>
+                <i folder="0" file="7"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_mother_body" realname="mother_body" type="sprite">
+            <frames>
+                <i folder="0" file="12"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_mother_foot" realname="mother_foot" type="sprite">
+            <frames>
+                <i folder="0" file="13"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_mother_arm" realname="mother_arm" type="sprite">
+            <frames>
+                <i folder="0" file="8"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_front_arm1" realname="front_arm1" type="sprite">
+            <frames>
+                <i folder="0" file="0"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_front_arm2" realname="front_arm2" type="sprite">
+            <frames>
+                <i folder="0" file="1"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_front_body" realname="front_body" type="sprite">
+            <frames>
+                <i folder="0" file="2"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_foot" realname="foot" type="sprite">
+            <frames>
+                <i folder="0" file="11"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_foot_000" realname="foot_000" type="sprite">
+            <frames>
+                <i folder="0" file="11"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_front_head" realname="front_head" type="sprite">
+            <frames>
+                <i folder="0" file="3"/>
+            </frames>
+        </obj_info>
+        <obj_info name="winning sceen_back_tale" realname="back_tale" type="sprite">
+            <frames>
+                <i folder="0" file="4"/>
+            </frames>
+        </obj_info>
+        <animation id="0" name="hug_2" length="1000" interval="100" looping="false">
+            <gline pos="68"/>
+            <gline pos="-119" v="1"/>
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="father_foot_000" folder="0" file="10" abs_x="-59.57589" abs_y="-34.901282" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                    <object_ref id="1" name="father_arm2" folder="0" file="6" abs_x="-56.250686" abs_y="49.331158" abs_angle="23.886878" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="1" key="0" z_index="1"/>
+                    <object_ref id="2" name="father_body" folder="0" file="9" abs_x="-132.505854" abs_y="138.32017" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="2" key="0" z_index="2"/>
+                    <object_ref id="3" name="father_foot" folder="0" file="10" abs_x="-89.267292" abs_y="-39.324317" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="4" key="0" z_index="3"/>
+                    <object_ref id="4" name="mother_foot_000" folder="0" file="13" abs_x="41.910018" abs_y="-6.487167" abs_angle="0" abs_scale_x="-1" abs_scale_y="1" abs_a="1" timeline="5" key="0" z_index="4"/>
+                    <object_ref id="5" name="mother_arm2" folder="0" file="7" abs_x="35.158928" abs_y="79.677851" abs_angle="341.611686" abs_scale_x="-1" abs_scale_y="1" abs_a="1" timeline="6" key="0" z_index="5"/>
+                    <object_ref id="6" name="mother_body" folder="0" file="12" abs_x="109.096235" abs_y="153.028962" abs_angle="0" abs_scale_x="-1" abs_scale_y="1" abs_a="1" timeline="7" key="0" z_index="6"/>
+                    <object_ref id="7" name="mother_foot" folder="0" file="13" abs_x="70.262902" abs_y="-9.637705" abs_angle="0" abs_scale_x="-1" abs_scale_y="1" abs_a="1" timeline="8" key="0" z_index="7"/>
+                    <object_ref id="8" name="front_arm1" folder="0" file="0" abs_x="-54" abs_y="5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="10" key="0" z_index="8"/>
+                    <object_ref id="9" name="front_arm2" folder="0" file="1" abs_x="28" abs_y="5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="9"/>
+                    <object_ref id="10" name="foot_000" folder="0" file="11" abs_x="-31.5" abs_y="-53" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="14" key="0" z_index="10"/>
+                    <object_ref id="11" name="foot" folder="0" file="11" abs_x="6.5" abs_y="-53" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="13" key="0" z_index="11"/>
+                    <object_ref id="12" name="front_body" folder="0" file="2" abs_x="-37.5" abs_y="30" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="12" key="0" z_index="12"/>
+                    <object_ref id="13" name="front_head" folder="0" file="3" abs_x="-33" abs_y="75" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="15" key="0" z_index="13"/>
+                    <object_ref id="14" name="mother_arm" folder="0" file="8" abs_x="78.078873" abs_y="74.98362" abs_angle="0" abs_scale_x="-1" abs_scale_y="1" abs_a="1" timeline="9" key="0" z_index="14"/>
+                    <object_ref id="15" name="father_arm" folder="0" file="5" abs_x="-98.292344" abs_y="51.331722" abs_angle="358" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="3" key="0" z_index="15"/>
+                    <object_ref id="16" name="back_tale" folder="0" file="4" abs_x="-12.5" abs_y="-47.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="16" key="0" z_index="16"/>
+                </key>
+                <key id="1" time="254">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                    <object_ref id="1" timeline="1" key="1" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="1" z_index="2"/>
+                    <object_ref id="3" timeline="4" key="1" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="1" z_index="4"/>
+                    <object_ref id="5" timeline="6" key="1" z_index="5"/>
+                    <object_ref id="6" timeline="7" key="1" z_index="6"/>
+                    <object_ref id="7" timeline="8" key="1" z_index="7"/>
+                    <object_ref id="8" timeline="10" key="1" z_index="8"/>
+                    <object_ref id="9" timeline="11" key="1" z_index="9"/>
+                    <object_ref id="10" timeline="14" key="1" z_index="10"/>
+                    <object_ref id="11" timeline="13" key="1" z_index="11"/>
+                    <object_ref id="12" timeline="12" key="1" z_index="12"/>
+                    <object_ref id="13" timeline="15" key="1" z_index="13"/>
+                    <object_ref id="14" timeline="9" key="1" z_index="14"/>
+                    <object_ref id="15" timeline="3" key="1" z_index="15"/>
+                    <object_ref id="16" timeline="16" key="1" z_index="16"/>
+                </key>
+                <key id="2" time="500">
+                    <object_ref id="0" timeline="0" key="2" z_index="0"/>
+                    <object_ref id="1" timeline="1" key="2" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="2" z_index="2"/>
+                    <object_ref id="3" timeline="4" key="2" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="2" z_index="4"/>
+                    <object_ref id="5" timeline="6" key="2" z_index="5"/>
+                    <object_ref id="6" timeline="7" key="2" z_index="6"/>
+                    <object_ref id="7" timeline="8" key="2" z_index="7"/>
+                    <object_ref id="8" timeline="10" key="2" z_index="8"/>
+                    <object_ref id="9" timeline="11" key="2" z_index="9"/>
+                    <object_ref id="10" timeline="14" key="2" z_index="10"/>
+                    <object_ref id="11" timeline="13" key="2" z_index="11"/>
+                    <object_ref id="12" timeline="12" key="2" z_index="12"/>
+                    <object_ref id="13" timeline="15" key="2" z_index="13"/>
+                    <object_ref id="14" timeline="9" key="2" z_index="14"/>
+                    <object_ref id="15" timeline="3" key="2" z_index="15"/>
+                    <object_ref id="16" timeline="16" key="2" z_index="16"/>
+                </key>
+                <key id="3" time="884">
+                    <object_ref id="0" timeline="0" key="2" z_index="0"/>
+                    <object_ref id="1" timeline="1" key="2" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="2" z_index="2"/>
+                    <object_ref id="3" timeline="4" key="3" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="3" z_index="4"/>
+                    <object_ref id="5" timeline="6" key="2" z_index="5"/>
+                    <object_ref id="6" timeline="7" key="2" z_index="6"/>
+                    <object_ref id="7" timeline="8" key="3" z_index="7"/>
+                    <object_ref id="8" timeline="10" key="3" z_index="8"/>
+                    <object_ref id="9" timeline="11" key="3" z_index="9"/>
+                    <object_ref id="10" timeline="14" key="3" z_index="10"/>
+                    <object_ref id="11" timeline="13" key="3" z_index="11"/>
+                    <object_ref id="12" timeline="12" key="2" z_index="12"/>
+                    <object_ref id="13" timeline="15" key="2" z_index="13"/>
+                    <object_ref id="14" timeline="9" key="3" z_index="14"/>
+                    <object_ref id="15" timeline="3" key="2" z_index="15"/>
+                    <object_ref id="16" timeline="16" key="3" z_index="16"/>
+                </key>
+                <key id="4" time="1000">
+                    <object_ref id="0" timeline="0" key="3" z_index="0"/>
+                    <object_ref id="1" timeline="1" key="3" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="3" z_index="2"/>
+                    <object_ref id="3" timeline="4" key="4" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="4" z_index="4"/>
+                    <object_ref id="5" timeline="6" key="3" z_index="5"/>
+                    <object_ref id="6" timeline="7" key="3" z_index="6"/>
+                    <object_ref id="7" timeline="8" key="4" z_index="7"/>
+                    <object_ref id="8" timeline="10" key="4" z_index="8"/>
+                    <object_ref id="9" timeline="11" key="4" z_index="9"/>
+                    <object_ref id="10" timeline="14" key="4" z_index="10"/>
+                    <object_ref id="11" timeline="13" key="4" z_index="11"/>
+                    <object_ref id="12" timeline="12" key="3" z_index="12"/>
+                    <object_ref id="13" timeline="15" key="3" z_index="13"/>
+                    <object_ref id="14" timeline="9" key="4" z_index="14"/>
+                    <object_ref id="15" timeline="3" key="3" z_index="15"/>
+                    <object_ref id="16" timeline="16" key="4" z_index="16"/>
+                </key>
+            </mainline>
+            <timeline id="0" obj="0" name="father_foot_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="10" x="-41.07589" y="-34.901282" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="10" x="-41.07589" y="-34.901282" angle="0"/>
+                </key>
+                <key id="2" time="500" spin="0">
+                    <object folder="0" file="10" x="-29.680541" y="-34.885778" angle="0"/>
+                </key>
+                <key id="3" time="1000" spin="0">
+                    <object folder="0" file="10" x="-29.348617" y="-34.901282" angle="0"/>
+                </key>
+            </timeline>
+            <timeline id="1" obj="1" name="father_arm2">
+                <key id="0" spin="0">
+                    <object folder="0" file="6" x="-41.163965" y="56.012539" angle="23.886878"/>
+                </key>
+                <key id="1" time="254">
+                    <object folder="0" file="6" x="-41.163965" y="56.012539" angle="23.886878"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="6" x="-29.768616" y="56.028043" angle="47"/>
+                </key>
+                <key id="3" time="1000" spin="-1">
+                    <object folder="0" file="6" x="-29.436692" y="51.012539" angle="56.573362"/>
+                </key>
+            </timeline>
+            <timeline id="2" obj="2" name="father_body">
+                <key id="0" spin="0">
+                    <object folder="0" file="9" x="-72.005854" y="36.82017" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="9" x="-72.005854" y="36.82017" angle="0"/>
+                </key>
+                <key id="2" time="500" spin="0">
+                    <object folder="0" file="9" x="-60.610505" y="36.835674" angle="0"/>
+                </key>
+                <key id="3" time="1000" spin="0">
+                    <object folder="0" file="9" x="-60.278581" y="36.82017" angle="0"/>
+                </key>
+            </timeline>
+            <timeline id="3" obj="3" name="father_arm">
+                <key id="0" spin="0">
+                    <object folder="0" file="5" x="-93.198625" y="40.747506" angle="358"/>
+                </key>
+                <key id="1" time="254">
+                    <object folder="0" file="5" x="-93.198625" y="40.747506" angle="358"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="5" x="-81.803276" y="40.76301" angle="17.5499" scale_x="1.191949" scale_y="1.176878"/>
+                </key>
+                <key id="3" time="1000" spin="-1">
+                    <object folder="0" file="5" x="-81.471352" y="40.747506" angle="50.773718" scale_x="1.096116" scale_y="1.096116"/>
+                </key>
+            </timeline>
+            <timeline id="4" obj="4" name="father_foot">
+                <key id="0" spin="0">
+                    <object folder="0" file="10" x="-70.767292" y="-39.324317" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="10" x="-70.767292" y="-39.324317" angle="0"/>
+                </key>
+                <key id="2" time="500" spin="0">
+                    <object folder="0" file="10" x="-52.177699" y="-37.869964" angle="0" scale_x="1.1" scale_y="1.1"/>
+                </key>
+                <key id="3" time="884" spin="0">
+                    <object folder="0" file="10" x="-52.177699" y="-37.869964" angle="0" scale_x="1.1" scale_y="1.1"/>
+                </key>
+                <key id="4" time="1000" spin="0">
+                    <object folder="0" file="10" x="-52.177699" y="-37.869964" angle="0" scale_x="1.1" scale_y="1.1"/>
+                </key>
+            </timeline>
+            <timeline id="5" obj="5" name="mother_foot_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="13" x="25.410018" y="-6.487167" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="13" x="21.410018" y="-38.487167" angle="0" scale_x="-1"/>
+                </key>
+                <key id="2" time="500" spin="0">
+                    <object folder="0" file="13" x="27.773654" y="-40.019635" angle="0" scale_x="-1"/>
+                </key>
+                <key id="3" time="884" spin="0">
+                    <object folder="0" file="13" x="27.773654" y="-40.019635" angle="0" scale_x="-1"/>
+                </key>
+                <key id="4" time="1000" spin="0">
+                    <object folder="0" file="13" x="27.773654" y="-40.019635" angle="0" scale_x="-1"/>
+                </key>
+            </timeline>
+            <timeline id="6" obj="6" name="mother_arm2">
+                <key id="0" spin="0">
+                    <object folder="0" file="7" x="26.939078" y="77.14134" angle="341.611686" scale_x="-1"/>
+                </key>
+                <key id="1" time="254" spin="-1">
+                    <object folder="0" file="7" x="22.939078" y="45.14134" angle="341.611686" scale_x="-1"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="7" x="42.46621" y="44.38165" angle="309" scale_x="-1"/>
+                </key>
+                <key id="3" time="1000">
+                    <object folder="0" file="7" x="42.302714" y="43.608872" angle="312.187563" scale_x="-1"/>
+                </key>
+            </timeline>
+            <timeline id="7" obj="7" name="mother_body">
+                <key id="0" spin="0">
+                    <object folder="0" file="12" x="55.096235" y="61.028962" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="12" x="51.096235" y="29.028962" angle="0" scale_x="-1"/>
+                </key>
+                <key id="2" time="500" spin="0">
+                    <object folder="0" file="12" x="56.623367" y="28.269272" angle="0" scale_x="-1"/>
+                </key>
+                <key id="3" time="1000" spin="0">
+                    <object folder="0" file="12" x="57.459871" y="27.496494" angle="0" scale_x="-1"/>
+                </key>
+            </timeline>
+            <timeline id="8" obj="8" name="mother_foot">
+                <key id="0" spin="0">
+                    <object folder="0" file="13" x="53.762902" y="-9.637705" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="13" x="60.762902" y="-41.637705" angle="0" scale_x="-1.07277" scale_y="0.902307"/>
+                </key>
+                <key id="2" time="500" spin="0">
+                    <object folder="0" file="13" x="49.534638" y="-40.958546" angle="0" scale_x="-1.1" scale_y="1.1"/>
+                </key>
+                <key id="3" time="884" spin="0">
+                    <object folder="0" file="13" x="48.534638" y="-40.958546" angle="0" scale_x="-1.1" scale_y="1.1"/>
+                </key>
+                <key id="4" time="1000" spin="0">
+                    <object folder="0" file="13" x="49.534638" y="-40.958546" angle="0" scale_x="-1.1" scale_y="1.1"/>
+                </key>
+            </timeline>
+            <timeline id="9" obj="9" name="mother_arm">
+                <key id="0" spin="0">
+                    <object folder="0" file="8" x="73.268873" y="65.54362" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="254" spin="-1">
+                    <object folder="0" file="8" x="69.268873" y="33.54362" angle="0" scale_x="-1"/>
+                </key>
+                <key id="2" time="500" spin="-1">
+                    <object folder="0" file="8" x="74.796005" y="32.78393" angle="339.846793" scale_x="-1.208585" scale_y="1.020324"/>
+                </key>
+                <key id="3" time="884" spin="-1">
+                    <object folder="0" file="8" x="75.452892" y="32.177086" angle="318.059" scale_x="-1.179304" scale_y="1.138879"/>
+                </key>
+                <key id="4" time="1000">
+                    <object folder="0" file="8" x="75.63251" y="32.011152" angle="310.742" scale_x="-1.171297" scale_y="1.171297"/>
+                </key>
+            </timeline>
+            <timeline id="10" obj="10" name="front_arm1">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="-28" y="5" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="-1">
+                    <object folder="0" file="0" x="-28" y="5" angle="0"/>
+                </key>
+                <key id="2" time="500" spin="-1">
+                    <object folder="0" file="0" x="-23" y="5" angle="340"/>
+                </key>
+                <key id="3" time="884" spin="0">
+                    <object folder="0" file="0" x="-25.953884" y="41.056346" angle="300.820659" scale_x="1.023812" scale_y="1.053562"/>
+                </key>
+                <key id="4" time="1000">
+                    <object folder="0" file="0" x="-26.488643" y="49.879876" angle="300.820659" scale_x="1.023812" scale_y="1.053562"/>
+                </key>
+            </timeline>
+            <timeline id="11" obj="11" name="front_arm2">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="28" y="5" angle="0"/>
+                </key>
+                <key id="1" time="254">
+                    <object folder="0" file="1" x="28" y="5" angle="0"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="1" x="24" y="5" angle="20"/>
+                </key>
+                <key id="3" time="884">
+                    <object folder="0" file="1" x="5.895363" y="40.970948" angle="60" scale_x="1.187676" scale_y="1.19151"/>
+                </key>
+                <key id="4" time="1000" spin="-1">
+                    <object folder="0" file="1" x="5.093224" y="48.190199" angle="72.312024" scale_x="1.187676" scale_y="1.19151"/>
+                </key>
+            </timeline>
+            <timeline id="12" obj="12" name="front_body">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" y="-63" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="2" y="-63" angle="0"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="2" y="-63" angle="0"/>
+                </key>
+                <key id="3" time="1000" spin="-1">
+                    <object folder="0" file="2" x="-1.048123" y="-20.255323" angle="6.107257"/>
+                </key>
+            </timeline>
+            <timeline id="13" obj="13" name="foot">
+                <key id="0" spin="0">
+                    <object folder="0" file="11" x="19" y="-53" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="11" x="19" y="-53" angle="0"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="11" x="19" y="-53" angle="0"/>
+                </key>
+                <key id="3" time="884">
+                    <object folder="0" file="11" x="16.537374" y="-18.220089" angle="4.795883"/>
+                </key>
+                <key id="4" time="1000" spin="-1">
+                    <object folder="0" file="11" x="16.060718" y="-9.693545" angle="6.107257"/>
+                </key>
+            </timeline>
+            <timeline id="14" obj="14" name="foot_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="11" x="-19" y="-53" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="11" x="-19" y="-53" angle="0"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="11" x="-19" y="-53" angle="0"/>
+                </key>
+                <key id="3" time="884" spin="-1">
+                    <object folder="0" file="11" x="-19.71777" y="-21.065561" angle="4.795883"/>
+                </key>
+                <key id="4" time="1000" spin="-1">
+                    <object folder="0" file="11" x="-18.07613" y="-12.333488" angle="1.718018"/>
+                </key>
+            </timeline>
+            <timeline id="15" obj="15" name="front_head">
+                <key id="0" spin="0">
+                    <object folder="0" file="3" y="5" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="3" y="5" angle="0"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="3" y="5" angle="0"/>
+                </key>
+                <key id="3" time="1000" spin="-1">
+                    <object folder="0" file="3" x="-8.282644" y="47.358742" angle="1.898308"/>
+                </key>
+            </timeline>
+            <timeline id="16" obj="16" name="back_tale">
+                <key id="0" spin="0">
+                    <object folder="0" file="4" y="-47.5" angle="0"/>
+                </key>
+                <key id="1" time="254" spin="0">
+                    <object folder="0" file="4" y="-47.5" angle="0"/>
+                </key>
+                <key id="2" time="500">
+                    <object folder="0" file="4" y="-47.5" angle="0"/>
+                </key>
+                <key id="3" time="884">
+                    <object folder="0" file="4" x="-1.639344" y="-15.368852" angle="4.796"/>
+                </key>
+                <key id="4" time="1000" spin="-1">
+                    <object folder="0" file="4" x="-2.295082" y="-4.877049" angle="6.107"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

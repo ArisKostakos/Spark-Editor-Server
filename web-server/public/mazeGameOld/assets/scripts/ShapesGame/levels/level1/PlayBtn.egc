@@ -1,0 +1,117 @@
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<_State id="name"><Value>Button Sprite</Value></_State>
+		<_State id="spaceX"><Value>1200</Value></_State>
+		<_State id="spaceY"><Value>800</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+	</_States>
+
+	<Form><Space><Entities>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="2DMeshImageForm"><Value>[ImageUrl]</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="touchable"><Value>true</Value></_State>
+			</_States>
+			
+				
+			<_Form>
+				<_States>
+					<State><Id>ImageUrl</Id><Type>Text</Type><Value>playBtn</Value></State>
+				</_States>
+			</_Form>
+			
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							me.setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
+							me.sa('WaitFor',{delay:1, cbEntity:me, cbAction:"Destroy"});
+							me.setState('touchable',false);
+							
+							//Sound.playSound("m:Birds Long",e('Audio Control').s('VolumeFX'));
+							e('mainScene').fa('Birds Sit At Tree');
+							
+							//Play FX
+							e('Audio Control').fa('Play FX', { name:"fx:startButton" } );
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+				
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							me.sa('Shake');
+						</Script>
+					</_Scripts>
+				</_Action>
+				
+				<Action>
+					<Id>Shake</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							var deltas=[0,4,8,5,-2,-3,-8,-4];
+							
+							if (e('Blue Bird Fly').s('obj_player')==null)
+								return;
+							
+							var frameIndex=e('Blue Bird Fly').s('obj_player').currentIndex-1;
+							
+							if (frameIndex!=it.s('frame'))
+								me.addToState('spaceY',-deltas[frameIndex]);
+							
+							it.setState('frame',frameIndex);
+						</Script>
+					</Scripts>
+					<States>
+						<State><Id>frame</Id><Type>Integer</Type><Value>-1</Value></State>
+					</States>
+				</Action>
+						
+				<Action>
+					<Id>Destroy</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script>
+							me.setState('visible',false);
+							parent.removeChild(me);
+						</Script>
+					</Scripts>
+				</Action>
+						
+				<Action>
+					<Id>WaitFor</Id>
+					<Concurrency>Persistent</Concurrency>
+					<Scripts>
+						<Script><![CDATA[
+							it.addToState('delayCurrent',Logic.getDt());
+							
+							if (it.getState('delayCurrent')>it.getState('delay'))
+							{
+								it.stop();
+								
+								//Callback (Action finished)
+								it.setState('delayCurrent',0);
+								it.s('cbEntity').fa(it.s('cbAction'));
+							}
+						]]></Script>
+					</Scripts>
+					<States>
+						<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+						<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+						<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+						<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+					</States>
+				</Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+</Entity>

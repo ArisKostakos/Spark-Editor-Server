@@ -11,8 +11,8 @@
 				<_State id="touchable"><Value>false</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
 				<_State id="2DMeshImageForm"><Value>sea</Value></_State>
-				<_State id="spaceX"><Value>0</Value></_State>
-				<_State id="spaceY"><Value>130</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State> <!-- 0 -->
+				<_State id="spaceY"><Value>0</Value></_State> <!-- 130 -->
 				<_State id="scaleX"><Value>1</Value></_State>
 				<_State id="scaleY"><Value>1</Value></_State>
 			</_States>
@@ -20,7 +20,7 @@
 				<_Action id="Constructor">
 					<_Scripts>
 						<Script><![CDATA[
-							for (var i=0;i<40;i++)
+							for (var i=0;i<20;i++)
 							{
 								var f_wave = Logic.create('ShapesGame.levels.level1.Waves');
 								me.addChild(f_wave);
@@ -60,6 +60,27 @@
 				<_State id="spaceY"><Value>-540</Value></_State>
 				<_State id="scaleX"><Value>1</Value></_State>
 				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Flags -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>flag1</Value></_State>
+				<_State id="spaceX"><Value>-770</Value></_State>
+				<_State id="spaceY"><Value>-500</Value></_State>
+				<_State id="scaleX"><Value>0.7</Value></_State>
+				<_State id="scaleY"><Value>0.7</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>flag2</Value></_State>
+				<_State id="spaceX"><Value>685</Value></_State>
+				<_State id="spaceY"><Value>422</Value></_State>
 			</_States>
 		</Entity>
 	</Entities></Space></Form>

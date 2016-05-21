@@ -11,6 +11,7 @@
 		<_State id="2DMeshSpriterAnimForm"><Value>idle_left</Value></_State>
 		<State><Id>currentTile</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>walking</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>bouncing</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>walkSeconds</Id><Type>Decimal</Type><Value>1</Value></State>
 		<State><Id>walkToTile</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>currentDirection</Id><Type>Text</Type><Value>Undefined</Value></State>
@@ -18,6 +19,8 @@
 		<State><Id>originalBoundsWidth</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>originalBoundsHeight</Id><Type>Decimal</Type><Value>0</Value></State>
 		<State><Id>progress</Id><Type>Integer</Type><Value>0</Value></State>
+	
+		<State><Id>wrongTile</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Form>
@@ -52,6 +55,9 @@
 					
 					me.set('originalBoundsWidth',camera.s('maxBoundsWidth'));
 					me.set('originalBoundsHeight',camera.s('maxBoundsHeight'));
+					
+					Display.error("cameraCaptureAreaX: " + camera.s('captureAreaX'));
+					Display.error("cameraCaptureAreaY: " + camera.s('captureAreaY'));
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -66,6 +72,9 @@
 					me.set('spaceY',1150);
 					me.set('progress',0);
 					
+					//Reset Animation
+					me.set('2DMeshSpriterAnimForm','idle_left');
+					
 					var mazeArea = e('Maze Area');
 					var maze = mazeArea.s('maze');
 					var mazeWidth=mazeArea.s('mazeWidth');
@@ -79,6 +88,9 @@
 					
 					//Mark it as visited
 					l_lastTile.set('visited',true);
+					
+					//Set Player Arrows
+					e('Arrows').fa('Init',{query:false});
 				</Script>
 			</Scripts>
 		</Action>
@@ -120,7 +132,7 @@
 				<Script>
 					//forced
 					
-					if (me.s('walking')==true)
+					if (me.s('walking')==true || me.s('bouncing')==true)
 						return;
 					
 					//So this will be called even if tile is not a path or if tile is visited..
@@ -136,17 +148,29 @@
 					//If I can't go there
 					if (l_tile.s('path')==false || l_tile.s('visited')==true)
 					{
-						//Just look in the direction
-						me.set('2DMeshSpriterAnimForm',"idle_"+l_direction);
-						
-						//Set Direction Scale
-						if (l_direction=="right") me.set('scaleX',-1);
-							else me.set('scaleX',1);
-						
-						
-						//and play a sound maybe
-						//Play FX
-						e('Audio Control').fa('Play FX', { name:"fx:negative" } );
+						if (l_tile.s('visited')==true)
+						{
+							//Play FX
+							e('Audio Control').fa('Play FX', { name:"fx:negative", weak:true } );
+						}
+						else
+						{
+							//Just look in the direction
+							me.set('2DMeshSpriterAnimForm',"idle_"+l_direction);
+							
+							//Set Direction Scale
+							if (l_direction=="right") me.set('scaleX',-1);
+								else me.set('scaleX',1);
+							
+							//Play FX
+							e('Audio Control').fa('Play FX', { name:"fx:ouch" } );
+							
+							me.set('bouncing',true);
+							me.set('wrongTile',l_tile);
+							me.setState('animate_y',{type:"by", by:-25, seconds:0.4, easing:Ease.quadInOut});
+							me.sa('WaitFor',{delay:0.4, cbEntity:me, cbAction:"Bounce Down 1"});
+							l_tile.fa("Wrong Start");
+						}
 					}
 					//If I can go there
 					else
@@ -154,7 +178,9 @@
 						me.set('walking',true);
 						me.set('walkToTile',l_tile);
 					
-					
+						//Hide Arrows
+						e('Arrows').set('visible',false);
+						
 						//Jump
 						if (me.s('currentTile').s('firstTile'))
 						{
@@ -186,6 +212,33 @@
 				<State><Id>tile</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>direction</Id><Type>Text</Type><Value>undefined</Value></State>
 			</States>
+		</Action>
+		
+		<Action>
+			<Id>Bounce Down 1</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.setState('animate_y',{type:"by", by:25, seconds:0.4, easing:Ease.quadInOut});
+					me.sa('WaitFor',{delay:0.4, cbEntity:me, cbAction:"Bounce Down 2"});
+					
+					me.s('wrongTile').fa("Wrong End");
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Bounce Down 2</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('bouncing',false);
+				</Script>
+			</Scripts>
 		</Action>
 		
 		<Action>
@@ -249,7 +302,14 @@
 					e('Audio Control').fa('Play FX', { name:"fx:shapeChange" } );
 					
 					if (l_walkToTile.s('lastTile')==true)
+					{
 						me.fa('Victory');
+					}
+					else
+					{
+						//Set Player Arrows
+						e('Arrows').fa('Init',{query:true});
+					}
 				</Script>
 			</Scripts>
 		</Action>
@@ -272,6 +332,9 @@
 						
 						//Play FX
 						e('Audio Control').fa('Play FX', { name:"fx:achievement" } );
+						
+						//Shine Maze
+						e('Maze Area').fa('Shine Maze');
 					}
 					else if (progress==Math.round(pathLength*0.6))
 					{
@@ -280,6 +343,9 @@
 						
 						//Play FX
 						e('Audio Control').fa('Play FX', { name:"fx:achievement" } );
+						
+						//Shine Maze
+						e('Maze Area').fa('Shine Maze');
 					}
 					else if (progress==1 || progress==Math.round(pathLength*0.5) || progress==Math.round(pathLength*0.85))
 					{
@@ -305,6 +371,12 @@
 					
 					//Wait
 					me.sa('WaitFor',{delay:0.5, cbEntity:me, cbAction:"Victory 2"});
+					
+					//Play FX
+					e('Audio Control').fa('Play FX', { name:"fx:achievement" } );
+					
+					//Shine Maze
+					e('Maze Area').fa('Shine Maze');
 				</Script>
 			</Scripts>
 		</Action>
@@ -328,11 +400,14 @@
 					e('Mommy').stopAction('WaitFor');
 					
 					//Game Running
-					me.set('gameRunning',false);
+					e('Game Manager').set('gameRunning',false);
 					
 					//Zoom Test
 					var camera = e('Game Camera');
 					me.sa('Zoom',{ speed:3, easing:Ease.quadOut, zoomIn:true });
+					
+					//Hide Instructions
+					e('Instructions').set('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.backOut});
 				</Script>
 			</Scripts>
 		</Action>
@@ -384,6 +459,31 @@
 					e('heartsEmitter').setState('action_fire',true);
 					
 					me.sa('WaitFor',{delay:6, cbEntity:me, cbAction:"Victory 5"});
+					
+					
+					//Show Congrats Sign
+					var fromX=1000;
+					var fromY=400;
+					var toY=200;
+					var secs=5;
+					var secs2=5;
+					e('CongratsSign').setState('spaceX',fromX);
+					e('CongratsSign').setState('animate_y',{from:fromY+284, to:toY+284, seconds:secs, easing:Ease.backOut});
+					e('CongratsSign').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					e('CongratsBalloon1').setState('spaceX',fromX-250);
+					e('CongratsBalloon1').setState('animate_y',{from:fromY, to:toY, seconds:secs, easing:Ease.backOut});
+					e('CongratsBalloon1').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					e('CongratsBalloon2').setState('spaceX',fromX+263);
+					e('CongratsBalloon2').setState('animate_y',{from:fromY-6, to:toY-6, seconds:secs, easing:Ease.backOut});
+					e('CongratsBalloon2').setState('animate_opacity',{from:0, to:1, seconds:secs2, easing:Ease.backOut});
+					
+					//Fire Da Balloons
+					e('particle_b1').setState('action_fire',true);
+					e('particle_b2').setState('action_fire',true);
+					e('particle_b3').setState('action_fire',true);
+					e('particle_b4').setState('action_fire',true);
 				</Script>
 			</Scripts>
 		</Action>
@@ -403,6 +503,14 @@
 					
 					//Hide Shapes
 					e('Maze Area').sa('Hide Maze Shapes');
+					
+					//Hide Congrats Sign
+					e('CongratsBalloon1').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
+					e('CongratsBalloon2').setState('animate_y',{type:"by", by:-1000, seconds:3, easing:Ease.quadInOut});
+					e('CongratsSign').setState('animate_opacity',{type:"to", to:0, seconds:1.5, easing:Ease.quadInOut});
+					
+					e('CongratsBalloon1').setState('animate_opacity',{type:"to", to:0, seconds:3, easing:Ease.quintIn});
+					e('CongratsBalloon2').setState('animate_opacity',{type:"to", to:0, seconds:3, easing:Ease.quintIn});
 					
 					
 					me.sa('WaitFor',{delay:1.5, cbEntity:me, cbAction:"Victory 6"});
@@ -454,6 +562,8 @@
 					
 					var tweenWidth = it.s('tweenWidth');
 					var tweenHeight = it.s('tweenHeight');
+					var tweenX = it.s('tweenX');
+					var tweenY = it.s('tweenY');
 					var l_speed = it.s('speed');
 					var l_easing = it.s('easing');
 					var camera = e('Game Camera');
@@ -464,21 +574,29 @@
 						{
 							tweenWidth = it.set('tweenWidth', new Tween(me.s('originalBoundsWidth'), me.s('originalBoundsWidth')/1.85, l_speed, l_easing) );
 							tweenHeight = it.set('tweenHeight', new Tween(me.s('originalBoundsHeight'), me.s('originalBoundsHeight')/1.85, l_speed, l_easing) );
+							tweenX = it.set('tweenX', new Tween(0, 180, l_speed, l_easing) );
+							tweenY = it.set('tweenY', new Tween(0, 80, l_speed, l_easing) );
 						}
 						else
 						{
 							tweenWidth = it.set('tweenWidth', new Tween(me.s('originalBoundsWidth')/1.85, me.s('originalBoundsWidth'), l_speed, l_easing) );
 							tweenHeight = it.set('tweenHeight', new Tween(me.s('originalBoundsHeight')/1.85, me.s('originalBoundsHeight'), l_speed, l_easing) );
+							tweenX = it.set('tweenX', new Tween(180, 0, l_speed, l_easing) );
+							tweenY = it.set('tweenY', new Tween(80, 0, l_speed, l_easing) );
 						}
 					}
 					
 					var newWidth = tweenWidth.update( Logic.getDt() );
 					var newHeight = tweenHeight.update( Logic.getDt() );
+					var newX = tweenX.update( Logic.getDt() );
+					var newY = tweenY.update( Logic.getDt() );
 					
 					
 					
 					camera.set('maxBoundsWidth',newWidth);
 					camera.set('maxBoundsHeight',newHeight);
+					camera.set('maxBoundsX',newX);
+					camera.set('maxBoundsY',newY);
 						
 					camera.fa('Camera Init');
 					
@@ -488,6 +606,8 @@
 					{
 						it.set('tweenWidth',null);
 						it.set('tweenHeight',null);
+						it.set('tweenX',null);
+						it.set('tweenY',null);
 						it.stop();
 					}
 				]]></Script>
@@ -497,6 +617,8 @@
 				<State><Id>easing</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>tweenWidth</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>tweenHeight</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>tweenX</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>tweenY</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>zoomIn</Id><Type>Boolean</Type><Value>false</Value></State>
 			</States>
 		</Action>

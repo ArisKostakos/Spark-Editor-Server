@@ -14,7 +14,7 @@
 		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.8</Value></State>
 		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
-		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.2</Value></State>
+		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.4</Value></State>
 	
 		<State><Id>lastVoiceName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>lastMusicName</Id><Type>Text</Type><Value>Undefined</Value></State>
@@ -177,12 +177,21 @@
 					
 					if (me.s('Toggled')==false)
 					{
-						Sound.playSound( it.s('name'), me.s('VolumeFX') );
+						if (it.s('weak'))
+						{
+							if (Sound.isPlaying( it.s('name'))==false)
+								Sound.playSound( it.s('name'), me.s('VolumeFX') );
+						}
+						else
+							Sound.playSound( it.s('name'), me.s('VolumeFX') );
 					}
+					
+					it.set('weak',false);
 				</Script>
 			</Scripts>
 			<States>
 				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>weak</Id><Type>Boolean</Type><Value>false</Value></State>
 			</States>
 		</Action>
 				

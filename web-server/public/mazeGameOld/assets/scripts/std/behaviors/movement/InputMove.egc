@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_Actions>
+		<Action>
+			<Id>GoLeft</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('spaceX',me.getState('spaceX')-10);
+				</Script>
+			</Scripts>
+		</Action>
+		<Action>
+			<Id>GoRight</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('spaceX',me.getState('spaceX')+10);
+				</Script>
+			</Scripts>
+		</Action>
+		<Action>
+			<Id>GoUp</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('spaceY',me.getState('spaceY')+10);
+				</Script>
+			</Scripts>
+		</Action>
+		<Action>
+			<Id>GoDown</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.setState('spaceY',me.getState('spaceY')-10);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Camera2DStandard">
+	<_States>
+		<_State id="name"><Value>Game Camera</Value></_State>
+	</_States>
+</Entity>

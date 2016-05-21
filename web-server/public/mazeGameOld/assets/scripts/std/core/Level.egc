@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<State>
+			<Id>viewReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>moduleReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>eventSheetReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>stageAreaReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>created</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>views</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+</Entity>

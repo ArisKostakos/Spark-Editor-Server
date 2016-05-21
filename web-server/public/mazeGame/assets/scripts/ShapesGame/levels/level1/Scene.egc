@@ -19,6 +19,26 @@
 		<Entity extends="ShapesGame.levels.level1.Instructions"/>
 		<Entity extends="ShapesGame.levels.level1.Banner"/>
 		
+		<!-- Seals -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>seal</Value></_State>
+				<_State id="spaceX"><Value>;2280/2-600</Value></_State>
+				<_State id="spaceY"><Value>;1440/2-494+53</Value></_State>
+				<_State id="scaleX"><Value>-0.7</Value></_State>
+				<_State id="scaleY"><Value>0.7</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>seal</Value></_State>
+				<_State id="spaceX"><Value>;2280/2+550</Value></_State>
+				<_State id="spaceY"><Value>;1440/2-494+70</Value></_State>
+			</_States>
+		</Entity>
+		
 		<!-- Maze Stuff -->
 		<Entity extends="ShapesGame.levels.level1.MazeArea"/>
 		<!--<Entity extends="ShapesGame.levels.level1.CreateNewPathButton"/>-->
@@ -31,7 +51,7 @@
 				<_State id="emitX"><Value>;2280/2-765</Value></_State>
 				<_State id="emitY"><Value>250</Value></_State>
 				<_State id="particleEnabled"><Value>false</Value></_State>
-				<_State id="particleDuration"><Value>1</Value></_State>
+				<_State id="particleDuration"><Value>6</Value></_State>
 			</_States>
 		</Entity>
 		
@@ -47,6 +67,9 @@
 		<!-- Family -->
 		<Entity extends="ShapesGame.levels.level1.Family"/>
 		
+		<!-- Player Arrows -->
+		<Entity extends="ShapesGame.levels.level1.Arrows"/>
+		
 		<!-- Snow Particle Emitter -->
 		<Entity extends="ShapesGame.levels.level1.MyParticle">
 			<_States>
@@ -61,6 +84,96 @@
 		
 		<!-- Audio Button -->
 		<Entity extends="ShapesGame.levels.level1.AudioBtn"/>
+		
+		<!-- Logo -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>logo_text</Value></_State>
+				<_State id="spaceX"><Value>330</Value></_State>
+				<_State id="spaceY"><Value>1320</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>logo blueBird</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>logo_blueBird</Value></_State>
+				<_State id="spaceX"><Value>243</Value></_State>
+				<_State id="spaceY"><Value>1297</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>logo redBird</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>logo_redBird</Value></_State>
+				<_State id="spaceX"><Value>284</Value></_State>
+				<_State id="spaceY"><Value>1275</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Congratulations Stuff -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>CongratsSign</Value></_State>
+				<_State id="2DMeshImageForm"><Value>congrats_sign</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>CongratsBalloon1</Value></_State>
+				<_State id="2DMeshImageForm"><Value>congrats_balloons1</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="name"><Value>CongratsBalloon2</Value></_State>
+				<_State id="2DMeshImageForm"><Value>congrats_balloons2</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- Congrats Particle Emitters -->
+		<Entity extends="ShapesGame.levels.level1.BalloonParticle">
+			<_States>
+				<_State id="name"><Value>particle_b1</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon1</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="ShapesGame.levels.level1.BalloonParticle">
+			<_States>
+				<_State id="name"><Value>particle_b2</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon2</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="ShapesGame.levels.level1.BalloonParticle">
+			<_States>
+				<_State id="name"><Value>particle_b3</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon3</Value></_State>
+			</_States>
+		</Entity>
+		<Entity extends="ShapesGame.levels.level1.BalloonParticle">
+			<_States>
+				<_State id="name"><Value>particle_b4</Value></_State>
+				<_State id="2DMeshParticleEmitterForm"><Value>balloon4</Value></_State>
+			</_States>
+		</Entity>
 	</Entities></Space></Form>
 	
 	<_Actions>
@@ -106,19 +219,19 @@
 					//forced
 					
 					var secsBlue=3;
-					e('Blue Bird').setState('animate_scaleX',{from:-1, to:-0.8, seconds:secsBlue, easing:Ease.quadInOut});
-					e('Blue Bird').setState('animate_scaleY',{from:1, to:0.8, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_scaleX',{from:-1, to:-0.3, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_scaleY',{from:1, to:0.3, seconds:secsBlue, easing:Ease.quadInOut});
 					
-					e('Blue Bird').setState('animate_x',{type:"to", to:590, seconds:secsBlue, easing:Ease.quadInOut});
-					e('Blue Bird').setState('animate_y',{type:"to", to:110, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_x',{type:"to", to:243, seconds:secsBlue, easing:Ease.quadInOut});
+					e('Blue Bird').setState('animate_y',{type:"to", to:1297, seconds:secsBlue, easing:Ease.quadInOut});
 					me.sa('WaitFor',{delay:secsBlue, cbEntity:me, cbAction:"Blue Arrive"});
 					
 					var secsRed=3;
-					e('Red Bird').setState('animate_scaleX',{from:1, to:0.8, seconds:secsRed, easing:Ease.quadInOut});
-					e('Red Bird').setState('animate_scaleY',{from:1, to:0.8, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_scaleX',{from:-1, to:-0.3, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_scaleY',{from:1, to:0.3, seconds:secsRed, easing:Ease.quadInOut});
 					
-					e('Red Bird').setState('animate_x',{type:"to", to:1840, seconds:secsRed, easing:Ease.quadInOut});
-					e('Red Bird').setState('animate_y',{type:"to", to:110, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_x',{type:"to", to:284, seconds:secsRed, easing:Ease.quadInOut});
+					e('Red Bird').setState('animate_y',{type:"to", to:1275, seconds:secsRed, easing:Ease.quadInOut});
 					me.sa('WaitFor2',{delay:secsRed, cbEntity:me, cbAction:"Red Arrive"});
 					
 					e('Ellinopoula Banner').setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.quadInOut});
@@ -133,7 +246,9 @@
 				<Script>
 					//forced
 					
-					e('Blue Bird').setState('scaleX',0.8);
+					//e('Blue Bird').setState('scaleX',0.2);
+					e('Blue Bird').set('visible',false);
+					e('logo blueBird').set('visible',true);
 					//e('Blue Bird').fa('Animate',{state:"Stand"});
 				</Script>
 			</Scripts>
@@ -146,7 +261,10 @@
 				<Script>
 					//forced
 					
-					e('Red Bird').setState('scaleX',-0.8);
+					//e('Red Bird').setState('scaleX',-0.2);
+					e('Red Bird').set('visible',false);
+					e('logo redBird').set('visible',true);
+					
 					
 					e('Game Manager').fa('Create Match');
 				</Script>

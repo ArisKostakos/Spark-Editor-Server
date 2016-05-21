@@ -1,11 +1,13 @@
 <Entity extends="std.display.Image2D">
 	<_States>
-		<_State id="2DMeshImageForm"><Value>tile</Value></_State>
+		<_State id="2DMeshImageForm"><Value>tileImage</Value></_State>
 		<_State id="spaceWidth"><Value>170</Value></_State>
 		<_State id="spaceHeight"><Value>135</Value></_State>
 		
 		<State><Id>obj_shapeNormal</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>obj_shapeSelected</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>obj_shine</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>obj_tileWrong</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>shape</Id><Type>Text</Type><Value>Undefined</Value></State>
 			
 		<State><Id>mazeX</Id><Type>Integer</Type><Value>-1</Value></State>
@@ -26,6 +28,46 @@
 	</_States>
 	
 	<_Form><_Space><_Entities>
+		<!-- Shine -->
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="2DMeshSpritesheetForm"><Value>tile</Value></_State>
+				<_State id="visible"><Value>false</Value></_State>
+				<_State id="AnimationLoop"><Value>false</Value></_State>
+				<_State id="spaceX"><Value>;170/2</Value></_State>
+				<_State id="spaceY"><Value>;135/2</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							parent.set('obj_shine',me);
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+	
+		<!-- Tile Wrong -->
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>wrongTile</Value></_State>
+				<_State id="opacity"><Value>0</Value></_State>
+				<_State id="spaceX"><Value>;170/2</Value></_State>
+				<_State id="spaceY"><Value>;135/2</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							parent.set('obj_tileWrong',me);
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+		
 		<!-- Shape Normal -->
 		<Entity extends="std.display.Image2D">
 			<_States>
@@ -34,8 +76,6 @@
 				<_State id="2DMeshImageForm"><Value>circle_n</Value></_State>
 				<_State id="spaceX"><Value>;170/2</Value></_State>
 				<_State id="spaceY"><Value>;135/2</Value></_State>
-				<_State id="scaleX"><Value>1</Value></_State>
-				<_State id="scaleY"><Value>1</Value></_State>
 				<_State id="opacity"><Value>0</Value></_State>
 			</_States>
 			<_Actions>
@@ -57,8 +97,6 @@
 				<_State id="2DMeshImageForm"><Value>circle_s</Value></_State>
 				<_State id="spaceX"><Value>;170/2</Value></_State>
 				<_State id="spaceY"><Value>;135/2</Value></_State>
-				<_State id="scaleX"><Value>1</Value></_State>
-				<_State id="scaleY"><Value>1</Value></_State>
 				<_State id="opacity"><Value>0</Value></_State>
 			</_States>
 			<_Actions>
@@ -110,7 +148,7 @@
 						Display.de("Tile Clicked is not a neighbor tile.. play a noise or smth..");
 						
 						//Play FX
-						e('Audio Control').fa('Play FX', { name:"fx:negative" } );
+						e('Audio Control').fa('Play FX', { name:"fx:negative", weak:true } );
 					}
 				</Script>
 			</Scripts>
@@ -118,6 +156,48 @@
 	</_Triggers>
 		
 	<_Actions>
+		<Action>
+			<Id>Shine</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var obj_shine = me.s('obj_shine');
+					var l_obj_player = obj_shine.s('obj_player');
+					
+					obj_shine.set('visible',true);
+					l_obj_player.play();
+					
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Wrong Start</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.s('obj_tileWrong').set('animate_opacity',{type:"to", to:1, seconds:0.4, easing:Ease.quadInOut});
+				</Script>
+			</Scripts>
+		</Action>
+				
+				
+		<Action>
+			<Id>Wrong End</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.s('obj_tileWrong').set('animate_opacity',{type:"to", to:0, seconds:0.4, easing:Ease.quadInOut});
+				</Script>
+			</Scripts>
+		</Action>
+		
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script><![CDATA[
@@ -230,6 +310,8 @@
 					var l_obj_shapeSelected = me.s('obj_shapeSelected');
 					
 					l_obj_shapeSelected.set('animate_opacity',{type:"to", to:1, seconds:0.4, easing:Ease.quadInOut});
+					
+					me.fa('Shine');
 				</Script>
 			</Scripts>
 		</Action>
@@ -331,6 +413,8 @@
 					
 					//Play FX
 					e('Audio Control').fa('Play FX', { name:"fx:shapePop" } );
+					
+					me.fa('Shine');
 				</Script>
 			</Scripts>
 		</Action>

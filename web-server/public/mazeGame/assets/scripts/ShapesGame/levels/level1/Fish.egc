@@ -12,7 +12,7 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					me.fa('Stop Wave');
+					me.fa('Init Fish');
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -28,7 +28,7 @@
 					
 					l_obj_player.play();
 					
-					me.sa('WaitFor',{delay:1.2, cbEntity:me, cbAction:"Stop Wave"});
+					me.sa('WaitFor',{delay:1.2, cbEntity:me, cbAction:"Init Fish"});
 					
 					me.sa('WaitFor2',{delay:0.1, cbEntity:me, cbAction:"Play 2"});
 				</Script>
@@ -48,7 +48,7 @@
 		</Action>
 	
 		<Action>
-			<Id>Stop Wave</Id>
+			<Id>Init Fish</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
@@ -57,16 +57,28 @@
 					me.set('visible',false);
 					//var l_obj_player = me.s('obj_player');
 					
+					var spaceX=0;
+					
+					var randomY = Logic.random(1,100)/100;
+					
 					if (Logic.random(0,1)==0)
 					{
-						me.set('spaceX', Logic.random(150,400));
-						me.set('spaceY', Logic.random(200,850));
+						me.set('spaceX', Logic.random(300,480));
+						me.set('spaceY', 520+(1100-450)*randomY);
 					}
 					else
 					{
-						me.set('spaceX', Logic.random(1400,1650));
-						me.set('spaceY', Logic.random(100,950));
+						me.set('spaceX', Logic.random(1620,1750));
+						me.set('spaceY', 420+(1150-420)*randomY);
 					}
+					
+					var scale = 0.32 + randomY * (0.8 - 0.32);
+					
+					me.set('scaleX',scale);
+					me.set('scaleY',scale);
+					
+					if (Logic.random(0,1)==0)
+						me.set('scaleX', scale*(-1));
 					
 					me.sa('WaitFor',{delay:Logic.random(0,7), cbEntity:me, cbAction:"Play"});
 				</Script>

@@ -4,12 +4,13 @@
 		<_State id="name"><Value>Voice Control</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
 		<_State id="physicsEntity"><Value>false</Value></_State>
-		<_State id="2DMeshImageForm"><Value>[Button_Normal]</Value></_State>
+		<_State id="2DMeshImageForm"><Value>[Button_Toggled]</Value></_State>
 			
-		<_State id="spaceX"><Value>1130</Value></_State>
-		<_State id="spaceY"><Value>145</Value></_State>
-		<_State id="scaleX"><Value>1</Value></_State>
-		<_State id="scaleY"><Value>1</Value></_State>
+		<_State id="spaceX"><Value>1155</Value></_State>
+		<_State id="spaceY"><Value>80</Value></_State>
+		<_State id="scaleX"><Value>0.9</Value></_State>
+		<_State id="scaleY"><Value>0.9</Value></_State>
+		<_State id="opacity"><Value>0</Value></_State>
 		
 		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.5</Value></State>

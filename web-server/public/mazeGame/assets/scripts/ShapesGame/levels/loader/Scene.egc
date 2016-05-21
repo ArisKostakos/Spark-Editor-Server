@@ -161,7 +161,7 @@
 					function _onProgress(p_percDone, p_totalBytes)
 					{
 						//Display.warn("INTERP: Percent Loaded: " + p_percDone);
-						e('Loader Message Output Text').setState('text','loading game ... ' + p_percDone + '%');
+						e('Loader Message Output Text').setState('text','loading game ... ' + Math.min(p_percDone,100) + '%');
 						
 						var tempPerc = Std.int(p_percDone*300/100);
 						//Display.warn("INTERP: Percent2 Loaded: " + tempPerc);

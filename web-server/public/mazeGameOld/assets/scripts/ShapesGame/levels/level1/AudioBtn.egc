@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="name"><Value>Audio Control</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="2DMeshImageForm"><Value>[Button_Normal]</Value></_State>
+			
+		<_State id="spaceX"><Value>1945</Value></_State>
+		<_State id="spaceY"><Value>205</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		
+		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.8</Value></State>
+		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.2</Value></State>
+	
+		<State><Id>lastVoiceName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>lastMusicName</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>Button_Normal</Id>
+				<Type>Text</Type>
+				<Value>audioBtn_On</Value>
+			</State>
+	
+			<State>
+				<Id>Button_Toggled</Id>
+				<Type>Text</Type>
+				<Value>audioBtn_Off</Value>
+			</State>
+			
+			<State>
+				<Id>Button_MouseOver</Id>
+				<Type>Text</Type>
+				<Value>Undefined</Value>
+			</State>
+			
+			<State>
+				<Id>Button_Pressed</Id>
+				<Type>Text</Type>
+				<Value>Undefined</Value>
+			</State>
+		</_States>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseEntered</Event>
+			<Scripts>
+				<Script>
+				var a;
+				//me.setState("2DMeshImageForm","Button_MouseOver");
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseLeft</Event>
+			<Scripts>
+				<Script>
+				var a;
+				//me.setState("2DMeshImageForm","Button_Normal");
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					if (me.s('Toggled')==false)
+					{
+						me.setState("2DMeshImageForm","[Button_Toggled]");
+						
+						var l_lastMusicName = me.s('lastMusicName');
+						Sound.stopSound(l_lastMusicName,0.4);
+						me.stopAction('Next Music');
+						
+						me.setState('Toggled',true);
+					}
+					else
+					{
+						me.setState("2DMeshImageForm","[Button_Normal]");
+						
+						//Play Music
+						e('Audio Control').fa('Play Music', { name:"m:music1" } );
+						
+						
+						me.setState('Toggled',false);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<Action>
+			<Id>Play Music</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_lastMusicName = me.s('lastMusicName');
+					
+					//var l_playing = Sound.isPlaying(l_lastVoiceName);
+					
+					Sound.playSound( it.s('name'), me.s('VolumeMusic') );
+					me.set('lastMusicName', it.s('name'));
+					me.sa('Next Music');
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Next Music</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script>
+					var l_lastMusicName = me.s('lastMusicName');
+					
+					var l_playing = Sound.isPlaying(l_lastMusicName);
+					
+					if (l_playing==false)
+					{
+						it.stop();
+						if (l_lastMusicName=="m:music1")
+							me.fa('Play Music', { name:"m:music2" } );
+						else
+							me.fa('Play Music', { name:"m:music1" } );
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Play Voice</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_lastVoiceName = me.s('lastVoiceName');
+					
+					var l_playing = Sound.isPlaying(l_lastVoiceName);
+					
+					if (it.s('important')==true || l_playing==false)
+					{
+						if (l_lastVoiceName!="Undefined")
+						{
+							Sound.stopSound(l_lastVoiceName,0.1);
+						}
+						
+						Sound.playSound( it.s('name'), me.s('VolumeVoice') );
+						me.set('lastVoiceName', it.s('name'));
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>important</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Play FX</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('Toggled')==false)
+					{
+						Sound.playSound( it.s('name'), me.s('VolumeFX') );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Loop FX</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('Toggled')==false)
+					{
+						Sound.loopSound( it.s('name'), me.s('VolumeFX') );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -7,119 +7,171 @@
             <key>wave_000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{408,0},{408,70}}</string>
+                <string>{{408,0},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{816,0},{408,70}}</string>
+                <string>{{816,0},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,70},{408,70}}</string>
+                <string>{{1224,0},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{408,70},{408,70}}</string>
+                <string>{{1632,0},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{816,70},{408,70}}</string>
+                <string>{{0,78},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,140},{408,70}}</string>
+                <string>{{408,78},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{408,140},{408,70}}</string>
+                <string>{{816,78},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
             </dict>
             <key>wave_008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{816,140},{408,70}}</string>
+                <string>{{1224,78},{408,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{408,70}}</string>
+                <string>{{0,0},{408,78}}</string>
                 <key>sourceSize</key>
-                <string>{408,70}</string>
+                <string>{408,78}</string>
+            </dict>
+            <key>wave_009.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1632,78},{408,78}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{408,78}}</string>
+                <key>sourceSize</key>
+                <string>{408,78}</string>
+            </dict>
+            <key>wave_010.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,156},{408,78}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{408,78}}</string>
+                <key>sourceSize</key>
+                <string>{408,78}</string>
+            </dict>
+            <key>wave_011.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{408,156},{408,78}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{408,78}}</string>
+                <key>sourceSize</key>
+                <string>{408,78}</string>
+            </dict>
+            <key>wave_012.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{816,156},{408,78}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{408,78}}</string>
+                <key>sourceSize</key>
+                <string>{408,78}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -129,9 +181,9 @@
             <key>realTextureFileName</key>
             <string>waves.png</string>
             <key>size</key>
-            <string>{1224,210}</string>
+            <string>{2040,234}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:066a75e30378b70d8fd834c3f4d3a136:a5a248daba837934c8b9f601fbf42a8d:084cd3161963bc878ba09ac0f04e5ec7$</string>
+            <string>$TexturePacker:SmartUpdate:0d531b34876cfad4abc0dfaa52443d54:c0c4208b71269c793633e1e59cdb9614:084cd3161963bc878ba09ac0f04e5ec7$</string>
             <key>textureFileName</key>
             <string>waves.png</string>
         </dict>

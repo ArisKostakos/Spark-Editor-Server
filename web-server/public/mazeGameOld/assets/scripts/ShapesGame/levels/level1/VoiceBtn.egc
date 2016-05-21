@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Image2D">
+	<_States>
+		<_State id="name"><Value>Voice Control</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="2DMeshImageForm"><Value>[Button_Normal]</Value></_State>
+			
+		<_State id="spaceX"><Value>1130</Value></_State>
+		<_State id="spaceY"><Value>145</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		
+		<State><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>0.5</Value></State>
+		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.4</Value></State>
+	
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>Button_Normal</Id>
+				<Type>Text</Type>
+				<Value>voiceBtn_Off</Value>
+			</State>
+	
+			<State>
+				<Id>Button_Toggled</Id>
+				<Type>Text</Type>
+				<Value>voiceBtn_On</Value>
+			</State>
+			
+			<State>
+				<Id>Button_MouseOver</Id>
+				<Type>Text</Type>
+				<Value>Undefined</Value>
+			</State>
+			
+			<State>
+				<Id>Button_Pressed</Id>
+				<Type>Text</Type>
+				<Value>Undefined</Value>
+			</State>
+		</_States>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseEntered</Event>
+			<Scripts>
+				<Script>
+				var a;
+				//me.setState("2DMeshImageForm","Button_MouseOver");
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseLeft</Event>
+			<Scripts>
+				<Script>
+				var a;
+				//me.setState("2DMeshImageForm","Button_Normal");
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					//Show Instructions
+					e('Instructions').fa('Show');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

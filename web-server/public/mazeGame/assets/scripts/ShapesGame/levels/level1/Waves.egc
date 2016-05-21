@@ -4,15 +4,15 @@
 		<_State id="2DMeshSpritesheetForm"><Value>waves</Value></_State>
 		<_State id="visible"><Value>false</Value></_State>
 		<_State id="AnimationLoop"><Value>false</Value></_State>
-		<_State id="scaleX"><Value>0.5</Value></_State>
-		<_State id="scaleY"><Value>0.5</Value></_State>
+		<_State id="scaleX"><Value>0.25</Value></_State>
+		<_State id="scaleY"><Value>0.25</Value></_State>
 	</_States>
 	
 	<_Actions>
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					me.fa('Stop Wave');
+					me.fa('Init Wave');
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -28,14 +28,15 @@
 					
 					l_obj_player.play();
 					me.set('visible',true);
+					me.set('animate_x',{type:"by", by:80, seconds:1.2, easing:Ease.linear});
 					
-					me.sa('WaitFor',{delay:0.9, cbEntity:me, cbAction:"Stop Wave"});
+					me.sa('WaitFor',{delay:1.2, cbEntity:me, cbAction:"Init Wave"});
 				</Script>
 			</Scripts>
 		</Action>
 	
 		<Action>
-			<Id>Stop Wave</Id>
+			<Id>Init Wave</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
@@ -43,16 +44,25 @@
 					
 					me.set('visible',false);
 					
+					var spaceX=0;
+					
+					var randomY = Logic.random(1,100)/100;
+					
 					if (Logic.random(0,1)==0)
 					{
-						me.set('spaceX', Logic.random(150,400));
-						me.set('spaceY', Logic.random(200,850));
+						me.set('spaceX', Logic.random(250,550));
+						me.set('spaceY', 620+(1300-620)*randomY);
 					}
 					else
 					{
-						me.set('spaceX', Logic.random(1200,1650));
-						me.set('spaceY', Logic.random(100,950));
+						me.set('spaceX', Logic.random(1620,1750));
+						me.set('spaceY', 520+(1300-520)*randomY);
 					}
+					
+					var scale = 0.22 + randomY * (0.43 - 0.22);
+					
+					me.set('scaleX',scale);
+					me.set('scaleY',scale);
 					
 					me.sa('WaitFor',{delay:Logic.random(0,5), cbEntity:me, cbAction:"Play"});
 				</Script>

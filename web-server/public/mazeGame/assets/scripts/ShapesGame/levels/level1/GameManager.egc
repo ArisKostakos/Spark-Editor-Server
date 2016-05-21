@@ -71,8 +71,6 @@
 				<Script><![CDATA[
 					//forced
 					
-					
-					
 					//Sound.playSound('m:Debug');
 					
 					//Assumes board is clear and everything.....
@@ -99,6 +97,7 @@
 					
 					//Init Penguins
 					e('Player').fa('Init');
+					//e('Player').fa('Init Temp');
 					e('Mommy').fa('Init');
 					e('Daddy').fa('Init');
 					
@@ -107,8 +106,6 @@
 					
 					Display.de("PATH LENGTH: " + e('Maze Area').s('pathLength'));
 					
-					//Game Running
-					me.set('gameRunning',true);
 					
 					return;
 					
