@@ -3,6 +3,7 @@
 		<_State id="name"><Value>Arrows</Value></_State>
 		<_State id="opacity"><Value>0</Value></_State>
 		<State><Id>bright</Id><Type>Boolean</Type><Value>false</Value></State>
+		<_State id="visible"><Value>false</Value></_State>
 	</_States>
 	
 	<Form><Space><Entities>

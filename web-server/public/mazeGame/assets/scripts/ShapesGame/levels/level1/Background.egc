@@ -20,7 +20,7 @@
 				<_Action id="Constructor">
 					<_Scripts>
 						<Script><![CDATA[
-							for (var i=0;i<20;i++)
+							for (var i=0;i<80;i++) //20
 							{
 								var f_wave = Logic.create('ShapesGame.levels.level1.Waves');
 								me.addChild(f_wave);

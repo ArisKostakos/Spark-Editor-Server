@@ -59,12 +59,13 @@
 						me.set('spaceY', 520+(1300-520)*randomY);
 					}
 					
-					var scale = 0.22 + randomY * (0.43 - 0.22);
+					//var scale = 0.22 + randomY * (0.43 - 0.22);
+					var scale = 0.10 + randomY * (0.30 - 0.10);
 					
 					me.set('scaleX',scale);
 					me.set('scaleY',scale);
 					
-					me.sa('WaitFor',{delay:Logic.random(0,5), cbEntity:me, cbAction:"Play"});
+					me.sa('WaitFor',{delay:Logic.random(0,2), cbEntity:me, cbAction:"Play"});   //0,5
 				</Script>
 			</Scripts>
 		</Action>
