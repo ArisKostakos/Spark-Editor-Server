@@ -149,6 +149,17 @@
 						
 						//Play FX
 						e('Audio Control').fa('Play FX', { name:"fx:negative", weak:true } );
+						
+						
+						/*
+						l_character.set('bouncing',true);
+						l_character.set('wrongTile',me);
+						l_character.setState('animate_y',{type:"by", by:-25, seconds:0.4, easing:Ease.quadInOut});
+						l_character.sa('WaitFor',{delay:0.4, cbEntity:me, cbAction:"Bounce Down 1"});
+						me.fa("Wrong Start");
+						*/
+						//Remove direction from possible moves
+						//e('arrow_'+l_direction).set('visible',false);
 					}
 				</Script>
 			</Scripts>

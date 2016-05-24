@@ -4,44 +4,61 @@
 		<_State id="opacity"><Value>0</Value></_State>
 		<State><Id>bright</Id><Type>Boolean</Type><Value>false</Value></State>
 		<_State id="visible"><Value>false</Value></_State>
-		<_State id="spaceX"><Value>;2280/2-520</Value></_State>
-		<_State id="spaceY"><Value>;1440/2-210</Value></_State>
 	</_States>
 	
 	<Form><Space><Entities>
 		<!-- Left -->
 		<Entity extends="std.display.Image2D">
 			<_States>
-				<_State id="name"><Value>arrow_left</Value></_State>
+				<_State id="name"><Value>arrowLeft</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="2DMeshImageForm"><Value>choiceTile</Value></_State>
+				<_State id="2DMeshImageForm"><Value>arrow</Value></_State>
+				<_State id="spaceX"><Value>-80</Value></_State>
+				<_State id="spaceY"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>0.75</Value></_State>
+				<_State id="scaleY"><Value>0.75</Value></_State>
 			</_States>
 		</Entity>
 		
 		<!-- Right -->
 		<Entity extends="std.display.Image2D">
 			<_States>
-				<_State id="name"><Value>arrow_right</Value></_State>
+				<_State id="name"><Value>arrowRight</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="2DMeshImageForm"><Value>choiceTile</Value></_State>
+				<_State id="2DMeshImageForm"><Value>arrow</Value></_State>
+				<_State id="spaceX"><Value>80</Value></_State>
+				<_State id="spaceY"><Value>0</Value></_State>
+				<_State id="scaleX"><Value>0.75</Value></_State>
+				<_State id="scaleY"><Value>0.75</Value></_State>
+				<_State id="rotation"><Value>180</Value></_State>
 			</_States>
 		</Entity>
 		
 		<!-- Up -->
 		<Entity extends="std.display.Image2D">
 			<_States>
-				<_State id="name"><Value>arrow_up</Value></_State>
+				<_State id="name"><Value>arrowUp</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="2DMeshImageForm"><Value>choiceTile</Value></_State>
+				<_State id="2DMeshImageForm"><Value>arrow</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>-50</Value></_State>
+				<_State id="scaleX"><Value>0.75</Value></_State>
+				<_State id="scaleY"><Value>0.75</Value></_State>
+				<_State id="rotation"><Value>90</Value></_State>
 			</_States>
 		</Entity>
 		
 		<!-- Down -->
 		<Entity extends="std.display.Image2D">
 			<_States>
-				<_State id="name"><Value>arrow_down</Value></_State>
+				<_State id="name"><Value>arrowDown</Value></_State>
 				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="2DMeshImageForm"><Value>choiceTile</Value></_State>
+				<_State id="2DMeshImageForm"><Value>arrow</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>50</Value></_State>
+				<_State id="scaleX"><Value>0.75</Value></_State>
+				<_State id="scaleY"><Value>0.75</Value></_State>
+				<_State id="rotation"><Value>270</Value></_State>
 			</_States>
 		</Entity>
 	</Entities></Space></Form>
@@ -62,17 +79,26 @@
 				<Script>
 					//forced
 					
-					var duration = 0.5;
+					var duration = 1;
 					
 					if (me.s('bright'))
 					{
-						me.setState('animate_opacity',{type:"to", to:0.1, seconds:duration, easing:Ease.quadInOut});
+						me.setState('animate_opacity',{type:"to", to:0.3, seconds:duration, easing:Ease.quadInOut});
+						e('arrowLeft').setState('animate_x',{type:"to", to:-80, seconds:duration, easing:Ease.quadInOut});
+						e('arrowRight').setState('animate_x',{type:"to", to:80, seconds:duration, easing:Ease.quadInOut});
+						e('arrowUp').setState('animate_y',{type:"to", to:-50, seconds:duration, easing:Ease.quadInOut});
+						e('arrowDown').setState('animate_y',{type:"to", to:50, seconds:duration, easing:Ease.quadInOut});
 						me.sa('WaitFor',{delay:duration, cbEntity:me, cbAction:"Toggle"});
 						me.set('bright',false);
 					}
 					else
 					{
-						me.setState('animate_opacity',{type:"to", to:0.5, seconds:duration, easing:Ease.quadInOut});
+						me.setState('animate_opacity',{type:"to", to:0.7, seconds:duration, easing:Ease.quadInOut});
+						
+						e('arrowLeft').setState('animate_x',{type:"to", to:-80-15, seconds:duration, easing:Ease.quadInOut});
+						e('arrowRight').setState('animate_x',{type:"to", to:80+15, seconds:duration, easing:Ease.quadInOut});
+						e('arrowUp').setState('animate_y',{type:"to", to:-50-15, seconds:duration, easing:Ease.quadInOut});
+						e('arrowDown').setState('animate_y',{type:"to", to:50+15, seconds:duration, easing:Ease.quadInOut});
 						
 						me.sa('WaitFor',{delay:duration, cbEntity:me, cbAction:"Toggle"});
 						me.set('bright',true);
@@ -89,10 +115,8 @@
 					//forced
 					
 					me.set('visible',true);
-					
-					
 					var player = e('Player');
-					/*
+					
 					if (it.s('query'))
 					{
 						me.set('spaceX', query(player,'x'));
@@ -106,47 +130,30 @@
 					
 					Display.de('playerX: ' + player.s('spaceX'));
 					Display.de('playerY: ' + player.s('spaceY'));
-					*/
 					
 					//Get Characters current Tile
 					var l_currentTile = player.s('currentTile');
 					var l_ctDirs = l_currentTile.s('dirs');
 					
 					if (l_ctDirs.exists('left') && !l_ctDirs.get('left').s('visited'))
-					{
-						e('arrow_left').set('visible',true);
-						e('arrow_left').set('spaceX', l_ctDirs.get('left').s('spaceX') );
-						e('arrow_left').set('spaceY', l_ctDirs.get('left').s('spaceY') );
-					}
+						e('arrowLeft').set('visible',true);
 					else
-						e('arrow_left').set('visible',false);
+						e('arrowLeft').set('visible',false);
 						
 					if (l_ctDirs.exists('right') && !l_ctDirs.get('right').s('visited'))
-					{
-						e('arrow_right').set('visible',true);
-						e('arrow_right').set('spaceX', l_ctDirs.get('right').s('spaceX') );
-						e('arrow_right').set('spaceY', l_ctDirs.get('right').s('spaceY') );
-					}
+						e('arrowRight').set('visible',true);
 					else
-						e('arrow_right').set('visible',false);
+						e('arrowRight').set('visible',false);
 						
 					if (l_ctDirs.exists('up') && !l_ctDirs.get('up').s('visited'))
-					{
-						e('arrow_up').set('visible',true);
-						e('arrow_up').set('spaceX', l_ctDirs.get('up').s('spaceX') );
-						e('arrow_up').set('spaceY', l_ctDirs.get('up').s('spaceY') );
-					}
+						e('arrowUp').set('visible',true);
 					else
-						e('arrow_up').set('visible',false);
+						e('arrowUp').set('visible',false);
 						
 					if (l_ctDirs.exists('down') && !l_ctDirs.get('down').s('visited'))
-					{
-						e('arrow_down').set('visible',true);
-						e('arrow_down').set('spaceX', l_ctDirs.get('down').s('spaceX') );
-						e('arrow_down').set('spaceY', l_ctDirs.get('down').s('spaceY') );
-					}
+						e('arrowDown').set('visible',true);
 					else
-						e('arrow_down').set('visible',false);
+						e('arrowDown').set('visible',false);
 				</Script>
 			</Scripts>
 			<States>

@@ -160,6 +160,9 @@
 					
 					//Game Running
 					e('Game Manager').set('gameRunning',true);
+					
+					//Set Player Arrows
+					e('Arrows').fa('Init',{query:false});
 				</Script>
 			</Scripts>
 		</Action>

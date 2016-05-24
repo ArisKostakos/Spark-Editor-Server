@@ -7,156 +7,156 @@
             <key>fish_000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{811,53},{44,29}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{128,-86}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{264,172},{44,29}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{316,0},{316,201}}</string>
+                <string>{{811,1},{50,77}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{125,-62}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{258,124},{50,77}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{632,0},{316,201}}</string>
+                <string>{{328,1},{64,103}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{112,-34}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{238,83},{64,103}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{948,0},{316,201}}</string>
+                <string>{{626,1},{74,91}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{86,4}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{207,51},{74,91}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1264,0},{316,201}}</string>
+                <string>{{532,1},{92,83}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{46,38}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{158,21},{92,83}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1580,0},{316,201}}</string>
+                <string>{{1,1},{110,61}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{4,64}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{107,6},{110,61}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,201},{316,201}}</string>
+                <string>{{113,1},{106,59}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-37,64}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{68,7},{106,59}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{316,201},{316,201}}</string>
+                <string>{{719,1},{90,75}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-68,34}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{45,29},{90,75}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{632,201},{316,201}}</string>
+                <string>{{433,1},{78,97}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-92,7}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{27,45},{78,97}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_009.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{948,201},{316,201}}</string>
+                <string>{{221,1},{72,105}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-108,-20}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{14,68},{72,105}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_010.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1264,201},{316,201}}</string>
+                <string>{{890,1},{46,77}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-126,-62}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{9,124},{46,77}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
             <key>fish_011.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1580,201},{316,201}}</string>
+                <string>{{857,53},{24,29}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-119,-86}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{316,201}}</string>
+                <string>{{27,172},{24,29}}</string>
                 <key>sourceSize</key>
                 <string>{316,201}</string>
             </dict>
@@ -165,12 +165,16 @@
         <dict>
             <key>format</key>
             <integer>2</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
             <key>realTextureFileName</key>
             <string>fish.png</string>
             <key>size</key>
-            <string>{1896,402}</string>
+            <string>{937,85}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:fa26a4980d22a9b35b2dd84180138d87:5bc4e1dd53851ba335fd398124bd0e63:14ac73c88c3019464dc0f7ed87dc5bc2$</string>
+            <string>$TexturePacker:SmartUpdate:ea6cdf0bb7aec555a0813cbb10ca4d2e:5bc4e1dd53851ba335fd398124bd0e63:14ac73c88c3019464dc0f7ed87dc5bc2$</string>
             <key>textureFileName</key>
             <string>fish.png</string>
         </dict>

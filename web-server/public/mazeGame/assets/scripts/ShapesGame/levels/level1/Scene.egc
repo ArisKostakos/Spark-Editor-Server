@@ -20,20 +20,16 @@
 		<Entity extends="ShapesGame.levels.level1.Banner"/>
 		
 		<!-- Seals -->
-		<Entity extends="std.display.Image2D">
+		<Entity extends="ShapesGame.levels.level1.Seal">
 			<_States>
-				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="2DMeshImageForm"><Value>seal</Value></_State>
 				<_State id="spaceX"><Value>;2280/2-600</Value></_State>
 				<_State id="spaceY"><Value>;1440/2-494+53</Value></_State>
 				<_State id="scaleX"><Value>-0.7</Value></_State>
 				<_State id="scaleY"><Value>0.7</Value></_State>
 			</_States>
 		</Entity>
-		<Entity extends="std.display.Image2D">
+		<Entity extends="ShapesGame.levels.level1.Seal">
 			<_States>
-				<_State id="physicsEntity"><Value>false</Value></_State>
-				<_State id="2DMeshImageForm"><Value>seal</Value></_State>
 				<_State id="spaceX"><Value>;2280/2+550</Value></_State>
 				<_State id="spaceY"><Value>;1440/2-494+70</Value></_State>
 			</_States>
@@ -55,6 +51,9 @@
 			</_States>
 		</Entity>
 		
+		<!-- Player Arrows NEW (ARROWS)-->
+		<Entity extends="ShapesGame.levels.level1.Arrows"/>
+		
 		<!-- Mommy -->
 		<Entity extends="ShapesGame.levels.level1.Mommy"/>
 		
@@ -67,8 +66,8 @@
 		<!-- Family -->
 		<Entity extends="ShapesGame.levels.level1.Family"/>
 		
-		<!-- Player Arrows -->
-		<Entity extends="ShapesGame.levels.level1.Arrows"/>
+		<!-- Player Arrows OLD ARROWS
+		<Entity extends="ShapesGame.levels.level1.Arrows"/>-->
 		
 		<!-- Snow Particle Emitter -->
 		<Entity extends="ShapesGame.levels.level1.MyParticle">

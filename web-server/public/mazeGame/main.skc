@@ -112,6 +112,7 @@
 			<!-- Tile -->
 			<Asset type="image" location="local" bytes='10000' id="tileImage">ShapesGame/levels/level1/tiles/tile.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="wrongTile">ShapesGame/levels/level1/tiles/wrong_tile.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="choiceTile">ShapesGame/levels/level1/tiles/tile_white.png</Asset>
 			<Asset type="image" location="local" bytes='100000' id="tile_sheet">ShapesGame/levels/level1/spritesheets/tile_sheet.png</Asset>
 			<Asset type="image" location="local" bytes='4540' id="tile">ShapesGame/levels/level1/spritesheets/tile.plist</Asset>
 			
@@ -144,17 +145,18 @@
 			
 			<!-- Banner -->
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Instructions.egc</Asset>
-			<Asset type="image" location="local" bytes='10000' id="banner">ShapesGame/levels/level1/tiles/ice_banner2.png</Asset>
+			
+			<Asset type="image" location="local" bytes='10000' id="banner">ShapesGame/levels/level1/tiles/ice_banner2.png</Asset> <!-- FIX ME I AM TOO LONG tiles/ice_banner2 -->
+			
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Banner.egc</Asset>
 			
 			<!-- Background -->
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Background.egc</Asset>
-			<Asset type="image" location="local" bytes='10000' id="sea">ShapesGame/levels/level1/sea/seaBig.png</Asset>
+			<Asset type="image" location="local" bytes='10000' id="sea">ShapesGame/levels/level1/sea/seaBig.png</Asset> <!-- FIX ME I AM TOO LONG sea/seaBig -->
 			<Asset type="image" location="local" bytes='10000' id="ice">ShapesGame/levels/level1/ice/ice.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="igloo">ShapesGame/levels/level1/ice/igloo.png</Asset>
 			
 			<!-- Misc -->
-			<Asset type="image" location="local" bytes='10000' id="seal">ShapesGame/levels/level1/misc/seal.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="flag1">ShapesGame/levels/level1/misc/flag1.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="flag2">ShapesGame/levels/level1/misc/flag2.png</Asset>
 			<Asset type="image" location="local" bytes='10000' id="arrow">ShapesGame/levels/level1/misc/arrow.png</Asset>
@@ -210,7 +212,7 @@
 			<Asset type="sound" location="local" bytes='53000' id="fx:shapePop">ShapesGame/soundfx/shapePop.mp3</Asset>
 			<Asset type="sound" location="local" bytes='53000' id="fx:shapeChange">ShapesGame/soundfx/shapeChange.mp3</Asset>
 			<Asset type="sound" location="local" bytes='53000' id="fx:negative">ShapesGame/soundfx/negative.mp3</Asset>
-			<Asset type="sound" location="local" bytes='53000' id="fx:ouch">ShapesGame/soundfx/ouch.mp3</Asset>
+			<!--<Asset type="sound" location="local" bytes='53000' id="fx:ouch">ShapesGame/soundfx/ouch.mp3</Asset>-->
 			<Asset type="sound" location="local" bytes='53000' id="fx:step">ShapesGame/soundfx/step.mp3</Asset>
 			<Asset type="sound" location="local" bytes='53000' id="fx:achievement">ShapesGame/soundfx/achievementSound.mp3</Asset>
 			<Asset type="sound" location="local" bytes='120000' id="fx:victory">ShapesGame/soundfx/Victory.mp3</Asset>
@@ -266,6 +268,21 @@
 			<!-- Whole Family -->
 			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Family.egc</Asset>
 			<Asset type="image" location="local" id="family_penguin" bytes='100000' forceLoadAsData='true'>ShapesGame/levels/level1/spriter/family/family.scml</Asset>
+			
+			<!-- Seal -->
+			<Asset type="script" location="local" bytes='8650'>ShapesGame/levels/level1/Seal.egc</Asset>
+			<Asset type="image" location="local" id="fwkia3" bytes='100000' forceLoadAsData='true'>ShapesGame/levels/level1/spriter/seal/fwkia3.scml</Asset>
+			
+			<Asset type="image" location="local" id=".fwkia3_body" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_body.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_head" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_head.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale1" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale1.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale2" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale2.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale3" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale3.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale4" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale4.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale5" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale5.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale6" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale6.png</Asset>
+			<Asset type="image" location="local" id=".fwkia3_tale7" bytes='2000'>ShapesGame/levels/level1/spriter/seal/fwkia3_tale7.png</Asset>
+			
 			
 			<!-- Logo -->
 			<Asset type="image" location="local" bytes='10000' id="logo_text">ShapesGame/levels/level1/logo_text.png</Asset>
