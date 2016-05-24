@@ -122,6 +122,9 @@
 					if (e('Game Manager').s('gameRunning')==false)
 						return;
 					
+					if (e('Player').s('bouncing')==true || e('Player').s('walking')==true)
+						return;
+						
 					//Get Characters current Tile
 					var l_character = e('Player');
 					var l_currentTile = l_character.s('currentTile');
