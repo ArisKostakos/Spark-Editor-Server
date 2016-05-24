@@ -112,7 +112,7 @@
 					var l_currentTile = player.s('currentTile');
 					var l_ctDirs = l_currentTile.s('dirs');
 					
-					if (l_ctDirs.exists('left') && !l_ctDirs.get('left').s('visited'))
+					if (l_ctDirs.exists('left') && !l_ctDirs.get('left').s('visited') && l_ctDirs.get('left').s('path'))
 					{
 						e('arrow_left').set('visible',true);
 						e('arrow_left').set('spaceX', l_ctDirs.get('left').s('spaceX') );
@@ -121,7 +121,7 @@
 					else
 						e('arrow_left').set('visible',false);
 						
-					if (l_ctDirs.exists('right') && !l_ctDirs.get('right').s('visited'))
+					if (l_ctDirs.exists('right') && !l_ctDirs.get('right').s('visited') && l_ctDirs.get('right').s('path'))
 					{
 						e('arrow_right').set('visible',true);
 						e('arrow_right').set('spaceX', l_ctDirs.get('right').s('spaceX') );
@@ -130,7 +130,7 @@
 					else
 						e('arrow_right').set('visible',false);
 						
-					if (l_ctDirs.exists('up') && !l_ctDirs.get('up').s('visited'))
+					if (l_ctDirs.exists('up') && !l_ctDirs.get('up').s('visited') && l_ctDirs.get('up').s('path'))
 					{
 						e('arrow_up').set('visible',true);
 						e('arrow_up').set('spaceX', l_ctDirs.get('up').s('spaceX') );
@@ -139,7 +139,7 @@
 					else
 						e('arrow_up').set('visible',false);
 						
-					if (l_ctDirs.exists('down') && !l_ctDirs.get('down').s('visited'))
+					if (l_ctDirs.exists('down') && !l_ctDirs.get('down').s('visited') && l_ctDirs.get('down').s('path'))
 					{
 						e('arrow_down').set('visible',true);
 						e('arrow_down').set('spaceX', l_ctDirs.get('down').s('spaceX') );

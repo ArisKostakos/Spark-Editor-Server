@@ -73,7 +73,7 @@
 								l_text="Βρες το δρόμο με τα τετράγωνα σαν αυτό";
 							else if (l_pathShape=="circle")
 								l_text="Βρες το δρόμο με τους κύκλους σαν αυτόν";
-							
+								
 								
 							me.set('text',l_text);
 						</Script>

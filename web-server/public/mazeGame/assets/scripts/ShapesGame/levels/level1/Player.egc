@@ -237,6 +237,9 @@
 					//forced
 					
 					me.set('bouncing',false);
+					
+					//Show Arrows
+					e('Arrows').set('visible',true);
 				</Script>
 			</Scripts>
 		</Action>
@@ -309,6 +312,9 @@
 					{
 						//Set Player Arrows
 						e('Arrows').fa('Init',{query:true});
+						
+						//But don't show them yet
+						e('Arrows').set('visible',false);
 					}
 				</Script>
 			</Scripts>

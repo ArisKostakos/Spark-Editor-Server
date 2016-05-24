@@ -151,7 +151,7 @@
 						Display.de("Tile Clicked is not a neighbor tile.. play a noise or smth..");
 						
 						//Play FX
-						e('Audio Control').fa('Play FX', { name:"fx:negative", weak:true } );
+						e('Audio Control').fa('Play FX', { name:"fx:negative", weak:false } );
 						
 						
 						
