@@ -1,0 +1,267 @@
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<!--<_State id="physicsEntity"><Value>false</Value></_State>-->
+		<State><Id>nickname</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>color</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>position</Id><Type>Integer</Type><Value>0</Value></State>
+		<_State id="scaleX"><Value>1.3</Value></_State>
+		<_State id="scaleY"><Value>1.3</Value></_State>
+		<State><Id>speed</Id><Type>Integer</Type><Value>2</Value></State>
+		<State><Id>spriteSheet</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>image</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+		
+	<Form><Space><Entities>
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="2DMeshTextForm"><Value>defaultFont</Value></_State>
+				<_State id="font"><Value>defaultFont</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>-40</Value></_State>
+				<_State id="align"><Value>Left</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							me.set('text',parent.s('nickname') );
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+		
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="visible"><Value>true</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>0</Value></_State>
+				<_State id="AnimationSpeed"><Value>100</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							parent.set('spriteSheet',me );
+							me.set('2DMeshSpritesheetForm',parent.s('color'));
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Animate', {oldX: me.s('spaceX'), oldY: me.s('spaceY')});
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Animate</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					if (me.s('spriteSheet')==null)
+						return;
+				
+					var oldX=it.s('oldX');
+					var oldY=it.s('oldY');
+					var newX=me.s('spaceX');
+					var newY=me.s('spaceY');
+					var spriteSheet=me.s('spriteSheet');
+					var spriteSheetObj=spriteSheet.s('obj_player');
+				
+					//If X remained the same
+					if (oldX==newX)
+					{
+						if (oldY>newY) //up
+						{
+							spriteSheet.set('rotation',180);
+							spriteSheetObj.paused=false;
+						}
+						else if (oldY<newY) //down
+						{
+							spriteSheet.set('rotation',0);
+							spriteSheetObj.paused=false;
+						}
+						else
+						{
+							spriteSheetObj.paused=true;
+							//spriteSheetObj.setCurrentFrame(0);
+						}
+					}
+					else if (oldY==newY)
+					{
+						if (oldX>newX) //left
+						{
+							spriteSheet.set('rotation',90);
+							spriteSheetObj.paused=false;
+						}
+						else if (oldX<newX) //right
+						{
+							spriteSheet.set('rotation',270);
+							spriteSheetObj.paused=false;
+						}
+						else
+						{
+							spriteSheetObj.paused=true;
+							//spriteSheetObj.setCurrentFrame(0);
+						}
+					}
+					else
+					{
+						spriteSheetObj.paused=false;
+						
+						if (oldX>newX && oldY>newY)
+							spriteSheet.set('rotation',90+45); //left up
+						else if (oldX<newX && oldY>newY)
+							spriteSheet.set('rotation',180+45); //right up
+						else if (oldX<newX && oldY<newY)
+							spriteSheet.set('rotation',270+45); //right down
+						else if (oldX>newX && oldY<newY)
+							spriteSheet.set('rotation',45); //left down
+					}
+					
+					it.set('oldX',newX);
+					it.set('oldY',newY);
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>oldX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>oldY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>W</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>S</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>D</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>A</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<!--Arrow Keys-->
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceY', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Left</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						me.addToState('spaceX', -me.s('speed') );
+						Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

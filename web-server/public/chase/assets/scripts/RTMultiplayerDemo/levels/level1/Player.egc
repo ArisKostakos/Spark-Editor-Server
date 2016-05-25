@@ -1,0 +1,632 @@
+<Entity extends="std.display.Sprite2D">
+	<_States>
+		<!--<_State id="physicsEntity"><Value>false</Value></_State>-->
+		<State><Id>nickname</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>color</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>type</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>position</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>initX</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>initY</Id><Type>Integer</Type><Value>0</Value></State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<State><Id>speed</Id><Type>Decimal</Type><Value>300</Value></State>
+		<State><Id>spriteSheet</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>image</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>current</Id><Type>Dynamic</Type><Value>{}</Value></State>
+		<State><Id>destination</Id><Type>Dynamic</Type><Value>{}</Value></State>
+		
+		<State><Id>dir</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>orderDir</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+		
+	<Form><Space><Entities>
+		<Entity extends="std.display.Text2D">
+			<_States>
+				<_State id="2DMeshTextForm"><Value>defaultFont</Value></_State>
+				<_State id="font"><Value>defaultFont</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>-40</Value></_State>
+				<_State id="align"><Value>Left</Value></_State>
+				<_State id="scaleX"><Value>0.8</Value></_State>
+				<_State id="scaleY"><Value>0.8</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							me.set('text',parent.s('nickname') );
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+		
+		<Entity extends="std.display.Spritesheet2D">
+			<_States>
+				<_State id="visible"><Value>true</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+				<_State id="spaceX"><Value>0</Value></_State>
+				<_State id="spaceY"><Value>0</Value></_State>
+				<_State id="AnimationSpeed"><Value>100</Value></_State>
+			</_States>
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							parent.set('spriteSheet',me );
+							me.set('2DMeshSpritesheetForm',parent.s('color'));
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Temp
+					me.fa('Init');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Init</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Display.de("Created: " + me.s('nickname'));
+					//if (me.s('nickname')==e('Networking').s('nickname'))
+						//Display.de("It's Me!");
+					//Display.de("color: " + me.s('color'));
+					//Display.de("initX: " + me.s('initX'));
+					//Display.de("initY: " + me.s('initY'));
+					//Display.de("type: " + me.s('type'));
+					
+					var initX = me.s('initX');
+					var initY = me.s('initY');
+					
+					//Redo spaceX,Y
+					var maze = e('Maze Area').s('maze');
+					
+					var dir = me.set('dir','none');
+					var orderDir = me.set('orderDir','none');
+					
+					//find Current
+					var current = me.s('current');
+					current.topLeft = maze[initX][initY];
+					current.topRight = maze[initX+1][initY];
+					current.bottomLeft = maze[initX][initY+1];
+					current.bottomRight = maze[initX+1][initY+1];
+					current.posX = (current.topLeft.s('spaceX')+current.topRight.s('spaceX'))/2;
+					current.posY = (current.topLeft.s('spaceY')+current.bottomLeft.s('spaceY'))/2;
+					
+					/*
+					//find Destination
+					var destination = me.s('destination');
+					destination.topLeft = current.topLeft.s('dirs').get(dir);
+					destination.topRight = current.topRight.s('dirs').get(dir);
+					destination.bottomLeft = current.bottomLeft.s('dirs').get(dir);
+					destination.bottomRight = current.bottomRight.s('dirs').get(dir);
+					destination.posX = (destination.topLeft.s('spaceX')+destination.topRight.s('spaceX'))/2;
+					destination.posY = (destination.topLeft.s('spaceY')+destination.bottomLeft.s('spaceY'))/2;
+					*/
+					me.set('destination',null);
+					
+					me.set('spaceX', current.posX -40/2);
+					me.set('spaceY',  current.posY );
+					
+					me.sa('Animate', {oldX: me.s('spaceX'), oldY: me.s('spaceY')});
+					
+					me.sa('Move');
+					
+					if (me.s('nickname')==e('Networking').s('nickname') && me.s('type')=="hero")
+						me.sa('Check For Monsters');
+						
+					if (me.s('nickname')==e('Networking').s('nickname') && me.s('type')=="hero")
+						me.sa('Check For Dots');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Check For Monsters</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					var players = e('Networking').s('players');
+					
+					var x1 = me.s('spaceX');
+					var y1 = me.s('spaceY');
+					
+					var itr = players.iterator();
+					while (itr.hasNext())
+					{
+						var player = itr.next();
+						
+						if (player.s('type')=='monster')
+						{
+							var x2 = player.s('spaceX');
+							var y2 = player.s('spaceY');
+							
+							
+							var d = Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 );
+							
+							//Display.de("Distance: " + d);
+							if (d<50)
+							{
+								//I AM DEAD!
+								Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"dead", message: null });
+							}
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Check For Dots</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					var dots = e('Maze Area').s('dots');
+					
+					var x1 = me.s('spaceX');
+					var y1 = me.s('spaceY');
+					
+					var itr = dots.iterator();
+					while (itr.hasNext())
+					{
+						var dot = itr.next();
+						
+						var x2 = dot.s('spaceX');
+						var y2 = dot.s('spaceY');
+						
+						
+						var d = Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 );
+						
+						//Display.de("Distance: " + d);
+						if (d<30)
+						{
+							//I ATE the DOT!
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"ate dot", message: dot.s('nick') });
+							
+							//e('Maze Area').removeChild(dot); //wtf
+							
+							dot.set('visible',false);
+							
+							//dots.remove(dot.s('nick'));
+							
+							break;
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Move</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//Find Speed
+					var speed = me.s('speed')*Logic.getDt();
+					
+					//pos
+					var spaceX = me.s('spaceX');
+					var spaceY = me.s('spaceY');
+					
+					//Find Destination
+					var destination = me.s('destination');
+					
+					if (destination!=null)
+					{
+						//If we have not reached it, move
+						if (spaceX<destination.posX)
+							spaceX=Math.min(destination.posX,spaceX+speed);
+						else if (spaceX>destination.posX)
+							spaceX=Math.max(destination.posX,spaceX-speed);
+							
+						if (spaceY<destination.posY)
+							spaceY=Math.min(destination.posY,spaceY+speed);
+						else if (spaceY>destination.posY)
+							spaceY=Math.max(destination.posY,spaceY-speed);
+							
+							
+						//Check if we reached destination
+						if (spaceX==destination.posX && spaceY==destination.posY)
+						{
+							//Our Current becomes destination
+							me.set('current',destination);
+							
+							//Request new destination
+							me.fa('Change Destination');
+						}
+						
+						//Actually Move..
+						me.set('spaceX',spaceX);
+						me.set('spaceY',spaceY);
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Destination Interrupt</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//This is when player has stopped, or when changing from left to right or from bottom to top
+					
+					var dir = me.s('dir');
+					var orderDir = me.s('orderDir');
+					var current = me.s('current');
+					var destination = me.s('destination');
+					
+					//If player is stopped
+					if (destination==null)
+					{
+						//Request new destination
+						me.fa('Change Destination');
+					}
+					else
+					{
+						if 	( 	dir=='left' && orderDir=='right' ||
+								dir=='right' && orderDir=='left' ||
+								dir=='up' && orderDir=='down' ||
+								dir=='down' && orderDir=='up'
+							)
+						{
+							//Do the switcherou
+							me.set('current', destination);
+							me.set('destination', current);
+							me.set('dir',orderDir);
+							
+							if (me.s('nickname')==e('Networking').s('nickname'))
+								me.fa('Update to Network');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Change Destination</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//This is called when we have REACHED a destination
+					
+					var dir = me.s('dir');
+					var orderDir = me.s('orderDir');
+					var current = me.s('current');
+					
+					//Calculate actual Dir
+					
+					//We pick up the two tiles that we'll use to examine their neighbors
+					var tileA;
+					var tileB;
+					
+					if (orderDir=='up')
+					{
+						tileA=current.topLeft;
+						tileB=current.topRight;
+					}
+					else if (orderDir=='down')
+					{
+						tileA=current.bottomLeft;
+						tileB=current.bottomRight;
+					}
+					else if (orderDir=='left')
+					{
+						tileA=current.topLeft;
+						tileB=current.bottomLeft;
+					}
+					else if (orderDir=='right')
+					{
+						tileA=current.topRight;
+						tileB=current.bottomRight;
+					}
+					
+					//Check direction
+					var neighborA = tileA.s('dirs').get(orderDir);
+					var neighborB = tileB.s('dirs').get(orderDir);
+					
+					if (neighborA!=null && neighborA.s('type')=='E' && neighborB!=null && neighborB.s('type')=='E')
+					{
+						//Set new direction
+						dir = me.set('dir',orderDir);
+					}
+					
+					//Check if we can move
+					var neighborA = tileA.s('dirs').get(dir);
+					var neighborB = tileB.s('dirs').get(dir);
+					
+					if (neighborA!=null && neighborA.s('type')=='E' && neighborB!=null && neighborB.s('type')=='E')
+					{
+						//Set new destination
+						var destination = {};
+						destination.topLeft = current.topLeft.s('dirs').get(dir);
+						destination.topRight = current.topRight.s('dirs').get(dir);
+						destination.bottomLeft = current.bottomLeft.s('dirs').get(dir);
+						destination.bottomRight = current.bottomRight.s('dirs').get(dir);
+						destination.posX = (destination.topLeft.s('spaceX')+destination.topRight.s('spaceX'))/2;
+						destination.posY = (destination.topLeft.s('spaceY')+destination.bottomLeft.s('spaceY'))/2;
+						me.set('destination',destination);
+					}
+					else
+					{
+						me.set('destination',null);
+					}
+					
+					if (me.s('nickname')==e('Networking').s('nickname'))
+						me.fa('Update to Network');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Update to Network</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var current = me.s('current');
+					var currentTopLeftX=-1;
+					var currentTopLeftY=-1;
+					if (current!=null)
+					{
+						currentTopLeftX = current.topLeft.s('mazeX');
+						currentTopLeftY = current.topLeft.s('mazeY');
+					}
+					
+					var destination = me.s('destination');
+					var destinationTopLeftX=-1;
+					var destinationTopLeftY=-1;
+					if (destination!=null)
+					{
+						destinationTopLeftX = destination.topLeft.s('mazeX');
+						destinationTopLeftY = destination.topLeft.s('mazeY');
+					}
+					
+					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"Client Update", message: { dir:me.s('dir'), orderDir: me.s('orderDir'), currentTopLeftX: currentTopLeftX, currentTopLeftY: currentTopLeftY, destinationTopLeftX: destinationTopLeftX, destinationTopLeftY: destinationTopLeftY } });
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Animate</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					if (me.s('spriteSheet')==null)
+						return;
+				
+					var oldX=it.s('oldX');
+					var oldY=it.s('oldY');
+					var newX=me.s('spaceX');
+					var newY=me.s('spaceY');
+					var spriteSheet=me.s('spriteSheet');
+					var spriteSheetObj=spriteSheet.s('obj_player');
+				
+					//If X remained the same
+					if (oldX==newX)
+					{
+						if (oldY>newY) //up
+						{
+							spriteSheet.set('rotation',180);
+							spriteSheetObj.paused=false;
+						}
+						else if (oldY<newY) //down
+						{
+							spriteSheet.set('rotation',0);
+							spriteSheetObj.paused=false;
+						}
+						else
+						{
+							spriteSheetObj.paused=true;
+							//spriteSheetObj.setCurrentFrame(0);
+						}
+					}
+					else if (oldY==newY)
+					{
+						if (oldX>newX) //left
+						{
+							spriteSheet.set('rotation',90);
+							spriteSheetObj.paused=false;
+						}
+						else if (oldX<newX) //right
+						{
+							spriteSheet.set('rotation',270);
+							spriteSheetObj.paused=false;
+						}
+						else
+						{
+							spriteSheetObj.paused=true;
+							//spriteSheetObj.setCurrentFrame(0);
+						}
+					}
+					else
+					{
+						spriteSheetObj.paused=false;
+						
+						if (oldX>newX && oldY>newY)
+							spriteSheet.set('rotation',90+45); //left up
+						else if (oldX<newX && oldY>newY)
+							spriteSheet.set('rotation',180+45); //right up
+						else if (oldX<newX && oldY<newY)
+							spriteSheet.set('rotation',270+45); //right down
+						else if (oldX>newX && oldY<newY)
+							spriteSheet.set('rotation',45); //left down
+					}
+					
+					it.set('oldX',newX);
+					it.set('oldY',newY);
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>oldX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>oldY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>W</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceY', -me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+						
+						me.set('orderDir','up');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>S</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceY', me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+						
+						me.set('orderDir','down');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>D</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceX', me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+						
+						me.set('orderDir','right');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>A</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceX', -me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+						
+						me.set('orderDir','left');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<!--Arrow Keys-->
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceY', -me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+						
+						me.set('orderDir','up');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceY', me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:me.s('spaceY')} });
+						
+						me.set('orderDir','down');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceX', me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+						
+						me.set('orderDir','right');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDown</Event>
+			<Parameter>Left</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.s('nickname')==e('Networking').s('nickname'))
+					{
+						//me.addToState('spaceX', -me.s('speed') );
+						//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:me.s('spaceX')} });
+						
+						me.set('orderDir','left');
+						me.fa('Destination Interrupt');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

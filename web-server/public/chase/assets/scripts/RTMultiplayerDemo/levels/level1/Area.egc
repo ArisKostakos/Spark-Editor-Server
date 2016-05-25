@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="width"><Value>250</Value></_State>
+		<_State id="height"><Value>100</Value></_State>
+		<_State id="horizontalCenter"><Value>0</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
+		<_State id="name"><Value>Area 1</Value></_State>
+	</_States>
+	
+	<Form><Space><Entities>
+		<!--Background-->
+		<Entity extends="std.display.Image">
+			<_States>
+				<_State id="width"><Value>100%</Value></_State>
+				<_State id="height"><Value>100%</Value></_State>
+				<_State id="src"><Value>frame</Value></_State>
+			</_States>
+		</Entity>
+		
+		<Entity extends="std.display.VGroup">
+			<_States>
+				<_State id="width"><Value>100%</Value></_State>
+				<_State id="height"><Value>100%</Value></_State>
+				<_State id="paddingLeft"><Value>5</Value></_State>
+				<_State id="paddingRight"><Value>5</Value></_State>
+				<_State id="paddingTop"><Value>5</Value></_State>
+				<_State id="paddingBottom"><Value>5</Value></_State>
+				<_State id="gap"><Value>5</Value></_State>
+			</_States>
+				
+			<Form><Space><Entities>
+				<!--Name Label-->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="left"><Value>5</Value></_State>
+						<_State id="top"><Value>5</Value></_State>
+						<_State id="fontSize"><Value>16px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>17</Value></_State>
+						<_State id="text"><Value>Enter your Name:</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!--Name Input-->
+				<Entity extends="std.display.Input">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>17</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<_State id="placeholder"><Value>User Name</Value></_State>
+						<_State id="fontSize"><Value>15px</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textIndent"><Value>12px</Value></_State>
+						<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+						<_State id="name"><Value>nickInput</Value></_State>
+					</_States>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>100%</Value></_State></_States></Entity>
+				
+				<!-- Start Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>20</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+					<_State id="border"><Value>0px</Value></_State>
+					<_State id="text"><Value>Join!</Value></_State>
+					<_State id="fontSize"><Value>16px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+				<Script>
+					Display.de("Start the thing!");
+					e('Area 1').setState('display','none');
+					e('Area 2').setState('display','inline');
+					
+					e('Networking').setState('nickname',e('nickInput').s('text'));
+					
+					
+					if (e('Networking').s('nickname')=="Undefined")
+						e('Networking').setState('nickname',"Player "+ Std.string(Logic.random(1,99)));
+						
+					if (e('Networking').s('color')=="Undefined")
+						e('Networking').setState('color',"blue");
+					
+					
+					Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"greet", message: null });
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+			</Entities></Space></Form>
+		</Entity>
+	</Entities></Space></Form>
+</Entity>

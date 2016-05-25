@@ -1,0 +1,10 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<State><Id>nick</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<_State id="touchable"><Value>false</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="2DMeshImageForm"><Value>dot</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+	</_States>
+</Entity>
