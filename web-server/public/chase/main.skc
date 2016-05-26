@@ -119,6 +119,11 @@
 			<!-- Font -->
 			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
+			
+			<Asset type="image" location="local" bytes='100000' id="kUp">RTMultiplayerDemo/levels/level1/up.png</Asset>
+			<Asset type="image" location="local" bytes='100000' id="kDown">RTMultiplayerDemo/levels/level1/down.png</Asset>
+			<Asset type="image" location="local" bytes='100000' id="kLeft">RTMultiplayerDemo/levels/level1/left.png</Asset>
+			<Asset type="image" location="local" bytes='100000' id="kRight">RTMultiplayerDemo/levels/level1/right.png</Asset>
 		</Module>
 		
 		<Module id="SparkEditor:References">

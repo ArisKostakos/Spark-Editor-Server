@@ -1,7 +1,7 @@
 <Entity extends="std.display.Scene2D">
 	<_States>
 		<_State id="name"><Value>mainScene</Value></_State>
-		<State><Id>rectOpacity</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>rectOpacity</Id><Type>Decimal</Type><Value>0.3</Value></State>
 		<_State id="backgroundColor"><Value>0x201E1F</Value></_State>
 	</_States>
 	<Form><Space><Entities>
@@ -14,6 +14,119 @@
 		
 		<!-- Maze Stuff -->
 		<Entity extends="RTMultiplayerDemo.levels.level1.MazeArea"/>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>true</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>kUp</Value></_State>
+				<_State id="spaceX"><Value>1930</Value></_State>
+				<_State id="spaceY"><Value>995</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							var myPlayer=e('Networking').s('players').get(e('Networking').s('nickname'));
+						
+							if (myPlayer!=null)
+							{
+								myPlayer.set('orderDir','up');
+								myPlayer.fa('Destination Interrupt');
+							}
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>true</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>kDown</Value></_State>
+				<_State id="spaceX"><Value>1930</Value></_State>
+				<_State id="spaceY"><Value>1100</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							var myPlayer=e('Networking').s('players').get(e('Networking').s('nickname'));
+						
+							if (myPlayer!=null)
+							{
+								myPlayer.set('orderDir','down');
+								myPlayer.fa('Destination Interrupt');
+							}
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>true</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>kLeft</Value></_State>
+				<_State id="spaceX"><Value>1830</Value></_State>
+				<_State id="spaceY"><Value>1100</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							var myPlayer=e('Networking').s('players').get(e('Networking').s('nickname'));
+						
+							if (myPlayer!=null)
+							{
+								myPlayer.set('orderDir','left');
+								myPlayer.fa('Destination Interrupt');
+							}
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+		</Entity>
+		
+		<Entity extends="std.display.Image2D">
+			<_States>
+				<_State id="touchable"><Value>true</Value></_State>
+				<_State id="physicsEntity"><Value>false</Value></_State>
+				<_State id="2DMeshImageForm"><Value>kRight</Value></_State>
+				<_State id="spaceX"><Value>2030</Value></_State>
+				<_State id="spaceY"><Value>1100</Value></_State>
+				<_State id="scaleX"><Value>1</Value></_State>
+				<_State id="scaleY"><Value>1</Value></_State>
+			</_States>
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							var myPlayer=e('Networking').s('players').get(e('Networking').s('nickname'));
+						
+							if (myPlayer!=null)
+							{
+								myPlayer.set('orderDir','right');
+								myPlayer.fa('Destination Interrupt');
+							}
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
+		</Entity>
+		
 	</Entities></Space></Form>
 	
 	<_Actions>

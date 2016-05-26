@@ -164,6 +164,10 @@
 							{
 								//I AM DEAD!
 								Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"dead", message: null });
+								
+								me.set('visible',false);
+								
+								break;
 							}
 						}
 					}
@@ -198,11 +202,8 @@
 							//I ATE the DOT!
 							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"ate dot", message: dot.s('nick') });
 							
-							//e('Maze Area').removeChild(dot); //wtf
-							
 							dot.set('visible',false);
 							
-							//dots.remove(dot.s('nick'));
 							
 							break;
 						}
