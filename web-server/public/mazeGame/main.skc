@@ -203,7 +203,7 @@
 			<Asset type="sound" location="local" bytes='53000' id="s:tile_star">ShapesGame/voices/tile_star.mp3</Asset>
 			
 			<!-- Music -->
-			<Asset type="sound" location="local" bytes='1041000' id="m:music1">ShapesGame/music/music1.mp3</Asset>
+			<Asset type="sound" location="local" bytes='2354479' id="m:music1">ShapesGame/music/music1.mp3</Asset>
 			<Asset type="sound" location="local" bytes='3260000' id="m:music2">ShapesGame/music/music2.mp3</Asset>
 			
 			<!-- FX -->
