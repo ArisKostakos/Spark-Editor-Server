@@ -205,9 +205,8 @@ function forkModule(self, msg, session, forkedModule, newProjectName, cb)
 {
     console.warn("Forking Module: " + forkedModule.name);
 
-
     //Create New Module
-    createModule(self, session, forkedModule.name, forkedModule.requires, [newProjectName], function (err, moduleCreated) {
+    createModule(self, session, forkedModule.name, forkedModule.requires, [newProjectName], session.get('developer')._id, forkedModule._id, function (err, moduleCreated) {
         //Handle Error
         if (err) {
             cb(err);
@@ -248,10 +247,10 @@ function forkModule(self, msg, session, forkedModule, newProjectName, cb)
     });
 }
 
-function createModule(self, session, moduleName, moduleRequires, moduleTags, cb)
+function createModule(self, session, moduleName, moduleRequires, moduleTags, moduleOwnerId, forkedModuleId, cb)
 {
     //Create Main Module for this project
-    self.app.rpc.assets.createRemote.createModule(session, moduleName, moduleRequires, moduleTags, function(err, module_created) {
+    self.app.rpc.assets.createRemote.createModule(session, moduleName, moduleRequires, moduleTags, moduleOwnerId, forkedModuleId, function(err, module_created) {
         //Handle Error
         if (err) {
             cb(err);

@@ -72,6 +72,8 @@ exp.Project = Project;
 //Module
 var moduleSchema = mongoose.Schema({
     name: String,   //unique in project scope
+    fork: {type: Schema.Types.ObjectId, ref: 'Module'},
+    owner: {type: Schema.Types.ObjectId, ref: 'Developer'},
     requires: [String], //Weak linking by ModuleName (project scope)
     assets: [{type: Schema.Types.ObjectId, ref: 'Asset'}],
     executeEntity: {type: Schema.Types.ObjectId, ref: 'Asset'},
