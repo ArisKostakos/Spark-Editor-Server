@@ -77,7 +77,7 @@ var moduleSchema = mongoose.Schema({
     requires: [String], //Weak linking by ModuleName (project scope)
     assets: [{type: Schema.Types.ObjectId, ref: 'Asset'}],
     executeEntity: {type: Schema.Types.ObjectId, ref: 'Asset'},
-    tags: [String] //here as a tag (0) we can include the projectname that I was initially created for
+    tags: [String] //here as a tag (0) we include the projectname that I was initially created for
 });
 moduleSchema.plugin(deepPopulate, {});
 var Module = mongoose.model('Module', moduleSchema);

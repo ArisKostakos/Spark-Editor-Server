@@ -559,16 +559,137 @@ function save_createAsset(self, msg, session, command, cb)
 {
     console.log("Proccessing [createAsset] Command", command);
 
-    //Handle Success
-    cb(null);
+    /*
+     Create new DBA
+     --------------
+     type: "createAsset"
+     asset: DBA
+     */
+
+    //So, here's what's happening here... File is already uploaded..
+    //Recreate the asset and move the file and stuff
+    createAsset(command.asset, session, function (err) {
+        //Handle Error
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        //Handle Success
+        cb(null);
+    });
+}
+
+//Put me in assets server and make me remote
+function createAsset (asset, session, cb)
+{
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //Asset Path
+    var assetPath = path.resolve("../web-server/public") + '/assets';
+
+    //User Path
+    var userPath = assetPath + '/' + user.name;
+
+    var fullName = asset.fileName + '.' + asset.fileExtension;
+
+    //Asset Source Path
+    var assetSource = userPath + '/incoming/' + fullName;
+
+    //Asset Target Path
+    fs.ensureDirSync(userPath + '/' + asset.type + '/' + asset.dir);
+    var assetTarget = userPath + '/' + asset.type + '/' + asset.dir + '/' + fullName;
+
+
+
+    //Move Asset File
+    fs.move(assetSource, assetTarget, {clobber:true},
+        function(err) {
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            var raw_Asset = {name: asset.name, owner: asset.owner, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: asset.tags, accessControl: [], assetDependancies: []};
+
+            //Create Asset
+            database.create(database.Asset, raw_Asset,
+                function (err, objCreated_Asset) {
+                    //Handle Error
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+
+                    //Send Success Signal
+                    cb(null);
+                }
+            );
+        }
+    );
 }
 
 function save_addAssetToModule(self, msg, session, command, cb)
 {
     console.log("Proccessing [addAssetToModule] Command", command);
 
-    //Handle Success
-    cb(null);
+    /*
+     Add DBA to Module
+     -----------------
+     type: "addAssetToModule"
+
+     assetName: String
+     assetOwnerId: ObjectId
+     assetType: String
+
+     moduleName: String
+     moduleOwnerId: ObjectId
+     moduleProjectName: String
+     */
+
+    //Find Asset to Add
+    database.findOne(database.Asset, {owner: command.assetOwnerId, type: command.assetType, name: command.assetName},
+        function (err, asset_found) {
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            //Handle Success
+
+            //Find Module to add it to
+            database.findOne(database.Module, {owner: command.moduleOwnerId, 'tags.0': command.moduleProjectName, name: command.moduleName},
+                function (err, module_found) {
+                    //Handle Error
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+
+                    //Handle Success
+
+                    //Add it
+                    module_found.assets.push(asset_found._id);
+
+                    module_found.markModified('assets');
+                    module_found.save(function (err) {
+                        //Handle Error
+                        if (err) {
+                            cb(err);
+                            return;
+                        }
+
+                        //Handle Success
+                        cb(null);
+                    });
+                }
+            );
+        }
+    );
 }
 
 /* END OF SAVE FUNCTIONS */

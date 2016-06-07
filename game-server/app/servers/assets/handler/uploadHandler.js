@@ -313,8 +313,9 @@ function createAsset(dependancies, msg, session, cb)
     //tags
     var tags = msg.tags;
     var tagsFinal;
-    if (tags=='Undefined' || tags.length==0)
-        tagsFinal=[project.name];
+
+    if (tags == 'Undefined' || tags.length == 0)
+        tagsFinal = [project.name];
     else
     {
         tagsFinal = tags.split('&');
