@@ -510,16 +510,6 @@ handler.saveProject = function(msg, session, next) {
         //Handle Success
         next(null, {code: "success"});
     });
-
-    //For All Save Commands
-    for (var i=0; i<saveCommands.length; i++)
-    {
-        var saveCommand = saveCommands[i];
-
-        console.warn(saveCommand);
-    }
-
-
 };
 
 /* SAVE FUNCTIONS...
