@@ -500,6 +500,16 @@ handler.saveProject = function(msg, session, next) {
     var saveCommands = msg.commands;
 
     console.warn("Saving Project...");
+    proccessCommands(self, msg, session, saveCommands, 0, function(err) {
+        //Handle Error
+        if (err) {
+            next(null, {code: "error"});
+            return console.error(err);
+        }
+
+        //Handle Success
+        next(null, {code: "success"});
+    });
 
     //For All Save Commands
     for (var i=0; i<saveCommands.length; i++)
@@ -509,24 +519,69 @@ handler.saveProject = function(msg, session, next) {
         console.warn(saveCommand);
     }
 
-    //Handle Success
-    next(null, {code: "success"});
-/*
-    return;
-    database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "modules modules.assets", //no owner stuff.. good..
-        function (err, project_found) {
+
+};
+
+/* SAVE FUNCTIONS...
+    MAYBE ADD US IN A BRAND NEW SAVE SERVER, AND MAKE ALL OF US REMOTES! */
+function proccessCommands(self, msg, session, saveCommands, index, cb)
+{
+    if (index<saveCommands.length)
+    {
+        var saveCommand = saveCommands[index];
+
+        //Proccess Command
+        proccessCommand(self, msg, session, saveCommand, function (err){
             //Handle Error
             if (err) {
-                next(null, {code: "error"});
-                return console.error(err);
+                cb(err);
+                return;
             }
 
             //Handle Success
-            next(null, {code: "success", modules: project_found.modules});
-        }
-    );
-    */
-};
+
+            //Next Command
+            proccessCommands(self, msg, session, saveCommands, index+1, cb);
+        });
+    }
+    else //All done.. exiting, issuing real callback
+    {
+        cb(null);
+    }
+}
+
+function proccessCommand(self, msg, session, command, cb)
+{
+    switch(command.type) {
+        case 'createAsset':
+            save_createAsset(self, msg, session, command, cb);
+            break;
+        case 'addAssetToModule':
+            save_addAssetToModule(self, msg, session, command, cb);
+            break;
+        default:
+            console.error("Unknown Save Command Type! Ignoring...");
+            cb(null);
+    }
+}
+
+function save_createAsset(self, msg, session, command, cb)
+{
+    console.log("Proccessing [createAsset] Command", command);
+
+    //Handle Success
+    cb(null);
+}
+
+function save_addAssetToModule(self, msg, session, command, cb)
+{
+    console.log("Proccessing [addAssetToModule] Command", command);
+
+    //Handle Success
+    cb(null);
+}
+
+/* END OF SAVE FUNCTIONS */
 
 //todo: to connect to a project, user/team name is required as well. now it only connects to owner projects
 handler.connect = function(msg, session, next) {
