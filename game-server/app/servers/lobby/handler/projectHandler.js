@@ -487,6 +487,47 @@ handler.getProjectModulesPopulated = function(msg, session, next) {
     );
 };
 
+//Save Project
+handler.saveProject = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    var saveCommands = msg.commands;
+
+    console.warn("Saving Project...");
+
+    //For All Save Commands
+    for (var i=0; i<saveCommands.length; i++)
+    {
+        var saveCommand = saveCommands[i];
+
+        console.warn(saveCommand);
+    }
+
+    //Handle Success
+    next(null, {code: "success"});
+/*
+    return;
+    database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "modules modules.assets", //no owner stuff.. good..
+        function (err, project_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", modules: project_found.modules});
+        }
+    );
+    */
+};
+
 //todo: to connect to a project, user/team name is required as well. now it only connects to owner projects
 handler.connect = function(msg, session, next) {
     var self = this;
