@@ -546,6 +546,9 @@ function proccessCommand(self, msg, session, command, cb)
         case 'createAsset':
             save_createAsset(self, msg, session, command, cb);
             break;
+        case 'updateAsset':
+            save_updateAsset(self, msg, session, command, cb);
+            break;
         case 'addAssetToModule':
             save_addAssetToModule(self, msg, session, command, cb);
             break;
@@ -583,6 +586,35 @@ function save_createAsset(self, msg, session, command, cb)
 //Put me in assets server and make me remote
 function createAsset (asset, session, cb)
 {
+    copyUploadedAsset(asset, session, function(err) {
+        //Handle Error
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        //Handle Success
+        var raw_Asset = {name: asset.name, owner: asset.owner, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: asset.tags, accessControl: [], assetDependancies: []};
+
+        //Create Asset
+        database.create(database.Asset, raw_Asset,
+            function (err, objCreated_Asset) {
+                //Handle Error
+                if (err) {
+                    cb(err);
+                    return;
+                }
+
+                //Send Success Signal
+                cb(null);
+            }
+        );
+    });
+}
+
+//Put me in assets server and make me remote
+function copyUploadedAsset (asset, session, cb)
+{
     //Session bindings
     var user = session.get('user');
     var developer = session.get('developer');
@@ -604,7 +636,6 @@ function createAsset (asset, session, cb)
     var assetTarget = userPath + '/' + asset.type + '/' + asset.dir + '/' + fullName;
 
 
-
     //Move Asset File
     fs.move(assetSource, assetTarget, {clobber:true},
         function(err) {
@@ -613,21 +644,64 @@ function createAsset (asset, session, cb)
                 return;
             }
 
-            var raw_Asset = {name: asset.name, owner: asset.owner, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: asset.tags, accessControl: [], assetDependancies: []};
+            //Send Success Signal
+            cb(null);
+        }
+    );
+}
 
-            //Create Asset
-            database.create(database.Asset, raw_Asset,
-                function (err, objCreated_Asset) {
+function save_updateAsset(self, msg, session, command, cb)
+{
+    console.log("Proccessing [updateAsset] Command", command);
+
+    /*
+     Update DBA
+     ----------
+     type: "updateAsset"
+     uploadsFile: true/false  //IF THIS IS TRUE, it ignores the field value and just updates the file instead
+     asset: DBA //ONLY used temporarily for uploadsFile==TRUE. bit of a hack.. see below for more info |||| NOT PASSED HERE(server)
+     assetName: String
+     assetOwnerId: ObjectId
+     assetType: String
+     field: String
+     newValue: Object
+     */
+
+    //Find Asset to Update
+    database.findOne(database.Asset, {owner: command.assetOwnerId, type: command.assetType, name: command.assetName},
+        function (err, asset_found) {
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            //Handle Success
+
+            //If this update is to update its File
+            if (command.uploadsFile==true)
+            {
+                copyUploadedAsset(asset_found, session, function (err) {
                     //Handle Error
                     if (err) {
                         cb(err);
                         return;
                     }
 
-                    //Send Success Signal
+                    //Handle Success
                     cb(null);
-                }
-            );
+                });
+            }
+            //If this update is to update a field of the DB object
+            else
+            {
+                console.warn("Not Implemented yet.. but its very extremely easy to do");
+                //update field (with reflect)
+
+                //save field(with reflect)
+
+                cb(null);
+            }
         }
     );
 }
