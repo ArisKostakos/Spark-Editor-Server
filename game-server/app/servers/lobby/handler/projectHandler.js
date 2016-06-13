@@ -449,7 +449,7 @@ handler.getProjectLibraryCollections = function(msg, session, next) {
     var developer = session.get('developer');
     var project = session.get('project');
 
-    database.findOneAndPopulate(database.Project, {_id: project._id}, "libraryCollections",
+    database.findOneAndDeepPopulate(database.Project, {_id: project._id}, "libraryCollections libraryCollections.baseClass",
         function (err, project_found) {
             //Handle Error
             if (err) {

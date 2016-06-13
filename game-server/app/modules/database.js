@@ -105,8 +105,8 @@ var libraryCollectionSchema = mongoose.Schema({
                            //on the editor, we maintain a hash that links file extensions to importTypes, such as [image,spritesheet,spriter,sound,egc,..]
                            //Also, the editor knows how to handle an import type of say image (appropriate dialog, and also what asset to create on the DB, and what tags, etc..)
     //on drag to stage creation
-    baseClass: String, //{type: Schema.Types.ObjectId, ref: 'Asset'}, // the base class extended when added to stage
-    behaviors: [String], //[{type: Schema.Types.ObjectId, ref: 'Asset'}], // (a list of behavior components that will be added automatically when thingie added to stage
+    baseClass: {type: Schema.Types.ObjectId, ref: 'Asset'}, // the base class forked when added to stage
+    behaviors: [String], //[{type: Schema.Types.ObjectId, ref: 'Asset'}], // (a list of behavior components that will be added automatically when thingie added to stage //Deprecate this? maybe..
     //display
     tileWidth: Number, //64
     tileHeight: Number, //64
@@ -133,6 +133,7 @@ var assetSchema = mongoose.Schema({
     fileSize: Number,
     componentType: String,       //EventSheet Entry, Behavior, Spriter, stuff like that.. or null or "" if the asset is not a component (a component asset has a structure that the editor will expect from that type)
     tags: [String], //here as a tag we can include the projectname that I was initially uploaded for
+    meta: Schema.Types.Mixed,   //meta data(so tags will eventually be just user tags... and eventually i put tags in meta, and completely remove tags)
     accessControl: [{type: Schema.Types.ObjectId, ref: 'AccessEntry'}],
     assetDependancies: [{type: Schema.Types.ObjectId, ref: 'Asset'}] //egc classes and asset grouping
 });

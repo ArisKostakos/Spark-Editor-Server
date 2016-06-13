@@ -66,7 +66,7 @@ handler.getProjectAssets = function(msg, session, next) {
 
 };
 
-//This will temp load all lib Conditions, Actions and Expressions..
+//This will temp load all lib Conditions, Actions and Expressions.. (AND ALSO CLASS OBJECTS AND BEHAVIORS)
 //Later we an make it look up the project's include queries, and include those instead..
 handler.getProjectIncludeAssets = function(msg, session, next) {
     var self = this;
