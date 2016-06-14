@@ -58,7 +58,12 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 				var newTags = asset.tags.slice(0); //clone
 				newTags[0]=newProjectName;
 
-				var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: newTags, accessControl: [], assetDependancies: []};
+				//META
+				var newMeta = asset.meta;
+				console.warn("META:", newMeta);
+				newMeta.createdForProject = newProjectName;
+
+				var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: newTags, meta: newMeta, accessControl: [], assetDependancies: []};
 
 				//Create Asset
 				database.create(database.Asset, raw_Asset,
