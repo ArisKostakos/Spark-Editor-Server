@@ -60,8 +60,12 @@ remote.copy = function(asset, oldProjectName, user, developer, newProjectName, c
 
 				//META
 				var newMeta = asset.meta;
-				console.warn("META:", newMeta);
+				if (newMeta==null) //For now
+					newMeta = {};
+
 				newMeta.createdForProject = newProjectName;
+
+				console.warn("META:", newMeta);
 
 				var raw_Asset = {name: asset.name.replace(oldProjectName,newProjectName), fork: asset._id, owner: developer._id, type: asset.type, dir: asset.dir.replace(oldProjectName,newProjectName), fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: newTags, meta: newMeta, accessControl: [], assetDependancies: []};
 
