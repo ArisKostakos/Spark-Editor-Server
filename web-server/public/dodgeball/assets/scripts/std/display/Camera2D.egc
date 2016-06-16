@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<Extends>
+		<Entity extends="std.behaviors.display.Positionable2D"/>
+	</Extends>
+	
+	<_States>
+		<_State id="displayType">
+			<Value>Camera</Value>
+		</_State>
+		
+		<State>
+			<Id>captureAreaX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>captureAreaY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>captureAreaWidth</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>captureAreaHeight</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>maxBoundsX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>maxBoundsY</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		
+		<State>
+			<Id>maxBoundsWidth</Id>
+			<Type>Decimal</Type>
+			<Value>2280</Value>
+		</State>
+		
+		<State>
+			<Id>maxBoundsHeight</Id>
+			<Type>Decimal</Type>
+			<Value>1440</Value>
+		</State>
+		
+		<State>
+			<Id>minBoundsWidthRatio</Id>
+			<Type>Decimal</Type>
+			<Value>0.8421052631578947</Value>
+		</State>
+		
+		<State>
+			<Id>minBoundsHeightRatio</Id>
+			<Type>Decimal</Type>
+			<Value>0.8888888888888889</Value>
+		</State>
+		
+		<State>
+			<Id>minBoundsHorizontalAlign</Id>
+			<Type>Text</Type>
+			<Value>Center</Value>
+		</State>
+		
+		<State>
+			<Id>minBoundsVerticalAlign</Id>
+			<Type>Text</Type>
+			<Value>Middle</Value>
+		</State>
+	</_States>
+		
+	<_Actions>
+		<Action>
+			<Id>Camera Init</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Camera Init');
+					//Display.de("Hi from camera: " + me.s('name') + " called from view: " + it.s('view'));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>view</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,107 @@
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Game Manager</Value></_State>
+		<State><Id>allCards</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>cardsFound</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>selectedCards</Id><Type>Dynamic</Type><Value>[]</Value></State>
+		<State><Id>matchStarted</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>showingCards</Id><Type>Boolean</Type><Value>false</Value></State>
+	
+		<State><Id>gamesSequence</Id><Type>Dynamic</Type><Value>[]</Value></State>
+		<State><Id>currentGame</Id><Type>Text</Type><Value>None</Value></State>
+	
+		<State><Id>analytics</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>timeStamp</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>gameRunning</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Create Match</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					//e('Maze Area').fa('Create Path');
+					return;
+					//Sound.playSound('m:Debug');
+					
+					//Assumes board is clear and everything.....
+					
+					
+					//If Game Sequence is Empty, request new one
+					if (me.s('gamesSequence').length==0)
+						me.fa('Create Games Sequence');
+					
+					//Games Sequence
+					var l_gamesSequence = me.s('gamesSequence');
+					console.log('l_gamesSequence',l_gamesSequence);
+					
+					//Pick up Game, mark it
+					var l_currentGame = me.set('currentGame', l_gamesSequence.shift());
+					console.log('l_currentGame',l_currentGame);
+					
+					//Show Instructions
+					e('Instructions').fa('Show');
+					
+					//Create Maze
+					if (e('Maze Area').s('Creating')==false)
+						e('Maze Area').fa('Create Path');
+					
+					//Init Penguins
+					e('Player').fa('Init');
+					//e('Player').fa('Init Temp');
+					e('Mommy').fa('Init');
+					e('Daddy').fa('Init');
+					
+					//Show Shapes
+					e('Maze Area').sa('Show Maze Shapes');
+					
+					Display.de("PATH LENGTH: " + e('Maze Area').s('pathLength'));
+					
+					
+					return;
+					
+					
+					//Analytics
+					//console.log('analytics',window.analytics);
+					var l_analytics = {totalCards:items.length, mistakes:0, clickedRestart:false, duration:0};
+					window.analytics.push(l_analytics);
+					me.set('analytics',l_analytics);
+					
+					//Reset Time
+					me.set('timeStamp',Logic.getTime());
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>matchObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

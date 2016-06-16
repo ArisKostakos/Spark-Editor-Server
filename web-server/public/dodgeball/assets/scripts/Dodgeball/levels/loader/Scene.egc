@@ -1,0 +1,107 @@
+<Entity extends="std.display.Scene2D">
+	<Form><Space><Entities>
+		<Entity extends="std.display.VGroup">
+			<_States>
+				<!--<_State id="backgroundColor"><Value>white</Value></_State>-->
+				<_State id="horizontalCenter"><Value>0</Value></_State>
+				<_State id="verticalCenter"><Value>0</Value></_State>
+				<_State id="width"><Value>500</Value></_State>
+				<_State id="height"><Value>200</Value></_State>
+				<_State id="gap"><Value>15</Value></_State>
+				<_State id="horizontalAlign"><Value>center</Value></_State>
+			</_States>
+				
+			<Form><Space><Entities>
+				<!-- Project Name -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Loader: Project Title Text</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>50</Value></_State>
+					<_State id="fontSize"><Value>50px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="text"><Value>Multiplayer Demo</Value></_State>
+				</_States></Entity>
+				
+				<!-- Progress Bar -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>300</Value></_State>
+						<_State id="height"><Value>25</Value></_State>
+						<_State id="borderRadius"><Value>12px</Value></_State>
+						<_State id="borderColor"><Value>white</Value></_State>
+						<_State id="borderRadius"><Value>30px</Value></_State>
+						<_State id="borderWidth"><Value>2px</Value></_State>
+						<_State id="borderStyle"><Value>solid</Value></_State>
+					</_States>
+						
+					<Form><Space><Entities>
+						<!-- Progress Bar Fill Group -->
+						<Entity extends="std.display.Div">
+							<_States>
+								<_State id="name"><Value>Loader: Load Percentage</Value></_State>
+								<_State id="width"><Value>0</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="overflow"><Value>hidden</Value></_State>
+							</_States>
+								
+							<Form><Space><Entities>
+								<!-- Progress Bar Fill -->
+								<Entity extends="std.display.Div">
+									<_States>
+										<_State id="backgroundColor"><Value>white</Value></_State>
+										<_State id="left"><Value>2</Value></_State>
+										<_State id="top"><Value>2</Value></_State>
+										<_State id="width"><Value>296</Value></_State>
+										<_State id="height"><Value>21</Value></_State>
+										<_State id="borderRadius"><Value>25px</Value></_State>
+									</_States>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Loading Message -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Loader: Message Output Text</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>30</Value></_State>
+					<_State id="fontSize"><Value>30px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="text"><Value>Loading..</Value></_State>
+				</_States></Entity>
+			</Entities></Space></Form>
+		</Entity>
+		
+		
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					function _onProgress(p_percDone, p_totalBytes)
+					{
+						//Display.warn("INTERP: Percent Loaded: " + p_percDone);
+						e('Loader: Message Output Text').setState('text','Loading... ' + p_percDone + '%');
+						
+						var tempPerc = Std.int(p_percDone*300/100);
+						//Display.warn("INTERP: Percent2 Loaded: " + tempPerc);
+						e('Loader: Load Percentage').setState('width',Std.string(tempPerc));
+						
+						//Should it dispose the signal here?
+						//If this loader remains on memory and is used for everything, then no
+						//if we create new loader everytime, then yes
+						//for now, we assume no..
+					}
+					
+					Display.invalidateLayout();
+					
+					ModuleManager.progressSignal.connect(_onProgress);
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

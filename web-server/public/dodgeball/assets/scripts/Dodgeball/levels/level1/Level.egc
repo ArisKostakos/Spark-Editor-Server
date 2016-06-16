@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Level">
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>Module</Value></_State>
+						<_State id="url"><Value>Level1</Value></_State>
+					</_States>
+				</Entity>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>Dodgeball.levels.level1.View</Value></_State>
+					</_States>
+				</Entity>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>Dodgeball.levels.level1.DomView</Value></_State>
+					</_States>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

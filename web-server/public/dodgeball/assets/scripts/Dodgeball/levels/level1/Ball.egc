@@ -1,0 +1,108 @@
+<Entity extends="std.display.Image2D">
+	<_States>
+		<State><Id>nick</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<_State id="touchable"><Value>false</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<_State id="2DMeshImageForm"><Value>image:Ball</Value></_State>
+		<_State id="scaleX"><Value>1</Value></_State>
+		<_State id="scaleY"><Value>1</Value></_State>
+		<State><Id>dir</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>speed</Id><Type>Integer</Type><Value>1500</Value></State>
+		<State><Id>myTarget</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Move and Check For Collision');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Move and Check For Collision</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					var dir = me.s('dir');
+					
+					//Find Speed
+					var speed = me.s('speed')*Logic.getDt();
+					
+					if (dir=="left")
+						speed*= -1;
+					
+					me.addToState('spaceX', speed);
+					
+					
+					//Check for collision
+					var x1 = me.s('spaceX');
+					var y1 = me.s('spaceY');
+					
+					var target = e( me.s('myTarget') );
+					if (target==null)
+						return;
+					
+					var x2 = target.s('spaceX');
+					var y2 = target.s('spaceY');
+					
+					var d = Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 );
+					
+					if (d<150)
+					{
+						if (e('mainScene').s('LagComp'))
+							me.fa('Kabloom');
+						else
+							me.sa('WaitFor',{delay:0.2, cbEntity:me, cbAction:"Kabloom"});
+					}
+					
+					//Out of Stage
+					if (me.s('spaceX')<-100 || me.s('spaceX')>2500)
+					{
+						it.stop();
+						me.remove();
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Kabloom</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.getAction('Move and Check For Collision').stop();
+					me.remove();
+					
+					e( me.s('myTarget') ).fa('Timeout');
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					it.addToState('delayCurrent',Logic.getDt());
+					
+					if (it.getState('delayCurrent')>it.getState('delay'))
+					{
+						me.stopAction('WaitFor');
+						
+						//Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

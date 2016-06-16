@@ -1,0 +1,405 @@
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<_State id="name"><Value>Networking</Value></_State>
+		<State><Id>nickname</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>color</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>players</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>isMaster</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>playersSimple</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+	</_States>
+	<Form><Space><Entities>
+		<Entity extends="Dodgeball.levels.level1.Area"/>
+		<Entity extends="Dodgeball.levels.level1.Area2"/>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Comms.connectTo("130.211.172.86","3024", "multiplayerServer", me);
+					//Display.de("Connecting...");
+					
+					me.sa('Check For Mouse Click');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    me.stopAction('WaitFor');
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	
+	
+		<Action>
+			<Id>Check For Mouse Click</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					if (Input.pointer.isDown() && me.s('players').exists( me.s('nickname') ))
+					{
+						//Display.de("Pointer is down");
+						return;
+						
+						var myScene = e('mainScene');
+						var zoomX = query(myScene,'zoomX');
+						var zoomY = query(myScene,'zoomY');
+						var zoomScale = query(myScene,'zoomScale');
+						
+						//Display.de('zoomX: ' + zoomX);
+						//Display.de('zoomY: ' + zoomY);
+						//Display.de('zoomScale: ' + zoomScale);
+					
+						//Display.error('Input.pointer.currentX: ' + Input.pointer.currentX);
+						//Display.error('Input.pointer.currentY: ' + Input.pointer.currentY);
+						
+						var pointerX = (Input.pointer.currentX-zoomX)/zoomScale;
+						var pointerY = (Input.pointer.currentY-zoomY)/zoomScale;
+						
+						var myPlayer=me.s('players').get(me.s('nickname'));
+						var playerX=myPlayer.s('spaceX');
+						var playerY=myPlayer.s('spaceY');
+						
+						//myPlayer.set('spaceX', pointerX);
+						//myPlayer.set('spaceY', pointerY);
+						
+						if (Math.abs(playerX-pointerX)<myPlayer.s('speed'))
+						{
+							myPlayer.setState('spaceX', pointerX );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:myPlayer.s('spaceX')} });
+						}
+						else if (playerX<pointerX)
+						{
+							myPlayer.addToState('spaceX', myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:myPlayer.s('spaceX')} });
+						}
+						else if (playerX>pointerX)
+						{
+							myPlayer.addToState('spaceX', -myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {x:myPlayer.s('spaceX')} });
+						}
+						
+						if (Math.abs(playerY-pointerY)<myPlayer.s('speed'))
+						{
+							myPlayer.setState('spaceY', pointerY );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:myPlayer.s('spaceY')} });
+						}
+						else if (playerY<pointerY)
+						{
+							myPlayer.addToState('spaceY', myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:myPlayer.s('spaceY')} });
+						}
+						else if (playerY>pointerY)
+						{
+							myPlayer.addToState('spaceY', -myPlayer.s('speed') );
+							Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"my pos", message: {y:myPlayer.s('spaceY')} });
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkConnected</Event>
+			<Parameter>multiplayerServer</Parameter>
+			<Scripts>
+				<Script>
+					//Display.de("Connected!");
+					Comms.request('multiplayer.multiplayerHandler.enter', { uid: Std.random(999999), username:"Player", room:"Alf Dodgeball" }, "Entered Channel", me);
+					//Display.de("Entering Default Channel...");
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Entered Channel</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Entered Channel");
+					console.log("Received data from server (Entered Channel): ", data);
+					
+					//Add Listeners
+					Comms.addServerEvent('onSay');
+					Comms.addServerEvent('onLeave');
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Parameter>onSay</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script><![CDATA[
+					var data = Comms.getServerEventData("onSay").shift();
+					
+					//Display.error("onSay: "+data.message);
+					//console.log(data);
+					//Display.de("onSAY triggered!");
+					
+					if (data.type=="createMe")
+					{
+						//Display.de("I got the test thing back!" + data.message.text);
+						
+						
+						
+						if (!me.s('players').exists(data.id))
+						{
+							Display.de("Creating Player: " + data.id + " ("+data.message.sprite+")");
+							var player = Logic.create('Dodgeball.levels.level1.Player');
+							//player.setState('2DMeshImageForm',"pawn_"+data.message.sprite);
+							player.setState('nickname',data.id);
+							player.setState('color',data.message.sprite);
+							player.setState('spaceX',data.message.x);
+							player.setState('spaceY',data.message.y);
+							Logic.registerEntityByName(player);
+							e('mainScene').addChild(player);
+							
+							me.s('players').set(data.id, player);
+						}
+						else
+						{
+							Display.dl("Player " + data.id + " already exists!");
+						}
+					}
+					else if (data.type=="who are you")
+					{
+						//Ignore Self
+						if (data.id!=e('Networking').s('nickname'))
+						{
+							//Have I been created yet?
+							if (me.s('players').exists(e('Networking').s('nickname')))
+							{
+								var myPlayer=me.s('players').get(e('Networking').s('nickname'));
+								Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"createMe", message: {x:myPlayer.get('spaceX'), y:myPlayer.get('spaceY'), sprite:myPlayer.get('color')} });
+							}
+						}
+					}
+					else if (data.type=="Client Update")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							//Ignore Self
+							if (data.id!=e('Networking').s('nickname'))
+							{
+								//If i know the guy (had time to be created)
+								if (me.s('players').exists(data.id))
+								{
+									console.log("I AM UPDATING DATA FOR SOMEONE ELSE v2!");
+									
+									var thatPlayer=me.s('players').get(data.id);
+									
+									if (data.message.y!=null)
+										thatPlayer.set('spaceY', data.message.y);
+									
+									if (data.message.up!=null)
+										thatPlayer.set('up', data.message.up);
+									
+									if (data.message.down!=null)
+										thatPlayer.set('down', data.message.down);
+										
+									if (data.message.shoot!=null)
+										thatPlayer.set('shoot', data.message.shoot);
+								}
+							}
+						}
+					}
+					else if (data.type=="Lag Update")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							//Ignore Self
+							if (data.id!=e('Networking').s('nickname'))
+							{
+								if (data.message.on!=null)
+								{
+									if (data.message.on==true)
+									{
+										e('mainScene').set('LagComp',true);
+										e('LagCompText').set('text', 'Lag Compensation ON!');
+									}
+									else
+									{
+										e('mainScene').set('LagComp',false);
+										e('LagCompText').set('text', 'Lag Compensation OFF!');
+									}
+								}
+							}
+						}
+					}
+					else if (data.type=="greet")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							var playersSimple = me.s('playersSimple');
+							
+							if (!playersSimple.exists(data.id))
+							{
+								e('lobbyLog').addToState('text','<br>'+data.id +' joined the room.');
+								playersSimple.set(data.id, true);
+							}
+							
+							if (data.id!=e('Networking').s('nickname'))
+								Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"greet back", message: null });
+						}
+					}
+					else if (data.type=="greet back" && data.id!=e('Networking').s('nickname'))
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							var playersSimple = me.s('playersSimple');
+							
+							if (!playersSimple.exists(data.id))
+							{
+								e('lobbyLog').addToState('text','<br>'+data.id +' is in the room.');
+								playersSimple.set(data.id, true);
+							}
+						}
+					}
+					else if (data.type=="start")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							Display.de("Game Started!");
+							e('Area 2').setState('display','none');
+							
+							//Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"broadcast", message: e('Networking').s('color') });
+							
+							if (me.s('isMaster'))
+							{
+								var playersSimple = me.s('playersSimple');
+								
+								var first=false;
+								
+								var keys = playersSimple.keys();
+								while (keys.hasNext())
+								{
+									var playerSimple = keys.next();
+									var color;
+									var posX;
+									var posY;
+									var type;
+									
+									if (first==false)
+									{
+										type = "Alf";
+										color = "image:Alf";
+										posX=1930;
+										posY=1440/2;
+										first=true;
+									}
+									else
+									{
+										type = "Harry";
+										color = "image:Harry";
+										posX=400;
+										posY=1440/2;
+									}
+									
+									Comms.notify('multiplayer.multiplayerHandler.say', {id:e('Networking').s('nickname'), type:"create character", message: {nick:playerSimple, posX:posX, posY:posY, color:color, type:type} });
+								}
+							}
+						}
+					}
+					else if (data.type=="create character")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							Display.de("I received orders to create: " + data.message.nick);
+							
+							if (!me.s('players').exists(data.message.nick))
+							{
+								Display.de("Creating Player: " + data.message.nick + " ("+data.message.color+")");
+								var player = Logic.create('Dodgeball.levels.level1.Player');
+								player.setState('nickname',data.message.nick);
+								player.setState('color',data.message.color);
+								player.setState('spaceX',data.message.posX);
+								player.setState('spaceY',data.message.posY);
+								player.setState('type',data.message.type);
+								player.setState('name',data.message.type);
+								Logic.registerEntityByName(player);
+								e('mainScene').addChild(player);
+								
+								me.s('players').set(data.message.nick, player);
+							}
+							else
+							{
+								Display.dl("Player " + data.message.nick + " already exists!");
+							}
+						}
+					}
+					else if (data.type=="dead")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							var deadGuy = me.s('players').get(data.id);
+							
+							e('mainScene').removeChild(deadGuy);
+						}
+					}
+					else if (data.type=="ate dot")
+					{
+						if (e('Networking').s('nickname')!="Undefined")
+						{
+							var dots = e('Maze Area').s('dots');
+							
+							if (dots.exists(data.message))
+							{
+								var dot = dots.get(data.message);
+								
+								e('mainScene').removeChild(dot);
+								
+								dots.remove(data.message);
+							}
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkServerEvent</Event>
+			<Parameter>onLeave</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script><![CDATA[
+					var data = Comms.getServerEventData("onLeave").shift();
+					
+					console.log("I GOT onLeave", data);
+					
+					//If i know the guy (had time to be created)
+					if (me.s('players').exists(data.user))
+					{
+						var thatPlayer=me.s('players').get(data.user);
+						
+						thatPlayer.remove();
+						
+						me.s('players').remove(data.user);
+					}
+				]]></Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>
