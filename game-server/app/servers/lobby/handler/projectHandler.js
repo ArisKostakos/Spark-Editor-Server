@@ -594,7 +594,7 @@ function createAsset (asset, session, cb)
         }
 
         //Handle Success
-        var raw_Asset = {name: asset.name, owner: asset.owner, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: asset.tags, accessControl: [], assetDependancies: []};
+        var raw_Asset = {name: asset.name, owner: asset.owner, type: asset.type, dir: asset.dir, fileName: asset.fileName, fileExtension: asset.fileExtension, title: asset.title, fileSize: asset.fileSize, componentType: asset.componentType, tags: asset.tags, meta: asset.meta, accessControl: [], assetDependancies: []};
 
         //Create Asset
         database.create(database.Asset, raw_Asset,
