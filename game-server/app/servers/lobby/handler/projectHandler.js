@@ -631,9 +631,13 @@ function copyUploadedAsset (asset, session, cb)
     //Asset Source Path
     var assetSource = userPath + '/incoming/' + fullName;
 
+    //Asset User Path (ASSUMES THE OWNER IS NOT A TEAM BUT A USER! WARNING!)
+    var assetUserPath = assetPath + '/' + asset.owner.user.name;
+    console.warn('asset user path: ' + assetUserPath);
+
     //Asset Target Path
-    fs.ensureDirSync(userPath + '/' + asset.type + '/' + asset.dir);
-    var assetTarget = userPath + '/' + asset.type + '/' + asset.dir + '/' + fullName;
+    fs.ensureDirSync(assetUserPath + '/' + asset.type + '/' + asset.dir);
+    var assetTarget = assetUserPath + '/' + asset.type + '/' + asset.dir + '/' + fullName;
 
 
     //Move Asset File
@@ -668,7 +672,7 @@ function save_updateAsset(self, msg, session, command, cb)
      */
 
     //Find Asset to Update
-    database.findOne(database.Asset, {owner: command.assetOwnerId, type: command.assetType, name: command.assetName},
+    database.findOneAndDeepPopulate(database.Asset, {owner: command.assetOwnerId, type: command.assetType, name: command.assetName}, "owner.user",
         function (err, asset_found) {
             //Handle Error
             if (err) {
