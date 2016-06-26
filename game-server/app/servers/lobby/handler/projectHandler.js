@@ -552,6 +552,12 @@ function proccessCommand(self, msg, session, command, cb)
         case 'addAssetToModule':
             save_addAssetToModule(self, msg, session, command, cb);
             break;
+        case 'createModule':
+            save_createModule(self, msg, session, command, cb);
+            break;
+        case 'addModuleToProject':
+            save_addModuleToProject(self, msg, session, command, cb);
+            break;
         default:
             console.error("Unknown Save Command Type! Ignoring...");
             cb(null);
@@ -755,6 +761,112 @@ function save_addAssetToModule(self, msg, session, command, cb)
 
                     module_found.markModified('assets');
                     module_found.save(function (err) {
+                        //Handle Error
+                        if (err) {
+                            cb(err);
+                            return;
+                        }
+
+                        //Handle Success
+                        cb(null);
+                    });
+                }
+            );
+        }
+    );
+}
+
+
+function save_createModule(self, msg, session, command, cb)
+{
+    console.log("Proccessing [createModule] Command", command);
+
+    /*
+     Create new Module DBO
+     ----------------------
+     type: "createModule"
+     uploadsFile: false
+     module: ModuleDBO
+     */
+
+    //Recreate the module
+    _createModule(command.module, session, function (err) {
+        //Handle Error
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        //Handle Success
+        cb(null);
+    });
+}
+
+
+
+//Put me in ... server and make me remote
+function _createModule (module, session, cb)
+{
+    var raw_Module = {name: module.name, owner: module.owner, requires: module.requires, assets: [], tags: module.tags};
+
+    //Create Module
+    database.create(database.Module, raw_Module,
+        function (err, objCreated_Module) {
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            //Send Success Signal
+            cb(null);
+        }
+    );
+}
+
+function save_addModuleToProject(self, msg, session, command, cb)
+{
+    console.log("Proccessing [addModuleToProject] Command", command);
+
+    /*
+     Add Module DBO to Project
+     -------------------------
+     type: "addModuleToProject"
+     uploadsFile: false
+     moduleName: String
+     moduleOwnerId: ObjectId
+     moduleProjectName: String
+     projectName: String
+     projectOwnerId: ObjectId
+     */
+
+    //Find Module to Add
+    database.findOne(database.Module, {owner: command.moduleOwnerId, 'tags.0': command.moduleProjectName, name: command.moduleName},
+        function (err, module_found) {
+            //Handle Error
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            //Handle Success
+
+            //Find Project to add it to
+            database.findOne(database.Project, {owner: command.projectOwnerId, name: command.projectName},
+                function (err, project_found) {
+                    //Handle Error
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+
+                    //Handle Success
+
+                    //Add it
+                    project_found.modules.push(module_found._id);
+
+                    project_found.markModified('modules');
+                    project_found.save(function (err) {
                         //Handle Error
                         if (err) {
                             cb(err);
