@@ -626,36 +626,57 @@ function copyUploadedAsset (asset, session, cb)
     var developer = session.get('developer');
     var project = session.get('project');
 
-    //Asset Path
-    var assetPath = path.resolve("../web-server/public") + '/assets';
-
-    //User Path
-    var userPath = assetPath + '/' + user.name;
-
-    var fullName = asset.fileName + '.' + asset.fileExtension;
-
-    //Asset Source Path
-    var assetSource = userPath + '/incoming/' + fullName;
-
-    //Asset User Path (ASSUMES THE OWNER IS NOT A TEAM BUT A USER! WARNING!)
-    var assetUserPath = assetPath + '/' + asset.owner.user.name;
-    console.warn('asset user path: ' + assetUserPath);
-
-    //Asset Target Path
-    fs.ensureDirSync(assetUserPath + '/' + asset.type + '/' + asset.dir);
-    var assetTarget = assetUserPath + '/' + asset.type + '/' + asset.dir + '/' + fullName;
-
-
-    //Move Asset File
-    fs.move(assetSource, assetTarget, {clobber:true},
-        function(err) {
+    //Find Asset's Owner (.owner NEVER populated beforehand)
+    database.findOneAndPopulate(database.Developer, {_id: asset.owner }, "user team",
+        function (err, developer_found) {
+            //Handle Error
             if (err) {
                 cb(err);
                 return;
             }
 
-            //Send Success Signal
-            cb(null);
+            //Handle Success
+            var assetOwnerName;
+
+            //Recover name properly
+            if (developer_found.isTeam==false)
+                assetOwnerName=developer_found.user.name;
+            else
+                assetOwnerName=developer_found.team.name;
+
+
+            //Asset Path
+            var assetPath = path.resolve("../web-server/public") + '/assets';
+
+            //User Path
+            var userPath = assetPath + '/' + user.name;
+
+            var fullName = asset.fileName + '.' + asset.fileExtension;
+
+            //Asset Source Path
+            var assetSource = userPath + '/incoming/' + fullName;
+
+            //Asset User Path (actually, the asset OWNER path.. could be a team.)
+            var assetUserPath = assetPath + '/' + assetOwnerName;
+            console.warn('asset owner path: ' + assetUserPath);
+
+            //Asset Target Path
+            fs.ensureDirSync(assetUserPath + '/' + asset.type + '/' + asset.dir);
+            var assetTarget = assetUserPath + '/' + asset.type + '/' + asset.dir + '/' + fullName;
+
+
+            //Move Asset File
+            fs.move(assetSource, assetTarget, {clobber:true},
+                function(err) {
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+
+                    //Send Success Signal
+                    cb(null);
+                }
+            );
         }
     );
 }
@@ -678,7 +699,7 @@ function save_updateAsset(self, msg, session, command, cb)
      */
 
     //Find Asset to Update
-    database.findOneAndDeepPopulate(database.Asset, {owner: command.assetOwnerId, type: command.assetType, name: command.assetName}, "owner.user",
+    database.findOne(database.Asset, {owner: command.assetOwnerId, type: command.assetType, name: command.assetName},
         function (err, asset_found) {
             //Handle Error
             if (err) {
