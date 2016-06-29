@@ -346,6 +346,12 @@ function createAsset(dependancies, msg, session, cb)
     else
         var finalDir = project.name + '/' + dir.replace(/[/\\]/g, '/');
 
+    //get finalMeta
+    if (msg.meta==null)
+        var finalMeta = {};
+    else
+        var finalMeta = msg.meta;
+
     //get asset name
     var assetName = nameDir + '.' + rawName;
 
@@ -378,7 +384,7 @@ function createAsset(dependancies, msg, session, cb)
                     return;
                 }
 
-                var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetTitle, fileSize: fileSize, componentType: componentTypeFinal, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
+                var raw_Asset = {name: assetName, owner: developer._id, type: type, dir: finalDir, fileName: rawName, fileExtension: rawExtension, title: assetTitle, fileSize: fileSize, componentType: componentTypeFinal, meta: finalMeta, tags: tagsFinal, accessControl: [], assetDependancies: dependancies};
 
                 //Create Asset
                 database.create(database.Asset, raw_Asset,
