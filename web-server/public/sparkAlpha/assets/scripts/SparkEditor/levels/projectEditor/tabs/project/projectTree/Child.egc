@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tree.Child">
+	<_States>
+		<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Either a ClassEditor or a BehaviorEditor or an InstanceEditor -->
+	</_States>
+	
+	<_Actions>
+		<!-- Expand -->
+		<_Action id="Expand">
+			<_Scripts>
+				<Script>
+					Display.de("Expanding " + me.s('childId'));
+					
+					me.addChild( me.s('childrenContainerObject') );
+					
+					Display.invalidateLayout();
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<!-- Collapse -->
+		<_Action id="Collapse">
+			<_Scripts>
+				<Script>
+					Display.de("Collapsing " + me.s('childId'));
+					
+					me.removeChild( me.s('childrenContainerObject') );
+					
+					Display.invalidateLayout();
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<!-- PreConstructor -->
+		<_Action id="PreConstructor">
+			<_Scripts>
+				<Script>
+					Display.de("PreConstructor " + me.s('childId'));
+					
+					//Find Editor
+					me.fa('Find Editor');
+					
+					//Create the Children Container Here (dont ask why..)
+					var l_childrenContainer = Logic.create('std.display.VGroup');
+					l_childrenContainer.set('width','100%');
+					me.set('childrenContainerObject', l_childrenContainer);
+					
+					if (me.s('expanded')==true)
+						me.addChild(l_childrenContainer);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Find Editor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Find correct hash name to look for the editor
+					var l_editorHashName;
+					
+					//Find the editor for this Child (it will be either a ClassEditor or a BehaviorEditor or later an InstanceEditor)
+					if (me.s('childType')=="Behavior") 
+						l_editorHashName='behaviorEditors';
+					else
+						l_editorHashName='classEditors';
+					
+					//Link me to the editor
+					var l_editor = me.set('editor', e('Project Editor').s(l_editorHashName).get( me.s('childId') ) ); 
+					
+					//If successfull, also link the editor to me
+					if (l_editor!=null)
+						l_editor.set('projectChild', me);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Update Child</Id> <!-- Currently Only used to find editor for this, and its children, if a level is expanded and has not been loaded -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//For Me
+					if (me.s('editor')==null)
+						me.fa('Find Editor');
+						
+					//For Children
+					var l_iterator = me.s('children').iterator();
+					while (l_iterator.hasNext())
+					{
+						var w_child = l_iterator.next();
+						w_child.fa('Update Child');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+		
+		
+	<Form>
+		<Space>
+			<Entities>
+				<!-- This Child -->
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>41</Value></_State>
+					</_States>
+				
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('displayObject',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+						
+					<Form><Space><Entities>
+						<!-- Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>23</Value></_State>
+								<_State id="fontSize"><Value>22px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+							</_States>
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											me.set('text', parent.parentEntity.s('childTitle') );
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

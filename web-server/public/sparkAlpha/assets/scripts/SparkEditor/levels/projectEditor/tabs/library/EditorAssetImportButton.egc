@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="border"><Value>1px solid white</Value></_State>
+		<_State id="width"><Value>50</Value></_State>
+		<_State id="height"><Value>50</Value></_State>
+		<_State id="borderRadius"><Value>50%</Value></_State>
+		<_State id="right"><Value>30</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="width"><Value>11</Value></_State>
+						<_State id="height"><Value>15</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>-1</Value></_State>
+						<_State id="src"><Value>libsubcat_import_mikro</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="std.display.FileInput">
+					<_States>
+						<_State id="name"><Value>FileDrop</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="type"><Value>file</Value></_State>
+						<_State id="opacity"><Value>0</Value></_State>
+						<_State id="cursor"><Value>pointer</Value></_State>
+						<_State id="fontSize"><Value>1px</Value></_State>
+						<_State id="accept"><Value>.png, .jpg, .plist, .scml, .ogg, .mp3, .m4a, .mp4, .egc</Value></_State>
+					</_States>
+					
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+						<Script>
+						if (me.getState('files')==null) 
+						{
+							Display.error("File Input: No files selected");
+						}
+						else
+						{
+							if (me.getState('files').length!=1)
+							{
+								Display.error("File Input: More than one files selected");
+							}
+							else
+							{
+								var file = me.getState('files')[0];
+								
+								//Send it to Library Collections
+								var libraryCollections = Logic.getEntityByName('Editor Library Collections');
+								
+								libraryCollections.getAction('ImportRequest').setState('file', file);
+								libraryCollections.startAction('ImportRequest');
+							}
+						}
+						</Script>
+					</Scripts></Trigger></_Triggers>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

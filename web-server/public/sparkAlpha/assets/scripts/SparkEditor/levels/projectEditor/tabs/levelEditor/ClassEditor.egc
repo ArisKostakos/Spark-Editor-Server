@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<State><Id>classPrimitiveName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>classExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>behaviorEditors</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>target_XML_editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>type</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>moduleName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>editTab</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>projectChild</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From DBA">
+			<_Scripts>
+				<Script>
+					//Get the Class' Primitive DBA Name
+					me.set('classPrimitiveName', me.s('target_XML').get("extends") );
+					
+					//Find Meta Type
+					me.set('type', me.s('target_DBA').meta.type);
+					
+					//If this is a Level Class Editor
+					if (me.s('type')=="Level")
+					{
+						//The Level Game Object is assumed to have been created. Now it needs to have this action run
+						me.s('target_GameObject').forceAction("Find References");
+						
+						//So now we can get the Module that this level is contained in. (Feel free to use me anywhere)
+						me.set('moduleName', me.s('target_GameObject').s('moduleReferences')[0].getState('url') ); //We assume exactly 1 module exists for each level
+					}
+					
+					
+					//Create the editor version of the XML (it filters out non-editor behaviors)
+					var l_target_XML_editor = Logic.xml_clone(me.s('target_XML'));
+					
+					Logic.xml_entity_removeNode(l_target_XML_editor, "Extends");
+					
+					
+					//The following prepares the xml_editor to only add behaviors enabled in the editor.. The reason i do this from xml and not loop
+					//through behavior editors is because behaviorEditors for this ClassEditor has not been set up yet (it happens later on constructor for some reason..)
+					
+					//Get Behavior Names from xml (of forkedClass)
+					var l_behaviors = Logic.xml_entity_getExtendsEntities(me.s('target_XML'));
+					
+					//Find their Editors and add them here
+					for (f_behavior of l_behaviors)
+					{
+						console.warn("Found a behaviorExtend thing: ", f_behavior);
+						
+						//Get the BehaviorEditor
+						var f_behaviorEditor = e('Project Editor').s('behaviorEditors').get(f_behavior.ext);
+						
+						//Ask the Behavior Editor if it should be enabled in the editor
+						if (f_behaviorEditor.s('enabledInEditor')==true)
+							Logic.xml_entity_addExtend(l_target_XML_editor, {ext:f_behavior.ext });  //And add it if it is..
+					}
+					
+					
+					//I AM NOT SURE I LIKE THIS.. at all.. it's gonne be hard to maintain..
+					Assets.cacheScript(me.s('target_AssetName')+"_editor", Logic.xmlToString(l_target_XML_editor));
+					
+					me.set('target_XML_editor', l_target_XML_editor); //not sure if we'll ever need this thing..
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Move all this to Import from DBA? Hmmm don't know... maybe..
+					
+					me.set('behaviorEditors', new StringMap() );
+				
+					//Find the Behavior Editors used by this Class Editor
+					
+					Display.dw("Class Editor Constructor [ " + me.s('target_AssetName') + " ].");
+					
+					//Get Behavior Names from xml (of forkedClass)
+					var l_behaviorNames = Logic.xml_entity_getExtendsEntityNames(me.s('target_XML'));
+					
+					//Find their Editors and add them here
+					for (f_behaviorName of l_behaviorNames)
+					{
+						Display.de("class editor " + me.s('target_AssetName')  + " here, found behavior: " + f_behaviorName);
+						
+						var f_behaviorEditor = e('Project Editor').s('behaviorEditors').get(f_behaviorName);
+						
+						if (f_behaviorEditor!=null)
+							me.s('behaviorEditors').set(f_behaviorName, f_behaviorEditor);
+						else
+							Display.dw("I found a behavior that does not have an editor. It must not be a real behavior.. But how did this happen?");
+					}
+					
+					
+					//Create the Explorer
+					
+					//Create Explorer for this Class
+					var l_classExplorer = Logic.create("SparkEditor.levels.projectEditor.components.explorers.ClassExplorer");
+					l_classExplorer.set('parentEditor',me);
+					
+					//Forced Constructor
+					l_classExplorer.fa('Forced Constructor');
+					
+					//Store it..
+					me.set('classExplorer', l_classExplorer);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Add Behavior</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Behavior
+					var l_behaviorEditor = it.s('behaviorEditor');
+					
+					if (!me.s('behaviorEditors').exists( l_behaviorEditor.s('target_AssetName') ) )
+					{
+						//Add it
+						me.s('behaviorEditors').set(l_behaviorEditor.s('target_AssetName') , l_behaviorEditor);
+						
+						//Mark it as Needs to Export
+						me.fa('Needs To Export', {exportThis:true});
+						
+						Display.dw('exporting class');
+						console.log('parentEditor', me.s('parentEditor') );
+						console.log('parentTab', me.s('parentTab') );
+						
+						//update whatever.. (project panel?, its explorer.. etc)
+						//..
+						
+						
+						//Add it to xml
+					}
+					else
+					{
+						Display.warn('Behavior Editor ' + l_behaviorEditor.s('target_AssetName') + ' already exists for class Editor ' + me.s('target_AssetName') );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>behaviorEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Open Edit Tab</Id> <!-- This Action should exist on all trio-Editors (Class/Behavior/Instance) -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//You know something... I want to have an OPTION whether to cache the Tab or not.. for the RunTab for example, I dont need it
+					//and maybe I don't need it anyway.. although it will be a little slow to recreate complex tabs all the time...
+					//but don't worry about the export problem anymore.. this will work either way..
+					
+					//Get Tab
+					var l_editTab = me.s('editTab');
+					
+					//If Tab already exists
+					if (l_editTab!=null)
+					{
+						//If Tab does not exist in Tab Manager, sneak it back in
+						if ( !e('Main Tab Manager').s('tabs').exists( l_editTab.s('tabName') ) )
+							e('Main Tab Manager').fa('Add Tab',{name:l_editTab.s('tabName'), title:l_editTab.s('tabTitle'), type:l_editTab.s('tabType'), premadeTab: l_editTab });
+						
+						//Now Show it
+						e('Main Tab Manager').startAction('Show Tab',{name: l_editTab.s('tabName') });
+					}
+					else
+					{
+						//Create Tab, if possible
+						
+						if (me.s('type')=="Level")
+						{
+							if (me.s('moduleName')=="Loader") //hack, to determine easily that this level is DOM based, so we cannot edit it yet
+							{
+								alert("This Level is created with the Native Components Renderer. The Level Editor For Native Components is not done yet! Maybe in the next version...");
+							}
+							else
+							{
+								var l_moduleName = me.s('moduleName');
+								
+								if (ModuleManager.isModuleLoaded(l_moduleName))
+								{
+									Display.de('Module Loaded: ' + l_moduleName );
+									
+									//If module has not been 'initialized' (has been loaded from a Run Tab), Initialize it here
+									if (e('Project Editor').s('modulesInit').get(l_moduleName)!=true )
+									{
+										//Make sure we create all Editors for our new module
+										e('Project Editor').fa('Create Dependancies For',{ moduleName:l_moduleName, DBA:null, createClassObjects:true, jsCb:function () {
+										
+											//Set class Editors to project tree children (dont like it here..)
+											me.s('projectChild').fa('Update Child'); //for linking
+										
+											//Create Tab
+											me.fa('Create Level Tab');
+										}});
+									}
+									//Else, go ahead and do your thing
+									else
+									{
+										//Create Tab
+										me.fa('Create Level Tab');
+									}
+								}
+								else
+								{
+									Display.de('Module NOT loaded: ' + l_moduleName );
+									
+									if (ModuleManager.getModuleState(l_moduleName)==EModuleState.LOADING)
+									{
+										Display.de('Module BEING LOADED.. WAIT ASSHOLE!: ' + l_moduleName );
+										return;
+									}
+									else
+									{
+										ModuleManager.successSignal.connect(function () {
+											//After the Module Loads, make sure we create all Editors for our new module
+											e('Project Editor').fa('Create Dependancies For',{ moduleName:l_moduleName, DBA:null, createClassObjects:true, jsCb:function () {
+											
+												Display.de('Module was loaded. Now we set editors to the children of the tree');
+												//Set class Editors to project tree children (dont like it here..)
+												me.s('projectChild').fa('Update Child'); //for linking
+												
+												//Create Tab
+												me.fa('Create Level Tab');
+											}});
+										}).once();
+										
+										//Load Module
+										ModuleManager.loadModule(l_moduleName);
+									}
+								}
+							}
+						}
+						else
+						{
+							Display.de("Unknown type: " + me.s('type') + ". Cannot Open Edit Tab");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Create Level Tab</Id> <!-- The only reason this needs to be a separate Action, is because I need to call it twice :(  -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Add Level Editor Tab
+					e('Main Tab Manager').fa('Add Tab',{name: me.s('target_DBA').name , title: me.s('target_DBA').title , type:"levelEditor", parameters:{ editor:me }  });
+					
+					//Store The Tab We Just Created
+					me.set('editTab', e('Main Tab Manager').s('tabs').get( me.s('target_DBA').name ) );
+					
+					//Show Level Editor Tab
+					e('Main Tab Manager').startAction('Show Tab',{name:me.s('target_DBA').name});
+					
+					//Expand Project Child
+					if (me.s('projectChild').s('expanded')==false)
+						me.s('projectChild').fa('Expand Level Child');
+						
+					//Select Project Child?
+					//..
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Open Run Tab</Id> <!-- This Action should exist on all trio-Editors (Class/Behavior/Instance) -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//So.. I haven't linked the classEditor to its runTab at all.. we might wanna do that (not for caching, but for other purposes..)
+					
+					//If Tab exists in Tab Manager, (for Run, I don't cache the tabs, so this does the trick)
+					if ( e('Main Tab Manager').s('tabs').exists( "run:" + me.s('target_DBA').name ) )
+					{
+						//Close it and re-run it, or just show it?
+						//for now, just show it
+						
+						//Show Run Tab
+						e('Main Tab Manager').startAction('Show Tab',{name: "run:" + me.s('target_DBA').name});
+					}
+					else
+					{
+						//Create Tab
+						
+						//BUT FIRST, EXPORT!!!!
+						//Export Project
+						e('Project Editor').fa('Export Project Xml');
+						
+						if (me.s('type')=="Level")
+						{
+							//Add Run Project Tab
+							e('Main Tab Manager').fa('Add Tab',{name: "run:" + me.s('target_DBA').name, title: "Run " + me.s('target_DBA').title, type:"run", parameters:{ projectName:e('Project Editor').s('classEditor').s('target_DBA').name, levelName:me.s('target_DBA').name }  });
+							
+							//Show Run Project Tab
+							e('Main Tab Manager').startAction('Show Tab',{name: "run:" + me.s('target_DBA').name});
+						}
+						else if (me.s('type')=="Project")
+						{
+							//Add Run Project Tab
+							e('Main Tab Manager').fa('Add Tab',{name: "run:" + me.s('target_DBA').name, title: "Run " + me.s('target_DBA').title, type:"run", parameters:{ projectName:me.s('target_DBA').name, levelName:"Project" }  });
+							
+							//Show Run Project Tab
+							e('Main Tab Manager').startAction('Show Tab',{name: "run:" + me.s('target_DBA').name});
+						}
+						else
+						{
+							Display.de("Unknown type: " + me.s('type') + ". Cannot Open Edit Tab");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						Display.dl("Exporting Editor " + me.s('target_AssetName'));
+						
+						//Exporting Children
+						
+						//No Children to Export... (this could later be classes inside classes? ( i dont think we have forbidden this yet(or want to forbit it)..
+						//we have only forbidden behaviors inside behaviors)
+						
+						//Then, If This Editor must do any changes to it's own Class EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							Display.dl("Exporting_This for Editor " + me.s('target_AssetName'));
+							
+							//So we have identified that this class Needs to export THIS.. so we are now modifying our xml.. (behaviors and states)
+							
+							//Our current Xml
+							var l_target_XML = me.s('target_XML');
+							
+							//Redo behaviors
+							Logic.xml_entity_removeNode(l_target_XML, "Extends");
+							
+							//For All behaviors editors we got
+							var l_behaviorEditors_itr = me.s('behaviorEditors').iterator();
+							while (l_behaviorEditors_itr.hasNext())
+							{
+								var w_behaviorEditor = l_behaviorEditors_itr.next();
+								
+								//Add the Behavior's name to our XML
+								Logic.xml_entity_addExtend(l_target_XML, {ext: w_behaviorEditor.s('target_AssetName') });
+							}
+							
+							
+							//Redo states
+							//..(check my explorer, etc..)
+							
+							//Ready.. Cache it (save command happens in here as well)
+							e('Project Editor').fa('Update Asset Content', { DBA:me.s('target_DBA'), content:Logic.xmlToString(l_target_XML)} );
+							
+							
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+					else
+					{
+						Display.dl("Editor " + me.s('target_AssetName') + " does not need to export");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.ToolTabControl">
+	<_States>
+		<_State id="name"><Value>Bottom Tab</Value></_State>
+		<State><Id>expanded</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>chatWindow</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Initialize');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Initialize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Initialize');
+				
+					var bar = me.getState('bar');
+					var container = me.getState('container');
+					
+					if (bar!=null && container!=null)
+					{
+						bar.setState('backgroundColor','rgb(33,48,61)');
+						bar.setState('height','20');
+						//container.setState('height','0%');
+						
+						//Chat
+						var chatHeader = Logic.gameFactory.createGameEntity('SparkEditor.entities.tabcomponents.ToolTabBarHeaderExtended');
+						chatHeader.setState('caption','Chat');
+						chatHeader.setState('titleFontSize','15px');
+						chatHeader.setState('width','75');
+						chatHeader.setState('hasIcon',true);
+						chatHeader.setState('iconImage','toolbarIcon_Chat');
+						chatHeader.setState('iconWidth','19');
+						chatHeader.setState('iconHeight','15');
+						//chatHeader.setState('labelLeft',30);
+						//chatHeader.setState('backgroundColor','rgb(1,84,239)');
+						bar.addChild(chatHeader);
+
+						var chatWindow = Logic.gameFactory.createGameEntity('SparkEditor.entities.windows.ChatWindow');
+						chatWindow.setState('chatHeader',chatHeader);
+						container.addChild(chatWindow);
+						me.setState('chatWindow',chatWindow);
+						
+						//me.getAction('SelectWindow').setState('windowName','Chat');
+						//me.startAction('SelectWindow');
+						
+						me.stopAction('Initialize');
+					}
+					else
+					{
+						Display.error("null.. will try later..");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<_State id="backgroundColor"><Value>yellow</Value></_State>
+		<_State id="opacity"><Value>0.3</Value></_State>
+		<_State id="border"><Value>7px solid black</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<State><Id>SceneEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>Controls</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ClassEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>type</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>projectChild</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From Xml">
+			<_Scripts>
+				<Script>
+					Display.de('Instance Editor Xml Extends: ' + me.s('target_XML').get("extends"));
+					
+					me.sa('Get Class Editor');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Get Class Editor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_classEditor = e('Project Editor').s('classEditors').get(me.s('target_XML').get("extends"));
+					
+					if (l_classEditor!=null)
+					{
+						//Class Editor is available! Save It, keep going, and stop this action
+						it.stop();
+						
+						me.set('ClassEditor', l_classEditor);
+						
+						
+						//In order to create the gameObject from this XML, I want to ignore its Class's behaviors
+						//Not sure how to do this yet.. For now I will assume this:
+						//Classes always extend Primitives. So I will make this gameObject extend the Class's Primitive Instead of the actual Class
+						//This will make it ignore it's Class' States as well.. But I think that for the Editor, For now, It's ok..
+						
+						//var l_classPrimitiveName = l_classEditor.s('classPrimitiveName'); //i guess i dont need the primitive after all..
+						//what i need is to create some behaviors and not create others
+						//alternatively, just remove ALL the actions, like i do this already below
+					
+						//Display.dw("Primitive Name Found: " + l_classPrimitiveName);
+						
+						//So this is very wrong of course.. later on when I export this, it will still be fucked up
+						//figure out how to solve this, for everything (including the scene behavior called CameraSync..)
+						//Logic.xml_entity_removeNode(l_target_XML, "Form");
+						
+						
+						var l_target_XML = me.s('target_XML');
+						
+						//Hating this.. figure it out..
+						var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+						
+						l_target_XML_editor.set('extends', l_classEditor.s('target_AssetName')+"_editor");
+						
+						
+						//l_target_XML.addChild(Logic.xml_createElement("Actions"));
+						
+						//console.log('wow',l_target_XML_editor.toString());
+						
+						var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML_editor));
+						
+						//Store this piece of shit somewhere?
+						//l_target_XML_editor
+						
+						//Add my flambe object to the actual flambe scene
+						me.s('SceneEditor').s('target_GameObject').addChild(me.s('target_GameObject'));
+						
+						//Wait a frame so the actual flambe instance is created before positioning me(I am the overlay)
+						me.sa('Get Bounds');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<!--Not sure, but i do this here now to get real width in case its not a FillSprite-->
+			<Id>Get Bounds</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_target_GameObject = me.s('target_GameObject');
+					
+					//Wait until object has been correctly created
+					if (query(l_target_GameObject,'realWidth')==null)
+						return;
+				
+					it.stop();
+					
+					
+					
+					Display.de("HEREEE-- WIDTH: " + query(l_target_GameObject,'realWidth'));
+					Display.de("HEREEE-- HEIGHT: " + query(l_target_GameObject,'realHeight'));
+					
+					
+					var l_spaceX=l_target_GameObject.s('spaceX'); //I get this straight from what has been given in xml
+					var l_spaceY=l_target_GameObject.s('spaceY'); //I get this straight from what has been given in xml
+					
+					var l_spaceWidth=query(l_target_GameObject,'realWidth'); //I take this from quering the actual object
+					var l_spaceHeight=query(l_target_GameObject,'realHeight'); //I take this from quering the actual object
+					
+					//var l_spaceWidth=l_target_GameObject.s('boundsRect').width; //I take this from the feedback state the object returns
+					//var l_spaceHeight=l_target_GameObject.s('boundsRect').height; //I take this from the feedback state the object returns
+					
+					//Flambe uses centered anchor, dom uses top-left
+					l_spaceX-=l_spaceWidth/2;
+					l_spaceY-=l_spaceHeight/2;
+					
+					me.set('top', l_spaceY);
+					me.set('left', l_spaceX);
+					me.set('width', Std.string(l_spaceWidth));
+					me.set('height', Std.string(l_spaceHeight));
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						Display.dl("Exporting Editor " + me.s('target_AssetName'));
+						
+						//Export Children's XML (enable this when instances can carry instances)
+						//for (instanceEditor of me.s('instanceEditors'))
+						//	instanceEditor.fa('Export XML');
+						
+						//Then, If This Editor can later do any changes to it's Instance EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							Display.dl("Exporting_This for Editor " + me.s('target_AssetName'));
+						
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+					else
+					{
+						Display.dl("Editor " + me.s('target_AssetName') + " does not need to export");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					var l_absoluteRect = query(me,'absoluteRect');
+					console.log(l_absoluteRect);
+					
+					
+					var l_controls = me.s('Controls');
+					
+					//If null, create it now (lazy approach)
+					if (l_controls==null)
+					{
+						//Create
+						l_controls = me.set('Controls',Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.InstanceControls'));
+						l_controls.set('InstanceEditor',me);
+						
+						//Add to SceneEditor
+						me.s('SceneEditor').addChild(l_controls);
+					}
+					
+					//Show Controls, put to correct size, etc..
+					//temp
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					console.log('transformations',l_transformations);
+					
+					var l_spaceX=me.s('left');
+					var l_spaceY=me.s('top');
+					//var l_spaceWidth=me.s('target_GameObject').s('spaceWidth');
+					//var l_spaceHeight=me.s('target_GameObject').s('spaceHeight');
+					var l_spaceWidth=query(me.s('target_GameObject'),'realWidth'); //I take this from quering the actual object
+					var l_spaceHeight=query(me.s('target_GameObject'),'realHeight'); //I take this from quering the actual object
+					
+					l_controls.set('top', l_spaceY*l_transformations.scale + l_transformations.y  -1);
+					l_controls.set('left', l_spaceX*l_transformations.scale + l_transformations.x   -1);
+					
+					l_controls.set('width',Std.string(l_spaceWidth*l_transformations.scale));
+					l_controls.set('height',Std.string(l_spaceHeight*l_transformations.scale));
+					
+					Display.invalidateLayout();
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

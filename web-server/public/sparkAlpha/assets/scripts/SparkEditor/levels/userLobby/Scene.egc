@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.levels.userLobby.entities.Dashboard"/>
+				<Entity extends="SparkEditor.levels.common.popupManager.entities.PopupManager"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

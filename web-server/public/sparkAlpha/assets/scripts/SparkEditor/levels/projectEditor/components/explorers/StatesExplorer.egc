@@ -1,0 +1,67 @@
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<State><Id>parentTab</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<Form><Space><Entities>
+
+	</Entities></Space></Form>
+
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<Action>
+			<Id>Construct States</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					Display.de("CONSTRUCTING STATES");
+					
+					if (it.s('statesMap')!=null)
+					{
+						var iterator = it.s('statesMap').iterator();
+						while (iterator.hasNext())
+						{
+							var state = iterator.next();
+							Display.de("FOUND STATE: " + state.id);
+							
+							var l_stateExplorer = Logic.create("SparkEditor.levels.projectEditor.components.explorers.StateExplorer");
+							
+							//So we just force an action now to create the thing
+							l_stateExplorer.fa("Construct State", {stateObject:state});
+							
+							me.addChild(l_stateExplorer);
+						}
+					}
+					
+					if (it.s('mStatesMap')!=null)
+					{
+						var iterator = it.s('mStatesMap').iterator();
+						while (iterator.hasNext())
+						{
+							var state = iterator.next();
+							Display.de("FOUND M_STATE: " + state.id);
+							
+							var l_stateExplorer = Logic.create("SparkEditor.levels.projectEditor.components.explorers.StateExplorer");
+							
+							//So we just force an action now to create the thing
+							l_stateExplorer.fa("Construct State", {stateObject:state});
+							
+							me.addChild(l_stateExplorer);
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>statesMap</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>mStatesMap</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

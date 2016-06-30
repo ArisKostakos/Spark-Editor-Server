@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="name">
+			<Value>Selector Overlay</Value>
+		</_State>
+		
+		<_State id="2DMeshFillRectForm">
+			<Value>color1</Value>
+		</_State>
+		
+		<_State id="opacity">
+			<Value>0.3</Value>
+		</_State>
+			
+		<_State id="physicsEntity">
+			<Value>false</Value>
+		</_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>color1</Id>
+				<Type>Integer</Type>
+				<Value>0x333333</Value>
+			</State>
+		</_States>
+	</_Form>
+</Entity>

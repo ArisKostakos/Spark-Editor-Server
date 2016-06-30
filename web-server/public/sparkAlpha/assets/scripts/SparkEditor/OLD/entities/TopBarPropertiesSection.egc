@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>2</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Label Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Editor Output</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>14</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="text"><Value>Early Alpha Release</Value></_State>
+				</_States></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

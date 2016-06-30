@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<State>
+			<Id>viewReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>moduleReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>eventSheetReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>stageAreaReferences</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>created</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>views</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+		
+	<_Actions>
+		<Action>
+			<Id>Find References</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Figure out References here
+					var moduleReferences = [];
+					var viewReferences = [];
+					var eventSheetReferences = [];
+					var stageAreaReferences = [];
+					
+					for (child of me.getChildren())
+					{
+						if (child.getState('type') == 'Module')
+							moduleReferences.push(child);
+						else if (child.getState('type') == 'View')
+							viewReferences.push(child);
+						else if (child.getState('type') == 'EventSheet')
+							eventSheetReferences.push(child);
+						else if (child.getState('type') == 'StageArea')
+							stageAreaReferences.push(child);
+					}
+					
+					//Store later, break this function to tiny private ones ofc..
+					me.setState('moduleReferences', moduleReferences);
+					me.setState('viewReferences', viewReferences);
+					me.setState('eventSheetReferences', eventSheetReferences);
+					me.setState('stageAreaReferences', stageAreaReferences);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

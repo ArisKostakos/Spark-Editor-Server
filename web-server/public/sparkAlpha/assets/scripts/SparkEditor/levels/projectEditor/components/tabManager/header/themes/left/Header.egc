@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.header.ATabHeader">
+	<_States>
+		<_State id="headerTheme"><Value>left</Value></_State>
+		<_State id="right"><Value>0</Value></_State>
+		<State><Id>headerText</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="backgroundColor"><Value>rgb(62, 88, 112)</Value></_State>
+		<_State id="width"><Value>40%</Value></_State>
+		<_State id="height"><Value>70%</Value></_State>
+	</_States>
+		
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+				/*
+					if (me.s('headerType')=='library')
+					{
+						me.setState('backgroundColor','rgb(59, 185, 176)');
+					}
+					else if (me.s('headerType')=='project')
+					{
+						me.setState('backgroundColor','rgb(231, 47, 87)');
+					}
+					*/
+					
+					//me.fa('Hide Me');
+					
+					Display.de("YOOOOOOOOOOOOOOOOOOOOOOFFDF HEADER");
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Show Me">
+			<_Scripts>
+				<Script>
+					//Get Header
+					var l_header = me;
+					
+					//full size
+					l_header.set('width','60%');
+					l_header.set('height','100%');
+					
+					//to bottom
+					//l_header.setZorder("bottom");
+					
+					//color
+					l_header.set('backgroundColor','rgb(56, 192, 182)');
+					
+					//Get Header Text
+					var l_headerText =  l_header.s('headerText');
+					
+					//Change font size
+					l_headerText.set('fontSize','36px');
+					l_headerText.set('height','36');
+					//l_headerText.set('textAlign','right');
+					
+					
+					//For Library Scroller bug thing, very hacky code, remove me
+					setTimeout( function() {Display.invalidateLayout();} ,10);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Hide Me">
+			<_Scripts>
+				<Script>
+					//Get Header
+					var l_header = me;
+					
+					//full size
+					l_header.set('width','40%');
+					l_header.set('height','70%');
+					
+					//to bottom
+					//l_header.setZorder("top");
+					
+					//color
+					l_header.set('backgroundColor','rgb(62, 88, 112)');
+					
+					//Get Header Text
+					var l_headerText =  l_header.s('headerText');
+					
+					//Change font size
+					l_headerText.set('fontSize','26px');
+					l_headerText.set('height','26');
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+		
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="left"><Value>30</Value></_State>
+						<!--<_State id="textAlign"><Value>center</Value></_State>-->
+						<_State id="height"><Value>26</Value></_State>
+						<_State id="fontSize"><Value>26px</Value></_State>
+						<_State id="fontWeight"><Value>500</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="text"><Value>Header</Value></_State>
+						<_State id="whiteSpace"><Value>nowrap</Value></_State>
+						<State><Id>FastConstructor</Id><Type>Dynamic</Type><Value>parent.set('headerText',me)</Value></State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState('text',parent.s('headerTitle'));
+									//parent.set('headerText',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

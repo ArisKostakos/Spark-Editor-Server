@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State> <!-- this keeps it from growing very tall otuside the view.. should really be 100%.. overflow visible lets things outside 500 height to keep showing-->
+		<!--<_State id="overflow"><Value>scroll</Value></_State>-->
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>importTypes</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>containerPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tileWidth</Id><Type>Integer</Type><Value>50</Value></State>
+		<State><Id>tileHeight</Id><Type>Integer</Type><Value>50</Value></State>
+		<State><Id>tileUploadingImageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>tileUploadingBorderColor</Id><Type>Text</Type><Value>black</Value></State>
+		<State><Id>libraryObjectDB</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	
+	<!--<Extends>
+		<Entity extends="SparkEditor.behaviors.Scrollable"/>
+	</Extends>-->
+		
+	<_Actions>
+		<Action>
+			<Id>AddAssetsDB</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("AddAssetsDB");
+					
+					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+					
+					var containerPanel = me.getState('containerPanel');
+					
+					var assets = me.getAction('AddAssetsDB').getState('assets');
+					
+					for (asset of assets)
+					{
+						//Display.error("AddAssetsDB: FOUND: " + asset.name);
+						
+						var containerPanel = me.getState('containerPanel');
+						
+						var newItem = Logic.gameFactory.createGameEntity('SparkEditor.levels.projectEditor.tabs.library.EditorLibraryItem');
+						
+						if (asset.componentType=="Image")
+						{
+							newItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+						}
+						else if (asset.componentType=="Sound")
+						{
+							newItem.setState('caption',asset.fileName);
+							newItem.setState('skinType','imageAndText');
+							newItem.setState('imageName',"thumb_" + asset.componentType);
+						}
+						else if (asset.componentType=="Class" || asset.componentType=="Behavior")
+						{
+							newItem.setState('caption',asset.title);
+							newItem.setState('skinType','imageAndText');
+							
+							Display.de("OVER HERE YO HI IT IS SUNDAY");
+							console.log(asset.meta);
+							newItem.setState('imageName',"thumb_Text");
+							//newItem.setState('imageName',"thumb_" + asset.tags[1]);
+						}
+						
+						newItem.setState('width',Std.string(me.getState('tileWidth')));
+						newItem.setState('height',Std.string(me.getState('tileHeight')));
+						newItem.setState('asset',asset);
+						newItem.setState('libraryObjectDB',me.getState('libraryObjectDB'));
+						//newItem.setState('name',asset.name);
+						
+						
+						containerPanel.addChild(newItem);
+					}
+					
+					me.startAction('Invalidate Later',{frames:5});
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Invalidate Later</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (it.addToState('counter',1)>it.s('frames'))
+					{
+						it.stop();
+						
+						Display.invalidateLayout();
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>frames</Id><Type>Integer</Type><Value>0</Value></State>
+				<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>UploadFile</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("UploadFile");
+					var file = me.getAction('UploadFile').getState('file');
+					var componentType = me.getAction('UploadFile').getState('componentType');
+					var assetType = me.getAction('UploadFile').getState('assetType');
+					var tags = me.getAction('UploadFile').getState('tags');
+					var uploadId = me.getAction('UploadFile').getState('uploadId');
+					
+					var containerPanel = me.getState('containerPanel');
+					
+					var newItem = Logic.gameFactory.createGameEntityExtended('SparkEditor.levels.projectEditor.tabs.library.EditorLibraryItem', 'SparkEditor.levels.projectEditor.tabs.library.EditorLibraryItemUpload');
+					
+					newItem.setState('imageName',me.getState('tileUploadingImageName'));
+					newItem.setState('border',"2px dashed " + me.getState('tileUploadingBorderColor'));
+					newItem.setState('width',Std.string(me.getState('tileWidth')));
+					newItem.setState('height',Std.string(me.getState('tileHeight')));
+					newItem.setState('name',file.name);
+					
+					//need to check type here to decide Text or no text
+					if (componentType=="Sound")
+					{
+						var fileName = file.name.substring(0,file.name.lastIndexOf(".")); //temp name thing
+						newItem.setState('caption',fileName);
+						newItem.setState('skinType','imageAndText');
+					}
+					
+					newItem.setState('fileSize',file.size);
+					newItem.setState('componentType',componentType);
+					newItem.setState('assetType',assetType);
+					newItem.setState('tags',tags);
+					newItem.setState('uploadId',uploadId);
+					
+					newItem.setState('libraryObjectDB',me.getState('libraryObjectDB'));
+					
+					containerPanel.addChild(newItem);
+					
+					
+					Display.invalidateLayout();
+					
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>file</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>componentType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>assetType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>tags</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>uploadId</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Scroller">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+					</_States>
+					<Form><Space><Entities> 
+						<!-- Projects Container -->
+						<Entity extends="std.display.Div">
+							<_States>
+								<!--<_State id="backgroundColor"><Value>green</Value></_State>
+
+
+
+								<_State id="horizontalGap"><Value>20</Value></_State>
+								<_State id="verticalGap"><Value>20</Value></_State>
+								<_State id="columnAlign"><Value>justifyUsingWidth</Value></_State>-->
+							
+								<_State id="layout"><Value>Tile</Value></_State>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>150</Value></_State>
+									
+								
+								<_State id="horizontalAlign"><Value>justify</Value></_State>
+								<_State id="verticalAlign"><Value>justify</Value></_State>
+									
+								<!-- hating this....-->
+								<_State id="requestedColumnCount"><Value>3</Value></_State>
+									
+								<_State id="horizontalGap"><Value>6</Value></_State>
+								<_State id="verticalGap"><Value>6</Value></_State>
+									
+								<_State id="paddingLeft"><Value>6</Value></_State>
+								<_State id="paddingRight"><Value>6</Value></_State>
+								<_State id="paddingTop"><Value>6</Value></_State>
+								<_State id="paddingBottom"><Value>6</Value></_State>
+							</_States>
+							
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								parent.parentEntity.setState('containerPanel',me);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

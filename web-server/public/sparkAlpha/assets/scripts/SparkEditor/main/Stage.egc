@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Stage">
+	<_States>
+		<_State id="name">
+			<Value>Spark Editor Stage</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

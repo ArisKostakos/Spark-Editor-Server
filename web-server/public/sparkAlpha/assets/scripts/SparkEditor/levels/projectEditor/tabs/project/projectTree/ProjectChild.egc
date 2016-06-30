@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.project.projectTree.Child">
+	<_States>
+
+	</_States>
+	
+	<_Actions>
+		<!-- PreConstructor -->
+		<_Action id="PreConstructor">
+			<_Scripts>
+				<Script>
+					var l_ProjectEditor = e('Project Editor');
+					
+					//Find All Levels
+					l_ProjectEditor.s('Assets_DB').find({'meta.type':"Level", $not: { _inModules:{$size:0} } , componentType:"Class"}, function (err, docs) {
+						console.log("Levels_DB " + docs.length + ": ", docs);
+						
+						for (levelDB of docs)
+						{
+							me.fa('Add Child', { childId:levelDB.name, childTitle:levelDB.title, childType:"Level", child_DBA:levelDB, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.LevelChild' } );
+						}
+					});
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+		
+		
+	<Form>
+		<Space>
+			<Entities>
+				<!-- This Child -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>41</Value></_State>
+						<_State id="backgroundColor"><Value>yellow</Value></_State>
+					</_States>
+				
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('displayObject',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+						
+					<Form><Space><Entities>
+						
+						<!-- Expand Button -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>25</Value></_State>
+								<_State id="height"><Value>25</Value></_State>
+								<_State id="src"><Value>projectTree_expand</Value></_State>
+								<_State id="left"><Value>10</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											Display.de("Click EXPAND BUTTON OF: " + parent.parentEntity.s('childId') );
+											
+											parent.parentEntity.fa('Toggle');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>23</Value></_State>
+								<_State id="fontSize"><Value>22px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+								<_State id="pointerEvents"><Value>none</Value></_State>
+							</_States>
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											me.set('text', 'Project: ' + parent.parentEntity.s('childTitle') );
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+						
+						<!-- Run Button -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>25</Value></_State>
+								<_State id="height"><Value>25</Value></_State>
+								<_State id="src"><Value>projectTree_run</Value></_State>
+								<_State id="right"><Value>10</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											Display.de("Click RUN BUTTON OF: " + parent.parentEntity.s('childId') );
+											
+											var l_child = parent.parentEntity;
+											
+											l_child.s('editor').fa('Open Run Tab');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

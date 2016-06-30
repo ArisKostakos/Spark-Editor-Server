@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.TabBase">
+	<_States>
+		<!--<_State id="backgroundColor"><Value>cyan</Value></_State>-->
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<State><Id>statesExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+	
+	
+	<_Actions>
+		<_Action id="Created Event">
+			<_Scripts>
+				<Script>
+					//Display.de("SHOWING LEVEL EDITOR: " + );
+					
+					//Get Tab Parameters
+					var l_parameters = me.s('parameters');
+					
+					//Get Editor (This will be either a Class Editor or a Behavior Editor.. We don't care, we are agnostic
+					var l_editor = l_parameters.editor;
+					
+					//Create Explorer for this Class
+					var l_explorer = Logic.create("SparkEditor.levels.projectEditor.components.explorers.StatesExplorer");
+					
+					//Set Parent Tab
+					l_explorer.set('parentTab', me);
+					
+					//Get States we want to visualize
+					var l_statesMap = Logic.xml_getAllStates(l_editor.s('target_XML'), true);
+					var l_mStatesMap = Logic.xml_getAllMStates(l_editor.s('target_XML'), true);
+					
+					//So we just force an action now to create the thing
+					l_explorer.fa("Construct States", {statesMap:l_statesMap, mStatesMap:l_mStatesMap});
+					
+					//Store it..
+					me.set('statesExplorer', l_explorer);
+					
+					//Add it (this will always be a child of it's tab.. IT's the Tab that's going to move around from tabManager's Container to tabManager's Container..)
+					me.addChild(l_explorer);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Show Event">
+			<_Scripts>
+				<Script>
+					//Display.de("SHOWING LEVEL EDITOR: " + );
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Hide Event">
+			<_Scripts>
+				<Script>
+					//Display.de("HIDING LEVEL EDITOR: " + );
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					//Display.de("HIDING LEVEL EDITOR: " + );
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,1064 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="physicsEntity"><Value>false</Value></_State>
+		<!--<_State id="name"><Value>Sprite 2D Edit</Value></_State>--> <!--Nesseccery to change the name of entities on the editor, so evensheets don't control them with their picker-->
+		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>spriteGridLock</Id><Type>Integer</Type><Value>8</Value></State> <!--64-->
+		<State><Id>ClassAsset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tempUploading</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tempContextPosX</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>tempContextPosY</Id><Type>Decimal</Type><Value>0</Value></State>
+	
+		<State><Id>sprite2DVisibility</Id><Type>Boolean</Type><Value>true</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
+					leveleditor2d.getAction('EntityClicked').setState('entity',me);
+					leveleditor2d.startAction('EntityClicked');
+					
+					me.getAction('Drag').setState('dragX',me.getState('spaceX'));
+					me.getAction('Drag').setState('dragY',me.getState('spaceY'));
+					me.startAction('Drag');
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>MouseRightClick</Event>
+			<Scripts>
+				<Script>
+					function createContextNode(nodeName,nodeType,parentNode)
+					{
+						var node = {};
+						node.name=nodeName;
+						node.children = [];
+						node.type=nodeType;
+						parentNode.children.push(node);
+						
+						return node;
+					}
+					
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
+					leveleditor2d.getAction('EntityClicked').setState('entity',me);
+					leveleditor2d.startAction('EntityClicked');
+					
+					
+					var mainList = {};
+					mainList.children = [];
+					
+					createContextNode("Rename","Rename",mainList);
+					createContextNode("Clone","Clone",mainList);
+					
+					var order = createContextNode("Order","Order",mainList);
+					createContextNode("On Top","On Top",order);
+					createContextNode("One Up","One Up",order);
+					createContextNode("One Down","One Down",order);
+					createContextNode("On Bottom","On Bottom",order);
+					
+					
+					var visibility = createContextNode("Visibility","Visibility",mainList);
+					createContextNode("Visible","Visible",visibility);
+					createContextNode("Invisible","Invisible",visibility);
+					
+					createContextNode("Behaviors","Behaviors",mainList);
+					createContextNode("States","States",mainList);
+					createContextNode("eStates (alpha)","ExistingStates",mainList);
+					createContextNode("Delete","Delete",mainList);
+					
+					var mousePosX = Input.pointer.currentX;
+					var mousePosY = Input.pointer.currentY;
+					
+					//Store for later
+					me.setState('tempContextPosX',mousePosX);
+					me.setState('tempContextPosY',mousePosY);
+					
+					//Open Popup [CHOOSE AC]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+					popUpAction.setState('popupPosX',mousePosX);
+					popUpAction.setState('popupPosY',mousePosY);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Entity Context Menu');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>W</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction('Clone').setState('dir','up');
+						me.startAction('Clone');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>S</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction('Clone').setState('dir','down');
+						me.startAction('Clone');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>A</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction('Clone').setState('dir','left');
+						me.startAction('Clone');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>D</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction('Clone').setState('dir','right');
+						me.startAction('Clone');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>Delete</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						Logic.getEntityByName('2d Scene Editor').getState('target').startAction('DeleteSelected');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Up");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Down");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>Left</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Left");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyPressed</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.getAction("Move").setState("Dir","Right");
+						me.startAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased</Event>
+			<Parameter>Up</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased</Event>
+			<Parameter>Down</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased</Event>
+			<Parameter>Left</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>KeyReleased</Event>
+			<Parameter>Right</Parameter>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (me.getState('selected'))
+					{
+						me.stopAction("Move");
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<!-- Update Class Object Asset-->
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.file_getSendFileRequestData("updatedClassAsset")!=null)
+					{
+						if (me.getState('tempUploading')) //if it's me who's uploading this..
+						{
+							var data = Comms.file_getSendFileRequestData("updatedClassAsset");
+							
+							Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+							
+							if (data.progress==1)
+							{
+								Display.error("FILE: " + 'File Uploaded!');
+								
+								var asset = me.getState('ClassAsset');
+								Display.error("FILE: " + asset.name);
+								//incomingFileName
+								var incomingFileName = "updatedClassAsset";
+								var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+								Comms.request("assets.uploadHandler.updateAssetFile", {assetUserName: connectedUserName, assetType:asset.type, assetName:asset.name, incomingFileName:incomingFileName}, "updatedClassAsset");
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData("updatedClassAsset")!=null)
+					{
+						if (me.getState('tempUploading')) //if it's me who's uploading this..
+						{
+							var data = Comms.getRequestData("updatedClassAsset");
+							
+							if (data.code=="success")
+							{
+								Display.error('Updated Class Asset fucking success!');
+								Logic.getEntityByName('Editor Output').setState('text','Almost done!');
+								
+								//Ok here's the thing.. If I were to override flambe Asset system a bit I could directly update the Class File (you change the asset._content String)
+								//But i don't wanna do that just yet.. so I'll do the dump thing and RELOAD the asset back from the server...
+								//Initiate Load
+								var loader = Assets.initiateBatch();
+								
+								var asset = me.getState('ClassAsset');
+								var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+								var assetUrl = '/assets/' + connectedUserName + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								
+								
+								//Add file to Flambe Loader
+								loader.addFile(assetUrl, assetId);
+								
+								var oldMe = me;
+								
+								//Event Listener
+								loader.successSignal.connect(function () {
+									oldMe.setState('tempUploading',false);
+									Logic.getEntityByName('Editor Output').setState('text','All done!');
+									
+									//Update Inheritance
+									Logic.getEntityByName('Project Editor').getAction('RegisterInheritance').setState('asset',asset);
+									Logic.getEntityByName('Project Editor').startAction('RegisterInheritance');
+									
+								}).once();
+								
+								//Load
+								loader.start();
+							}
+							else
+							{
+								Display.error('Updated Class Asset error!');
+								Logic.getEntityByName('Editor Output').setState('text','Error Updating Entity :(');
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Export Xml -->
+		<Action>
+			<Id>Export Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced			
+					
+					//Create exportXml
+					var exportXml = Logic.xml_createElementAttr('Entity','extends', me.getState('ClassAsset').name );
+					
+					//Add States
+					Logic.xml_entity_addMState(exportXml, {id:"spaceX", value: Std.string(me.getState('spaceX')) },true);
+					Logic.xml_entity_addMState(exportXml, {id:"spaceY", value: Std.string(me.getState('spaceY')) },true);
+					
+					if (me.getState('scaleX')!=1)
+						Logic.xml_entity_addMState(exportXml, {id:"scaleX", value: Std.string(me.getState('scaleX')) },true);
+					if (me.getState('scaleY')!=1)
+						Logic.xml_entity_addMState(exportXml, {id:"scaleY", value: Std.string(me.getState('scaleY')) },true);
+					if (me.getState('rotation')!=0)
+						Logic.xml_entity_addMState(exportXml, {id:"rotation", value: Std.string(me.getState('rotation')) },true);
+					if (me.getState('sprite2DVisibility')!=true)
+						Logic.xml_entity_addMState(exportXml, {id:"visible", value: Std.string(me.getState('sprite2DVisibility')) },true);
+					//Store
+					me.setState('xmlExport',exportXml);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Import Xml -->
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					Display.error("SOSOSO HERE'S ONE");
+					
+					var importXml = it.getState('importXml');
+					
+					//Now, disable things you don't want happening on Edit.. like physicsEntity
+					//me.setState('physicsEntity',false); //we do this on the Sprite2DEdit.egc
+					
+					//Find class name
+					var className = importXml.get("extends");
+					
+					//Now let's get the asset for that class
+					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+					var asset = ClassObjectsDBbyNameHash.get(className);
+					
+					//Store it
+					me.setState('ClassAsset',asset);
+					
+					//sprite2DVisibility
+					/*
+					//instantiate
+					var isSpriter = (entityChildXml.get('extends').substr(entityChildXml.get('extends').lastIndexOf('.')+1)=="Spriter2D");
+					
+					
+					//add to scene
+					if (childEntity.getState('name')=="Background") //background entity //THIS IS NOT GONNA WORK ANYMORE, CAUSE SPRITE2DEDIT CHANGES THE NAME
+					{
+						//add to SceneBoundsDisplay edit object
+						Logic.getEntityByName('SceneBoundsDisplay').addChild(childEntity);
+						
+						//Store the reference
+						editScene.setState('backgroundEntity',childEntity);
+						
+						//Untouchable
+						childEntity.setState('touchable',false);
+						
+						//Create a couple more backgrounds to fill the white bounds rect
+						var backgroundWidth = Logic.reflectField(Assets.getTexture(childEntity.gameForm.getState('ImageUrl')), 'width')-2; //-2 is to prevent some white gaps betweeen backgrounds
+						
+						var multipleBackgroundsCount = Math.ceil(editScene.getState('boundsWidth')/backgroundWidth);
+						var backgroundsCreated = 1;
+						
+						//Display.error("we need " + multipleBackgroundsCount + " Backgrounds!");
+						
+						while (multipleBackgroundsCount>backgroundsCreated)
+						{
+							var extraBackground = Logic.gameFactory.createGameEntityByXml(entityChildXml);
+							extraBackground.setState('spaceX',extraBackground.getState('spaceX')+backgroundWidth*backgroundsCreated);
+							Logic.getEntityByName('SceneBoundsDisplay').addChild(extraBackground);
+							
+							//Untouchable
+							extraBackground.setState('touchable',false);
+							
+							backgroundsCreated+=1;
+							//Display.error("Created a background!");
+						}
+					}
+					else //normal entity
+					{
+						//add to scene
+						editScene.addChild(childEntity);
+					}
+					
+					//Grid Lock
+					if (isSpriter) childEntity.setState('spriteGridLock',8); //1
+					*/
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>CreateBehaviors</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
+					Display.error("My Asset.name is: " + asset.name);
+					
+					//Check hash to pick up it's classes
+					var InheritanceHashByName = Logic.getEntityByName('Project Editor').getState("InheritanceHashByName");
+					var inheritanceMap = InheritanceHashByName.get(asset.name);
+					
+					var behaviorsFound = [];
+					
+					var keys = inheritanceMap.keys();
+					while (keys.hasNext())
+					{
+						var behaviorName = keys.next();
+						//Is it a behavior?
+						if (inheritanceMap.get(behaviorName)==true)
+						{
+							behaviorsFound.push(behaviorName);
+						}
+					}
+					
+					it.setState('returnBehaviors',behaviorsFound);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnBehaviors</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>CreateStates</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
+					Display.error("My Asset.name is: " + asset.name);
+					
+					//Check hash to pick up it's classes
+					var StatesHashByName = Logic.getEntityByName('Project Editor').getState("StatesHashByName");
+					var statesMap = StatesHashByName.get(asset.name);
+					Display.error(statesMap);
+					it.setState('returnStates',statesMap);	//statesMap is read only.. don't write to it..
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnStates</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>CreateMStates</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get the class object asset
+					var asset = me.getState('ClassAsset');
+					Display.error("My Asset.name is: " + asset.name);
+					
+					//Check hash to pick up it's classes
+					var MStatesHashByName = Logic.getEntityByName('Project Editor').getState("MStatesHashByName");
+					var mstatesMap = MStatesHashByName.get(asset.name);
+					Display.error(mstatesMap);
+					it.setState('returnMStates',mstatesMap);	//mstatesMap is read only.. don't write to it..
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnMStates</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: Entity Context Menu -->
+		<Action>
+			<Id>Callback: Entity Context Menu</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						Display.error("Got: " + cb_Arg1.name);
+						
+						if (cb_Arg1.type=="Delete")
+						{
+							Logic.getEntityByName('2d Scene Editor').getState('target').startAction('DeleteSelected');
+						}
+						else if (cb_Arg1.type=="ExistingStates")
+						{
+							me.forceAction('CreateMStates');
+							var mstates = me.getAction('CreateMStates').getState('returnMStates');
+							
+							
+							//Open Popup
+							var popUpManager = Logic.getEntityByName('PopUp Manager');
+							var popUpAction = popUpManager.getAction('Open PopUp');
+							popUpAction.setState('popupName',"SparkEditor.entities.popups.items.MStatesPopUp");
+							popUpAction.setState('popupPosX',me.getState('tempContextPosX'));
+							popUpAction.setState('popupPosY',me.getState('tempContextPosY'));
+							popUpAction.setState('argA',mstates);
+							popUpAction.setState('cb_caller',me);
+							popUpAction.setState('cb_actionName','Callback: MStates Window');
+							popUpManager.forceAction('Open PopUp');
+						}
+						else if (cb_Arg1.type=="Clone")
+						{
+							me.getAction('Clone').setState('dir','right');
+							me.startAction('Clone');
+						}
+						else if (cb_Arg1.type=="Visible")
+						{
+							me.setState('sprite2DVisibility',true);
+						}
+						else if (cb_Arg1.type=="Invisible")
+						{
+							me.setState('sprite2DVisibility',false);
+						}
+						else if (cb_Arg1.type=="On Top")
+						{
+							//me.setState('xxxxxxx',false);
+							me.setZorder("top");
+						}
+						else if (cb_Arg1.type=="One Up")
+						{
+							me.setZorder("oneUp");
+						}
+						else if (cb_Arg1.type=="One Down")
+						{
+							me.setZorder("oneDown");
+						}
+						else if (cb_Arg1.type=="On Bottom")
+						{
+							me.setZorder("bottom");
+						}
+						else if (cb_Arg1.type=="Behaviors")
+						{
+							me.forceAction('CreateBehaviors');
+							var behaviors = me.getAction('CreateBehaviors').getState('returnBehaviors');
+							
+							
+							//Open Popup
+							var popUpManager = Logic.getEntityByName('PopUp Manager');
+							var popUpAction = popUpManager.getAction('Open PopUp');
+							popUpAction.setState('popupName',"SparkEditor.entities.popups.items.BehaviorsPopUp");
+							popUpAction.setState('popupPosX',me.getState('tempContextPosX'));
+							popUpAction.setState('popupPosY',me.getState('tempContextPosY'));
+							popUpAction.setState('argA',behaviors);
+							popUpAction.setState('cb_caller',me);
+							popUpAction.setState('cb_actionName','Callback: Behaviors Window');
+							popUpManager.forceAction('Open PopUp');
+						}
+						else if (cb_Arg1.type=="States")
+						{
+							me.forceAction('CreateStates');
+							var states = me.getAction('CreateStates').getState('returnStates');
+							
+							
+							//Open Popup
+							var popUpManager = Logic.getEntityByName('PopUp Manager');
+							var popUpAction = popUpManager.getAction('Open PopUp');
+							popUpAction.setState('popupName',"SparkEditor.entities.popups.items.StatesPopUp");
+							popUpAction.setState('popupPosX',me.getState('tempContextPosX'));
+							popUpAction.setState('popupPosY',me.getState('tempContextPosY'));
+							popUpAction.setState('argA',states);
+							popUpAction.setState('cb_caller',me);
+							popUpAction.setState('cb_actionName','Callback: States Window');
+							popUpManager.forceAction('Open PopUp');
+						}
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: Behaviors Window -->
+		<Action>
+			<Id>Callback: Behaviors Window</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						
+						
+						var asset = me.getState('ClassAsset');
+						
+						//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+						
+						//Get the ASSET'S XML.. doihh..
+						var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+						
+						Logic.xml_entity_removeNode(asset_xml,"Extends");
+						
+						for (item of cb_Arg1)
+						{
+							Display.error("Adding: " + item);
+							Logic.xml_entity_addExtend(asset_xml, {ext: item});
+						}
+						
+						//Add the extend node to asset xml
+						
+						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+						
+						//Get me ready to upload stuff
+						me.setState('tempUploading',true);
+						
+						//Upload it
+						var finalString = Logic.xmlToString(asset_xml);
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: States Window -->
+		<Action>
+			<Id>Callback: States Window</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						
+						
+						var asset = me.getState('ClassAsset');
+						
+						//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+						
+						//Get the ASSET'S XML.. doihh..
+						var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+						
+						//Remove All Full States here
+						var statesNode = Logic.xml_getElement(asset_xml, "_States");
+						Logic.xml_entity_removeAllNodes(statesNode,"State");
+						
+						//Add new States
+						for (item of cb_Arg1)
+						{
+							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
+							Logic.xml_entity_addState(asset_xml, item, true);
+						}
+						
+						
+						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+						
+						//Get me ready to upload stuff
+						me.setState('tempUploading',true);
+						
+						//Upload it
+						var finalString = Logic.xmlToString(asset_xml);
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Callback: MStates Window -->
+		<Action>
+			<Id>Callback: MStates Window</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						Display.error("Callback: Select AC: OK");
+						
+						
+						var asset = me.getState('ClassAsset');
+						
+						//Display.error("My Class2 is: " + asset.name + ", and id: " + asset._id);
+						
+						//Get the ASSET'S XML.. doihh..
+						var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+						
+						//Remove All Merge States here
+						var statesNode = Logic.xml_getElement(asset_xml, "_States");
+						Logic.xml_entity_removeAllNodes(statesNode,"_State");
+						
+						var objectRenamed = null;
+						
+						//Add new _States
+						for (item of cb_Arg1)
+						{
+							//Display.error("ADDING: " + "id: " + item.id + ", type: " + item.type + ", value: " + item.value);
+							Logic.xml_entity_addMState(asset_xml, item, true);
+							
+							//Check for rename
+							if (item.id=="name")
+								if (item.value!=me.s('name'))
+									objectRenamed=item.value;
+							
+							//Change "Dynamic" MStates on the spot!
+							if (item.id=="text" || item.id=="font" || item.id=="align" || item.id=="wrapWidth" || item.id=="letterSpacing" || item.id=="lineSpacing")
+								me.setState(item.id,item.value);
+						}
+						
+						
+						//So.. over here we check if name has changed, cause this needs us to do a lot of stuff.. (renaming an object)
+						if (objectRenamed!=null)
+						{
+							//Find Class Object Project Item
+							for (projectChild of e('Editor Project Collections').s('collectionPanelsByNameHash').get('Objects').s('containerPanel').getChildren())
+								if (projectChild.s('asset')==asset)
+								{
+									projectChild.getAction('Rename').setState('newName',objectRenamed);
+									projectChild.forceAction('Rename');
+									break;
+								}
+						}
+						
+						//Display.error("XML OUTPUT: " + Logic.xmlToString(asset_xml));
+						
+						//Get me ready to upload stuff
+						me.setState('tempUploading',true);
+						
+						//Upload it
+						var finalString = Logic.xmlToString(asset_xml);
+						var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+						Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						
+						Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Select -->
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Select");
+
+					if (me.getState('selector')==null)
+					{
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.behaviors.Sprite2DEditSelector');
+						//Display.error("LAAAAAAAAAAAAAAAAAAAAA: " + me.getState('boundsRect'));
+						myNewItem.setState('selectRect', me.getState('boundsRect'));
+						
+						me.addChild(myNewItem);
+						me.setState('selector',myNewItem);
+					}
+					else
+					{
+						me.getState('selector').startAction('show');
+					}
+					
+					//set thing to update
+					//var propertiesWindow = Logic.getEntityByName('Properties Window');
+					//propertiesWindow.getAction('Update').setState('xmlData',me.getState('xmlData').firstElement());
+					//propertiesWindow.startAction('Update');
+					
+					me.setState('selected',true);
+					
+				</Script>
+			</Scripts>
+		</Action>
+
+		<!-- Deselect -->
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('selector')!=null)
+					{
+						me.getState('selector').startAction('hide');
+					}
+					
+					me.setState('selected',false);
+					me.stopAction("Deselect");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Drag -->
+		<Action>
+			<Id>Drag</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Input.pointer.isDown())
+					{
+						if (Input.pointer.distX()==0 && Input.pointer.distY()==0)
+							return; //don't grid lock and stuff.. (not good code..)
+						
+						var scale = Logic.getEntityByName('Editor Scene Edit Camera').getState('scaleX');
+						
+						var realX = me.getAction('Drag').getState('dragX')+Input.pointer.distX()/scale;
+						var realY = me.getAction('Drag').getState('dragY')+Input.pointer.distY()/scale;
+						
+						me.getAction('Drag').setState('dragX',realX);
+						me.getAction('Drag').setState('dragY',realY);
+						
+						var gridLock = me.getState('spriteGridLock');
+						me.setState('spaceX', Math.round(realX/gridLock)*gridLock);
+						me.setState('spaceY', Math.round(realY/gridLock)*gridLock);
+						Display.error('spaceX: ' + me.getState('spaceX') + ", spaceY: " + me.getState('spaceY') + ' -> realX: ' + realX + ", realY: " + realY);
+					}
+					else
+					{
+						me.stopAction("Drag");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>dragX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dragY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Move -->
+		<Action>
+			<Id>Move</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var direction = me.getAction("Move").getState("Dir");
+					
+					if (direction=="Left")
+						me.setState("spaceX",me.getState("spaceX")-1);
+					else if (direction=="Right")
+						me.setState("spaceX",me.getState("spaceX")+1);
+					else if (direction=="Up")
+						me.setState("spaceY",me.getState("spaceY")-1);
+					else if (direction=="Down")
+						me.setState("spaceY",me.getState("spaceY")+1);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>Dir</Id><Type>Text</Type><Value>undefined</Value></State>
+			</States>
+		</Action>
+		
+		
+		<!-- Clone -->
+		<Action>
+			<Id>Clone</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Clone");
+					
+					//Get Direction
+					var dir = me.getAction('Clone').getState('dir');
+					
+					
+					//Export Xml from here
+					me.forceAction('Export Xml');
+					var entityChildXml = me.getState('xmlExport');
+					
+					
+					//Clone it and create the Edit Xml
+					var tempEntityChildXml = Logic.xml_clone(entityChildXml);
+					Logic.xml_entity_removeNode(tempEntityChildXml, "Form");
+					Logic.xml_entity_addExtend(tempEntityChildXml, {ext: 'SparkEditor.entities.editors.behaviors.Sprite2DEdit'});
+					
+					//Instantiate
+					var editChild = Logic.gameFactory.createGameEntityByXml(tempEntityChildXml);
+					
+					
+					
+					//add it as child
+					var editScene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					editScene.addChild(editChild);
+					
+					//Run Import
+					editChild.getAction('Import Xml').setState('importXml',entityChildXml);
+					editChild.forceAction('Import Xml');
+					
+					
+					var shiftX=0;
+					var shiftY=0;
+					
+					//Change Position
+					
+						//Check Size
+					var realWidth = me.getState('boundsRect').width * me.getState('scaleX');
+					var realHeight = me.getState('boundsRect').height * me.getState('scaleY');
+						
+					if (dir=='left') shiftX-=realWidth;
+					else if (dir=='right') shiftX+=realWidth;
+					else if (dir=='up') shiftY-=realHeight;
+					else if (dir=='down') shiftY+=realHeight;
+					
+					editChild.setState('spaceX',me.getState('spaceX')+shiftX);
+					editChild.setState('spaceY',me.getState('spaceY')+shiftY);
+					
+					//Stupid gridlock (redo me properly, with hash probably)
+					//childEntity.setState('spriteGridLock',me.getState('spriteGridLock'));
+					
+					
+					/*
+					me.startAction('Deselect');
+					
+					childEntity.setState('boundsRect',me.getState('boundsRect'));
+					childEntity.startAction('Select');
+					*/
+
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
+					leveleditor2d.getAction('EntityClicked').setState('entity',editChild);
+					leveleditor2d.startAction('EntityClicked');
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>dir</Id><Type>Text</Type><Value>none</Value></State>
+			</_States>
+		</Action>
+	</_Actions>
+</Entity>

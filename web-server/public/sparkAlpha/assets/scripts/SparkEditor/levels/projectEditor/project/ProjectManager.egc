@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Project Manager</Value></_State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//lalala
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Export</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced..
+					
+					
+					Display.error("Project Manager: Export");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>yoyo</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Save</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced..
+					
+					
+					Display.error("Project Manager: Save");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>yoyo</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Run Preview</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced..
+					
+					
+					Display.error("Project Manager: Run Preview");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>yoyo</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Run Export</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced..
+					
+					
+					Display.error("Project Manager: Run Export");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>yoyo</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Stop Preview</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced..
+					
+					
+					Display.error("Project Manager: Stop Preview");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>yoyo</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		
+	</_Triggers>
+</Entity>

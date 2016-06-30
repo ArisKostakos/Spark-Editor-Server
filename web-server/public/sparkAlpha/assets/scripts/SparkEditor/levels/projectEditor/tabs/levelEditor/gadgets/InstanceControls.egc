@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<!--<_State id="backgroundColor"><Value>yellow</Value></_State>-->
+		<_State id="border"><Value>1px solid black</Value></_State>
+		<_State id="opacity"><Value>1</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="cursor"><Value>pointer</Value></_State>
+		<_State id="width"><Value>300</Value></_State>
+		<_State id="height"><Value>300</Value></_State>
+		<_State id="cursor"><Value>pointer</Value></_State>
+		<_State id="draggable"><Value>true</Value></_State>
+		<State><Id>InstanceEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>DragXStart</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>DragYStart</Id><Type>Decimal</Type><Value>0</Value></State>
+	</_States>
+	
+	<_Actions>
+
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					Display.de("controls clicked");
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>OnDragStart</Event>
+			<Scripts>
+				<Script>
+					//a mess..
+					//console.log("Drag Start",me.s('eventObject'));
+					
+					me.set('DragXStart',me.s('eventObject').x);
+					me.set('DragYStart',me.s('eventObject').y);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>OnDrag</Event>
+			<Scripts>
+				<Script>
+					//a mess..
+					//console.log("Dragging",me.s('eventObject'));	
+					var l_event = me.s('eventObject');
+					var l_instanceEditor = me.s('InstanceEditor');
+					var l_transformations = l_instanceEditor.s('SceneEditor').s('transformations');
+					
+					var l_movementX=l_event.x-me.s('DragXStart');
+					var l_movementY=l_event.y-me.s('DragYStart');
+					
+					me.s('InstanceEditor').addToState('left',l_movementX/l_transformations.scale);
+					me.s('InstanceEditor').addToState('top',l_movementY/l_transformations.scale);
+					me.addToState('left',l_movementX);
+					me.addToState('top',l_movementY);
+					
+					l_instanceEditor.s('target_GameObject').addToState('spaceX',l_movementX/l_transformations.scale);
+					l_instanceEditor.s('target_GameObject').addToState('spaceY',l_movementY/l_transformations.scale);
+					
+					me.set('DragXStart',me.s('eventObject').x);
+					me.set('DragYStart',me.s('eventObject').y);
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>OnDragEnd</Event>
+			<Scripts>
+				<Script>
+					//a mess..
+					//console.log("Drag End",me.s('eventObject'));
+					var l_event = me.s('eventObject');
+					var l_instanceEditor = me.s('InstanceEditor');
+					var l_transformations = l_instanceEditor.s('SceneEditor').s('transformations');
+					
+					var l_movementX=l_event.x-me.s('DragXStart');
+					var l_movementY=l_event.y-me.s('DragYStart');
+					
+					me.s('InstanceEditor').addToState('left',l_movementX/l_transformations.scale);
+					me.s('InstanceEditor').addToState('top',l_movementY/l_transformations.scale);
+					me.addToState('left',l_movementX);
+					me.addToState('top',l_movementY);
+					
+					l_instanceEditor.s('target_GameObject').addToState('spaceX',l_movementX/l_transformations.scale);
+					l_instanceEditor.s('target_GameObject').addToState('spaceY',l_movementY/l_transformations.scale);
+					
+					me.set('DragXStart',me.s('eventObject').x);
+					me.set('DragYStart',me.s('eventObject').y);
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

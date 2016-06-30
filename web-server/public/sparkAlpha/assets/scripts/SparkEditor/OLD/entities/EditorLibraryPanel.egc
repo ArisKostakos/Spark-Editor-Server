@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="name"><Value>Editor Library Panel</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Container -->
+				<Entity extends="SparkEditor.entities.library.platform.EditorLibraryCategories"><_States>
+					<_State id="paddingTop"><Value>41</Value></_State>
+				</_States></Entity>
+
+				<!-- Heading -->
+					<Entity extends="std.display.Div"><_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>41</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(56, 191, 181)</Value></_State>
+						<_State id="boxShadow"><Value>0px 4px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+						</_States><Form><Space><Entities>
+						
+						<!-- Heading Text -->
+						<Entity extends="std.display.Text"><_States>
+							<_State id="name"><Value>Library Heading</Value></_State>
+							<_State id="text"><Value>Library</Value></_State>
+							<_State id="left"><Value>10</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+							<_State id="fontSize"><Value>22px</Value></_State>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>22</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="verticalCenter"><Value>0</Value></_State>
+						</_States></Entity>
+
+					</Entities></Space></Form></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

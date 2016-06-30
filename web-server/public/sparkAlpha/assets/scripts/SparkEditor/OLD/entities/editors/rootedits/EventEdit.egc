@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Event</Value></_State>
+		<_State id="width"><Value>100%</Value></_State><!-- 100% -->
+		<!--<_State id="border"><Value>1px dashed black</Value></_State>
+		<_State id="borderRadius"><Value>5px</Value></_State>-->
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<!--<_State id="backgroundColor"><Value>rgb(0,160,227)</Value></_State>-->
+		<State><Id>EventId</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>EventIdDisplay</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>parentEventSheet</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>conditionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>actionsContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>connectingLineGroup</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>actionsContainerGroup</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<_State id="gap"><Value>0</Value></_State>
+		<State><Id>eventWzardInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Event Id -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>15</Value></_State>
+					<_State id="height"><Value>30</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>right</Value></_State>
+					<_State id="textVerticalAlign"><Value>middle</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',Std.string(parent.getState('EventId')));
+					parent.setState('EventIdDisplay',me);
+				</Script></_Scripts></_Action></_Actions></Entity>
+	
+				<!-- Conditions -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="paddingLeft"><Value>5</Value></_State>
+						<_State id="width"><Value>40%</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+							
+					</_States>
+					<Form><Space><Entities>
+						<!-- Conditions Container -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="gap"><Value>1</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								parent.parentEntity.setState('conditionsContainer',me);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						
+						<!-- Add New Condition -->
+						<Entity extends="SparkEditor.entities.buttons.eventsheet.AddButtonSmall">
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+								<Script>
+									parent.parentEntity.startAction("Create New Condition");
+								</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Connecting Line -->
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="width"><Value>10</Value></_State>
+						<_State id="height"><Value>30</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('connectingLineGroup',me);
+					</Script></_Scripts></_Action></_Actions>
+					<Form><Space><Entities>
+						<Entity extends="std.display.Div">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>2</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="backgroundColor"><Value>white</Value></_State>
+							</_States>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+	
+				<!-- Actions -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>60%</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState('actionsContainerGroup',me);
+					</Script></_Scripts></_Action></_Actions>
+					<Form><Space><Entities>
+						<!-- Actions Container -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="gap"><Value>1</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								parent.parentEntity.setState('actionsContainer',me);
+							</Script></_Scripts></_Action></_Actions>
+						</Entity>
+						
+						<!-- Add New Action -->
+						<Entity extends="SparkEditor.entities.buttons.eventsheet.AddButtonSmall">
+							<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+								<Script>
+									parent.parentEntity.startAction("Create New Action");
+								</Script>
+							</Scripts></Trigger></_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		
+	</_Triggers>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					return;
+					Display.error('conditions container: ' + me.getState('conditionsContainer'));
+					Display.error('actions container: ' + me.getState('actionsContainer'));
+				</Script>
+			</_Scripts>
+		</_Action>
+	
+		<!-- Export Xml -->
+		<Action>
+			<Id>Export Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Create the event
+					var eventXml = Logic.xml_createElementAttr('Entity','extends','std.ace.Event');
+					
+					//First, we determine from the conditions, what trigger to create..
+					var firstCondition=eventChild.getState('conditionsContainer').getChildren()[0]; //for now, consider first condition
+					
+					//By checking all conditions for this event, determine an appropriate trigger
+					//Set Up Trigger Event Node
+					var conditionTarget_asset = firstCondition.getState('target_asset');
+					var condition_asset = firstCondition.getState('ac_asset');
+					var condition_par1 = firstCondition.getState('par1');
+					var condition_par2 = firstCondition.getState('par2');
+					var condition_par3 = firstCondition.getState('par3');
+					var condition_par4 = firstCondition.getState('par4');
+					
+					
+					//Determine Trigger Based on 'chosen' condition
+					var triggerEvent="NotFound";
+					if (condition_asset.fileName=="MouseLeftClick")
+						triggerEvent="MouseLeftClick";
+					else if (condition_asset.fileName=="KeyPressed")
+						triggerEvent="KeyPressed";
+					else if (condition_asset.fileName=="KeyDown")
+						triggerEvent="KeyDown";
+					else if (condition_asset.fileName=="KeyReleased")
+						triggerEvent="KeyReleased";
+					else if (condition_asset.fileName=="Collided")
+						triggerEvent="PhysicsSensorStart";
+					else if (condition_asset.fileName=="StateChanged")
+						triggerEvent="StateChanged";
+					else if (condition_asset.fileName=="OnSceneCreated")
+						triggerEvent="SceneCreated";
+					else if (condition_asset.fileName=="CustomTrigger")
+						triggerEvent="CustomTrigger";
+					else if (condition_asset.fileName=="SoundCompleted")
+						triggerEvent="SoundCompleted";
+					else if (condition_asset.fileName=="ProjectPaused")
+						triggerEvent="ProjectPaused";
+					else if (condition_asset.fileName=="ProjectResumed")
+						triggerEvent="ProjectResumed";
+					else if (condition_asset.fileName=="Created")
+						triggerEvent="Created";
+						
+					//Set Up Trigger Target Node
+					var triggerTarget;
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyDown" || triggerEvent=="KeyReleased" || triggerEvent=="SceneCreated" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted" || triggerEvent=="ProjectPaused" || triggerEvent=="ProjectResumed") //hack to set no target for keyboard
+						triggerTarget="TargetNone";
+					else
+						triggerTarget= conditionTarget_asset.title;
+					
+					//Set Up Trigger Parameter
+					var triggerParameter=null;
+					if (triggerEvent=="KeyPressed" || triggerEvent=="KeyDown" || triggerEvent=="KeyReleased" || triggerEvent=="StateChanged" || triggerEvent=="CustomTrigger" || triggerEvent=="SoundCompleted")
+					{
+						triggerParameter = condition_par1.object;
+					}
+					
+					//Create the trigger
+					Logic.xml_entity_addTrigger(eventXml, {ext:"std.ace.TriggerBase", event:triggerEvent, target:triggerTarget, parameter:triggerParameter},true);
+					
+					//Create entities node (children)
+					var entities = Logic.xml_createElements(['Form','Space','Entities']);
+					eventXml.addChild(entities.first);
+					
+					//Add Children Conditions
+					for (conditionChild of eventChild.getState('conditionsContainer').getChildren())
+					{
+						conditionChild.forceAction('Export Xml');
+						entities.last.addChild(conditionChild.getState('xmlExport'));
+					}
+					
+					//Add Children Events
+					for (actionChild of eventChild.getState('actionsContainer').getChildren())
+					{
+						actionChild.forceAction('Export Xml');
+						entities.last.addChild(actionChild.getState('xmlExport'));
+					}
+					
+					//Store
+					me.setState('xmlExport',eventXml);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<!-- Update -->
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Update Children Conditions
+					for (conditionChild of eventChild.getState('conditionsContainer').getChildren())
+					{
+						conditionChild.getAction('Update').setState('renameObjectClass',it.getState('renameObjectClass'));
+						conditionChild.forceAction('Update');
+					}
+					
+					//Update Children Events
+					for (actionChild of eventChild.getState('actionsContainer').getChildren())
+					{
+						actionChild.getAction('Update').setState('renameObjectClass',it.getState('renameObjectClass'));
+						actionChild.forceAction('Update');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>renameObjectClass</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Query -->
+		<Action>
+			<Id>Query</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Update Children Conditions
+					for (conditionChild of eventChild.getState('conditionsContainer').getChildren())
+					{
+						conditionChild.getAction('Query').setState('nameExists',it.getState('nameExists'));
+						conditionChild.forceAction('Query');
+					}
+					
+					//Update Children Events
+					for (actionChild of eventChild.getState('actionsContainer').getChildren())
+					{
+						actionChild.getAction('Query').setState('nameExists',it.getState('nameExists'));
+						actionChild.forceAction('Query');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>nameExists</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Create New Instance -->
+		<Action>
+			<Id>Create New Instance</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('conditionsContainer')!=null && me.getState('actionsContainer')!=null)
+					{
+						me.stopAction("Create New Instance");
+						
+						me.setState('eventWzardInProgress',true);
+						
+						//create an conditionEdit
+						var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+						conditionEdit.setState('parentEvent',me);
+						
+						//add it as child to conditions
+						me.getState('conditionsContainer').addChild(conditionEdit);
+						conditionEdit.startAction('Create New Instance');
+						
+						Display.invalidateLayout();
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>AC removed</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var counter = it.getState('counter');
+					if (counter==0)
+					{
+						if (me.getState('conditionsContainer').getChildren().length==0)
+						{
+							Display.error("REMOVING EVENT!!!!");
+							parent.removeChild(me);
+						}
+						//var item = it.getState('item');
+						
+						//me.removeChild(item);
+						counter+=1;
+					}
+					else if (counter==1) //Apparently, for this to work we need to do two invalidations, otherwise the Done Button gets left behind
+					{
+						me.stopAction('AC removed');
+						counter=0;
+					}
+					
+					Display.invalidateLayout();
+					it.setState('counter',counter);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>counter</Id><Type>Integer</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Create New Condition</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Create New Condition");
+					
+					//create an conditionEdit
+					var conditionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+					conditionEdit.setState('parentEvent',me);
+					
+					//add it as child to me
+					if (it.getState('index')==-1)
+						me.getState('conditionsContainer').addChild(conditionEdit);
+					else
+						me.getState('conditionsContainer').insertChild(conditionEdit, it.getState('index'));
+						
+					conditionEdit.startAction('Create New Instance');
+					
+					Display.invalidateLayout();
+					
+					it.setState('index',-1);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>index</Id><Type>Integer</Type><Value>-1</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Create New Action</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Create New Action");
+					
+					//create an actionEdit
+					var actionEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+					actionEdit.setState('parentEvent',me);
+					
+					//add it as child to me
+					if (it.getState('index')==-1)
+						me.getState('actionsContainer').addChild(actionEdit);
+					else
+						me.getState('actionsContainer').insertChild(actionEdit, it.getState('index'));
+						
+					actionEdit.startAction('Create New Instance');
+					Display.invalidateLayout();
+					
+					
+					me.getState('connectingLineGroup').setState('display','inline');
+					me.getState('actionsContainerGroup').setState('display','inline');
+					
+					it.setState('index',-1);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>index</Id><Type>Integer</Type><Value>-1</Value></State>
+			</States>
+		</Action>
+				
+		<!-- Import Xml -->
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('conditionsContainer')!=null && me.getState('actionsContainer')!=null)
+					{
+						me.stopAction("Import Xml");
+						
+						var importXml = it.getState('importXml');
+						
+						var l_entitiesNode = Logic.xml_getElements(importXml,["Form","Space","Entities"]);
+						
+						var entities = l_entitiesNode.elementsNamed('Entity');
+						//for each [entity] in [form.space.entities]
+						while (entities.hasNext())
+						{
+							var entityChildXml = entities.next();
+							
+							//Get the AC Asset
+							var className = entityChildXml.get('extends');
+							
+							var acAsset = Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').get(className);
+							
+							//Display.error("FoundAC Object: " + acAsset.name);
+							
+							var acEdit;
+							if (acAsset.componentType=="Condition")
+							{
+								acEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ConditionEdit');
+								me.getState('conditionsContainer').addChild(acEdit);
+							}
+							else
+							{
+								acEdit = Logic.gameFactory.createGameEntity('SparkEditor.entities.editors.rootedits.ActionEdit');
+								me.getState('actionsContainer').addChild(acEdit);
+							}
+							
+							acEdit.setState('parentEvent',me);
+							acEdit.setState('ac_asset',acAsset);
+							acEdit.getAction('Import Xml').setState('importXml',entityChildXml);
+							acEdit.startAction('Import Xml');
+							
+						}
+						
+						me.getState('connectingLineGroup').setState('display','inline');
+						me.getState('actionsContainerGroup').setState('display','inline');
+						//Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.EditorIconTextHorizontalButton">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>36</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(59,79,94)</Value></_State>
+		<_State id="textfontSize"><Value>13</Value></_State>
+		<!--
+		<State><Id>normalTextColor</Id><Type>Text</Type><Value>white</Value></State>
+		<State><Id>selectedTextColor</Id><Type>Text</Type><Value>red</Value></State>
+		<State><Id>selectedImageSuffix</Id><Type>Text</Type><Value>_selected</Value></State>
+		-->
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Real Input -->
+				<Entity extends="std.display.FileInput"><_States>
+					<_State id="name"><Value>Upload</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="type"><Value>file</Value></_State>
+					<_State id="accept"><Value>.jpg, .png</Value></_State>
+					<_State id="opacity"><Value>0</Value></_State>
+					<_State id="cursor"><Value>pointer</Value></_State>
+					<_State id="fontSize"><Value>1px</Value></_State>
+				</_States>
+				<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+				<Script>
+				if (me.getState('files')==null) 
+				{
+					Display.error("shit..");
+				}
+				else
+				{
+					if (me.getState('files').length==0)
+					{
+						Display.error("crap..");
+					}
+					else
+					{
+						var file = me.getState('files')[0];
+						var username = Logic.getEntityByName('Spark Editor').getState('username');
+						
+						Display.error('file selected: ' + file.name + ", of size: " + file.size + ", for user: " + username);
+						
+						Comms.file_sendFileRequest(file, {name: file.name, size: file.size, user: username} , file.name);
+						
+						var objectsPanel = Logic.getEntityByName('Editor Library Objects Panel');
+						
+						objectsPanel.getAction('AddItem').setState('itemName', file.name);
+						objectsPanel.getAction('AddItem').setState('itemTitle', file.name);
+						objectsPanel.getAction('AddItem').setState('itemSize', file.size);
+						objectsPanel.startAction('AddItem');
+					}
+				}
+				</Script>
+				</Scripts></Trigger></_Triggers></Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>/*
+					var myContainer = parent.parentEntity;
+					
+					myContainer.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = me;
+					myContainer.startAction("SelectCategory");*/
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Selected -->
+		<Action>
+			<Id>Selected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>/*
+					me.getState('textObject').setState('fontColor',me.getState('selectedTextColor'));
+					me.getState('imageObject').setState('src', me.getState('imageName')+me.getState('selectedImageSuffix'));
+					me.stopAction("Selected");*/
+				</Script>
+			</Scripts>
+		</Action>
+
+		<!-- Unselected -->
+		<Action>
+			<Id>Unselected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>/*
+					me.getState('textObject').setState('fontColor',me.getState('normalTextColor'));
+					me.getState('imageObject').setState('src', me.getState('imageName'));
+					me.stopAction("Unselected");*/
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

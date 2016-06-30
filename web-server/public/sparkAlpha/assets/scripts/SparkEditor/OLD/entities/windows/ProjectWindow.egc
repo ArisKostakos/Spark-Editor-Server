@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.TabWindow">
+	<_States>
+		<_State id="name"><Value>Project Window</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<_State id="overflow"><Value>hidden</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.entities.project.EditorProjectCollections"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

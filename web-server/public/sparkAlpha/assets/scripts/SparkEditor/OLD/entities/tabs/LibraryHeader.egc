@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.ToolTabBarHeader">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+	</_States>
+		
+	<_Form>
+		<_Space>
+			<_Entities>
+				<Entity extends="SparkEditor.entities.library.EditorAssetImportButton"/>
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

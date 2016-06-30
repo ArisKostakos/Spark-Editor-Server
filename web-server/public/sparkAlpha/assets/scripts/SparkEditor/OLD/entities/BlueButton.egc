@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="width"><Value>50</Value></_State>
+		<_State id="gap"><Value>2</Value></_State>
+		<State><Id>buttonText</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>imageWidth</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>imageHeight</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>imageHorCenter</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>imageVerCenter</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Actions>
+		<Action>
+			<Id>ButtonClicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("ButtonClicked");
+				</Script>
+			</Scripts>
+		</Action>
+	</Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Circle -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="borderRadius"><Value>50%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(0,160,227)</Value></_State>
+					<_State id="width"><Value>28</Value></_State>
+					<_State id="height"><Value>28</Value></_State>
+					</_States><_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+					<Script>
+						parent.startAction('ButtonClicked');
+					</Script>
+					</Scripts></Trigger></_Triggers>
+					<Form><Space><Entities>
+						<!-- Circle Image -->
+						<Entity extends="std.display.Image"><_Actions><_Action id="Constructor"><_Scripts><Script>
+							me.setState('src',parent.parentEntity.getState('imageName'));
+							me.setState('width',parent.parentEntity.getState('imageWidth'));
+							me.setState('height',parent.parentEntity.getState('imageHeight'));
+							me.setState('horizontalCenter',parent.parentEntity.getState('imageHorCenter'));
+							me.setState('verticalCenter',parent.parentEntity.getState('imageVerCenter'));
+							
+							parent.parentEntity.setState('imageObject', me);
+						</Script></_Scripts></_Action></_Actions></Entity>
+					</Entities></Space></Form>
+				</Entity>
+	
+				<!-- Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>13</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>13px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('buttonText'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

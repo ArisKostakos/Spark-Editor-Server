@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="width"><Value>0</Value></_State>
+		<_State id="height"><Value>0</Value></_State>
+		<State><Id>instanceEditors</Id><Type>Dynamic</Type><Value>[]</Value></State> <!-- bomb, ready to blow up. fix me -->
+		<State><Id>sceneBoundsObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>transformations</Id><Type>Dynamic</Type><Value>{x:0,y:0,scale:1}</Value></State>
+	</_States>
+	
+	<Form><Space><Entities>
+		<!--Scene Bounds Object-->
+		<Entity extends="std.display.Div">
+			<_States>
+				<_State id="pointerEvents"><Value>none</Value></_State>
+				<!--<_State id="backgroundColor"><Value>green</Value></_State>
+				<_State id="opacity"><Value>0.5</Value></_State>-->
+			</_States>
+				
+			<_Actions>
+				<_Action id="Constructor">
+					<_Scripts>
+						<Script>
+							parent.set('sceneBoundsObject',me);
+						</Script>
+					</_Scripts>
+				</_Action>
+			</_Actions>
+		</Entity>
+	</Entities></Space></Form>
+		
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					//Display.de('My Scene Created is: ' + me.s('target_GameObject').s('name'));
+					var l_target_XML = me.s('target_XML');
+					
+					//for each [entity] in [form.space.entities]
+					var l_entitiesNode = Logic.xml_getElements(l_target_XML,["Form","Space","Entities"]);
+					var l_entities = l_entitiesNode.elementsNamed('Entity');
+					
+					//Just to make sure we only get 1 of each (using keys)
+					//var l_classObjects = new StringMap();
+					
+					//Store Xml children here, so we can create scene right after
+					var l_instanceObjects = [];
+					
+					//Go through all children of the scene XML
+					while (l_entities.hasNext())
+					{
+						var f_entityChildXml = l_entities.next();
+						
+						//Store
+						//l_classObjects.set(f_entityChildXml.get("extends"),true);
+						
+						//Store
+						l_instanceObjects.push(f_entityChildXml);
+					}
+					
+					//Remove children from XML
+					Logic.xml_entity_removeNode(l_target_XML, "Form");
+					
+					
+					//Hating this.. figure it out..
+					var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+					
+					//Add camera sync behavior
+					Logic.xml_entity_addExtend(l_target_XML_editor, {ext: 'SparkEditor.levels.projectEditor.tabs.levelEditor.behaviors.SceneCameraSync'});
+					
+					
+					//Create the Scene (without its children)
+					var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML_editor));
+					l_target_GameObject.set('SceneEditor',me);
+					
+					//Store this piece of shit somewhere?
+					//l_target_XML_editor
+					
+					/*
+					//Create all class objects
+					var l_keys = l_classObjects.keys();
+					while (l_keys.hasNext())
+					{
+						var f_key = l_keys.next();
+						
+						//Class Editor
+						var f_classEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.ClassEditor');
+						me.addChild(f_classEditor);
+						me.s('classEditors').push(f_classEditor);
+						f_classEditor.fa('Import From AssetName',{importAssetName: f_key, createObject:false});
+					}
+					*/
+					
+					//Create all Instance Objects
+					for (f_instance of l_instanceObjects)
+					{
+						//Instance Editor
+						var f_instanceEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.InstanceEditor');
+						f_instanceEditor.set('SceneEditor',me);
+						f_instanceEditor.set('parentEditor',me);
+						me.s('instanceEditors').push(f_instanceEditor);
+						f_instanceEditor.fa('Import From Xml',{importXml: f_instance});
+					}
+					
+					me.sa('Initialize');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Initialize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_boundsObject = me.s('sceneBoundsObject');
+					
+					if (l_boundsObject==null)
+						return;
+					
+					it.stop();
+					
+					for (f_instanceEditor of me.s('instanceEditors'))
+					{
+						l_boundsObject.addChild(f_instanceEditor);
+					}
+					
+					
+					//Position me according to Scene Target's Boundaries we created:
+					var l_boundsX=me.s('target_GameObject').s('boundsX');
+					var l_boundsY=me.s('target_GameObject').s('boundsY');
+					var l_boundsWidth=me.s('target_GameObject').s('boundsWidth');
+					var l_boundsHeight=me.s('target_GameObject').s('boundsHeight');
+					
+					
+					//If Scene is infinite (l_boundsWidth==0 && l_boundsHeight==0), it's fine cause it will not create anything to draw on..
+					//for.. whenever we do decide on infinite scenes..
+					l_boundsObject.set('top', Std.string(l_boundsY));
+					l_boundsObject.set('left', Std.string(l_boundsX));
+					l_boundsObject.set('width', Std.string(l_boundsWidth));
+					l_boundsObject.set('height', Std.string(l_boundsHeight));
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<_Action id="Export XML"> <!-- Consider leaving Export XML to Base Editor.egc and use sub actions like Export XML:Create This and Export XML:Create Children to make these actions here lighter on code-->
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						Display.dl("Exporting Editor " + me.s('target_AssetName'));
+						
+						//Export Children's XML
+						for (instanceEditor of me.s('instanceEditors'))
+							instanceEditor.fa('Export XML');
+							
+						
+						//Then, If This Editor can later do any changes to it's Scene EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							Display.dl("Exporting_This for Editor " + me.s('target_AssetName'));
+							
+							//..
+							//first, look how it's done in Scene2D
+							//then implement your own, here or if it gets too big, in a new function
+							//then call a save command
+							
+							//SO, i DONT WORRY about anything other than children for now.. and when complete solution for states/other bheaviors/etc comes, implement it here as well
+							var l_target_XML = me.s('target_XML');
+							
+							//Make sure there's no Form
+							Logic.xml_entity_removeNode(l_target_XML, "Form");
+							
+							//Create New Form
+							var l_entitiesXML = Logic.xml_createElements(['Form','Space','Entities']);
+							l_target_XML.addChild(l_entitiesXML.first);
+							
+							//Add Entities XMLs
+							for (instanceEditor of me.s('instanceEditors'))
+								l_entitiesXML.last.addChild(instanceEditor.s('target_XML'));
+								
+							//My XML is ready
+							//Display.de("I just created a new scene xml.. let's look at it:");
+							//console.log(l_target_XML.toString());
+							
+							//Update it (save command happens inside this function, in case you're wondering)
+							e('Project Editor').fa('Update Asset Content', { DBA:me.s('target_DBA'), content:Logic.xmlToString(l_target_XML)} );
+							
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+							
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+					else
+					{
+						Display.dl("Editor " + me.s('target_AssetName') + " does not need to export");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

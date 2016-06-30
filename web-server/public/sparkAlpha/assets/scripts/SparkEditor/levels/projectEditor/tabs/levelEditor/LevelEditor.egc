@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="overflow"><Value>hidden</Value></_State>
+		<State><Id>Module Name</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Level Loaded</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>View Editors</Id><Type>Dynamic</Type><Value>[]</Value></State> <!-- bomb, ready to blow up. fix me -->
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					var p_level = me.set('target_GameObject', it.s('LevelEditor_gameObject'));
+					
+					//for each viewReference
+					var l_viewReferences = p_level.s('viewReferences');
+					for (f_viewReference of l_viewReferences)
+					{
+						console.log('viewReferenceUrl', f_viewReference.s('url'));
+						
+						//Create ViewEditor
+						var f_viewEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.ViewEditor');
+						f_viewEditor.set('LevelEditor',me);
+						f_viewEditor.set('parentEditor',me);
+						me.addChild(f_viewEditor);
+						me.s('View Editors').push(f_viewEditor);
+						f_viewEditor.fa('Import From AssetName',{importAssetName:f_viewReference.s('url'), createObject:true});
+					}
+					
+					//Assuming exactly 1 module reference
+					var l_moduleReferences = p_level.s('moduleReferences');
+					
+					//Store Module Name Used
+					me.set('Module Name',l_moduleReferences[0].s('url'));
+					
+					//Show Maybe here I request from Module Manager to do its thing..
+					//e('Project Editor').fa('Create Dependancies For',{ moduleName:me.s('Module Name'), DBA:null, createClassObjects:true, jsCb:null } );
+					
+					//Adding Level Game Object to active Space/Stage
+					Display.projectActiveSpaceReference.spaceEntity.addChild(p_level);
+					
+					//Mark Level as fully loaded
+					me.set('Level Loaded',true);
+				</Script>
+			</_Scripts>
+			<_States>
+				<State><Id>LevelEditor_gameObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</_Action>
+			
+		<Action>
+			<!-- This means, add the flambe level to stage-->
+			<Id>Show Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Display.de('adding flambe level to stage');
+					
+					//Adding Level Game Object to active Space/Stage
+					var p_levelObject=me.s('target_GameObject');
+					Display.projectActiveSpaceReference.spaceEntity.addChild(p_levelObject);
+					
+					for (f_viewEditor of me.s('View Editors'))
+						f_viewEditor.fa('Add View To Stage Area');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<!-- This means, remove the flambe level from stage-->
+			<Id>Hide Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Display.de('removing flambe level from stage');
+					
+					//Removing Level Game Object from active Space/Stage
+					var p_levelObject=me.s('target_GameObject');
+					Display.projectActiveSpaceReference.spaceEntity.removeChild(p_levelObject);
+					
+					for (f_viewEditor of me.s('View Editors'))
+						f_viewEditor.fa('Remove View From Stage Area');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						Display.dl("Exporting Editor " + me.s('target_AssetName'));
+						
+						//Export Children's XML
+						for (viewEditor of me.s('View Editors'))
+							viewEditor.fa('Export XML');
+						
+							
+						//Then, If This Editor can later do any changes to it's Level EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							Display.dl("Exporting_This for Editor " + me.s('target_AssetName'));
+							
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+					else
+					{
+						Display.dl("Editor " + me.s('target_AssetName') + " does not need to export");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Needs To Export">
+			<_Scripts>
+				<Script>
+					//Simple Add-On Exception for the LevelEditor. If this action is called, let it's tab owner know about it
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

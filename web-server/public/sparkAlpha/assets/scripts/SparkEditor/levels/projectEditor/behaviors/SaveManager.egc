@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State><Id>saveCommands</Id><Type>Dynamic</Type><Value>[]</Value></State>
+		<State><Id>saveCommands_helper</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State><!-- DBA.name that needs its file updated, false/true -->
+		<State><Id>saveInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>filesToBeUploaded</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>saveInProgressCommands</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Add Save Command</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					/****COMMAND TYPES****
+					
+					***Assets (DBAs)***
+					
+					Create new DBA
+					--------------
+					type: "createAsset"
+					uploadsFile: true
+					asset: DBA
+					
+					Update DBA
+					----------
+					type: "updateAsset"
+					uploadsFile: true/false  //IF THIS IS TRUE, it ignores the field value and just updates the file instead
+					asset: DBA //ONLY used temporarily for uploadsFile==TRUE. bit of a hack.. see below for more info
+					assetName: String
+					assetOwnerId: ObjectId
+					assetType: String
+					field: String
+					newValue: Object
+					
+					Delete DBA
+					-----------
+					type: "deleteAsset"
+					uploadsFile: false
+					assetName: String
+					assetOwnerId: ObjectId
+					assetType: String
+					
+					Add DBA to Module
+					-----------------
+					type: "addAssetToModule"
+					uploadsFile: false
+					assetName: String
+					assetOwnerId: ObjectId
+					assetType: String
+					moduleName: String
+					moduleOwnerId: ObjectId
+					moduleProjectName: String
+					
+					Remove DBA from Module
+					----------------------
+					type: "removeAssetFromModule"
+					uploadsFile: false
+					assetName: String
+					assetOwnerId: ObjectId
+					assetType: String
+					moduleName: String
+					moduleOwnerId: ObjectId
+					moduleProjectName: String
+					
+					
+					***Modules***
+					
+					Create new Module DBO
+					----------------------
+					type: "createModule"
+					uploadsFile: false
+					module: ModuleDBO
+					
+					Add Module DBO to Project
+					-------------------------
+					type: "addModuleToProject"
+					uploadsFile: false
+					moduleName: String
+					moduleOwnerId: ObjectId
+					moduleProjectName: String
+					projectName: String
+					projectOwnerId: ObjectId
+					
+					Remove Module DBO from Project
+					-------------------------
+					type: "removeModuleFromProject"
+					uploadsFile: false
+					moduleName: String
+					moduleOwnerId: ObjectId
+					moduleProjectName: String
+					projectName: String
+					projectOwnerId: ObjectId
+					
+					***Projects***
+					
+					...
+					
+					...
+					
+					**********************/
+					
+					//Get Command
+					var l_command = it.s('command');
+					
+					//If the command updates an existing file, then we don't add the command so fast..
+					if (l_command.uploadsFile==true) //if it uploads file, the first command to be added will either be "createAsset" or "updateAsset". only the first will be issued. The SECOND command will only have to be "updateAsset".. so cancel it, no reason to send it twice (also it crashes server ofc because file in incoming is replaced when uploading twice, and then MOVED into place by first command)
+					{
+						//Only add the command, if an update like that is not ALREADY in save queue!
+						if (!me.s('saveCommands_helper').exists(l_command.asset.name)) //using asset.name because its assumed that uploadsFille==true only happens for createAsset & updateAsset. And they both have an asset field in the uploadsFile==true case
+						{
+							//Add Command
+							me.s('saveCommands').push( l_command );
+							
+							//Raise the flag for this DBA
+							me.s('saveCommands_helper').set(l_command.asset.name, true);
+						}
+						else
+						{
+							Display.dw("A Save Command that Uploads this File [" + l_command.asset.name + "] already exists in queue. Ignoring...");
+						}
+					}
+					else
+					{
+						//Add Command
+						me.s('saveCommands').push( l_command );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>command</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Save Project</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					if (me.s('saveInProgress')==false)
+					{
+						var l_saveCommands = me.s('saveCommands');
+						
+						if (l_saveCommands.length>0)
+						{
+							//Save
+							console.log(l_saveCommands);
+							
+							//Saving In Progress...
+							me.set('saveInProgress', true);
+							
+							//First, Upload Files (when done, it will do its thing and continue from there
+							me.fa('Upload Files', {commands: l_saveCommands} );
+							
+							//Save Commands are cleared here, so even if a new save command is issued while the project is saving, it will not get lost..
+							//Just make sure that if connection has been lost, it will not even come here.. it will catch it in the very beginning of this action (if (stillConnected==true) or something)
+							me.set('saveCommands', []);
+							me.set('saveCommands_helper', new StringMap());
+						}
+						else
+						{
+							//Nothing to Save
+							Display.log("Nothing to Save. Ignoring...");
+						}
+					}
+					else
+					{
+						//Saving already in progress.. Wait!!
+						Display.warn("Saving already in progress. Please wait..");
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<!-- Currently, it only works for Script types. -->
+			<Id>Upload Files</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Init Counter
+					var l_filesToBeUploaded = me.set('filesToBeUploaded',0);
+					
+					//Get Commands
+					var l_commands = it.s('commands');
+					
+					//For every Save Command that requires a file to be uploaded, upload that file
+					for (command of l_commands)
+					{
+						if (command.uploadsFile==true)
+						{
+							l_filesToBeUploaded+=1;
+							
+							var l_assetScriptFile = Assets.getScript(command.asset.name).toString();
+							
+							//Upload File
+							Comms.file_sendFileRequest(l_assetScriptFile, {name: command.asset.fileName+'.'+command.asset.fileExtension, size: l_assetScriptFile.length /* because command.asset.fileSize might be outdated */, user: me.s('User_DBO').name} , "Save: On Upload File Complete", me);
+							
+							//A bit of a hack, but for updateAsset with uploadsFile==true, we do set asset, but only for the client, to be used in this very function..
+							//so don't send that thing to the server, we don't need it
+							if (command.type=='updateAsset')
+								command.asset = null;
+						}
+					}
+					
+					me.set('filesToBeUploaded', l_filesToBeUploaded);
+					
+					//No uploads will occur, so move on to next step from here
+					if (l_filesToBeUploaded==0)
+					{
+						Comms.request("lobby.projectHandler.saveProject", {commands: l_commands}, "On Save Complete", me);
+					}
+					else
+					{
+						me.set('saveInProgressCommands', l_commands);
+					}
+					
+					//Clear the function parameter to save some RAM..
+					it.s('commands', null);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>commands</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+		
+	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Parameter>Save: On Upload File Complete</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.file_getSendFileRequestData('Save: On Upload File Complete').shift();
+					
+					Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
+					
+					//me.getState('progressBar').setState('height',data.progressPercent+'%');
+					
+					if (data.progress==1)
+					{
+						var l_filesToBeUploaded = me.subtractFromState('filesToBeUploaded',1);
+					
+						//If I am the last file uploaded
+						if (l_filesToBeUploaded==0)
+						{
+							Display.de("LAST GUY UPLOADING COMPLETE!!!");
+							Comms.request("lobby.projectHandler.saveProject", {commands: me.s('saveInProgressCommands')}, "On Save Complete", me);
+							me.set('saveInProgressCommands', null); //Save some RAM
+						}
+						/*
+						//fileName
+						var fileName = me.getState('name');
+						
+						//fileSize
+						var fileSize = me.getState('fileSize');
+						
+						//componentType
+						var componentType = me.getState('componentType');
+						
+						//assetType
+						var assetType = me.getState('assetType');
+						
+						//tags
+						var tags = me.getState('tags');
+						
+						
+						////Until we have a component loader window, assetName is always fileName, and no ext
+						var justfileNameMoExt = fileName.substring(0,fileName.lastIndexOf("."));
+						var assetTitle = justfileNameMoExt;  //this is actually itemTitle, when i receive it..
+						//Display.error("Creating:::: fileName: " + fileName + ", fileSize: " + fileSize);
+						
+						Comms.request("assets.uploadHandler.uploadAsset", {fileName: fileName, fileSize: fileSize, assetTitle: assetTitle, dir: '', type: assetType, componentType: componentType, tags: tags}, me.getState('uploadId'));
+						*/
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>On Save Complete</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("On Save Complete");
+					
+					me.set('saveInProgress', false);
+					
+					if (data.code=="success")
+					{	
+						/*
+						//Assets created by this project are already in the Assets_DB, but other assets are not
+						for (module of data.modules)
+							for (asset of module.assets)
+							{
+								asset._inModules=[module.name];
+								asset._loaded=false;
+								me.s('Assets_DB').insert(asset);
+							}
+						
+						for (module of data.modules)
+						{
+							module.assets=null;
+							me.s('Modules_DB').insert(module);
+						}
+						
+						
+						//Next Job
+						me.forceAction('Next');
+						*/
+						
+						Display.error('[On Save Complete] SUCCESS!!');
+					}
+					else
+					{
+						Display.error('Error on [On Save Complete] Request!');
+						
+						//So over here, we're fucked... saveCommands are lost forever.. we should never get here in production..
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

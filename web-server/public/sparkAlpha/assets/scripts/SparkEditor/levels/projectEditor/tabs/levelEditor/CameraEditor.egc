@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					Display.de('My Camera Created is: ' + me.s('target_GameObject').s('name'));
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						Display.dl("Exporting Editor " + me.s('target_AssetName'));
+						
+						//Export Children's XML (enable this when instances can carry instances)
+						//for (instanceEditor of me.s('instanceEditors'))
+						//	instanceEditor.fa('Export XML');
+						
+						//Then, If This Editor can later do any changes to it's Instance EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							Display.dl("Exporting_This for Editor " + me.s('target_AssetName'));
+						
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+					else
+					{
+						Display.dl("Editor " + me.s('target_AssetName') + " does not need to export");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

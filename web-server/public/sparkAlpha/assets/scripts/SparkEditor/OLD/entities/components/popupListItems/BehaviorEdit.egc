@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>30</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(66,84,102)</Value></_State>
+		<State><Id>parObj</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Behavior Title -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>150</Value></_State>
+					<_State id="height"><Value>17</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>left</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						var acAsset = Logic.getEntityByName('Project Editor').getState('ModuleAssetsDBbyNameHash').get(parent.getState('parObj'));
+						me.setState("text",acAsset.title);
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+	
+				<!-- Delete Icon -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="width"><Value>12</Value></_State>
+						<_State id="height"><Value>17</Value></_State>
+						<_State id="verticalAlign"><Value>middle</Value></_State>
+						<_State id="src"><Value>editor_delete</Value></_State>
+						<_State id="touchable"><Value>true</Value></_State>
+						<_State id="cursor"><Value>pointer</Value></_State>
+					</_States>
+					<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+					<Script>
+						parent.parentEntity.getAction('Remove Item').setState('item',parent);
+						parent.parentEntity.startAction('Remove Item');
+					</Script>
+					</Scripts></Trigger></_Triggers>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

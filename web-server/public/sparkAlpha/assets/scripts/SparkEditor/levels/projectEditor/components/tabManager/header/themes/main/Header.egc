@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.header.ATabHeader">
+	<_States>
+		<_State id="width"><Value>100</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(54,81,103)</Value></_State>
+		<_State id="headerTheme"><Value>main</Value></_State>
+	</_States>
+
+	<_Form>
+		<_Space>
+			<_Entities>
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="width"><Value>20</Value></_State>
+						<_State id="height"><Value>20</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="right"><Value>5</Value></_State>
+						<_State id="src"><Value>toolbarIcon_Header_Close</Value></_State>
+						<_State id="touchable"><Value>true</Value></_State>
+						<_State id="cursor"><Value>pointer</Value></_State>
+					</_States>
+					<_Triggers>
+						<Trigger>
+							<Event>MouseLeftClick</Event>
+							<Scripts>
+								<Script>
+									Display.de("yoyo clicked me header");
+									parent.s('TabManager').forceAction('Remove Tab',{name:parent.s('headerName')});
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

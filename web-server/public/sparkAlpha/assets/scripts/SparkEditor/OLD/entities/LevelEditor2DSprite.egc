@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<_State id="touchable"><Value>true</Value></_State>
+		
+		<State><Id>selector</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>componentName</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					if (Input.keyboard.isKeyDown(Key.Alt))
+					{
+						me.startAction('Clone');
+					}
+					else
+					{
+						var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
+						leveleditor2d.getAction('EntityClicked').setState('entity',me);
+						leveleditor2d.startAction('EntityClicked');
+						me.startAction('Drag');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Select -->
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('selector')==null)
+					{
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.LevelEditor2DSelector');
+						myNewItem.setState('selectRect', me.getState('boundsRect'));
+
+						me.addChild(myNewItem);
+						me.setState('selector',myNewItem);
+					}
+					else
+					{
+						me.getState('selector').startAction('show');
+					}
+					
+					me.stopAction("Select");
+				</Script>
+			</Scripts>
+		</Action>
+
+		<!-- Deselect -->
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('selector')!=null)
+					{
+						me.getState('selector').startAction('hide');
+					}
+					
+					
+					me.stopAction("Deselect");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Drag -->
+		<Action>
+			<Id>Drag</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (Input.pointer.isDown())
+					{
+						me.setState('spaceX',me.getState('spaceX')+Input.pointer.distX());
+						me.setState('spaceY',me.getState('spaceY')+Input.pointer.distY());
+					}
+					else
+					{
+						me.stopAction("Drag");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Clone -->
+		<Action>
+			<Id>Clone</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var mainScene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					var componentName = me.getState('componentName');
+
+					var myNewImage2D = Logic.gameFactory.createGameEntityExtended(componentName,'SparkEditor.entities.LevelEditor2DSprite');
+					myNewImage2D.setState('componentName',componentName);
+					myNewImage2D.setState('spaceX',me.getState('spaceX'));
+					myNewImage2D.setState('spaceY',me.getState('spaceY'));
+					myNewImage2D.setState('scaleX',me.getState('scaleX'));
+					myNewImage2D.setState('scaleY',me.getState('scaleY'));
+					mainScene.addChild(myNewImage2D);
+						
+					//Select and start dragging the new Entity
+					var leveleditor2d = Logic.getEntityByName('2d Scene Editor').getState('target');
+					leveleditor2d.getAction('EntityClicked').setState('entity',myNewImage2D);
+					leveleditor2d.startAction('EntityClicked');
+					myNewImage2D.startAction('Drag');
+						
+					me.stopAction("Clone");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					if (me.s('isPreview')==false)
+					{
+						for (child of me.getChildren())
+						{
+							if (child.getState('name')==me.getState('initSpaceName'))
+							{
+								if (child.getState('displayType') == "Space")
+								{
+									me.setState('space',child);
+									
+									if (me.s('activeProject'))
+										Display.setActiveSpace(child);
+										
+									//Display.log("Display Space Entity Assigned Successfuly!");
+								}
+								else
+								{
+									Display.warn("Incompatible Space Entity defined!");
+								}
+								
+								break;
+							}
+						}
+						
+						Logic.getExternal().call("setPreloaderText",["Retrieving Project Files..."]);
+						
+						if (me.s('loaderLevelUrl')!='Undefined')
+						{
+							me.sa('Run Level', { levelName:me.s('loaderLevelUrl') } );
+							
+							var oldMe=me;
+							Logic.levelManager.levelRan.connect(function() {
+								if (oldMe.s('initLevelUrl')!='Undefined')
+									oldMe.sa('Run Level', { levelName:oldMe.s('initLevelUrl') } );
+							}).once();
+						}
+						else
+						{
+							if (me.s('initLevelUrl')!='Undefined')
+								me.sa('Run Level', { levelName:me.s('initLevelUrl') } );
+						}
+					}
+					else
+					{
+						if (me.s('initLevelUrl')!='Undefined')
+								me.sa('Run Level', { levelName:me.s('initLevelUrl') } );
+						else
+							Display.error("Cannot run project. No Init Level Found!");
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+			
+		<Action>
+			<Id>Run Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					if (me.s('isPreview')==false)
+						Logic.levelManager.runLevel(it.s('levelName'));
+					else
+					{
+						//if (me.s('previewMode')=="Project")
+							Logic.levelManager.runLevel(it.s('levelName'), me.s('previewRunSlot'), me.s('previewStageArea'));
+						//else
+						//{
+							//This was written so that I don't allow user to load any level other than initLevelUrl
+							//So if they just load one level, maybe for some reason i don't want  them to start loading other levels in that tab
+							//not sure if i will need this..
+						//}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>levelName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+	<_States>
+		<State>
+			<Id>initSpaceName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+				
+		<State>
+			<Id>initLevelUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+				
+		<State>
+			<Id>loaderLevelUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>space</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>activeProject</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		
+		<State>
+			<Id>isPreview</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>previewMode</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>previewStageArea</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>previewRunSlot</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	</_States>
+</Entity>

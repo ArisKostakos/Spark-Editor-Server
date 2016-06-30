@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Export Project Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					//This tries to export everything. It is the responsibility of the exportee to see if it actually needs exporting or not.
+					
+					//Export Main Tab Manager
+					e('Main Tab Manager').fa('Export XML');
+					
+					//Export All Class Editors
+					var l_classEditors_itr = me.s('classEditors').iterator();
+					while (l_classEditors_itr.hasNext())
+					{
+						var w_classEditor = l_classEditors_itr.next();
+						
+						//Export Class Editor
+						w_classEditor.fa('Export XML');
+					}
+					
+					//Export All Behavior Editors
+					var l_behaviorEditors_itr = me.s('behaviorEditors').iterator();
+					while (l_behaviorEditors_itr.hasNext())
+					{
+						var w_behaviorEditor = l_behaviorEditors_itr.next();
+						
+						//Export Behavior Editor
+						w_behaviorEditor.fa('Export XML');
+					}
+					
+				]]></Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

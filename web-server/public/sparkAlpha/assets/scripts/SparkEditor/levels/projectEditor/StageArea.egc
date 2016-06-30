@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.StageArea">
+	<_States>
+		<_State id="name"><Value>View Stage Area</Value></_State>
+		<_State id="layout"><Value>Basic</Value></_State>
+		<_State id="top"><Value>;40+30+100+1+1</Value></_State>
+		<_State id="left"><Value>;370+1</Value></_State>
+		<_State id="right"><Value>;0</Value></_State>
+		<_State id="bottom"><Value>;25</Value></_State>
+	</_States>
+</Entity>

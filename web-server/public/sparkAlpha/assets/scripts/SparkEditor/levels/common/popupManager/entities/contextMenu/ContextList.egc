@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="backgroundColor"><Value>rgb(41, 57, 75)</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="gap"><Value>1</Value></_State>
+		<_State id="paddingLeft"><Value>1</Value></_State>
+		<_State id="paddingRight"><Value>1</Value></_State>
+		<_State id="paddingTop"><Value>1</Value></_State>
+		<_State id="paddingBottom"><Value>1</Value></_State>
+		<State><Id>targetLayerName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>data</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>posXOffset</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>posYOffset</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>childWidth</Id><Type>Integer</Type><Value>150</Value></State>
+		<State><Id>childHeight</Id><Type>Integer</Type><Value>22</Value></State>
+		<State><Id>ContextItemObjects</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>parentPopUp</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Is root contextList?
+					if (me.getState('targetLayerName') == 'Undefined')
+					{
+						me.setState('display',"inline");
+						me.setState('targetLayerName',parent.getState('targetLayerName'));
+						me.setState('posXOffset',parent.getState('left'));
+						me.setState('posYOffset',parent.getState('top'));
+						me.setState('data',parent.getState('argA'));
+						me.setState('parentPopUp',parent);
+					}
+					
+					
+					//Display.de("CONTEXT LIST ENTRY: " + me.getState('data').name + " X: " + me.getState('posXOffset')+ " Y: " + me.getState('posYOffset'));
+					
+					var data = me.getState('data');
+					
+					//Display.de('me.getState("targetLayerName"): ' + me.getState('targetLayerName'));
+					//Display.de('me.getState("data"): ' + data);
+					
+					var ContextItemObjects = [];
+					var i = 0;
+					for (child of data.children)
+					{
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.levels.common.popupManager.entities.contextMenu.ContextItem');
+						myNewItem.setState('targetLayerName', me.getState('targetLayerName'));
+						myNewItem.setState('data', child);
+						myNewItem.setState('caption', child.name);
+						myNewItem.setState('width', Std.string(me.getState('childWidth')));
+						myNewItem.setState('height', Std.string(me.getState('childHeight')));
+						myNewItem.setState('posXOffset', me.getState('posXOffset')+me.getState('childWidth')+1);
+						myNewItem.setState('posYOffset', me.getState('posYOffset')+(me.getState('childHeight')+1)*i);
+						me.addChild(myNewItem);
+						ContextItemObjects.push(myNewItem);
+						i += 1;
+					}
+					
+					me.setState('ContextItemObjects',ContextItemObjects);
+					
+					Display.invalidateLayout(); //ieehhh
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>ChildMouseEntered</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					var evokingChild = it.getState('child');
+					var children = me.getState('ContextItemObjects');
+					
+					for (child of children)
+					{
+						if (child!=evokingChild)
+						{
+							child.startAction('Deselect');
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>child</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>ChildMouseLeft</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					var evokingChild = it.getState('child');
+					var children = me.getState('ContextItemObjects');
+					
+					//Not Implemented for now..
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>child</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Hide</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					var children = me.getState('ContextItemObjects');
+					
+					if (children!=null) //i put this here cause i got 'children is null' run-time errors
+						for (child of children)
+							child.startAction('Deselect');
+					
+					me.setState('display','none');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+		
+	<_Form>
+		<_Space>
+			<_Entities>
+
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.project.projectTree.Child">
+	<_States>
+
+	</_States>
+	
+	<_Actions>
+		<_Action id="PreConstructor">
+			<_Scripts>
+				<Script>
+					var l_ProjectEditor = e('Project Editor');
+					
+					//Find All Scenes
+					l_ProjectEditor.s('Assets_DB').find({ _inModules: [ me.s('child_DBA').tags[1] ], 'meta.type':"Scene", componentType:"Class" }, function (err, docs) {
+						console.log("Scenes_DB " + docs.length + ": ", docs);
+						
+						for (sceneDB of docs)
+						{
+							me.fa('Add Child', { childId:sceneDB.name, childTitle:sceneDB.title, childType:"Scene", child_DBA:sceneDB, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.SceneChild' } );
+						}
+					});
+					
+					//Find All Entities
+					l_ProjectEditor.s('Assets_DB').find({ _inModules: [ me.s('child_DBA').tags[1] ], 'meta.type':"Entity", componentType:"Class" }, function (err, docs) {
+						console.log("Entities_DB " + docs.length + ": ", docs);
+						
+						for (entityDB of docs)
+						{
+							me.fa('Add Child', { childId:entityDB.name, childTitle:entityDB.title, childType:"Entity", child_DBA:entityDB, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.EntityChild' } );
+						}
+					});
+					
+					//Find All Behaviors (VERY TEMP!!! REMOVE ME FROM HERE)
+					l_ProjectEditor.s('Assets_DB').find({ _inModules: [ me.s('child_DBA').tags[1] ], componentType:"Behavior" }, function (err, docs) {
+						console.log("Behaviors_DB " + docs.length + ": ", docs);
+						
+						for (behaviorDB of docs)
+						{
+							me.fa('Add Child', { childId:behaviorDB.name, childTitle:behaviorDB.title, childType:"Behavior", child_DBA:behaviorDB, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.BehaviorChild' } );
+						}
+					});
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Expand Level Child</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Over here, before we freely Toggle, we check if Module is loaded first.
+					//If it's not, we load it first (later add visual too), and then toggle
+					var l_moduleName = me.s('editor').s('moduleName');
+					
+					if (ModuleManager.isModuleLoaded(l_moduleName))
+					{
+						Display.de('Module is already Loaded: ' + l_moduleName );
+						
+						//If module has not been 'initialized' (has been loaded from a Run Tab), Initialize it here
+						if (e('Project Editor').s('modulesInit').get(l_moduleName)!=true )
+						{
+							//Make sure we create all Editors for our new module
+							e('Project Editor').fa('Create Dependancies For',{ moduleName:l_moduleName, DBA:null, createClassObjects:true, jsCb:function () {
+								Display.de('Now we set editors to the children of the tree');
+								me.fa('Update Child'); //for linking
+								
+								//Go Ahead and Expand
+								me.fa('Expand');
+							}});
+						}
+						//Else, go ahead and do your thing
+						else
+						{
+							//Go Ahead and Expand
+							me.fa('Expand');
+						}
+					}
+					else
+					{
+						Display.de('Module NOT loaded: ' + l_moduleName );
+						
+						if (ModuleManager.getModuleState(l_moduleName)==EModuleState.LOADING)
+						{
+							Display.de('Module BEING LOADED.. WAIT ASSHOLE!: ' + l_moduleName );
+							return;
+						}
+						else
+						{
+							ModuleManager.successSignal.connect(function () {
+								//After the Module Loads, make sure we create all Editors for our new module
+								e('Project Editor').fa('Create Dependancies For',{ moduleName:l_moduleName, DBA:null, createClassObjects:true, jsCb:function () {
+								
+									Display.de('Module was loaded. Now we set editors to the children of the tree');
+									me.fa('Update Child'); //for linking
+									
+									//NOW, we can finally expand..
+									me.fa('Expand');
+								}});
+							}).once();
+							
+							//Load Module
+							ModuleManager.loadModule(l_moduleName);
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+		
+		
+	<Form>
+		<Space>
+			<Entities>
+				<!-- This Child -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>41</Value></_State>
+						<_State id="backgroundColor"><Value>brown</Value></_State>
+					</_States>
+				
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('displayObject',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+						
+					<Form><Space><Entities>
+						<!-- Expand Button -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>25</Value></_State>
+								<_State id="height"><Value>25</Value></_State>
+								<_State id="src"><Value>projectTree_expand</Value></_State>
+								<_State id="left"><Value>10</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											var l_child = parent.parentEntity;
+										
+											Display.de("Click EXPAND BUTTON OF: " + l_child.s('childId') );
+											
+											//If we try to open this Level
+											if (l_child.s('expanded')==false)
+											{
+												//Expand, if possible (with a Level Child, it's complicated due to Module loading and such)
+												l_child.fa('Expand Level Child');
+											}
+											else
+											{
+												//Go Ahead and Collapse
+												l_child.fa('Collapse');
+											}
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>23</Value></_State>
+								<_State id="fontSize"><Value>22px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+								<_State id="pointerEvents"><Value>none</Value></_State>
+							</_States>
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											me.set('text', 'Level: ' + parent.parentEntity.s('childTitle') );
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+						
+						<!-- Edit Button -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>25</Value></_State>
+								<_State id="height"><Value>25</Value></_State>
+								<_State id="src"><Value>projectTree_edit</Value></_State>
+								<_State id="right"><Value>45</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											Display.de("Click EDIT BUTTON OF: " + parent.parentEntity.s('childId') );
+											
+											var l_child = parent.parentEntity;
+											
+											l_child.s('editor').fa('Open Edit Tab');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Run Button -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>25</Value></_State>
+								<_State id="height"><Value>25</Value></_State>
+								<_State id="src"><Value>projectTree_run</Value></_State>
+								<_State id="right"><Value>10</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											Display.de("Click RUN BUTTON OF: " + parent.parentEntity.s('childId') );
+											
+											var l_child = parent.parentEntity;
+											
+											l_child.s('editor').fa('Open Run Tab');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.HGroup">
+	<_States>
+		<State><Id>label</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>value</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>15</Value></_State>
+	</_States>
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Label Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>30%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>orange</Value></_State>
+					<_State id="textAlign"><Value>right</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('label'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Input Box -->
+				<Entity extends="std.display.Input"><_States>
+					<_State id="width"><Value>70%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(255, 255, 255)</Value></_State>
+					<_State id="border"><Value>2px</Value></_State>
+					<_State id="placeholder"><Value>Enter Value</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>black</Value></_State>
+					<_State id="textIndent"><Value>4px</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState('value',me);
+				</Script></_Scripts></_Action></_Actions>
+				<_Triggers><Trigger><Event>Changed</Event><Scripts>
+					<Script>
+						parent.startAction("Changed");
+					</Script></Scripts></Trigger>
+				</_Triggers></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<Action>
+			<Id>Changed</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Changed");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

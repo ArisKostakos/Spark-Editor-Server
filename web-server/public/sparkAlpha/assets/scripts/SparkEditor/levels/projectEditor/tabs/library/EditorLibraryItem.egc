@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>50</Value></_State>
+		<_State id="height"><Value>50</Value></_State>
+		<_State id="border"><Value>0px</Value></_State>
+		<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>caption</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>skinType</Id><Type>Text</Type><Value>imageOnly</Value></State>
+		<State><Id>libraryObjectDB</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Image -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="touchable"><Value>true</Value></_State>
+						<_State id="cursor"><Value>pointer</Value></_State>
+						<_State id="draggable"><Value>true</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<State><Id>tempDeleting</Id><Type>Boolean</Type><Value>false</Value></State>
+					</_States>
+						
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.setState('imageObject',me);
+									me.setState('src',parent.getState('imageName'));
+									
+									if (parent.getState('skinType')=='imageOnly')
+									{
+										me.setState('width', '100%');
+										me.setState('height', '100%');
+									}
+									else if (parent.getState('skinType')=='imageAndText')
+									{
+										me.setState('width', '70%');
+										me.setState('height', '70%');
+									}
+								</Script>
+							</_Scripts>
+						</_Action>
+						
+						<Action>
+							<Id>Clear DragAndDrop Event</Id>
+							<Concurrency>Persistent</Concurrency>
+							<Scripts>
+								<Script>
+									Display.de('Clear DragAndDrop Event!');
+									it.stop();
+									
+									//We clear the event.. So if we get a drop with null, we know it's from outside of the browser
+									e('Drag And Drop Manager').set('drag event',null);
+								</Script>
+							</Scripts>
+						</Action>
+					</_Actions>
+						
+					<_Triggers>
+						<Trigger>
+							<Event>OnDragStart</Event>
+							<Scripts>
+								<Script>
+									//Logic.getEntityByName('Drag Surface View').setState('visible',true);
+									Display.de("DRAG STARTTT");
+									
+									var l_dragEvent = e('Drag And Drop Manager').set('drag event',{});
+									
+									l_dragEvent.initiator="Library";
+									l_dragEvent.DBA=parent.getState('asset');
+									l_dragEvent.LibraryDBA=parent.getState('libraryObjectDB');
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>OnDragEnd</Event>
+							<Scripts>
+								<Script>
+									//Logic.getEntityByName('Drag Surface View').setState('visible',false);
+									Display.de("DRAG ENDDD");
+									me.sa('Clear DragAndDrop Event');
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>MouseDown</Event>
+							<Scripts>
+								<Script>
+									return;
+									
+									if (me.getState('eventObject').which==1) //Left Mouse Button
+									{
+										Display.de("Mouse Down LEFT!!!");
+										
+										Logic.getEntityByName('Drag Surface View').setState('visible',true);
+										Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',parent.getState('asset'));
+										Logic.getEntityByName('Drag Surface Scene').setState('libraryOfAssetBeingDragged',parent.getState('libraryObjectDB'));
+									}
+									
+									
+									//FINDS OFFSET FROM MOUSE CLICK TO IMAGE. I might need it later on..
+									//Display.error("Mouse Down!!!");
+									//var eventObject = me.getState('eventObject');
+									//var localX = eventObject.target.getBoundingClientRect().left;
+									//var localY = eventObject.target.getBoundingClientRect().top;
+									//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+									//.error("Mouse Global-> X: " + Input.pointer.currentX + ", Y: " + Input.pointer.currentY);
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>MouseUp</Event>
+							<Scripts>
+								<Script>
+									//Logic.getEntityByName('Drag Surface View').setState('visible',false);
+									Display.de("MOUSE UPP");
+								</Script>
+							</Scripts>
+						</Trigger>
+					
+						<Trigger>
+							<Event>MouseRightClick</Event>
+							<Scripts>
+								<Script>
+									return;
+									function createContextNode(nodeName,nodeType,parentNode)
+									{
+										var node = {};
+										node.name=nodeName;
+										node.children = [];
+										node.type=nodeType;
+										parentNode.children.push(node);
+										
+										return node;
+									}
+									
+									if (parent.s('asset').componentType!="Class")
+									{
+										var mainList = {};
+										mainList.children = [];
+										
+										//createContextNode("Paste (alpha)","PasteImage",mainList); //disabled.. enable it if U need it..
+										createContextNode("Remove","Remove",mainList);
+										
+										var mousePosX = Input.pointer.currentX;
+										var mousePosY = Input.pointer.currentY;
+										
+										
+										//Open Popup [CHOOSE AC]
+										var popUpManager = Logic.getEntityByName('PopUp Manager');
+										var popUpAction = popUpManager.getAction('Open PopUp');
+										popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+										popUpAction.setState('popupPosX',mousePosX);
+										popUpAction.setState('popupPosY',mousePosY);
+										popUpAction.setState('argA',mainList);
+										popUpAction.setState('cb_caller',me);
+										popUpAction.setState('cb_actionName','Callback: LibraryItem Context Menu');
+										popUpManager.forceAction('Open PopUp');
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+						
+						<Trigger>
+							<Event>NetworkRequest</Event>
+							<Target>TargetNone</Target>
+							<Scripts>
+								<Script>
+									if (Comms.getRequestData("deleteAssetLibrary")!=null)
+									{
+										if (me.getState('tempDeleting')) //if it's me who's getting removed..
+										{
+											var data = Comms.getRequestData("deleteAssetLibrary");
+											
+											me.setState('tempDeleting',false);
+											
+											if (data.code=="success")
+											{
+												Display.error('Remove Asset success!');
+												Logic.getEntityByName('Editor Output').setState('text','Asset Removed Successfully!');
+												parent.parentEntity.removeChild(parent);
+												
+												Display.invalidateLayout();
+											}
+											else
+											{
+												Display.error('Remove Asset error!');
+												Logic.getEntityByName('Editor Output').setState('text','Error Removing Asset :(');
+											}
+										}
+									}
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+						
+					<_Actions>
+						<!-- Callback: LibraryItem Context Menu -->
+						<Action>
+							<Id>Callback: LibraryItem Context Menu</Id>
+							<Concurrency>Persistent</Concurrency>
+							<Scripts>
+								<Script><![CDATA[
+									//forced
+									
+									var cb_result = it.getState('cb_result');
+									var cb_Arg1 = it.getState('cb_Arg1');
+									
+									if (cb_result=="OK")
+									{
+										Display.error("Callback: Select AC: OK");
+										Display.error("Got: " + cb_Arg1.name);
+										
+										if (cb_Arg1.type=="Remove")
+										{
+											var asset = parent.getState('asset');
+											var developerAsset = Logic.getEntityByName('Spark Editor').getState('developerAsset');
+											
+											//Check that we are not using this asset in our project
+											if (e('Project Editor').s('ModuleAssetsDBbyAssetIdHash').exists(asset._id)==false)
+											{
+												//Display.error("This asset is Owner: " + asset.owner);
+												//Display.error("Found Developer with Id: " + developerAsset._id);
+												
+												//Check if we own this asset
+												if (asset.owner==developerAsset._id)
+												{
+													me.setState('tempDeleting',true);
+													Comms.request("assets.uploadHandler.deleteAsset", {assetName: asset.name}, "deleteAssetLibrary");
+												}
+												else
+												{
+													Display.error("Cannot Remove Library Item of different User");
+													Logic.getEntityByName('Editor Output').setState('text','Failed to remove Item (no access)');
+												}
+											}
+											else
+											{
+												//Open Info Popup
+												var popUpManager = e('PopUp Manager');
+												var popUpAction = popUpManager.getAction('Open PopUp');
+												popUpAction.setState('popupName',"SparkEditor.entities.popups.items.InfoPopUp");
+												popUpAction.setState('argA',"This asset is currently being used in your project!<br/>Remove it and try again!");
+												popUpAction.setState('argB',"Ooops!");
+												popUpAction.setState('cb_caller',me);
+												popUpAction.setState('cb_actionName','Undefined'); //No Callback
+												popUpManager.forceAction('Open PopUp');
+											}
+										}
+										else if (cb_Arg1.type=="PasteImage")
+										{
+											var selectedEntities = Logic.getEntityByName('2d Scene Editor').getState('target').getState('selectedEntities');
+											if (selectedEntities.length==1)
+											{
+												var objectEntity = selectedEntities[0];
+												var objectClassAsset = objectEntity.getState('ClassAsset');
+												var libraryImageAsset = parent.getState('asset');
+												
+												
+												//Get Object Class egc
+												var objectClassXml = Logic.xml_parseAsset(objectClassAsset);
+												
+												//Change ImageUrl Value to name of new image
+												Logic.xml_entity_updateFormState(objectClassXml, {id:"ImageUrl",value:"image_"+libraryImageAsset.name}, true, true);
+												
+												//Upload new egc file (send request to Sprite2DEdit)
+												objectEntity.setState('tempUploading',true);
+												
+												//Upload it
+												var finalString = Logic.xmlToString(objectClassXml);
+												var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
+												Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+												
+												Comms.file_sendFileRequest(finalString, {name: "updatedClassAsset", size: finalString.length, user: connectedUserName} , "updatedClassAsset");
+												
+												//add new image to Modules
+												Comms.request("assets.updateHandler.addProjectMainModuleAssetReferences", {assetReferences: [libraryImageAsset._id]}, "whatever dude...");
+												
+												//remove old image from Modules (later: except maybe if used by smth else)
+												Comms.request("assets.updateHandler.removeProjectMainModuleAssetReferences", {assetReferences: [objectClassAsset.tags[1]]}, "whatever dude...");
+												
+												//Change asset's tag[1] to id of new image
+												objectClassAsset.tags[1] = libraryImageAsset._id;
+												
+												//update assetDb
+												Comms.request("assets.updateHandler.updateAssetEntry", {assetId:objectClassAsset._id, field:"tags", newValue:objectClassAsset.tags}, "whatever...");
+												
+												//later: flambe load new image
+												
+												
+												//Next
+												//display x,y,scale,rotation,etc (thumbnail too?) on bar
+												//change scene size
+												//add graphics
+												//do background stuff
+												//sound End trigger
+												//sound service to know if music,sfx, etc
+												//pausing for snowglobes
+												//font
+												//the fadeIn fadeOut bug (stopallactions, change persistent to... transient?..)
+												//....
+											}
+										}
+									}
+									else
+									{
+										Display.error("Callback: Select AC: CANCEL");
+									}
+								]]></Script>
+							</Scripts>
+							<States>
+								<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+								<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+							</States>
+						</Action>
+					</_Actions>
+				</Entity>
+					
+				<!-- Caption -->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="bottom"><Value>0</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="fontSize"><Value>12px</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						me.setState('text',parent.getState('caption'));
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(24,39,51)</Value></_State>
+		<_State id="name"><Value>NavBar</Value></_State> <!-- remove me, no need, was just testing something -->
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Spark Version 
+				<Entity extends="std.display.Text"><_States>
+					<_State id="top"><Value>5</Value></_State>
+					<_State id="left"><Value>5</Value></_State>
+					<_State id="width"><Value>150</Value></_State>
+					<_State id="fontSize"><Value>11px</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="text"><Value>Spark Alpha v0.65</Value></_State>
+				</_States></Entity>-->
+				
+				<!-- Title 
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>40</Value></_State>
+					<_State id="fontSize"><Value>34px</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="horizontalCenter"><Value>0</Value></_State>
+					<_State id="verticalCenter"><Value>0</Value></_State>
+					<_State id="text"><Value>My Projects</Value></_State>
+				</_States></Entity>-->
+			
+				<!-- User 
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>120</Value></_State>
+						<_State id="right"><Value>28</Value></_State>
+						<_State id="top"><Value>14</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+					</_States>
+					<Form><Space><Entities>-->
+						<!-- Photo 
+						<Entity extends="std.display.Image"><_States>
+								<_State id="width"><Value>36</Value></_State>
+								<_State id="height"><Value>36</Value></_State>
+								<_State id="src"><Value>editor_unknownUser</Value></_State>
+							</_States>
+						</Entity>-->
+						<!-- Name 
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>18</Value></_State>
+								<_State id="fontSize"><Value>14px</Value></_State>
+								<_State id="fontWeight"><Value>300</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+							</_States>
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											me.setState('text',e('Spark Editor').s('username'));
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>-->
+				
+				<!-- Group -->
+				<Entity extends="SparkEditor.levels.projectEditor.topArea.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_group</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+					<_State id="top"><Value>5</Value></_State>
+					<_State id="left"><Value>5</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Group Button");
+					
+					//Export Project
+					e('Project Editor').fa('Export Project Xml');
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Lock -->
+				<Entity extends="SparkEditor.levels.projectEditor.topArea.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_lock</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+					<_State id="top"><Value>5</Value></_State>
+					<_State id="left"><Value>40</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Lock Button");
+					
+					//Save Project
+					e('Project Editor').fa('Save Project');
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Undo -->
+				<Entity extends="SparkEditor.levels.projectEditor.topArea.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_undo</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+					<_State id="top"><Value>5</Value></_State>
+					<_State id="left"><Value>575</Value></_State>
+					<State><Id>myObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+					<State><Id>added</Id><Type>Boolean</Type><Value>false</Value></State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Undo Button");
+					
+					if (me.s('myObject')==null)
+					{
+						Display.error("Creating tetragonaki");
+						var l_myObject = Logic.create('std.display.Div');
+						l_myObject.set('top', 5);
+						l_myObject.set('left', 630);
+						l_myObject.set('backgroundColor', 'green');
+						l_myObject.set('width', '20');
+						l_myObject.set('height', '20');
+						l_myObject.set('name', 'tetragonaki');
+						parent.addChild(l_myObject);
+						me.set('added', true);
+						me.set('myObject', l_myObject);
+					}
+					else
+					{
+						if (me.s('added')==true)
+						{
+							Display.error("Removing tetragonaki");
+							var l_myObject = me.s('myObject');
+							parent.removeChild(l_myObject);
+							me.set('added', false);
+						}
+						else
+						{
+							Display.error("Adding tetragonaki");
+							var l_myObject = me.s('myObject');
+							parent.addChild(l_myObject);
+							me.set('added', true);
+						}
+					}
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Delete -->
+				<Entity extends="SparkEditor.levels.projectEditor.topArea.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_delete</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+					<_State id="top"><Value>5</Value></_State>
+					<_State id="left"><Value>110</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Undo Button");
+					
+					//Run Project
+					//Add Level Editor Tab
+					e('Main Tab Manager').fa('Add Tab',{name:"Event Sheet",title:"Events", type:"eventSheetEditor"});
+					
+					//Show Level Editor Tab
+					e('Main Tab Manager').startAction('Show Tab',{name:"Event Sheet"});
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

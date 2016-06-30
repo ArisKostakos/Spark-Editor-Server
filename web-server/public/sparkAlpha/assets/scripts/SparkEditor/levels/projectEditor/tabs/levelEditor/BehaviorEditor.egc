@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<State><Id>statesExplorerTab</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>type</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>createdWith</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>projectChild</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>enabledInEditor</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>editTab</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From DBA">
+			<_Scripts>
+				<Script>
+					//Check if this behavior should be enabled (run) in the editor..
+					if (me.s('target_XML').get("meta_enabledInEditor")=="true")
+						me.set('enabledInEditor', true);
+					else
+						me.set('enabledInEditor', false);
+						
+						
+					//Find Meta Type
+					me.set('type', me.s('target_DBA').meta.type);
+					me.set('createdWith', me.s('target_DBA').meta.createdWith);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+			
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//get DBA
+					var l_DBA = me.s('target_DBA');
+				
+					//Create it
+					var l_tab = Logic.create('SparkEditor.levels.projectEditor.tabs.statesExplorer.Tab');
+					
+					//Set it up
+					l_tab.setState('tabName', l_DBA.title);
+					l_tab.setState('tabTitle', l_DBA.title);
+					//l_tab.setState('TabManager',me);
+					l_tab.setState('parameters', { editor:me } );
+					
+					//Call 'Created Event' For the Tab
+					l_tab.fa('Created Event');
+					
+					//Store
+					me.set('statesExplorerTab', l_tab);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Open Edit Tab</Id> <!-- This Action should exist on all trio-Editors (Class/Behavior/Instance) -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//You know something... I want to have an OPTION whether to cache the Tab or not.. for the RunTab for example, I dont need it
+					//and maybe I don't need it anyway.. although it will be a little slow to recreate complex tabs all the time...
+					//but don't worry about the export problem anymore.. this will work either way..
+					
+					//Get Tab
+					var l_editTab = me.s('editTab');
+					
+					//If Tab already exists
+					if (l_editTab!=null)
+					{
+						//If Tab does not exist in Tab Manager, sneak it back in
+						if ( !e('Main Tab Manager').s('tabs').exists( l_editTab.s('tabName') ) )
+							e('Main Tab Manager').fa('Add Tab',{name:l_editTab.s('tabName'), title:l_editTab.s('tabTitle'), type:l_editTab.s('tabType'), premadeTab: l_editTab });
+						
+						//Now Show it
+						e('Main Tab Manager').startAction('Show Tab',{name: l_editTab.s('tabName') });
+					}
+					else
+					{
+						//Create Tab, if possible
+						
+						if (me.s('createdWith')=="Raw SML")
+						{
+							//Add SML Editor Tab
+							e('Main Tab Manager').fa('Add Tab',{name: me.s('target_DBA').name , title: me.s('target_DBA').title , type:"rawSmlEditor", parameters:{ editor:me }  });
+							
+							//Store The Tab We Just Created
+							me.set('editTab', e('Main Tab Manager').s('tabs').get( me.s('target_DBA').name ) );
+							
+							//Show SML Editor Tab
+							e('Main Tab Manager').startAction('Show Tab',{name:me.s('target_DBA').name});
+						}
+						else
+						{
+							Display.de("Unknown createdWith: " + me.s('createdWith') + ". Cannot Open Edit Tab");
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

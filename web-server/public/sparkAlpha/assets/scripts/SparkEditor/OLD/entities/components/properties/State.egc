@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<State><Id>stateXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>18</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(82,107,125)</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="paddingLeft"><Value>2</Value></_State>
+	</_States>
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Label Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>50%</Value></_State>
+					<_State id="height"><Value>14</Value></_State>
+					<_State id="verticalCenter"><Value>0</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>12px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>left</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('stateXml').get('id'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Input Box -->
+				<Entity extends="std.display.Input"><_States>
+					<_State id="width"><Value>50%</Value></_State>
+					<_State id="height"><Value>14</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(255, 255, 255)</Value></_State>
+					<_State id="border"><Value>none</Value></_State>
+					<_State id="placeholder"><Value>Enter Value</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>12px</Value></_State>
+					<_State id="fontColor"><Value>black</Value></_State>
+					<_State id="textIndent"><Value>2px</Value></_State>
+				</_States>
+				<_Triggers>
+					<Trigger>
+						<Event>Changed</Event>
+						<Scripts>
+							<Script>
+								Display.error('Input Changed: ' + me.getState('text'));
+								
+								function firstElementNamed(p_xmlNode, p_elementName)
+								{
+									if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+									{
+										return p_xmlNode.elementsNamed(p_elementName).next();
+									}
+									else
+									{
+										return null;
+									}
+								}
+								
+								var stateValueXml = firstElementNamed(parent.getState('stateXml'),'Value');
+							
+								stateValueXml.removeChild(stateValueXml.firstChild());
+								stateValueXml.addChild(Xml.parse(me.getState('text')));
+							</Script>
+						</Scripts>
+					</Trigger>
+				</_Triggers>
+				<_Actions><_Action id="Constructor"><_Scripts><Script>
+					function firstElementNamed(p_xmlNode, p_elementName)
+					{
+						if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+						{
+							return p_xmlNode.elementsNamed(p_elementName).next();
+						}
+						else
+						{
+							return null;
+						}
+					}
+					
+					var stateValueXml = firstElementNamed(parent.getState('stateXml'),'Value');
+				
+					me.setState('text',stateValueXml.firstChild().toString());
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

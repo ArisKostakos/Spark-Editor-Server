@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Spark Editor:Login Panel</Value></_State>
+		<_State id="width"><Value>512</Value></_State>
+		<_State id="height"><Value>377</Value></_State>
+		<_State id="horizontalCenter"><Value>0</Value></_State>
+		<_State id="verticalCenter"><Value>0</Value></_State>
+		
+		<_State id="backgroundColor"><Value>#21303D</Value></_State>
+		<_State id="borderRadius"><Value>12px</Value></_State>
+		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+		
+		<State><Id>userInput</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>passwordInput</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>connectedLight</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>outputText</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Connected Light -->
+				<Entity extends="std.display.Div"><_States>
+					<_State id="borderRadius"><Value>50%</Value></_State>
+					<_State id="backgroundColor"><Value>orange</Value></_State>
+					<_State id="width"><Value>10</Value></_State>
+					<_State id="height"><Value>10</Value></_State>
+					<_State id="top"><Value>10</Value></_State>
+					<_State id="left"><Value>10</Value></_State>
+				</_States>
+				<_Actions><_Action id="Constructor"><_Scripts><Script>
+					e('Spark Editor:Login Panel').setState('connectedLight',me);
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
+				
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="gap"><Value>3</Value></_State>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="verticalAlign"><Value>top</Value></_State>
+						<_State id="paddingLeft"><Value>42</Value></_State>
+						<_State id="paddingRight"><Value>38</Value></_State>
+						<_State id="paddingTop"><Value>17</Value></_State> <!--52-->
+						<_State id="paddingBottom"><Value>49</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Or Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>38</Value></_State>
+								<_State id="fontSize"><Value>22px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+								<_State id="text"><Value>Make your badass Game Now!</Value></_State>
+								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Sign Up Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(231, 47, 87)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="text"><Value>Sign Up</Value></_State>
+							<_State id="fontSize"><Value>30px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+						<Script>
+							if (e('Spark Editor').s('Connected')==true)
+							{
+								var loginPanel = e('Spark Editor:Login Panel');
+								var signupPanel = e('Spark Editor:Signup Panel');
+								
+								loginPanel.setState('display','none');
+								signupPanel.startAction('show');
+							}
+							else
+							{
+								var loginPanel = e('Spark Editor:Login Panel');
+								loginPanel.s('outputText').setState('text', 'Client has not connected yet! Be patient...');
+							}
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="height"><Value>1</Value></_State></_States></Entity>
+						
+						<!-- Or Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>24</Value></_State>
+								<_State id="fontSize"><Value>22px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+								<_State id="text"><Value>- or -</Value></_State>
+								<_State id="fontColor"><Value>rgb(150,150,150)</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="height"><Value>1</Value></_State></_States></Entity>
+						
+						<!-- User Name -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+								<Entity extends="std.display.Div"><_States>
+									<_State id="width"><Value>49</Value></_State>
+									<_State id="height"><Value>49</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+								<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+										<_State id="width"><Value>24</Value></_State>
+										<_State id="height"><Value>26</Value></_State>
+										<_State id="horizontalCenter"><Value>0</Value></_State>
+										<_State id="verticalCenter"><Value>0</Value></_State>
+										<_State id="src"><Value>userIcon</Value></_State>
+								</_States></Entity></Entities></Space></Form></Entity>
+								
+								<Entity extends="std.display.Input"><_States>
+									<_State id="width"><Value>100%</Value></_State>
+									<_State id="height"><Value>47</Value></_State>
+									<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+									<_State id="border"><Value>0px</Value></_State>
+									<_State id="placeholder"><Value>User Name</Value></_State>
+									<_State id="fontSize"><Value>23px</Value></_State>
+									<_State id="fontColor"><Value>white</Value></_State>
+									<_State id="textIndent"><Value>12px</Value></_State>
+									<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+								</_States>
+								<_Actions><_Action id="Constructor"><_Scripts><Script>
+									e('Spark Editor:Login Panel').setState('userInput',me);
+								</Script></_Scripts></_Action></_Actions>
+									<_Triggers><Trigger><Event>KeyReleasedLocal</Event><Scripts>
+								<Script>
+									var eventObjectKeyRelease = me.getState('eventObjectKeyRelease');
+									
+									if (eventObjectKeyRelease.keyCode==33 || eventObjectKeyRelease.keyCode==34 || eventObjectKeyRelease.keyCode==145)
+									{
+										//Get Login Panel
+										var loginPanel = e('Spark Editor:Login Panel');
+										
+										//Set User/Pass
+										var strUser;
+										var strPass;
+										var adminMode;
+										if (eventObjectKeyRelease.keyCode==33) //Page Up
+										{
+											strUser = 'test2';
+											strPass = 'lala2';
+											adminMode=false;
+										}
+										else if (eventObjectKeyRelease.keyCode==34) //Page Down
+										{
+											strUser = 'spark';
+											strPass = '12qw!@QW ';
+											adminMode=true;
+										}
+										else if (eventObjectKeyRelease.keyCode==145) //Scroll Lock
+										{
+											strUser = 'edugames';
+											strPass = 'r0diof';
+											adminMode=false;
+										}
+										
+										//Call Login Action
+										loginPanel.getAction('Login').setState('userName',strUser);
+										loginPanel.getAction('Login').setState('password',strPass);
+										loginPanel.getAction('Login').setState('adminMode',adminMode);
+										loginPanel.forceAction('Login');
+									}
+								</Script></Scripts></Trigger>
+							</_Triggers>
+						</Entity>
+						</Entities></Space></Form></Entity>
+						
+						<!-- Password -->
+						<Entity extends="std.display.HGroup"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="gap"><Value>3</Value></_State></_States><Form><Space><Entities>
+							<Entity extends="std.display.Div"><_States>
+								<_State id="width"><Value>49</Value></_State>
+								<_State id="height"><Value>49</Value></_State>
+								<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State></_States>
+							<Form><Space><Entities><Entity extends="std.display.Image"><_States>
+									<_State id="width"><Value>17</Value></_State>
+									<_State id="height"><Value>23</Value></_State>
+									<_State id="horizontalCenter"><Value>0</Value></_State>
+									<_State id="verticalCenter"><Value>0</Value></_State>
+									<_State id="src"><Value>passwordIcon</Value></_State>
+							</_States></Entity></Entities></Space></Form></Entity>
+							
+							<Entity extends="std.display.Input"><_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>47</Value></_State>
+								<_State id="backgroundColor"><Value>rgb(61, 77, 95)</Value></_State>
+								<_State id="border"><Value>0px</Value></_State>
+								<_State id="placeholder"><Value>Password</Value></_State>
+								<_State id="type"><Value>password</Value></_State>
+								<_State id="fontSize"><Value>23px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textIndent"><Value>12px</Value></_State>
+								<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								e('Spark Editor:Login Panel').setState('passwordInput',me);
+							</Script></_Scripts></_Action></_Actions>
+							<_Triggers><Trigger><Event>KeyPressedLocal</Event><Scripts>
+								<Script>
+									var eventObjectKeyPress = me.getState('eventObjectKeyPress');
+									
+									if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
+									{
+										//Get Login Panel
+										var loginPanel = e('Spark Editor:Login Panel');
+										
+										//Set User/Pass
+										var strUser =loginPanel.s('userInput').s('text');
+										var strPass =loginPanel.s('passwordInput').s('text');
+										
+										//Call Login Action
+										loginPanel.getAction('Login').setState('userName',strUser);
+										loginPanel.getAction('Login').setState('password',strPass);
+										if (eventObjectKeyPress.keyCode==10)
+											loginPanel.getAction('Login').setState('adminMode',true);
+										else
+											loginPanel.getAction('Login').setState('adminMode',false);
+										loginPanel.forceAction('Login');
+									}
+								</Script></Scripts></Trigger>
+							</_Triggers></Entity>
+						</Entities></Space></Form></Entity>
+						
+						<!-- Login Button -->
+						<Entity extends="std.display.Button"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+							<_State id="textVerticalAlign"><Value>middle</Value></_State>
+							<_State id="backgroundColor"><Value>rgb(59, 185, 176)</Value></_State>
+							<_State id="border"><Value>0px</Value></_State>
+							<_State id="text"><Value>Log in</Value></_State>
+							<_State id="fontSize"><Value>30px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+						</_States>
+						<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+						<Script>
+							//Get Login Panel
+							var loginPanel = Logic.getEntityByName('Spark Editor:Login Panel');
+							
+							//Set User/Pass
+							var strUser =loginPanel.s('userInput').s('text');
+							var strPass =loginPanel.s('passwordInput').s('text');
+							
+							//Call Login Action
+							loginPanel.getAction('Login').setState('userName',strUser);
+							loginPanel.getAction('Login').setState('password',strPass);
+							loginPanel.getAction('Login').setState('adminMode',false);
+							loginPanel.forceAction('Login');
+						</Script>
+						</Scripts></Trigger></_Triggers></Entity>
+						
+						
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="height"><Value>10</Value></_State></_States></Entity>
+						
+						<!-- Output Text -->
+						<Entity extends="std.display.Text"><_States>
+							<_State id="width"><Value>100%</Value></_State>
+							<_State id="height"><Value>49</Value></_State>
+							<_State id="fontSize"><Value>22px</Value></_State>
+							<_State id="fontColor"><Value>white</Value></_State>
+							<_State id="textAlign"><Value>center</Value></_State>
+						</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+						e('Spark Editor:Login Panel').setState('outputText',me);
+						</Script></_Scripts></_Action></_Actions></Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Every minute
+					 setInterval(function(){
+							//Report to Google Analytics
+							e('Spark Editor').getAction('GoogleAnalytics').setState('category','Time');
+							e('Spark Editor').getAction('GoogleAnalytics').setState('action','Update');
+							e('Spark Editor').getAction('GoogleAnalytics').setState('label',e('Spark Editor').s('username') + '&' + e('Spark Editor').s('projectname'));
+							e('Spark Editor').forceAction('GoogleAnalytics');
+						}, 60000);
+					
+					me.startAction('FillInputsFromCookies');
+					me.startAction('CheckConnection');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>FillInputsFromCookies</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('userInput')!=null && me.s('passwordInput')!=null)
+					{
+						//Load username from cookies
+						if (Logic.getStorage().get('username')!=null)
+						me.s('userInput').setState('text',Logic.getStorage().get('username'));
+						
+						//Load password from cookies
+						if (Logic.getStorage().get('password')!=null)
+							me.s('passwordInput').setState('text',Logic.getStorage().get('password'));
+							
+						me.stopAction('FillInputsFromCookies');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<Id>CheckConnection</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (e('Spark Editor').s('Connected'))
+					{
+						if (e('Spark Editor:Login Panel').s('connectedLight')!=null)
+						{
+							e('Spark Editor:Login Panel').s('connectedLight').setState('backgroundColor','green');
+							me.stopAction('CheckConnection');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<Id>Login</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get User/Pass
+					var userName= it.getState('userName');
+					var password= it.getState('password');
+					
+					
+					var projectEntity = e('Spark Editor');
+					if (projectEntity.getState('Connected')==true)
+					{
+						if (userName.length>0 && userName!='Undefined' &&
+							password.length>0 && password!='Undefined')
+						{
+							me.s('outputText').setState('text', 'Please wait...');
+							
+							//Set Admin Mode
+							e('Spark Editor').setState('adminMode',it.getState('adminMode'));
+							
+							Comms.request("registration.loginHandler.login", { 	uid: projectEntity.s('UniqueId'), 
+																				username: userName, 
+																				password: password}, "Log In Request", me);
+						}
+						else
+						{
+							me.s('outputText').setState('text', 'Please fill in every field.');
+						}
+							
+					}
+					else
+					{
+						me.s('outputText').setState('text', 'Client has not connected yet! Be patient...');
+					}
+					
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>userName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>password</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>adminMode</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+			
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Log In Request</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Log In Request");
+					
+					if (data.code=="match")
+					{
+						e('Spark Editor').setState('username',data.user.name);
+						
+						//Report to Google Analytics
+						e('Spark Editor').getAction('GoogleAnalytics').setState('category','Project');
+						e('Spark Editor').getAction('GoogleAnalytics').setState('action','Login');
+						e('Spark Editor').getAction('GoogleAnalytics').setState('label',e('Spark Editor').s('username'));
+						e('Spark Editor').forceAction('GoogleAnalytics');
+						
+						//Store to Cookies
+						var strUser =me.s('userInput').s('text');
+						var strPass =me.s('passwordInput').s('text');
+						Logic.getStorage().set('username',strUser);
+						Logic.getStorage().set('password',strPass);
+						
+						me.s('outputText').setState('text', 'Logged in. Entering lobby...');
+						Comms.request("lobby.projectHandler.listUserProjects", {}, "Request All My Projects", me);
+						
+						e('Spark Editor').setState('developerAsset',data.developer);
+						e('Spark Editor').setState('userAsset',data.user);
+					}
+					else if (data.code=="nomatch")
+					{
+						//Display.error("Log In Panel: Unknown UserName/Password!");
+						me.s('outputText').setState('text', 'Username or Password not valid!');
+					}
+					else if (data.code=="error")
+					{
+						//Display.error("Log In Panel: Unknown Error");
+						me.s('outputText').setState('text', 'An unknown error occured.');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Request All My Projects</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Request All My Projects");
+					
+					if (data.code=="success")
+					{
+						me.s('outputText').setState('text', 'Retrieving projects...');
+						
+						//Fill Dashboard View with projects
+						var dashboardScene;
+						if (e('Spark Editor').s('adminMode')==true)
+						{
+							//dashboardScene = e('Dashboard Admin');
+						}
+						else
+						{
+							//dashboardScene = e('Dashboard Normal');
+							Logic.levelManager.runLevel('SparkEditor.levels.userLobby.Level');
+						}
+						
+						//Store results
+						e('Spark Editor').setState('userProjects',data.projects);
+					}
+					else
+					{
+						me.s('outputText').setState('text', 'Error requesting all my projects.');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

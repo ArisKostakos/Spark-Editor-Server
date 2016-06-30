@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.VGroup">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Blank -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile">
+					<_States>
+						<_State id="name"><Value>BlankTemplateTile</Value></_State>
+						<_State id="projectName"><Value>Blank</Value></_State>
+						<_State id="projectFork"><Value>BlankTemplate</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Blank</Value></_State>
+						<_State id="imageWidth"><Value>26</Value></_State>
+						<_State id="imageHeight"><Value>26</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Logic.getEntityByName('PlatformTemplateTile').startAction('Deselect'); //terrible fix again..
+									me.startAction('Select');
+									Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
+									//Display.error("Selected Template: " + Logic.getEntityByName('New Project Pop Up').getState('templateName'));
+								</Script>
+							</_Scripts>
+						</_Action>
+						<_Action id="Constructor"><_Scripts><Script>
+							me.startAction('Select');
+							Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
+							//Display.error("Selected Template: " + Logic.getEntityByName('New Project Pop Up').getState('templateName'));
+						</Script></_Scripts></_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Platform -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile">
+					<_States>
+						<_State id="name"><Value>PlatformTemplateTile</Value></_State>
+						<_State id="projectName"><Value>Platform</Value></_State>
+						<_State id="projectFork"><Value>PlatformTemplate</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Platform</Value></_State>
+						<_State id="imageWidth"><Value>43</Value></_State>
+						<_State id="imageHeight"><Value>39</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									return;
+									Logic.getEntityByName('BlankTemplateTile').startAction('Deselect'); //terrible fix again..
+									me.startAction('Select');
+									Logic.getEntityByName('New Project Pop Up').setState('templateName',me.getState('projectFork'));
+									//Display.error("Selected Template: " + Logic.getEntityByName('New Project Pop Up').getState('templateName'));
+								</Script>
+							</_Scripts>
+						</_Action>
+						<_Action id="Constructor"><_Scripts><Script>
+							//me.startAction('Select');
+						</Script></_Scripts></_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Racing -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Racing</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Racing</Value></_State>
+						<_State id="imageWidth"><Value>49</Value></_State>
+						<_State id="imageHeight"><Value>25</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Tower -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Tower Defence</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Tower</Value></_State>
+						<_State id="imageWidth"><Value>45</Value></_State>
+						<_State id="imageHeight"><Value>31</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Flappy -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Flappy</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Flappy</Value></_State>
+						<_State id="imageWidth"><Value>39</Value></_State>
+						<_State id="imageHeight"><Value>26</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Breakout -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Breakout</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Breakout</Value></_State>
+						<_State id="imageWidth"><Value>29</Value></_State>
+						<_State id="imageHeight"><Value>28</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46,61,74)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Match3 -->
+				<Entity extends="SparkEditor.levels.userLobby.entities.TemplateTile"><_States>
+						<_State id="projectName"><Value>Match 3</Value></_State>
+						<_State id="imageName"><Value>lobbyProjectTemplate_Match3</Value></_State>
+						<_State id="imageWidth"><Value>32</Value></_State>
+						<_State id="imageHeight"><Value>27</Value></_State>
+						<_State id="isDisabled"><Value>true</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(38,53,66)</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="ButtonClicked">
+							<_Scripts>
+								<Script>
+									Display.error("ok this works fine..");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Editor Library Behaviors Panel</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>AddItemNoUpload</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var container2d = Logic.getEntityByName('LibraryBehaviorsAlphaContainer');
+					var components = me.getAction('AddItemNoUpload').getState('items');
+					
+					var username = Logic.getEntityByName('Spark Editor').getState('username');
+					var i = 0;
+					while (components.length>i)
+					{
+						var asset = components[i];
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItem');
+						myNewItem.setState('name',asset.fileName);
+						myNewItem.setState('buttonText',asset.fileName);
+						myNewItem.setState('imageName','libcat_behaviors');
+						myNewItem.setState('imageWidth',"14");
+						myNewItem.setState('imageHeight',"14");
+						myNewItem.setState('component',asset);
+						container2d.addChild(myNewItem);
+						Display.error('component #' + i + ':' + asset.fileName);
+						//Display.error(components[i].assets);
+						
+						i+=1;
+					}
+					
+					me.stopAction("AddItemNoUpload");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- List -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="gap"><Value>1</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="paddingLeft"><Value>1</Value></_State>
+						<_State id="paddingRight"><Value>1</Value></_State>
+						<_State id="paddingTop"><Value>1</Value></_State>
+						<_State id="paddingBottom"><Value>1</Value></_State>
+						<!--<_State id="height"><Value>100%</Value></_State>-->
+					</_States>
+					<Form><Space><Entities>
+						<!-- Alpha -->
+						<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryButton"><_States>
+							<_State id="name"><Value>Library Behavior Alpha</Value></_State>
+							<_State id="buttonText"><Value>Alpha</Value></_State>
+							<_State id="imageName"><Value>libcat_behaviors</Value></_State>
+							<_State id="selectedColor"><Value>rgb(227,112,135)</Value></_State>
+							<_State id="selected"><Value>true</Value></_State>
+							<_State id="imageWidth"><Value>12</Value></_State>
+							<_State id="imageHeight"><Value>12</Value></_State>
+						</_States></Entity>
+						
+						
+						<!-- 2D List -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="name"><Value>LibraryBehaviorsAlphaContainer</Value></_State>
+								<_State id="gap"><Value>1</Value></_State>
+								<_State id="width"><Value>100%</Value></_State>
+								<!--<_State id="height"><Value>100%</Value></_State>-->
+							</_States>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State><Id>SceneEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>Changed</Event>
+			<Scripts>
+				<Script>
+					me.sa('Change Scene Zoom');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<Action>
+			<Id>Change Scene Zoom</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//I do this to a new action, cause the trigger will happen 4 times instead of one, due to shitty camera updating
+					it.stop();
+					
+					var zoomX = query(me,'zoomX');
+					var zoomY = query(me,'zoomY');
+					var zoomScale = query(me,'zoomScale');
+					
+					//Display.de("zoomX: " + zoomX);
+					//Display.de("zoomY: " + zoomY);
+					//Display.de("zoomScale: " + zoomScale);
+					
+					var l_boundsObject = me.s('SceneEditor').s('sceneBoundsObject');
+					
+					if (l_boundsObject!=null)
+					{
+						var l_transform = "translate("+(zoomX/zoomScale)+"px,"+(zoomY/zoomScale)+"px)";
+						
+						//var l_transform = "scale("+zoomScale+")";
+						
+						//Display.de("Transforming to: " + l_transform);
+						
+						l_boundsObject.set('transformScale', Std.string(zoomScale));
+						l_boundsObject.set('transform', l_transform);
+					}
+					
+					//Also store the transformations to the Scene Editor
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					
+					l_transformations.x=zoomX;
+					l_transformations.y=zoomY;
+					l_transformations.scale=zoomScale;
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

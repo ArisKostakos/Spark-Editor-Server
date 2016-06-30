@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tree.Tree">
+	<_States>
+		<State><Id>editorClickedTemp</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Child Clicked">
+			<_Scripts>
+				<Script>
+					var l_child = it.s('child');
+					
+					//Ok so for now we'll try to add code here that shows us an explorer for this
+					//let's see how that goes..
+					
+					var l_abstractEditor = l_child.s('editor');
+					
+					if (l_abstractEditor!=null)
+					{
+						Display.de('Abstract Editor To be Displayed: ' + l_abstractEditor.s('target_DBA').name);
+						//Find LevelEditor (which should be opened) for this scene
+						//var l_levelEditor = //for now just find the behavior panel of the active tab, later on you can figure out if when i click on any element (scene/view/camera) it should FIRST
+						//open the appropriate Tab, and then pick up the behavior area for that module
+						
+						var l_behaviorsGroup = e('Behaviors Group'); //temp ofc..
+						
+						if (l_behaviorsGroup!=null)
+						{
+							//Remove All Children
+							l_behaviorsGroup.removeChildren();
+							
+							//Add the Explorer of AbstractEditor to the LevelEditor Space..
+							if (l_child.s('childType')=="Behavior")
+								l_behaviorsGroup.addChild( l_abstractEditor.s('statesExplorerTab') );
+							else
+								l_behaviorsGroup.addChild( l_abstractEditor.s('classExplorer') );
+						}
+						else
+						{
+							Display.error("Behaviors Group is null");
+						}
+						
+						
+						me.set('editorClickedTemp', l_abstractEditor);
+					}
+					else
+					{
+						Display.error("Editor Has Not Been Created For Child " + l_child.s('childId') );
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

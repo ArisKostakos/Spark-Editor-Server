@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="name"><Value>Editor Project Collections</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<State><Id>selectedCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>collectionsHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>collectionPanelsByNameHash</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					function createCollection(title, iconName, componentType, titleColor, titleColorSelected, tileWidth, tileHeight, hash)
+					{
+						//Create Button
+						var _button = Logic.gameFactory.createGameEntity('SparkEditor.entities.project.EditorProjectCollectionButton');
+						_button.setState('buttonText',title);
+						_button.setState('imageName',iconName);
+						_button.setState('normalTextColor', titleColor);
+						_button.setState('selectedTextColor', titleColorSelected);
+						Logic.getEntityByName('Editor Project Collections Buttons Container').addChild(_button);
+						
+						
+						//Create Panel
+						var _panel = Logic.gameFactory.createGameEntity('SparkEditor.entities.project.EditorProjectCollectionPanel');
+						
+						_panel.setState('name',title);
+						_panel.setState('componentTypes',[componentType]);
+						_panel.setState('tileWidth',tileWidth);
+						_panel.setState('tileHeight',tileHeight);
+						Logic.getEntityByName('Editor Project Collections Panels Container').addChild(_panel);
+						
+						//Register In hash
+						hash.set(_button,_panel);
+						
+						//Register in name hash
+						me.s('collectionPanelsByNameHash').set(title,_panel);
+						
+						
+						Display.error("projectCollection.title: " + title);
+						
+						return {button:_button, panel:_panel};
+					}
+					
+					var projectCollectionsHash = new ObjectMap();
+					me.setState('collectionPanelsByNameHash',new StringMap());
+					
+					//Create Collections
+					var collectionFirst = createCollection("Objects", "libcat_image", "Object Class", "rgb(65,80,97)", "rgb(59,185,176)", 64, 64, projectCollectionsHash);
+					createCollection("Project", "libcat_image", "Scene", "rgb(65,80,97)", "rgb(59,185,176)", 64, 64, projectCollectionsHash);
+					createCollection("Images", "libcat_image", "Image", "rgb(65,80,97)", "rgb(59,185,176)", 64, 64, projectCollectionsHash);
+					createCollection("Sounds", "libcat_image", "Sound", "rgb(65,80,97)", "rgb(59,185,176)", 64, 64, projectCollectionsHash);
+					
+					me.setState('collectionsHash',projectCollectionsHash);
+					
+					//Select First
+					me.getAction('SelectCategory').setState('selectionRequest',collectionFirst.button);
+					me.startAction("SelectCategory");
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<!-- ImportRequestAssetDb-->
+		<Action>
+			<Id>ImportRequestAssetsDb</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					function findCorrectCollection(componentType)
+					{
+						var collectionsHash = me.getState('collectionsHash');
+						
+						var collectionsFound = [];
+						var itr = collectionsHash.iterator();
+						while (itr.hasNext())
+						{
+							var collection = itr.next();
+							if (collection.getState('componentTypes')[0]==componentType)
+								collectionsFound.push(collection);
+						}
+						
+						if (collectionsFound.length==0)
+						{
+							Display.error("ERROR: No collection likes this import type!");
+							return null;
+						}
+						else
+						{
+							if (collectionsFound.length>1)
+							{
+								Display.error("ERROR: It becomes a bit tricky when more than one collections want this, because we don't know what tags and what componentType to upload this asset with!");
+								return null;
+							}
+							else
+							{
+								return collectionsFound[0];
+							}
+						}
+					}
+				
+					me.stopAction("ImportRequestAssetsDb");
+					
+					//Get Hashes
+					var collectionsHash = me.getState('collectionsHash');
+					//var importTypesHash = me.getState('importTypesHash');
+					
+					//Distribute
+					var assets = it.getState('assets');
+					
+					//Display.error("ImportRequestAssetDbImportRequestAssetDb: length: " + assets.length);
+					
+					var objectAssets = [];
+					var levelAssets = []; //?
+					var imageAssets = [];
+					var soundAssets = [];
+					
+					var itr = assets.iterator();
+					while (itr.hasNext())
+					{
+						var asset = itr.next();
+						
+						if (asset.componentType=="Image")
+							imageAssets.push(asset);
+						else if (asset.componentType=="Sound")
+							soundAssets.push(asset);
+						else if (asset.componentType=="Object Class")
+							objectAssets.push(asset);
+						else if (asset.componentType=="Scene" || asset.componentType=="Project" || asset.componentType=="Camera" || asset.componentType=="View")
+							levelAssets.push(asset);
+					}
+					
+					//Not too proud of this either
+					var collection = findCorrectCollection("Image");
+					if (collection!=null)
+					{
+						//Send assets to the collection
+						collection.getAction('AddAssetsDB').setState('assets',imageAssets);
+						collection.startAction('AddAssetsDB');
+					}
+					
+					var collection = findCorrectCollection("Sound");
+					if (collection!=null)
+					{
+						//Send assets to the collection
+						collection.getAction('AddAssetsDB').setState('assets',soundAssets);
+						collection.startAction('AddAssetsDB');
+					}
+					
+					var collection = findCorrectCollection("Object Class");
+					if (collection!=null)
+					{
+						//Send assets to the collection
+						collection.getAction('AddAssetsDB').setState('assets',objectAssets);
+						collection.startAction('AddAssetsDB');
+					}
+					
+					var collection = findCorrectCollection("Scene");
+					if (collection!=null)
+					{
+						//Send assets to the collection
+						collection.getAction('AddAssetsDB').setState('assets',levelAssets);
+						collection.startAction('AddAssetsDB');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		
+		<!-- SelectCategory -->
+		<Action>
+			<Id>SelectCategory</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var oldSelected = me.getState('selectedCategoryObject');
+					var newSelected = me.getAction('SelectCategory').getState('selectionRequest');
+					var collectionsHash = me.getState('collectionsHash');
+					
+					if (oldSelected!=newSelected)
+					{
+						if (oldSelected!=null)
+						{
+							oldSelected.startAction("Unselected");
+							collectionsHash.get(oldSelected).setState('display','none');
+						}
+						
+						if (newSelected!=null)
+						{
+							newSelected.startAction("Selected");
+							collectionsHash.get(newSelected).setState('display','inline');
+						}
+							
+						me.setState('selectedCategoryObject', newSelected);
+					}
+					
+					me.stopAction("SelectCategory");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>selectionRequest</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Categories -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="name"><Value>Editor Project Collections Buttons Container</Value></_State>
+						<_State id="gap"><Value>0</Value></_State><!--3-->
+						<_State id="width"><Value>85</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>
+						<_State id="layout"><Value>Vertical</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Sub-Categories -->
+				<Entity extends="std.display.Div"> <!-- Group-->
+					<_States>
+						<_State id="name"><Value>Editor Project Collections Panels Container</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="overflow"><Value>hidden</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+					
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

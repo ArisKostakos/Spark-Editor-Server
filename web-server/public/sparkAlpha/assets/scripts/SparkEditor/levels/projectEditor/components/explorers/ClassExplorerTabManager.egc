@@ -1,0 +1,55 @@
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.TabManager">
+	<_States>
+		<_State id="headerTheme"><Value>main</Value></_State>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="headersBelow"><Value>true</Value></_State>
+		<_State id="containerColor"><Value>red</Value></_State>
+		<_State id="backgroundColor"><Value>green</Value></_State>
+		<State><Id>parentClassExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<Form><Space><Entities>
+
+	</Entities></Space></Form>
+
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<Action>
+			<Id>Construct States Explorers</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					Display.de("CONSTRUCTING STATES EXPLORERS TABS");
+					
+					//Get The Editor
+					var l_classEditor = me.s('parentClassExplorer').s('parentEditor');
+					
+					Display.de("11 So we are creating class editor tabs for class: " + l_classEditor.s('target_DBA').name);
+					
+					//Add Main Tab
+					me.fa('Add Tab',{name:l_classEditor.s('target_DBA').name, title:'This', type:"statesExplorer", parameters: { editor:l_classEditor } });
+					
+					
+					Display.de("22 So we are creating class editor tabs for class: " + l_classEditor.s('target_DBA').name);
+					console.log('l_classEditor', l_classEditor);
+					//console.log('behavior editors',l_classEditor.s('behaviorEditors'));
+					//Get Behavior Editors Used by this Class Editor
+					var iterator = l_classEditor.s('behaviorEditors').iterator();
+					//console.log('iterator', iterator);
+					while (iterator.hasNext())
+					{
+						var f_behaviorEditor = iterator.next();
+						Display.de("So I  found behavior: " + f_behaviorEditor.s('target_DBA').name);
+						//Add Behavior's Tab
+						me.fa('Add Tab',{name:f_behaviorEditor.s('target_DBA').name, title:f_behaviorEditor.s('target_DBA').title, type:"statesExplorer", premadeTab:f_behaviorEditor.s('statesExplorerTab') });
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>
