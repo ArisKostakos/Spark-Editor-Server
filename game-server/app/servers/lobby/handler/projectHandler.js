@@ -503,7 +503,7 @@ handler.saveProject = function(msg, session, next) {
     proccessCommands(self, msg, session, saveCommands, 0, function(err) {
         //Handle Error
         if (err) {
-            next(null, {code: "error"});
+            next(null, {code: "error", error: err});
             return console.error(err);
         }
 
