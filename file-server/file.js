@@ -15,9 +15,9 @@ server.on('connection', function(client){
     console.warn("Somebody connected, yeahhh");
 
     client.on('stream', function(stream, meta){
-        console.warn("FILE SEND REQUEST RECEIVED: Name ["+ meta.name + "] and size [" + meta.size + "] for user [" + meta.user + "]");
+        console.warn("FILE SEND REQUEST RECEIVED: Name ["+ meta.name + "] and size [" + meta.size + "] for user [" + meta.user + meta.dir + "]");
 
-        var userIncomingPath = path.resolve("../web-server/public") + '/assets/' + meta.user + '/incoming';
+        var userIncomingPath = path.resolve("../web-server/public") + '/assets/' + meta.user + '/incoming/'+meta.dir;
 
         fs.ensureDirSync(userIncomingPath);
 
