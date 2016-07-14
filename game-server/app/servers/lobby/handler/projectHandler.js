@@ -654,7 +654,7 @@ function copyUploadedAsset (asset, session, cb)
             var fullName = asset.fileName + '.' + asset.fileExtension;
 
             //Asset Source Path
-            var assetSource = userPath + '/incoming/' + fullName;
+            var assetSource = userPath + '/incoming/' + asset.dir + '/' + fullName;
 
             //Asset User Path (actually, the asset OWNER path.. could be a team.)
             var assetUserPath = assetPath + '/' + assetOwnerName;
