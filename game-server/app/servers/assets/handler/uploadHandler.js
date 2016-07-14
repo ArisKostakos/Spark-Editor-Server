@@ -356,7 +356,7 @@ function createAsset(dependancies, msg, session, cb)
     var assetName = nameDir + '.' + rawName;
 
     //Asset Source Path
-    var assetSource = userPath + '/incoming/' + fileName;
+    var assetSource = userPath + '/incoming/' + finalDir + '/' + fileName;
 
     //Asset Target Path
     fs.ensureDirSync(userPath + '/' + type + '/' + finalDir);
