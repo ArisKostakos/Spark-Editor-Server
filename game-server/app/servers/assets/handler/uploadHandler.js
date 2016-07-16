@@ -201,8 +201,13 @@ handler.uploadAsset = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
 
+    var l_dependancies;
+    if (msg.dependancies!=null)
+        l_dependancies=msg.dependancies;
+    else
+        l_dependancies=[];
 
-    createAsset([], msg, session, function (err, data) {
+    createAsset(l_dependancies, msg, session, function (err, data) {
         if (err) {
             next(null, data);
             return console.error(err);
