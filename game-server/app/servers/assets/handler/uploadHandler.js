@@ -20,6 +20,7 @@ handler.rawUpload = function(msg, session, next) {
 
     //user
     var user = session.get('user');
+    var project = session.get('project');
 
     //fileName
     var fileName = msg.fileName;
