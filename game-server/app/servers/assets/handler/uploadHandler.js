@@ -31,8 +31,17 @@ handler.rawUpload = function(msg, session, next) {
     var userPath = assetPath + '/' + user.name;
 
     //Asset Source Path
-    fs.ensureDirSync(userPath + '/incoming');
-    var assetSource = userPath + '/incoming/' + fileName;
+    var dir = msg.dir;
+    //get finalDir
+    if (dir.length==0)
+        var finalDir = project.name;
+    else
+        var finalDir = project.name + '/' + dir.replace(/[/\\]/g, '/');
+
+
+    //Asset Source Path
+    fs.ensureDirSync(userPath + '/incoming/' + finalDir);
+    var assetSource = userPath + '/incoming/' + finalDir + '/' + fileName;
 
     //Read File
     fs.readFile(assetSource, 'utf8', function (err, data) {
