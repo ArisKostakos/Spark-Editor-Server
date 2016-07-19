@@ -463,6 +463,55 @@ handler.getProjectLibraryCollections = function(msg, session, next) {
     );
 };
 
+
+//Get all modules referenced in this project
+handler.getProjectModules = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    database.findOneAndPopulate(database.Project, {_id: project._id}, "modules", //no owner stuff.. good..
+        function (err, project_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", modules: project_found.modules});
+        }
+    );
+};
+
+//populateModule
+handler.populateModule = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    database.findOneAndPopulate(database.Module, {_id: msg.moduleId}, "assets", //no owner stuff.. good..
+        function (err, module_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", module: module_found});
+        }
+    );
+};
+
 //Get all modules referenced in this project
 handler.getProjectModulesPopulated = function(msg, session, next) {
     var self = this;
