@@ -47,6 +47,11 @@
 			<Value>0</Value>
 		</State>
 		<State><!--export-->
+			<Id>applyImpulseAngle</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State><!--export-->
 			<Id>velocityX</Id>
 			<Type>Decimal</Type>
 			<Value>0</Value>

@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<State><Id>target_asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ac_asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>par1</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>par2</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>par3</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>par4</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>imageObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>textObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>parentEvent</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>xmlExport</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>wizardInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
+	
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Code Image -->
+				<Entity extends="std.display.Image"><_States>
+					<_State id="width"><Value>20</Value></_State>
+					<_State id="height"><Value>20</Value></_State>
+				</_States>
+				<_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState("imageObj",me);
+				</Script></_Scripts></_Action></_Actions>
+				</Entity>
+				
+				<!-- Some Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>17</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>left</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						parent.setState("textObj",me);
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					//Display.error("CLICKED CONDITION-> X: " + me.getState('feedbackX') + ", Y: " + me.getState('feedbackY') + ", WIDTH: " + me.getState('feedbackWidth') + ", HEIGHT: " + me.getState('feedbackHeight'));
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>MouseRightClick</Event>
+			<Scripts>
+				<Script>
+					function createContextNode(nodeName,nodeType,parentNode)
+					{
+						var node = {};
+						node.name=nodeName;
+						node.children = [];
+						node.type=nodeType;
+						parentNode.children.push(node);
+						
+						return node;
+					}
+					
+					var mainList = {};
+					mainList.children = [];
+					
+					var eventNode = createContextNode("Event","Event",mainList);
+					createContextNode("Clone Event","CloneEvent",eventNode);
+					var createNewNode = createContextNode("Create new " + me.getState('name'),"Create",mainList);
+					createContextNode("Insert Above","InsertAbove",createNewNode);
+					createContextNode("Insert Below","InsertBelow",createNewNode);
+					createContextNode("Replace with new","Replace",mainList);
+					createContextNode("Change Target","changeTarget",mainList);
+					createContextNode("Change " + me.getState('name'),"changeAC",mainList);
+					createContextNode("Edit Parameters","changeParameters",mainList);
+					createContextNode("Clone " + me.getState('name'),"Clone",mainList);
+					createContextNode("Delete","Delete",mainList);
+					
+					var mousePosX = Input.pointer.currentX;
+					var mousePosY = Input.pointer.currentY;
+					
+					
+					//Open Popup [CHOOSE AC]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUpNoArrow");
+					popUpAction.setState('popupPosX',mousePosX);
+					popUpAction.setState('popupPosY',mousePosY);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Ac Object Context Menu');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<!-- Callback: Ac Object Context Menu -->
+		<Action>
+			<Id>Callback: Ac Object Context Menu</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						if (cb_Arg1.type=="CloneEvent")
+						{
+							var parentEvent = me.getState("parentEvent");
+							
+							var parentEventSheet = parentEvent.getState("parentEventSheet");
+							parentEventSheet.addToState('EventsCount',1);
+							
+							var clonedEvent = parentEvent.clone();
+							clonedEvent.setState('EventId',parentEventSheet.getState('EventsCount'));
+							
+							parentEvent.parentEntity.addChild(clonedEvent);
+							
+							Display.invalidateLayout();
+						}
+						else if (cb_Arg1.type=="InsertAbove")
+						{
+							Display.error("Insert Above!");
+							var parentEvent = me.getState("parentEvent");
+							parentEvent.getAction("Create New " + me.getState('name')).setState('index',me.get_zIndex());
+							parentEvent.startAction("Create New " + me.getState('name'));
+						}
+						else if (cb_Arg1.type=="InsertBelow")
+						{
+							Display.error("Insert Below!");
+							var parentEvent = me.getState("parentEvent");
+							parentEvent.getAction("Create New " + me.getState('name')).setState('index',me.get_zIndex()+1);
+							parentEvent.startAction("Create New " + me.getState('name'));
+						}
+						else if (cb_Arg1.type=="Replace")
+						{
+							me.setState('wizardInProgress',true);
+							me.getState("imageObj").setState('src',"codeIcon");
+							me.getState("textObj").setState('text',"");
+							me.startAction('ChooseTarget');
+						}
+						else if (cb_Arg1.type=="changeTarget")
+						{
+							me.setState('wizardInProgress',false);
+							me.startAction('ChooseTarget');
+						}
+						else if (cb_Arg1.type=="changeAC")
+						{
+							me.setState('wizardInProgress',true);
+							me.getState("textObj").setState('text',"");
+							me.startAction('ChooseAC');
+						}
+						else if (cb_Arg1.type=="changeParameters")
+						{
+							me.setState('wizardInProgress',true);
+							me.startAction('ChooseParameters');
+						}
+						else if (cb_Arg1.type=="Clone")
+						{
+							parent.addChild(me.clone());
+							Display.invalidateLayout();
+						}
+						else if (cb_Arg1.type=="Delete")
+						{
+							parent.removeChild(me);
+							
+							me.getState('parentEvent').startAction('AC removed');
+						}
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>StartWizard</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('StartWizard');
+					
+					me.setState('wizardInProgress',true);
+					//me.forceAction('ChooseTarget');
+					me.startAction('ChooseTarget');
+				</Script>
+			</Scripts>
+		</Action>
+		<Action>
+			<Id>ChooseTarget</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					
+					var globalPos = Logic.queryGameEntity(me, "globalPosition");
+					
+					//Ok about this... WTF, if i don't put this measure in, it works on New Event calling create Condition
+					//but not from a Create New Condition button (so, bug when adds a second/third condition to an event)
+					//it is VERY weird... very.....weird..
+					if (globalPos==null) //is this still a thing?
+					{
+						Display.error("is nuuuullll oii");
+						return;
+					}
+					
+					me.stopAction("ChooseTarget"); //if it's forced, then..? remove this?
+					
+					Display.error("WTF NOW....: " + globalPos);
+					//Get Assets we Want to display
+					var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+					var arrayOfAssets = [];
+					
+					var iterator = ClassObjectsDBbyNameHash.iterator();
+					while (iterator.hasNext())
+					{
+						var asset = iterator.next();
+						arrayOfAssets.push(asset);
+					}
+					
+					//Open Popup [CHOOSE TARGET]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.ChooseTargetPopUp");
+					popUpAction.setState('popupPosX',globalPos.x+13);
+					popUpAction.setState('popupPosY',globalPos.y+30);
+					popUpAction.setState('argA',arrayOfAssets);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Select New Target');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Callback: Select AC</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						me.getAction('Set New AC').setState('asset',cb_Arg1.asset);
+						me.startAction('Set New AC');
+					}
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+						//cancel wizard flag here
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Callback: Select New Target</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						me.getAction('Set New Target').setState('asset',cb_Arg1);
+						me.startAction('Set New Target');
+					}
+					else
+					{
+						//cancel wizard flag here
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Callback: Select Parameters</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						me.getAction('Set New Parameters').setState('parameters',cb_Arg1);
+						me.startAction('Set New Parameters');
+					}
+					else
+					{
+						//cancel wizard flag here
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Set New Parameters</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Set New Parameters');
+					var parameters = it.getState('parameters');
+					
+					var acAsset = me.getState('ac_asset');
+					
+					var strAC = acAsset.tags[3];
+					
+					var i=0;
+					while (parameters.length>i)
+					{
+						strAC = Logic.replace(strAC,'%' + Std.string(i+1),'g',parameters[i].object);
+						me.setState('par' + Std.string(i+1),parameters[i]);
+						i+=1;
+					}
+					
+					me.getState("textObj").setState('text',strAC);
+					
+					
+					//wizard flag should go off
+					
+					if (me.getState('name')=="Condition")
+						if (me.getState('parentEvent').getState('eventWzardInProgress'))
+						{
+							me.getState('parentEvent').startAction('Create New Action');
+							me.getState('parentEvent').setState('eventWzardInProgress',false);
+						}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>parameters</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Set New Target</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('Set New Target');
+					var asset = it.getState('asset');
+					
+					//Store
+					me.setState('target_asset',asset);
+					
+					//Get
+					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
+					
+					//Figure out Thumbnail
+					var thumbUrl="NotFound";
+					
+					if (asset.componentType=="Image")
+					{
+						thumbUrl = '/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+					}
+					else if (asset.componentType=="Class")
+					{
+						thumbUrl = "thumb_" + asset.tags[1];
+					}
+					else if (asset.componentType=="Object Class")//but then, for the rest Object Classes (classes that have an asset thumb reference, do this)
+					{
+						if (asset.tags[1]=="Text") //|| Sound, || ...
+						{
+							thumbUrl = "thumb_" + asset.tags[1];
+						}
+						else
+						{
+							var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+							thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+						}
+					}
+					else //Sound,Project,Scene,Camera,...
+					{
+						thumbUrl = "thumb_" + asset.componentType;
+					}
+					
+					
+					me.getState("imageObj").setState('src',thumbUrl);
+					
+					if (me.getState('wizardInProgress'))
+						me.startAction('ChooseAC');
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+
+		<Action>
+			<Id>Set New AC</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					/*
+					function createParObject(parType)
+					{
+						var obj = {};
+						if (parType=="Kb")
+						{
+							obj.type="Keyboard";
+						}
+						return obj;
+					}
+					*/
+					
+					me.stopAction('Set New AC');
+					/*
+					//Reset Pars
+					for (i in 1...4)
+						me.setState('condition_par' + Std.string(i),null);
+					*/
+					var asset = it.getState('asset');
+					
+					//Store
+					me.setState('ac_asset',asset);
+					
+					//Decode Parameters
+					/*
+					var displayString = asset.tags[3];
+					
+					var parsStr = displayString.split('%');
+					
+					var i=1;
+					while (parsStr.length>i)
+					{
+						var parStr = parsStr[i].substr(0,2);
+						me.setState('condition_par' + Std.string(i), createParObject(parStr));
+						i+=1;
+					}
+					*/
+					
+					/*
+					//Get
+					var username = Logic.getEntityByName('Spark Editor').getState('username'); //assume we own this asset.. later, deep search the assets we get from the includes
+					var ModuleAssetsDBbyAssetIdHash = Logic.getEntityByName('Project Editor').getState("ModuleAssetsDBbyAssetIdHash");
+					
+					//Change Thumbnail
+					var thumbUrl="NotFound";
+					if (asset.tags.length>1)
+					{
+						var thumbnailAsset = ModuleAssetsDBbyAssetIdHash.get(asset.tags[1]);
+						thumbUrl = '/assets/' + username + '/thumbnail/' + thumbnailAsset.dir + '/' + thumbnailAsset.fileName + '.' + thumbnailAsset.fileExtension;
+					}
+					*/
+					me.getState("textObj").setState('text',asset.title);
+					
+					
+					
+					
+					
+					//If at least 1 parameter needs to be set, run parameter editor,
+					//if (me.getState('condition_par1')!=null)
+					if (asset.tags.length>4)
+					{
+						if (me.getState('wizardInProgress'))
+							me.startAction('ChooseParameters');
+					}
+					//Otherwise, keep going
+					else
+					{
+						//wizard flag should go off
+						if (me.getState('name')=="Condition")
+							if (me.getState('parentEvent').getState('eventWzardInProgress'))
+							{
+								me.getState('parentEvent').startAction('Create New Action');
+								me.getState('parentEvent').setState('eventWzardInProgress',false);
+							}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>ChooseAC</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					function getListChild(node,childName)
+					{
+						for (child of node.children)
+						{
+							if (child.name==childName)
+								return child;
+						}
+						
+						return null;
+					}
+					
+					
+					me.stopAction('ChooseAC');
+					
+					var target_asset = me.getState('target_asset');
+					
+					var acHash;
+					if (me.getState('name')=="Condition")
+						acHash = Logic.getEntityByName('Project Editor').getState('ConditionAssetsDBbyTargets');
+					else
+						acHash = Logic.getEntityByName('Project Editor').getState('ActionAssetsDBbyTargets');
+					
+					
+					//Check hash to pick up it's classes
+					var InheritanceHashByName = Logic.getEntityByName('Project Editor').getState("InheritanceHashByName");
+					var inheritanceMap = InheritanceHashByName.get(target_asset.name);
+					
+					var typesFound = [];
+					
+					var keys = inheritanceMap.keys();
+					while (keys.hasNext())
+					{
+						var classType = keys.next();
+						Display.error("FOUND TYPE!!!!: " + classType);
+						typesFound.push(classType);
+					}
+					
+					
+					//Support Only 1 level of grouping for now. and all ACE MUST have exactly 1 group (no zero groups either)
+					var mainList = {};
+					mainList.children = [];
+					
+					for (type of typesFound)
+					{
+						if (acHash.exists(type))
+						{
+							for (asset of acHash.get(type))
+							{
+								Display.error("FOUND AC: " + asset.name);
+								var group = getListChild(mainList,asset.tags[1]);
+								
+								//If null, create it
+								if (group==null)
+								{
+									group = {};
+									group.name=asset.tags[1];
+									group.children = [];
+									mainList.children.push(group);
+								}
+								
+								//Create listObject and add it to group
+								var childAsset = {};
+								childAsset.name=asset.title;
+								childAsset.asset=asset;
+								childAsset.children = [];
+								
+								group.children.push(childAsset);
+							}
+						}
+					}
+					
+					
+					var globalPos = Logic.queryGameEntity(me, "globalPosition");
+					
+					//Open Popup [CHOOSE AC]
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.EventSheetContextMenuPopUp");
+					popUpAction.setState('popupPosX',globalPos.x+33);
+					popUpAction.setState('popupPosY',globalPos.y+30);
+					popUpAction.setState('argA',mainList);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Select AC');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>CreateParams</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					function createParObject(parType, currentPar)
+					{
+						var obj = {};
+						var objSplit = parType.split(":");
+						obj.name=objSplit[1];
+						
+						if (objSplit[0]=="%Kb")
+							obj.type="Keyboard";
+						else if (objSplit[0]=="%Cn")
+							obj.type="Object";
+						else if (objSplit[0]=="%Ei")
+						{
+							obj.type="Expression";
+							obj.expType="Integer";
+						}
+						else if (objSplit[0]=="%Ed")
+						{
+							obj.type="Expression";
+							obj.expType="Decimal";
+						}
+						else if (objSplit[0]=="%Eb")
+						{
+							obj.type="Expression";
+							obj.expType="Boolean";
+						}
+						else if (objSplit[0]=="%Et")
+						{
+							obj.type="Expression";
+							obj.expType="Text";
+						}
+						
+						//Get Current Value (If any)
+						if (currentPar!=null)
+							obj.object=currentPar.object;
+							
+						return obj;
+					}
+					
+					var asset = me.getState('ac_asset');
+					var params = [];
+					
+					var i=4;
+					while (asset.tags.length>i)
+					{
+						params.push(createParObject(asset.tags[i],me.getState('par' + Std.string(i-3))));
+						i +=1;
+					}
+					
+					it.setState('returnParams',params);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>returnParams</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		
+		<Action>
+			<Id>ChooseParameters</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('ChooseParameters');
+					
+					me.forceAction('CreateParams');
+					var params = me.getAction('CreateParams').getState('returnParams');
+					
+					var globalPos = Logic.queryGameEntity(me, "globalPosition");
+					
+					//Open Popup
+					var popUpManager = Logic.getEntityByName('PopUp Manager');
+					var popUpAction = popUpManager.getAction('Open PopUp');
+					popUpAction.setState('popupName',"SparkEditor.entities.popups.items.ChooseParametersPopUp");
+					popUpAction.setState('popupPosX',globalPos.x+53);
+					popUpAction.setState('popupPosY',globalPos.y+30);
+					popUpAction.setState('argA',params);
+					popUpAction.setState('cb_caller',me);
+					popUpAction.setState('cb_actionName','Callback: Select Parameters');
+					popUpManager.forceAction('Open PopUp');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Create New Instance -->
+		<Action>
+			<Id>Create New Instance</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction("Create New Instance");
+
+					me.startAction('StartWizard');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<!-- Export Xml -->
+		<Action>
+			<Id>Export Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced			
+					
+					//Create AC
+					var exportXml = Logic.xml_createElementAttr('Entity','extends', me.getState('ac_asset').name );
+					
+					//Add Target
+					Logic.xml_entity_addMState(exportXml, {id:"target", value: me.getState('target_asset').title },true);
+					
+					//Add Parameters
+					var i=1;
+					while (4>=i)
+					{
+						var par = me.getState('par' + Std.string(i));
+						if (par!=null)
+						{
+							//Add Parameter
+							Logic.xml_entity_addMState(exportXml, {id:"par" + Std.string(i), value: par.object },true);
+						}
+						i+=1;
+					}
+					
+					
+					//Store
+					me.setState('xmlExport',exportXml);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<!-- Update -->
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced			
+					var renameObjectClass = it.getState('renameObjectClass');
+					
+					if (renameObjectClass!=null)
+					{
+						var changeDetected=false;
+						
+						//Create Parameter objects again (maybe not so performance wise...)
+						me.forceAction('CreateParams');
+						var params = me.getAction('CreateParams').getState('returnParams');
+						
+						
+						//Update Parameters
+						for (param of params)
+						{
+							//Update, depending on parameter type
+							if (param.type=="Object")
+							{
+								//Update Object
+								if (renameObjectClass.oldName==param.object)
+								{
+									//Update Value
+									param.object=renameObjectClass.newName;
+									changeDetected=true;
+								}
+							}
+							else if (param.type=="Expression")
+							{
+								//Update Expression
+								if (param.object.indexOf(renameObjectClass.oldName)!=-1)
+								{
+									//Update Value
+									//Change this mess with a nice RegEx
+									param.object=StringTools.replace(param.object,"e('"+renameObjectClass.oldName+"')","e('"+renameObjectClass.newName+"')");
+									param.object=StringTools.replace(param.object,'e("'+renameObjectClass.oldName+'")','e("'+renameObjectClass.newName+'")');
+									changeDetected=true;
+								}
+							}
+						}
+						
+						
+						//If change happened, update Text (for now it's text..)
+						if (changeDetected)
+						{
+							me.getAction('Set New Parameters').setState('parameters',params);
+							me.forceAction('Set New Parameters');
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>renameObjectClass</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Query -->
+		<Action>
+			<Id>Query</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced			
+					var nameExists = it.getState('nameExists');
+					
+					if (nameExists!=null)
+					{
+						//Check Target Asset
+						if (me.s('target_asset').title==nameExists.query)
+							nameExists.feedback+=1;
+						
+						//Create Parameter objects again (maybe not so performance wise...)
+						me.forceAction('CreateParams');
+						var params = me.getAction('CreateParams').getState('returnParams');
+						
+						
+						//Check Parameters
+						for (param of params)
+						{
+							//Check, depending on parameter type
+							if (param.type=="Object")
+							{
+								//Check Object
+								if (nameExists.query==param.object)
+								{
+									nameExists.feedback+=1;
+								}
+							}
+							else if (param.type=="Expression")
+							{
+								//Check Expression
+								if (param.object.indexOf(nameExists.query)!=-1)
+								{
+									nameExists.feedback+=1;
+								}
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>nameExists</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		
+		<!-- Import Xml -->
+		<Action>
+			<Id>Import Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.getState('imageObj')!=null)
+					{
+						me.stopAction('Import Xml');
+						
+						var importXml = it.getState('importXml');
+						
+						var ClassObjectsDBbyTitleHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyTitleHash");
+						
+						var states = Logic.xml_getAllMStates(importXml, true);
+						
+						var acTargetAsset = ClassObjectsDBbyTitleHash.get(states.get('target').value);
+						
+						//Set AC Target
+						me.getAction('Set New Target').setState('asset',acTargetAsset);
+						me.forceAction('Set New Target');
+						
+						//Set Ac
+						me.getAction('Set New AC').setState('asset',me.getState('ac_asset'));
+						me.forceAction('Set New AC');
+						
+						//Set Parameters
+						me.forceAction('CreateParams');
+						var params = me.getAction('CreateParams').getState('returnParams');
+						
+						var i=1;
+						while (4>=i)
+						{
+							if (states.exists('par' + Std.string(i)))
+							{
+								var param = params[i-1];
+								param.object = states.get('par' + Std.string(i)).value;
+							}
+							i +=1;
+						}
+						
+						me.getAction('Set New Parameters').setState('parameters',params);
+						me.forceAction('Set New Parameters');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

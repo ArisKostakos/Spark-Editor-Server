@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="borderWidth"><Value>1px</Value></_State>
+		<_State id="borderColor"><Value>rgb(41, 57, 75)</Value></_State>
+		<_State id="borderStyle"><Value>solid</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

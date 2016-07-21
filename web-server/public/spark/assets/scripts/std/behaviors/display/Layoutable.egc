@@ -42,6 +42,30 @@
 			<Type>Text</Type>
 			<Value>Implicit</Value>
 		</State>
+	
+		<State>
+			<Id>minWidth</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>minHeight</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>maxWidth</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
+		
+		<State>
+			<Id>maxHeight</Id>
+			<Type>Text</Type>
+			<Value>Implicit</Value>
+		</State>
 		
 		<State>
 			<Id>left</Id>

@@ -3,4 +3,8 @@
 	<Extends>
 		<Entity extends="std.behaviors.display.Layoutable"/>
 	</Extends>
+	
+	<_States>
+		<State><Id>pointerEvents</Id><Type>Text</Type><Value>auto</Value></State>
+	</_States>
 </Entity>

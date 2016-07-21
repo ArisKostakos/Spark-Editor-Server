@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State>
+			<Id>target_DBA</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>target_File</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>target_XML</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>target_GameObject</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>target_AssetName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>needsToExport</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>exportThis</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>parentEditor</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	
+		<State>
+			<Id>parentTab</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+		
+	<_Actions>
+		<Action>
+			<Id>Import From AssetName</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//MAYBE LATER even use it for ProjectEditor as well..
+					
+					//Works for Script File Assets only
+					
+					//Asset Name
+					me.set('target_AssetName',it.s('importAssetName'));
+					
+					//File
+					me.set('target_File',Assets.getScript(me.s('target_AssetName')));
+					
+					//XML
+					me.set('target_XML',Logic.xml_parseScript(me.s('target_File')));
+					
+					//DBA (async)
+					e('Project Editor').s('Assets_DB').findOne({name:me.s('target_AssetName')}, function (err, doc) {
+						me.set('target_DBA',doc);
+					});
+					
+					//Game Object
+					if (it.s('createObject'))
+						me.set('target_GameObject',Logic.create(me.s('target_AssetName')));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importAssetName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>createObject</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Import From DBA</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//MAYBE LATER even use it for ProjectEditor as well..
+					
+					//Works for Script File Assets only
+					
+					//Asset Name
+					me.set('target_AssetName',it.s('importDBA').name);
+					
+					//File
+					me.set('target_File',Assets.getScript(me.s('target_AssetName')));
+					
+					//XML
+					me.set('target_XML',Logic.xml_parseScript(me.s('target_File')));
+					
+					//DBA
+					me.set('target_DBA', it.s('importDBA'));
+					
+					//Game Object
+					if (it.s('createObject'))
+						me.set('target_GameObject',Logic.create(me.s('target_AssetName')));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importDBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>createObject</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Import From Xml</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//XML
+					me.set('target_XML',it.s('importXml'));
+					
+					//Game Object
+					if (it.s('createObject'))
+						me.set('target_GameObject',Logic.createFromXml(me.s('target_XML')));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>importXml</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>createObject</Id><Type>Boolean</Type><Value>false</Value></State><!-- warning, this value may not be resetted everytime it's called.. do a global search for this action -->
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Export XML</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Forced
+					
+					//extend me...
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Needs To Export</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Forced
+					
+					me.set('needsToExport', true);
+					
+					if (it.s('exportThis')==true)
+						me.set('exportThis', true);
+					
+					if (me.s('parentEditor')!=null)
+						me.s('parentEditor').fa('Needs To Export', {exportThis:false});
+						
+					if (me.s('parentTab')!=null)
+						me.s('parentTab').fa('Needs To Export');
+						
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>exportThis</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

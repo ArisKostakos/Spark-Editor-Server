@@ -23,5 +23,7 @@
 		<_State id="cursor">
 			<Value>pointer</Value>
 		</_State>
+			
+		<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
 	</_States>
 </Entity>

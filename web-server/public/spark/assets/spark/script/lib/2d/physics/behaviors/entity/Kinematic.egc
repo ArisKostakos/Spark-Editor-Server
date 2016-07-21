@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Entity extends="lib.2d.physics.behaviors.entity.NonStatic">
-	<_States>
-		<_State id="physicsType"><Value>Kinematic</Value></_State>
-	</_States>
-</Entity>

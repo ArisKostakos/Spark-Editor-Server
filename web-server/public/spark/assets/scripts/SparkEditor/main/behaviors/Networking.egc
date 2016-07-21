@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Display.log("Start Connecting to stuff...");
+					me.setState('UniqueId', "Connection" + Std.random(999999));
+					
+					//old: 104.154.55.28
+					//new: 130.211.172.86
+					Comms.connectTo("130.211.172.86","3014", "gateServer", me);
+					Comms.file_connectTo("130.211.172.86", "3001", "fileServer", me);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>GoogleAnalytics</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					ga('send', {
+                          hitType: 'event',
+                          eventCategory: it.getState('category'),
+                          eventAction: it.getState('action'),
+						  eventLabel: it.getState('label')
+                        });
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>category</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>action</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>label</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		<!-- Networking -->
+		<Trigger>
+			<Event>NetworkConnected</Event>
+			<Parameter>gateServer</Parameter>
+			<Scripts>
+				<Script>
+					Comms.request('gate.gateHandler.queryEntry', { uid: me.getState('UniqueId') }, "getConnectorAddress", me);
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>NetworkConnected</Event>
+			<Parameter>connectorServer</Parameter>
+			<Scripts>
+				<Script>
+					Comms.request('connector.entryHandler.enter', { uid: me.getState('UniqueId') }, "greetConnector", me);
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>getConnectorAddress</Parameter>
+			<Scripts>
+				<Script>
+					//Display.error("Request Received Identified: getConnectorAddress");
+					var data = Comms.getRequestData("getConnectorAddress");
+					
+					Comms.disconnect();
+					
+					if (data.code == 2001) 
+					{
+						Display.error("Pomelo: Received error code 2001! Aborting connection.");
+						return;
+					}
+					
+					if (data.host == '127.0.0.1') 
+						data.host = "130.211.172.86";
+
+					Comms.connectTo(data.host, data.port, "connectorServer", me);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>greetConnector</Parameter>
+			<Scripts>
+				<Script>
+					//Display.error("Request Received Identified: greetConnector");
+					var data = Comms.getRequestData("greetConnector");
+					Display.log("Received data from server: " + data.code);
+					
+					me.setState('Connected',true);
+					
+					//Add Listener for onChat
+					Comms.addServerEvent('onChat'); //no me, so it's global (accessible to be triggered from other entities too)
+					
+					//Comms.request('lobby.projectHandler.createIncludeQuery', { includeTags: ['test'], includeQuery: {type: "script"} }, "CreateIncludeQuery");
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<!-- File Transfer -->
+		<Trigger>
+			<Event>FileTransferConnected</Event>
+			<Parameter>fileServer</Parameter>
+			<Scripts>
+				<Script>
+					//Display.error("Received File Server CONNECTED Event...");
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_States>
+		<State>
+			<Id>UniqueId</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>userAsset</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+				
+		<State>
+			<Id>developerAsset</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>username</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>Connected</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+				
+		<State>
+			<Id>adminMode</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+	</_States>
+</Entity>

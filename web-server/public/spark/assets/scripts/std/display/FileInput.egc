@@ -23,6 +23,12 @@
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
+	
+		<State>
+			<Id>multiple</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
 		
 		<_State id="NCmeshType">
 			<Value>Input</Value>

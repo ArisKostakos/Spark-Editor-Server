@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Entity extends="std.display.Camera2D">
-	<_States>
-		<_State id="name">
-			<Value>Dummy Camera</Value>
-		</_State>
-	</_States>
-</Entity>

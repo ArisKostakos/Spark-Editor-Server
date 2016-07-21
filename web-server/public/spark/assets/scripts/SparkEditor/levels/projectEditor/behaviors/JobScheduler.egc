@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State><Id>jobs</Id><Type>Dynamic</Type><Value>[]</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Next</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced..
+					
+					var l_job = me.s('jobs').shift();
+					
+					if (l_job!=null)
+						Logic.interpet(l_job,me,it);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

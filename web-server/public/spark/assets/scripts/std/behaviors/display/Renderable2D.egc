@@ -26,6 +26,12 @@
 		</State>
 		
 		<State>
+			<Id>2DMeshParticleEmitterForm</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
 			<Id>2DMeshFillRectForm</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
@@ -66,5 +72,7 @@
 			<Type>Decimal</Type>
 			<Value>1</Value>
 		</State>
+	
+		<State><Id>animate_opacity</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 </Entity>

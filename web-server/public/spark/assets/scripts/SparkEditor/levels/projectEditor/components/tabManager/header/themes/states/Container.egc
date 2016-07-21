@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.header.ATabHeaderContainer">
+	<_States>
+		<_State id="height"><Value>28</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(38,56,72)</Value></_State>
+		<_State id="headerTheme"><Value>states</Value></_State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Show Header">
+			<_Scripts>
+				<Script>
+					var l_header = me.s('headers').get(it.s('name'));
+					l_header.set('backgroundColor','rgb(45,67,85)');
+					l_header.s('headerLabel').set('fontColor','white');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Hide Header">
+			<_Scripts>
+				<Script>
+					var l_header = me.s('headers').get(it.s('name'));
+					l_header.set('backgroundColor', 'rgb(38,56,72)');
+					l_header.s('headerLabel').set('fontColor','rgb(54,77,99)');
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>
+	

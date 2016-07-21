@@ -9,7 +9,7 @@
 		<State>
 			<Id>text</Id>
 			<Type>Text</Type>
-			<Value>Undefined</Value>
+			<Value><![CDATA[]]></Value>
 		</State>
 		
 		<State>

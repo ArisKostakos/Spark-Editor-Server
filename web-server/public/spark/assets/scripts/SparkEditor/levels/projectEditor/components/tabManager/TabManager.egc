@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<State><Id>headerTheme</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>headerContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>tabContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>containerColor</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<_State id="gap"><Value>0</Value></_State>
+		<State><Id>tabs</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>activeTabName</Id><Type>Text</Type><Value>None</Value></State>
+		<State><Id>needsToExport</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>headersBelow</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<Action>
+			<Id>Initialize</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('tabs', new StringMap());
+					
+					//Set up Header Container
+					var headerContainer = Logic.create('SparkEditor.levels.projectEditor.components.tabManager.header.themes.'+me.s('headerTheme')+'.Container');
+					headerContainer.setState('headerTheme',me.s('headerTheme'));
+					headerContainer.setState('TabManager',me);
+					headerContainer.fa('Initialize');
+					
+					me.setState('headerContainer',headerContainer);
+					
+					//Set Up tabContainer
+					var tabContainer = Logic.create('SparkEditor.levels.projectEditor.components.tabManager.TabContainer');
+					tabContainer.setState('backgroundColor',me.s('containerColor'));
+					tabContainer.setState('TabManager',me);
+					
+					me.setState('tabContainer',tabContainer);
+					
+					if (me.s('headersBelow')==false)
+					{
+						me.addChild(headerContainer);
+						me.addChild(tabContainer);
+					}
+					else
+					{
+						me.addChild(tabContainer);
+						me.addChild(headerContainer);
+					}
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<Id>Add Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (it.s('premadeTab')==null)
+					{
+					
+						//Create it
+						var l_tab = Logic.create('SparkEditor.levels.projectEditor.tabs.'+it.s('type')+'.Tab');
+						
+						//Set it up
+						l_tab.setState('tabName',it.s('name'));
+						l_tab.setState('tabTitle',it.s('title'));
+						l_tab.setState('tabType',it.s('type'));
+						l_tab.setState('TabManager',me);
+						l_tab.setState('parameters',it.s('parameters'));
+					
+						//Call 'Created Event' For the Tab
+						l_tab.fa('Created Event');
+					}
+					else
+					{
+						//Just use this one
+						var l_tab = it.s('premadeTab');
+					}
+					
+					//Add to collection
+					me.s('tabs').set(it.s('name'),l_tab);
+					
+					//Add Header
+					me.s('headerContainer').forceAction("Add Header",{name:it.s('name'), title:it.s('title'), type:it.s('type')});
+					
+					//Reset Premade Tab
+					it.set('premadeTab',null);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>title</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>type</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>parameters</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>premadeTab</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- Removes the Tab Completely from the Tab Manager -->
+			<Id>Remove Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_activeTabName = me.s('activeTabName');
+					var l_tabName = it.s('name');
+					var l_tab = me.s('tabs').get(l_tabName);
+					
+					//Export The Tab, in case we stop caching tabs in editors..(and remember, the LevelEditor does exports that ClassEditors do not do (for the scene, etc.)
+					//ClassEditors only Export behaviors and stuff..)
+					l_tab.fa('Export XML'); //this exports tabs that might not need to export too (e.g. runTab). NOT A BIG DEAL (the run tab's export action just returns), but to fix it, do the fa('export XML') only on the Remove Event of tabs that actually export
+					
+					//Hide Tab
+					if (l_activeTabName==l_tabName)
+						me.fa('Hide Tab', {name:l_tabName} );
+					
+					//Remove Header
+					me.s('headerContainer').fa('Remove Header',{name:l_tabName});
+					
+					//Remove Tab (what is this? i don't need to do anything.. It is already removed from the hide, and I am NOT destroying the tab completely.. I might need it, so it's probably cached elsewhere)
+					//Maybe here I just do a Remove Event, which is handy for Run Tab, so it knows to completely destroy the whole level
+					//Tell the Tab it's going to show
+					l_tab.fa('Remove Event');
+					
+					//Remove it from the collection
+					me.s('tabs').remove(l_tabName);
+					
+					
+					//Find another tab to show (go for the last one added)
+					var l_lastTabAdded = null;
+					
+					var iterator = me.s('tabs').iterator();
+					while (iterator.hasNext())
+					{
+						l_lastTabAdded = iterator.next();
+					}
+					
+					if (l_lastTabAdded!=null)
+					{
+						me.fa('Show Tab', {name:l_lastTabAdded.s('tabName')} );
+					}
+					else
+					{
+						//So.. this is awkard..Nothing to show on our TabManager..
+						Display.warn('So.. this is awkard..Nothing to show on our TabManager..');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>Show Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//mixed
+					it.stop();
+					
+					var activeTabName = me.s('activeTabName');
+					
+					//Check if tab is already active (and ignore if it is)
+					if (activeTabName!=it.s('name'))
+					{
+						//Hide Current Tab (if any)  (and header)
+						if (activeTabName!='None')
+						{
+							//Hide Tab
+							me.fa('Hide Tab', {name:activeTabName} );
+						}
+						
+						//Get Tab
+						var l_tab = me.s('tabs').get(it.s('name'));
+						
+						//Add it to container
+						me.s('tabContainer').addChild(l_tab);
+						
+						//Tell the Tab it's going to show
+						l_tab.fa('Show Event');
+						
+						//Set tab name as active
+						me.setState('activeTabName',it.s('name'));
+						
+						//Show Header (just a simple show here, container doesn't keep track of what header displaying at a time)
+						me.s('headerContainer').fa('Show Header',{name:it.s('name')});
+						
+						//Invalidate
+						Display.invalidateLayout(); //we might need a second frame validation for library panel:(
+					}
+					else
+					{
+						Display.log('Tab already active. Ignoring...');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Hide Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_tabName = it.s('name');
+					
+					//Tell the Header To go to "HideMode"
+					me.s('headerContainer').fa('Hide Header',{name:l_tabName});
+					
+					//Actually remove the Tab
+					me.s('tabContainer').removeChild(me.s('tabs').get(l_tabName));
+					
+					//Tell the Tab it's going to hide
+					me.s('tabs').get(l_tabName).fa('Hide Event');
+					
+					//Set tab name to 'None'
+					me.setState('activeTabName', 'None' );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Export XML</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Forced
+					
+					if (me.s('needsToExport'))
+					{
+						//Children
+						var iterator = me.s('tabs').iterator();
+						while (iterator.hasNext())
+						{
+							var tab = iterator.next();
+							tab.fa('Export XML');
+						}	
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Needs To Export</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Forced
+					
+					me.set('needsToExport', true);
+					
+					//So, over here, I can keep going.. add a parent for the TabManager.. (probably the projectEditor?) and call Needs To Export to it to
+					//This way, when I click save or whatever, i don't need to call all tab managers and tell them exportXML, I can just do ProjectEditor.exportXML()
+					//but whatevs..
+					
+					//if (me.s('TabManager')!=null)
+					//	me.s('TabManager').fa('Needs To Export');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

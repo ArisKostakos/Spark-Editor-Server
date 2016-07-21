@@ -1,0 +1,109 @@
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.TabManager">
+	<_States>
+		<_State id="headerTheme"><Value>states</Value></_State>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="headersBelow"><Value>true</Value></_State>
+		<!--<_State id="containerColor"><Value>red</Value></_State>-->
+		<_State id="backgroundColor"><Value>rgb(45,67,85)</Value></_State>
+		<State><Id>parentClassExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<Form><Space><Entities>
+
+	</Entities></Space></Form>
+
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<Action>
+			<Id>Construct States Explorers</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get The Editor
+					var l_classEditor = me.s('parentClassExplorer').s('parentEditor');
+					
+					//Add Main Tab
+					me.fa('Add Tab',{name:l_classEditor.s('target_DBA').name, title:'This', type:"statesExplorer", parameters: { editor:l_classEditor } });
+					
+					//Get Behavior Editors Used by this Class Editor
+					var iterator = l_classEditor.s('behaviorEditors').iterator();
+					while (iterator.hasNext())
+					{
+						var f_behaviorEditor = iterator.next();
+						
+						//Add Behavior's Tab
+						me.fa('Add Tab',{name:f_behaviorEditor.s('target_DBA').name, title:f_behaviorEditor.s('target_DBA').title, type:"statesExplorer", premadeTab:f_behaviorEditor.s('behaviorExplorer').s('statesExplorerTab') });
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Update Current Explorer Tab</Id> <!-- Show -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var activeTabName = me.s('activeTabName');
+					if (activeTabName!='None')
+					{
+						var l_tab = me.s('tabs').get(activeTabName);
+						
+						//Getting Tab Child back
+						me.s('tabContainer').removeChild(l_tab);
+						me.s('tabContainer').addChild(l_tab);
+						
+						//Letting it know that my editor called it
+						l_tab.set('openedFromEditor', me.s('parentClassExplorer').s('parentEditor'));
+						
+						l_tab.fa('Update States');
+					}
+					else
+					{
+						//Over here, we select the first tab, if nothing is selected
+						var l_classEditor = me.s('parentClassExplorer').s('parentEditor');
+						
+						me.sa('Wait1Frame'); //HHHUUUGE HACK.. fix me plzz (without the Wait1Frame, some header doesn't have time to get created :/)
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Wait1Frame</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					//Get The Editor
+					var l_classEditor = me.s('parentClassExplorer').s('parentEditor');
+					me.sa('Show Tab', {name:l_classEditor.s('target_DBA').name} );
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<_Action id="Show Tab">
+			<_Scripts>
+				<Script>
+					var activeTabName = me.s('activeTabName');
+					if (activeTabName!='None')
+					{
+						var l_tab = me.s('tabs').get(activeTabName);
+						
+						//Letting it know that my editor called it
+						l_tab.set('openedFromEditor', me.s('parentClassExplorer').s('parentEditor'));
+						
+						l_tab.fa('Update States');
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

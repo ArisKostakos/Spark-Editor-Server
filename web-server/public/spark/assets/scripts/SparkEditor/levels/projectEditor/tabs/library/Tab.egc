@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.TabBase">
+	<_States>
+		<_State id="backgroundColor"><Value>rgb(40,56,74)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Library Panel Stuff -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="top"><Value>67</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				
+					<Form><Space><Entities>
+						<!-- Controls -->
+						<Entity extends="std.display.Div">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>61</Value></_State>
+								<_State id="backgroundColor"><Value>rgb(25,37,47)</Value></_State>
+								<_State id="layout"><Value>Horizontal</Value></_State>
+								<_State id="horizontalAlign"><Value>center</Value></_State>
+								<_State id="verticalAlign"><Value>middle</Value></_State>
+							</_States>
+						
+							<Form><Space><Entities>
+								<!-- Create Behavior Icon -->
+								<Entity extends="std.display.Image">
+									<_States>
+										<_State id="width"><Value>50</Value></_State>
+										<_State id="height"><Value>50</Value></_State>
+										<_State id="src"><Value>events_addbutton</Value></_State>
+										<_State id="touchable"><Value>true</Value></_State>
+										<_State id="cursor"><Value>pointer</Value></_State>
+										<State><Id>behaviorName</Id><Type>Text</Type><Value>Undefined</Value></State>
+										<State><Id>behaviorTitle</Id><Type>Text</Type><Value>Undefined</Value></State>
+										<State><Id>behaviorSize</Id><Type>Integer</Type><Value>0</Value></State>
+									</_States>
+									<_Triggers>
+										<Trigger>
+											<Event>MouseLeftClick</Event>
+											<Scripts>
+												<Script><![CDATA[
+
+													//e('Project Editor').fa('Create New Level');
+													
+													//Very temporary.. Creates a new blank behavior.. to use whenever u want..
+													
+													//Prepare File
+													//var l_behaviorFile = Logic.xml_createDocument();
+													
+													//Create Xml
+													var l_blankBehaviorXml = Logic.xml_createElement("Entity");
+													
+													//Create Xml
+													/*
+													var l_blankBehaviorXmlString = '<Entity>
+														<_States>
+															
+														</_States>
+														
+														<_Actions>
+															<_Action id="Constructor">
+																<_Scripts>
+																	<Script>
+																		//Enter code here...
+																	</Script>
+																</_Scripts>
+															</_Action>
+														</_Actions>
+													</Entity>';
+													*/
+													
+													var l_blankBehaviorXmlString = Logic.xmlToString(l_blankBehaviorXml);
+													
+													//var l_random = Logic.random(1,1000);
+													var l_behaviorName = e('Spark Editor: Library Search Input').s('text')+".egc";
+													var l_behaviorTitle = e('Spark Editor: Library Search Input').s('text');
+													
+													
+													//Upload the file from the file service
+													Comms.file_sendFileRequest(l_blankBehaviorXmlString, {name: l_behaviorName, size: l_blankBehaviorXmlString.length, user: e('Project Editor').s('User_DBO').name, dir: e('Project Editor').s('Project_DBO').name+'/mylib/behaviors'} , "onFileUploaded", me);
+													
+													me.set('behaviorName', l_behaviorName);
+													me.set('behaviorTitle', l_behaviorTitle);
+													me.set('behaviorSize', l_blankBehaviorXmlString.length);
+												]]></Script>
+											</Scripts>
+										</Trigger>
+										<Trigger>
+											<Event>FileTransferRequest</Event>
+											<Parameter>onFileUploaded</Parameter>
+											<Scripts>
+												<Script>
+													var data = Comms.file_getSendFileRequestData("onFileUploaded").shift();
+													
+													Display.error("File Transfer Progress: " + data.progress + ", percent: " + data.progressPercent);
+													
+													//me.getState('progressBar').setState('height',data.progressPercent+'%');
+													
+													if (data.progress==1)
+													{
+														
+														//meta
+														var l_meta = {
+															master: true,
+															createdWith: "Raw SML",
+															target: {},
+															createdForProject: e('Project Editor').s('Project_DBO').name,
+															type: "Custom",
+															subType: "2D",
+															thumbnail: {
+																embeddedUrl: "thumbnail_behavior_custom"
+															},
+															tags: []
+														};
+														//ADD META TO REQUEST
+														
+														Comms.request("assets.uploadHandler.uploadAsset", {fileName: me.s('behaviorName'), fileSize: me.s('behaviorSize'), assetTitle: me.s('behaviorTitle'), dir: 'mylib/behaviors', type: 'script', componentType: 'Behavior', meta: l_meta, tags: ""}, "onAssetCreated" , me);
+													}
+												</Script>
+											</Scripts>
+										</Trigger>
+										
+										<Trigger>
+											<Event>NetworkRequest</Event>
+											<Parameter>onAssetCreated</Parameter>
+											<Scripts>
+												<Script>
+													var data = Comms.getRequestData('onAssetCreated');
+													
+													if (data.code=="success")
+													{
+														var asset = data.asset;
+														
+														Display.error("Success creating asset: " + asset.name);
+														
+														//Add to our local DB
+														asset._inModules=[];
+														e('Project Editor').fa('Insert Asset', {asset: asset} );
+														
+														//deeh.. sucks
+														e('Editor Library Collections').s('collectionsHash2').get('Behaviors').sa('AddAssetsDB', {assets:[asset]});
+														return;
+														//for now, just change the icon here
+														var username = Logic.getEntityByName('Spark Editor').getState('username');
+													
+														//Thumbnail
+														var imageObject = me.getState('imageObject');
+														
+														//If Asset is Image
+														if (asset.type=="image")
+														{
+															imageObject.setState('src','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+														}
+														//If Asset is Sound
+														else if (asset.type=="sound")
+														{
+															imageObject.setState('src',"thumb_" + asset.componentType);
+														}
+														
+														//Text //ONLY IF ITEM IS captionType enabled...
+														//var objText = me.getState('obj_text');
+														//objText.setState('opacity','1');
+													
+														//Remove Progress Bar
+														var objProgressBar = me.getState('progressBar');
+														me.removeChild(objProgressBar);
+														//objProgressBar.setState('opacity','0');
+														
+														//Clear Border
+														me.setState('border','0px');
+														
+														//Store asset db object
+														me.setState('asset',asset);
+														
+														//Rename me?
+														me.setState('name',"libraryAsset." + asset.title); //whatever.. never using this anyway.. jsut for fun..
+													}
+													else
+													{
+														Display.error("Error uploading asset. Code: " + data.code);
+														//remove uploading item here (me) or something..
+													}
+												</Script>
+											</Scripts>
+										</Trigger>
+									</_Triggers>
+								</Entity>
+								<!-- Text -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100</Value></_State>
+										<_State id="height"><Value>33</Value></_State>
+										<_State id="fontSize"><Value>16px</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+										<_State id="text"><Value>Create New Behavior</Value></_State>
+										<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- Upload Icon -->
+								<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton"/>
+								<!-- Text -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100</Value></_State>
+										<_State id="height"><Value>33</Value></_State>
+										<_State id="fontSize"><Value>16px</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+										<_State id="text"><Value>Import New Asset</Value></_State>
+										<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+									</_States>
+								</Entity>
+							</Entities></Space></Form>
+						
+							<_Triggers>
+						
+							</_Triggers>
+						
+							<_Actions>
+						
+							</_Actions>
+						</Entity>
+						
+						<!-- Library Collections -->
+						<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorLibraryCollections"/>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Library Panel Search -->
+				<Entity extends="SparkEditor.levels.projectEditor.tabs.library.LibrarySearch"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

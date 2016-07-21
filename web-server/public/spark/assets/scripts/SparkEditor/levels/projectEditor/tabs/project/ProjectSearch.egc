@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>67</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(56, 192, 182)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Search -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>85%</Value></_State>
+						<_State id="height"><Value>32</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+					
+					<Form><Space><Entities>
+						<!-- Search Input -->
+						<Entity extends="std.display.Input">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>30</Value></_State>
+								<_State id="backgroundColor"><Value>white</Value></_State>
+								<_State id="border"><Value>0px</Value></_State>
+								<_State id="placeholder"><Value>Search for item</Value></_State>
+								<_State id="fontSize"><Value>18px</Value></_State>
+								<_State id="fontColor"><Value>black</Value></_State>
+								<_State id="textIndent"><Value>12px</Value></_State>
+								<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+								<_State id="borderRadius"><Value>9px 0px 0px 9px</Value></_State>
+							</_States>
+							<_Actions><_Action id="Constructor"><_Scripts><Script>
+								//e('Spark Editor:Login Panel').setState('passwordInput',me);
+							</Script></_Scripts></_Action></_Actions>
+							<_Triggers><Trigger><Event>KeyPressedLocal</Event><Scripts>
+								<Script>
+									var eventObjectKeyPress = me.getState('eventObjectKeyPress');
+									
+									//Enter
+									if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
+									{
+										//Pressed Enter
+									}
+								</Script></Scripts></Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!--Search Icon -->
+						<Entity extends="std.display.Div">
+							<_States>
+								<_State id="borderRadius"><Value>0px 9px 9px 0px</Value></_State>
+								<_State id="width"><Value>42</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="backgroundColor"><Value>white</Value></_State>
+								<_State id="opacity"><Value>0.5</Value></_State>
+							</_States>
+							<Form><Space><Entities>
+								<Entity extends="std.display.Image">
+									<_States>
+										<_State id="width"><Value>21</Value></_State>
+										<_State id="height"><Value>21</Value></_State>
+										<_State id="horizontalCenter"><Value>-1</Value></_State>
+										<_State id="verticalCenter"><Value>0</Value></_State>
+										<_State id="src"><Value>leftTab_searchIcon</Value></_State>
+									</_States>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Arrow -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="bottom"><Value>0</Value></_State>
+						<_State id="left"><Value>25</Value></_State>
+						<_State id="width"><Value>0</Value></_State>
+						<_State id="height"><Value>0</Value></_State>
+						<_State id="borderStyle"><Value>solid</Value></_State>
+						<_State id="borderWidth"><Value>14px 14px 0 14px</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState("borderColor",parent.getState('backgroundColor') + "transparent transparent transparent");
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

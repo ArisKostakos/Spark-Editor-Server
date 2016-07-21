@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(25,37,47)</Value></_State>
+		<_State id="borderRadius"><Value>50%</Value></_State>
+		<_State id="opacity"><Value>1</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="width"><Value>9</Value></_State>
+		<_State id="height"><Value>9</Value></_State>
+		<_State id="draggable"><Value>true</Value></_State>
+		<_State id="cursor"><Value>crosshair</Value></_State>
+		<State><Id>InstanceEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>DragXLast</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>DragYLast</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>beingDragged</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.set('InstanceEditor', parent.s('InstanceEditor')); //does this work??
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseDown</Event>
+			<Scripts>
+				<Script>
+					me.set('DragXLast',me.s('eventObject').x);
+					me.set('DragYLast',me.s('eventObject').y);
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>OnDragStart</Event>
+			<Scripts>
+				<Script>
+					//var l_mouseEvent = me.s('eventObject');
+					//me.s('InstanceEditor').s('LevelEditor').fa('ScaleDragStart', { editor:me.s('InstanceEditor'), scaleType:me.s('scaleType'), ctrlKey: l_mouseEvent.ctrlKey, shiftKey: l_mouseEvent.shiftKey, altKey: l_mouseEvent.altKey } );
+					
+					me.set('beingDragged', true);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>OnDrag</Event>
+			<Scripts>
+				<Script>
+					if (me.s('beingDragged'))
+					{
+						var l_mouseEvent = me.s('eventObjectOnDrag');
+						
+						//If both are 0, smth is probably wrong.. don't record the event..
+						if (l_mouseEvent.x!=0 || l_mouseEvent.y!=0)
+						{
+							me.s('InstanceEditor').s('LevelEditor').fa('RotateDrag', { editor:me.s('InstanceEditor'), moveX: l_mouseEvent.x-me.s('DragXLast'), moveY: l_mouseEvent.y-me.s('DragYLast'), ctrlKey: l_mouseEvent.ctrlKey, shiftKey: l_mouseEvent.shiftKey, altKey: l_mouseEvent.altKey } );
+							
+							me.set('DragXLast',l_mouseEvent.x);
+							me.set('DragYLast',l_mouseEvent.y);
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>OnDragEnd</Event>
+			<Scripts>
+				<Script>
+					me.set('beingDragged', false);
+				
+					//me.s('InstanceEditor').fa('Needs To Export', {exportThis:true} );
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

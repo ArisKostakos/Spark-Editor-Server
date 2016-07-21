@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Lobby NavBar -->
+				<Entity extends="SparkEditor.levels.common.entities.LobbyBar"/>
+				
+				<!-- Everything Else -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- New Project Area -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="name"><Value>New Project</Value></_State>
+								<_State id="width"><Value>550</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="paddingTop"><Value>10</Value></_State>
+								<_State id="paddingLeft"><Value>20</Value></_State>
+								<_State id="paddingBottom"><Value>20</Value></_State>
+								<_State id="paddingRight"><Value>20</Value></_State>
+								<_State id="gap"><Value>15</Value></_State>
+							</_States>
+								
+							<Form><Space><Entities>
+								<!-- Caption -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>25</Value></_State>
+										<_State id="text"><Value>Create a new project</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- New Project Panel -->
+								<Entity extends="SparkEditor.levels.userLobby.entities.NewProjectPanel">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+									</_States>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+						
+						<!-- My Projects Area-->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="paddingTop"><Value>10</Value></_State>
+								<_State id="paddingLeft"><Value>20</Value></_State>
+								<_State id="paddingBottom"><Value>20</Value></_State>
+								<_State id="paddingRight"><Value>20</Value></_State>
+								<_State id="gap"><Value>15</Value></_State>
+							</_States>
+								
+							<Form><Space><Entities>
+								<!-- Caption -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>25</Value></_State>
+										<_State id="text"><Value>My Projects</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- Big Project Container -->
+								<Entity extends="std.display.Div">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="backgroundColor"><Value>#21303D</Value></_State>
+										<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+									</_States>
+										
+									<Form><Space><Entities>
+										<!-- No Projects Text -->
+										<Entity extends="std.display.Text">
+											<_States>
+												<_State id="name"><Value>Spark Editor|User Lobby|Projects|No Projects Text</Value></_State>
+												<_State id="width"><Value>400</Value></_State>
+												<_State id="height"><Value>80</Value></_State>
+												<_State id="text"><Value>You have no projects. Create a new one dumbass.</Value></_State>
+												<_State id="fontWeight"><Value>300</Value></_State>
+												<_State id="fontSize"><Value>38px</Value></_State>
+												<_State id="fontColor"><Value>white</Value></_State>
+												<_State id="textAlign"><Value>center</Value></_State>
+												<_State id="horizontalCenter"><Value>0</Value></_State>
+												<_State id="verticalCenter"><Value>-100</Value></_State>
+												<_State id="display"><Value>none</Value></_State>
+											</_States>
+										</Entity>
+										
+										<!-- For Scroller Paddings (dont ask..) -->
+										<Entity extends="std.display.Div">
+											<_States>
+												<_State id="layout"><Value>Vertical</Value></_State>
+												<_State id="width"><Value>100%</Value></_State>
+												<_State id="height"><Value>100%</Value></_State>
+												<_State id="paddingLeft"><Value>10</Value></_State>
+												<_State id="paddingRight"><Value>10</Value></_State>
+												<_State id="paddingTop"><Value>35</Value></_State>
+												<_State id="paddingBottom"><Value>10</Value></_State>
+											</_States>
+											<Form><Space><Entities>
+												<!-- User Projects Group -->
+												<Entity extends="std.display.Scroller">
+													<_States>
+														<_State id="width"><Value>100%</Value></_State>
+														<_State id="height"><Value>100%</Value></_State>
+													</_States>
+													<Form><Space><Entities> 
+														<!-- Projects Container -->
+														<Entity extends="std.display.Div">
+															<_States>
+																<!--<_State id="backgroundColor"><Value>green</Value></_State>-->
+																<_State id="name"><Value>Spark Editor|User Lobby|Projects|Projects Container</Value></_State>
+																<_State id="layout"><Value>Tile</Value></_State>
+																<_State id="width"><Value>100%</Value></_State>
+																<_State id="height"><Value>150</Value></_State>
+																<_State id="horizontalGap"><Value>20</Value></_State>
+																<_State id="verticalGap"><Value>20</Value></_State>
+																<_State id="columnAlign"><Value>justifyUsingWidth</Value></_State>
+															</_States>
+														</Entity>
+													</Entities></Space></Form>
+												</Entity>
+											</Entities></Space></Form>
+										</Entity>
+									</Entities></Space></Form>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Parameter>userAdmin|Dashboard|Connect To Project</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("userAdmin|Dashboard|Connect To Project");
+					
+					if (data.code=="success")
+					{
+						//Store project on shared space
+						e('Spark Editor').setState('project_dbo',data.project);
+						Logic.levelManager.runLevel('SparkEditor.levels.projectEditor.Level');
+					}
+					else if (data.code=="notfound")
+					{
+						Display.error("Project does't exist.");
+					}
+					else
+					{
+						Display.error('Error connecting to project.');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('AddProjects',{items:e('Spark Editor').s('userProjects')});
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>AddProjects</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var projects = it.getState('items');
+					
+					if (projects.length==0)
+					{
+						e('Spark Editor|User Lobby|Projects|No Projects Text').setState('display','inline');
+					}
+					else
+					{
+						var projectsContainer = e('Spark Editor|User Lobby|Projects|Projects Container');
+					
+						var i = 0;
+						while (projects.length>i)
+						{
+							var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.levels.userLobby.entities.ProjectTile');
+							
+							myNewItem.setState('projectName',projects[i].title);
+							myNewItem.setState('imageName','lobbyProjectTemplate_Platform_Thumb');
+							myNewItem.setState('project',projects[i]);
+							projectsContainer.addChild(myNewItem);
+							
+							i+=1;
+						}
+						
+						//Refresh Container's Scroller
+						projectsContainer.parentEntity.forceAction('Refresh');
+					}
+					
+					Display.invalidateLayout();
+					me.stopAction("AddProjects");
+					me.startAction("invalidate");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>invalidate</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.setState('timer',it.getState('timer')+1);
+					
+					if (it.getState('timer')>2)
+					{
+						me.stopAction('invalidate');
+						Display.invalidateLayout();
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>timer</Id><Type>Integer</Type><Value>0</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

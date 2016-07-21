@@ -4,52 +4,13 @@
 		<Entity extends="std.behaviors.display.Layoutable"/>
 	</Extends>
 	
-	<_Actions>
-		<_Action id="Constructor">
-			<_Scripts>
-				<Script>
-					for (child of parent.parentEntity.getChildren()) //parent.parent of a View should always be it's space
-					{
-						//Find Scene
-						if (child.getState('name')==me.getState('initSceneName'))
-						{
-							if (child.getState('displayType')=="Scene")
-							{
-								me.setState('scene',child);
-								//Display.debug("Display Scene Entity Set Successfuly to View!");
-							}
-							else
-							{
-								Display.warn("Incompatible Scene Entity defined!");
-							}
-						}
-						
-						//Find Camera
-						if (child.getState('name')==me.getState('initCameraName'))
-						{
-							if (child.getState('displayType')=="Camera")
-							{
-								me.setState('camera',child);
-								//Display.debug("Display Camera Entity Set Successfuly to View!");
-							}
-							else
-							{
-								Display.warn("Incompatible Camera Entity defined!");
-							}
-						}
-					}
-				</Script>
-			</_Scripts>
-		</_Action>
-	</_Actions>
-	
 	<_States>
 		<_State id="displayType">
 			<Value>View</Value>
 		</_State>
 		
 		<State>
-			<Id>initSceneName</Id>
+			<Id>initSceneUrl</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
@@ -61,7 +22,7 @@
 		</State>
 		
 		<State>
-			<Id>initCameraName</Id>
+			<Id>initCameraUrl</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
@@ -96,4 +57,23 @@
 			<Value>true</Value>
 		</State>
 	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+				/*
+					if (me.s('camera')!=null)
+					{
+						me.s('camera').startAction('Camera Init', {view:me});
+					}
+					else
+					{
+						Display.warn("View " + me.s('name') + ": Failed to initialize camera :/");
+					}
+					*/
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
 </Entity>

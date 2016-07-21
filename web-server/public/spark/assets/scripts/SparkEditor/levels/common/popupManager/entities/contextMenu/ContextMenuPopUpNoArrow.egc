@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.common.popupManager.entities.PopUpBase">
+	<_States>
+		<_State id="targetLayerName"><Value>PopUp Layer 3 Scene</Value></_State>
+		<State><Id>ContextListMainObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="top"><Value>0</Value></_State>
+		<_State id="left"><Value>0</Value></_State>
+		<_State id="border"><Value>0px</Value></_State>
+	</_States>
+
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- List -->
+				<Entity extends="SparkEditor.levels.common.popupManager.entities.contextMenu.ContextList">
+					<_States>
+
+					</_States>
+					
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									Display.invalidateLayout(); //This is mostly to prevent glitches when panel show up..
+									//parent.setState('ContextListMainObject',me); //not used yet but maybe we will..
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+
+	<_Triggers>
+
+	</_Triggers>
+		
+	<_Actions>
+		<Action>
+			<Id>ItemSelected</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Close PopUp
+					me.startAction('Close');
+					
+					//Run Callback with OK
+					var cb_caller = me.getState('cb_caller');
+					var cb_action = cb_caller.getAction(me.getState('cb_actionName'));
+					cb_action.setState('cb_result',"OK");
+					cb_action.setState('cb_Arg1',it.getState('itemObject'));
+					
+					cb_caller.forceAction(me.getState('cb_actionName'));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>itemObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+</Entity>

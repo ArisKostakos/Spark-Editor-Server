@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.CodeEditor">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<_State id="overflow"><Value>hidden</Value></_State>
+		<State><Id>SML Loaded</Id><Type>Boolean</Type><Value>false</Value></State>
+			
+		<State><Id>Module Name</Id><Type>Text</Type><Value>Undefined</Value></State>
+	
+	
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					//Mark Level as fully loaded
+					me.set('SML Loaded',true);
+					
+					//Load SML to Code Editor (me)
+					var l_target_File = me.s('target_File');
+					
+					var ace = me.getState('aceObject');
+					
+					ace.resize();
+					ace.setReadOnly(false);
+					ace.setShowPrintMargin(false);
+					
+					ace.setValue(l_target_File.toString(), -1);
+					
+					ace.on("change", 
+						function(e)
+						{
+							me.fa('Needs To Export', {exportThis:true});
+						}
+					);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+			
+		<Action>
+			<!-- This means, add the flambe level to stage-->
+			<Id>Show SML</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					/*
+					setTimeout( function() {Display.invalidateLayout(); Display.warn("invalidate yoo111");} ,500);
+					
+					setTimeout( function() {var ace = me.getState('aceObject');
+					ace.resize(); Display.warn("invalidate yoo222");} ,1000);
+					*/
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<!-- This means, remove the flambe level from stage-->
+			<Id>Hide SML</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						//Export Children's XML
+						//
+						
+							
+						//Then, If This Editor can later do any changes to it's Level EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							//Update it (save command happens inside this function, in case you're wondering)
+							e('Project Editor').fa('Update Asset Content', { DBA:me.s('target_DBA'), content: me.s('aceObject').getValue() } );
+							
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Needs To Export">
+			<_Scripts>
+				<Script>
+					//Simple Add-On Exception for the LevelEditor. If this action is called, let it's tab owner know about it
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

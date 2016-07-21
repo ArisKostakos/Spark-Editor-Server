@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.TabBase">
+	<_States>
+		<!--<_State id="backgroundColor"><Value>cyan</Value></_State>-->
+		<!--<_State id="pointerEvents"><Value>none</Value></_State>-->
+		<!--<_State id="layout"><Value>Vertical</Value></_State>-->
+		<_State id="gap"><Value>0</Value></_State>
+		<!--<State><Id>levelEditor</Id><Type>Dynamic</Type><Value>null</Value></State>-->
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Behaviors Area 
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100</Value></_State>
+						<_State id="pointerEvents"><Value>auto</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(45,67,85)</Value></_State>
+					</_States>
+					
+					<Form>
+						<Space>
+							<Entities>
+								
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>-->
+				
+				<!-- Cyan Line?? 
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>1</Value></_State>
+						<_State id="pointerEvents"><Value>auto</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(45,67,85)</Value></_State>
+					</_States>
+					
+					<Form>
+						<Space>
+							<Entities>
+								
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>-->
+				
+				<!-- Level Editor
+				<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.LevelEditor">
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.setState('levelEditor',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>-->
+			</Entities>
+		</Space>
+	</Form>
+	
+	
+	<_Actions>
+		<Action>
+			<Id>Open Event Sheet</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					/*
+					//Load Level
+					Logic.levelManager.loadLevel(it.s('levelAssetName'));
+					
+					Logic.levelManager.levelLoaded.connect(function(p_level) {
+						//Proceed
+						
+						me.s('levelEditor').fa('Import From AssetName', { importAssetName:it.s('levelAssetName'), LevelEditor_gameObject:p_level } );
+					}).once();
+					*/
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>levelAssetName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

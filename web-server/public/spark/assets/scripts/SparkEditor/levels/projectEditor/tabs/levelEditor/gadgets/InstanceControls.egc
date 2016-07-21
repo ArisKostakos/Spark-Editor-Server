@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<!--<_State id="backgroundColor"><Value>yellow</Value></_State>-->
+		<_State id="border"><Value>1px solid rgb(48,55,62)</Value></_State>
+		<_State id="opacity"><Value>1</Value></_State>
+		<!--<_State id="touchable"><Value>true</Value></_State>
+		<_State id="cursor"><Value>pointer</Value></_State>-->
+		<!--<_State id="draggable"><Value>true</Value></_State>-->
+		<State><Id>InstanceEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form><Space><Entities>
+		<!-- top left -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="left"><Value>-4</Value></_State>
+				<_State id="top"><Value>-4</Value></_State>
+				<_State id="cursor"><Value>nw-resize</Value></_State>
+				<_State id="scaleType"><Value>topLeft</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- top center -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="horizontalCenter"><Value>0</Value></_State>
+				<_State id="top"><Value>-4</Value></_State>
+				<_State id="cursor"><Value>n-resize</Value></_State>
+				<_State id="scaleType"><Value>topCenter</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- top right -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="right"><Value>-4</Value></_State>
+				<_State id="top"><Value>-4</Value></_State>
+				<_State id="cursor"><Value>ne-resize</Value></_State>
+				<_State id="scaleType"><Value>topRight</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- middle left -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="left"><Value>-4</Value></_State>
+				<_State id="verticalCenter"><Value>0</Value></_State>
+				<_State id="cursor"><Value>w-resize</Value></_State>
+				<_State id="scaleType"><Value>middleLeft</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- middle right -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="right"><Value>-4</Value></_State>
+				<_State id="verticalCenter"><Value>0</Value></_State>
+				<_State id="cursor"><Value>e-resize</Value></_State>
+				<_State id="scaleType"><Value>middleRight</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- bottom left -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="left"><Value>-4</Value></_State>
+				<_State id="bottom"><Value>-4</Value></_State>
+				<_State id="cursor"><Value>sw-resize</Value></_State>
+				<_State id="scaleType"><Value>bottomLeft</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- bottom center -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="horizontalCenter"><Value>0</Value></_State>
+				<_State id="bottom"><Value>-4</Value></_State>
+				<_State id="cursor"><Value>s-resize</Value></_State>
+				<_State id="scaleType"><Value>bottomCenter</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!-- bottom right -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.ScaleGadget">
+			<_States>
+				<_State id="right"><Value>-4</Value></_State>
+				<_State id="bottom"><Value>-4</Value></_State>
+				<_State id="cursor"><Value>se-resize</Value></_State>
+				<_State id="scaleType"><Value>bottomRight</Value></_State>
+			</_States>
+		</Entity>
+		
+		<!--Rotate Gadget -->
+		<Entity extends="SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.RotateGadget">
+			<_States>
+				<_State id="horizontalCenter"><Value>-1</Value></_State>
+				<_State id="verticalCenter"><Value>-1</Value></_State>
+			</_States>
+		</Entity>
+	</Entities></Space></Form>
+		
+	<_Actions>
+
+	</_Actions>
+		
+	<_Triggers>
+		
+	</_Triggers>
+</Entity>

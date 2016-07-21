@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.TabManager">
+	<_States>
+		<_State id="name"><Value>Left Tab Manager</Value></_State>
+		<_State id="headerTheme"><Value>left</Value></_State>
+		<_State id="containerColor"><Value>rgb(66,84,102)</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(24,39,51)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.fa('Initialize');
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

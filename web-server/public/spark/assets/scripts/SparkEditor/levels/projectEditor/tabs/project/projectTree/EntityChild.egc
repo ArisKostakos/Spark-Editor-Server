@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.project.projectTree.Child">
+	<_States>
+
+	</_States>
+	
+	<_Actions>
+		<_Action id="PreConstructor">
+			<_Scripts>
+				<Script>
+					me.fa('Update');
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+		
+		
+	<Form>
+		<Space>
+			<Entities>
+				<!-- This Child -->
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>15</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(52,76,96)</Value></_State>
+					</_States>
+				
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('displayObject',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+						
+					<Form><Space><Entities>
+						<!-- Expand Button -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>13</Value></_State>
+								<_State id="height"><Value>13</Value></_State>
+								<_State id="src"><Value>projectTree_expand</Value></_State>
+								<_State id="left"><Value>73</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+								<_State id="touchable"><Value>true</Value></_State>
+								<_State id="cursor"><Value>pointer</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											parent.parentEntity.fa('Toggle');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>15</Value></_State>
+								<_State id="fontSize"><Value>14px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="left"><Value>90</Value></_State>
+								<_State id="textAlign"><Value>left</Value></_State>
+								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+								<_State id="pointerEvents"><Value>none</Value></_State>
+							</_States>
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											me.set('text', parent.parentEntity.s('childTitle') );
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

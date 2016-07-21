@@ -1,1 +1,0 @@
-<Entity extends="std.display.Image2D"><Extends/><_States><_State id="name"><Value>character2_87</Value></_State><_State id="2DMeshImageForm"><Value>ImageUrl</Value></_State></_States><_Form><_States><State><Id>ImageUrl</Id><Type>Text</Type><Value>image_test13.character2</Value></State></_States></_Form></Entity>

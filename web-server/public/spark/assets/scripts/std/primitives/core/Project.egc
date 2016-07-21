@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					if (me.s('isPreview')==false) //if we load on preview, we don't create a new active space, we use the current one.. etc
+					{
+						for (child of me.getChildren())
+						{
+							if (child.getState('name')==me.getState('initSpaceName'))
+							{
+								if (child.getState('displayType') == "Space")
+								{
+									me.setState('space',child);
+									
+									if (me.s('activeProject'))
+										Display.setActiveSpace(child);
+										
+									//Display.log("Display Space Entity Assigned Successfuly!");
+								}
+								else
+								{
+									Display.warn("Incompatible Space Entity defined!");
+								}
+								
+								break;
+							}
+						}
+						
+						Logic.getExternal().call("setPreloaderText",["Retrieving Project Files..."]);
+						
+						me.sa('Run Level', {levelName:me.s('initLevelUrl'), preloader:true, loaderLevelName:me.s('loaderLevelUrl')});
+					}
+					else
+					{
+						if (me.s('previewMode')=="Project")
+							me.sa('Run Level', {levelName:me.s('initLevelUrl'), preloader:true, loaderLevelName:me.s('loaderLevelUrl')});
+						else
+							me.sa('Run Level', {levelName:me.s('initLevelUrl'), preloader:false, loaderLevelName:'Undefined'});
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+			
+		<Action>
+			<Id>Run Level Pure</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					if (me.s('isPreview')==false)
+						Logic.levelManager.runLevel(it.s('levelName'));
+					else
+					{
+						//if (me.s('previewMode')=="Project")
+							var oldMe=me;
+							var oldIt=it;
+							Logic.levelManager.levelRan.connect(function() {
+								Display.invalidateLayout(); //not sure about thiiiis
+								oldMe.set('currentLevelUrl', oldIt.s('levelName'));
+								Logic.levelManager.currentLevel.get(oldMe.s('previewRunSlot')).sa('Init Level'); //Initiate this level
+							}).once();
+							
+							Logic.levelManager.runLevel(it.s('levelName'), me.s('previewRunSlot'), me.s('previewStageArea'));
+						//else
+						//{
+							//This was written so that I don't allow user to load any level other than initLevelUrl
+							//So if they just load one level, maybe for some reason i don't want  them to start loading other levels in that tab
+							//not sure if i will need this..
+						//}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>levelName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Run Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					if (it.s('preloader')==false)
+					{
+						me.sa('Run Level Pure', {levelName: it.s('levelName')});
+					}
+					else
+					{
+						if (it.s('loaderLevelName')!='Undefined')
+						{
+							me.sa('Run Level Pure', { levelName:it.s('loaderLevelName') } );
+							
+							var oldMe=me;
+							var oldIt=it;
+							Logic.levelManager.levelRan.connect(function() {
+								if (oldIt.s('levelName')!='Undefined')
+									oldMe.sa('Run Level Pure', { levelName:oldIt.s('levelName') } );
+							}).once();
+						}
+						else
+						{
+							if (it.s('levelName')!='Undefined')
+								me.sa('Run Level Pure', { levelName:it.s('levelName') } );
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>levelName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>preloader</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>loaderLevelName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Restart Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop(); //mixed I guess
+					
+					if (me.s('currentLevelUrl')!="Undefined")
+					{
+						me.sa('Run Level', {levelName:me.s('currentLevelUrl'), preloader:false});
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Refresh Cameras</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Running Level
+					var l_runSlot;
+					
+					if (me.s('isPreview')==false)
+						l_runSlot="Main";
+					else
+						l_runSlot=me.s('previewRunSlot');
+						
+					Logic.levelManager.currentLevel.get(l_runSlot).fa('Refresh Cameras');
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>XXXXXXX</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+	<_States>
+		<State>
+			<Id>initSpaceName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+				
+		<State>
+			<Id>initLevelUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+				
+		<State>
+			<Id>loaderLevelUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>space</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<Id>activeProject</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		
+		<State>
+			<Id>isPreview</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+		
+		<State>
+			<Id>previewMode</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>previewStageArea</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>previewRunSlot</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+				
+		<State>
+			<Id>currentLevelUrl</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	</_States>
+</Entity>

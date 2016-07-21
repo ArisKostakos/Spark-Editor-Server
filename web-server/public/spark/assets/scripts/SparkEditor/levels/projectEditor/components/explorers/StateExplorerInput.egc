@@ -1,0 +1,104 @@
+<Entity extends="std.display.Input">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>23</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(62, 88, 112)</Value></_State>
+		<_State id="border"><Value>1px solid rgb(37, 55, 70)</Value></_State>
+		<_State id="placeholder"><Value>Enter Value</Value></_State>
+		<_State id="textIndent"><Value>6px</Value></_State>
+		<State><Id>statesExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>stateExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="dropTarget"><Value>true</Value></_State>
+	</_States>
+
+	<_Triggers>
+		<Trigger>
+			<Event>Changed</Event>
+			<Scripts>
+				<Script>
+					Display.error('Input Changed: ' + me.getState('text'));
+					
+					me.fa('Update');
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>OnDrop</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+				
+					//Figure out X, Y, etc..
+					var eventObject = me.getState('eventObject');
+					
+					console.log('dragEvent: ',l_dragEvent);
+					console.log('eventObject: ',eventObject);
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					console.log('l_asset: ',l_asset);
+					
+					me.set('text', l_asset.type+':'+l_asset.name);
+					
+					var l_openedFromEditor = me.s('statesExplorer').s('parentTab').s('openedFromEditor');
+					var l_explorerAsset = l_openedFromEditor.s('target_DBA');
+					//warning.. if l_openedFromEditor is an instance, is this gonna work ok?
+					//also i need to make sure ALL modules that own this asset are loaded, not just one
+					console.log('l_explorerAsset: ',l_explorerAsset);
+					
+					//first module (DO THIS FOR ALL OF US. you know what.. I may not need to actualy ModuleManager.loadModule ALL of em, just the first one.. just Add Asset to Module ALL of em)
+					var l_moduleName = l_explorerAsset._inModules[0];
+					
+					e('Project Editor').fa('Add Asset To Module', { Asset_DBA: l_asset, ModuleName: l_moduleName, insertDBA: false } );
+					//Reload Module
+						ModuleManager.successSignal.connect(function () {
+							Display.de("LOADING COMPLETE");
+							me.fa('Update');
+						}).once();
+						
+					//Reload the Module
+					ModuleManager.loadModule(l_moduleName);
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_editor = me.s('statesExplorer').s('parentTab').s('editor');
+					var l_openedFromEditor = me.s('statesExplorer').s('parentTab').s('openedFromEditor');
+					var l_stateExplorer = me.s('stateExplorer');
+					
+					//If I am looking this explorer through a parent editor, the change happens in the parentEditor's SML, so it will always be a merge state (overwritting the original full(or merged) state in SML)
+					if (l_editor!=l_openedFromEditor)
+					{
+						if (l_openedFromEditor.s('states').exists(l_stateExplorer.s('stateId')))
+							l_openedFromEditor.s('states').get(l_stateExplorer.s('stateId')).value=me.s('text');
+						else
+							l_openedFromEditor.s('states').set(l_stateExplorer.s('stateId'), { id:l_stateExplorer.s('stateId'), value: me.getState('text'), kind: "Merge", behaviorName: l_editor.s('target_AssetName') });
+						
+						l_openedFromEditor.fa('Needs To Export', {exportThis:true} );
+					}
+					else
+					{
+						l_editor.s('states').get(l_stateExplorer.s('stateId')).value=me.s('text');
+						l_editor.fa('Needs To Export', {exportThis:true} );
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

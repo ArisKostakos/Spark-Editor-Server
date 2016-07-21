@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<State><Id>headerTheme</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>headerName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>headerTitle</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>headerType</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>TabManager</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<!--<_State id="textAlign"><Value>center</Value></_State>-->
+						<_State id="height"><Value>19</Value></_State>
+						<_State id="fontSize"><Value>18px</Value></_State>
+						<_State id="fontWeight"><Value>400</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="text"><Value>Header</Value></_State>
+						<_State id="whiteSpace"><Value>nowrap</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState('text',parent.s('headerTitle'));
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+	<Script>
+		me.s('TabManager').forceAction('Show Tab',{name:me.s('headerName')});
+	</Script>
+	</Scripts></Trigger></_Triggers>
+		
+		
+	<_Actions>
+		<Action>
+			<Id>Show Me</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Hide Me</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

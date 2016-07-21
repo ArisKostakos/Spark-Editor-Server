@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.primitives.core.Level">
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>Module</Value></_State>
+						<_State id="url"><Value>SparkEditor:User Lobby</Value></_State>
+					</_States>
+				</Entity>
+				<!--
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>SparkEditor.levels.common.popupManager.views.PopUpLayer4View</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>SparkEditor.levels.common.popupManager.views.PopUpLayer3View</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>SparkEditor.levels.common.popupManager.views.PopUpLayer2View</Value></_State>
+					</_States>
+				</Entity>
+				
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>SparkEditor.levels.common.popupManager.views.PopUpLayer1View</Value></_State>
+					</_States>
+				</Entity>
+				-->
+				<Entity extends="std.core.LevelReference">
+					<_States>
+						<_State id="type"><Value>View</Value></_State>
+						<_State id="url"><Value>SparkEditor.levels.userLobby.View</Value></_State>
+					</_States>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
