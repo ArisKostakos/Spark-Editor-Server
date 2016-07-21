@@ -66,6 +66,56 @@ handler.getProjectAssets = function(msg, session, next) {
 
 };
 
+handler.getProjectAssetsImages = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //Find Assets
+    database.find(database.Asset, {owner: developer._id, 'tags.0': project.name, type:'image'},
+        function (err, objects_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", assets: objects_found});
+        }
+    );
+
+};
+
+handler.getProjectAssetsOther = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //Find Assets
+    database.find(database.Asset, {owner: developer._id, 'tags.0': project.name, type: {$ne: 'image'}},
+        function (err, objects_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            //Handle Success
+            next(null, {code: "success", assets: objects_found});
+        }
+    );
+
+};
+
 //This will temp load all lib Conditions, Actions and Expressions.. (AND ALSO CLASS OBJECTS AND BEHAVIORS)
 //Later we an make it look up the project's include queries, and include those instead..
 handler.getProjectIncludeAssets = function(msg, session, next) {
