@@ -142,7 +142,7 @@ handler.getProjectIncludeAssets = function(msg, session, next) {
 
 
                 //Find Assets
-                //owner.user.. BAD.. fuck this, it's really wasteful u know what.. i'm removing it NOW. Actually I cant.. due to SparkOld :( ......  DONE!!! fuck SparkOld!
+                //owner.user.. BAD... fuck this, it's really wasteful u know what.. i'm removing it NOW. Actually I cant.. due to SparkOld :( ......  DONE!!! fuck SparkOld!
                 //database.findAndDeepPopulate(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", $or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' }, { componentType: 'Behavior' }, { componentType: 'Class' } ]}   , "owner.user",
                 database.find(database.Asset, {owner: sparkDeveloperId, 'tags.0': "lib", $or: [ { componentType: 'Condition' }, { componentType: 'Action' }, { componentType: 'Expression' }, { componentType: 'Behavior' }, { componentType: 'Class' } ]}   ,
                     function (err, objects_found) {
