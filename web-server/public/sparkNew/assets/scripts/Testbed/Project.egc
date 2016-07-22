@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.primitives.core.Project">
+	<Extends>
+
+	</Extends>
+
+	<_States>
+		<_State id="name">
+			<Value>Spark Game</Value>
+		</_State>
+		
+		<_State id="initSpaceName">
+			<Value>Main Space</Value>
+		</_State>
+		
+		<_State id="loaderLevelUrl">
+			<Value>Testbed.levels.loader.Level</Value>
+		</_State>
+			
+		<_State id="initLevelUrl">
+			<Value>Testbed.levels.level1.Level</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="Testbed.Space"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

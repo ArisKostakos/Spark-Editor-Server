@@ -104,9 +104,9 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Lock Button");
-					
+					alert('Save Disabled');
 					//Save Project
-					e('Project Editor').fa('Save Project');
+					//e('Project Editor').fa('Save Project');
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
 				

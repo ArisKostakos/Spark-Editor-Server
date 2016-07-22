@@ -1,0 +1,64 @@
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<_State id="name"><Value>mainScene</Value></_State>
+	</_States>
+	<Form><Space><Entities>
+		<!--
+		<Entity extends="std.primitives.2d.AdobeAnimation">
+			<Extends>
+				<Entity extends="Testbed.levels.level1.Sprite"/>
+			</Extends>
+			<_States>
+				<_State id="2DMeshAdobeAnimationForm"><Value>Alf</Value></_State>
+				<_State id="Init Animation"><Value>~faceExpression6_resting_mc</Value></_State>
+				<_State id="spaceX"><Value>100</Value></_State>
+				<_State id="spaceY"><Value>150</Value></_State>
+			</_States>
+		</Entity>-->
+		
+		<Entity extends="std.primitives.nc.Video">
+			<_States>
+				<_State id="name"><Value>videoDude</Value></_State>
+				<_State id="left"><Value>0</Value></_State>
+				<_State id="top"><Value>0</Value></_State>
+				<_State id="width"><Value>100%</Value></_State>
+				<_State id="height"><Value>100%</Value></_State>
+			</_States>
+		</Entity>
+	</Entities></Space></Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					Display.de("Hello World!");
+					me.sa('initVideo');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>initVideo</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (e('videoDude').s('videoObject')!=null)
+					{
+						it.stop();
+						Display.de("VIDEO NOT NULL!");
+						videoObject = e('videoDude').s('videoObject');
+						videoObject.src="intro1.mp4";
+						videoObject.load();
+						videoObject.play();
+						//videoObject.controls = true;
+						//videoObject.type="movie.mp4";
+					}
+					else
+					{
+						Display.de("VIDEO NULL!");
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

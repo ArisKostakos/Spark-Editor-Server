@@ -303,7 +303,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/primitives/2d/AdobeAnimation.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/primitives/2d/Spritesheet.egc</Asset>
 			
-			
+			<Asset type="script" location="local" bytes='35672'>std/primitives/nc/Video.egc</Asset>
 			
 			
 			<Asset type="script" location="local" bytes='35672'>std/display/Image2D.egc</Asset>
