@@ -322,6 +322,10 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
+					//Run Project
+					e('Project Manager').fa('Run Preview');
+					return;
+				
 					//Project Class Editor's XML
 					var l_projectXml = me.s('classEditor').s('target_XML');
 				
