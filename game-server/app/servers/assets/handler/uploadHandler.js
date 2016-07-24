@@ -187,7 +187,7 @@ handler.uploadProjectFile = function(msg, session, next) {
     var finalDir = project.name;
 
     //Asset Source Path
-    var assetSource = userPath + '/incoming/' + msg.dir + '/' + fileName;
+    var assetSource = userPath + '/incoming/' + project.name + '/' + fileName;
 
     //Asset Target Path
     fs.ensureDirSync(userPath + '/project/' + finalDir);
