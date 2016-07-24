@@ -84,8 +84,6 @@ handler.getProjectAssetsOfType = function(msg, session, next) {
                 return console.error(err);
             }
 
-            for ()
-
             //Handle Success
             next(null, {code: "success", assets: objects_found});
         }
@@ -110,10 +108,8 @@ handler.getProjectAssetsOfTypeAndComponentType = function(msg, session, next) {
                 return console.error(err);
             }
 
-            for ()
-
-                //Handle Success
-                next(null, {code: "success", assets: objects_found});
+            //Handle Success
+            next(null, {code: "success", assets: objects_found});
         }
     );
 };
