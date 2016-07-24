@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<States>
+		<State>
+			<Id>type</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>url</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+		
+		<State>
+			<Id>visibleAtStart</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		
+		<!-- Maybe add more ways to reference than url.. like name, or whatever..| So, i did this but not using it yet.. I thought of using this for when we have more than 1 Level Cameras-->
+		<State>
+			<Id>refName</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	</States>
+	
+	<Form><Space/></Form>
+</Entity>

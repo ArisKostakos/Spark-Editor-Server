@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Gui2D">
+	<Extends>
+		<Entity extends="std.behaviors.display.NativeComponent"/>
+		<Entity extends="std.behaviors.display.StyleableNC"/>
+	</Extends>
+	
+	<_States>
+		<_State id="NCmeshType">
+			<Value>Video</Value>
+		</_State>
+			<State><Id>videoObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+</Entity>
