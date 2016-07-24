@@ -84,11 +84,38 @@ handler.getProjectAssetsOfType = function(msg, session, next) {
                 return console.error(err);
             }
 
+            for ()
+
             //Handle Success
             next(null, {code: "success", assets: objects_found});
         }
     );
+};
 
+handler.getProjectAssetsOfTypeAndComponentType = function(msg, session, next) {
+    var self = this;
+    var sessionService = self.app.get('sessionService');
+
+    //Session bindings
+    var user = session.get('user');
+    var developer = session.get('developer');
+    var project = session.get('project');
+
+    //Find Assets
+    database.find(database.Asset, {owner: developer._id, 'tags.0': project.name, type:msg.type, componentType: msg.componentType},
+        function (err, objects_found) {
+            //Handle Error
+            if (err) {
+                next(null, {code: "error"});
+                return console.error(err);
+            }
+
+            for ()
+
+                //Handle Success
+                next(null, {code: "success", assets: objects_found});
+        }
+    );
 };
 
 handler.getProjectAssetsOther = function(msg, session, next) {
