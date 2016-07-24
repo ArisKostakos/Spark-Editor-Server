@@ -66,7 +66,7 @@ handler.getProjectAssets = function(msg, session, next) {
 
 };
 
-handler.getProjectAssetsImages = function(msg, session, next) {
+handler.getProjectAssetsOfType = function(msg, session, next) {
     var self = this;
     var sessionService = self.app.get('sessionService');
 
@@ -76,7 +76,7 @@ handler.getProjectAssetsImages = function(msg, session, next) {
     var project = session.get('project');
 
     //Find Assets
-    database.find(database.Asset, {owner: developer._id, 'tags.0': project.name, type:'image'},
+    database.find(database.Asset, {owner: developer._id, 'tags.0': project.name, type:msg.type},
         function (err, objects_found) {
             //Handle Error
             if (err) {
@@ -115,6 +115,7 @@ handler.getProjectAssetsOther = function(msg, session, next) {
     );
 
 };
+
 
 //This will temp load all lib Conditions, Actions and Expressions.. (AND ALSO CLASS OBJECTS AND BEHAVIORS)
 //Later we an make it look up the project's include queries, and include those instead..
