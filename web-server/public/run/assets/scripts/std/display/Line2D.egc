@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.FillRect2D">
+	<_States>
+		<_State id="2DMeshFillRectForm">
+			<Value>LineColor</Value>
+		</_State>
+		<_State id="spaceWidth">
+			<Value>0</Value>
+		</_State>
+		<_State id="spaceHeight">
+			<Value>0</Value>
+		</_State>
+	</_States>
+	
+	<_Form>
+		<_States>
+			<State>
+				<Id>LineColor</Id>
+				<Type>Integer</Type>
+				<Value>0xFF0000</Value>
+			</State>
+		</_States>
+	</_Form>
+</Entity>
