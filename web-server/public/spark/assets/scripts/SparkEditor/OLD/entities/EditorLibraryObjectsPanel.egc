@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Editor Library Objects Panel</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="display"><Value>none</Value></_State>
+		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>AddItem</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					Display.error("hii adding item...");
+					
+					var container2d = Logic.getEntityByName('LibraryObjects2DContainer');
+
+					var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItemUpload');
+					myNewItem.setState('name',me.getAction('AddItem').getState('itemName'));
+					myNewItem.setState('buttonText',me.getAction('AddItem').getState('itemTitle'));
+					myNewItem.setState('fileSize',me.getAction('AddItem').getState('itemSize'));
+					myNewItem.setState('imageName','libsubcat_import_mikro');
+					myNewItem.setState('imageWidth',"9");
+					myNewItem.setState('imageHeight',"14");
+					myNewItem.setState('opacity',"0.6");
+					container2d.addChild(myNewItem);
+					
+					//Display.error('Username: ' + Logic.getEntityByName('Spark Editor').getState('username'));
+					//Display.error('Project: ' + Logic.getEntityByName('Spark Editor').getState('projectname'));
+					
+					
+					//Display.projectActiveSpaceReference.activeStageReference.layoutManager.validated=false;
+					me.stopAction("AddItem");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>itemName</Id><Type>Text</Type><Value>Untitled</Value></State>
+				<State><Id>itemTitle</Id><Type>Text</Type><Value>Untitled</Value></State>
+				<State><Id>itemSize</Id><Type>Integer</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>AddItemNoUpload</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var container2d = Logic.getEntityByName('LibraryObjects2DContainer');
+					var components = me.getAction('AddItemNoUpload').getState('items');
+					
+					var username = Logic.getEntityByName('Spark Editor').getState('username');
+					var i = 0;
+					while (components.length>i)
+					{
+						var asset = components[i];
+						var myNewItem = Logic.gameFactory.createGameEntity('SparkEditor.entities.EditorLibrarySubCategoryItem');
+						myNewItem.setState('name',asset.fileName);
+						myNewItem.setState('buttonText',asset.fileName);
+						myNewItem.setState('imageName','/assets/' + username + '/thumbnail/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension);
+						myNewItem.setState('imageWidth',"14");
+						myNewItem.setState('imageHeight',"14");
+						myNewItem.setState('component',asset);
+						container2d.addChild(myNewItem);
+						Display.error('component #' + i + ':' + asset.fileName);
+						//Display.error(components[i].assets);
+						
+						i+=1;
+					}
+					
+					me.stopAction("AddItemNoUpload");
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>items</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- List -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="gap"><Value>1</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="paddingLeft"><Value>1</Value></_State>
+						<_State id="paddingRight"><Value>1</Value></_State>
+						<_State id="paddingTop"><Value>1</Value></_State>
+						<_State id="paddingBottom"><Value>1</Value></_State>
+						<!--<_State id="height"><Value>100%</Value></_State>-->
+					</_States>
+					<Form><Space><Entities>
+						<!-- 2D -->
+						<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryButton"><_States>
+							<_State id="name"><Value>Library Object 2D</Value></_State>
+							<_State id="buttonText"><Value>2D</Value></_State>
+							<_State id="imageName"><Value>libsubcat_shapes_2d</Value></_State>
+							<_State id="selectedColor"><Value>rgb(227,112,135)</Value></_State>
+							<_State id="selected"><Value>true</Value></_State>
+							<_State id="imageWidth"><Value>12</Value></_State>
+							<_State id="imageHeight"><Value>12</Value></_State>
+						</_States></Entity>
+						
+						
+						<!-- 2D List -->
+						<Entity extends="std.display.VGroup">
+							<_States>
+								<_State id="name"><Value>LibraryObjects2DContainer</Value></_State>
+								<_State id="gap"><Value>1</Value></_State>
+								<_State id="width"><Value>100%</Value></_State>
+								<!--<_State id="height"><Value>100%</Value></_State>-->
+							</_States>
+						</Entity>
+						
+						<!-- 3D -->
+						<Entity extends="SparkEditor.entities.EditorLibrarySubCategoryButton"><_States>
+							<_State id="name"><Value>Library Object 3D</Value></_State>
+							<_State id="buttonText"><Value>3D</Value></_State>
+							<_State id="imageName"><Value>libsubcat_shapes_3d</Value></_State>
+							<!--<_State id="selectedColor"><Value>rgb(148,194,43)</Value></_State>-->
+							<_State id="imageWidth"><Value>13</Value></_State>
+							<_State id="imageHeight"><Value>14</Value></_State>
+						</_States></Entity>
+						
+						<!-- Import Assets -->
+						<Entity extends="SparkEditor.entities.EditorAssetImport"><_States>
+							<_State id="name"><Value>Library Object Import</Value></_State>
+							<_State id="buttonText"><Value>Import</Value></_State>
+							<_State id="imageName"><Value>libsubcat_import_mikro</Value></_State>
+							<_State id="imageWidth"><Value>9</Value></_State>
+							<_State id="imageHeight"><Value>14</Value></_State>
+						</_States></Entity>
+						
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

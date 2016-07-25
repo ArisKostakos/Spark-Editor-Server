@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.header.ATabHeaderContainer">
+	<_States>
+		<_State id="height"><Value>50</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="headerTheme"><Value>left</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(56, 192, 182)</Value></_State>
+	</_States>
+</Entity>

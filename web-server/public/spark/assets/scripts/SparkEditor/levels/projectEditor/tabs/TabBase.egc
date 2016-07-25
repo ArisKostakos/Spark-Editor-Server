@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<State><Id>tabName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>tabTitle</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>tabType</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>TabManager</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>parameters</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>needsToExport</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Created Event</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//extend me...
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Show Event</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Mixed
+					it.stop();
+					
+					//extend me...
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Hide Event</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Mixed
+					it.stop();
+					
+					//extend me...
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Remove Event</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Mixed
+					it.stop();
+					
+					//extend me...
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Export XML</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Forced
+					
+					//extend me...
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Needs To Export</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Forced
+					
+					me.set('needsToExport', true);
+					
+					if (me.s('TabManager')!=null)
+						me.s('TabManager').fa('Needs To Export');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

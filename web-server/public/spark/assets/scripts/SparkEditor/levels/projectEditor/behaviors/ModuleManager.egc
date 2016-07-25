@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<State><Id>classEditors</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>behaviorEditors</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>modulesInit</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State> <!-- moduleName,Boolean, for whether we have created dependancies at least ONCE for a module -->
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>Create Dependancies For</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_modules;
+					Display.log('Create Dependancies For...');
+					
+					//By Name
+					if (it.s('moduleName')!='Undefined')
+					{
+						l_modules = [ it.s('moduleName') ];
+					}
+					else if (it.s('DBA')!=null)
+					{
+						l_modules = it.s('DBA')._inModules;
+						alert("Not sure if this works properly (untested.. because of the inModules query below!). But should work...");
+					}
+					else
+					{
+						Display.error("Did not find module to create dependancies for");
+						return;
+					}
+					
+					for (f_module of l_modules)
+					{
+						me.s('modulesInit').set(f_module, true);
+					}
+					
+					
+					//Create Class Objects (and Behavior Objects) Editors
+					if (it.s('createClassObjects'))
+					{
+						//Create Any BehaviorEditors found in this module (that are not already created)
+						me.s('Assets_DB').find({ _inModules: { $in: l_modules } ,componentType:'Behavior' }, function (err, objectBehaviorDBAs) {
+							
+							for (f_DBA of objectBehaviorDBAs)
+							{
+								if (!me.s('behaviorEditors').exists(f_DBA.name))
+								{
+									//Behavior Editor
+									var f_behaviorEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.BehaviorEditor');
+									me.addChild(f_behaviorEditor);
+									me.s('behaviorEditors').set(f_DBA.name, f_behaviorEditor);
+									f_behaviorEditor.fa('Import From DBA',{importDBA: f_DBA, createObject:false});
+								}
+								else
+								{
+									Display.log('Behavior Editor for ' + f_DBA.title + ' already exists.');
+								}
+							}
+							
+							
+							//Then, Create Any ClassEditors found in this module (that are not already created)
+							me.s('Assets_DB').find({ _inModules: { $in: l_modules } , componentType:'Class' }, function (err, objectClassDBAs) {
+								
+								for (f_DBA of objectClassDBAs)
+								{
+									if (!me.s('classEditors').exists(f_DBA.name))
+									{
+										//Class Editor
+										var f_classEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.ClassEditor');
+										me.addChild(f_classEditor);
+										me.s('classEditors').set(f_DBA.name, f_classEditor);
+										
+										//If it's a Level Class Editor, create its game Object
+										if (f_DBA.meta.type=="Level")
+											f_classEditor.fa('Import From DBA',{importDBA: f_DBA, createObject:true});
+										else
+											f_classEditor.fa('Import From DBA',{importDBA: f_DBA, createObject:false});
+											
+										
+										//If this is THE Project Class Editor, Store it
+										if (f_DBA.meta.type=="Project")
+											me.set('classEditor', f_classEditor);
+									}
+									else
+									{
+										Display.log('Class Editor for ' + f_DBA.title + ' already exists.');
+									}
+								}
+								
+								//We finished! do callback (this is a little weird, I know)
+								//function call back or Action callback? hmmm
+								if (it.s('jsCb')!=null)
+									it.s('jsCb')();
+							});
+						});
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>moduleName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>createClassObjects</Id><Type>Boolean</Type><Value>true</Value></State>
+				<State><Id>jsCb</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Create New Module</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Local variables
+					var l_moduleName = it.s('moduleName');
+					var l_addTag = it.s('addTag');
+					var l_addToProject = it.s('addToProject');
+					var l_feedback = it.s('feedback');
+					
+					
+					//Create the DBO
+					
+					//Tags
+					var l_tags = [me.s('Project_DBO').name]; //first tag is always the project name
+					
+					if (l_addTag!='No')
+						l_tags.push(l_addTag);
+						
+					var l_ModuleDBO = { name: l_moduleName, owner: me.s('Developer_DBO')._id, tags: l_tags, assets: null, requires: ["Std:Base","Std:Loader","Std:Ace","Std:Rest","Common"] };
+					
+					
+					//Add to Project (it's a boolean this time (so it only works for adding to CURRENT project) )
+					//In this case, the 'Add Module To Project' function is also responsible for doing the create new save command because of reasons
+					if (l_addToProject==true)
+					{
+						//Adding an existing Asset to a Module
+						me.fa('Add Module To Project', { Module_DBO: l_ModuleDBO} );
+					}
+					//else just add the save command.. and i'm guessing it would be added to a module later on.. don't use this case yet but it should work fine
+					//warning though... in this scenario, the l_ModuleDBO is not even ADDED to Nedb!!!!! sooo.. yeah.. i either have to make sure it is being added
+					//or even better.. remove this from here (the add save command).. and only do a save command if the asset is actually being ADDED to nedb!!
+					else
+					{
+						//Create Save Command
+						me.fa('Add Save Command', { command:{ type: "createModule", uploadsFile:true, module: l_ModuleDBO } } );
+					}
+					
+					//Otherwise, return to feedback
+					if (l_feedback!=null)
+					{
+						l_feedback.DBO=l_ModuleDBO;
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>moduleName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>addTag</Id><Type>Text</Type><Value>No</Value></State>
+				<State><Id>addToProject</Id><Type>Boolean</Type><Value>true</Value></State>
+				<State><Id>feedback</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Add Module To Project</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var module = it.s('Module_DBO');
+					
+					//If it doesn't exist in this module already
+					if (!Project.main.modules.exists(module.name) )
+					{
+						Display.log("module does not exist. adding..");
+						
+						//Create it in ModuleManager
+						ModuleManager.createNewModule(module.name,module.requires);
+						
+						//Get Project
+						var l_project = me.s('Project_DBO');
+						
+						//Actually Insert the DBO
+						me.fa('Insert Module', {module: module} );
+						
+						//Create Save Command
+						me.fa('Add Save Command', { command:{ type: "createModule", uploadsFile:false, module: module } } );
+						
+						//Create Save Command
+						me.fa('Add Save Command', { command:{ type: "addModuleToProject", uploadsFile: false, moduleName: module.name, moduleOwnerId: module.owner, moduleProjectName: l_project.name, projectName: l_project.name, projectOwnerId: l_project.owner } } );
+					}
+					else
+					{
+						Display.log("Module Already exists in this Project. Ignoring Add...");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>Module_DBO</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+				
+		<Action>
+			<Id>Insert Module</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Module
+					var l_module = it.s('module');
+					
+					//Insert to DB
+					me.s('Modules_DB').insert(l_module);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>module</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.VGroup">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<State><Id>bar</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>container</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>activeWindow</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<Action>
+			<Id>SelectWindow</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('SelectWindow');
+					
+					var activeWindow = me.getState('activeWindow');
+					var windowName = me.getAction('SelectWindow').getState('windowName');
+					
+					if (me.getState('name')=='Viewport Tab')
+					{
+						var view = Logic.getEntityByName('Editor Viewport View');
+						
+						if (windowName=="Scene")
+						{
+							Display.error('Changing To Scene');
+
+							view.setState('height','25');
+							
+							Logic.getEntityByName('ViewportTabSceneHeader').startAction('Selected'); //quick fix
+							Logic.getEntityByName('ViewportTabEventHeader').startAction('Unselected'); //quick fix
+						}
+						else if (windowName=="Events")
+						{
+							Display.error('Changing To Events');
+
+							view.setState('height','100%');
+							
+							Logic.getEntityByName('ViewportTabSceneHeader').startAction('Unselected'); //quick fix
+							Logic.getEntityByName('ViewportTabEventHeader').startAction('Selected'); //quick fix
+						}
+					}
+					else if (me.getState('name')=='Bottom Tab')
+					{
+						var bottomStageArea = Logic.getEntityByName('Bottom');
+						var expanded = me.s('expanded');
+						
+						if (windowName=="Chat")
+						{
+							Display.error('Toggle Chat');
+							Display.error('stageArea: ' + bottomStageArea.s('name'));
+							if (expanded)
+							{
+								bottomStageArea.setState('height','20');
+								me.setState('expanded',false);
+							}
+							else
+							{
+								bottomStageArea.setState('height','210');
+								me.setState('expanded',true);
+								
+								me.s('chatWindow').setState('unreadMessages',0);
+								me.s('chatWindow').forceAction('RefreshUnreadMessages');
+							}
+							
+							/*
+							Logic.getEntityByName('ViewportTabSceneHeader').startAction('Selected'); //quick fix
+							Logic.getEntityByName('ViewportTabEventHeader').startAction('Unselected'); //quick fix
+							*/
+						}
+					}
+					
+					//Crappy Window Selection
+					if (activeWindow!=null)
+					{
+						activeWindow.setState('display','none');
+						activeWindow.setState('width','0');
+						activeWindow.setState('height','0');
+						//me.getState('container').removeChild(activeWindow);
+						//Display.error('Removing: ' + activeWindow.getState('name'));
+					}
+				
+					//really crappy..
+					var l_window = Logic.getEntityByName(windowName + ' Window');
+					if (l_window!=null)
+					{
+						l_window.setState('display','inline');
+						l_window.setState('width','100%');
+						l_window.setState('height','100%');
+						//me.getState('container').addChild(l_window);
+						//Display.error('Adding: ' + l_window.getState('name'));
+					}
+					
+					me.setState('activeWindow',l_window);
+					
+					Display.invalidateLayout();
+					
+					Display.error("Select Window Finished");
+				</Script>
+			</Scripts>
+			<_States>
+				<State><Id>windowName</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</_States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tree.Child">
+	<_States>
+		<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- Either a ClassEditor or a BehaviorEditor or an InstanceEditor -->
+	</_States>
+	
+	<_Actions>
+		<!-- Expand -->
+		<_Action id="Expand">
+			<_Scripts>
+				<Script>
+					me.addChild( me.s('childrenContainerObject') );
+					
+					Display.invalidateLayout();
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<!-- Collapse -->
+		<_Action id="Collapse">
+			<_Scripts>
+				<Script>
+					me.removeChild( me.s('childrenContainerObject') );
+					
+					Display.invalidateLayout();
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<!-- PreConstructor -->
+		<_Action id="PreConstructor">
+			<_Scripts>
+				<Script>
+					//Link To Editor
+					me.fa('Link To Editor');
+					
+					//Create the Children Container Here (dont ask why..)
+					var l_childrenContainer = Logic.create('std.display.VGroup');
+					l_childrenContainer.set('width','100%');
+					l_childrenContainer.set('gap',1);
+					me.set('childrenContainerObject', l_childrenContainer);
+					
+					if (me.s('expanded')==true)
+						me.addChild(l_childrenContainer);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Update</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Find my corresponding editor (Class/Behavior/Instance)
+					me.fa('Link To Editor'); //if not already done (do a check)
+					
+					//Populate Class Children
+					me.fa('Populate Class Children'); //if not already done (do a check)
+					
+					//Populate Behavior Children
+					me.fa('Populate Behavior Children'); //if not already done (do a check)
+					
+					//Populate Instance Children
+					me.fa('Populate Instance Children'); //if not already done (do a check)
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Populate Class Children</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//override me
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Populate Behavior Children</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Same everywhere
+					var l_editor = me.s('editor');
+					
+					//Only Classes can have behaviors
+					if (l_editor.s('editorType')=="Class")
+					{
+						//for all behavior editors
+						var iterator = l_editor.s('behaviorEditors').iterator();
+						while (iterator.hasNext())
+						{
+							var behaviorEditor = iterator.next();
+							var l_DBA = behaviorEditor.s('target_DBA');
+							
+							me.fa('Add Child', { childId:l_DBA.name, childTitle:l_DBA.title, childType:"Behavior", child_DBA:l_DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.BehaviorChild' } );
+						}
+						
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Populate Instance Children</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//override me
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<Id>Link To Editor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Find correct hash name to look for the editor
+					var l_editorHashName;
+					
+					//Find the editor for this Child (it will be either a ClassEditor or a BehaviorEditor or later an InstanceEditor)
+					if (me.s('childType')=="Behavior") 
+						l_editorHashName='behaviorEditors';
+					else
+						l_editorHashName='classEditors';
+					
+					//Link me to the editor
+					var l_editor = me.set('editor', e('Project Editor').s(l_editorHashName).get( me.s('childId') ) ); 
+					
+					//If successfull, also link the editor to me
+					if (l_editor!=null)
+						l_editor.set('projectChild', me);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<!--<Action>
+			<Id>Update Child</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//For Me
+					if (me.s('editor')==null)
+						me.fa('Link To Editor');
+						
+					//For Children
+					var l_iterator = me.s('children').iterator();
+					while (l_iterator.hasNext())
+					{
+						var w_child = l_iterator.next();
+						w_child.fa('Update Child');
+					}
+				</Script>
+			</Scripts>
+		</Action>-->
+	</_Actions>
+		
+		
+	<Form>
+		<Space>
+			<Entities>
+				<!-- This Child -->
+				<Entity extends="std.display.Group">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>20</Value></_State>
+					</_States>
+				
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('displayObject',me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+						
+					<Form><Space><Entities>
+						<!-- Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>23</Value></_State>
+								<_State id="fontSize"><Value>22px</Value></_State>
+								<_State id="fontColor"><Value>white</Value></_State>
+								<_State id="textAlign"><Value>center</Value></_State>
+								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+							</_States>
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											me.set('text', parent.parentEntity.s('childTitle') );
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

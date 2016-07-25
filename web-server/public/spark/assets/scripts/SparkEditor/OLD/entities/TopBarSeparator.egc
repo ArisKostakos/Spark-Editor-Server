@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>2</Value></_State>
+		<_State id="height"><Value>85%</Value></_State>
+		<_State id="borderRadius"><Value>12px</Value></_State>
+		<_State id="backgroundColor"><Value>rgba(0,0,0,0.1)</Value></_State>
+	</_States>
+</Entity>

@@ -1,0 +1,96 @@
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<State><Id>statesExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>stateKind</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>stateId</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>stateType</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>inputObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<Form><Space><Entities>
+		
+	</Entities></Space></Form>
+
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<Action>
+			<Id>Construct State</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Divider
+					if (it.s('createDivider'))
+					{
+						var l_divider = Logic.create('std.display.Div');
+						l_divider.set('width', '2');
+						l_divider.set('height', '65%');
+						l_divider.set('backgroundColor', 'rgb(23,41,56)');
+						
+						me.addChild(l_divider);
+					}
+					
+					//Container
+					var l_stateContainer = Logic.create('std.display.VGroup');
+					l_stateContainer.set('width', '100');
+					l_stateContainer.set('height', '100%');
+					l_stateContainer.set('paddingTop', 4);
+					l_stateContainer.set('paddingLeft', 4);
+					l_stateContainer.set('paddingRight', 4);
+					me.addChild(l_stateContainer);
+					
+					//Get State Object
+					var l_stateObject = it.s('stateObject');
+					
+					//Store Id
+					me.set('stateId', l_stateObject.id);
+					
+					//Store Kind
+					me.set('stateKind', l_stateObject.kind);
+					
+					//Label
+					var l_text = Logic.create('std.display.Text');
+					l_text.set('width','100%');
+					l_text.set('height','25');
+					l_text.set('textAlign','center');
+					l_text.set('text',l_stateObject.id);
+					
+					l_stateContainer.addChild(l_text);
+					
+					//Input
+					var l_input = Logic.create('SparkEditor.levels.projectEditor.components.explorers.StateExplorerInput');
+					l_input.set('statesExplorer', me.s('statesExplorer'));
+					l_input.set('stateExplorer', me);
+					l_input.set('text',l_stateObject.value);
+					me.set('inputObject', l_input);
+					l_stateContainer.addChild(l_input);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>stateObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>createDivider</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Update State</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					Display.de("Changing value to: " + it.s('state').value);
+					me.s('inputObject').set('text', it.s('state').value);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>state</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.HGroup">
+	<_States>
+		<State><Id>label</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>value</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>12</Value></_State>
+	</_States>
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Label Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>40%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>12px</Value></_State>
+					<_State id="fontColor"><Value>rgb(0, 162, 232)</Value></_State>
+					<_State id="textAlign"><Value>right</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					me.setState('text',parent.getState('label'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Value Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>60%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>12px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>left</Value></_State>
+					<_State id="selectable"><Value>true</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState('value',me);
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

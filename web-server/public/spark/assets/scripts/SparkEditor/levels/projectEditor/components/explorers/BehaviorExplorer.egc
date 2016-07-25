@@ -1,0 +1,82 @@
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<State><Id>parentEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>descriptor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>statesExplorerTab</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<Form><Space><Entities>
+
+	</Entities></Space></Form>
+
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<Action>
+			<Id>Forced Constructor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Create Descriptor
+					var l_descriptor = Logic.create("SparkEditor.levels.projectEditor.components.explorers.BehaviorExplorerDescriptor");
+					l_descriptor.set('parentBehaviorExplorer', me);
+					me.set('descriptor', l_descriptor);
+					me.addChild(l_descriptor);
+					
+					//Initialize
+					l_descriptor.fa('Forced Constructor');
+					
+					
+					//get DBA
+					var l_DBA = me.s('parentEditor').s('target_DBA');
+				
+					//Create it
+					var l_tab = Logic.create('SparkEditor.levels.projectEditor.tabs.statesExplorer.Tab');
+					
+					//Set it up
+					l_tab.setState('tabName', l_DBA.name);
+					l_tab.setState('tabTitle', l_DBA.title);
+					//l_tab.setState('TabManager',me);
+					l_tab.setState('parameters', { editor:me.s('parentEditor') } );
+					
+					//Call 'Created Event' For the Tab
+					l_tab.fa('Created Event');
+					
+					//Store
+					me.set('statesExplorerTab', l_tab);
+					
+					//adding this child here (although we will lose it, other editors will steal this tab)
+					//me.addChild(l_tab); //so, don't bother..
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Show</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_tab = me.s('statesExplorerTab');
+					
+					//Getting Tab Child back
+					me.removeChild(l_tab);
+					me.addChild(l_tab);
+					
+					//Letting it know that my editor called it
+					l_tab.set('openedFromEditor', me.s('parentEditor'));
+					
+					l_tab.fa('Update States');
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

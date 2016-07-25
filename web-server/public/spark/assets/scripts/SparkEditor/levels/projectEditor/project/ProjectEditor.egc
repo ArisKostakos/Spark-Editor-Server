@@ -1,0 +1,1866 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.core.Base">
+	<_States>
+		<_State id="name"><Value>Project Editor</Value></_State>
+			
+			
+		<!--DEPRECATED-->
+		<State><Id>ClassObjectsDBbyNameHash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>ClassObjectsDBbyTitleHash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>ModuleAssetsDBbyAssetIdHash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>ModuleAssetsDBbyNameHash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+	
+		<State><Id>ConditionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>ActionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>ExpressionAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>BehaviorAssetsDBbyTargets</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+	
+		<State><Id>InheritanceHashByName</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State> <!-- Only for Class Objects? -->
+		<State><Id>StatesHashByName</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State> <!-- Only for Class Objects? -->
+		<State><Id>MStatesHashByName</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State> <!-- Only for Class Objects? -->
+	
+		<State><Id>classObjectsCount</Id><Type>Integer</Type><Value>0</Value></State>
+		<!--END OF DEPRECATED-->
+	
+		<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>firstSceneFound</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>classEditor</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- The Class Editor of the Project DBA -->
+	
+		<State><Id>modulesFound</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- temp modules array used only for initialization -->
+	
+		<!--DBA Objects (database Assets I should distinguish between DBO of Asset Types and DBO without. cause all DB Asset types should be strongly linked to an actual File,
+			others no. soo....grmf DBA for Assets DBO for rest. so this needs to change)-->
+		<State><Id>Developer_DBO</Id><Type>Dynamic</Type><Value>e('Spark Editor').s('developerAsset')</Value></State>
+		<State><Id>User_DBO</Id><Type>Dynamic</Type><Value>e('Spark Editor').s('userAsset')</Value></State>
+		<State><Id>Project_DBO</Id><Type>Dynamic</Type><Value>e('Spark Editor').s('project_dbo')</Value></State>
+	
+		<!--Local Databases-->
+		<State><Id>Developers_DB</Id><Type>Dynamic</Type><Value>new Nedb()</Value></State>
+		<State><Id>Modules_DB</Id><Type>Dynamic</Type><Value>new Nedb()</Value></State>
+		<State><Id>LibraryCollections_DB</Id><Type>Dynamic</Type><Value>new Nedb()</Value></State>
+		<State><Id>Assets_DB</Id><Type>Dynamic</Type><Value>new Nedb()</Value></State>
+	
+		<!--Local Quick and Dirty Hashes (to avoid asychronous calls for simple things..)-->
+		<State><Id>Developers_Hash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State>
+		<State><Id>Assets_Hash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State> <!-- by asset.name  WARNING: These assets will not be updated, use NedB for updated ones-->
+		<State><Id>Assets_IdHash</Id><Type>Dynamic</Type><Value>new StringMap()</Value></State> <!-- by asset._id  WARNING: These assets will not be updated, use NedB for updated ones-->
+	</_States>
+	
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.JobScheduler"/>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.ModuleManager"/>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.ExportManager"/>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.SaveManager"/>
+	</Extends>
+	
+	<Form><Space><Entities>
+		<Entity extends="SparkEditor.levels.projectEditor.project.ProjectManager"/>
+		<Entity extends="SparkEditor.levels.projectEditor.project.DragAndDropManager"/>
+	</Entities></Space></Form>
+
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Add Library Tab
+					e('Left Tab Manager').forceAction('Add Tab',{name:"Library",title:"Library", type:"library", parameters:null});
+					
+					//Add Project Tab
+					e('Left Tab Manager').forceAction('Add Tab',{name:"Project",title:"Project", type:"project", parameters:null});
+					
+					//Show Library Tab
+					e('Left Tab Manager').startAction('Show Tab',{name:"Library"});
+					
+					//Get Project DBA
+					me.setState('target_DBA',e('Spark Editor').s('project_dbo'));
+					
+					//Load Project
+					me.startAction('Load Project');
+				</Script>
+			</_Scripts>
+		</_Action>
+
+		<Action>
+			<Id>Load Project</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					//Request AND Create Library Categories
+					me.s('jobs').push('Comms.request("lobby.projectHandler.getProjectLibraryCollections", {}, "Project Library Collections Request",me)');
+					
+					//Request Modules and their assets BEFORE INCLUDE QUERY INCLUDES PLEASE..
+					//me.s('jobs').push('Comms.request("lobby.projectHandler.getProjectModulesPopulated", {}, "Project Modules Request",me)');
+					me.s('jobs').push('Comms.request("lobby.projectHandler.getProjectModules", {}, "Project Modules Request 2",me)');
+					
+					//Populate Them
+					me.s('jobs').push('me.forceAction("Populate Modules")');
+					
+					//THESE TWO ARE OF LIBRARY INCLUDES
+					//Request All Assets with tag[0] of this project
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"image"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"model"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"sound"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"data"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfTypeAndComponentType", {type:"script", componentType:"Class"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfTypeAndComponentType", {type:"script", componentType:"Behavior"}, "Project Assets Request",me)');
+					
+					//me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOther", {}, "Project Assets Request",me)');
+					
+					//Request All ACE Assets (later on, do proper include query stuff instead of this and the one above) ( I ALSO USE THIS FOR LIB CLASS OBJECTS NOW)
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectIncludeAssets", {}, "ACE Assets Request",me)');
+					
+					//Request All developer references found in ALL Assets
+					me.s('jobs').push('me.forceAction("Request Asset Owners")');
+					
+					//Distribute Assets to libraries
+					me.s('jobs').push('me.forceAction("Distribute Assets in Library Tab")');
+					
+					//Construct All Modules (so they can be loaded, either from ModuleManager, or LevelManager)
+					me.s('jobs').push('me.forceAction("Construct All Project Modules")');
+					
+					//Load Main Module (of the project)
+					me.s('jobs').push('me.forceAction("Load Main Module")');
+					
+					//Create Project Tree
+					me.s('jobs').push('me.forceAction("Create Project Tree")');
+					
+					//Load initLevel
+					me.s('jobs').push('me.forceAction("Load Init Level")');
+					
+					//Log DataBase
+					//me.s('jobs').push('me.forceAction("Log DataBase")');
+					
+					//END
+					me.s('jobs').push('me.forceAction("END")');
+					me.forceAction('Next');
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<Id>RegisterInheritanceMany</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.stopAction('RegisterInheritanceMany');
+					
+					var iterator = it.getState('assets').iterator();
+					while (iterator.hasNext())
+					{
+						var classObject = iterator.next();
+						me.getAction('RegisterInheritance').setState('asset',classObject);
+						me.forceAction('RegisterInheritance');
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+			
+		<Action>
+			<Id>RegisterInheritance</Id> <!-- And States.. -->
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					function parseGameEntityFile(fileName, mapEntry, root)
+					{
+						//The Parsing here can be optimized by storing the parses somewhere, and checking there first
+						Display.error("Parsing: " + fileName);
+						
+						var asset_xml = Xml.parse(Assets.getFile(fileName).toString()).firstElement();
+						
+						//Store Main Extends
+						if (asset_xml.exists('extends'))
+						{
+							var extendFileId = asset_xml.get('extends');
+							mapEntry.set(extendFileId,false); //false means, NOT a behavior
+							
+							parseGameEntityFile(StringTools.replace(extendFileId,".","/") + ".egc", mapEntry, false);
+						}
+						
+						
+						
+						
+						//Store Extends Classes (Behaviors)
+						var extendEntities = Logic.xml_entity_getExtendsEntityNames(asset_xml);
+						for (extendEntity of extendEntities)
+						{
+							mapEntry.set(extendEntity,root); //true means, it's a behavior
+							parseGameEntityFile(StringTools.replace(extendEntity,".","/") + ".egc", mapEntry, false);
+						}
+					}
+					
+					//forced
+					
+					me.stopAction('RegisterInheritance'); //sometimes forced, sometimes not. (mixed)
+					
+					//Get project_dbo
+					var asset = it.getState('asset');
+					
+					
+					//Get the asset's xml
+					var assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+					
+					
+					//DEEP INHERITANCE
+					var InheritanceHashByName = me.getState('InheritanceHashByName');
+					
+					//Create New Entry (if previous exists, ditch it)
+					var mapEntry = new StringMap();
+					InheritanceHashByName.set(asset.name,mapEntry);
+					
+					//Recursive Parse
+					parseGameEntityFile(assetId,mapEntry,true);
+					
+					
+					//LOG
+					Display.error("Asset: " + asset.name);
+					var keys = mapEntry.keys();
+					while (keys.hasNext())
+					{
+						var dep_entry = keys.next();
+						Display.error("Dependancy: " + dep_entry + ", isBehavior: " + mapEntry.get(dep_entry));
+					}
+					
+					//Re-parse (ouch..)
+					var asset_xml = Xml.parse(Assets.getFile(assetId).toString()).firstElement();
+					
+					//SHALLOW STATES
+					var StatesHashByName = me.getState('StatesHashByName');
+					//Create New Entry (if previous exists, ditch it)
+					var statesMapEntry = Logic.xml_getAllStates(asset_xml,true); //Store States
+					StatesHashByName.set(asset.name,statesMapEntry);
+					
+					//SHALLOW MSTATES
+					var MStatesHashByName = me.getState('MStatesHashByName');
+					//Create New Entry (if previous exists, ditch it)
+					var mstatesMapEntry = Logic.xml_getAllMStates(asset_xml,true); //Store MStates
+					MStatesHashByName.set(asset.name,mstatesMapEntry);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<!-- Run this everytime you want to make sure you have all developers populated from Assets_DB -->
+		<Action>
+			<Id>Request Asset Owners</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					Display.dl("Request Asset Owners");
+					
+					//Find all owners from all the assets I got!
+					me.s('Assets_DB').find({}, function (err, assets) {
+						var l_developersHash = me.s('Developers_Hash');
+						var l_developerIds = [];
+						for (asset of assets)
+						{
+							if (l_developersHash.exists(asset.owner)==false)
+							{
+								l_developersHash.set(asset.owner,null); //will populate it on the comm request below
+								l_developerIds.push(asset.owner);
+							}
+						}
+						
+						if (l_developerIds.length>0)
+							Comms.request("lobby.developerHandler.populateDevelopers", {developerIds: l_developerIds}, "Populate Developers Request",me);
+						else
+							me.forceAction('Next');
+					});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Load Main Module</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					ModuleManager.successSignal.connect(function () {
+						//Since Main Requires 'Levels' Module to be loaded, both Modules are now loaded. Create Dependancies for them (ClassEditors, BehaviorEditors)
+						
+						//Some callback hell, since Create Dependancies For is asynchronous (damn you nedb..)
+						me.fa('Create Dependancies For',{ moduleName:'Main', DBA:null, createClassObjects:true, jsCb:function () {
+							me.fa('Create Dependancies For',{ moduleName:'Levels', DBA:null, createClassObjects:true, jsCb:function () {
+								//Proceed
+								me.forceAction('Next');
+							}});
+						}});
+					}).once();
+					
+					//Load Main Module
+					ModuleManager.loadModule('Main');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Create Project Tree</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Get Project Tree
+					var pTree = e('Project Tree');
+					
+					//Find Project
+					me.s('Assets_DB').findOne({'meta.type':"Project", componentType:"Class"}, function (err, projectDB) {
+						pTree.fa('Add Child', { childId:projectDB.name, childTitle:projectDB.title, childType:"Project", child_DBA:projectDB, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.ProjectChild' } );
+						
+						//Expand the Project Child
+						pTree.s('children').get(projectDB.name).fa('Expand');
+						
+						//Proceed
+						me.forceAction('Next');
+					});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Load Init Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Run Project
+					//e('Project Manager').fa('Run Preview');
+					//return;
+				
+					//Project Class Editor's XML
+					var l_projectXml = me.s('classEditor').s('target_XML');
+				
+					//Get init Level Url
+					var initLevelUrl = Logic.xml_getMState(l_projectXml, "initLevelUrl", true);
+					
+					//Load it
+					if (initLevelUrl!=null)
+					{
+						//Get Init Level Class Editor
+						var l_levelClassEditor = me.s('classEditors').get(initLevelUrl.value);
+						
+						//Open Level
+						l_levelClassEditor.fa('Open Edit Tab');
+						
+						//Proceed (don't wait for level to load or anything.. careful not to use levelManager after this proceed, it will be busy loading the initLevel)
+						me.forceAction('Next');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Populate Modules</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					//forced
+					
+					//Recursive
+					
+					var l_modulesFound = me.s('modulesFound');
+					var l_index = it.s('index');
+					
+					if (l_index<l_modulesFound.length)
+					{
+						Comms.request("lobby.projectHandler.populateModule", {moduleId:l_modulesFound[l_index]._id}, "Populate Module Request",me);
+						it.addToState('index', 1); //for next time
+					}
+					else
+					{
+						//Proceed
+						me.forceAction('Next');
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>index</Id><Type>Integer</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Construct All Project Modules</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Modules Found in this project
+					me.s('Modules_DB').find({}, function (err, modules) {
+						//For Every Module that this project requires
+						for (module of modules)
+						{	
+							//Create it in ModuleManager
+							ModuleManager.createNewModule(module.name,module.requires);
+						}
+					});
+					
+					
+					//Get Assets Found in this project (required by all modules we previously created)
+					//The reason I put assets is a new DB is that I think having a shallow Assets DB will help.. maybe not.. but i dont mind it.. i think it will be useful for other things
+					//Also, remember..Assets_DB has both module assets and library assets from includes.. it's all here..
+					me.s('Assets_DB').find({}, function (err, assets) {
+					
+						var l_developersHash = me.s('Developers_Hash');
+					
+						//For Every Asset (from include or from modules)
+						for (asset of assets)
+						{	
+							//If it's from modules
+							if (asset._inModules.length>0)
+							{
+								//Construct Asset (reference)
+								var l_assetId=asset.type+':'+asset.name;
+								var l_assetUrl = asset.dir+'/'+asset.fileName+'.'+asset.fileExtension;
+								var l_assetLocation = l_developersHash.get(asset.owner).name;
+								
+								var l_assetReference = ModuleManager.createNewAsset(l_assetId, l_assetUrl, asset.type, null, l_assetLocation, Std.string(asset.fileSize), null, null);
+								
+								//For every moduleName that this asset is included in
+								for (moduleName of asset._inModules)
+								{
+									//Construct Asset (reference) and add it to Module (reference)
+									//Add it to appropriate Module
+									ModuleManager.addAssetToModule(l_assetReference,Project.main.modules.get(moduleName));
+								}
+							}
+						}
+						
+						
+						//Next Job
+						me.forceAction('Next');
+					});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<!-- This Action assumes that the passed DBA already exists in AssetsDB (or is at least created and it adds it itself) and simply doesn't care about DBA's target file-->
+			<Id>Add Asset To Module</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var asset = it.s('Asset_DBA');
+					Display.de('Adding something to module: ' + it.s('ModuleName'));
+					
+					//Get Module
+					var l_module = Project.main.modules.get(it.s('ModuleName'));
+					
+					//Get Asset realName (or localName... flambeName... u know..)
+					var l_assetId=asset.type+':'+asset.name;
+					
+					//If it doesn't exist in this module already
+					if (!l_module.assets.exists(l_assetId))
+					{
+						Display.log("asset does not exist. adding..");
+						
+						//Construct Asset Entry(reference)
+						var l_assetUrl = asset.dir+'/'+asset.fileName+'.'+asset.fileExtension;
+						var l_assetLocation = me.s('Developers_Hash').get(asset.owner).name;
+						var l_assetReference = ModuleManager.createNewAsset(l_assetId, l_assetUrl, asset.type, null, l_assetLocation, Std.string(asset.fileSize), null, null);
+						
+						//Add it to Module
+						ModuleManager.addAssetToModule(l_assetReference,l_module);
+						
+						//Mark DBA added to module and update it
+						if (it.s('insertDBA')==false)
+						{
+							Display.log("Updating Asset " + asset.name);
+							me.s('Assets_DB').update({ _id: asset._id }, { $push: { _inModules: it.s('ModuleName') } }, {}); //is this enough?
+						}
+						//Actually Insert the DBA
+						else
+						{
+							Display.log("Insterting Asset " + asset.name + " to " + it.s('ModuleName'));
+							asset._inModules.push(it.s('ModuleName')); //is this enough?
+							me.fa('Insert Asset', {asset: asset} );
+							
+							//In this case, we are also responsible of doing the create new save command
+							
+							//Create Save Command
+							me.fa('Add Save Command', { command:{ type: "createAsset", uploadsFile:true, asset: asset } } );
+						}
+						
+						//Create Save Command
+						me.fa('Add Save Command', { command:{ type: "addAssetToModule", uploadsFile:false, assetName: asset.name, assetOwnerId: asset.owner, assetType: asset.type, moduleName: it.s('ModuleName'), moduleOwnerId: me.s('Developer_DBO')._id /*i guess with will do for now*/, moduleProjectName: me.s('Project_DBO').name } } );
+					}
+					else
+					{
+						Display.log("Asset Already exists in this Module. Ignoring Add...");
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>Asset_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>ModuleName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>insertDBA</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<!-- This action created a new DBA and a new File. It only works for Script types.
+			<!-- A new Asset is always created FOR a specific level (my thoughts 2 weeks later: or a specific module?? I hope so.. there was something.. i fixed it.. it should be for Modules now) -->
+			<Id>Create New Asset</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Local variables
+					var l_fileName = it.s('fileName');
+					var l_title = it.s('title');
+					var l_dir = it.s('dir');
+					var l_addTag = it.s('addTag');
+					var l_addToModule = it.s('addToModule');
+					var l_feedback = it.s('feedback');
+					
+					var l_assetName = StringTools.replace(l_dir ,"/",".") + '.' + l_fileName;
+					
+					
+					//Create the DBA's target file
+					Assets.cacheScript(l_assetName,it.s('content'));
+					
+					//Create the DBA
+					
+					//Tags
+					var l_tags = [me.s('Project_DBO').name]; //first tag is always the project name
+					
+					if (l_addTag!='No')
+						l_tags.push(l_addTag);
+						
+					var l_DBA = { 	name: l_assetName, owner: me.s('Developer_DBO')._id, type: 'script', dir: l_dir, fileName: l_fileName, fileExtension: 'egc', 
+									title: l_title, fileSize: it.s('content').length, componentType: it.s('componentType'), tags: l_tags, meta:it.s('meta'), _inModules: [] };
+					
+					//Add to Module (if it's different than 'No')
+					//In this case, the 'Add Asset To Module' function is also responsible for doing the create new save command because of reasons
+					if (l_addToModule!='No')
+					{
+						//Adding an existing Asset to a Module
+						me.fa('Add Asset To Module', { Asset_DBA: l_DBA, ModuleName: l_addToModule, insertDBA: true} );
+					}
+					//else just add the save command.. and i'm guessing it would be added to a module later on.. don't use this case yet but it should work fine
+					//warning though... in this scenario, the l_DBA is not even ADDED to Nedb!!!!! sooo.. yeah.. i either have to make sure it is being added
+					//or even better.. remove this from here (the add save command).. and only do a save command if the asset is actually being ADDED to nedb!!
+					else
+					{
+						//Create Save Command
+						me.fa('Add Save Command', { command:{ type: "createAsset", uploadsFile:true, asset: l_DBA } } );
+					}
+					
+					//Otherwise, return to feedback
+					if (l_feedback!=null)
+					{
+						l_feedback.DBA=l_DBA;
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>fileName</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>title</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>content</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>dir</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>componentType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>addTag</Id><Type>Text</Type><Value>No</Value></State>
+				<State><Id>meta</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>addToModule</Id><Type>Text</Type><Value>No</Value></State>
+				<State><Id>feedback</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<!-- Updates the actual content File of a DBA. It only works for Script types. -->
+			<Id>Update Asset Content</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get DBA
+					var l_DBA = it.s('DBA');
+					
+					//Get content
+					var l_content = it.s('content');
+					
+					//Cache new Content
+					Assets.cacheScript(l_DBA.name, l_content);
+					
+					//Update Asset's Filesize
+					l_DBA.fileSize = l_content.length;
+					
+					//Save the change to Nedb
+					me.s('Assets_DB').update({ _id: l_DBA._id },  { $set: { fileSize: l_DBA.fileSize } }, {});
+					
+					//Create Save Command
+					e('Project Editor').fa('Add Save Command', { command:{ type: "updateAsset", uploadsFile:true, asset:l_DBA, assetName: l_DBA.name, assetOwnerId: l_DBA.owner, assetType: l_DBA.type} } );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>content</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<!-- Is this a thing I need to do??? maybe... -->
+			<Id>Update Asset Field</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//pars will be DBA, field, value, ...
+					
+					//then we need to update DBA, mark it to be uploaded(add save command), etc..
+					
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>field</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>value</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Insert Asset</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Asset
+					var l_asset = it.s('asset');
+					
+					//Insert to DB
+					me.s('Assets_DB').insert(l_asset);
+					
+					//Insert To Hash
+					me.s('Assets_Hash').set(l_asset.name, l_asset);
+					
+					//Insert To IdHash
+					me.s('Assets_IdHash').set(l_asset._id, l_asset);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		
+		<Action>
+			<Id>Log DataBase</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					console.log('Developer_DBO',me.s('Developer_DBO'));
+					console.log('User_DBO',me.s('User_DBO'));
+					console.log('Project_DBO',me.s('Project_DBO'));
+					
+					me.s('Modules_DB').find({}, function (err, docs) {
+						console.log("Modules_DB " + docs.length + ": ", docs);
+					});
+					
+					me.s('Assets_DB').find({}, function (err, docs) {
+						console.log("Assets_DB " + docs.length + ": ", docs);
+					});
+					
+					
+					console.log("Project.modules",Project.getModules());
+					
+					//Next Job
+					me.forceAction('Next');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Distribute Assets in Library Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Send some Assets to Library Collections
+					//me.s('Assets_DB').find({ $or: [{ type: 'image' }, { type: 'sound' }, { type: 'script', $or: [{componentType:'Class'}, {componentType:'Behavior'}] }] }, function (err, assetsFound) {
+					me.s('Assets_DB').find({ }, function (err, assetsFound) {
+						//Send them
+						if (err==null)
+							e('Editor Library Collections').startAction('ImportRequestAssetsDb',{assets:assetsFound});
+						else
+							Display.error("Problem with Query: " + err);
+					});
+					
+					//Next Job (don't wait for the callback to keep going..)
+					me.forceAction('Next');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Distribute Assets in Project Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var moduleAssets = me.s('ModuleAssetsDBbyNameHash');
+					
+					//Send it to Project Collections
+					e('Editor Project Collections').startAction('ImportRequestAssetsDb',{assets:moduleAssets});
+					
+					//Next Job
+					me.forceAction('Next');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>END</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					Display.log('END!');
+					
+					me.forceAction('Next');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Create New Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.s('Assets_DB').count({ _inModules: [ 'Levels' ] }, function (err, r_levelsNum) {
+						
+						var l_numOfLevels = r_levelsNum;
+						var l_moduleName = "Level"+Std.string(l_numOfLevels);
+						var l_levelDir = me.s('Project_DBO').name+"/levels/level"+Std.string(l_numOfLevels);
+						var l_levelNamePath = me.s('Project_DBO').name+".levels.level"+Std.string(l_numOfLevels);
+						
+						//Create the module
+						var l_createModuleFeedback={};
+						me.fa('Create New Module', {moduleName: l_moduleName, addTag:"No", addToProject:true, feedback:l_createModuleFeedback} );
+						
+						
+						////LEVEL.EGC
+						
+						//Load and fork (don't worry, if already loaded, it won't load twice)
+						var l_classToFork = me.s('Assets_Hash').get('lib.classes.level.Level');
+						Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+							//Create New Asset
+							
+							//Everything Loaded. Keep going
+							
+							//////CHANGES TO FILE
+							
+							
+							//Parse File
+							var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+							
+							//for each [entity] in [form.space.entities]
+							var l_entitiesNode = Logic.xml_getElements(l_newXml,["Form","Space","Entities"]);
+							var l_entities = l_entitiesNode.elementsNamed('Entity');
+							
+							var l_entriesNum = 0;
+							
+							//Go through all children of the scene XML
+							while (l_entities.hasNext())
+							{
+								var f_entityChildXml = l_entities.next();
+								
+								l_entriesNum+=1;
+								
+								if (l_entriesNum==1)//Assumes first entry in this egc Level master is ModuleReference
+								{
+									Logic.xml_entity_updateMState(f_entityChildXml, { id:"url", value: l_moduleName }, true); //Change Url of Module Reference
+								}
+								else if (l_entriesNum==2)	//and that second is ViewReference
+								{
+									Logic.xml_entity_updateMState(f_entityChildXml, { id:"url", value: l_levelNamePath+".View" }, true); //Change Url of View Reference
+								}
+								else if (l_entriesNum==3)	//and that third is CameraReference
+								{
+									Logic.xml_entity_updateMState(f_entityChildXml, { id:"url", value: l_levelNamePath+".Camera" }, true); //Change Url of Camera Reference
+								}
+							}
+							
+							
+							//////CHANGES TO META
+							
+							//Create meta
+							var l_meta = Logic.copyObject(l_classToFork.meta);
+							l_meta.createdForProject = me.s('Project_DBO').name;
+							l_meta.master = false;
+							
+							
+							
+							//////CHANGES TO DBA
+							
+							var l_addTag = l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+							var l_dir = l_levelDir;
+							
+							//Create our new Level.egc
+							var l_feedback_level={};
+							me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: "Level "+Std.string(l_numOfLevels), content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:"Levels", feedback:l_feedback_level } );
+							
+							
+							
+							////VIEW.EGC
+						
+							//Load and fork (don't worry, if already loaded, it won't load twice)
+							l_classToFork = me.s('Assets_Hash').get('lib.classes.level.View');
+							Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+								//Create New Asset
+								
+								//Everything Loaded. Keep going
+								
+								//////CHANGES TO FILE
+								
+								
+								//Parse File
+								var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+								
+								Logic.xml_entity_updateMState(l_newXml, { id:"initSceneUrl", value: l_levelNamePath+".Scene" }, true); //Change initSceneUrl to Scene Name
+								
+								
+								//////CHANGES TO META
+								
+								//Create meta
+								var l_meta = Logic.copyObject(l_classToFork.meta);
+								l_meta.createdForProject = me.s('Project_DBO').name;
+								l_meta.master = false;
+								
+								
+								
+								//////CHANGES TO DBA
+								
+								var l_addTag = "No"; // l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+								var l_dir = l_levelDir;
+								
+								//Create our new View.egc
+								var l_feedback_view={};
+								me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: l_classToFork.fileName, content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_moduleName, feedback:l_feedback_view } );
+								
+								
+								////CAMERA.EGC
+								
+								//Load and fork (don't worry, if already loaded, it won't load twice)
+								l_classToFork = me.s('Assets_Hash').get('lib.classes.level.2d.Camera');
+								Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+									//Create New Asset
+									
+									//Everything Loaded. Keep going
+									
+									//////CHANGES TO FILE
+									
+									
+									//Parse File
+									var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+									
+									//Logic.xml_entity_updateMState(l_newXml, { id:"initSceneUrl", value: l_levelNamePath+".Scene" }, true); //Change initSceneUrl to Scene Name
+									
+									
+									//////CHANGES TO META
+									
+									//Create meta
+									var l_meta = Logic.copyObject(l_classToFork.meta);
+									l_meta.createdForProject = me.s('Project_DBO').name;
+									l_meta.master = false;
+									
+									
+									
+									//////CHANGES TO DBA
+									
+									var l_addTag = "No"; // l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+									var l_dir = l_levelDir;
+									
+									//Create our new Camera.egc
+									var l_feedback_camera={};
+									me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: l_classToFork.fileName, content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_moduleName, feedback:l_feedback_camera } );
+									
+									
+									
+									////SCENE.EGC
+									
+									//Load and fork (don't worry, if already loaded, it won't load twice)
+									l_classToFork = me.s('Assets_Hash').get('lib.classes.level.Scene');
+									Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+										//Create New Asset
+										
+										//Everything Loaded. Keep going
+										
+										//////CHANGES TO FILE
+										
+										
+										//Parse File
+										var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+										
+										//No changes needed as of yet..
+										
+										
+										//////CHANGES TO META
+										
+										//Create meta
+										var l_meta = Logic.copyObject(l_classToFork.meta);
+										l_meta.createdForProject = me.s('Project_DBO').name;
+										l_meta.master = false;
+										
+										
+										
+										//////CHANGES TO DBA
+										
+										var l_addTag = "No"; //  l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+										var l_dir = l_levelDir;
+										
+										//Create our new Scene.egc
+										var l_feedback_scene={};
+										me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: l_classToFork.fileName, content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_moduleName, feedback:l_feedback_scene } );
+										
+										//Now we try load our new module/level, and then we might try to update the project tree too
+										//The reason i say 'try' is because i cant say with all those asynchronous calls early on, if i had enough time to prepare NedB for the following steps to work correctly.. maybe though..
+										
+										//So, no loading.. we create the level treeChild and expand it (which loads the level)
+										
+										//First, create Class Editor for the new Level, by doing this:
+										me.fa('Create Dependancies For',{ moduleName:'Levels', DBA:null, createClassObjects:true, jsCb:function () {
+											//Now, create the new Level TreeChild
+											me.s('classEditor').s('projectChild').fa('Add Child', { childId:l_feedback_level.DBA.name, childTitle:l_feedback_level.DBA.title, childType:"Level", child_DBA:l_feedback_level.DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.LevelChild' } );
+											
+											//Get TreeChild we created
+											var l_levelTreeChild = me.s('classEditor').s('projectChild').s('children').get(l_feedback_level.DBA.name);
+											
+											//Expand it
+											l_levelTreeChild.fa('Expand Level Child');
+										}});
+									});
+								});
+							});
+							
+						});
+					});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<!-- This Action Clones a level BUT the entities/behaviors do not get cloned, just referenced -->
+			<Id>Clone Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//This is actually the ClassEditor for this level
+					var l_levelToClone = it.s('LevelToClone');
+					
+					me.s('Assets_DB').count({ _inModules: [ 'Levels' ] }, function (err, r_levelsNum) {
+						
+						var l_numOfLevels = r_levelsNum;
+						var l_moduleName = "Level"+Std.string(l_numOfLevels);
+						var l_levelDir = me.s('Project_DBO').name+"/levels/level"+Std.string(l_numOfLevels);
+						var l_levelNamePath = me.s('Project_DBO').name+".levels.level"+Std.string(l_numOfLevels);
+						
+						//Create the module
+						var l_createModuleFeedback={};
+						me.fa('Create New Module', {moduleName: l_moduleName, addTag:"No", addToProject:true, feedback:l_createModuleFeedback} );
+						
+						
+						////LEVEL.EGC
+						
+						//Load and fork (don't worry, if already loaded, it won't load twice)
+						var l_classToFork = me.s('Assets_Hash').get('lib.classes.level.Level');
+						Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+							//Create New Asset
+							
+							//Everything Loaded. Keep going
+							
+							//////CHANGES TO FILE
+							
+							
+							//Parse File
+							var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+							
+							//for each [entity] in [form.space.entities]
+							var l_entitiesNode = Logic.xml_getElements(l_newXml,["Form","Space","Entities"]);
+							var l_entities = l_entitiesNode.elementsNamed('Entity');
+							
+							var l_entriesNum = 0;
+							
+							//Go through all children of the scene XML
+							while (l_entities.hasNext())
+							{
+								var f_entityChildXml = l_entities.next();
+								
+								l_entriesNum+=1;
+								
+								if (l_entriesNum==1)//Assumes first entry in this egc Level master is ModuleReference
+								{
+									Logic.xml_entity_updateMState(f_entityChildXml, { id:"url", value: l_moduleName }, true); //Change Url of Module Reference
+								}
+								else if (l_entriesNum==2)	//and that second is ViewReference
+								{
+									Logic.xml_entity_updateMState(f_entityChildXml, { id:"url", value: l_levelNamePath+".View" }, true); //Change Url of View Reference
+								}
+								else if (l_entriesNum==3)	//and that third is CameraReference
+								{
+									Logic.xml_entity_updateMState(f_entityChildXml, { id:"url", value: l_levelNamePath+".Camera" }, true); //Change Url of Camera Reference
+								}
+							}
+							
+							
+							//////CHANGES TO META
+							
+							//Create meta
+							var l_meta = Logic.copyObject(l_classToFork.meta);
+							l_meta.createdForProject = me.s('Project_DBO').name;
+							l_meta.master = false;
+							
+							
+							
+							//////CHANGES TO DBA
+							
+							var l_addTag = l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+							var l_dir = l_levelDir;
+							
+							//Create our new Level.egc
+							var l_feedback_level={};
+							me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: "Level "+Std.string(l_numOfLevels), content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:"Levels", feedback:l_feedback_level } );
+							
+							
+							
+							////VIEW.EGC
+						
+							//Load and fork (don't worry, if already loaded, it won't load twice)
+							l_classToFork = me.s('Assets_Hash').get('lib.classes.level.View');
+							Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+								//Create New Asset
+								
+								//Everything Loaded. Keep going
+								
+								//////CHANGES TO FILE
+								
+								
+								//Parse File
+								var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+								
+								Logic.xml_entity_updateMState(l_newXml, { id:"initSceneUrl", value: l_levelNamePath+".Scene" }, true); //Change initSceneUrl to Scene Name
+								
+								
+								//////CHANGES TO META
+								
+								//Create meta
+								var l_meta = Logic.copyObject(l_classToFork.meta);
+								l_meta.createdForProject = me.s('Project_DBO').name;
+								l_meta.master = false;
+								
+								
+								
+								//////CHANGES TO DBA
+								
+								var l_addTag = "No"; // l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+								var l_dir = l_levelDir;
+								
+								//Create our new View.egc
+								var l_feedback_view={};
+								me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: l_classToFork.fileName, content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_moduleName, feedback:l_feedback_view } );
+								
+								
+								////CAMERA.EGC
+								
+								//Load and fork (don't worry, if already loaded, it won't load twice)
+								l_classToFork = me.s('Assets_Hash').get('lib.classes.level.2d.Camera');
+								Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+									//Create New Asset
+									
+									//Everything Loaded. Keep going
+									
+									//////CHANGES TO FILE
+									
+									
+									//Parse File
+									var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+									
+									//Logic.xml_entity_updateMState(l_newXml, { id:"initSceneUrl", value: l_levelNamePath+".Scene" }, true); //Change initSceneUrl to Scene Name
+									
+									
+									//////CHANGES TO META
+									
+									//Create meta
+									var l_meta = Logic.copyObject(l_classToFork.meta);
+									l_meta.createdForProject = me.s('Project_DBO').name;
+									l_meta.master = false;
+									
+									
+									
+									//////CHANGES TO DBA
+									
+									var l_addTag = "No"; // l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+									var l_dir = l_levelDir;
+									
+									//Create our new Camera.egc
+									var l_feedback_camera={};
+									me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: l_classToFork.fileName, content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_moduleName, feedback:l_feedback_camera } );
+									
+									
+									
+									////SCENE.EGC
+									
+									//Load and fork (don't worry, if already loaded, it won't load twice)
+									//l_classToFork = me.s('Assets_Hash').get('lib.classes.level.Scene');
+									var l_clonedLevelName = l_levelToClone.s('target_AssetName');
+									var l_clonedLevelRoot = l_clonedLevelName.substring(0,l_clonedLevelName.lastIndexOf("."));
+									l_classToFork = me.s('Assets_Hash').get(l_clonedLevelRoot+'.Scene');
+									
+									Assets.loadOrphanAsset( l_classToFork , e('Project Editor').s('Developers_Hash').get(l_classToFork.owner), function () {
+										//Create New Asset
+										
+										//Everything Loaded. Keep going
+										
+										//////CHANGES TO FILE
+										
+										
+										//Parse File
+										var l_newXml =  Logic.xml_from_file( Assets.getScript(l_classToFork.name) );
+										
+										//No changes needed as of yet..
+										
+										
+										//////CHANGES TO META
+										
+										//Create meta
+										var l_meta = Logic.copyObject(l_classToFork.meta);
+										l_meta.createdForProject = me.s('Project_DBO').name;
+										l_meta.master = false;
+										
+										
+										
+										//////CHANGES TO DBA
+										
+										var l_addTag = "No"; //  l_moduleName; //soon i should not need this stupid tag.. (it's for the Level.egc..)
+										var l_dir = l_levelDir;
+										
+										//Create our new Scene.egc
+										var l_feedback_scene={};
+										me.fa('Create New Asset', { fileName:l_classToFork.fileName, title: l_classToFork.fileName, content:Logic.xmlToString(l_newXml), dir:l_dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_moduleName, feedback:l_feedback_scene } );
+										
+										//Now we add all things from clonedModule to new module
+										var l_clonedModuleName = l_levelToClone.s('moduleName');
+										
+										//Find All DBAs of this module
+										me.s('Assets_DB').find({ _inModules: l_clonedModuleName }, function (err, docs) {
+											for (dBA of docs)
+											{
+												if (dBA.name!=l_clonedLevelRoot+'.Scene' && dBA.name!=l_clonedLevelRoot+'.Camera' && dBA.name!=l_clonedLevelRoot+'.View')
+													me.fa('Add Asset To Module', { Asset_DBA: dBA, ModuleName: l_moduleName, insertDBA: false } );
+											}
+											
+											//Now we try load our new module/level, and then we might try to update the project tree too
+											//The reason i say 'try' is because i cant say with all those asynchronous calls early on, if i had enough time to prepare NedB for the following steps to work correctly.. maybe though..
+											
+											//So, no loading.. we create the level treeChild and expand it (which loads the level)
+											
+											//First, create Class Editor for the new Level, by doing this:
+											me.fa('Create Dependancies For',{ moduleName:'Levels', DBA:null, createClassObjects:true, jsCb:function () {
+												//Now, create the new Level TreeChild
+												me.s('classEditor').s('projectChild').fa('Add Child', { childId:l_feedback_level.DBA.name, childTitle:l_feedback_level.DBA.title, childType:"Level", child_DBA:l_feedback_level.DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.LevelChild' } );
+												
+												//Get TreeChild we created
+												var l_levelTreeChild = me.s('classEditor').s('projectChild').s('children').get(l_feedback_level.DBA.name);
+												
+												//Expand it
+												l_levelTreeChild.fa('Expand Level Child');
+											}});
+										});
+									});
+								});
+							});
+							
+						});
+					});
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>LevelToClone</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Export Project</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var exportProject = new Project();
+					exportProject.name = me.s('Project_DBO').name;
+					exportProject.version = "1.0";
+					exportProject.executeModules.push("Main");
+					exportProject.sliced = Project.main.sliced;
+					
+					//Paths
+					var iterator = Project.main.paths.keys();
+					while (iterator.hasNext())
+					{
+						var path = iterator.next();
+						exportProject.paths.set(path,Project.main.paths.get(path));
+					}
+					
+					//Std Modules
+					exportProject.modules.set("Std:Base", Project.main.modules.get("Std:Base"));
+					exportProject.modules.set("Std:Loader", Project.main.modules.get("Std:Loader"));
+					exportProject.modules.set("Std:BasicNC", Project.main.modules.get("Std:BasicNC"));
+					exportProject.modules.set("Std:Ace", Project.main.modules.get("Std:Ace"));
+					exportProject.modules.set("Std:Rest", Project.main.modules.get("Std:Rest"));
+					
+					//Project Modules
+					me.s('Modules_DB').find({}, function (err, modules) {
+						//For Every Module that this project requires
+						for (module of modules)
+							exportProject.modules.set(module.name, Project.main.modules.get(module.name)); //Copy their reference to our new Project
+							
+						//Fix Main's execute Entity
+						exportProject.modules.get("Main").executeEntity=me.s('Project_DBO').name+'.Project';
+							
+						//Export
+						var exportXml = exportProject.exportToXml();
+						//console.log(exportXml);
+						//console.log(exportXml.toString());
+						
+						//Prepare File
+						var clientFile = Logic.xml_createDocument();
+						clientFile.addChild(exportXml);
+						
+						//Save to String
+						var finalString = Logic.xmlToString(clientFile);
+						//Display.error("clientFile: " + finalString);
+						Display.de("Uploading Main.skc");
+						//Upload
+						var connectedUserName = me.s('User_DBO').name; // Logic.getEntityByName('Spark Editor').getState('username');
+						//Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						Comms.file_sendFileRequest(finalString, {name: "main.skc", size: finalString.length, user: connectedUserName, dir: me.s('Project_DBO').name} , "Request: Main.skc Uploaded", me);
+					});
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>FileTransferRequest</Event>
+			<Parameter>Request: Main.skc Uploaded</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.file_getSendFileRequestData('Request: Main.skc Uploaded').shift();
+					
+					Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+					//Logic.getEntityByName('Editor Output').setState('text','Uploading ' + data.progressPercent+'%');
+					if (data.progress==1)
+					{
+						Display.error('Main.skc file Uploaded!');
+						//Logic.getEntityByName('Editor Output').setState('text','Project Uploaded!');
+						
+						Comms.request("assets.uploadHandler.uploadProjectFile", {fileName: "main.skc"}, "Request: Main.skc Created", me);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Request: Main.skc Created</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Request: Main.skc Created");
+					
+					if (data.code=="success")
+					{
+						//Open New Tab
+						Display.error('Project Export Success!');
+						//Logic.getEntityByName('Editor Output').setState('text','Project Export Success!');
+						
+						var username = me.s('User_DBO').name;
+						var projectname = me.s('Project_DBO').name;
+						
+						window.open("http://sparkgamengine.com/run/?user="+username+"&project="+projectname,"previewTab");
+					}
+					else
+					{
+						Display.error('Project Export Error!');
+						//Logic.getEntityByName('Editor Output').setState('text','Project Export Error!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					//Get Module Assets and Flambe Load them
+					if (Comms.getRequestData("Project Main Module Assets Request")!=null)
+					{
+						var data = Comms.getRequestData("Project Main Module Assets Request");
+						
+						if (data.code=="success")
+						{
+							Display.error('Requesting Main Module Assets success!');
+							
+							//Get Username
+							//var userName = me.getState('assetUserName');
+							
+							//Initiate Load
+							var loader = Assets.initiateBatch();
+
+							var i = 0;
+							while (data.assets.length>i)
+							{
+								//Get AssetDb
+								var asset = data.assets[i];
+								
+								var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								Display.error("asset.owner.user.name: " + asset.owner.user.name);
+								Display.error("assetUrl: " + assetUrl);
+								var assetId;
+								
+								//If Asset is Script
+								if (asset.type=="script")
+								{
+									assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+									
+									if (asset.componentType=="Scene")
+									{
+										if (me.s('firstSceneFound')==null)
+										{
+											me.setState('firstSceneFound',asset);
+										}
+										/*
+										if (asset.fileName=="MainScene")
+										{
+											//Init Scene Editor
+											var sceneEditor = Logic.getEntityByName('2d Scene Editor');
+											sceneEditor.setState('assetUserName', asset.owner.user.name);
+											sceneEditor.setState('assetType',asset.type);
+											sceneEditor.setState('assetName',asset.name);
+										}*/
+										
+										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
+									}
+									else if (asset.componentType=="Camera" || asset.componentType=="View")
+									{
+										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
+									}
+									else if (asset.componentType=="EventSheet")
+									{
+										//Init EventSheet Editor
+										/*
+										var eventsheetEditor = Logic.getEntityByName('Event Collection Editor');
+										eventsheetEditor.setState('assetUserName', asset.owner.user.name);
+										eventsheetEditor.setState('assetType',asset.type);
+										eventsheetEditor.setState('assetName',asset.name);
+										*/
+									}
+									else if (asset.componentType=="Object Class")
+									{
+										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
+									}
+									else if (asset.componentType=="Project")
+									{
+										//Let's see what happens if we store the Project as well
+										me.getState('ClassObjectsDBbyNameHash').set(asset.name,asset);
+										me.getState('ClassObjectsDBbyTitleHash').set(asset.title,asset);
+										
+										//Store the asset (maybe should be done earlier..)
+										me.setState('asset',asset);
+										
+										//Get Object Count from asset
+										me.setState('classObjectsCount',Std.parseInt(asset.tags[1]));
+									}
+								}
+								else if (asset.type=="image")
+								{
+									assetId = 'image_' + asset.name;
+								}
+								else if (asset.type=="sound")
+								{
+									assetId = 'sound_' + asset.name;
+								}
+								
+								//Store the AssetDB
+								me.getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+								me.getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
+								
+								Display.error('asset.id: ' + asset._id);
+								Display.error('asset.name: ' + asset.name);
+								
+								//Add file to Flambe Loader
+								loader.addFile(assetUrl, assetId);
+								
+								
+								Display.error(data.assets[i].name);
+								i+=1;
+							}
+							
+							
+							//var assetUserName = me.getState('assetUserName');
+							
+							var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
+							Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
+							
+							
+							//Event Listener
+							loader.successSignal.connect(function () {
+								//Normaly, I create the scene and eventsheet here
+								//but because I temp flambe load behjaviors etc later on for now(although they should have
+								//been included in the projet's main module, but they didn't so i flamb load them at the include query..
+								//so I will temporarily create the scene etc later on too
+								//Start up Scene Editor
+								//Logic.getEntityByName('2d Scene Editor').startAction('GetAsset');
+								
+								//Start up EventSheet Editor
+								//Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+								
+								
+								//TEMP: Get ACE Lib stuff (to be replaced with Project Include assets, but not flambe load them, and distribute to libraries too)
+								//so this might not be the place for it...
+								Comms.request("assets.requestHandler.getProjectIncludeAssets", {}, "ACE Assets Request");
+								
+							}).once();
+							
+							//Load
+							loader.start();
+						}
+						else
+						{
+							Display.error('Error Requesting Main Module Assets!');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+				
+				
+		<!-- NEW TRIGGERS -->
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Project Library Collections Request</Parameter>
+			<Scripts>
+				<Script>
+					Display.dl("Project Library Collections Request");
+					
+					//Create Library Categories
+					var data = Comms.getRequestData("Project Library Collections Request");
+					
+					if (data.code=="success")
+					{
+						//Store
+						me.s('LibraryCollections_DB').insert(data.libraryCollections);
+						
+						var libraryCollections = e('Editor Library Collections');
+						var libraryCollectionButtonsContainer = e('Editor Library Collections Buttons Container');
+						var libraryCollectionPanelsContainer = e('Editor Library Collections Panels Container');
+						
+						var libraryCollectionsHash = new ObjectMap();
+						var libraryCollectionsHash2 = new StringMap();
+						var selectedAtFirst = null;
+						
+						var i = 0;
+						while (data.libraryCollections.length>i)
+						{
+							//Get AssetDb
+							var libraryCollection = data.libraryCollections[i];
+							
+							//Create Button
+							var libraryCollectionButton = Logic.gameFactory.createGameEntity('SparkEditor.levels.projectEditor.tabs.library.EditorLibraryCollectionButton');
+							libraryCollectionButton.setState('buttonText',libraryCollection.title);
+							libraryCollectionButton.setState('imageName',libraryCollection.iconName);
+							libraryCollectionButton.setState('normalTextColor',libraryCollection.titleColor);
+							libraryCollectionButton.setState('selectedTextColor',libraryCollection.titleColorSelected);
+							//myNewItem.setState('asset',asset); //asset or panel object
+							libraryCollectionButtonsContainer.addChild(libraryCollectionButton);
+							
+							//Create Panel
+							var libraryCollectionPanel = Logic.gameFactory.createGameEntity('SparkEditor.levels.projectEditor.tabs.library.EditorLibraryCollectionPanel');
+							
+							libraryCollectionPanel.setState('name',libraryCollection.title);
+							libraryCollectionPanel.setState('importTypes',libraryCollection.importTypes);
+							libraryCollectionPanel.setState('tileWidth',libraryCollection.tileWidth);
+							libraryCollectionPanel.setState('tileHeight',libraryCollection.tileHeight);
+							libraryCollectionPanel.setState('tileUploadingImageName',libraryCollection.iconName);
+							libraryCollectionPanel.setState('tileUploadingBorderColor',libraryCollection.titleColor);
+							libraryCollectionPanel.setState('libraryObjectDB',libraryCollection); //asset
+							libraryCollectionPanelsContainer.addChild(libraryCollectionPanel);
+							
+							//Register In hash
+							libraryCollectionsHash.set(libraryCollectionButton,libraryCollectionPanel);
+							libraryCollectionsHash2.set(libraryCollection.title,libraryCollectionPanel);
+							
+							
+							if (i==0)
+								selectedAtFirst = libraryCollectionButton;
+								
+							i+=1;
+						}
+						
+						//Store the library collections hash
+						libraryCollections.setState('collectionsHash',libraryCollectionsHash);
+						libraryCollections.setState('collectionsHash2',libraryCollectionsHash2);
+						
+						//Select the first category
+						if (selectedAtFirst!=null)
+							libraryCollections.startAction("SelectCategory",{selectionRequest:selectedAtFirst});
+						
+						//Next Job
+						me.forceAction('Next');
+					}
+					else
+					{
+						Display.error('Error Requesting Library Collections!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Project Modules Request</Parameter>
+			<Scripts>
+				<Script>
+					Display.dl("Project Modules Request");
+					
+					var data = Comms.getRequestData("Project Modules Request");
+						
+					if (data.code=="success")
+					{	
+						//Assets created by this project are already in the Assets_DB, but other assets are not
+						for (module of data.modules)
+							for (asset of module.assets)
+							{
+								if (!me.s('Assets_IdHash').exists(asset._id))
+								{
+									//Display.de("Creating: Module " + module.name + " to " + asset.name);
+									asset._inModules=[module.name];
+									me.fa('Insert Asset', {asset: asset} );
+								}
+								else
+								{
+									//Display.de("Adding: Module " + module.name + " to " + asset.name);
+									//me.s('Assets_Hash').get(asset.name)._inModules.push(module.name); //i guess this gets somehow updated on its own..?
+									me.s('Assets_DB').update( { _id: asset._id }, { $push: { _inModules: module.name } }, { } );
+								}
+							}
+						
+						for (module of data.modules)
+						{
+							module.assets=null;
+							me.s('Modules_DB').insert(module);
+						}
+						
+						
+						//Next Job
+						me.forceAction('Next');
+					}
+					else
+					{
+						Display.error('Error on Project Modules Request!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Project Modules Request 2</Parameter>
+			<Scripts>
+				<Script>
+					Display.dl("Project Modules Request 2");
+					
+					var data = Comms.getRequestData("Project Modules Request 2");
+						
+					if (data.code=="success")
+					{	
+						me.set('modulesFound', data.modules);
+						
+						//Next Job
+						me.forceAction('Next');
+					}
+					else
+					{
+						Display.error('Error on Project Modules Request 2!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Populate Module Request</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Populate Module Request");
+					
+					if (data.code=="success")
+					{	
+						var module = data.module;
+						Display.error('Received Populated Module: ' + module.name);
+						
+						for (asset of module.assets)
+						{
+							if (!me.s('Assets_IdHash').exists(asset._id))
+							{
+								Display.de("Creating: Module " + module.name + " to " + asset.name);
+								asset._inModules=[module.name];
+								me.fa('Insert Asset', {asset: asset} );
+							}
+							else
+							{
+								Display.de("Adding: Module " + module.name + " to " + asset.name);
+								////me.s('Assets_Hash').get(asset.name)._inModules.push(module.name); //i guess this gets somehow updated on its own..?
+								me.s('Assets_DB').update( { _id: asset._id }, { $push: { _inModules: module.name } }, { } );
+							}
+						}
+						
+						module.assets=null;
+						me.s('Modules_DB').insert(module);
+						
+						//Next Module
+						me.fa('Populate Modules');
+					}
+					else
+					{
+						Display.error('Error on Populate Module Request!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Project Assets Request</Parameter>
+			<Scripts>
+				<Script>
+					Display.dl("Project Assets Request");
+					
+					var data = Comms.getRequestData("Project Assets Request");
+						
+					if (data.code=="success")
+					{	
+						for (asset of data.assets)
+						{
+							if (!me.s('Assets_IdHash').exists(asset._id))
+							{
+								asset._inModules=[];
+								me.fa('Insert Asset', {asset: asset} );
+							}
+						}
+						
+						
+						//Next Job
+						me.forceAction('Next');
+					}
+					else
+					{
+						Display.error('Error on Project Assets Request!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Populate Developers Request</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Populate Developers Request");
+						
+					if (data.code=="success")
+					{	
+						var Developers_DB = me.s('Developers_DB');
+						var Developers_Hash = me.s('Developers_Hash');
+					
+						//Populate that shit!
+						for (developer of data.developers)
+						{
+							//Create shortcut name in developer object
+							if (developer.isTeam==true)
+								developer.name=developer.team.name;
+							else
+								developer.name=developer.user.name;
+						
+							Developers_DB.insert(developer);
+							Developers_Hash.set(developer._id,developer); //This should occupy the entry before the request that was (developer._id,null)
+							
+							//Construct Project Paths for this developer
+							ModuleManager.createAllPaths(developer.name,'/assets/'+developer.name+'/');
+						}
+						
+						
+						//Next Job
+						me.forceAction('Next');
+					}
+					else
+					{
+						Display.error('Error on Populate Developers Request!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>ACE Assets Request</Parameter>
+			<Scripts>
+				<Script>
+					Display.dl("ACE Assets Request");
+					
+					var data = Comms.getRequestData("ACE Assets Request");
+						
+					if (data.code=="success")
+					{
+						for (asset of data.assets)
+						{
+							if (!me.s('Assets_IdHash').exists(asset._id))
+							{
+								asset._inModules=[];
+								me.fa('Insert Asset', {asset: asset} );
+							}
+						}
+						
+						//Next Job
+						me.forceAction('Next');
+						
+						/*
+						//Store them for later
+						me.setState('tempIncludeAssets',data.assets);
+						
+						//Get Username
+						//var userName = me.getState('assetUserName');
+						
+						//Initiate Load
+						var loader = Assets.initiateBatch();
+
+						var i = 0;
+						while (data.assets.length>i)
+						{
+							//Get AssetDb
+							var asset = data.assets[i];
+							
+							var assetUrl = '/assets/' + asset.owner.user.name + '/' + asset.type + '/' + asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+							Display.error("asset.owner.user.name: " + asset.owner.user.name);
+							Display.error("assetUrl: " + assetUrl);
+							var assetId;
+							
+							//If Asset is Script
+							if (asset.type=="script")
+							{
+								assetId = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+								
+								var aceHashByTarget;
+								
+								if (asset.componentType=="Condition")
+								{
+									aceHashByTarget = me.getState('ConditionAssetsDBbyTargets');
+								}
+								else if (asset.componentType=="Action")
+								{
+									aceHashByTarget = me.getState('ActionAssetsDBbyTargets');
+								}
+								else if (asset.componentType=="Expression")
+								{
+									aceHashByTarget = me.getState('ExpressionAssetsDBbyTargets');
+								}
+								else if (asset.componentType=="Behavior")
+								{
+									aceHashByTarget = me.getState('BehaviorAssetsDBbyTargets');
+								}
+								
+								//If script is ace object (and not Class)
+								if (aceHashByTarget!=null)
+								{
+									//Insert asset
+									if (aceHashByTarget.exists(asset.tags[2])==false)
+										aceHashByTarget.set(asset.tags[2],[]);
+										
+									aceHashByTarget.get(asset.tags[2]).push(asset); //only 1 target supported for now
+								}
+							}
+							
+							
+							//Store the AssetDB
+							me.getState('ModuleAssetsDBbyAssetIdHash').set(asset._id,asset);
+							me.getState('ModuleAssetsDBbyNameHash').set(asset.name,asset);
+							Display.error('asset.id: ' + asset._id);
+							Display.error('asset.name: ' + asset.name);
+							
+							//Add file to Flambe Loader
+							loader.addFile(assetUrl, assetId);
+							
+							
+							Display.error(data.assets[i].name);
+							i+=1;
+						}
+						
+						
+						//var assetUserName = me.getState('assetUserName');
+						
+						//var projectName = Logic.getEntityByName('Spark Editor').getState('projectname');
+						//Display.error("DEBUG LOG: Creating Scene Editor 2d from: " + projectName + '.scenes.MainScene');
+						
+						var oldMe = me;
+						
+						//Event Listener
+						loader.successSignal.connect(function () {
+						
+							//load them here for now...
+							//Start up Scene Editor and load first scene
+							//Init Scene Editor
+							var sceneEditor = Logic.create('SparkEditor.entities.editors.2dSceneEditor');  //Logic.getEntityByName('2d Scene Editor');
+							
+							sceneEditor.setState('assetUserName', asset.owner.user.name);
+							sceneEditor.setState('assetType',asset.type);
+							sceneEditor.setState('assetName',asset.name);
+							sceneEditor.startAction('GetAsset');
+							
+							//Start up EventSheet Editor (no..)
+							//Logic.getEntityByName('Event Collection Editor').startAction('GetAsset');
+							
+							
+							//Get Library Collections for this project
+							Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
+							
+							//Do some Inheritance Hashing on the main class modules (now that everything has been flambe loaded)
+							oldMe.getAction('RegisterInheritanceMany').setState('assets',oldMe.getState('ClassObjectsDBbyNameHash'));
+							oldMe.startAction('RegisterInheritanceMany');
+						}).once();
+						
+						if (data.assets.length>0)
+						{
+							//Load
+							loader.start();
+						}
+						else
+						{
+							//Get Library Collections for this project
+							Comms.request("assets.requestHandler.getProjectLibraryCollections", {}, "Project Library Collections Request");
+						}
+						*/
+					}
+					else
+					{
+						Display.error('Error Requesting ACE Assets!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tabManager.header.ATabHeader">
+	<_States>
+		<_State id="width"><Value>80</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(38,56,72)</Value></_State>
+		<_State id="headerTheme"><Value>states</Value></_State>
+		<State><Id>headerLabel</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<!--<_State id="textAlign"><Value>center</Value></_State>-->
+						<_State id="height"><Value>19</Value></_State>
+						<_State id="fontSize"><Value>18px</Value></_State>
+						<_State id="fontWeight"><Value>400</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="fontColor"><Value>rgb(54,77,99)</Value></_State>
+						<_State id="text"><Value>Header</Value></_State>
+						<_State id="whiteSpace"><Value>nowrap</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState('text',parent.s('headerTitle'));
+									parent.set('headerLabel', me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

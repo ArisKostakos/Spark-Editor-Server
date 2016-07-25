@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<_State id="dropTarget"><Value>true</Value></_State>
+		<State><Id>SceneEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>CameraEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>LevelEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<!--<_State id="backgroundColor"><Value>green</Value></_State>
+		<_State id="opacity"><Value>0.5</Value></_State>-->
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					//Position me according to View Target we created:
+					me.set('top', me.s('target_GameObject').s('top'));
+					me.set('left', me.s('target_GameObject').s('left'));
+					me.set('width', me.s('target_GameObject').s('width'));
+					me.set('height', me.s('target_GameObject').s('height'));
+					
+					//Scene Editor
+					var l_sceneEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.SceneEditor');
+					l_sceneEditor.set('parentEditor',me);
+					l_sceneEditor.set('LevelEditor',me.s('LevelEditor'));
+					me.addChild(l_sceneEditor);
+					l_sceneEditor.fa('Import From AssetName',{importAssetName: me.s('target_GameObject').s('initSceneUrl')});
+					me.set('SceneEditor',l_sceneEditor);
+					
+					//If it uses it's own camera
+					if (me.s('target_GameObject').s('initCameraUrl')!="Level Camera")
+					{
+						//Camera Editor
+						var l_cameraEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.CameraEditor');
+						l_cameraEditor.set('parentEditor',me);
+						me.addChild(l_cameraEditor);
+						l_cameraEditor.fa('Import From AssetName',{importAssetName: me.s('target_GameObject').s('initCameraUrl'), createObject:false});
+						me.set('CameraEditor',l_cameraEditor);
+					}
+					
+					//Prepare View Game Object
+					var levelObject=me.s('LevelEditor').s('target_GameObject');
+					var viewObject=me.s('target_GameObject');
+					var sceneObject=l_sceneEditor.s('target_GameObject');
+					var cameraObject=me.s('LevelEditor').s('Level Editor Camera');
+					
+					//Set Scene and Camera
+					viewObject.set('scene',sceneObject);
+					viewObject.set('camera',cameraObject);
+					viewObject.setState('parent', 'View Stage Area'); //The explicit rule to set views of a level to a specific parent(e.g. a StageArea)
+					
+					//Add them to the level so it runs
+					levelObject.addChild(sceneObject);
+					//we dont need to add the camera to the level.. it's added from the LevelEditor (this is good)
+					
+					//Add View to Stage Area
+					me.fa('Add View To Stage Area');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Add View To Stage Area</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var viewObject=me.s('target_GameObject');
+					
+					//Add View to Stage
+					Display.projectActiveSpaceReference.activeStageReference.stageEntity.addChild(viewObject);
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Remove View From Stage Area</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var viewObject=me.s('target_GameObject');
+					
+					//Add View to Stage
+					Display.projectActiveSpaceReference.activeStageReference.stageEntity.removeChild(viewObject);
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						//Export Children's XML
+						me.s('SceneEditor').fa('Export XML');
+						//me.s('CameraEditor').fa('Export XML');
+						
+						//Then, If This Editor can later do any changes to it's View EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+			
+		<Action>
+			<Id>Dropped A Behavior</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var asset = it.s('dropped_DBA');
+					var assetLibrary = it.s('droppedFromLibraryCollection_DBA');
+					var localX = it.s('dropX');
+					var localY = it.s('dropY');
+					
+					
+					//Our Editors
+					var l_LevelEditor = me.s('LevelEditor');
+					var l_SceneEditor = me.s('SceneEditor');
+					
+					//so.. i dont need to load anything, right? right... i can just do:
+					e('Project Editor').fa('Add Asset To Module', { Asset_DBA: asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+					
+					//ok good so
+					
+					//Reload Module
+					ModuleManager.successSignal.connect(function () {
+						//Proceed
+						
+						//This happens later. We wait for behavior editor to be created in Create Dependancies
+						var _onCreateDependancies = function ()
+						{
+							//So.. we got a problem here.. Create Dependancies For is async (fucking nedb man...), so now we have to wait.. no way around this
+							
+							//SOOOOOOOOOOOOOOO at this point, our new behavior is added to the module (if nesseccery), save command has been issued.. we're all good
+							//I need to add this behavior to our class editor
+							
+							//Get newly Created Behavior Editor (or even old created behavior editor.. i guess, if it was already in the level..)
+							var l_behaviorEditor = e('Project Editor').s('behaviorEditors').get(asset.name);
+							
+							//Get Class Editor already Temp selected in Project Panel (we will add behavior to this guy)
+							var l_classEditor = e('Project Tree').s('editorClickedTemp');
+							
+							l_classEditor.fa('Add Behavior', {behaviorEditor: l_behaviorEditor} );
+							
+							//class editor will handle the rest
+							
+							//At this point... figure out where this action will go, if there is gonna be back and forth, and how it makes sense for Editors to talk together better..
+							
+							
+							//YOYOYOY
+							//e('Project Tree').s('children').get('poutsa.Project').s('children').get('poutsa.levels.level1.Level').fa('Add Child', { childId:l_createAssetFeedback.DBA.name, childTitle:l_createAssetFeedback.DBA.name, childType:"Object Class", child_DBA:l_createAssetFeedback.DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.ObjectClassChild' } );
+							//YOOYOYO
+						}
+						
+						
+						//Show Maybe here I request from Module Manager to do its thing..
+						e('Project Editor').fa('Create Dependancies For',{ moduleName:l_LevelEditor.s('Module Name'), DBA:null, createClassObjects:true, jsCb:_onCreateDependancies } );
+					}).once();
+					
+					//Reload the Module of the Level that this View belongs to
+					ModuleManager.loadModule(me.s('LevelEditor').s('Module Name'));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>dropX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropped_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>droppedFromLibraryCollection_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Dropped A Sound</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var asset = it.s('dropped_DBA');
+					var assetLibrary = it.s('droppedFromLibraryCollection_DBA');
+					var localX = it.s('dropX');
+					var localY = it.s('dropY');
+					
+					
+					//Our Editors
+					var l_LevelEditor = me.s('LevelEditor');
+					var l_SceneEditor = me.s('SceneEditor');
+					
+					//so.. i dont need to load anything, right? right... i can just do:
+					e('Project Editor').fa('Add Asset To Module', { Asset_DBA: asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+					
+					//ok good so
+					
+					//Reload Module
+					ModuleManager.successSignal.connect(function () {
+						//Proceed
+						
+						alert("Sound Loaded!");
+					}).once();
+					
+					//Reload the Module of the Level that this View belongs to
+					ModuleManager.loadModule(me.s('LevelEditor').s('Module Name'));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>dropX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropped_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>droppedFromLibraryCollection_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Dropped An Image</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var asset = it.s('dropped_DBA');
+					var assetLibrary = it.s('droppedFromLibraryCollection_DBA');
+					var localX = it.s('dropX');
+					var localY = it.s('dropY');
+					
+					
+					var classToFork=null;//Will get values later, but put it here for closure
+					
+					//SO HERE'S THE THING.
+					/* There's a big exception going on... We're gonna need to fork *something* to make our new class asset that will be added to the project
+					If the asset being dragged is an actual Class, then fork that... Otherwise, fork the BaseClass indicated in the library.. Pretty straightforward
+					When we determine what class to fork, make sure the class is loaded in flambe.. because we'll need to parse that thing, make changes to the egc, then upload it..*/
+					
+					//Code starts below this _onLoad one..
+					
+					//This function will be called AFTER baseClass has been loaded
+					var _onLoad = function ()
+					{
+						//Parse File
+						var l_newXml =  Logic.xml_from_file( Assets.getScript(classToFork.name) );
+						
+						//Figure out Name for our new Class
+						var newClassName="Malakia";
+						
+						//Do Generic changes to our new Class
+						Logic.xml_entity_updateMState(l_newXml, { id:"name", value: newClassName }, true); //Change Name
+						
+						//Do Specific changes to our new Class
+						if (asset.componentType=="Image") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
+						{
+							Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshImageForm", value: Logic.getDbaFlambeId(asset) }, true); //Change Image Target
+						}
+						
+						//Our Editors
+						var l_LevelEditor = me.s('LevelEditor');
+						var l_SceneEditor = me.s('SceneEditor');
+						
+						//Adding an existing Asset to a Module. This is the actual asset from the Library (e.g. an image Asset)
+						//Later on, this shouldn't be required.. When the actualy Object Class is added to a module, it will do a recursive
+						//check of its dependancies and every dependancy of those dependancies, and it will be added if it is not already
+						//this needs to happen both client side, and then server side on the 'Add Class Object to Module' Command...
+						//The reason i need to do this is cause if i simply move a class object from one level to another (and let's say it's a class object of a spriter,
+						//which ALSO has a ton of behaviors in it), then recursive adding of dependnacies is the only way i can see of doing this without losing my mind..
+						e('Project Editor').fa('Add Asset To Module', { Asset_DBA: asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+						//warning:the above should not be done if the asset being dragged is a class...
+						
+						//So.. a simplified version instead of doing dependancies can be done now, since I've decided on a shallow class/behavior system (SPARK promotes shallow Inheritance)
+						//so, if i do have dependancies, i don't have to do any queries or parsing..
+						
+						//since now i don't have dependancies, i'll have to actually look up the behaviors from the xml.. no other way... 
+						//and then get the DBA (which should be added from the 'lib' query (but not nesseccerily loaded or added to module but maybe)
+						
+						//do i continue or do dependancies ONLY for CLASS type objects?
+						
+						//lets continue. we will do dependancies when we do spriter/spritesheets.. gonna be fun:P so if you are doing spriter, consider doing dependancies for classes too
+						
+						//continuing...
+						
+						//instead of dependancies, we might store every dependancy on our ClassEditor.. i like this....
+						
+						//so...
+						
+						//Get Behaviors from xml (of forkedClass)
+						var l_behaviorNames = Logic.xml_entity_getExtendsEntityNames(l_newXml);
+						
+						//get the assets from the hash (WARNING, these asset will NOT be updated. Use Nedb for updated ones)
+						for (f_behaviorName of l_behaviorNames)
+						{
+							var f_asset = e('Project Editor').s('Assets_Hash').get(f_behaviorName);
+							
+							if (f_asset!=null)
+							{
+								//Add Assets to Module
+								e('Project Editor').fa('Add Asset To Module', { Asset_DBA: f_asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+							}
+							else
+							{
+								Display.error("Behavior Asset [" + f_behaviorName + "] NOT found in the Assets DBA Hash!");
+							}
+						}
+						
+						//Create New Asset for a level
+						//tags
+						//(second tag of Object Class is the asset used to display ThumbNail. added option to use lib_name for thumb too. This should be determined by Library Collection stuff!!!!
+						if (asset.componentType=="Class")
+							var l_addTag = asset.tags[1]; //convert this to meta thing again.. maybe use meta.thumbType
+						else if (asset.componentType=="Image")
+							var l_addTag =  asset._id; //over here.. instead add this to meta.thumbObjectId
+						else
+						{
+							var l_addTag = "No"; //Should not really go there, ever!
+							Display.error("ERROR!!!!! UNKNOWN COMPONENT TYPE: " + asset.componentType);
+						}
+						
+						//Create meta
+						var l_meta = Logic.copyObject(classToFork.meta);
+						l_meta.createdForProject = e('Project Editor').s('Project_DBO').name;
+						l_meta.master = false;
+						
+						if (asset.componentType=="Image") //MAYBE a better way here would be if classToFork.meta.subType=="Image"
+							l_meta.thumbnail.objectId = asset._id;
+						
+						
+						/*
+						var l_meta = {
+							master: false,
+							primitive: "std.primitives.Project",
+							type: "Entity",
+							subType: "",
+							createdForProject: "BlankTemplate",
+							thumbnail: {
+								embeddedUrl: "thumbnail_project"
+							},
+							tags: []
+						};*/
+						
+						var l_createAssetFeedback={};
+						//over here we need to set title, change to Class, figure out name, add meta, set meta.master, etc..
+						e('Project Editor').fa('Create New Asset', { fileName:asset.fileName, title:asset.fileName, content:Logic.xmlToString(l_newXml), dir:l_LevelEditor.s('target_DBA').dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_LevelEditor.s('Module Name'), feedback:l_createAssetFeedback } );
+						
+						//Reload Module
+						ModuleManager.successSignal.connect(function () {
+							//Proceed
+							
+							//Class Editor
+							/*
+							var f_classEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.ClassEditor');
+							l_SceneEditor.addChild(f_classEditor);
+							l_SceneEditor.s('classEditors').push(f_classEditor);
+							f_classEditor.fa('Import From AssetName',{importAssetName: l_createAssetFeedback.DBA.name, createObject:false});
+							*/
+							
+							//Show Maybe here I request from Module Manager to do its thing..
+							e('Project Editor').fa('Create Dependancies For',{ moduleName:l_LevelEditor.s('Module Name'), DBA:null, createClassObjects:true, jsCb:function () {
+								//Proceed
+								//Create Instance To the Scene? I guess so..
+								//Create the instance XML
+								var l_entityXml = Logic.xml_createElementAttr('Entity','extends', l_createAssetFeedback.DBA.name );
+								
+								//Add States
+								Logic.xml_entity_addMState(l_entityXml, {id:"id", value: Std.string(0) },true); //incremental, like class, or unique for every class, or...?
+								Logic.xml_entity_addMState(l_entityXml, {id:"spaceX", value: Std.string(localX) },true);
+								Logic.xml_entity_addMState(l_entityXml, {id:"spaceY", value: Std.string(localY) },true);
+								Logic.xml_entity_addMState(l_entityXml, {id:"scaleX", value: Std.string(1) },true); //not great but..
+								Logic.xml_entity_addMState(l_entityXml, {id:"scaleY", value: Std.string(1) },true); //not great but..
+								Logic.xml_entity_addMState(l_entityXml, {id:"rotation", value: Std.string(0) },true); //not great but..
+								
+								//We create an InstanceEditor and Import the Xml
+								//Instance Editor
+								var f_instanceEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.InstanceEditor');
+								f_instanceEditor.set('SceneEditor',l_SceneEditor);
+								f_instanceEditor.set('parentEditor',l_SceneEditor);
+								f_instanceEditor.set('LevelEditor',l_LevelEditor);
+								l_SceneEditor.s('sceneBoundsObject').addChild(f_instanceEditor); 
+								l_SceneEditor.s('instanceEditors').push(f_instanceEditor);
+								f_instanceEditor.fa('Import From Xml',{importXml: l_entityXml});
+								
+								//Mark Scene Editor as 'Needs to Export' (do this inside scene editor.. maybe the whole add instance thing..)
+								l_SceneEditor.fa('Needs To Export', {exportThis:true});
+								
+								//At this point... figure out where this action will go, if there is gonna be back and forth, and how it makes sense for Editors to talk together better..
+								
+								
+								//Get the class Editor for this Level
+								var l_levelClassEditor = me.s('LevelEditor').s('parentTab').s('editor');
+								
+								//Create and Update the Tree Child
+								l_levelClassEditor.s('projectChild').fa('Add Child', { childId:l_createAssetFeedback.DBA.name, childTitle:l_createAssetFeedback.DBA.title, childType:"Entity", child_DBA:l_createAssetFeedback.DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.EntityChild' } );
+							}});
+						}).once();
+						
+						//Reload the Module of the Level that this View belongs to
+						ModuleManager.loadModule(me.s('LevelEditor').s('Module Name'));
+					}
+					
+					
+					//This is the code that loads the Base Class
+					
+					//Figure out Class Asset to fork
+					if (asset.componentType!="Class")
+						classToFork = assetLibrary.baseClass;
+					else
+						classToFork = asset;
+					
+					//Fork it
+					if (Assets.scriptLoaded(classToFork.name))
+					{
+						_onLoad();
+					}
+					else
+					{
+						Assets.loadOrphanAsset( classToFork , e('Project Editor').s('Developers_Hash').get(classToFork.owner), _onLoad );
+					}
+					
+					//Code continues on _onLoad()..
+					
+					/*
+					return;
+					//Add Camera Offsets and Scaling
+					var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+					var scale = camera.getState('scaleX');
+					localX = localX / scale + camera.getState('captureAreaX');
+					localY = localY / scale + camera.getState('captureAreaY');
+					
+					
+					var sceneUploader = Logic.gameFactory.createGameEntity('SparkEditor.entities.nonvisual.SceneUploader');
+					sceneUploader.setState('dropX',Std.int(localX));
+					sceneUploader.setState('dropY',Std.int(localY));
+					sceneUploader.setState('assetBeingDragged',parent.getState('assetBeingDragged'));
+					sceneUploader.setState('libraryOfAssetBeingDragged',parent.getState('libraryOfAssetBeingDragged'));
+					
+					//Scene Uploader is non visual.. so doesn't matter where we add it, as long as it's in the active GameSpace
+					//So that its actions are triggered.
+					me.addChild(sceneUploader);
+					*/
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>dropX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropped_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>droppedFromLibraryCollection_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+				
+		<Action>
+			<!-- So this will be a generic function for dropping anything other than a class or behavior basically..So I need to create the class here -->
+			<Id>Dropped Any Step1</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var asset = it.s('dropped_DBA');
+					
+					//This is the code that loads the Base Class
+					var classToFork;
+					
+					//Figure out Class Asset to fork
+					if (asset.componentType=="Class")
+						classToFork = asset;
+					else if (asset.componentType=="Image")
+						//classToFork = assetLibrary.baseClass; //I am deprecating Library Collection's baseClass.. it doesn't work..
+						classToFork = e('Project Editor').s('Assets_Hash').get('lib.classes.ImageSprite');
+					else if (asset.componentType=="AdobeAnimation")
+						classToFork = e('Project Editor').s('Assets_Hash').get('lib.classes.AdobeAnimationSprite');
+					else if (asset.componentType=="Spritesheet")
+						classToFork = e('Project Editor').s('Assets_Hash').get('lib.classes.SpritesheetSprite');
+						
+					//Fork it
+					if (Assets.scriptLoaded(classToFork.name))
+					{
+						me.fa('Dropped Any Step2', {dropX:it.s('dropX'), dropY:it.s('dropY'), dropped_DBA:it.s('dropped_DBA'), droppedFromLibraryCollection_DBA:it.s('droppedFromLibraryCollection_DBA'), classToFork_DBA:classToFork  });
+					}
+					else
+					{
+						Assets.loadOrphanAsset( classToFork , e('Project Editor').s('Developers_Hash').get(classToFork.owner), function(){
+							me.fa('Dropped Any Step2', {dropX:it.s('dropX'), dropY:it.s('dropY'), dropped_DBA:it.s('dropped_DBA'), droppedFromLibraryCollection_DBA:it.s('droppedFromLibraryCollection_DBA'), classToFork_DBA:classToFork  });
+						});
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>dropX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropped_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>droppedFromLibraryCollection_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+				
+		<Action>
+			<Id>Dropped Any Step2</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var classToFork = it.s('classToFork_DBA');
+					
+					var asset = it.s('dropped_DBA');
+					var assetLibrary = it.s('droppedFromLibraryCollection_DBA');
+					var localX = it.s('dropX');
+					var localY = it.s('dropY');
+					
+					//Our Editors
+					var l_LevelEditor = me.s('LevelEditor');
+					var l_SceneEditor = me.s('SceneEditor');
+					
+					//Here we add all raw lib assets (an image asset, a json asset, dependancies of them, all that..
+					if (asset.componentType!="Class") //so it's not applicable if we're just dragging a class file.. we don't add that, we just use it to fork it below
+					{
+						//Adding an existing Asset to a Module. This is the actual asset from the Library (e.g. an image Asset)
+						//Later on, this shouldn't be required.. When the actualy Object Class is added to a module, it will do a recursive
+						//check of its dependancies and every dependancy of those dependancies, and it will be added if it is not already
+						//this needs to happen both client side, and then server side on the 'Add Class Object to Module' Command...
+						//The reason i need to do this is cause if i simply move a class object from one level to another (and let's say it's a class object of a spriter,
+						//which ALSO has a ton of behaviors in it), then recursive adding of dependnacies is the only way i can see of doing this without losing my mind..
+						e('Project Editor').fa('Add Asset To Module', { Asset_DBA: asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+						//warning:the above should not be done if the asset being dragged is a class...
+						
+						//So.. a simplified version instead of doing dependancies can be done now, since I've decided on a shallow class/behavior system (SPARK promotes shallow Inheritance)
+						//so, if i do have dependancies, i don't have to do any queries or parsing..
+						
+						//since now i don't have dependancies, i'll have to actually look up the behaviors from the xml.. no other way... 
+						//and then get the DBA (which should be added from the 'lib' query (but not nesseccerily loaded or added to module but maybe)
+						
+						//do i continue or do dependancies ONLY for CLASS type objects?
+						
+						//lets continue. we will do dependancies when we do spriter/spritesheets.. gonna be fun:P so if you are doing spriter, consider doing dependancies for classes too
+						var l_storedDependancyAsset; //for later on
+						
+						for (dependancyId of asset.assetDependancies)
+						{
+							var f_asset = e('Project Editor').s('Assets_IdHash').get(dependancyId);
+							l_storedDependancyAsset = f_asset;
+							Display.de('found dependancy asset: ' + f_asset.name);
+							e('Project Editor').fa('Add Asset To Module', { Asset_DBA: f_asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+						}
+						
+						
+						//instead of dependancies, we might store every dependancy on our ClassEditor.. i like this....
+					}
+					//so...
+					
+					
+					
+					//Parse File
+					var l_newXml =  Logic.xml_from_file( Assets.getScript(classToFork.name) );
+					
+					//Figure out Name for our new Class
+					var newClassName="Untitled Object";
+					
+					//Do Generic changes to our new Class
+					Logic.xml_entity_updateMState(l_newXml, { id:"name", value: newClassName }, true); //Change Name
+					
+					//Do Specific changes to our new Class
+					if (asset.componentType=="Image") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
+					{
+						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshImageForm", value: Logic.getDbaFlambeId(asset) }, true); //Change Image Target
+					}
+					else if (asset.componentType=="AdobeAnimation") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
+					{
+						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshAdobeAnimationForm", value: Logic.getDbaFlambeId(asset) }, true); //Change AdobeAnimation(the json) Target
+						Logic.xml_entity_updateMState(l_newXml, { id:"Init Animation", value: '~Symbol 1' }, true); //Change Init Animation
+						
+						var l_dependancyFlambeName = Logic.getDbaFlambeId(l_storedDependancyAsset);
+						var l_atlasFolder = l_dependancyFlambeName.substring(0,l_dependancyFlambeName.lastIndexOf("."));
+						Logic.xml_entity_updateMState(l_newXml, { id:"Atlas Folder", value: l_atlasFolder }, true); //Change Atlas Folder
+						
+					}
+					else if (asset.componentType=="Spritesheet") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
+					{
+						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshSpritesheetForm", value: Logic.getDbaFlambeId(asset) }, true); //Change Spritesheet(the plist) Target
+						Logic.xml_entity_updateMState(l_newXml, { id:"Atlas File", value: Logic.getDbaFlambeId(l_storedDependancyAsset) }, true); //Change Atlas File
+						
+					}
+					
+					//Get Behaviors from xml (of forkedClass)
+					var l_behaviorNames = Logic.xml_entity_getExtendsEntityNames(l_newXml);
+					
+					//get the assets from the hash (WARNING, these asset will NOT be updated. Use Nedb for updated ones)
+					for (f_behaviorName of l_behaviorNames)
+					{
+						var f_asset = e('Project Editor').s('Assets_Hash').get(f_behaviorName);
+						
+						if (f_asset!=null)
+						{
+							//Add Assets to Module
+							e('Project Editor').fa('Add Asset To Module', { Asset_DBA: f_asset, ModuleName: l_LevelEditor.s('Module Name'), insertDBA: false } );
+						}
+						else
+						{
+							Display.error("Behavior Asset [" + f_behaviorName + "] NOT found in the Assets DBA Hash!");
+						}
+					}
+					
+					//Create New Asset for a level
+					//tags
+					//(second tag of Object Class is the asset used to display ThumbNail. added option to use lib_name for thumb too. This should be determined by Library Collection stuff!!!!
+					if (asset.componentType=="Class")
+						var l_addTag = asset.tags[1]; //convert this to meta thing again.. maybe use meta.thumbType
+					else if (asset.componentType=="Image")
+						var l_addTag =  asset._id; //over here.. instead add this to meta.thumbObjectId
+					else
+					{
+						var l_addTag = "No"; //do 'No' for everyone.. deprecate tags for this use..
+					}
+					
+					//Create meta
+					var l_meta = Logic.copyObject(classToFork.meta);
+					l_meta.createdForProject = e('Project Editor').s('Project_DBO').name;
+					l_meta.master = false;
+					
+					if (asset.componentType=="Image") //MAYBE a better way here would be if classToFork.meta.subType=="Image"
+						l_meta.thumbnail.objectId = asset._id;
+					
+					
+					/*
+					var l_meta = {
+						master: false,
+						primitive: "std.primitives.Project",
+						type: "Entity",
+						subType: "",
+						createdForProject: "BlankTemplate",
+						thumbnail: {
+							embeddedUrl: "thumbnail_project"
+						},
+						tags: []
+					};*/
+					
+					var l_createAssetFeedback={};
+					//over here we need to set title, change to Class, figure out name, add meta, set meta.master, etc..
+					e('Project Editor').fa('Create New Asset', { fileName:asset.fileName, title:asset.fileName, content:Logic.xmlToString(l_newXml), dir:l_LevelEditor.s('target_DBA').dir, componentType: 'Class', addTag: l_addTag, meta:l_meta, addToModule:l_LevelEditor.s('Module Name'), feedback:l_createAssetFeedback } );
+					
+					//Reload Module
+					ModuleManager.successSignal.connect(function () {
+						//Proceed
+						
+						//Class Editor
+						/*
+						var f_classEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.ClassEditor');
+						l_SceneEditor.addChild(f_classEditor);
+						l_SceneEditor.s('classEditors').push(f_classEditor);
+						f_classEditor.fa('Import From AssetName',{importAssetName: l_createAssetFeedback.DBA.name, createObject:false});
+						*/
+						
+						//Show Maybe here I request from Module Manager to do its thing..
+						e('Project Editor').fa('Create Dependancies For',{ moduleName:l_LevelEditor.s('Module Name'), DBA:null, createClassObjects:true, jsCb:function () {
+							//Proceed
+							//If it's a class we might NOT WANT to create an instance:P
+							//If it's a class we might NOT WANT to create an instance:P
+							//If it's a class we might NOT WANT to create an instance:P
+							
+							//Create Instance To the Scene? I guess so..
+							//Create the instance XML
+							var l_entityXml = Logic.xml_createElementAttr('Entity','extends', l_createAssetFeedback.DBA.name );
+							
+							//Add States
+							Logic.xml_entity_addMState(l_entityXml, {id:"id", value: Std.string(0) },true); //incremental, like class, or unique for every class, or...?
+							Logic.xml_entity_addMState(l_entityXml, {id:"spaceX", value: Std.string(localX) },true);
+							Logic.xml_entity_addMState(l_entityXml, {id:"spaceY", value: Std.string(localY) },true);
+							Logic.xml_entity_addMState(l_entityXml, {id:"scaleX", value: Std.string(1) },true); //not great but..
+							Logic.xml_entity_addMState(l_entityXml, {id:"scaleY", value: Std.string(1) },true); //not great but..
+							Logic.xml_entity_addMState(l_entityXml, {id:"rotation", value: Std.string(0) },true); //not great but..
+							
+							//We create an InstanceEditor and Import the Xml
+							//Instance Editor
+							var f_instanceEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.InstanceEditor');
+							f_instanceEditor.set('SceneEditor',l_SceneEditor);
+							f_instanceEditor.set('parentEditor',l_SceneEditor);
+							f_instanceEditor.set('LevelEditor',l_LevelEditor);
+							l_SceneEditor.s('sceneBoundsObject').addChild(f_instanceEditor); 
+							l_SceneEditor.s('instanceEditors').push(f_instanceEditor);
+							f_instanceEditor.fa('Import From Xml',{importXml: l_entityXml});
+							
+							//Mark Scene Editor as 'Needs to Export' (do this inside scene editor.. maybe the whole add instance thing..)
+							l_SceneEditor.fa('Needs To Export', {exportThis:true});
+							
+							//At this point... figure out where this action will go, if there is gonna be back and forth, and how it makes sense for Editors to talk together better..
+							
+							
+							//Get the class Editor for this Level
+							var l_levelClassEditor = me.s('LevelEditor').s('parentTab').s('editor');
+							
+							//Create and Update the Tree Child
+							l_levelClassEditor.s('projectChild').fa('Add Child', { childId:l_createAssetFeedback.DBA.name, childTitle:l_createAssetFeedback.DBA.title, childType:"Entity", child_DBA:l_createAssetFeedback.DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.EntityChild' } );
+						}});
+					}).once();
+					
+					//Reload the Module of the Level that this View belongs to
+					ModuleManager.loadModule(me.s('LevelEditor').s('Module Name'));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>dropX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>dropped_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>droppedFromLibraryCollection_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>classToFork_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+		
+	<_Triggers>
+		<Trigger>
+			<Event>OnDrop</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+				
+					//Figure out X, Y, etc..
+					var eventObject = me.getState('eventObject');
+					//console.log('on drop eventObject',eventObject);
+					
+					var l_LevelEditorGlobalPos = query(me.s('LevelEditor'),'absoluteRect');
+					var localX = eventObject.clientX - l_LevelEditorGlobalPos.left;
+					var localY = eventObject.clientY - l_LevelEditorGlobalPos.top;
+					//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+					
+					//Add Camera Offsets and Scaling
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					//Display.error("l_transformations> X: " + l_transformations.x + ", Y: " + l_transformations.y + ", scale: " + l_transformations.scale);
+					localX = (localX - l_transformations.x)/l_transformations.scale;
+					localY = (localY - l_transformations.y)/l_transformations.scale;
+					
+					
+					//Get Drop Event Data
+					var asset = l_dragEvent.DBA;
+					var assetLibrary = l_dragEvent.LibraryDBA;
+					
+					
+					//Normally we should tell the LevelEditor...
+					
+					//But for now, we tell... me
+					if (asset.componentType=="Behavior")
+						me.fa('Dropped A Behavior', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
+					else if (asset.componentType=="Sound")
+						me.fa('Dropped A Sound', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
+					else if (asset.componentType=="Image")
+						me.fa('Dropped An Image', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
+					else if (asset.componentType=="AdobeAnimation" || asset.componentType=="Spritesheet")
+						me.fa('Dropped Any Step1', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
+					else
+						Display.warn("Dropped an unknown type: " + asset.componentType);
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

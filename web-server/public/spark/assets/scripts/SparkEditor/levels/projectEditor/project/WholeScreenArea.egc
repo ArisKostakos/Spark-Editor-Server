@@ -1,0 +1,47 @@
+<Entity extends="std.display.VGroup">
+	<_States>
+		<_State id="name"><Value>Spark Editor:Screen</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<!--<_State id="acceptsKeyboardInput"><Value>true</Value></_State>-->
+			<!-- I could also prevent defaults here, which would effectively stop F8, etc.. -->
+		<!--<State><Id>lastKeyEvent</Id><Type>Dynamic</Type><Value>null</Value></State>-->
+	</_States>
+		
+	<_Triggers>
+		<!--
+		<Trigger>
+			<Event>KeyPressedLocal</Event>
+			<Scripts>
+				<Script>
+					Display.de("KEY PRESS");
+					me.set('lastKeyEvent', me.s('eventObjectKeyPress'));
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyDownLocal</Event>
+			<Scripts>
+				<Script>
+					//if u gonna use this again, use the events' timestamp to determine if a mouse down has been falsely triggered after a mouse up (and in that case, don't overwrite)
+					console.log('eventObjectKeyDown', me.s('eventObjectKeyDown'));
+					me.set('lastKeyEvent', me.s('eventObjectKeyDown'));
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>KeyReleasedLocal</Event>
+			<Scripts>
+				<Script>
+					console.log('eventObjectKeyRelease', me.s('eventObjectKeyRelease'));
+					me.set('lastKeyEvent', me.s('eventObjectKeyRelease'));
+				</Script>
+			</Scripts>
+		</Trigger>
+			-->
+	</_Triggers>
+</Entity>

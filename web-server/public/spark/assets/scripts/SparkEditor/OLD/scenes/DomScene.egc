@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Dom Scene</Value>
+		</_State>
+		
+		<State><Id>signupPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>loginPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.entities.LoginBackground"/>
+				<Entity extends="SparkEditor.entities.SignupPanel"/>
+				<Entity extends="SparkEditor.entities.LoginPanel"/>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					for (child of me.getChildren())
+						if (child.getState('name')=='Login Panel')
+							me.setState('loginPanel',child);
+						else if (child.getState('name')=='Signup Panel')
+							me.setState('signupPanel',child);
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

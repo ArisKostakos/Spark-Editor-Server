@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.components.tree.Tree">
+	<_States>
+		<State><Id>editorClickedTemp</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<_Action id="Child Clicked">
+			<_Scripts>
+				<Script>
+					var l_child = it.s('child');
+					
+					//Ok so for now we'll try to add code here that shows us an explorer for this
+					//let's see how that goes..
+					
+					var l_childClassEditor = l_child.s('editor');
+					
+					var l_classLevelEditor = null;
+					
+					var w_child = l_child;
+					while (w_child.s('childType')!="Level")
+					{
+						w_child = w_child.s('childParent');
+						
+						//If we reached the top, it means this child doesn't belong to a Level
+						if (w_child==null)
+							break;
+					}
+					
+					if (w_child!=null)
+						l_classLevelEditor = w_child.s('editor');
+					
+					
+					
+					if (l_classLevelEditor!=null)
+					{
+						//If the editTab relevant to this editor is created
+						if (l_classLevelEditor.s('editTab')!=null)
+						{
+							var l_explorerArea = l_classLevelEditor.s('editTab').s('Explorer Area');
+						
+							if (l_explorerArea!=null)
+							{
+								l_childClassEditor.fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+							}
+							else
+							{
+								Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+							}
+						}
+						else
+						{
+							//Otherwise, create it?
+							Display.log("Tab not created to display this item. Decide what to do in this scenario..");
+						}
+						
+						me.set('editorClickedTemp', l_childClassEditor);
+					}
+					else
+					{
+						Display.error("Level editor not found For Child " + l_child.s('childId') );
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

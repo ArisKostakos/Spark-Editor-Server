@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+
+	<_States>
+		<_State id="name">
+			<Value>Drag Surface Scene</Value>
+		</_State>
+		<State><Id>assetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>libraryOfAssetBeingDragged</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="std.display.Div">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="backgroundColor"><Value>white</Value></_State>
+						<_State id="opacity"><Value>0.25</Value></_State>
+						<_State id="dropTarget"><Value>true</Value></_State>
+					</_States>
+					<_Triggers>
+						<Trigger>
+							<Event>OnDrop</Event>
+							<Scripts>
+								<Script>
+								
+									function firstElementNamed(p_xmlNode, p_elementName)
+									{
+										if (p_xmlNode.elementsNamed(p_elementName).hasNext())
+										{
+											return p_xmlNode.elementsNamed(p_elementName).next();
+										}
+										else
+										{
+											return null;
+										}
+									}
+									
+									//Figure out X, Y, etc..
+									var eventObject = me.getState('eventObject');
+									var localX = eventObject.clientX - eventObject.target.getBoundingClientRect().left;
+									var localY = eventObject.clientY - eventObject.target.getBoundingClientRect().top;
+									Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+									
+									//Add Camera Offsets and Scaling
+									var camera = Logic.getEntityByName('Editor Scene Edit Camera');
+									var scale = camera.getState('scaleX');
+									localX = localX / scale + camera.getState('captureAreaX');
+									localY = localY / scale + camera.getState('captureAreaY');
+									
+									
+									var sceneUploader = Logic.gameFactory.createGameEntity('SparkEditor.entities.nonvisual.SceneUploader');
+									sceneUploader.setState('dropX',Std.int(localX));
+									sceneUploader.setState('dropY',Std.int(localY));
+									sceneUploader.setState('assetBeingDragged',parent.getState('assetBeingDragged'));
+									sceneUploader.setState('libraryOfAssetBeingDragged',parent.getState('libraryOfAssetBeingDragged'));
+									
+									//Scene Uploader is non visual.. so doesn't matter where we add it, as long as it's in the active GameSpace
+									//So that its actions are triggered.
+									me.addChild(sceneUploader);
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<State><Id>LevelEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<!--<_State id="backgroundColor"><Value>red</Value></_State>
+		<_State id="opacity"><Value>0.5</Value></_State>-->
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					//Position me according to..
+					/*
+					me.set('top', me.s('target_GameObject').s('maxBoundsY'));
+					me.set('left', me.s('target_GameObject').s('maxBoundsX'));
+					me.set('width', Std.string(me.s('target_GameObject').s('maxBoundsWidth')));
+					me.set('height', Std.string(me.s('target_GameObject').s('maxBoundsHeight')));*/
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						//Export Children's XML (enable this when instances can carry instances)
+						//for (instanceEditor of me.s('instanceEditors'))
+						//	instanceEditor.fa('Export XML');
+						
+						//Then, If This Editor can later do any changes to it's Instance EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

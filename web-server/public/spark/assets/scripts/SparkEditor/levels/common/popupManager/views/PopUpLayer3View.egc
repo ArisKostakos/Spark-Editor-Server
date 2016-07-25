@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.View">
+	<_States>
+		<_State id="name">
+			<Value>PopUp Layer 3 View</Value>
+		</_State>
+		
+		<_State id="zIndex">
+			<Value>2</Value>
+		</_State>
+		
+		<_State id="initSceneUrl">
+			<Value>SparkEditor.levels.common.popupManager.scenes.PopUpLayer3</Value>
+		</_State>
+		
+		<_State id="initCameraUrl">
+			<Value>std.display.Camera2D</Value>
+		</_State>
+		
+		<_State id="width">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="height">
+			<Value>100%</Value>
+		</_State>
+		
+		<_State id="visible">
+			<Value>false</Value>
+		</_State>
+		
+		<_State id="renderer">
+			<Value>NativeControls</Value>
+		</_State>
+		
+	</_States>
+</Entity>

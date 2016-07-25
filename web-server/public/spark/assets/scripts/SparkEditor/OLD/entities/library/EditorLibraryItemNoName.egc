@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Image">
+	<_States>
+		<_State id="width"><Value>50</Value></_State>
+		<_State id="height"><Value>50</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="cursor"><Value>pointer</Value></_State>
+		<_State id="draggable"><Value>true</Value></_State>
+		<State><Id>asset</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>OnDragStart</Event>
+			<Scripts>
+				<Script>
+					Logic.getEntityByName('Drag Surface View').setState('visible',true);				
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>OnDragEnd</Event>
+			<Scripts>
+				<Script>
+					Logic.getEntityByName('Drag Surface View').setState('visible',false);
+					Display.error("DRAG ENDDD");
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>MouseDown</Event>
+			<Scripts>
+				<Script>
+					Logic.getEntityByName('Drag Surface View').setState('visible',true);
+					Logic.getEntityByName('Drag Surface Scene').setState('assetBeingDragged',me.getState('asset'));
+					
+					//FINDS OFFSET FROM MOUSE CLICK TO IMAGE. I might need it later on..
+					//Display.error("Mouse Down!!!");
+					//var eventObject = me.getState('eventObject');
+					//var localX = eventObject.target.getBoundingClientRect().left;
+					//var localY = eventObject.target.getBoundingClientRect().top;
+					//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+					//.error("Mouse Global-> X: " + Input.pointer.currentX + ", Y: " + Input.pointer.currentY);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>MouseUp</Event>
+			<Scripts>
+				<Script>
+					Logic.getEntityByName('Drag Surface View').setState('visible',false);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>MouseLeftClicked</Event>
+			<Scripts>
+				<Script>
+			
+				return;
+					//Hacking away...
+					var scene = Logic.getEntityByName('2d Scene Editor').getState('target');
+					var asset = me.getState('component');
+					
+					if (asset.componentType=='Behavior')
+					{
+						var selectedEntities = Logic.getEntityByName('Level Editor 2D Scene').getState('selectedEntities');
+						
+						var assetUrl = asset.dir + '/' + asset.fileName + '.' + asset.fileExtension;
+						var behaviorXml = Xml.parse(Assets.getFile(assetUrl).toString()).firstElement();
+						
+						if (selectedEntities.length==1)
+						{
+							selectedEntities[0].getAction('AddBehavior').setState('behaviorXml',behaviorXml);
+							selectedEntities[0].getAction('AddBehavior').setState('asset',asset);
+							selectedEntities[0].startAction('AddBehavior');
+						}
+						else
+						{
+							var scene = Logic.getEntityByName('Level Editor 2D Scene');
+							scene.getAction('AddBehavior').setState('behaviorXml',behaviorXml);
+							scene.getAction('AddBehavior').setState('asset',asset);
+							scene.startAction('AddBehavior');
+						}
+					}
+					else
+					{
+						var entityXml = Xml.createElement('Entity');
+						entityXml.set('extends' , 'std.display.Image2D');
+						
+						var statesXml = Xml.createElement('_States');
+						
+						//State Name
+						var stateName_Xml = Xml.createElement('_State');
+						stateName_Xml.set('id', 'name');
+						var stateName_ValueXml = Xml.createElement('Value');
+						stateName_ValueXml.addChild(Xml.parse('Unnamed'));
+						
+						//2d mesh image form
+						var stateXml = Xml.createElement('_State');
+						stateXml.set('id', '2DMeshImageForm');
+						var stateValueXml = Xml.createElement('Value');
+						stateValueXml.addChild(Xml.parse('ImageUrl'));
+						
+						//StateX
+						var stateX_Xml = Xml.createElement('_State');
+						stateX_Xml.set('id', 'spaceX');
+						var stateX_ValueXml = Xml.createElement('Value');
+						stateX_ValueXml.addChild(Xml.parse('50'));
+						
+						//StateY
+						var stateY_Xml = Xml.createElement('_State');
+						stateY_Xml.set('id', 'spaceY');
+						var stateY_ValueXml = Xml.createElement('Value');
+						stateY_ValueXml.addChild(Xml.parse('50'));
+						
+						var formXml = Xml.createElement('_Form');
+						var formStatesXml = Xml.createElement('_States');
+						var formStateXml = Xml.createElement('State');
+						var formStateIdXml = Xml.createElement('Id');
+						formStateIdXml.addChild(Xml.parse('ImageUrl'));
+						var formStateTypeXml = Xml.createElement('Type');
+						formStateTypeXml.addChild(Xml.parse('Text'));
+						var formStateValueXml = Xml.createElement('Value');
+						formStateValueXml.addChild(Xml.parse('image_' + asset.name));
+						
+						entityXml.addChild(statesXml);
+							statesXml.addChild(stateName_Xml);
+								stateName_Xml.addChild(stateName_ValueXml);
+							statesXml.addChild(stateXml);
+								stateXml.addChild(stateValueXml);
+							statesXml.addChild(stateX_Xml);
+								stateX_Xml.addChild(stateX_ValueXml);
+							statesXml.addChild(stateY_Xml);
+								stateY_Xml.addChild(stateY_ValueXml);
+						entityXml.addChild(formXml);
+							formXml.addChild(formStatesXml);
+								formStatesXml.addChild(formStateXml);
+									formStateXml.addChild(formStateIdXml);
+									formStateXml.addChild(formStateTypeXml);
+									formStateXml.addChild(formStateValueXml);
+						
+						var pureXml = Xml.parse(entityXml.toString());
+						
+						Display.error("SPRITE XML: " + pureXml);
+							
+							
+						var childExtendsXml = Xml.createElement('Extends');
+						entityXml.insertChild(childExtendsXml,0);
+
+						//add [entity] Sprite2DEdit in [extends]
+						var sceneEditXml = Xml.createElement('Entity');
+						sceneEditXml.set('extends','SparkEditor.entities.editors.behaviors.Sprite2DEdit');
+						childExtendsXml.addChild(sceneEditXml);
+						
+						//instantiate, add to scene
+						var finalXml = Xml.parse(entityXml.toString());
+						var childEntity = Logic.gameFactory.createGameEntityByXml(finalXml.firstElement());
+						scene.addChild(childEntity);
+						
+						//give it snapshot xml
+						childEntity.setState('xmlData',pureXml);
+					}
+
+					
+					/*
+					var myContainer = parent.parentEntity;
+					
+					myContainer.possibleActionSet.get('SelectCategory').gameStateSet.get('selectionRequest').value = me;
+					myContainer.startAction("SelectCategory");*/
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

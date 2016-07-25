@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.editors.rootedits.ACBaseEdit">
+	<_States>
+		<_State id="name"><Value>Action</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>30</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(51,127,131)</Value></_State>
+		<_State id="paddingLeft"><Value>4</Value></_State>
+	</_States>
+</Entity>

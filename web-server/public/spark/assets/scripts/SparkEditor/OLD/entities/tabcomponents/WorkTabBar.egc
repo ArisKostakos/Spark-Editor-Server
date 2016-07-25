@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.tabcomponents.TabBar">
+	<_States>
+		<_State id="height"><Value>25</Value></_State><!--25-->
+		<_State id="paddingLeft"><Value>5</Value></_State>
+		<_State id="gap"><Value>18</Value></_State>
+	</_States>
+</Entity>

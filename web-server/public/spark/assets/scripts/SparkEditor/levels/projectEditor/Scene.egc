@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Here be Project Editor's Layout! -->
+				<!-- Consisted of Groups and Areas -->
+				
+				<!-- Whole Screen Group-->
+				<Entity extends="SparkEditor.levels.projectEditor.project.WholeScreenArea">
+					<Form><Space><Entities>
+						<!-- Everything-But-Bottom Group -->
+						<Entity extends="std.display.HGroup">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+								<_State id="gap"><Value>0</Value></_State>
+								<_State id="pointerEvents"><Value>none</Value></_State>
+							</_States>
+							<Form><Space><Entities>
+								<!-- Left Area -->
+								<Entity extends="SparkEditor.levels.projectEditor.components.area.Area">
+									<_States>
+										<_State id="width"><Value>370</Value></_State>
+										<_State id="borderWidth"><Value>0</Value></_State><!-- remove me when u make areas borderless -->
+									</_States>
+									<Form><Space><Entities>
+										<Entity extends="SparkEditor.levels.projectEditor.leftArea.LeftTabManager"/>
+									</Entities></Space></Form>
+								</Entity>
+								
+								<!-- Top-Middle-Right Group -->
+								<Entity extends="std.display.VGroup">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="gap"><Value>0</Value></_State>
+										<_State id="pointerEvents"><Value>none</Value></_State>
+									</_States>
+									<Form><Space><Entities>
+										<!-- Top Area -->
+										<Entity extends="SparkEditor.levels.projectEditor.components.area.Area">
+											<_States>
+												<_State id="height"><Value>40</Value></_State>
+											</_States>
+											<Form><Space><Entities>
+												<Entity extends="SparkEditor.levels.projectEditor.topArea.NavBar"/>
+											</Entities></Space></Form>
+										</Entity>
+										
+										<!-- Main Group -->
+										<Entity extends="std.display.HGroup">
+											<_States>
+												<_State id="width"><Value>100%</Value></_State>
+												<_State id="height"><Value>100%</Value></_State>
+												<_State id="gap"><Value>0</Value></_State>
+												<_State id="pointerEvents"><Value>none</Value></_State>
+											</_States>
+											<Form><Space><Entities>
+												<!-- Main Area -->
+												<Entity extends="SparkEditor.levels.projectEditor.components.area.Area">
+													<_States>
+														<_State id="pointerEvents"><Value>none</Value></_State>
+													</_States>
+													<Form><Space><Entities>
+														<Entity extends="SparkEditor.levels.projectEditor.mainArea.MainTabManager"/>
+													</Entities></Space></Form>
+												</Entity>
+												
+												<!-- Right Area 
+												<Entity extends="SparkEditor.levels.projectEditor.components.area.Area">
+													<_States>
+														<_State id="width"><Value>300</Value></_State>
+													</_States>
+													<Form><Space><Entities>
+													</Entities></Space></Form>
+												</Entity>-->
+											</Entities></Space></Form>
+										</Entity>
+									</Entities></Space></Form>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+						
+						<!-- Bottom Area -->
+						<Entity extends="SparkEditor.levels.projectEditor.components.area.Area">
+							<_States>
+								<_State id="height"><Value>25</Value></_State>
+							</_States>
+							<Form><Space><Entities>
+							</Entities></Space></Form>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Popup Manager -->
+				<Entity extends="SparkEditor.levels.common.popupManager.entities.PopupManager"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

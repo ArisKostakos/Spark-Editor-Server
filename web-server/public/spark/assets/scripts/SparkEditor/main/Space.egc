@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.primitives.core.Space">
+	<_States>
+		<_State id="name">
+			<Value>Spark Editor Space</Value>
+		</_State>
+		
+		<_State id="initStageName">
+			<Value>Spark Editor Stage</Value>
+		</_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Stage -->
+				<Entity extends="SparkEditor.main.Stage"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

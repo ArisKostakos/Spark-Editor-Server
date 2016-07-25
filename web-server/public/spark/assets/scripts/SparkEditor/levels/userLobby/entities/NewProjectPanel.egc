@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>New Project Pop Up</Value></_State>
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="paddingTop"><Value>32</Value></_State>
+		<_State id="paddingLeft"><Value>52</Value></_State>
+		<_State id="paddingBottom"><Value>32</Value></_State>
+		<_State id="paddingRight"><Value>52</Value></_State>
+		<_State id="gap"><Value>12</Value></_State>
+		<_State id="backgroundColor"><Value>#21303D</Value></_State>
+		<_State id="boxShadow"><Value>5px 5px 10px rgba(0, 0, 0, 0.3)</Value></_State>
+		<State><Id>newProjectName</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>templateName</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>outputText</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>busy</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Text Thingie -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>26</Value></_State>
+					</_States>
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Label -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>77</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Step 1:</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>rgb(79, 95, 112)</Value></_State>
+										<_State id="textAlign"><Value>left</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- Instructions -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Select a template to start with</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="textAlign"><Value>left</Value></_State>
+									</_States>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>
+				
+				<!-- Templates Group -->
+				<Entity extends="std.display.Scroller">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<Entity extends="SparkEditor.levels.userLobby.entities.DeleteMe">
+							<_States>
+								<_State id="height"><Value>150</Value></_State>
+							</_States>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>15</Value></_State></_States></Entity>
+				
+				<!-- Text Thingie -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>26</Value></_State>
+					</_States>
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Label -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>77</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Step 2:</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>rgb(79, 95, 112)</Value></_State>
+										<_State id="textAlign"><Value>left</Value></_State>
+									</_States>
+								</Entity>
+								
+								<!-- Instructions -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>100%</Value></_State>
+										<_State id="text"><Value>Enter the name of your game</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="textAlign"><Value>left</Value></_State>
+									</_States>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>
+				
+				<!-- Name Input-->
+				<Entity extends="std.display.Input">
+					<_States>
+						<_State id="name"><Value>Create New: Project Name Field</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>35</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(46, 61, 74)</Value></_State>
+						<_State id="border"><Value>0px</Value></_State>
+						<_State id="placeholder"><Value>Enter project name</Value></_State>
+						<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+						<_State id="fontSize"><Value>23px</Value></_State>
+						<_State id="fontWeight"><Value>300</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textIndent"><Value>12px</Value></_State>
+						<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+					</_States>
+					<_Triggers><Trigger><Event>KeyReleasedLocal</Event><Scripts>
+						<Script>
+							var eventObjectKeyPress = me.getState('eventObjectKeyPress');
+							
+							if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10) //Enter
+							{
+								e('New Project Pop Up').forceAction('Create Project');
+							}
+						</Script></Scripts></Trigger>
+					</_Triggers>
+				</Entity>
+				
+				<!-- Spacer -->
+				<Entity extends="std.display.Group"><_States><_State id="height"><Value>5</Value></_State></_States></Entity>
+				
+				<!-- Buttons -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="horizontalAlign"><Value>center</Value></_State>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>40</Value></_State>
+						<_State id="gap"><Value>5</Value></_State>
+					</_States>
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Create Button -->
+								<Entity extends="std.display.Button">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State> <!-- 140-->
+										<_State id="height"><Value>40</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+										<_State id="textVerticalAlign"><Value>middle</Value></_State>
+										<_State id="backgroundColor"><Value>rgb(255, 153, 51)</Value></_State>
+										<_State id="border"><Value>0px</Value></_State>
+										<_State id="text"><Value>Create</Value></_State>
+										<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+										<_State id="fontSize"><Value>23px</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+									</_States>
+									<_Triggers><Trigger><Event>MouseLeftClick</Event><Scripts>
+									<Script>
+										e('New Project Pop Up').forceAction('Create Project');
+									</Script>
+									</Scripts></Trigger></_Triggers>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+				</Entity>
+				
+				<!-- Output Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>18</Value></_State>
+					<_State id="fontSize"><Value>16px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					e('New Project Pop Up').setState('outputText',me);
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Check if Project Exists</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Check if Project Exists");
+					
+					if (data.code=="success")
+					{
+						me.s('outputText').setState('text', 'Project name already exists');
+						me.setState('busy',false);
+					}
+					else if (data.code=="notfound")
+					{
+						var newProjectName = me.s('newProjectName');
+						var newProjectTitle = e('Create New: Project Name Field').s('text');
+						var forkTemplateName = me.s('templateName');
+						
+						//Fork Platform
+						Comms.request("lobby.projectHandler.fork", {projectName: newProjectName, projectTitle: newProjectTitle, forkedProjectName: forkTemplateName}, "Create New Project From Template", me);
+					}
+					else
+					{
+						me.getState('outputText').setState('text', 'Error checking existing projects.');
+						me.setState('busy',false);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Create New Project From Template</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Create New Project From Template");
+					
+					if (data.code=="success")
+					{
+						var newProjectName = me.getState('newProjectName');
+						
+						me.getState('outputText').setState('text', "Project created. Connecting to " + newProjectName + "...");
+						
+						//Connect to it
+						Comms.request("lobby.projectHandler.connect", {projectName: newProjectName}, "userAdmin|Dashboard|Connect To Project");
+					}
+					else
+					{
+						me.getState('outputText').setState('text', 'Error forking project.');
+						me.setState('busy',false);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<Action>
+			<Id>Create Project</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('busy'))
+					{
+						Display.warn('Busy doing something. Stop spam-clicking..');
+					}
+					else
+					{
+						var projectName = e('Create New: Project Name Field').s('text');
+						projectName = Logic.replace(projectName,' ','g','_');
+						projectName = Logic.replace(projectName,'[^a-zA-Z0-9_]','g','');
+						projectName = projectName.toLowerCase();
+						
+						if (3>projectName.length || projectName=='undefined')
+						{
+							me.s('outputText').setState('text',"Project Name can't be less than 3 characters");
+						}
+						else if (projectName.length>40)
+						{
+							me.s('outputText').setState('text',"Project Name can't be more than 40 characters");
+						}
+						else
+						{
+							me.setState('busy',true);
+							
+							me.setState('newProjectName',projectName);
+							me.s('outputText').setState('text','Please Wait...');
+							
+							Comms.request("lobby.projectHandler.connect", {projectName: projectName}, "Check if Project Exists",me);
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

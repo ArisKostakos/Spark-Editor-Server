@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.HGroup">
+	<_States>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="horizontalAlign"><Value>center</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="gap"><Value>5</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Undo -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_undo</Value></_State>
+					<_State id="imageWidth"><Value>18</Value></_State>
+					<_State id="imageHeight"><Value>14</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States></Entity>
+				
+				<!-- Redo -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_redo</Value></_State>
+					<_State id="imageWidth"><Value>18</Value></_State>
+					<_State id="imageHeight"><Value>14</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States></Entity>
+				
+				<!-- Cut -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_cut</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>15</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States></Entity>
+				
+				<!-- Copy -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_copy</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>18</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States></Entity>
+				
+				<!-- Paste -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_paste</Value></_State>
+					<_State id="imageWidth"><Value>18</Value></_State>
+					<_State id="imageHeight"><Value>20</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States></Entity>
+				
+				<!-- Delete -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_delete</Value></_State>
+					<_State id="imageWidth"><Value>12</Value></_State>
+					<_State id="imageHeight"><Value>17</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Logic.getEntityByName('2d Scene Editor').getState('target').startAction('DeleteSelected');
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Lock -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_lock</Value></_State>
+					<_State id="imageWidth"><Value>14</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Lock Button");
+				</Script></_Scripts></_Action></_Actions></Entity>
+				
+				<!-- Group -->
+				<Entity extends="SparkEditor.entities.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_group</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Group Button");
+					return;
+					var behaviorName;
+					//behaviorName="QuizLogic";
+					//behaviorName="Snowflake";
+					behaviorName="ClickerLogic";
+					
+					//Initiate Load
+					var loader = Assets.initiateBatch();
+					
+					var assetId = 'lib/behaviors/'+behaviorName+'.egc';
+					var assetUrl = '/assets/spark/script/lib/behaviors/'+behaviorName+'.egc';
+					
+					//Add file to Flambe Loader
+					loader.addFile(assetUrl, assetId);
+					
+					//Event Listener
+					loader.successSignal.connect(function () {
+						Logic.getEntityByName('Editor Output').setState('text','Behavior '+behaviorName+' Refreshed!');
+					}).once();
+					
+					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+					//Load
+					loader.start();
+					
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

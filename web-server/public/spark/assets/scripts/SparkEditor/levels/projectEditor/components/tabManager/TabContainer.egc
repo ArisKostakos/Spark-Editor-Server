@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="pointerEvents"><Value>inherit</Value></_State>
+		<State><Id>TabManager</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<!--<_State id="backgroundColor"><Value>rgb(41,59,77)</Value></_State>-->
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

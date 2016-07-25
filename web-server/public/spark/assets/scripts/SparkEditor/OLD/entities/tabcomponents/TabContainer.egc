@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					parent.setState('container',me);
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+</Entity>

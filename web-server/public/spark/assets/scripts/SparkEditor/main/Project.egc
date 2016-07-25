@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.primitives.core.Project">
+	<Extends>
+		<Entity extends="SparkEditor.main.behaviors.Networking"/>
+		<Entity extends="SparkEditor.main.behaviors.SharedSpace"/>
+	</Extends>
+
+	<_States>
+		<_State id="name">
+			<Value>Spark Editor</Value>
+		</_State>
+		
+		<_State id="initSpaceName">
+			<Value>Spark Editor Space</Value>
+		</_State>
+			
+		<_State id="loaderLevelUrl">
+			<Value>SparkEditor.levels.se_loader.Level</Value>
+		</_State>
+		
+		<_State id="initLevelUrl">
+			<Value>SparkEditor.levels.login.Level</Value>
+		</_State>
+		
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.main.Space"/>
+			</Entities>
+		</Space>
+	</Form>
+	
+</Entity>

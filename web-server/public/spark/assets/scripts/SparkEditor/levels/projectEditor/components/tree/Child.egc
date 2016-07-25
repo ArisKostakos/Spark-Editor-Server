@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<!--<_State id="backgroundColor"><Value>blue</Value></_State>-->
+		<_State id="layout"><Value>Vertical</Value></_State>
+		<_State id="gap"><Value>1</Value></_State>
+		
+		<!-- Child Properties -->
+		<State><Id>childId</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>childTitle</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>childType</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>child_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>childParent</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<!-- Tree Identifications -->
+		<State><Id>parentTree</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>treeLevel</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>children</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<!-- Tree Child States -->
+		<State><Id>expanded</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>selected</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>active</Id><Type>Boolean</Type><Value>false</Value></State>
+	
+		<!-- Child Objects -->
+		<State><Id>displayObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>childrenContainerObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//nothing here?
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Toggle</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('expanded'))
+						me.fa('Collapse');
+					else
+						me.fa('Expand');
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Expand</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('expanded',true);
+					//override me..
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Collapse</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('expanded',false);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>PreConstructor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('children', new StringMap());
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Add Child</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//var l_child = it.s('child');
+					
+					
+					var l_child = Logic.create( it.s('treeChildUrl') );
+					l_child.set('childId', it.s('childId') );
+					l_child.set('childTitle', it.s('childTitle') );
+					l_child.set('childType', it.s('childType') );
+					l_child.set('child_DBA', it.s('child_DBA') );
+					l_child.set('childParent', me );
+					
+					l_child.set('parentTree', me.s('parentTree') );
+					
+					//PreConstructor
+					l_child.fa('PreConstructor');
+					
+					//Add The Child
+					me.s('childrenContainerObject').addChild(l_child);
+					
+					me.s('children').set( l_child.s('childId'), l_child);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>childId</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>childTitle</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>childType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>child_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>treeChildUrl</Id><Type>Text</Type><Value>SparkEditor.levels.projectEditor.components.tree.Child</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					me.s('parentTree').sa('Child Clicked', {child:me} );
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

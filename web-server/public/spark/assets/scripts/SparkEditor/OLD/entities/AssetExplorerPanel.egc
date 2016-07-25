@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.TreeView">
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//..
+				</Script>
+			</_Scripts>
+		</_Action>
+	</_Actions>
+				
+	<_States>
+		<_State id="name">
+			<Value>Asset Explorer</Value>
+		</_State>
+
+		<_State id="backgroundColor">
+			<Value>rgb(102,102,117)</Value>
+		</_State>
+		
+		<State><Id>assets</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>isTreeLoaded</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					if (Comms.getRequestData('AE_requestAssets')!=null)
+					{
+						var data = Comms.getRequestData('AE_requestAssets');
+						
+						if (data.code=="success")
+						{
+							me.setState('assets',data.assets);
+							
+							me.startAction('displayAssets');
+						}
+						else
+						{
+							Logic.getEntityByName('AU_output').getState('value').setState('text','Error Retrieving Assets...');
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+	
+	<_Actions>
+		<Action>
+			<Id>requestAssets</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					Comms.request("assets.requestHandler.getPopulated", {}, "AE_requestAssets");
+					
+					me.stopAction("requestAssets");
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>displayAssets</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					function ensureTreeNode(array,nodeText,type, asset_id)
+					{
+						var found = null;
+						var n = 0;
+						while (array.length>n)
+						{
+							if (array[n].text==nodeText)
+								return array[n];
+								
+							n+=1;
+						}
+						
+						if (asset_id!="no")
+							var newNode = {id: asset_id, text: nodeText, type: type, state: {opened:true}, children: []};
+						else
+							var newNode = {text: nodeText, type: type, state: {opened:true}, children: []};
+							
+						array.push(newNode);
+						
+						return newNode;
+					}
+				
+					var assets = me.getState('assets');
+					
+					if (assets==null)
+					{
+						Logic.getEntityByName('AU_output').getState('value').setState('text','Error Displaying Assets...');
+					}
+					else
+					{
+						var treeData = [];
+					
+						var i = 0;
+						while (assets.length>i)
+						{
+							//Display.error('asset #' + i + ',name: ' + assets[i].name);
+							
+							var userNode = ensureTreeNode(treeData, assets[i].owner.user.name, "user", "no");
+
+							var typeNode = ensureTreeNode(userNode.children, assets[i].type, "type", "no");
+							
+							var splitName = assets[i].name.split('.');
+							
+							var l = 0;
+							var leafNode = typeNode;
+							while (splitName.length>l)
+							{
+								if (l==splitName.length-1)
+									leafNode = ensureTreeNode(leafNode.children, splitName[l],"file", "a" + i);
+								else
+									leafNode = ensureTreeNode(leafNode.children, splitName[l],"folder", "no");
+									
+								l+=1;
+							}
+							
+							//var dirNode = ensureTreeNode(typeNode.children, assets[i].dir);
+							
+							//var fileNameNode = ensureTreeNode(dirNode.children, assets[i].fileName);
+							
+							i+=1;
+						}
+						
+						var tree = me.getState('treeObject');
+						
+						
+						if (me.getState('isTreeLoaded')==false)
+						{
+							tree.jstree( { types : {
+									  default : {
+										icon : "assets/images/treeIcons/folder.png"
+									  },
+									  file : {
+										icon : "assets/images/treeIcons/file.png"
+									  },
+									  folder : {
+										icon : "assets/images/treeIcons/folder.png"
+									  },
+									  type : {
+										icon : "assets/images/treeIcons/type.png"
+									  },
+									  user : {
+										icon : "assets/images/treeIcons/user.png"
+									  }
+									},
+								plugins : [ "types" ],
+								core : {
+								themes: {
+									name: 'default',
+									dots: true,
+									icons: true
+								}
+							} });
+							
+							tree.on("changed.jstree", function (e, data) {
+								if (data.selected.length!=0)
+								{
+									
+									 var parentNode = tree.jstree(true).get_node(data.selected);
+									 if (parentNode.id.substr(0,1)=='a')
+									 {
+										var astId = parentNode.id.substr(1);
+										
+										Logic.getEntityByName('Asset Properties').getAction('showAsset').setState('asset',assets[astId]);
+										Logic.getEntityByName('Asset Properties').startAction('showAsset');
+										
+										Logic.getEntityByName('Code Editor').getAction('showAsset').setState('asset',assets[astId]);
+										Logic.getEntityByName('Code Editor').startAction('showAsset');
+									 }
+								}
+							});
+							
+							me.setState('isTreeLoaded',true);
+						}
+						
+						 tree.jstree(true).settings.core.data = treeData;
+						 tree.jstree(true).refresh();
+					}
+					
+					me.stopAction("displayAssets");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

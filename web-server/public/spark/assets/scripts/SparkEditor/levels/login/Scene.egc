@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+	<Form>
+		<Space>
+			<Entities>
+				<Entity extends="SparkEditor.levels.login.entities.LoginBackground"/>
+				<Entity extends="SparkEditor.levels.login.entities.SignupPanel"/>
+				<Entity extends="SparkEditor.levels.login.entities.LoginPanel"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

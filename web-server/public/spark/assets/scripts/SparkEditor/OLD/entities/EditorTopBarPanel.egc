@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="name"><Value>Editor Top Bar Panel</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="horizontalAlign"><Value>left</Value></_State><!--center-->
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="width"><Value>100%</Value></_State>
+		<!--<_State id="minWidth"><Value>700</Value></_State>-->
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- File -->
+				<Entity extends="SparkEditor.entities.TopBarFileSection"><_States>
+					<_State id="width"><Value>22%</Value></_State>
+				</_States></Entity>
+				
+				<!-- Separator -->
+				<Entity extends="SparkEditor.entities.TopBarSeparator"></Entity>
+			
+				<!-- Edit -->
+				<Entity extends="SparkEditor.entities.TopBarEditSection"><_States>
+					<_State id="width"><Value>25%</Value></_State>
+				</_States></Entity>
+				
+				<!-- Separator -->
+				<Entity extends="SparkEditor.entities.TopBarSeparator"></Entity>
+				
+				<!-- Properties -->
+				<Entity extends="SparkEditor.entities.TopBarPropertiesSection"><_States>
+					<_State id="width"><Value>21%</Value></_State>
+				</_States></Entity>
+				
+				<!-- Separator -->
+				<Entity extends="SparkEditor.entities.TopBarSeparator"></Entity>
+				
+				<!-- Run -->
+				<Entity extends="SparkEditor.entities.TopBarRunSection"><_States>
+					<_State id="width"><Value>32%</Value></_State>
+				</_States></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

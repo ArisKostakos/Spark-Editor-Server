@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>30</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<State><Id>parObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Some Text -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>70</Value></_State>
+					<_State id="height"><Value>17</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="fontSize"><Value>15px</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>right</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						me.setState("text",parent.getState('parObj').name+":");
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

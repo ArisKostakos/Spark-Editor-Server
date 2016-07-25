@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.entities.components.assetParameter.ParameterEditBase">
+	<_States>
+
+	</_States>
+	
+	<_Form>
+		<_Space>
+			<_Entities>
+				<!-- Button -->
+				<Entity extends="std.display.Button"><_States>
+					<_State id="width"><Value>200</Value></_State>
+					<_State id="height"><Value>80%</Value></_State>
+					<_State id="backgroundColor"><Value>rgb(83, 98, 115)</Value></_State>
+					<_State id="layout"><Value>Horizontal</Value></_State>
+					<_State id="verticalAlign"><Value>middle</Value></_State>
+					<State><Id>btnTextObj</Id><Type>Dynamic</Type><Value>null</Value></State>
+					</_States>
+				
+					<_Triggers>
+						<Trigger>
+							<Event>MouseLeftClick</Event>
+							<Scripts>
+								<Script>
+									var globalPos = Logic.queryGameEntity(me, "globalPosition");
+									
+									//Ok about this... WTF, if i don't put this measure in, it works on New Event calling create Condition
+									//but not from a Create New Condition button (so, bug when adds a second/third condition to an event)
+									//it is VERY weird... very.....weird..
+									/*
+									if (globalPos==null)
+									{
+										Display.error("is nuuuullll oii");
+										return;
+									}
+									
+									//me.stopAction("ChooseTarget");
+									*/
+									
+									Display.error("WTF NOW....: " + globalPos);
+									//Get Assets we Want to display
+									var ClassObjectsDBbyNameHash = Logic.getEntityByName('Project Editor').getState("ClassObjectsDBbyNameHash");
+									var arrayOfAssets = [];
+									
+									
+									var iterator = ClassObjectsDBbyNameHash.iterator();
+									while (iterator.hasNext())
+									{
+										var asset = iterator.next();
+										arrayOfAssets.push(asset);
+									}
+									
+									//Open Popup [CHOOSE TARGET]
+									var popUpManager = Logic.getEntityByName('PopUp Manager');
+									var popUpAction = popUpManager.getAction('Open PopUp');
+									popUpAction.setState('popupName',"SparkEditor.entities.popups.items.ChooseTargetPopUp");
+									popUpAction.setState('popupPosX',globalPos.x+100);
+									popUpAction.setState('popupPosY',globalPos.y+30);
+									popUpAction.setState('argA',arrayOfAssets);
+									popUpAction.setState('cb_caller',me);
+									popUpAction.setState('cb_actionName','Callback: Select New Target');
+									popUpManager.forceAction('Open PopUp');
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+		
+					<_Form>
+						<_Space>
+							<_Entities>
+								<!-- Button Text -->
+								<Entity extends="std.display.Text"><_States>
+									<_State id="width"><Value>100%</Value></_State>
+									<_State id="height"><Value>15</Value></_State>
+									<_State id="fontWeight"><Value>300</Value></_State>
+									<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+									<_State id="fontSize"><Value>13px</Value></_State>
+									<_State id="fontColor"><Value>white</Value></_State>
+									<_State id="textAlign"><Value>center</Value></_State>
+									</_States>
+									<_Actions><_Action id="Constructor"><_Scripts><Script>
+										me.setState("text","Click to choose");
+										parent.setState('btnTextObj',me);
+									</Script></_Scripts></_Action></_Actions>
+								</Entity>
+							</_Entities>
+						</_Space>
+					</_Form>
+						
+					<_Actions>
+						<Action>
+							<Id>Callback: Select New Target</Id>
+							<Concurrency>Persistent</Concurrency>
+							<Scripts>
+								<Script>
+									//forced
+									
+									var cb_result = it.getState('cb_result');
+									var cb_Arg1 = it.getState('cb_Arg1');
+									
+									if (cb_result=="OK")
+									{
+										//me.getAction('Set New Target').setState('asset',cb_Arg1);
+										//me.startAction('Set New Target');
+										Display.error("Selected a dude: " + cb_Arg1.title);
+										
+										me.getState('btnTextObj').setState('text',cb_Arg1.title);
+										
+										parent.getState('parObj').object=cb_Arg1.title;
+									}
+									else
+									{
+										//cancel wizard flag here
+									}
+								</Script>
+							</Scripts>
+							<States>
+								<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+								<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+							</States>
+						</Action>
+					</_Actions>
+				</Entity>
+			</_Entities>
+		</_Space>
+	</_Form>
+</Entity>

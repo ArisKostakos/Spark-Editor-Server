@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Button">
+	<_States>
+		<State><Id>caption</Id><Type>Text</Type><Value>Untitled</Value></State>
+		<State><Id>titleFontSize</Id><Type>Text</Type><Value>15px</Value></State>
+		<State><Id>hasIcon</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>iconImage</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>iconWidth</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>iconHeight</Id><Type>Text</Type><Value>20</Value></State>
+		<State><Id>normalTextColor</Id><Type>Text</Type><Value>white</Value></State>
+		<State><Id>selectedTextColor</Id><Type>Text</Type><Value>red</Value></State>
+		<State><Id>selectedImageSuffix</Id><Type>Text</Type><Value>_selected</Value></State>
+		<_State id="gap"><Value>0</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>textObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="paddingLeft"><Value>5</Value></_State>
+		<_State id="paddingRight"><Value>5</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Header Icon -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="display"><Value>none</Value></_State>
+						<_State id="width"><Value>1</Value></_State>
+						<_State id="height"><Value>1</Value></_State>
+					</_States>
+					<_Actions><_Action id="Constructor"><_Scripts><Script>
+						if (parent.getState('hasIcon'))
+						{
+							parent.setState('imageObject',me);
+							me.setState('src',parent.getState('iconImage'));
+							me.setState('width',parent.getState('iconWidth'));
+							me.setState('height',parent.getState('iconHeight'));
+							me.setState('display','inline');
+						}
+					</Script></_Scripts></_Action></_Actions>
+				</Entity>
+				
+				<!-- Header Title -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>100%</Value></_State>
+					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="verticalCenter"><Value>0</Value></_State>
+				</_States><_Actions><_Action id="Constructor"><_Scripts><Script>
+					parent.setState('textObject',me);
+					me.setState('text',parent.getState('caption'));
+					me.setState('fontSize',parent.getState('titleFontSize'));
+					me.setState('height',parent.getState('titleFontSize'));
+					me.setState('fontColor',parent.getState('normalTextColor'));
+				</Script></_Scripts></_Action></_Actions></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

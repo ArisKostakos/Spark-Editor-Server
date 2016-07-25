@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+		<_State id="overflow"><Value>hidden</Value></_State>
+		<State><Id>Module Name</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Level Editor Camera</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>Level Loaded</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>ClassEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>View Editors</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>Selection</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>Selected Type</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From AssetName">
+			<_Scripts>
+				<Script>
+					//Create the view editors array
+					me.set('View Editors', [] );
+					
+					//Create the selection array
+					me.set('Selection', new ObjectMap() );
+					
+					//Get My Class Editor
+					me.set('ClassEditor', e('Project Editor').s('classEditors').get(me.s('target_AssetName')));
+				
+					var p_level = me.set('target_GameObject', it.s('LevelEditor_gameObject'));
+					
+					//Create the Level Editor's Camera (I create it first, cause the ViewEditors will need this BTW, this is the Edit Camera, not the camera for runtime)
+					var l_levelEditorCamera = me.set('Level Editor Camera', Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.LevelEditorCamera') );
+					
+					
+					//Assuming exactly 1 camera reference
+					var l_cameraReferences = p_level.s('cameraReferences');
+					
+					//Level Camera Editor
+					var l_cameraEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.CameraEditor');
+					l_cameraEditor.set('parentEditor',me);
+					l_cameraEditor.set('LevelEditor',me);
+					me.addChild(l_cameraEditor);
+					l_cameraEditor.fa('Import From AssetName',{importAssetName: l_cameraReferences[0].s('url'), createObject:false});
+					
+					
+					//for each viewReference
+					var l_viewReferences = p_level.s('viewReferences');
+					for (f_viewReference of l_viewReferences)
+					{
+						//Create ViewEditor
+						var f_viewEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.ViewEditor');
+						f_viewEditor.set('LevelEditor',me);
+						f_viewEditor.set('parentEditor',me);
+						me.addChild(f_viewEditor);
+						me.s('View Editors').push(f_viewEditor);
+						f_viewEditor.fa('Import From AssetName',{importAssetName:f_viewReference.s('url'), createObject:true});
+					}
+					
+					
+					//Assuming exactly 1 module reference
+					var l_moduleReferences = p_level.s('moduleReferences');
+					
+					//Store Module Name Used
+					me.set('Module Name',l_moduleReferences[0].s('url'));
+					
+					//Show Maybe here I request from Module Manager to do its thing..
+					//e('Project Editor').fa('Create Dependancies For',{ moduleName:me.s('Module Name'), DBA:null, createClassObjects:true, jsCb:null } );
+					
+					//Add Level Editor's Camera to Level, so it runs
+					p_level.addChild(l_levelEditorCamera);
+					
+					//Adding Level Game Object to active Space/Stage
+					Display.projectActiveSpaceReference.spaceEntity.addChild(p_level);
+					
+					//Mark Level as fully loaded
+					me.set('Level Loaded',true);
+				</Script>
+			</_Scripts>
+			<_States>
+				<State><Id>LevelEditor_gameObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</_States>
+		</_Action>
+			
+		<Action>
+			<!-- This means, add the flambe level to stage-->
+			<Id>Show Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Adding Level Game Object to active Space/Stage
+					var p_levelObject=me.s('target_GameObject');
+					Display.projectActiveSpaceReference.spaceEntity.addChild(p_levelObject);
+					
+					for (f_viewEditor of me.s('View Editors'))
+						f_viewEditor.fa('Add View To Stage Area');
+						
+					//me.s('Level Editor Camera').sa('Camera Update');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<!-- This means, remove the flambe level from stage-->
+			<Id>Hide Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Removing Level Game Object from active Space/Stage
+					var p_levelObject=me.s('target_GameObject');
+					Display.projectActiveSpaceReference.spaceEntity.removeChild(p_levelObject);
+					
+					for (f_viewEditor of me.s('View Editors'))
+						f_viewEditor.fa('Remove View From Stage Area');
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						//Export Children's XML
+						for (viewEditor of me.s('View Editors'))
+							viewEditor.fa('Export XML');
+						
+							
+						//Then, If This Editor can later do any changes to it's Level EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<_Action id="Needs To Export">
+			<_Scripts>
+				<Script>
+					//Simple Add-On Exception for the LevelEditor. If this action is called, let it's tab owner know about it
+					
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Clicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_editor = it.s('editor');
+					var l_selection = me.s('Selection');
+					
+					if (it.s('ctrlKey') || it.s('shiftKey'))
+					{
+						Display.de("SHIFT OR CONTROL PRESSED");
+						
+						//Over here, do a check for Selected Type.. only add to selection if selected Type matches
+						
+						//l_editor can be null, if clicked on level editor
+						if (l_editor!=null)
+						{
+							//Toggle Selection (Insert or remove selected)
+							if (!l_selection.exists(l_editor))
+							{
+								l_editor.fa('Select');
+								l_selection.set(l_editor, true);
+							}
+							else
+							{
+								l_editor.fa('Deselect');
+								l_selection.remove(l_editor);
+							}
+						}
+						
+						//Show collection of common behaviors to state explorer
+						//..
+					}
+					else //If i normal-clicked (no shifts, etc)
+					{
+						//Deselect everything else
+						var keys = l_selection.keys();
+						while (keys.hasNext())
+						{
+							var w_selectedEditor = keys.next();
+							
+							if (w_selectedEditor!=l_editor)
+							{
+								w_selectedEditor.fa('Deselect');
+								l_selection.remove(w_selectedEditor);
+							}
+						}
+						
+						//l_editor can be null, if clicked on level editor
+						if (l_editor!=null)
+						{
+							//if what i clicked wasn't already selected, select it
+							if (!l_selection.exists(l_editor))
+							{
+								l_editor.fa('Select');
+								l_selection.set(l_editor, true);
+								
+								me.set('Selected Type', l_editor.s('editorType') );
+							}
+							
+							//Show Class Editor for selected Instance (For shift clicking it's more complicated.. showing collection of common behaviors instead..)
+							var l_explorerArea = me.s('parentTab').s('Explorer Area');
+							
+							if (l_explorerArea!=null)
+							{
+								//I guess this should now be InstanceEditor... so l_editor itself..
+								l_editor.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+							}
+							else
+							{
+								Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+							}
+						}
+						else
+						{
+							//Select Level Editor (state explorer)? why not, am I right? or am I white?
+							var l_explorerArea = me.s('parentTab').s('Explorer Area');
+							
+							if (l_explorerArea!=null)
+							{
+								me.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+							}
+							else
+							{
+								Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+							}
+						}
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>ctrlKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>shiftKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>altKey</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>DragStart</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_editor = it.s('editor');
+					var l_selection = me.s('Selection');
+					
+					//If it wasn't already selected
+					if (!l_selection.exists(l_editor))
+					{
+						//Simulate a click on it
+						me.fa('Clicked', { editor:it.s('editor'), ctrlKey: it.s('ctrlKey'), shiftKey: it.s('shiftKey'), altKey: it.s('altKey') } );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>ctrlKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>shiftKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>altKey</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Drag</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_editor = it.s('editor');
+					var l_moveX = it.s('moveX');
+					var l_moveY = it.s('moveY');
+					var l_selection = me.s('Selection');
+					
+					//i can check for the keys here, to do stuff while dragging (move only in one axis, etc..)
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						w_selectedEditor.fa('MoveBy', {moveX: l_moveX, moveY: l_moveY});
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>ctrlKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>shiftKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>altKey</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>ScaleDrag</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_editor = it.s('editor');
+					var l_moveX = it.s('moveX');
+					var l_moveY = it.s('moveY');
+					var l_scaleType = it.s('scaleType');
+					
+					var l_selection = me.s('Selection');
+					
+					//i can check for the keys here, to do stuff while dragging (move only in one axis, etc..)
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						w_selectedEditor.fa('ScaleBy', {scaleType: l_scaleType, moveX: l_moveX, moveY: l_moveY});
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>scaleType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>ctrlKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>shiftKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>altKey</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>RotateDrag</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_editor = it.s('editor');
+					var l_moveX = it.s('moveX');
+					var l_moveY = it.s('moveY');
+					
+					var l_selection = me.s('Selection');
+					
+					//i can check for the keys here, to do stuff while dragging (move only in one axis, etc..)
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						w_selectedEditor.fa('RotateBy', {moveX: l_moveX, moveY: l_moveY});
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>ctrlKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>shiftKey</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>altKey</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Refresh Selected Controls</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					var l_selection = me.s('Selection');
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						//Refresh Controls (and show)
+						w_selectedEditor.sa('Refresh Controls');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Hide Selected Controls</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_selection = me.s('Selection');
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						//Hide Controls
+						w_selectedEditor.fa('Hide Controls');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').sa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>CameraPan</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Display.de("Dragginnggg");
+					
+					var l_levelEditorCamera = me.s('Level Editor Camera');
+					var l_zoom = l_levelEditorCamera.s('zoom');
+					
+					var l_mouseEvent = me.s('eventObjectMouseMove');
+					
+					
+					l_levelEditorCamera.addToState('x', -l_mouseEvent.movementX*l_zoom);
+					l_levelEditorCamera.addToState('y', -l_mouseEvent.movementY*l_zoom);
+					
+					l_levelEditorCamera.set('command_updateCamera', true);
+					
+					//Refresh Controls of Selected Objects
+					me.fa('Hide Selected Controls');
+					me.sa('WaitFor',{delay:0.2,delayCurrent:0,cbEntity:me,cbAction:"Refresh Selected Controls"});
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseScroll</Event>
+			<Scripts>
+				<Script><![CDATA[
+				
+					Display.error("SCROLLY SCROLYYYYY");
+					//console.log(me.s('eventObject'));
+					var eventObject = me.s('eventObject');
+					
+					var l_deltaY = eventObject.deltaY;
+					
+					var l_levelEditorCamera = me.s('Level Editor Camera');
+					
+					var dir=0.05;
+					if (l_deltaY<0)
+						dir *= -1;
+						
+					l_levelEditorCamera.addToState('zoom', dir);
+					
+					//Center Our Zoom //Good enough for now.. although it's totally crap and guesswork
+					var l_LevelEditorGlobalPos = query(me,'absoluteRect');
+					var localX = eventObject.clientX - l_LevelEditorGlobalPos.left;
+					var localY = eventObject.clientY - l_LevelEditorGlobalPos.top;
+					
+					//Display.error("Drag> X: " + localX + ", Y: " + localY);
+					
+					l_levelEditorCamera.addToState('x', -1100*dir);
+					l_levelEditorCamera.addToState('y', -800*dir);
+					
+					l_levelEditorCamera.set('command_updateCamera', true);
+					
+					//Refresh Controls of Selected Objects
+					me.fa('Hide Selected Controls');
+					me.sa('WaitFor',{delay:0.2,delayCurrent:0,cbEntity:me,cbAction:"Refresh Selected Controls"});
+				]]></Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>MouseMoved</Event>
+			<Scripts>
+				<Script>
+					//Display.de("Mouse Move");
+					//console.log(me.s('eventObjectMouseMove'));
+					
+					if (me.s('eventObjectMouseMove').button==2) //Right click was pressed while moving
+						me.fa("CameraPan");
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					//Clicked Nothingness..
+					var l_mouseEvent = me.s('eventObject');
+					me.fa('Clicked', { editor:null, ctrlKey: l_mouseEvent.ctrlKey, shiftKey: l_mouseEvent.shiftKey, altKey: l_mouseEvent.altKey } );
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>KeyDownLocal</Event>
+			<Scripts>
+				<Script><![CDATA[
+					//This is here instead of the InstanceEditors to reduce the amount of Keyboard Event Listeners (I don't want to attach them to every InstanceEditor..)
+					
+					//i can check for shift+ctrl+alt keys here for more advanced stuff
+					//console.log('eventObjectKeyDown', me.s('eventObjectKeyDown'));
+					
+					
+					var l_selection = me.s('Selection');
+					
+					//If selection is not empty
+					if (l_selection.iterator().hasNext())
+					{
+						//var l_code = me.s('eventObjectKeyDown').code;
+						var l_keyCode = me.s('eventObjectKeyDown').keyCode;
+						var l_instruction=null;
+						var l_moveX=0;
+						var l_moveY=0;
+						
+						//Accurate Move
+						if (l_keyCode>=37 && l_keyCode<=40) //Arrow Keys
+						{
+							l_instruction="MoveBy";
+							if (l_keyCode==37) //arrow left
+								l_moveX=-1;
+							else if (l_keyCode==38) //arrow up
+								l_moveY=-1;
+							else if (l_keyCode==39) //arrow right
+								l_moveX=1;
+							else if (l_keyCode==40) //arrow down
+								l_moveY=1;
+						}
+						//Directional Clone
+						else if (l_keyCode==87 || l_keyCode==65 || l_keyCode==83 || l_keyCode==68) //WASD
+						{
+							l_instruction="Clone";
+							if (l_keyCode==87) //W
+								l_moveY=-1;
+							else if (l_keyCode==65) //A
+								l_moveX=-1;
+							else if (l_keyCode==83) //S
+								l_moveY=1;
+							else if (l_keyCode==68) //D
+								l_moveX=1;
+						}
+						
+						//Instruction found
+						if (l_instruction!=null)
+						{
+							var keys = l_selection.keys();
+							while (keys.hasNext())
+							{
+								var w_selectedEditor = keys.next();
+								
+								w_selectedEditor.fa(l_instruction, {moveX: l_moveX, moveY: l_moveY});
+								
+								//if (l_instruction=="MoveBy")
+								//	w_selectedEditor.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+							}
+							
+							//if (l_instruction=="Clone")
+							//	me.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+						}
+					}
+				]]></Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="SparkEditor.levels.projectEditor.tabs.TabBase">
+	<_States>
+		<_State id="backgroundColor"><Value>rgb(28,41,53)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Project Panel Stuff -->
+				<Entity extends="std.display.VGroup">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="top"><Value>67</Value></_State>
+						<_State id="gap"><Value>0</Value></_State>
+					</_States>
+				
+					<Form><Space><Entities>
+						<!-- Controls -->
+						<Entity extends="std.display.Div">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>61</Value></_State>
+								<_State id="backgroundColor"><Value>rgb(25,37,47)</Value></_State>
+								<_State id="layout"><Value>Horizontal</Value></_State>
+								<_State id="horizontalAlign"><Value>center</Value></_State>
+								<_State id="verticalAlign"><Value>middle</Value></_State>
+							</_States>
+						
+							<Form><Space><Entities>
+								<Entity extends="std.display.Image">
+									<_States>
+										<_State id="width"><Value>50</Value></_State>
+										<_State id="height"><Value>50</Value></_State>
+										<_State id="src"><Value>events_addbutton</Value></_State>
+										<_State id="touchable"><Value>true</Value></_State>
+										<_State id="cursor"><Value>pointer</Value></_State>
+									</_States>
+									<_Triggers>
+										<Trigger>
+											<Event>MouseLeftClick</Event>
+											<Scripts>
+												<Script>
+													e('Project Editor').fa('Create New Level');
+												</Script>
+											</Scripts>
+										</Trigger>
+									</_Triggers>
+								</Entity>
+								<!-- Text -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100</Value></_State>
+										<_State id="height"><Value>33</Value></_State>
+										<_State id="fontSize"><Value>16px</Value></_State>
+										<_State id="textAlign"><Value>center</Value></_State>
+										<_State id="text"><Value>Create New Level</Value></_State>
+										<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+									</_States>
+								</Entity>
+							</Entities></Space></Form>
+						
+							<_Triggers>
+						
+							</_Triggers>
+						
+							<_Actions>
+						
+							</_Actions>
+						</Entity>
+						
+						<Entity extends="std.display.Scroller">
+							<_States>
+								<_State id="width"><Value>100%</Value></_State>
+								<_State id="height"><Value>100%</Value></_State>
+							</_States>
+							<Form><Space><Entities> 
+								<!-- Tree -->
+								<Entity extends="SparkEditor.levels.projectEditor.tabs.project.projectTree.Tree">
+									<_States>
+										<_State id="name"><Value>Project Tree</Value></_State>
+										<_State id="height"><Value>150</Value></_State>
+									</_States>
+								</Entity>
+							</Entities></Space></Form>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Project Panel Search -->
+				<Entity extends="SparkEditor.levels.projectEditor.tabs.project.ProjectSearch"/>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

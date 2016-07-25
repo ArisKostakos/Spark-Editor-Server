@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<Extends>
+		<Entity extends="SparkEditor.levels.projectEditor.behaviors.Editor"/>
+	</Extends>
+	
+	<_States>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<!--<_State id="backgroundColor"><Value>yellow</Value></_State>
+		<_State id="opacity"><Value>0.3</Value></_State>-->
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="draggable"><Value>true</Value></_State>
+		<_State id="preventDefaultEvents"><Value>true</Value></_State>
+		<State><Id>SceneEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>Controls</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ClassEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>type</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>editorType</Id><Type>Text</Type><Value>Instance</Value></State>
+		<State><Id>projectChild</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>LevelEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>DragXLast</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>DragYLast</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>beingDragged</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>naturalWidth</Id><Type>Decimal</Type><Value>0</Value></State> <!-- actual size, before zoom and/or scaleX,Y transformations -->
+		<State><Id>naturalHeight</Id><Type>Decimal</Type><Value>0</Value></State> <!-- actual size, before zoom and/or scaleX,Y transformations -->
+	</_States>
+	
+	<_Actions>
+		<_Action id="Import From Xml">
+			<_Scripts>
+				<Script>
+					me.sa('Get Class Editor');
+				</Script>
+			</_Scripts>
+		</_Action>
+		
+		<Action>
+			<Id>Get Class Editor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_classEditor = e('Project Editor').s('classEditors').get(me.s('target_XML').get("extends"));
+					
+					if (l_classEditor!=null)
+					{
+						//Class Editor is available! Save It, keep going, and stop this action
+						it.stop();
+						
+						me.set('ClassEditor', l_classEditor);
+						
+						
+						//In order to create the gameObject from this XML, I want to ignore its Class's behaviors
+						//Not sure how to do this yet.. For now I will assume this:
+						//Classes always extend Primitives. So I will make this gameObject extend the Class's Primitive Instead of the actual Class
+						//This will make it ignore it's Class' States as well.. But I think that for the Editor, For now, It's ok..
+						
+						//var l_classPrimitiveName = l_classEditor.s('classPrimitiveName'); //i guess i dont need the primitive after all..
+						//what i need is to create some behaviors and not create others
+						//alternatively, just remove ALL the actions, like i do this already below
+					
+						
+						//So this is very wrong of course.. later on when I export this, it will still be fucked up
+						//figure out how to solve this, for everything (including the scene behavior called CameraSync..)
+						//Logic.xml_entity_removeNode(l_target_XML, "Form");
+						
+						
+						var l_target_XML = me.s('target_XML');
+						
+						//Hating this.. figure it out..
+						var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+						
+						l_target_XML_editor.set('extends', l_classEditor.s('target_AssetName')+"_editor");
+						
+						
+						//l_target_XML.addChild(Logic.xml_createElement("Actions"));
+						
+						
+						var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML_editor));
+						
+						//Store this piece of shit somewhere?
+						//l_target_XML_editor
+						
+						//Add my flambe object to the actual flambe scene
+						me.s('SceneEditor').s('target_GameObject').addChild(me.s('target_GameObject'));
+						
+						//Wait a frame so the actual flambe instance is created before positioning me(I am the overlay)
+						me.sa('Get Bounds');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+			
+		<Action>
+			<!--Not sure, but i do this here now to get real width in case its not a FillSprite-->
+			<Id>Get Bounds</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_target_GameObject = me.s('target_GameObject');
+					
+					//Wait until object has been correctly created
+					if (query(l_target_GameObject,'realWidth')==null)
+						return;
+					
+					it.stop();
+					
+					
+					var l_spaceX=l_target_GameObject.s('spaceX'); //I get this straight from what has been given in xml
+					var l_spaceY=l_target_GameObject.s('spaceY'); //I get this straight from what has been given in xml
+					var l_scaleX=l_target_GameObject.s('scaleX'); //I get this straight from what has been given in xml
+					var l_scaleY=l_target_GameObject.s('scaleY'); //I get this straight from what has been given in xml
+					
+					//var l_spaceWidth=query(l_target_GameObject,'realWidth'); //I take this from quering the actual object
+					//var l_spaceHeight=query(l_target_GameObject,'realHeight'); //I take this from quering the actual object
+					
+					var l_spaceWidth=query(l_target_GameObject,'boundsWidth'); //I take this from quering the actual object
+					var l_spaceHeight=query(l_target_GameObject,'boundsHeight'); //I take this from quering the actual object
+					
+					//Save Natural Size
+					var l_naturalWidth = me.set('naturalWidth', l_spaceWidth/l_scaleX);
+					var l_naturalHeight = me.set('naturalHeight', l_spaceHeight/l_scaleY);
+					
+					//var l_spaceWidth=l_target_GameObject.s('boundsRect').width; //I take this from the feedback state the object returns
+					//var l_spaceHeight=l_target_GameObject.s('boundsRect').height; //I take this from the feedback state the object returns
+					
+					//Flambe uses centered anchor, dom uses top-left
+					l_spaceX-=l_naturalWidth*l_scaleX/2;
+					l_spaceY-=l_naturalHeight*l_scaleY/2;
+					
+					me.set('top', l_spaceY);
+					me.set('left', l_spaceX);
+					me.set('width', Std.string(l_naturalWidth*l_scaleX));
+					me.set('height', Std.string(l_naturalHeight*l_scaleY));
+					var l_rotation_transform = "rotate("+Std.string(l_target_GameObject.s('rotation'))+"deg)";
+					me.set('transform', l_rotation_transform);
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<_Action id="Export XML">
+			<_Scripts>
+				<Script>
+					if (me.s('needsToExport'))
+					{
+						//Export Children's XML (enable this when instances can carry instances)
+						//for (instanceEditor of me.s('instanceEditors'))
+						//	instanceEditor.fa('Export XML');
+						
+						//Then, If This Editor can later do any changes to it's Instance EGC, do it here
+						if (me.s('exportThis')==true)
+						{
+							var l_target_XML = me.s('target_XML');
+							var l_target_GameObject = me.s('target_GameObject');
+							
+							//Update everything
+							Logic.xml_entity_updateMState(l_target_XML, { id:"spaceX", value: Std.string(l_target_GameObject.s('spaceX')) }, true);
+							Logic.xml_entity_updateMState(l_target_XML, { id:"spaceY", value: Std.string(l_target_GameObject.s('spaceY')) }, true);
+							
+							//if (l_target_GameObject.s('scaleX')!=1) //we stupidly create the mStates at the beginning anyway, so... commenting the ifs..
+								Logic.xml_entity_updateMState(l_target_XML, { id:"scaleX", value: Std.string(l_target_GameObject.s('scaleX')) }, true);
+							//if (l_target_GameObject.s('scaleY')!=1)
+								Logic.xml_entity_updateMState(l_target_XML, { id:"scaleY", value: Std.string(l_target_GameObject.s('scaleY')) }, true);
+							//if (l_target_GameObject.s('rotation')!=0)
+								Logic.xml_entity_updateMState(l_target_XML, { id:"rotation", value: Std.string(l_target_GameObject.s('rotation')) }, true);
+						
+							//Reset Flag
+							me.set('exportThis', false);
+						}
+						
+						//Reset Flag
+						me.set('needsToExport', false);
+					}
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Select</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_absoluteRect = query(me,'absoluteRect');
+					
+					
+					var l_controls = me.s('Controls');
+					
+					//If null, create it now (lazy approach)
+					if (l_controls==null)
+					{
+						//Create
+						l_controls = me.set('Controls',Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.gadgets.InstanceControls'));
+						l_controls.set('InstanceEditor',me);
+					}
+					
+					//Add to SceneEditor
+					me.s('SceneEditor').addChild(l_controls);
+					
+					//Refresh Controls
+					me.sa('Refresh Controls');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Refresh Controls</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					it.stop();
+					
+					var l_controls = me.s('Controls');
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					
+					var l_spaceX=me.s('left');
+					var l_spaceY=me.s('top');
+					
+					
+					var l_target_GameObject = me.s('target_GameObject');
+					var l_naturalWidth = me.s('naturalWidth');
+					var l_naturalHeight = me.s('naturalHeight');
+					
+					var l_scaledWidth = l_naturalWidth * l_target_GameObject.s('scaleX');
+					var l_scaledHeight = l_naturalHeight * l_target_GameObject.s('scaleY');
+					
+					l_controls.set('display','inline');
+					l_controls.set('top', l_spaceY*l_transformations.scale + l_transformations.y  -1);
+					l_controls.set('left', l_spaceX*l_transformations.scale + l_transformations.x  -1);
+					
+					l_controls.set('width',Std.string(l_scaledWidth*l_transformations.scale));
+					l_controls.set('height',Std.string(l_scaledHeight*l_transformations.scale));
+					
+					var l_rotation_transform = "rotate("+Std.string(l_target_GameObject.s('rotation'))+"deg)";
+					l_controls.set('transform', l_rotation_transform);
+					
+					Display.invalidateLayout();
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Hide Controls</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_controls = me.s('Controls');
+					
+					l_controls.set('display','none');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Deselect</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_controls = me.s('Controls');
+					
+					//Remove from SceneEditor
+					me.s('SceneEditor').removeChild(l_controls);
+				</Script>
+			</Scripts>
+		</Action>
+				
+				
+		<Action>
+			<Id>MoveBy</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_controls = me.s('Controls');
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					
+					var l_movementX=it.s('moveX');
+					var l_movementY=it.s('moveY');
+					
+					me.addToState('left',l_movementX/l_transformations.scale);
+					me.addToState('top',l_movementY/l_transformations.scale);
+					l_controls.addToState('left',l_movementX);
+					l_controls.addToState('top',l_movementY);
+					
+					me.s('target_GameObject').addToState('spaceX',l_movementX/l_transformations.scale);
+					me.s('target_GameObject').addToState('spaceY',l_movementY/l_transformations.scale);
+					
+					//Correct way.. But not as optimized.. will run a lot during dragging
+					me.fa('Needs To Export', {exportThis:true} );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>RotateBy</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_controls = me.s('Controls');
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					
+					var l_movementX=it.s('moveX');
+					var l_movementY=it.s('moveY');
+					
+					var l_crappyRotation = (l_movementX+l_movementY)/2;
+					
+					var l_angles = -l_crappyRotation + me.s('target_GameObject').s('rotation');
+					
+					var l_transform = "rotate("+Std.string(l_angles)+"deg)";
+					
+					me.set('transform', l_transform);
+					l_controls.set('transform', l_transform);
+					me.s('target_GameObject').set('rotation',l_angles);
+					
+					//Correct way.. But not as optimized.. will run a lot during dragging
+					me.fa('Needs To Export', {exportThis:true} );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Clone</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_movementX=it.s('moveX');
+					var l_movementY=it.s('moveY');
+					
+					//Make sure the XML is up to date, before cloning it
+					me.fa('Export XML');
+					
+					//Clone new Xml
+					var l_newXml = Logic.xml_clone(me.s('target_XML'));
+					
+					//Make Changes to it
+					if (l_movementX==1) //this 1 here just suggests the direction
+						Logic.xml_entity_updateMState(l_newXml, { id:"spaceX", value: Std.string(me.s('target_GameObject').s('spaceX')+me.s('naturalWidth')*me.s('target_GameObject').s('scaleX')) }, true);
+					else if (l_movementX==-1) //this 1 here just suggests the direction
+						Logic.xml_entity_updateMState(l_newXml, { id:"spaceX", value: Std.string(me.s('target_GameObject').s('spaceX')-me.s('naturalWidth')*me.s('target_GameObject').s('scaleX')) }, true);
+					else if (l_movementY==1) //this 1 here just suggests the direction
+						Logic.xml_entity_updateMState(l_newXml, { id:"spaceY", value: Std.string(me.s('target_GameObject').s('spaceY')+me.s('naturalHeight')*me.s('target_GameObject').s('scaleY')) }, true);
+					else if (l_movementY==-1) //this 1 here just suggests the direction
+						Logic.xml_entity_updateMState(l_newXml, { id:"spaceY", value: Std.string(me.s('target_GameObject').s('spaceY')-me.s('naturalHeight')*me.s('target_GameObject').s('scaleY')) }, true);
+					
+					//Create a new Instance Editor
+					//This might be better placed on SceneEditor..
+					var f_instanceEditor = Logic.create('SparkEditor.levels.projectEditor.tabs.levelEditor.InstanceEditor');
+					f_instanceEditor.set('SceneEditor',me.s('SceneEditor'));
+					f_instanceEditor.set('parentEditor',me.s('parentEditor'));
+					f_instanceEditor.set('LevelEditor',me.s('LevelEditor'));
+					me.s('SceneEditor').s('instanceEditors').push(f_instanceEditor); //careful of z-order here.. do an insert instead, +1 on this editor's z
+					f_instanceEditor.fa('Import From Xml',{importXml: l_newXml});
+					me.s('SceneEditor').s('sceneBoundsObject').addChild(f_instanceEditor);
+					
+					//not sure why this is nesseccery.. :(
+					f_instanceEditor.fa('Needs To Export', {exportThis:true} );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>ScaleBy</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_controls = me.s('Controls');
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					
+					var l_target_GameObject = me.s('target_GameObject');
+					var l_scaleX=it.s('moveX');
+					var l_scaleY=it.s('moveY');
+					var l_scaleType=it.s('scaleType');
+					var l_scaleXtransformed=it.s('moveX')/l_transformations.scale;
+					var l_scaleYtransformed=it.s('moveY')/l_transformations.scale;
+					
+					var l_naturalWidth = me.s('naturalWidth');
+					var l_naturalHeight = me.s('naturalHeight');
+					
+					var l_scaledWidth = l_naturalWidth * l_target_GameObject.s('scaleX');
+					var l_scaledHeight = l_naturalHeight * l_target_GameObject.s('scaleY');
+					
+					
+					//Now change scaleType, depending on transformation!!!
+					//scaleType (OR, update InstanceControls to rename it's scale gadgets, on every rotate [this would fix cursors as well])
+					//or do one better.. TRANSFORM the X and Y of the event!!!! i love this..
+					
+					if (l_scaleType=="bottomCenter")
+					{
+						var l_newScaleY = l_target_GameObject.set('scaleY', ((l_scaledHeight+l_scaleYtransformed)*l_target_GameObject.s('scaleY'))/l_scaledHeight);
+						me.set('height', Std.string(l_naturalHeight*l_newScaleY));
+						l_controls.set('height', Std.string(l_naturalHeight*l_newScaleY*l_transformations.scale));
+						me.s('target_GameObject').addToState('spaceY',l_scaleYtransformed/2);
+					}
+					else if (l_scaleType=="middleRight")
+					{
+						var l_newScaleX = l_target_GameObject.set('scaleX', ((l_scaledWidth+l_scaleXtransformed)*l_target_GameObject.s('scaleX'))/l_scaledWidth);
+						me.set('width', Std.string(l_naturalWidth*l_newScaleX));
+						l_controls.set('width', Std.string(l_naturalWidth*l_newScaleX*l_transformations.scale));
+						me.s('target_GameObject').addToState('spaceX',l_scaleXtransformed/2);
+					}
+					else if (l_scaleType=="bottomRight")
+					{
+						if (Math.abs(l_scaleXtransformed)>=Math.abs(l_scaleYtransformed))
+						{
+							var l_newScaleXpre = ((l_scaledWidth+l_scaleXtransformed)*l_target_GameObject.s('scaleX'))/l_scaledWidth;
+							var l_newScaleYpre = l_target_GameObject.s('scaleY')*l_newScaleXpre/l_target_GameObject.s('scaleX');
+							var l_newSizeY = l_naturalHeight*l_newScaleYpre;
+							var l_differenceY = l_newSizeY-l_scaledHeight;
+							
+							var l_differenceX = l_scaleXtransformed;
+						}
+						else
+						{
+							var l_newScaleYpre = ((l_scaledHeight+l_scaleYtransformed)*l_target_GameObject.s('scaleY'))/l_scaledHeight;
+							var l_newScaleXpre = l_target_GameObject.s('scaleX')*l_newScaleYpre/l_target_GameObject.s('scaleY');
+							var l_newSizeX = l_naturalWidth*l_newScaleXpre;
+							var l_differenceX = l_newSizeX-l_scaledWidth;
+							
+							var l_differenceY = l_scaleYtransformed;
+						}
+					
+						
+						var l_newScaleX = l_target_GameObject.set('scaleX', l_newScaleXpre);
+						me.set('width', Std.string(l_naturalWidth*l_newScaleX));
+						l_controls.set('width', Std.string(l_naturalWidth*l_newScaleX*l_transformations.scale));
+						me.s('target_GameObject').addToState('spaceX',l_differenceX/2);
+						
+						var l_newScaleY = l_target_GameObject.set('scaleY', l_newScaleYpre);
+						me.set('height', Std.string(l_naturalHeight*l_newScaleY));
+						l_controls.set('height', Std.string(l_naturalHeight*l_newScaleY*l_transformations.scale));
+						me.s('target_GameObject').addToState('spaceY',l_differenceY/2);
+					}
+					else if (l_scaleType=="topCenter")
+					{
+						var l_newScaleY = l_target_GameObject.set('scaleY', ((l_scaledHeight-l_scaleYtransformed)*l_target_GameObject.s('scaleY'))/l_scaledHeight);
+						me.set('height', Std.string(l_naturalHeight*l_newScaleY));
+						l_controls.set('height', Std.string(l_naturalHeight*l_newScaleY*l_transformations.scale));
+						
+						me.s('target_GameObject').addToState('spaceY',l_scaleYtransformed/2);
+						me.addToState('top',l_scaleYtransformed);
+						l_controls.addToState('top',l_scaleY);
+					}
+					else if (l_scaleType=="middleLeft")
+					{
+						var l_newScaleX = l_target_GameObject.set('scaleX', ((l_scaledWidth-l_scaleXtransformed)*l_target_GameObject.s('scaleX'))/l_scaledWidth);
+						me.set('width', Std.string(l_naturalWidth*l_newScaleX));
+						l_controls.set('width', Std.string(l_naturalWidth*l_newScaleX*l_transformations.scale));
+						
+						me.s('target_GameObject').addToState('spaceX',l_scaleXtransformed/2);
+						me.addToState('left',l_scaleXtransformed);
+						l_controls.addToState('left',l_scaleX);
+					}
+					else if (l_scaleType=="topLeft")
+					{
+						if (Math.abs(l_scaleXtransformed)>=Math.abs(l_scaleYtransformed))
+						{
+							var l_newScaleXpre = ((l_scaledWidth-l_scaleXtransformed)*l_target_GameObject.s('scaleX'))/l_scaledWidth;
+							var l_newScaleYpre = l_target_GameObject.s('scaleY')*l_newScaleXpre/l_target_GameObject.s('scaleX');
+							var l_newSizeY = l_naturalHeight*l_newScaleYpre;
+							var l_differenceY = l_newSizeY-l_scaledHeight;
+							
+							var l_differenceX = -l_scaleXtransformed;
+						}
+						else
+						{
+							var l_newScaleYpre = ((l_scaledHeight-l_scaleYtransformed)*l_target_GameObject.s('scaleY'))/l_scaledHeight;
+							var l_newScaleXpre = l_target_GameObject.s('scaleX')*l_newScaleYpre/l_target_GameObject.s('scaleY');
+							var l_newSizeX = l_naturalWidth*l_newScaleXpre;
+							var l_differenceX = l_newSizeX-l_scaledWidth;
+							
+							var l_differenceY = -l_scaleYtransformed;
+						}
+						
+					
+						var l_newScaleX = l_target_GameObject.set('scaleX', l_newScaleXpre);
+						me.set('width', Std.string(l_naturalWidth*l_newScaleX));
+						l_controls.set('width', Std.string(l_naturalWidth*l_newScaleX*l_transformations.scale));
+						
+						
+						var l_newScaleY = l_target_GameObject.set('scaleY', l_newScaleYpre);
+						me.set('height', Std.string(l_naturalHeight*l_newScaleY));
+						l_controls.set('height', Std.string(l_naturalHeight*l_newScaleY*l_transformations.scale));
+						
+						
+						me.s('target_GameObject').addToState('spaceX',-l_differenceX/2);
+						me.addToState('left',-l_differenceX);
+						l_controls.addToState('left',-l_differenceX*l_transformations.scale);
+						
+						me.s('target_GameObject').addToState('spaceY',-l_differenceY/2);
+						me.addToState('top',-l_differenceY);
+						l_controls.addToState('top',-l_differenceY*l_transformations.scale);
+					}
+					else if (l_scaleType=="topRight")
+					{
+						if (Math.abs(l_scaleXtransformed)>=Math.abs(l_scaleYtransformed))
+						{
+							var l_newScaleXpre = ((l_scaledWidth+l_scaleXtransformed)*l_target_GameObject.s('scaleX'))/l_scaledWidth;
+							var l_newScaleYpre = l_target_GameObject.s('scaleY')*l_newScaleXpre/l_target_GameObject.s('scaleX');
+							var l_newSizeY = l_naturalHeight*l_newScaleYpre;
+							var l_differenceY = l_newSizeY-l_scaledHeight;
+							
+							var l_differenceX = l_scaleXtransformed;
+						}
+						else
+						{
+							var l_newScaleYpre = ((l_scaledHeight-l_scaleYtransformed)*l_target_GameObject.s('scaleY'))/l_scaledHeight;
+							var l_newScaleXpre = l_target_GameObject.s('scaleX')*l_newScaleYpre/l_target_GameObject.s('scaleY');
+							var l_newSizeX = l_naturalWidth*l_newScaleXpre;
+							var l_differenceX = l_newSizeX-l_scaledWidth;
+							
+							var l_differenceY = -l_scaleYtransformed;
+						}
+						
+					
+						var l_newScaleX = l_target_GameObject.set('scaleX', l_newScaleXpre);
+						me.set('width', Std.string(l_naturalWidth*l_newScaleX));
+						l_controls.set('width', Std.string(l_naturalWidth*l_newScaleX*l_transformations.scale));
+						
+						
+						var l_newScaleY = l_target_GameObject.set('scaleY', l_newScaleYpre);
+						me.set('height', Std.string(l_naturalHeight*l_newScaleY));
+						l_controls.set('height', Std.string(l_naturalHeight*l_newScaleY*l_transformations.scale));
+						
+						
+						me.s('target_GameObject').addToState('spaceX',l_differenceX/2);
+						
+						me.s('target_GameObject').addToState('spaceY',-l_differenceY/2);
+						me.addToState('top',-l_differenceY);
+						l_controls.addToState('top',-l_differenceY*l_transformations.scale);
+					}
+					else if (l_scaleType=="bottomLeft")
+					{
+						if (Math.abs(l_scaleXtransformed)>=Math.abs(l_scaleYtransformed))
+						{
+							var l_newScaleXpre = ((l_scaledWidth-l_scaleXtransformed)*l_target_GameObject.s('scaleX'))/l_scaledWidth;
+							var l_newScaleYpre = l_target_GameObject.s('scaleY')*l_newScaleXpre/l_target_GameObject.s('scaleX');
+							var l_newSizeY = l_naturalHeight*l_newScaleYpre;
+							var l_differenceY = l_newSizeY-l_scaledHeight;
+							
+							var l_differenceX = -l_scaleXtransformed;
+						}
+						else
+						{
+							var l_newScaleYpre = ((l_scaledHeight+l_scaleYtransformed)*l_target_GameObject.s('scaleY'))/l_scaledHeight;
+							var l_newScaleXpre = l_target_GameObject.s('scaleX')*l_newScaleYpre/l_target_GameObject.s('scaleY');
+							var l_newSizeX = l_naturalWidth*l_newScaleXpre;
+							var l_differenceX = l_newSizeX-l_scaledWidth;
+							
+							var l_differenceY = l_scaleYtransformed;
+						}
+						
+					
+						var l_newScaleX = l_target_GameObject.set('scaleX', l_newScaleXpre);
+						me.set('width', Std.string(l_naturalWidth*l_newScaleX));
+						l_controls.set('width', Std.string(l_naturalWidth*l_newScaleX*l_transformations.scale));
+						
+						
+						var l_newScaleY = l_target_GameObject.set('scaleY', l_newScaleYpre);
+						me.set('height', Std.string(l_naturalHeight*l_newScaleY));
+						l_controls.set('height', Std.string(l_naturalHeight*l_newScaleY*l_transformations.scale));
+						
+						
+						me.s('target_GameObject').addToState('spaceX',-l_differenceX/2);
+						me.addToState('left',-l_differenceX);
+						l_controls.addToState('left',-l_differenceX*l_transformations.scale);
+						
+						me.s('target_GameObject').addToState('spaceY',l_differenceY/2);
+					}
+					
+					
+					//Correct way.. But not as optimized.. will run a lot during dragging
+					me.fa('Needs To Export', {exportThis:true} );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>scaleType</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>moveX</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
+			</States>
+		</Action>
+				
+				
+		<!-- Callback: Right Click Menu -->
+		<Action>
+			<Id>Callback: Right Click Menu</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var cb_result = it.getState('cb_result');
+					var cb_Arg1 = it.getState('cb_Arg1');
+					
+					if (cb_result=="OK")
+					{
+						//Display.error("Callback: Select AC: OK");
+						//Display.error("Got: " + cb_Arg1.name);
+						
+						if (cb_Arg1.type=="top" || cb_Arg1.type=="oneUp" || cb_Arg1.type=="oneDown" || cb_Arg1.type=="bottom")
+						{
+							me.s('target_GameObject').setZorder(cb_Arg1.type);
+							
+							var l_instanceEditors = me.s('SceneEditor').s('instanceEditors');
+							
+							//Remove me from array
+							var l_indexOf = l_instanceEditors.indexOf(me);
+							l_instanceEditors.splice(l_indexOf, 1);
+							
+							
+							if (cb_Arg1.type=="top")
+								l_instanceEditors.push(me);
+							else if (cb_Arg1.type=="oneUp")
+								l_instanceEditors.splice(l_indexOf+1, 0, me);
+							else if (cb_Arg1.type=="oneDown")
+								l_instanceEditors.splice(l_indexOf-1, 0, me);
+							else if (cb_Arg1.type=="bottom")
+								l_instanceEditors.unshift(me);
+						}
+					}/*
+					else
+					{
+						Display.error("Callback: Select AC: CANCEL");
+					}*/
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					var l_mouseEvent = me.s('eventObject');
+					me.s('LevelEditor').fa('Clicked', { editor:me, ctrlKey: l_mouseEvent.ctrlKey, shiftKey: l_mouseEvent.shiftKey, altKey: l_mouseEvent.altKey } );
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>MouseDown</Event>
+			<Scripts>
+				<Script>
+					me.set('DragXLast',me.s('eventObject').x);
+					me.set('DragYLast',me.s('eventObject').y);
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>OnDragStart</Event>
+			<Scripts>
+				<Script>
+					var l_mouseEvent = me.s('eventObject');
+					me.s('LevelEditor').fa('DragStart', { editor:me, ctrlKey: l_mouseEvent.ctrlKey, shiftKey: l_mouseEvent.shiftKey, altKey: l_mouseEvent.altKey } );
+					
+					me.set('beingDragged', true);
+				</Script>
+			</Scripts>
+		</Trigger>
+		
+		<Trigger>
+			<Event>OnDrag</Event>
+			<Scripts>
+				<Script>
+					if (me.s('beingDragged'))
+					{
+						var l_mouseEvent = me.s('eventObjectOnDrag');
+						
+						//If both are 0, smth is probably wrong.. don't record the event..
+						if (l_mouseEvent.x!=0 || l_mouseEvent.y!=0)
+						{
+							me.s('LevelEditor').fa('Drag', { editor:me, moveX: l_mouseEvent.x-me.s('DragXLast'), moveY: l_mouseEvent.y-me.s('DragYLast'), ctrlKey: l_mouseEvent.ctrlKey, shiftKey: l_mouseEvent.shiftKey, altKey: l_mouseEvent.altKey } );
+							
+							me.set('DragXLast',l_mouseEvent.x);
+							me.set('DragYLast',l_mouseEvent.y);
+						}
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	
+		<Trigger>
+			<Event>OnDragEnd</Event>
+			<Scripts>
+				<Script>
+					me.set('beingDragged', false);
+				
+					//me.fa('Needs To Export', {exportThis:true} );
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<Event>MouseRightClick</Event>
+			<Scripts>
+				<Script>
+					function createContextNode(nodeName,nodeType,parentNode)
+					{
+						var node = {};
+						node.name=nodeName;
+						node.children = [];
+						node.type=nodeType;
+						parentNode.children.push(node);
+						
+						return node;
+					}
+					
+					var mainList = {};
+					mainList.children = [];
+					
+					createContextNode("Set On Top","top",mainList);
+					createContextNode("Step One Up","oneUp",mainList);
+					createContextNode("Step One Down","oneDown",mainList);
+					createContextNode("Set To Bottom","bottom",mainList);
+					
+					//Open Popup [CHOOSE AC]
+					e('PopUp Manager').forceAction('Open PopUp',{popupName:"SparkEditor.levels.common.popupManager.entities.contextMenu.ContextMenuPopUpNoArrow",
+																popupPosX:Input.pointer.currentX, popupPosY:Input.pointer.currentY, argA: mainList, 
+																cb_caller:me, cb_actionName:'Callback: Right Click Menu'});
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>
