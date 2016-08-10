@@ -635,6 +635,11 @@
 							else if (cb_Arg1.type=="bottom")
 								l_instanceEditors.unshift(me);
 						}
+						else if (cb_Arg1.type=="lock")
+						{
+							me.set('pointerEvents','none');
+							//me.set('display','none');
+						}
 					}/*
 					else
 					{
@@ -736,6 +741,7 @@
 					createContextNode("Step One Up","oneUp",mainList);
 					createContextNode("Step One Down","oneDown",mainList);
 					createContextNode("Set To Bottom","bottom",mainList);
+					createContextNode("Lock","lock",mainList);
 					
 					//Open Popup [CHOOSE AC]
 					e('PopUp Manager').forceAction('Open PopUp',{popupName:"SparkEditor.levels.common.popupManager.entities.contextMenu.ContextMenuPopUpNoArrow",

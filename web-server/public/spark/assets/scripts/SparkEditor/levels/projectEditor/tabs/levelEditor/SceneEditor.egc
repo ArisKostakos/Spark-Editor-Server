@@ -76,6 +76,9 @@
 					//Hating this.. figure it out..
 					var l_target_XML_editor = Logic.xml_clone(l_target_XML);
 					
+					//not thought this a lot. its to now have behaviors in scene on EDIT
+					Logic.xml_entity_removeNode(l_target_XML_editor, "Extends");
+					
 					//Add camera sync behavior
 					Logic.xml_entity_addExtend(l_target_XML_editor, {ext: 'SparkEditor.levels.projectEditor.tabs.levelEditor.behaviors.SceneCameraSync'});
 					

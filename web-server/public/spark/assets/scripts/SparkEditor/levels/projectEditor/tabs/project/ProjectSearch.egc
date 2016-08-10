@@ -23,6 +23,7 @@
 						<!-- Search Input -->
 						<Entity extends="std.display.Input">
 							<_States>
+								<_State id="name"><Value>Spark Editor: Project Search Input</Value></_State> <!-- oh god remove me.. -->
 								<_State id="width"><Value>100%</Value></_State>
 								<_State id="height"><Value>30</Value></_State>
 								<_State id="backgroundColor"><Value>white</Value></_State>
