@@ -390,6 +390,28 @@
 		</Action>
 		
 		<Action>
+			<Id>Destroy Selection</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_selection = me.s('Selection');
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						w_selectedEditor.fa('Destroy');
+					}
+					
+					me.fa('Deselect All');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
 			<Id>Refresh Selected Controls</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
@@ -479,6 +501,19 @@
 					//Refresh Controls of Selected Objects
 					me.fa('Hide Selected Controls');
 					me.sa('WaitFor',{delay:0.2,delayCurrent:0,cbEntity:me,cbAction:"Refresh Selected Controls"});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>Deselect All</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//We'll do this by simulating a null click (for code re-use)
+					me.fa('Clicked', { editor:null, ctrlKey: false, shiftKey: false, altKey: false } );
 				</Script>
 			</Scripts>
 		</Action>
@@ -594,23 +629,41 @@
 							else if (l_keyCode==68) //D
 								l_moveX=1;
 						}
+						//Delete
+						else if (l_keyCode==46) //delete key
+						{
+							l_instruction="Delete";
+						}
 						
 						//Instruction found
 						if (l_instruction!=null)
 						{
-							var keys = l_selection.keys();
-							while (keys.hasNext())
+							//The correct way for doing this.. seperates the Selection Action from keybinding
+							//do this for the rest, so it's easier to do grouped clone,etc.. one use case is group cloning by right click context menu
+							if (l_instruction=="Delete")
 							{
-								var w_selectedEditor = keys.next();
-								
-								w_selectedEditor.fa(l_instruction, {moveX: l_moveX, moveY: l_moveY});
-								
-								//if (l_instruction=="MoveBy")
-								//	w_selectedEditor.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+								me.fa('Destroy Selection');
 							}
-							
-							//if (l_instruction=="Clone")
-							//	me.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+							else //the wrong deprecated way..
+							{
+								var keys = l_selection.keys();
+								while (keys.hasNext())
+								{
+									var w_selectedEditor = keys.next();
+									
+									w_selectedEditor.fa(l_instruction, {moveX: l_moveX, moveY: l_moveY});
+									
+									//if (l_instruction=="MoveBy")
+									//	w_selectedEditor.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+								}
+								
+								//If it was clone, deselect clonees (cause the cloned objects will start selected)
+								if (l_instruction=="Clone")
+									me.fa('Clicked', { editor:null, ctrlKey: false, shiftKey: false, altKey: false } );
+								
+								//if (l_instruction=="Clone")
+								//	me.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+							}
 						}
 					}
 				]]></Script>

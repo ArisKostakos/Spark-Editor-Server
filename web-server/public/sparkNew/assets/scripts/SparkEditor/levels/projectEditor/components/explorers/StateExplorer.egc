@@ -61,6 +61,9 @@
 					l_text.set('textAlign','center');
 					l_text.set('text',l_stateObject.id);
 					
+					if (l_stateObject.objectSpecific=="true")
+						l_text.set('fontColor','red');
+					
 					l_stateContainer.addChild(l_text);
 					
 					//Input

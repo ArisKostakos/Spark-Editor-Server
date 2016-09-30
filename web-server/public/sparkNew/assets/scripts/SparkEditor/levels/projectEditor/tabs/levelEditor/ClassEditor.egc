@@ -15,6 +15,8 @@
 		<State><Id>editTab</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>projectChild</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- This should actually be a map (1 editor to many projectChild) -->
 		<State><Id>states</Id><Type>Dynamic</Type><Value>null</Value></State>
+	
+		<State><Id>locked</Id><Type>Boolean</Type><Value>false</Value></State> <!-- This should be moved to the instance -->
 	</_States>
 	
 	<_Actions>
@@ -125,6 +127,7 @@
 		</_Action>
 			
 		<Action>
+			<!-- I should make this (private) and change the name. it should be called from the new Add Behavior Below -->
 			<Id>Add Behavior</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
@@ -150,7 +153,7 @@
 						me.s('projectChild').fa('Add Child', { childId:l_DBA.name, childTitle:l_DBA.title, childType:"Behavior", child_DBA:l_DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.BehaviorChild' } );
 						
 						//Update Explorer
-						//..
+						me.s('classExplorer').fa('Refresh Class Explorer');
 					}
 					else
 					{
@@ -160,6 +163,62 @@
 			</Scripts>
 			<States>
 				<State><Id>behaviorEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- By complete, I mean, this handles everything, from loading the behavior, adding assets to modules, etc -->
+			<Id>Add Behavior Complete</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_behavior_asset_DBA = it.s('behavior_asset_DBA');
+					var l_moduleUsed=null; //any of the modules that uses this class. doesn't matter which
+					//Things to do now:
+					//a) Find in which modules this class is being used
+					
+					//Get updated target_DBA
+					e('Project Editor').s('Assets_DB').findOne({ name: me.s('target_DBA').name }, function (err, doc) {
+						var l_updatedTarget_DBA=doc;
+						
+						for (f_moduleName of l_updatedTarget_DBA._inModules)
+						{
+							console.log('used in module: ' + f_moduleName);
+							//b) for each module that uses this class, we need to make sure this behavior is added in it
+							e('Project Editor').fa('Add Asset To Module', { Asset_DBA: l_behavior_asset_DBA, ModuleName: f_moduleName, insertDBA: false } );
+							
+							l_moduleUsed = f_moduleName;
+						}
+						
+							//Reload Module
+							ModuleManager.successSignal.connect(function () {
+								//Proceed
+								
+									//This happens later. We wait for behavior editor to be created in Create Dependancies
+									var _onCreateDependancies = function ()
+									{
+										//at this point, our new behavior is added to the module (if nesseccery), save command has been issued.. we're all good
+										
+										//Get newly Created Behavior Editor (or even old created behavior editor.. i guess, if it was already in the level..)
+										var l_behaviorEditor = e('Project Editor').s('behaviorEditors').get(l_behavior_asset_DBA.name);
+										
+										//So now we just add behaviorEditor
+										me.fa('Add Behavior', {behaviorEditor: l_behaviorEditor} );
+									}
+								
+								
+								//Create Behavior Editor for that module
+								e('Project Editor').fa('Create Dependancies For',{ moduleName:l_moduleUsed, DBA:null, createClassObjects:true, jsCb:_onCreateDependancies } );
+							}).once();
+						//Reload a module that uses this class (to load our behavior asset and create our BehaviorEditor)
+						ModuleManager.loadModule(l_moduleUsed);
+					});
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>behavior_asset_DBA</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
 		
@@ -356,6 +415,21 @@
 			<States>
 				<State><Id>explorerContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
+		</Action>
+				
+		<Action>
+			<Id>Toggle Lock</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					me.set('locked', !me.s('locked'));
+					Display.de('locked: ' + me.s('locked'));
+					//unfinished..
+					
+				</Script>
+			</Scripts>
 		</Action>
 		
 		<_Action id="Export XML">

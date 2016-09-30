@@ -14,14 +14,14 @@
 		</_Action>
 			
 		<Action>
-			<Id>Export</Id>
+			<Id>Export Project</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
 					//forced..
-					
-					
 					Display.error("Project Manager: Export");
+					
+					e('Project Editor').fa('Export Project');
 				</Script>
 			</Scripts>
 			<States>

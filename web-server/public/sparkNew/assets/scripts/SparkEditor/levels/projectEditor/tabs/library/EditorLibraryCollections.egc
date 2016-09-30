@@ -495,13 +495,13 @@
 						if (oldSelected!=null)
 						{
 							oldSelected.startAction("Unselected");
-							collectionsHash.get(oldSelected).setState('display','none');
+							collectionsHash.get(oldSelected).setState('visibility','hidden');
 						}
 						
 						if (newSelected!=null)
 						{
 							newSelected.startAction("Selected");
-							collectionsHash.get(newSelected).setState('display','inline');
+							collectionsHash.get(newSelected).setState('visibility','visible');
 						}
 							
 						me.setState('selectedCategoryObject', newSelected);
@@ -540,7 +540,7 @@
 						<_State id="name"><Value>Editor Library Collections Panels Container</Value></_State>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
-						<_State id="overflow"><Value>hidden</Value></_State>
+						<!--<_State id="overflow"><Value>hidden</Value></_State>-->
 					</_States>
 					<Form><Space><Entities>
 					

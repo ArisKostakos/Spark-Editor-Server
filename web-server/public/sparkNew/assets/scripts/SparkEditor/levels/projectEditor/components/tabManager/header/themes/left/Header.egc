@@ -6,7 +6,7 @@
 		<State><Id>headerText</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<_State id="backgroundColor"><Value>rgb(62, 88, 112)</Value></_State>
 		<_State id="width"><Value>40%</Value></_State>
-		<_State id="height"><Value>70%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State> <!--70% -->
 	</_States>
 		
 		
@@ -70,7 +70,7 @@
 					
 					//full size
 					l_header.set('width','40%');
-					l_header.set('height','70%');
+					l_header.set('height','100%'); //70%
 					
 					//to bottom
 					//l_header.setZorder("top");

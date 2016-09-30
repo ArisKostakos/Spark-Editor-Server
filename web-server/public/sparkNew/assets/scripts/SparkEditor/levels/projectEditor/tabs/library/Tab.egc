@@ -12,7 +12,7 @@
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
-						<_State id="top"><Value>67</Value></_State>
+						<_State id="top"><Value>1</Value></_State> <!--67-->
 						<_State id="gap"><Value>0</Value></_State>
 					</_States>
 				
@@ -29,7 +29,7 @@
 							</_States>
 						
 							<Form><Space><Entities>
-								<!-- Create Behavior Icon -->
+								<!-- Create Behavior Icon 
 								<Entity extends="std.display.Image">
 									<_States>
 										<_State id="width"><Value>50</Value></_State>
@@ -192,7 +192,7 @@
 										</Trigger>
 									</_Triggers>
 								</Entity>
-								<!-- Text -->
+								<!-- Text 
 								<Entity extends="std.display.Text">
 									<_States>
 										<_State id="width"><Value>100</Value></_State>
@@ -203,7 +203,7 @@
 										<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
 									</_States>
 								</Entity>
-								
+								-->
 								<!-- Upload Icon -->
 								<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton"/>
 								<!-- Text -->

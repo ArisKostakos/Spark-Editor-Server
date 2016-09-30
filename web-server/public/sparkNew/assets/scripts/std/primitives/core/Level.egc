@@ -58,8 +58,10 @@
 					var cameraReferences = [];
 					var stageAreaReferences = [];
 					
-					for (child of me.getChildren())
+					//for (child of me.getChildren())  DOES NOT WORK ON IE
+					for (child in me.getChildren()) //WORKS ON IE BUT I DONT LIKE IT
 					{
+						child = me.getChildren()[child]; //WORKS ON IE BUT I DONT LIKE IT
 						if (child.getState('type') == 'Module')
 							moduleReferences.push(child);
 						else if (child.getState('type') == 'View')

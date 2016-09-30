@@ -4,10 +4,12 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					if (me.s('isPreview')==false) //if we load on preview, we don't create a new active space, we use the current one.. etc
+					if (me.s('isPreview')==false) //If in release mode, create the active space
 					{
-						for (child of me.getChildren())
+						//for (child of me.getChildren()) DOES NOT WORK ON IE
+						for (child in me.getChildren()) //WORKS ON IE BUT I DONT LIKE IT
 						{
+							child = me.getChildren()[child]; //WORKS ON IE BUT I DONT LIKE IT
 							if (child.getState('name')==me.getState('initSpaceName'))
 							{
 								if (child.getState('displayType') == "Space")
@@ -32,7 +34,7 @@
 						
 						me.sa('Run Level', {levelName:me.s('initLevelUrl'), preloader:true, loaderLevelName:me.s('loaderLevelUrl')});
 					}
-					else
+					else //if we load on preview, we don't create a new active space, we use the current one.. etc
 					{
 						if (me.s('previewMode')=="Project")
 							me.sa('Run Level', {levelName:me.s('initLevelUrl'), preloader:true, loaderLevelName:me.s('loaderLevelUrl')});
@@ -52,7 +54,17 @@
 					it.stop();
 					
 					if (me.s('isPreview')==false)
+					{
+						var oldMe=me;
+						var oldIt=it;
+						Logic.levelManager.levelRan.connect(function() {
+							Display.invalidateLayout(); //not sure about thiiiis
+							oldMe.set('currentLevelUrl', oldIt.s('levelName'));
+							Logic.levelManager.currentLevel.get("Main").sa('Init Level'); //Initiate this level
+						}).once();
+						
 						Logic.levelManager.runLevel(it.s('levelName'));
+					}
 					else
 					{
 						//if (me.s('previewMode')=="Project")
@@ -151,9 +163,6 @@
 					Logic.levelManager.currentLevel.get(l_runSlot).fa('Refresh Cameras');
 				</Script>
 			</Scripts>
-			<States>
-				<State><Id>XXXXXXX</Id><Type>Dynamic</Type><Value>null</Value></State>
-			</States>
 		</Action>
 	</_Actions>
 		

@@ -104,11 +104,25 @@
 				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
 				<Script>
 					Display.error("Clicked Lock Button");
-					alert('Save Disabled');
+					//alert('Save Disabled');
 					//Save Project
-					//e('Project Editor').fa('Save Project');
+					e('Project Editor').fa('Save Project');
 				</Script></_Scripts></_Action></_Actions></Entity>
 				
+				<!-- Text -->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="name"><Value>Save Label</Value></_State>
+						<_State id="width"><Value>300</Value></_State>
+						<_State id="height"><Value>17</Value></_State>
+						<_State id="top"><Value>5</Value></_State>
+						<_State id="left"><Value>80</Value></_State>
+						<_State id="fontSize"><Value>16px</Value></_State>
+						<_State id="textAlign"><Value>left</Value></_State>
+						<_State id="text"><Value>Idle</Value></_State>
+						<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
+					</_States>
+				</Entity>
 				
 				<!-- Export (open a tab)-->
 				<Entity extends="SparkEditor.levels.projectEditor.topArea.GreyButton"><_States>
@@ -123,8 +137,8 @@
 				<Script>
 					Display.error("Clicked Export Button");
 					
-					Display.de('exporting');
-					
+					//e('Project Manager').fa('Export Project');
+					e('Project Editor').fa('Save Project', {exportAfterSaving:true});
 					return;
 					
 					//Refresh Project Tree's Scroller

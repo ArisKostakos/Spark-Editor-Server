@@ -21,6 +21,7 @@
 				<_State id="pointerEvents"><Value>none</Value></_State>
 				<!--<_State id="backgroundColor"><Value>green</Value></_State>
 				<_State id="opacity"><Value>0.5</Value></_State>-->
+				<_State id="border"><Value>1px dashed black</Value></_State>
 			</_States>
 				
 			<_Actions>
@@ -75,6 +76,9 @@
 					
 					//Hating this.. figure it out..
 					var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+					
+					//not thought this a lot. its to now have behaviors in scene on EDIT
+					Logic.xml_entity_removeNode(l_target_XML_editor, "Extends");
 					
 					//Add camera sync behavior
 					Logic.xml_entity_addExtend(l_target_XML_editor, {ext: 'SparkEditor.levels.projectEditor.tabs.levelEditor.behaviors.SceneCameraSync'});

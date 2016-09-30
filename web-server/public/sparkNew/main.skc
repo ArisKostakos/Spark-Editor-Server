@@ -302,6 +302,7 @@
 			<Asset type="script" location="local" bytes='35672'>std/primitives/2d/Image.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/primitives/2d/AdobeAnimation.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/primitives/2d/Spritesheet.egc</Asset>
+			<Asset type="script" location="local" bytes='35672'>std/primitives/2d/Spriter.egc</Asset>
 			
 			<Asset type="script" location="local" bytes='35672'>std/primitives/nc/Video.egc</Asset>
 			
@@ -360,6 +361,13 @@
 			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
 			
 			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound.mp3</Asset>
+			
+			<!-- Extremely Temp Particles -->
+			<Asset type="script" location="local" bytes='35672'>temp/Particle.egc</Asset>
+			<Asset type="image" location="local" bytes='35672' id="snow.pex">temp/snow.pex</Asset>
+			<Asset type="image" location="local" bytes='10000' id="snow">temp/snow.png</Asset>
+			<Asset type="image" location="local" bytes='35672' id="bubble.pex">temp/bubble.pex</Asset>
+			<Asset type="image" location="local" bytes='10000' id="bubble">temp/bubble.png</Asset>
 		</Module>
 		
 		<Module id="SparkEditor:DEPRECATED" executeEntity="SparkEditor.MainProject">

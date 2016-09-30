@@ -44,6 +44,35 @@
 		</Action>
 				
 		<Action>
+			<!-- This checks all behavior tabs added against current behavior editors that the class editor uses. It adds/Removes tabs accordingly -->
+			<!-- for now, only adding is implemented -->
+			<Id>Refresh Explorers</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get The Editor
+					var l_classEditor = me.s('parentClassExplorer').s('parentEditor');
+					
+					//Get Behavior Editors Used by this Class Editor
+					var iterator = l_classEditor.s('behaviorEditors').iterator();
+					while (iterator.hasNext())
+					{
+						var f_behaviorEditor = iterator.next();
+						
+						//If it doesn't exist...
+						if (!me.s('tabs').exists(f_behaviorEditor.s('target_DBA').name))
+						{
+							//Add Behavior's Tab
+							me.fa('Add Tab',{name:f_behaviorEditor.s('target_DBA').name, title:f_behaviorEditor.s('target_DBA').title, type:"statesExplorer", premadeTab:f_behaviorEditor.s('behaviorExplorer').s('statesExplorerTab') });
+						}
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
 			<Id>Update Current Explorer Tab</Id> <!-- Show -->
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>

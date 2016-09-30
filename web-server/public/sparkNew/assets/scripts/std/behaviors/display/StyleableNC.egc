@@ -94,13 +94,13 @@
 		<State>
 			<Id>visibility</Id>
 			<Type>Text</Type>
-			<Value>visible</Value>
+			<Value>Undefined</Value>
 		</State>
 		
 		<State>
 			<Id>opacity</Id>
 			<Type>Text</Type>
-			<Value>1</Value>
+			<Value>Undefined</Value>
 		</State>
 		
 		<State>

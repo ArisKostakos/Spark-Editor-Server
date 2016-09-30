@@ -484,6 +484,8 @@
 						classToFork = e('Project Editor').s('Assets_Hash').get('lib.classes.AdobeAnimationSprite');
 					else if (asset.componentType=="Spritesheet")
 						classToFork = e('Project Editor').s('Assets_Hash').get('lib.classes.SpritesheetSprite');
+					else if (asset.componentType=="Spriter")
+						classToFork = e('Project Editor').s('Assets_Hash').get('lib.classes.SpriterSprite');
 						
 					//Fork it
 					if (Assets.scriptLoaded(classToFork.name))
@@ -580,7 +582,17 @@
 					else if (asset.componentType=="AdobeAnimation") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
 					{
 						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshAdobeAnimationForm", value: Logic.getDbaFlambeId(asset) }, true); //Change AdobeAnimation(the json) Target
-						Logic.xml_entity_updateMState(l_newXml, { id:"Init Animation", value: '~faceExpression1_surprised_mc' }, true); //Change Init Animation
+						Logic.xml_entity_updateMState(l_newXml, { id:"Init Animation", value: e('Spark Editor: Project Search Input').s('text') }, true); //Change Init Animation
+						
+						var l_dependancyFlambeName = Logic.getDbaFlambeId(l_storedDependancyAsset);
+						var l_atlasFolder = l_dependancyFlambeName.substring(0,l_dependancyFlambeName.lastIndexOf("."));
+						Logic.xml_entity_updateMState(l_newXml, { id:"Atlas Folder", value: l_atlasFolder }, true); //Change Atlas Folder
+						
+					}
+					else if (asset.componentType=="Spriter") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
+					{
+						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshSpriterForm", value: Logic.getDbaFlambeId(asset) }, true); //Change Spriter(the scml) Target
+						Logic.xml_entity_updateMState(l_newXml, { id:"Init Animation", value: e('Spark Editor: Project Search Input').s('text') }, true); //Change Init Animation
 						
 						var l_dependancyFlambeName = Logic.getDbaFlambeId(l_storedDependancyAsset);
 						var l_atlasFolder = l_dependancyFlambeName.substring(0,l_dependancyFlambeName.lastIndexOf("."));
@@ -758,13 +770,13 @@
 					//Normally we should tell the LevelEditor...
 					
 					//But for now, we tell... me
-					if (asset.componentType=="Behavior")
-						me.fa('Dropped A Behavior', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
-					else if (asset.componentType=="Sound")
+					//if (asset.componentType=="Behavior")
+						//me.fa('Dropped A Behavior', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
+					/*else */if (asset.componentType=="Sound")
 						me.fa('Dropped A Sound', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
 					else if (asset.componentType=="Image")
 						me.fa('Dropped An Image', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
-					else if (asset.componentType=="AdobeAnimation" || asset.componentType=="Spritesheet")
+					else if (asset.componentType=="AdobeAnimation" || asset.componentType=="Spritesheet" || asset.componentType=="Spriter")
 						me.fa('Dropped Any Step1', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
 					else
 						Display.warn("Dropped an unknown type: " + asset.componentType);

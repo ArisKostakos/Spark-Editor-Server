@@ -17,6 +17,13 @@
 		</State>
 		
 		<State>
+			<!-- only using this for debugging -->
+			<Id>scrollerId</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
 			<Id>scrollerContainerObject</Id>
 			<Type>Dynamic</Type>
 			<Value>null</Value>
@@ -55,11 +62,16 @@
 				<Script>
 					//forced
 					
+					//I don't think this needs to happen on every layout update
+					//what it does is tells the scroller the height of it's container stuff
+					//meaning, if scroller is 500px but has stuff that are 2000px, it will say, your stuff are 2000px
+					//and peculiarly, setting the height of the scroller container to 2000px, will do that.
+					
 					var group = me.getChildren()[0]; //get first and only child
 					var groupEntity = query(group,'groupObject'); //get its group object
 					
 					me.s('scrollerContainerObject').style.height=Std.string(groupEntity.measuredHeight)+"px"; //update height
-					//Display.de("Scroller Height: " + me.s('scrollerContainerObject').style.height);
+					//Display.de("#"+me.s('scrollerId')+" Scroller Height: " + me.s('scrollerContainerObject').style.height);
 				</Script>
 			</Scripts>
 		</Action>

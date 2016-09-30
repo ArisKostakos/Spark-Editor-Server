@@ -39,16 +39,20 @@
 							//Don't add state if it's a behaviorExtend State, and we are a class Tab Explorer
 							if (l_editor.s('editorType')=="Behavior" || state.behaviorName==null) 
 							{
-								var l_stateExplorer = Logic.create("SparkEditor.levels.projectEditor.components.explorers.StateExplorer");
-								l_stateExplorer.set('statesExplorer', me);
-								
-								//So we just force an action now to create the thing
-								l_stateExplorer.fa("Construct State", {stateObject:state, createDivider:l_createDivider});
-								
-								me.addChild(l_stateExplorer);
-								l_stateExplorers.set(state.id, l_stateExplorer);
-								
-								l_createDivider=true;
+								//Don't add state, if it has a notVisible meta
+								if (state.visibleOnEditor!="false")
+								{
+									var l_stateExplorer = Logic.create("SparkEditor.levels.projectEditor.components.explorers.StateExplorer");
+									l_stateExplorer.set('statesExplorer', me);
+									
+									//So we just force an action now to create the thing
+									l_stateExplorer.fa("Construct State", {stateObject:state, createDivider:l_createDivider});
+									
+									me.addChild(l_stateExplorer);
+									l_stateExplorers.set(state.id, l_stateExplorer);
+									
+									l_createDivider=true;
+								}
 							}
 						}
 					}
@@ -75,15 +79,15 @@
 					{
 						var w_stateId = keys.next();
 						
-						//First Pass
+						//First Pass (behavior or class)
 						var w_state = l_statesFirstPass.get(w_stateId);
 						
-						//Second Pass
+						//Second Pass (class overrides)
 						if (l_statesSecondPass!=null)
 							if (l_statesSecondPass.exists(w_stateId))
 								w_state=l_statesSecondPass.get(w_stateId);
 						
-						//Third Pass
+						//Third Pass (object overrides)
 						//..
 						
 						//Update State Explorer for this state

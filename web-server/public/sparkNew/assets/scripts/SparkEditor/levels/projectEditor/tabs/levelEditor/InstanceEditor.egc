@@ -23,6 +23,8 @@
 		<State><Id>beingDragged</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>naturalWidth</Id><Type>Decimal</Type><Value>0</Value></State> <!-- actual size, before zoom and/or scaleX,Y transformations -->
 		<State><Id>naturalHeight</Id><Type>Decimal</Type><Value>0</Value></State> <!-- actual size, before zoom and/or scaleX,Y transformations -->
+		<_State id="dropTarget"><Value>true</Value></_State>
+		<State><Id>selectedOnCreation</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -133,6 +135,10 @@
 					me.set('height', Std.string(l_naturalHeight*l_scaleY));
 					var l_rotation_transform = "rotate("+Std.string(l_target_GameObject.s('rotation'))+"deg)";
 					me.set('transform', l_rotation_transform);
+					
+					//Select by simulating click
+					if (me.s('selectedOnCreation'))
+						me.s('LevelEditor').fa('Clicked', { editor:me, ctrlKey: false, shiftKey: true, altKey: false } );
 				</Script>
 			</Scripts>
 		</Action>
@@ -361,6 +367,7 @@
 					f_instanceEditor.set('SceneEditor',me.s('SceneEditor'));
 					f_instanceEditor.set('parentEditor',me.s('parentEditor'));
 					f_instanceEditor.set('LevelEditor',me.s('LevelEditor'));
+					f_instanceEditor.set('selectedOnCreation',true);
 					me.s('SceneEditor').s('instanceEditors').push(f_instanceEditor); //careful of z-order here.. do an insert instead, +1 on this editor's z
 					f_instanceEditor.fa('Import From Xml',{importXml: l_newXml});
 					me.s('SceneEditor').s('sceneBoundsObject').addChild(f_instanceEditor);
@@ -374,6 +381,8 @@
 				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
 			</States>
 		</Action>
+		
+		
 		
 		<Action>
 			<Id>ScaleBy</Id>
@@ -635,6 +644,15 @@
 							else if (cb_Arg1.type=="bottom")
 								l_instanceEditors.unshift(me);
 						}
+						else if (cb_Arg1.type=="lock")
+						{
+							me.set('pointerEvents','none');
+							//me.set('display','none');
+						}
+						else if (cb_Arg1.type=="delete")
+						{
+							me.s('LevelEditor').fa('Destroy Selection');
+						}
 					}/*
 					else
 					{
@@ -645,6 +663,61 @@
 			<States>
 				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
 				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- Removes this Instance from the scene -->
+			<Id>Destroy</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//@TODO, check if we also need to remove the CLASS (if no other instances are found, both in all scenes and events..)
+					//even if no other instances are found, maybe ASK user if he wants to keep the class anyway?
+					
+					//For now, it just removes the instance
+					
+					//First, remove all instances from Level Editor
+					
+					me.remove(); //this
+					me.s('SceneEditor').s('target_GameObject').removeChild(me.s('target_GameObject')); //actual instance
+					//controls will be removed by just deselect it (which happens on level editor)
+					
+					
+					//Then make sure next time we export this scene, this instance is not there
+					
+					//we need to remove ourselves from an ARRAY (not hash), so..
+					var l_index = me.s('SceneEditor').s('instanceEditors').indexOf(me);
+					me.s('SceneEditor').s('instanceEditors').splice(l_index, 1);
+					
+					//Mark Scene to be exported (not me, i'll be gone..)
+					me.s('SceneEditor').fa('Needs To Export', {exportThis:true});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<!-- This opens the state explorer for this Object (Instance) -->
+			<Id>Open Explorer Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_explorerContainer = it.s('explorerContainer');
+					
+					//Remove All Children
+					l_explorerContainer.removeChildren(); //export opportunity here.. but whatevs..
+					
+					l_explorerContainer.addChild( me.s('classExplorer') );
+					
+					me.s('classExplorer').fa('Show');
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>explorerContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
 	</_Actions>
@@ -713,6 +786,90 @@
 				</Script>
 			</Scripts>
 		</Trigger>
+		
+		
+		<Trigger>
+			<Event>OnDragEnter</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+					{
+						me.set('backgroundColor','yellow');
+						me.set('opacity',0.3);
+					}
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>OnDrop</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+						me.s('ClassEditor').fa('Add Behavior Complete', { behavior_asset_DBA:l_asset} );
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+						
+					me.set('backgroundColor','transparent');
+					me.set('opacity',0);
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>OnDragLeave</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+					{
+						me.set('backgroundColor','transparent');
+						me.set('opacity',0);
+					}
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+				</Script>
+			</Scripts>
+		</Trigger>
 				
 		<Trigger>
 			<Event>MouseRightClick</Event>
@@ -736,6 +893,8 @@
 					createContextNode("Step One Up","oneUp",mainList);
 					createContextNode("Step One Down","oneDown",mainList);
 					createContextNode("Set To Bottom","bottom",mainList);
+					createContextNode("Lock","lock",mainList);
+					createContextNode("Delete","delete",mainList);
 					
 					//Open Popup [CHOOSE AC]
 					e('PopUp Manager').forceAction('Open PopUp',{popupName:"SparkEditor.levels.common.popupManager.entities.contextMenu.ContextMenuPopUpNoArrow",

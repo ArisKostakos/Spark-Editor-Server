@@ -101,8 +101,14 @@
 					
 					//THESE TWO ARE OF LIBRARY INCLUDES
 					//Request All Assets with tag[0] of this project
-					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsImages", {}, "Project Assets Request",me)');
-					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOther", {}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"image"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"model"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"sound"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfType", {type:"data"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfTypeAndComponentType", {type:"script", componentType:"Class"}, "Project Assets Request",me)');
+					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOfTypeAndComponentType", {type:"script", componentType:"Behavior"}, "Project Assets Request",me)');
+					
+					//me.s('jobs').push('Comms.request("assets.requestHandler.getProjectAssetsOther", {}, "Project Assets Request",me)');
 					
 					//Request All ACE Assets (later on, do proper include query stuff instead of this and the one above) ( I ALSO USE THIS FOR LIB CLASS OBJECTS NOW)
 					me.s('jobs').push('Comms.request("assets.requestHandler.getProjectIncludeAssets", {}, "ACE Assets Request",me)');
@@ -323,8 +329,8 @@
 			<Scripts>
 				<Script>
 					//Run Project
-					e('Project Manager').fa('Run Preview');
-					return;
+					//e('Project Manager').fa('Run Preview');
+					//return;
 				
 					//Project Class Editor's XML
 					var l_projectXml = me.s('classEditor').s('target_XML');
@@ -1187,17 +1193,15 @@
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
 				<Script>
-					me.stopAction('Export Project');
+					//forced
 					
-					//Display.error("Exporting Project: " + Project.main.name);
-					var username = Logic.getEntityByName('Spark Editor').getState('username');
-					var projectname = Logic.getEntityByName('Spark Editor').getState('projectname');
+					//Temp output
+					e('Save Label').set('text','Exporting Project...');
 					
 					var exportProject = new Project();
-					
-					exportProject.name = projectname;
-					exportProject.version = "0.1";
-					exportProject.executeModules.push("MainModule");
+					exportProject.name = me.s('Project_DBO').name;
+					exportProject.version = "1.0";
+					exportProject.executeModules.push("Main");
 					exportProject.sliced = Project.main.sliced;
 					
 					//Paths
@@ -1207,79 +1211,41 @@
 						var path = iterator.next();
 						exportProject.paths.set(path,Project.main.paths.get(path));
 					}
-					exportProject.setPath("project", "script", "/assets/"+username+"/script/");
-					exportProject.setPath("project", "image", "/assets/"+username+"/image/");
-					exportProject.setPath("project", "model", "/assets/"+username+"/model/");
-					exportProject.setPath("project", "sound", "/assets/"+username+"/sound/");
-					exportProject.setPath("project", "data", "/assets/"+username+"/data/");
-					exportProject.setPath("spark", "script", "/assets/spark/script/");
-					exportProject.setPath("spark", "image", "/assets/spark/image/");
-					exportProject.setPath("spark", "model", "/assets/spark/model/");
-					exportProject.setPath("spark", "sound", "/assets/spark/sound/");
-					exportProject.setPath("spark", "data", "/assets/spark/data/");
 					
-					//StandardLibrary Module
-					exportProject.modules.set("StandardLibrary", Project.main.modules.get("StandardLibrary"));
+					//Std Modules
+					exportProject.modules.set("Std:Base", Project.main.modules.get("Std:Base"));
+					exportProject.modules.set("Std:Loader", Project.main.modules.get("Std:Loader"));
+					exportProject.modules.set("Std:BasicNC", Project.main.modules.get("Std:BasicNC"));
+					exportProject.modules.set("Std:Ace", Project.main.modules.get("Std:Ace"));
+					exportProject.modules.set("Std:Rest", Project.main.modules.get("Std:Rest"));
 					
-					//Main Module
-					var mainModule = new Module("MainModule");
-					mainModule.executeEntity=exportProject.name + ".MainProject";
-					mainModule.requiresModules.push("StandardLibrary");
-					
-					//Assets
-					var ModuleAssetsDBbyNameHash = me.getState('ModuleAssetsDBbyNameHash');
-					var iterator = ModuleAssetsDBbyNameHash.iterator();
-					while (iterator.hasNext())
-					{
-						var assetDB = iterator.next();
-						var asset = new Asset(assetDB.name);
-						asset.type = assetDB.type;
-						
-						//Bug here.. when I just created the asset, and try to export, it doesn't have owner..
-						//workaround for now... default to project
-						//test if it works!
-						if (assetDB.owner.user!=null)
-						{
-							if (assetDB.owner.user.name=="spark")
-								asset.location = 'spark';
-							else
-								asset.location = 'project';
-						}
-						else
-						{
-							asset.location = 'project';
-						}
+					//Project Modules
+					me.s('Modules_DB').find({}, function (err, modules) {
+						//For Every Module that this project requires
+						for (module of modules)
+							exportProject.modules.set(module.name, Project.main.modules.get(module.name)); //Copy their reference to our new Project
 							
-						asset.bytes = Std.string(assetDB.fileSize);
-						asset.url = assetDB.dir+'/'+assetDB.fileName+'.'+assetDB.fileExtension;
+						//Fix Main's execute Entity
+						exportProject.modules.get("Main").executeEntity=me.s('Project_DBO').name+'.Project';
+							
+						//Export
+						var exportXml = exportProject.exportToXml();
+						//console.log(exportXml);
+						//console.log(exportXml.toString());
 						
-						mainModule.assets.set(asset.id,asset);
+						//Prepare File
+						var clientFile = Logic.xml_createDocument();
+						clientFile.addChild(exportXml);
 						
-						if (asset.type=="image")
-							asset.id = 'image_' + assetDB.name;
-						else if (asset.type=="sound")
-							asset.id = 'sound_' + assetDB.name;
-						else
-							asset.id = null;
-					}
-					
-					exportProject.modules.set(mainModule.id, mainModule);
-					
-					//Export
-					var exportXml = exportProject.exportToXml();
-					
-					//Prepare File
-					var clientFile = Logic.xml_createDocument();
-					clientFile.addChild(exportXml);
-					
-					//Save to String
-					var finalString = Logic.xmlToString(clientFile);
-					Display.error("clientFile: " + finalString);
-					
-					//Upload
-					var connectedUserName = Logic.getEntityByName('Spark Editor').getState('username');
-					Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
-					Comms.file_sendFileRequest(finalString, {name: "main.skc", size: finalString.length, user: connectedUserName} , "uploadProjectFile"); //this needs dir if im gonna use it again
+						//Save to String
+						var finalString = Logic.xmlToString(clientFile);
+						//Display.error("clientFile: " + finalString);
+						Display.de("Uploading Main.skc");
+						//Upload
+						var connectedUserName = me.s('User_DBO').name; // Logic.getEntityByName('Spark Editor').getState('username');
+						//Logic.getEntityByName('Editor Output').setState('text','Please Wait...');
+						Comms.file_sendFileRequest(finalString, {name: "main.skc", size: finalString.length, user: connectedUserName, dir: me.s('Project_DBO').name} , "Request: Main.skc Uploaded", me);
+					});
 				</Script>
 			</Scripts>
 		</Action>
@@ -1288,27 +1254,54 @@
 	<_Triggers>
 		<Trigger>
 			<Event>FileTransferRequest</Event>
-			<Target>TargetNone</Target>
+			<Parameter>Request: Main.skc Uploaded</Parameter>
 			<Scripts>
 				<Script>
-					if (Comms.file_getSendFileRequestData("uploadProjectFile")!=null)
+					var data = Comms.file_getSendFileRequestData('Request: Main.skc Uploaded').shift();
+					
+					Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
+					//Logic.getEntityByName('Editor Output').setState('text','Uploading ' + data.progressPercent+'%');
+					if (data.progress==1)
 					{
-						var data = Comms.file_getSendFileRequestData("uploadProjectFile");
+						Display.error('Main.skc file Uploaded!');
+						//Logic.getEntityByName('Editor Output').setState('text','Project Uploaded!');
 						
-						Display.error("FILE: " + 'Uploading ' + data.progressPercent+'%');
-						Logic.getEntityByName('Editor Output').setState('text','Uploading ' + data.progressPercent+'%');
-						if (data.progress==1)
-						{
-							Display.error("FILE: " + 'File Uploaded!');
-							Logic.getEntityByName('Editor Output').setState('text','Project Uploaded!');
-							
-							Comms.request("assets.uploadHandler.uploadProjectFile", {fileName: "main.skc"}, "projectFileCreated");
-						}
+						Comms.request("assets.uploadHandler.uploadProjectFile", {fileName: "main.skc"}, "Request: Main.skc Created", me);
 					}
 				</Script>
 			</Scripts>
 		</Trigger>
 		
+		<Trigger>
+			<Event>NetworkRequest</Event>
+			<Parameter>Request: Main.skc Created</Parameter>
+			<Scripts>
+				<Script>
+					var data = Comms.getRequestData("Request: Main.skc Created");
+					
+					if (data.code=="success")
+					{
+						//Open New Tab
+						Display.error('Project Export Success!');
+						//Logic.getEntityByName('Editor Output').setState('text','Project Export Success!');
+						
+						//Temp output
+						e('Save Label').set('text','Project Exported!');
+						
+						var username = me.s('User_DBO').name;
+						var projectname = me.s('Project_DBO').name;
+						
+						window.open("http://sparkgamengine.com/run/?user="+username+"&project="+projectname,"previewTab");
+					}
+					else
+					{
+						Display.error('Project Export Error!');
+						//Logic.getEntityByName('Editor Output').setState('text','Project Export Error!');
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+				
 		<Trigger>
 			<Event>NetworkRequest</Event>
 			<Target>TargetNone</Target>
@@ -1453,27 +1446,6 @@
 						else
 						{
 							Display.error('Error Requesting Main Module Assets!');
-						}
-					}
-					else if (Comms.getRequestData("projectFileCreated")!=null)
-					{
-						var data = Comms.getRequestData("projectFileCreated");
-						
-						if (data.code=="success")
-						{
-							//Open New Tab
-							Display.error('Project Export Success!');
-							Logic.getEntityByName('Editor Output').setState('text','Project Export Success!');
-							
-							var username = Logic.getEntityByName('Spark Editor').getState('username');
-							var projectname = Logic.getEntityByName('Spark Editor').getState('projectname');
-					
-							window.open("http://sparkgamengine.com/spark/start.html?user="+username+"&project="+projectname,"previewTab");
-						}
-						else
-						{
-							Display.error('Project Export Error!');
-							Logic.getEntityByName('Editor Output').setState('text','Project Export Error!');
 						}
 					}
 				</Script>
