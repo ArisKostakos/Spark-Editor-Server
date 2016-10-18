@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Text Bubble -->
+				<Entity extends="std.display.Button">
+					<_States>
+						<_State id="borderRadius"><Value>23px</Value></_State>
+						<_State id="backgroundColor"><Value>rgb(62,88,112)</Value></_State>
+						<_State id="width"><Value>84</Value></_State>
+						<_State id="height"><Value>23</Value></_State>
+						<_State id="left"><Value>16</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.set('width', Std.string( 15*e('Project Editor').s('User_DBO').firstName.length ) );
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+						
+					<Form>
+						<Space>
+							<Entities>
+								<!-- Label -->
+								<Entity extends="std.display.Text">
+									<_States>
+										<_State id="width"><Value>100%</Value></_State>
+										<_State id="height"><Value>19</Value></_State>
+										<_State id="fontSize"><Value>17px</Value></_State>
+										<_State id="fontWeight"><Value>300</Value></_State>
+										<_State id="fontColor"><Value>white</Value></_State>
+										<_State id="left"><Value>42</Value></_State>
+										<_State id="horizontalCenter"><Value>0</Value></_State>
+										<_State id="verticalCenter"><Value>0</Value></_State>
+										<_State id="text"><Value>My Name</Value></_State>
+										<_State id="whiteSpace"><Value>nowrap</Value></_State>
+									</_States>
+									<_Actions>
+										<_Action id="Constructor">
+											<_Scripts>
+												<Script>
+													me.set('text', e('Project Editor').s('User_DBO').firstName);
+												</Script>
+											</_Scripts>
+										</_Action>
+									</_Actions>
+								</Entity>
+							</Entities>
+						</Space>
+					</Form>
+					
+					<_Triggers>
+						<Trigger>
+							<Event>MouseLeftClick</Event>
+							<Scripts>
+								<Script>
+									parent.fa('ButtonClicked');
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+				</Entity>
+				
+				<!-- Back To Lobby Image -->
+				<Entity extends="SparkEditor.levels.projectEditor.topArea.ImageButton">
+					<_States>
+						<_State id="src"><Value>editor_unknownUser</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									if (e('Project Editor').s('User_DBO').firstName=="Aris")
+										me.set('src', 'editor_userAris');
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+					<_Triggers>
+						<Trigger>
+							<Event>MouseLeftClick</Event>
+							<Scripts>
+								<Script>
+									parent.fa('ButtonClicked');
+								</Script>
+							</Scripts>
+						</Trigger>
+					</_Triggers>
+				</Entity>
+			</Entities>
+		</Space>
+	</Form>
+	
+	<_Actions>
+		<Action>
+			<Id>ButtonClicked</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Go Back To Lobby
+					alert("Account Settings not done yet. Sorry!");
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

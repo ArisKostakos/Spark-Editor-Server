@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(25,37,47)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Center Area: Title -->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="width"><Value>100%</Value></_State>
+						<_State id="height"><Value>22</Value></_State>
+						<_State id="fontSize"><Value>19px</Value></_State>
+						<_State id="fontWeight"><Value>300</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="textAlign"><Value>center</Value></_State>
+						<_State id="horizontalCenter"><Value>0</Value></_State>
+						<_State id="verticalCenter"><Value>0</Value></_State>
+						<_State id="text"><Value>Untitled Project</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.set('text', e('Project Editor').s('Project_DBO').title);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+			
+				<!-- Left Area -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="left"><Value>10</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="verticalAlign"><Value>middle</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						<!-- Back To Lobby Button -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.LobbyButton"/>
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="width"><Value>38</Value></_State></_States></Entity>
+						
+						<!-- Undo -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.ImageButton">
+							<_States>
+								<_State id="src"><Value>editor_undo</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											alert("Undo not done yet. Sorry!");
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Redo -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.ImageButton">
+							<_States>
+								<_State id="src"><Value>editor_redo_disabled</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											alert("Redo not done yet. Sorry!");
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Right Area -->
+				<Entity extends="std.display.HGroup">
+					<_States>
+						<_State id="right"><Value>20</Value></_State>
+						<_State id="height"><Value>100%</Value></_State>
+						<_State id="verticalAlign"><Value>middle</Value></_State>
+					</_States>
+					<Form><Space><Entities>
+						
+						<!-- Text -->
+						<Entity extends="std.display.Text">
+							<_States>
+								<_State id="name"><Value>Save Label</Value></_State>
+								<_State id="width"><Value>300</Value></_State>
+								<_State id="height"><Value>15</Value></_State>
+								<_State id="fontSize"><Value>14px</Value></_State>
+								<_State id="textAlign"><Value>right</Value></_State>
+								<_State id="text"><Value>Please Wait...</Value></_State>
+								<_State id="fontColor"><Value>rgb(45,67,85)</Value></_State>
+							</_States>
+						</Entity>
+						
+						<!-- Save -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.ImageButton">
+							<_States>
+								<_State id="src"><Value>editor_save</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											//Save Project
+											e('Project Editor').fa('Save Project');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Export -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.ImageButton">
+							<_States>
+								<_State id="src"><Value>editor_export</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											//Export Project
+											e('Project Editor').fa('Save Project', {exportAfterSaving:true});
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- run preview temp (where share will probably be.. -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.ImageButton">
+							<_States>
+								<_State id="src"><Value>editor_share</Value></_State>
+							</_States>
+								
+							<_Triggers>
+								<Trigger>
+									<Event>MouseLeftClick</Event>
+									<Scripts>
+										<Script>
+											//Run Project
+											e('Project Manager').fa('Run Preview');
+										</Script>
+									</Scripts>
+								</Trigger>
+							</_Triggers>
+						</Entity>
+						
+						<!-- Spacer -->
+						<Entity extends="std.display.Group"><_States><_State id="width"><Value>38</Value></_State></_States></Entity>
+						
+						<!-- Name Button -->
+						<Entity extends="SparkEditor.levels.projectEditor.topArea.NameButton"/>
+					</Entities></Space></Form>
+				</Entity>
+				
+				<!-- Export (open a tab)
+				<Entity extends="SparkEditor.levels.projectEditor.topArea.GreyButton"><_States>
+					<_State id="imageName"><Value>editor_export</Value></_State>
+					<_State id="imageWidth"><Value>17</Value></_State>
+					<_State id="imageHeight"><Value>19</Value></_State>
+					<_State id="imageHorCenter"><Value>0</Value></_State>
+					<_State id="imageVerCenter"><Value>0</Value></_State>
+					<_State id="top"><Value>5</Value></_State>
+					<_State id="right"><Value>110</Value></_State>
+				</_States><_Actions><_Action id="ButtonClicked"><_Scripts>
+				<Script>
+					Display.error("Clicked Export Button");
+					
+					//e('Project Manager').fa('Export Project');
+					e('Project Editor').fa('Save Project', {exportAfterSaving:true});
+					return;
+					
+					//Refresh Project Tree's Scroller
+					e('Project Tree').parentEntity.forceAction('Refresh');
+					
+					return;
+					
+					//Run Project
+					//Add Level Editor Tab
+					e('Main Tab Manager').fa('Add Tab',{name:"Event Sheet",title:"Events", type:"eventSheetEditor"});
+					
+					//Show Level Editor Tab
+					e('Main Tab Manager').startAction('Show Tab',{name:"Event Sheet"});
+				</Script></_Scripts></_Action></_Actions></Entity>-->
+			</Entities>
+		</Space>
+	</Form>
+</Entity>

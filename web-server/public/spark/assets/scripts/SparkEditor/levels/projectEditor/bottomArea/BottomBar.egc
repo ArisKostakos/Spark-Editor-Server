@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Div">
+	<_States>
+		<_State id="width"><Value>100%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(25,37,47)</Value></_State>
+	</_States>
+	
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Mouse Coordinates -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Mouse Coords Output</Value></_State>
+					<_State id="width"><Value>100%</Value></_State>
+					<_State id="height"><Value>15</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="horizontalCenter"><Value>0</Value></_State>
+					<_State id="verticalCenter"><Value>0</Value></_State>
+					<_State id="text"><Value>Undefined</Value></_State>
+				</_States></Entity>
+				
+				<!-- Zoom Percentage Coordinates -->
+				<Entity extends="std.display.Text"><_States>
+					<_State id="name"><Value>Zoom Percentage Output</Value></_State>
+					<_State id="width"><Value>100</Value></_State>
+					<_State id="height"><Value>15</Value></_State>
+					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontWeight"><Value>300</Value></_State>
+					<_State id="fontColor"><Value>white</Value></_State>
+					<_State id="textAlign"><Value>center</Value></_State>
+					<_State id="right"><Value>100</Value></_State>
+					<_State id="verticalCenter"><Value>0</Value></_State>
+					<_State id="text"><Value>Undefined</Value></_State>
+				</_States></Entity>
+			</Entities>
+		</Space>
+	</Form>
+</Entity>
