@@ -44,11 +44,41 @@
 		</State>
 		
 		<State>
+			<Id>borderLeft</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>borderRight</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>borderTop</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>borderBottom</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
 			<Id>boxShadow</Id>
 			<Type>Text</Type>
 			<Value>Undefined</Value>
 		</State>
 		
+		<State>
+			<Id>zIndex</Id>
+			<Type>Integer</Type>
+			<Value>0</Value>
+		</State>
+	
 		<State>
 			<Id>fontFamily</Id>
 			<Type>Text</Type>
@@ -94,13 +124,13 @@
 		<State>
 			<Id>visibility</Id>
 			<Type>Text</Type>
-			<Value>visible</Value>
+			<Value>Undefined</Value>
 		</State>
 		
 		<State>
 			<Id>opacity</Id>
 			<Type>Text</Type>
-			<Value>1</Value>
+			<Value>Undefined</Value>
 		</State>
 		
 		<State>

@@ -4,8 +4,11 @@
 		<_Action id="Constructor">
 			<_Scripts>
 				<Script>
-					for (child of me.getChildren())
+					//for (child of me.getChildren()) DOES NOT WORK ON IE
+					for (child in me.getChildren()) //WORKS ON IE BUT I DONT LIKE IT
 					{
+						child = me.getChildren()[child]; //WORKS ON IE BUT I DONT LIKE IT
+						
 						if (child.getState('name')==me.getState('initStageName'))
 						{
 							if (child.getState('displayType')=="Stage")

@@ -5,8 +5,8 @@
 		<_State id="2DmeshType"><Value>AdobeAnimation</Value></_State>
 		<State><Id>2DMeshAdobeAnimationForm</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>Atlas Folder</Id><Type>Text</Type><Value>Undefined</Value></State>
-		<State><Id>Init Animation</Id><Type>Text</Type><Value>Undefined</Value></State>
-		<State><Id>Init Animation Loop</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State><Id>Animation</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Animation Loop</Id><Type>Boolean</Type><Value>true</Value></State>
 		<State><Id>obj_player</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 </Entity>
