@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="SparkEditor.levels.projectEditor.tabs.TabBase">
 	<_States>
-		<_State id="backgroundColor"><Value>rgb(40,56,74)</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(32,48,61)</Value></_State>
 	</_States>
 	
 	<Form>
@@ -12,12 +12,12 @@
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
-						<_State id="top"><Value>67</Value></_State>
+						<_State id="top"><Value>0</Value></_State> <!--1,67-->
 						<_State id="gap"><Value>0</Value></_State>
 					</_States>
 				
 					<Form><Space><Entities>
-						<!-- Controls -->
+						<!-- Controls 
 						<Entity extends="std.display.Div">
 							<_States>
 								<_State id="width"><Value>100%</Value></_State>
@@ -29,7 +29,7 @@
 							</_States>
 						
 							<Form><Space><Entities>
-								<!-- Create Behavior Icon -->
+								 Create Behavior Icon 
 								<Entity extends="std.display.Image">
 									<_States>
 										<_State id="width"><Value>50</Value></_State>
@@ -114,6 +114,7 @@
 															createdForProject: e('Project Editor').s('Project_DBO').name,
 															type: "Custom",
 															subType: "2D",
+															hidden: false,
 															thumbnail: {
 																embeddedUrl: "thumbnail_behavior_custom"
 															},
@@ -192,7 +193,7 @@
 										</Trigger>
 									</_Triggers>
 								</Entity>
-								<!-- Text -->
+								 Text 
 								<Entity extends="std.display.Text">
 									<_States>
 										<_State id="width"><Value>100</Value></_State>
@@ -204,9 +205,9 @@
 									</_States>
 								</Entity>
 								
-								<!-- Upload Icon -->
+								 Upload Icon 
 								<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton"/>
-								<!-- Text -->
+								 Text 
 								<Entity extends="std.display.Text">
 									<_States>
 										<_State id="width"><Value>100</Value></_State>
@@ -227,7 +228,7 @@
 						
 							</_Actions>
 						</Entity>
-						
+						-->
 						<!-- Library Collections -->
 						<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorLibraryCollections"/>
 					</Entities></Space></Form>

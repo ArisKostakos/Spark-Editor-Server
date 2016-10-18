@@ -7,6 +7,7 @@
 	<_States>
 		<_State id="pointerEvents"><Value>auto</Value></_State>
 		<_State id="dropTarget"><Value>true</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
 		<State><Id>SceneEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>CameraEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>LevelEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
@@ -582,7 +583,7 @@
 					else if (asset.componentType=="AdobeAnimation") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
 					{
 						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshAdobeAnimationForm", value: Logic.getDbaFlambeId(asset) }, true); //Change AdobeAnimation(the json) Target
-						Logic.xml_entity_updateMState(l_newXml, { id:"Init Animation", value: e('Spark Editor: Project Search Input').s('text') }, true); //Change Init Animation
+						Logic.xml_entity_updateMState(l_newXml, { id:"Animation", value: e('Spark Editor: Project Search Input').s('text') }, true);
 						
 						var l_dependancyFlambeName = Logic.getDbaFlambeId(l_storedDependancyAsset);
 						var l_atlasFolder = l_dependancyFlambeName.substring(0,l_dependancyFlambeName.lastIndexOf("."));
@@ -592,7 +593,7 @@
 					else if (asset.componentType=="Spriter") //This might be better if i can check against the Primitive Class (std.display.Image2D..) used by the classToFork. But this works too..
 					{
 						Logic.xml_entity_updateMState(l_newXml, { id:"2DMeshSpriterForm", value: Logic.getDbaFlambeId(asset) }, true); //Change Spriter(the scml) Target
-						Logic.xml_entity_updateMState(l_newXml, { id:"Init Animation", value: e('Spark Editor: Project Search Input').s('text') }, true); //Change Init Animation
+						Logic.xml_entity_updateMState(l_newXml, { id:"Animation", value: 'idle'/*e('Spark Editor: Project Search Input').s('text')*/ }, true);
 						
 						var l_dependancyFlambeName = Logic.getDbaFlambeId(l_storedDependancyAsset);
 						var l_atlasFolder = l_dependancyFlambeName.substring(0,l_dependancyFlambeName.lastIndexOf("."));
@@ -770,9 +771,9 @@
 					//Normally we should tell the LevelEditor...
 					
 					//But for now, we tell... me
-					if (asset.componentType=="Behavior")
-						me.fa('Dropped A Behavior', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
-					else if (asset.componentType=="Sound")
+					//if (asset.componentType=="Behavior")
+						//me.fa('Dropped A Behavior', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
+					/*else */if (asset.componentType=="Sound")
 						me.fa('Dropped A Sound', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
 					else if (asset.componentType=="Image")
 						me.fa('Dropped An Image', { dropX:localX, dropY:localY, dropped_DBA:asset, droppedFromLibraryCollection_DBA:assetLibrary } );
@@ -781,6 +782,66 @@
 					else
 						Display.warn("Dropped an unknown type: " + asset.componentType);
 				</Script>
+			</Scripts>
+		</Trigger>
+		
+				
+		<!-- The following two triggers are for updating Mouse coordinates.. horrible code, and code repetition follows. I was sick..-->
+		<Trigger>
+			<Event>MouseMoved</Event>
+			<Scripts>
+				<Script>
+					//Display.de("Mouse Move");
+					//console.log(me.s('eventObjectMouseMove'));
+					
+					//Figure out X, Y, etc..
+					var eventObject = me.getState('eventObjectMouseMove');
+					//console.log('on drop eventObject',eventObject);
+					
+					var l_LevelEditorGlobalPos = query(me.s('LevelEditor'),'absoluteRect');
+					var localX = eventObject.clientX - l_LevelEditorGlobalPos.left;
+					var localY = eventObject.clientY - l_LevelEditorGlobalPos.top;
+					//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+					
+					//Add Camera Offsets and Scaling
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					//Display.error("l_transformations> X: " + l_transformations.x + ", Y: " + l_transformations.y + ", scale: " + l_transformations.scale);
+					localX = (localX - l_transformations.x)/l_transformations.scale;
+					localY = (localY - l_transformations.y)/l_transformations.scale;
+					
+					
+					e('Mouse Coords Output').set('text','(x: '+Math.round(localX)+', y: ' + Math.round(localY) + ')');
+				</Script>
+			</Scripts>
+		</Trigger>
+				
+		<Trigger>
+			<!-- This is COMPLETELY identical to above.. just lazy to create an action for it. Also, this will use values from LAST scroll.. so it's always one scroll late -->
+			<Event>MouseScroll</Event>
+			<Scripts>
+				<Script><![CDATA[
+					//Display.de("Mouse Move");
+					//console.log(me.s('eventObjectMouseMove'));
+					
+					//Figure out X, Y, etc..
+					var eventObject = me.getState('eventObjectMouseMove');
+					//console.log('on drop eventObject',eventObject);
+					
+					var l_LevelEditorGlobalPos = query(me.s('LevelEditor'),'absoluteRect');
+					var localX = eventObject.clientX - l_LevelEditorGlobalPos.left;
+					var localY = eventObject.clientY - l_LevelEditorGlobalPos.top;
+					//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+					
+					//Add Camera Offsets and Scaling
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					//Display.error("l_transformations> X: " + l_transformations.x + ", Y: " + l_transformations.y + ", scale: " + l_transformations.scale);
+					localX = (localX - l_transformations.x)/l_transformations.scale;
+					localY = (localY - l_transformations.y)/l_transformations.scale;
+					
+					
+					e('Mouse Coords Output').set('text','(x: '+Math.round(localX)+', y: ' + Math.round(localY) + ')');
+					e('Zoom Percentage Output').set('text',Math.round(l_transformations.scale*100)+'%');
+				]]></Script>
 			</Scripts>
 		</Trigger>
 	</_Triggers>

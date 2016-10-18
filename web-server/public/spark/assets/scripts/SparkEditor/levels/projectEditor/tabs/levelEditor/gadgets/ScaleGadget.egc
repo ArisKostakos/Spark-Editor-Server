@@ -2,7 +2,7 @@
 <Entity extends="std.display.Div">
 	<_States>
 		<_State id="pointerEvents"><Value>auto</Value></_State>
-		<_State id="backgroundColor"><Value>rgb(52,76,96)</Value></_State>
+		<_State id="backgroundColor"><Value>rgb(32,48,61)</Value></_State>
 		<_State id="opacity"><Value>1</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
 		<_State id="width"><Value>7</Value></_State>

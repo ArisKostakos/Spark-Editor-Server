@@ -4,9 +4,15 @@
 		<_State id="headerTheme"><Value>left</Value></_State>
 		<_State id="right"><Value>0</Value></_State>
 		<State><Id>headerText</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>headerIcon</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<_State id="backgroundColor"><Value>rgb(62, 88, 112)</Value></_State>
-		<_State id="width"><Value>40%</Value></_State>
-		<_State id="height"><Value>70%</Value></_State>
+		<_State id="width"><Value>44%</Value></_State>
+		<_State id="height"><Value>100%</Value></_State> <!--70% -->
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="gap"><Value>9</Value></_State>
+		<_State id="paddingLeft"><Value>17</Value></_State>
+		<_State id="paddingTop"><Value>3</Value></_State>
 	</_States>
 		
 		
@@ -38,8 +44,9 @@
 					var l_header = me;
 					
 					//full size
-					l_header.set('width','60%');
+					l_header.set('width','56%');
 					l_header.set('height','100%');
+					l_header.set('paddingLeft',20);
 					
 					//to bottom
 					//l_header.setZorder("bottom");
@@ -47,14 +54,18 @@
 					//color
 					l_header.set('backgroundColor','rgb(56, 192, 182)');
 					
-					//Get Header Text
+					//Get Header Text/Icon
 					var l_headerText =  l_header.s('headerText');
+					var l_headerIcon =  l_header.s('headerIcon');
 					
 					//Change font size
 					l_headerText.set('fontSize','36px');
-					l_headerText.set('height','36');
+					l_headerText.set('height','47');
 					//l_headerText.set('textAlign','right');
 					
+					//change icon size
+					l_headerIcon.set('width','27');
+					l_headerIcon.set('height','21');
 					
 					//For Library Scroller bug thing, very hacky code, remove me
 					setTimeout( function() {Display.invalidateLayout();} ,10);
@@ -69,8 +80,9 @@
 					var l_header = me;
 					
 					//full size
-					l_header.set('width','40%');
-					l_header.set('height','70%');
+					l_header.set('width','44%');
+					l_header.set('height','100%'); //70%
+					l_header.set('paddingLeft',17);
 					
 					//to bottom
 					//l_header.setZorder("top");
@@ -78,12 +90,17 @@
 					//color
 					l_header.set('backgroundColor','rgb(62, 88, 112)');
 					
-					//Get Header Text
+					//Get Header Text/Icon
 					var l_headerText =  l_header.s('headerText');
+					var l_headerIcon =  l_header.s('headerIcon');
 					
 					//Change font size
-					l_headerText.set('fontSize','26px');
-					l_headerText.set('height','26');
+					l_headerText.set('fontSize','24px');
+					l_headerText.set('height','27');
+					
+					//change icon size
+					l_headerIcon.set('width','21');
+					l_headerIcon.set('height','16');
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -92,14 +109,29 @@
 	<Form>
 		<Space>
 			<Entities>
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="width"><Value>21</Value></_State>
+						<_State id="height"><Value>16</Value></_State>
+						<_State id="src"><Value>leftHeader_Library</Value></_State>
+						<State><Id>FastConstructor</Id><Type>Dynamic</Type><Value>parent.set('headerIcon',me)</Value></State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState('src', "leftHeader_"+parent.s('headerTitle'));
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
 				<Entity extends="std.display.Text">
 					<_States>
-						<_State id="verticalCenter"><Value>0</Value></_State>
-						<_State id="width"><Value>100%</Value></_State>
-						<_State id="left"><Value>30</Value></_State>
+						<_State id="width"><Value>50%</Value></_State>
 						<!--<_State id="textAlign"><Value>center</Value></_State>-->
-						<_State id="height"><Value>26</Value></_State>
-						<_State id="fontSize"><Value>26px</Value></_State>
+						<_State id="height"><Value>27</Value></_State>
+						<_State id="fontSize"><Value>24px</Value></_State>
 						<_State id="fontWeight"><Value>500</Value></_State>
 						<_State id="fontColor"><Value>white</Value></_State>
 						<_State id="text"><Value>Header</Value></_State>
@@ -111,7 +143,6 @@
 							<_Scripts>
 								<Script>
 									me.setState('text',parent.s('headerTitle'));
-									//parent.set('headerText',me);
 								</Script>
 							</_Scripts>
 						</_Action>

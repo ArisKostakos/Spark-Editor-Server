@@ -88,7 +88,43 @@
 				<State><Id>LevelEditor_gameObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</_States>
 		</_Action>
+		
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Create Ruler');
+				</Script>
+			</_Scripts>
+		</_Action>
 			
+		<Action>
+			<Id>Create Ruler</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_displayObject = me.s('displayObject');
+					
+					if (l_displayObject!=null)
+					{
+						it.stop();
+						
+						//Create Rulers
+						ruler.constructRulers({
+							container: l_displayObject,// reference to DOM element to apply rulers on
+							rulerHeight: 20, // thickness of ruler
+							fontFamily: 'Ubuntu',// font for points
+							fontSize: '11px', 
+							strokeStyle: 'rgb(63,84,96)',
+							lineWidth: 1,
+							enableMouseTracking: true,
+							enableToolTip: true
+						});
+					}
+					
+				</Script>
+			</Scripts>
+		</Action>
+		
 		<Action>
 			<!-- This means, add the flambe level to stage-->
 			<Id>Show Level</Id>
@@ -184,16 +220,43 @@
 							{
 								l_editor.fa('Select');
 								l_selection.set(l_editor, true);
+								
+								//THIS SHOULD BE: Show collection of common behaviors to state explorer
+								//Show Class Editor for selected Instance (For shift clicking it's more complicated.. showing collection of common behaviors instead..)
+								var l_explorerArea = me.s('parentTab').s('Explorer Area');
+								
+								if (l_explorerArea!=null)
+								{
+									//I guess this should now be InstanceEditor... so l_editor itself..
+									//l_editor.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+									l_editor.fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+								}
+								else
+								{
+									Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+								}
 							}
 							else
 							{
 								l_editor.fa('Deselect');
 								l_selection.remove(l_editor);
+								
+								if (l_selection.iterator().hasNext()==false)
+								{
+									//Select Level Editor (state explorer). why not, am I right? or am I white?
+									var l_explorerArea = me.s('parentTab').s('Explorer Area');
+									
+									if (l_explorerArea!=null)
+									{
+										me.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+									}
+									else
+									{
+										Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+									}
+								}
 							}
 						}
-						
-						//Show collection of common behaviors to state explorer
-						//..
 					}
 					else //If i normal-clicked (no shifts, etc)
 					{
@@ -220,24 +283,25 @@
 								l_selection.set(l_editor, true);
 								
 								me.set('Selected Type', l_editor.s('editorType') );
-							}
-							
-							//Show Class Editor for selected Instance (For shift clicking it's more complicated.. showing collection of common behaviors instead..)
-							var l_explorerArea = me.s('parentTab').s('Explorer Area');
-							
-							if (l_explorerArea!=null)
-							{
-								//I guess this should now be InstanceEditor... so l_editor itself..
-								l_editor.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
-							}
-							else
-							{
-								Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+								
+								//Show Class Editor for selected Instance (For shift clicking it's more complicated.. showing collection of common behaviors instead..)
+								var l_explorerArea = me.s('parentTab').s('Explorer Area');
+								
+								if (l_explorerArea!=null)
+								{
+									//I guess this should now be InstanceEditor... so l_editor itself..
+									//l_editor.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+									l_editor.fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+								}
+								else
+								{
+									Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+								}
 							}
 						}
 						else
 						{
-							//Select Level Editor (state explorer)? why not, am I right? or am I white?
+							//Select Level Editor (state explorer). why not, am I right? or am I white?
 							var l_explorerArea = me.s('parentTab').s('Explorer Area');
 							
 							if (l_explorerArea!=null)
@@ -390,6 +454,28 @@
 		</Action>
 		
 		<Action>
+			<Id>Destroy Selection</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_selection = me.s('Selection');
+					
+					var keys = l_selection.keys();
+					while (keys.hasNext())
+					{
+						var w_selectedEditor = keys.next();
+						
+						w_selectedEditor.fa('Destroy');
+					}
+					
+					me.fa('Deselect All');
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
 			<Id>Refresh Selected Controls</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
@@ -482,6 +568,139 @@
 				</Script>
 			</Scripts>
 		</Action>
+				
+		<Action>
+			<Id>Deselect All</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//We'll do this by simulating a null click (for code re-use)
+					me.fa('Clicked', { editor:null, ctrlKey: false, shiftKey: false, altKey: false } );
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<!-- Called from State Explorers, asking to update a live state -->
+			<Id>Live State Changed</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					console.log('stateObject', it.s('stateObject'));
+					console.log('newValue', it.s('newValue'));
+					console.log('editor', it.s('editor'));
+					console.log('openedFromEditor', it.s('openedFromEditor'));
+					console.log('openedFromInstanceEditor', it.s('openedFromInstanceEditor'));
+					
+					console.log('openedFromEditor.type', it.s('openedFromEditor').s('type'));
+					
+					
+					//Typecast newValue
+					if (it.s('stateObject').kind=="Merge")
+					{
+						//If it's a merge, we're fucked.. we can't know the type.. assume string..
+						var l_newCastedValue = it.s('newValue');
+					}
+					else
+					{
+						if (it.s('stateObject').type=='Integer')
+							var l_newCastedValue = parseInt(it.s('newValue'));
+						else if (it.s('stateObject').type=='Decimal')
+							var l_newCastedValue = parseFloat(it.s('newValue'));
+						else if (it.s('stateObject').type=='Boolean')
+							var l_newCastedValue = (it.s('newValue') === 'true')
+						else if (it.s('stateObject').type=='Text')
+							var l_newCastedValue = it.s('newValue');
+						else //Dynamic?
+						{
+							var l_newCastedValue = null;
+							alert('is this it?: ' + it.s('newValue'));
+						}
+					}
+					
+					//If it's a Scene
+					if (it.s('openedFromEditor').s('type')=="Scene")
+					{
+						//Find this sceneEditor(s) (notice, openedFromEditor is a classEditor here)
+						for (f_viewEditor of me.s('View Editors'))
+						{
+							//If this scene matches the one from the state
+							if (it.s('openedFromEditor').s('target_AssetName')==f_viewEditor.s('SceneEditor').s('target_AssetName'))
+							{
+								//I'm not gonna break the for loop, in case the same scene is included in two different views (some kind of split screen game?)
+								
+								//Change value here, willy nilly? (i don't liiike this..)
+								f_viewEditor.s('SceneEditor').s('target_GameObject').set( it.s('stateObject').id, l_newCastedValue);
+								
+								Display.de('updated: ' + it.s('stateObject').id + ' to ' + l_newCastedValue);
+								
+								//I'll come back to this.. (fix updating gameScene states like width,height,background.. the code above is fine)
+							}
+						}
+					}
+					//If it's an Entity
+					else if (it.s('openedFromEditor').s('type')=="Entity")
+					{
+						//If the explorer was called from an instance, not the actual class
+						if (it.s('openedFromInstanceEditor')!=null)
+						{
+							//Loop through selection
+							var l_selection = me.s('Selection');
+							
+							var keys = l_selection.keys();
+							while (keys.hasNext())
+							{
+								//a selected editor (instance editor? i guess)
+								var w_selectedEditor = keys.next();
+								
+								//make sure this editor has the same classEditor as the one we updated the change
+								//actually don't do this, cause we might want to change spaceX of different types of classEditor instances
+								
+								//just willy nilly change shit
+								w_selectedEditor.s('target_GameObject').set( it.s('stateObject').id, l_newCastedValue);
+								
+								//update states map (it is already done for the one linked to the statesExplorer, but not for all the others (for multiple selection)
+								//but as it is, on instances of different classes, this is dangerous.. make sure you fix state explorers to only show common states
+								w_selectedEditor.fa('Update States', {statesArray:[it.s('stateObject').id]} );
+								
+								//refresh bounds and its controls
+								w_selectedEditor.sa('Refresh Bounds And Controls');
+								
+								//IF the state is not objectSpecific, we will need to update all instances for that class, NOT just the selected ones
+								//I'm sure there's a better way for this btw.. although i dont really mind naming the instanceEditors and getting them from here
+								if (it.s('stateObject').objectSpecific!="true")
+								{
+									for (f_instanceEditor of Logic.getAllEntitiesByName( w_selectedEditor.s('name') ) )
+									{
+										if (f_instanceEditor!=null)
+										{
+											//just willy nilly change shit
+											f_instanceEditor.s('target_GameObject').set( it.s('stateObject').id, l_newCastedValue);
+											
+											//Don't have to update states or do anything else, since it's not objectSpecific
+										}
+									}
+								}
+							}
+						}
+						//if it's from the class, not sure what to do.. update ALL instances? do nothing? do this later
+						//else
+						//..
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>stateObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>newValue</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>editor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>openedFromEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>openedFromInstanceEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 	</_Actions>
 		
 	<_Triggers>
@@ -527,9 +746,31 @@
 			<Event>MouseMoved</Event>
 			<Scripts>
 				<Script>
-					//Display.de("Mouse Move");
-					//console.log(me.s('eventObjectMouseMove'));
+				/*
+					Display.de("Mouse Move");
+					console.log(me.s('eventObjectMouseMove'));
 					
+					
+					
+					
+					//Figure out X, Y, etc..
+					var eventObject = me.getState('eventObjectMouseMove');
+					//console.log('on drop eventObject',eventObject);
+					
+					var l_LevelEditorGlobalPos = query(me,'absoluteRect');
+					var localX = eventObject.clientX - l_LevelEditorGlobalPos.left;
+					var localY = eventObject.clientY - l_LevelEditorGlobalPos.top;
+					//Display.error("OnDrop-> X: " + localX + ", Y: " + localY);
+					
+					//Add Camera Offsets and Scaling
+					var l_transformations = me.s('SceneEditor').s('transformations');
+					//Display.error("l_transformations> X: " + l_transformations.x + ", Y: " + l_transformations.y + ", scale: " + l_transformations.scale);
+					localX = (localX - l_transformations.x)/l_transformations.scale;
+					localY = (localY - l_transformations.y)/l_transformations.scale;
+					
+					
+					e('Mouse Coords Output').set('text','x: '+localX+', y: ' + localY);
+				*/
 					if (me.s('eventObjectMouseMove').button==2) //Right click was pressed while moving
 						me.fa("CameraPan");
 				</Script>
@@ -594,23 +835,41 @@
 							else if (l_keyCode==68) //D
 								l_moveX=1;
 						}
+						//Delete
+						else if (l_keyCode==46) //delete key
+						{
+							l_instruction="Delete";
+						}
 						
 						//Instruction found
 						if (l_instruction!=null)
 						{
-							var keys = l_selection.keys();
-							while (keys.hasNext())
+							//The correct way for doing this.. seperates the Selection Action from keybinding
+							//do this for the rest, so it's easier to do grouped clone,etc.. one use case is group cloning by right click context menu
+							if (l_instruction=="Delete")
 							{
-								var w_selectedEditor = keys.next();
-								
-								w_selectedEditor.fa(l_instruction, {moveX: l_moveX, moveY: l_moveY});
-								
-								//if (l_instruction=="MoveBy")
-								//	w_selectedEditor.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+								me.fa('Destroy Selection');
 							}
-							
-							//if (l_instruction=="Clone")
-							//	me.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+							else //the wrong deprecated way..
+							{
+								var keys = l_selection.keys();
+								while (keys.hasNext())
+								{
+									var w_selectedEditor = keys.next();
+									
+									w_selectedEditor.fa(l_instruction, {moveX: l_moveX, moveY: l_moveY});
+									
+									//if (l_instruction=="MoveBy")
+									//	w_selectedEditor.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+								}
+								
+								//If it was clone, deselect clonees (cause the cloned objects will start selected)
+								if (l_instruction=="Clone")
+									me.fa('Clicked', { editor:null, ctrlKey: false, shiftKey: false, altKey: false } );
+								
+								//if (l_instruction=="Clone")
+								//	me.fa('Needs To Export', {exportThis:true} ); //Since the export is done on the user action, not when an entity is changed (for a lil bit of optimization while dragging)
+							}
 						}
 					}
 				]]></Script>

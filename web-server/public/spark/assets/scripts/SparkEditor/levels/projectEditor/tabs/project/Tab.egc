@@ -12,7 +12,7 @@
 					<_States>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
-						<_State id="top"><Value>67</Value></_State>
+						<_State id="top"><Value>0</Value></_State> <!--1,67-->
 						<_State id="gap"><Value>0</Value></_State>
 					</_States>
 				

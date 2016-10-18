@@ -6,6 +6,7 @@
 		<State><Id>parentEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>descriptor</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>tabManager</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<_State id="dropTarget"><Value>true</Value></_State>
 	</_States>
 
 	<Form><Space><Entities>
@@ -13,7 +14,31 @@
 	</Entities></Space></Form>
 
 	<_Triggers>
-
+		<Trigger>
+			<Event>OnDrop</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+						me.s('parentEditor').fa('Add Behavior Complete', { behavior_asset_DBA_array:[l_asset]} );
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+				</Script>
+			</Scripts>
+		</Trigger>
 	</_Triggers>
 
 	<_Actions>
@@ -58,7 +83,31 @@
 					
 					var l_tabManager = me.s('tabManager');
 					
+					//Set instance editor, if any (even if we use the same classExplorer, every time it is 'shown' from x editor, this value will change here.. which is cool)
+					l_tabManager.set('openedFromInstanceEditor', it.s('instanceEditor') );
+					
 					l_tabManager.fa('Update Current Explorer Tab');
+					
+					//My way of making an action state optional (and default to something) is resetting it at the end. It's not bad..
+					it.set('instanceEditor', null);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>instanceEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- Make sure tabs and behaviors match and do changes if they don't -->
+			<Id>Refresh Class Explorer</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_tabManager = me.s('tabManager');
+					
+					l_tabManager.fa('Refresh Explorers');
 				</Script>
 			</Scripts>
 		</Action>

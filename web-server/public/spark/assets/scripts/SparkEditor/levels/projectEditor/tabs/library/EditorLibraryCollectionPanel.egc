@@ -4,8 +4,9 @@
 		<_State id="gap"><Value>0</Value></_State>
 		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>100%</Value></_State> <!-- this keeps it from growing very tall otuside the view.. should really be 100%.. overflow visible lets things outside 500 height to keep showing-->
-		<!--<_State id="overflow"><Value>scroll</Value></_State>-->
-		<_State id="display"><Value>none</Value></_State>
+		<!--<_State id="overflow"><Value>scroll</Value></_State>
+		<_State id="display"><Value>none</Value></_State>-->
+		<_State id="visibility"><Value>hidden</Value></_State>
 		<State><Id>selectedSubCategoryObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>importTypes</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>containerPanel</Id><Type>Dynamic</Type><Value>null</Value></State>
@@ -234,8 +235,12 @@
 	<Form>
 		<Space>
 			<Entities>
+				<!-- Upload Icon  -->
+				<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton"/>
+				
 				<Entity extends="std.display.Scroller">
 					<_States>
+						<_State id="top"><Value>50</Value></_State>
 						<_State id="width"><Value>100%</Value></_State>
 						<_State id="height"><Value>100%</Value></_State>
 					</_States>
@@ -244,9 +249,6 @@
 						<Entity extends="std.display.Div">
 							<_States>
 								<!--<_State id="backgroundColor"><Value>green</Value></_State>
-
-
-
 								<_State id="horizontalGap"><Value>20</Value></_State>
 								<_State id="verticalGap"><Value>20</Value></_State>
 								<_State id="columnAlign"><Value>justifyUsingWidth</Value></_State>-->

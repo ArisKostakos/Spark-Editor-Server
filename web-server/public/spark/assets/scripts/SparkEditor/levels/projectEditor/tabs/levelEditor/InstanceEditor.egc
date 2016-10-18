@@ -23,6 +23,9 @@
 		<State><Id>beingDragged</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>naturalWidth</Id><Type>Decimal</Type><Value>0</Value></State> <!-- actual size, before zoom and/or scaleX,Y transformations -->
 		<State><Id>naturalHeight</Id><Type>Decimal</Type><Value>0</Value></State> <!-- actual size, before zoom and/or scaleX,Y transformations -->
+		<_State id="dropTarget"><Value>true</Value></_State>
+		<State><Id>selectedOnCreation</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>states</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -30,6 +33,11 @@
 			<_Scripts>
 				<Script>
 					me.sa('Get Class Editor');
+					
+					//Trying something out.. Name this editor its class, so we can easily retrieve it from outside ( I don't think it breaks anything, just adds convenience)
+					//Logic.deregisterEntityNameClass(me); //it never had a name.. so commented out i think
+					me.set('name', me.s('target_XML').get("extends"));
+					Logic.registerEntityByName(me);
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -66,16 +74,34 @@
 						
 						var l_target_XML = me.s('target_XML');
 						
-						//Hating this.. figure it out..
-						var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+						//Get Every State (both States and mStates)
+						me.set('states', Logic.xml_getEveryState(l_target_XML, true));
 						
-						l_target_XML_editor.set('extends', l_classEditor.s('target_AssetName')+"_editor");
+						//Hating this.. figure it out..
+						//var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+						
+						//l_target_XML_editor.set('extends', l_classEditor.s('target_AssetName')+"_editor");
 						
 						
 						//l_target_XML.addChild(Logic.xml_createElement("Actions"));
 						
 						
-						var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML_editor));
+						var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML));
+						
+						//Some hacks for editor stuff
+						if (l_target_GameObject.s('physicsEntity')!=null)
+							l_target_GameObject.set('physicsEntity', false);
+						
+						//@FIX ME REALLLYY SOON DUDE!!!!
+						//This ia a terrible way to remove all actions from an instance, so they dont run on editor mode
+						//the meta_enabledInEditor="true" doesn't cut it for me anymore, cause i need to create ALL behaviors cause i might need to override their states in the editor
+						//so i thought, let's kill all its actions dynamically
+						//but a much more currect way should be, destroy all its TRIGGERS dynamically
+						//but right now, it's not easy to remove a gameEntity's triggers. so we remove all its actions (including constructor) instead
+						//this will also cause a warning 'cannot find constructor action' for all instances.. which sucks..
+						//this is a new low.. fix me!
+						console.log("NOTICE ME SENPAI!",l_target_GameObject);
+						l_target_GameObject.possibleActionSet = new StringMap(); //this is it.. this is the line..
 						
 						//Store this piece of shit somewhere?
 						//l_target_XML_editor
@@ -110,11 +136,31 @@
 					var l_scaleX=l_target_GameObject.s('scaleX'); //I get this straight from what has been given in xml
 					var l_scaleY=l_target_GameObject.s('scaleY'); //I get this straight from what has been given in xml
 					
-					//var l_spaceWidth=query(l_target_GameObject,'realWidth'); //I take this from quering the actual object
-					//var l_spaceHeight=query(l_target_GameObject,'realHeight'); //I take this from quering the actual object
+					//simple exception for spriter
+					//INSTEAD of doing this, make a new nice query function for FlambeEntity2D that returns the right size for every type..
+					if (l_target_GameObject.s('2DmeshType')=='Spriter')
+					{
+						var l_spaceWidth=query(l_target_GameObject,'boundsWidth'); //I take this from quering the actual object
+						var l_spaceHeight=query(l_target_GameObject,'boundsHeight'); //I take this from quering the actual object
+						
+						Display.de('query boundsX: ' + query(l_target_GameObject,'boundsX'));
+						Display.de('query boundsY: ' + query(l_target_GameObject,'boundsY'));
+						
+						l_spaceX+=query(l_target_GameObject,'boundsX');
+						l_spaceY+=query(l_target_GameObject,'boundsY');
+					}
+					else
+					{
+						var l_spaceWidth=query(l_target_GameObject,'realWidth')*l_scaleX; //I take this from quering the actual object
+						var l_spaceHeight=query(l_target_GameObject,'realHeight')*l_scaleY; //I take this from quering the actual object
+					}
 					
-					var l_spaceWidth=query(l_target_GameObject,'boundsWidth'); //I take this from quering the actual object
-					var l_spaceHeight=query(l_target_GameObject,'boundsHeight'); //I take this from quering the actual object
+					/*
+					Display.de('boundsWidth: ' + query(l_target_GameObject,'boundsWidth'));
+					Display.de('boundsHeight: ' + query(l_target_GameObject,'boundsHeight'));
+					Display.de('realWidth: ' + query(l_target_GameObject,'realWidth'));
+					Display.de('realHeight: ' + query(l_target_GameObject,'realHeight'));
+					*/
 					
 					//Save Natural Size
 					var l_naturalWidth = me.set('naturalWidth', l_spaceWidth/l_scaleX);
@@ -124,15 +170,25 @@
 					//var l_spaceHeight=l_target_GameObject.s('boundsRect').height; //I take this from the feedback state the object returns
 					
 					//Flambe uses centered anchor, dom uses top-left
-					l_spaceX-=l_naturalWidth*l_scaleX/2;
-					l_spaceY-=l_naturalHeight*l_scaleY/2;
+					if (l_target_GameObject.s('2DmeshType')!='Spriter') //spriter is also top-left because its width,height are 0
+					{
+						l_spaceX-=l_naturalWidth*l_scaleX/2;
+						l_spaceY-=l_naturalHeight*l_scaleY/2;
+					}
 					
 					me.set('top', l_spaceY);
 					me.set('left', l_spaceX);
-					me.set('width', Std.string(l_naturalWidth*l_scaleX));
-					me.set('height', Std.string(l_naturalHeight*l_scaleY));
+					me.set('width', Std.string(l_spaceWidth));
+					me.set('height', Std.string(l_spaceHeight));
 					var l_rotation_transform = "rotate("+Std.string(l_target_GameObject.s('rotation'))+"deg)";
 					me.set('transform', l_rotation_transform);
+					
+					//Select by simulating click
+					if (me.s('selectedOnCreation'))
+					{
+						me.s('LevelEditor').fa('Clicked', { editor:me, ctrlKey: false, shiftKey: true, altKey: false } );
+						me.set('selectedOnCreation', false); //this selectedOnCreation thing is a big hack.. must reset it cause i dont only use this action on instance creation anymore
+					}
 				</Script>
 			</Scripts>
 		</Action>
@@ -152,6 +208,8 @@
 							var l_target_XML = me.s('target_XML');
 							var l_target_GameObject = me.s('target_GameObject');
 							
+							//delete this
+							/*
 							//Update everything
 							Logic.xml_entity_updateMState(l_target_XML, { id:"spaceX", value: Std.string(l_target_GameObject.s('spaceX')) }, true);
 							Logic.xml_entity_updateMState(l_target_XML, { id:"spaceY", value: Std.string(l_target_GameObject.s('spaceY')) }, true);
@@ -162,7 +220,29 @@
 								Logic.xml_entity_updateMState(l_target_XML, { id:"scaleY", value: Std.string(l_target_GameObject.s('scaleY')) }, true);
 							//if (l_target_GameObject.s('rotation')!=0)
 								Logic.xml_entity_updateMState(l_target_XML, { id:"rotation", value: Std.string(l_target_GameObject.s('rotation')) }, true);
+							//end of delete this
+							*/
+							
+							console.log('exporting an instance (states)',me.s('states'));
+							
+							//NEW way
+							//Redo States (for both main and inside behavior Extends)
+							Logic.xml_entity_removeNode(l_target_XML, "_States");
+							
+							var iterator = me.s('states').iterator();
+							while (iterator.hasNext())
+							{
+								var f_state = iterator.next();
+								
+								if (f_state.kind=="Merge")
+									Logic.xml_entity_addMState(l_target_XML, f_state, true);
+								else
+									Logic.xml_entity_addState(l_target_XML, f_state, true);
+							}
+							
 						
+							console.log('final xml',l_target_XML);
+							
 							//Reset Flag
 							me.set('exportThis', false);
 						}
@@ -236,6 +316,19 @@
 				</Script>
 			</Scripts>
 		</Action>
+		
+		<Action>
+			<Id>Refresh Bounds And Controls</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.sa('Get Bounds');
+					me.sa('Refresh Controls');
+					
+					it.stop();
+				</Script>
+			</Scripts>
+		</Action>
 				
 		<Action>
 			<Id>Hide Controls</Id>
@@ -286,8 +379,8 @@
 					me.s('target_GameObject').addToState('spaceX',l_movementX/l_transformations.scale);
 					me.s('target_GameObject').addToState('spaceY',l_movementY/l_transformations.scale);
 					
-					//Correct way.. But not as optimized.. will run a lot during dragging
-					me.fa('Needs To Export', {exportThis:true} );
+					//Update States And Mark To Export
+					me.fa('Update States', {statesArray:['spaceX','spaceY']} );
 				</Script>
 			</Scripts>
 			<States>
@@ -319,8 +412,8 @@
 					l_controls.set('transform', l_transform);
 					me.s('target_GameObject').set('rotation',l_angles);
 					
-					//Correct way.. But not as optimized.. will run a lot during dragging
-					me.fa('Needs To Export', {exportThis:true} );
+					//Update States And Mark To Export
+					me.fa('Update States', {statesArray:['rotation']} );
 				</Script>
 			</Scripts>
 			<States>
@@ -342,6 +435,9 @@
 					//Make sure the XML is up to date, before cloning it
 					me.fa('Export XML');
 					
+					//Make sure my Class is up to date, before cloning an instance
+					me.s('ClassEditor').fa('Export XML');
+					console.log('cloning export xml: ' + me.s('target_XML') );
 					//Clone new Xml
 					var l_newXml = Logic.xml_clone(me.s('target_XML'));
 					
@@ -361,6 +457,7 @@
 					f_instanceEditor.set('SceneEditor',me.s('SceneEditor'));
 					f_instanceEditor.set('parentEditor',me.s('parentEditor'));
 					f_instanceEditor.set('LevelEditor',me.s('LevelEditor'));
+					f_instanceEditor.set('selectedOnCreation',true);
 					me.s('SceneEditor').s('instanceEditors').push(f_instanceEditor); //careful of z-order here.. do an insert instead, +1 on this editor's z
 					f_instanceEditor.fa('Import From Xml',{importXml: l_newXml});
 					me.s('SceneEditor').s('sceneBoundsObject').addChild(f_instanceEditor);
@@ -374,6 +471,8 @@
 				<State><Id>moveY</Id><Type>Decimal</Type><Value>0</Value></State>
 			</States>
 		</Action>
+		
+		
 		
 		<Action>
 			<Id>ScaleBy</Id>
@@ -587,8 +686,8 @@
 					}
 					
 					
-					//Correct way.. But not as optimized.. will run a lot during dragging
-					me.fa('Needs To Export', {exportThis:true} );
+					//Update States And Mark To Export
+					me.fa('Update States', {statesArray:['spaceX', 'spaceY', 'scaleX', 'scaleY']} );
 				</Script>
 			</Scripts>
 			<States>
@@ -640,6 +739,10 @@
 							me.set('pointerEvents','none');
 							//me.set('display','none');
 						}
+						else if (cb_Arg1.type=="delete")
+						{
+							me.s('LevelEditor').fa('Destroy Selection');
+						}
 					}/*
 					else
 					{
@@ -650,6 +753,110 @@
 			<States>
 				<State><Id>cb_result</Id><Type>Text</Type><Value>Undefined</Value></State>
 				<State><Id>cb_Arg1</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- Removes this Instance from the scene -->
+			<Id>Destroy</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//@TODO, check if we also need to remove the CLASS (if no other instances are found, both in all scenes and events..)
+					//even if no other instances are found, maybe ASK user if he wants to keep the class anyway?
+					
+					//For now, it just removes the instance
+					
+					//First, remove all instances from Level Editor
+					
+					me.remove(); //this
+					me.s('SceneEditor').s('target_GameObject').removeChild(me.s('target_GameObject')); //actual instance
+					//controls will be removed by just deselect it (which happens on level editor)
+					
+					
+					//Then make sure next time we export this scene, this instance is not there
+					
+					//we need to remove ourselves from an ARRAY (not hash), so..
+					var l_index = me.s('SceneEditor').s('instanceEditors').indexOf(me);
+					me.s('SceneEditor').s('instanceEditors').splice(l_index, 1);
+					
+					//Mark Scene to be exported (not me, i'll be gone..)
+					me.s('SceneEditor').fa('Needs To Export', {exportThis:true});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<!-- This opens the state explorer for this Object (Instance) -->
+			<Id>Open Explorer Tab</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_explorerContainer = it.s('explorerContainer');
+					
+					//Remove All Children
+					l_explorerContainer.removeChildren(); //export opportunity here.. but whatevs..
+					
+					var l_classExplorer = me.s('ClassEditor').s('classExplorer');
+					
+					l_explorerContainer.addChild( l_classExplorer );
+					
+					l_classExplorer.fa('Show', {instanceEditor:me} ); //Show class explorer, with me as arguement (objectView)
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>explorerContainer</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- This action updates given states then refreshes states Explorer (assuming it's selected,
+				and (right now) it's the only one selected) Also, marks needs to export
+				This one is called EITHER from a gadget of this instance editor, OR
+				from LevelEditor (initiated from a StatesExplorer Change).-->
+			<Id>Update States</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_statesArray = it.s('statesArray');
+					var l_states = me.s('states');
+					
+					
+					for (f_stateName of l_statesArray)
+					{
+						if (l_states.exists(f_stateName))
+							l_states.get(f_stateName).value=me.s('target_GameObject').s(f_stateName);
+						else
+						{
+							//Get State from my class
+							var l_state =  me.s('ClassEditor').s('states').get(f_stateName);
+							
+							//If it's not object specific, states Explorer will have taken care of it
+							if (l_state.objectSpecific=="true")
+								l_states.set(f_stateName, { id:f_stateName, value: me.s('target_GameObject').s(f_stateName), kind: "Merge"});
+						}
+					}
+					
+					me.fa('Needs To Export', {exportThis:true} );
+					
+					//Update StatesExplorer
+					var l_classExplorer = me.s('ClassEditor').s('classExplorer');
+					
+					//if this explorer is currently visible
+					if (l_classExplorer.parentEntity!=null)
+						//if this explorer is displaying this instance (because multiple view have not been implemented yet)
+						if (l_classExplorer.s('tabManager').s('openedFromInstanceEditor')==me)
+							l_classExplorer.s('tabManager').fa('Update Current Explorer Tab'); //i think this is the reason that ALL states are refreshed in states explorer isntead of the one we want. fix me
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>statesArray</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
 	</_Actions>
@@ -718,6 +925,90 @@
 				</Script>
 			</Scripts>
 		</Trigger>
+		
+		
+		<Trigger>
+			<Event>OnDragEnter</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+					{
+						me.set('backgroundColor','yellow');
+						me.set('opacity',0.3);
+					}
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>OnDrop</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+						me.s('ClassEditor').fa('Add Behavior Complete', { behavior_asset_DBA_array:[l_asset]} );
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+						
+					me.set('backgroundColor','transparent');
+					me.set('opacity',0);
+				</Script>
+			</Scripts>
+		</Trigger>
+		<Trigger>
+			<Event>OnDragLeave</Event>
+			<Scripts>
+				<Script>
+					var l_dragEvent = e('Drag And Drop Manager').s('drag event');
+					
+					if (l_dragEvent==null)
+					{
+						Display.log('drag event null, quitting onDrop');
+						return;
+					}
+					
+					//Get Drop Event Data
+					var l_asset = l_dragEvent.DBA;
+					var l_assetLibrary = l_dragEvent.LibraryDBA;
+					
+					//Decide what to tell the Class Editor
+					if (l_asset.componentType=="Behavior")
+					{
+						me.set('backgroundColor','transparent');
+						me.set('opacity',0);
+					}
+					else
+						Display.warn("Dropped an unknown type: " + l_asset.componentType);
+				</Script>
+			</Scripts>
+		</Trigger>
 				
 		<Trigger>
 			<Event>MouseRightClick</Event>
@@ -742,6 +1033,7 @@
 					createContextNode("Step One Down","oneDown",mainList);
 					createContextNode("Set To Bottom","bottom",mainList);
 					createContextNode("Lock","lock",mainList);
+					createContextNode("Delete","delete",mainList);
 					
 					//Open Popup [CHOOSE AC]
 					e('PopUp Manager').forceAction('Open PopUp',{popupName:"SparkEditor.levels.common.popupManager.entities.contextMenu.ContextMenuPopUpNoArrow",

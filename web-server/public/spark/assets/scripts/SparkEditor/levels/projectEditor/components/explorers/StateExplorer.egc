@@ -7,6 +7,7 @@
 		<State><Id>stateId</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>stateType</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>inputObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>stateObject</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- i only use this to reference it's metas, nothing else -->
 	</_States>
 
 	<Form><Space><Entities>
@@ -29,7 +30,7 @@
 					if (it.s('createDivider'))
 					{
 						var l_divider = Logic.create('std.display.Div');
-						l_divider.set('width', '2');
+						l_divider.set('width', '1px'); //2
 						l_divider.set('height', '65%');
 						l_divider.set('backgroundColor', 'rgb(23,41,56)');
 						
@@ -61,6 +62,11 @@
 					l_text.set('textAlign','center');
 					l_text.set('text',l_stateObject.id);
 					
+					if (l_stateObject.live=="true")
+						l_text.set('fontColor','green');
+					else if (l_stateObject.objectSpecific=="true")
+						l_text.set('fontColor','red');
+					
 					l_stateContainer.addChild(l_text);
 					
 					//Input
@@ -70,6 +76,9 @@
 					l_input.set('text',l_stateObject.value);
 					me.set('inputObject', l_input);
 					l_stateContainer.addChild(l_input);
+					
+					//Store stateObject for reference
+					me.set('stateObject', l_stateObject);
 				</Script>
 			</Scripts>
 			<States>

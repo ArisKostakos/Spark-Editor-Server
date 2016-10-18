@@ -4,8 +4,8 @@
 		<_State id="name"><Value>View Stage Area</Value></_State>
 		<_State id="layout"><Value>Basic</Value></_State>
 		<_State id="top"><Value>164</Value></_State>
-		<_State id="left"><Value>371</Value></_State>
-		<_State id="right"><Value>;0</Value></_State>
-		<_State id="bottom"><Value>;25</Value></_State>
+		<_State id="left"><Value>;371+13</Value></_State>
+		<_State id="right"><Value>0</Value></_State>
+		<_State id="bottom"><Value>30</Value></_State>
 	</_States>
 </Entity>

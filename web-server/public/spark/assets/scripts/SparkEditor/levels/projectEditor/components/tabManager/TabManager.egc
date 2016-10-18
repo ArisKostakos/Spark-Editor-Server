@@ -41,6 +41,14 @@
 					
 					me.setState('headerContainer',headerContainer);
 					
+					/*
+					//Set Up Divider
+					var tabDivider = Logic.create('std.display.Div');
+					tabDivider.setState('backgroundColor','green');
+					tabDivider.setState('width','100%');
+					tabDivider.setState('height','3');
+					*/
+					
 					//Set Up tabContainer
 					var tabContainer = Logic.create('SparkEditor.levels.projectEditor.components.tabManager.TabContainer');
 					tabContainer.setState('backgroundColor',me.s('containerColor'));
@@ -51,11 +59,13 @@
 					if (me.s('headersBelow')==false)
 					{
 						me.addChild(headerContainer);
+						//me.addChild(tabDivider);
 						me.addChild(tabContainer);
 					}
 					else
 					{
 						me.addChild(tabContainer);
+						//me.addChild(tabDivider);
 						me.addChild(headerContainer);
 					}
 				</Script>

@@ -80,22 +80,55 @@
 				<Script>
 					var l_editor = me.s('statesExplorer').s('parentTab').s('editor');
 					var l_openedFromEditor = me.s('statesExplorer').s('parentTab').s('openedFromEditor');
+					var l_openedFromInstanceEditor = me.s('statesExplorer').s('parentTab').s('openedFromInstanceEditor');
 					var l_stateExplorer = me.s('stateExplorer');
-					
+					var l_stateObject = l_stateExplorer.s('stateObject');
 					//If I am looking this explorer through a parent editor, the change happens in the parentEditor's SML, so it will always be a merge state (overwritting the original full(or merged) state in SML)
 					if (l_editor!=l_openedFromEditor)
 					{
-						if (l_openedFromEditor.s('states').exists(l_stateExplorer.s('stateId')))
-							l_openedFromEditor.s('states').get(l_stateExplorer.s('stateId')).value=me.s('text');
+						//In this case, we're changing or creating an mState for a behavior of a class (not instance).
+						if (l_openedFromInstanceEditor==null || l_stateObject.objectSpecific!="true")
+						{
+							if (l_openedFromEditor.s('states').exists(l_stateExplorer.s('stateId')))
+								l_openedFromEditor.s('states').get(l_stateExplorer.s('stateId')).value=me.s('text');
+							else
+								l_openedFromEditor.s('states').set(l_stateExplorer.s('stateId'), { id:l_stateExplorer.s('stateId'), value: me.getState('text'), kind: "Merge", visibleOnEditor:l_stateObject.visibleOnEditor, objectSpecific:l_stateObject.objectSpecific, live:l_stateObject.live, behaviorName: l_editor.s('target_AssetName') });
+							
+							l_openedFromEditor.fa('Needs To Export', {exportThis:true} );
+						}
+						//In this case, we're changing or creating an mState for an Instance
 						else
-							l_openedFromEditor.s('states').set(l_stateExplorer.s('stateId'), { id:l_stateExplorer.s('stateId'), value: me.getState('text'), kind: "Merge", behaviorName: l_editor.s('target_AssetName') });
-						
-						l_openedFromEditor.fa('Needs To Export', {exportThis:true} );
+						{
+							if (l_openedFromInstanceEditor.s('states').exists(l_stateExplorer.s('stateId')))
+								l_openedFromInstanceEditor.s('states').get(l_stateExplorer.s('stateId')).value=me.s('text');
+							else
+								l_openedFromInstanceEditor.s('states').set(l_stateExplorer.s('stateId'), { id:l_stateExplorer.s('stateId'), value: me.getState('text'), kind: "Merge", visibleOnEditor:l_stateObject.visibleOnEditor, objectSpecific:l_stateObject.objectSpecific, live:l_stateObject.live});
+							
+							l_openedFromInstanceEditor.fa('Needs To Export', {exportThis:true} );
+						}
 					}
+					//in this case, i guess it's a root behavior.. and it could mostly be a State, but could also me an mState
 					else
 					{
 						l_editor.s('states').get(l_stateExplorer.s('stateId')).value=me.s('text');
 						l_editor.fa('Needs To Export', {exportThis:true} );
+					}
+					
+					//Whatever the case, if the state is live, notify the level editor
+					if (l_stateObject.live=="true") //DEPRECATING LIVE.. everything is live... GETTING live back.. i like it afterall
+					{
+						//Get the Current Main Tab (could be a level editor, code editor, etc, or nothing!)
+						var mainActiveTabName = e('Main Tab Manager').s('activeTabName');
+						
+						if (mainActiveTabName!="None")
+						{
+							//Get the Tab
+							var mainActiveTab = e('Main Tab Manager').s('tabs').get(mainActiveTabName);
+							
+							//Notify it (Warning, I'm now focusing on level editor tabs.. so this action needs to be implemented on other types of tabs (eg code editor)
+							if (mainActiveTab.s('levelEditor')!=null)
+								mainActiveTab.s('levelEditor').fa('Live State Changed', { stateObject:l_stateObject, newValue:me.getState('text'), editor:l_editor, openedFromEditor:l_openedFromEditor, openedFromInstanceEditor:l_openedFromInstanceEditor });
+						}
 					}
 				</Script>
 			</Scripts>

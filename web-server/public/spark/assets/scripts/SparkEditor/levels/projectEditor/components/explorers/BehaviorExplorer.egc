@@ -74,6 +74,9 @@
 					//Letting it know that my editor called it
 					l_tab.set('openedFromEditor', me.s('parentEditor'));
 					
+					//set instance editor, being called from, if any
+					l_tab.set('openedFromInstanceEditor', null); //behaviorExplorer will NEVER be called from an instance editor.. so null
+					
 					l_tab.fa('Update States');
 				</Script>
 			</Scripts>

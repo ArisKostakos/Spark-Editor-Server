@@ -47,6 +47,16 @@
 					l_transformations.x=zoomX;
 					l_transformations.y=zoomY;
 					l_transformations.scale=zoomScale;
+					
+					//Refresh Level's selected controls
+					me.s('SceneEditor').s('LevelEditor').sa('Refresh Selected Controls');
+					
+					
+					Display.de('my zoomX is: ' + zoomX);
+					Display.de('my zoomScale is: ' + zoomScale);
+					//Refresh ruler (setPos and setScale are EXTREMELY expensive.. ruler must be reworked (size should be just the screen, not 20000 or whatever it is)
+					ruler.setPos({x:zoomX-20, y:zoomY-20}); //in case you're wondering, the 20 magic number is just the ruler width height.
+					ruler.setScale(1/zoomScale);
 				</Script>
 			</Scripts>
 		</Action>

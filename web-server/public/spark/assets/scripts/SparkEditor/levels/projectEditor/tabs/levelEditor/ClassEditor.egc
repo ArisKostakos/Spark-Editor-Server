@@ -44,29 +44,48 @@
 					
 					
 					//Create the editor version of the XML (it filters out non-editor behaviors)
-					var l_target_XML_editor = Logic.xml_clone(me.s('target_XML'));
+					//var l_target_XML_editor = Logic.xml_clone(me.s('target_XML'));
 					
-					Logic.xml_entity_removeNode(l_target_XML_editor, "Extends");
+					//Logic.xml_entity_removeNode(l_target_XML_editor, "Extends");
 					
 					
-					//The following prepares the xml_editor to only add behaviors enabled in the editor.. The reason i do this from xml and not loop
+					//DEPRECATED The following prepares the xml_editor to only add behaviors enabled in the editor.. The reason i do this from xml and not loop
 					//through behavior editors is because behaviorEditors for this ClassEditor has not been set up yet (it happens later on constructor for some reason..)
 					
 					//Get Behavior from xml (of forkedClass)
 					var l_behaviors = Logic.xml_entity_getExtendsEntities(me.s('target_XML'));
 					
-					//Find their Editors and add them here
+					//Loop through all behaviors from extends
 					for (f_behavior of l_behaviors)
 					{
 						console.warn("Found a behaviorExtend thing: ", f_behavior);
 						
+						/* FINALLY DEPRECATED
 						//Get the BehaviorEditor
 						var f_behaviorEditor = e('Project Editor').s('behaviorEditors').get(f_behavior.ext);
 						
 						//Ask the Behavior Editor if it should be enabled in the editor
-						if (f_behaviorEditor.s('enabledInEditor')==true)
+						//if (f_behaviorEditor.s('enabledInEditor')==true)
+						//{
+							//Originally I only added the extend if its enabled in the editor.. like this:
 							Logic.xml_entity_addExtend(l_target_XML_editor, {ext:f_behavior.ext });  //And add it if it is.. //This is wrong.. doesn't include the _states of the behaviorXML inside Extends
 							
+							//BUT, i still need to create the _states of all behaviors, otherwise it will crash if a add an mState of a nonEnabled behavior
+							
+							//so I keep all behaviors, but destroy their actions and triggers (only keep _States)  (do i keep Form/Entities? hmhm wow.. maybe)
+							
+							//anyway, destroy triggers/actions..
+							
+							if (f_behaviorEditor.s('enabledInEditor')==false)
+							{
+								
+							}
+							
+							
+							//and now, sprite doesnt really need the meta flag.. maybe i dont need the meta flag at all? maybe... very possible..
+						//}
+						*/
+						
 						//Add Behavior Extend States to our states
 						var l_behaviorExtendStates = Logic.xml_getEveryState(f_behavior.xml, true);
 						
@@ -87,9 +106,11 @@
 					
 					
 					//I AM NOT SURE I LIKE THIS.. at all.. it's gonne be hard to maintain..
-					Assets.cacheScript(me.s('target_AssetName')+"_editor", Logic.xmlToString(l_target_XML_editor));
+					//Assets.cacheScript(me.s('target_AssetName')+"_editor", Logic.xmlToString(l_target_XML_editor));
 					
-					me.set('target_XML_editor', l_target_XML_editor); //not sure if we'll ever need this thing..
+					//me.set('target_XML_editor', l_target_XML_editor); //not sure if we'll ever need this thing..
+					
+					
 					
 					
 					me.set('behaviorEditors', new StringMap() );
@@ -99,6 +120,8 @@
 					//Get Behavior Names from xml (of forkedClass)
 					var l_behaviorNames = Logic.xml_entity_getExtendsEntityNames(me.s('target_XML'));
 					
+					var l_unloadedBehaviors = [];
+					
 					//Find their Editors and add them here
 					for (f_behaviorName of l_behaviorNames)
 					{
@@ -107,9 +130,11 @@
 						if (f_behaviorEditor!=null)
 							me.s('behaviorEditors').set(f_behaviorName, f_behaviorEditor);
 						else
-							Display.warn("I found a behavior that does not have an editor. It must not be a real behavior.. But how did this happen?");
+						{
+							l_unloadedBehaviors.push(f_behaviorName);
+							Display.warn("I found a behavior ["+f_behaviorName+"] that does not have an editor. I will add it to the module later on. no probs.");
+						}
 					}
-					
 					
 					//Create the Explorer
 					
@@ -122,11 +147,27 @@
 					
 					//Store it..
 					me.set('classExplorer', l_classExplorer);
+					
+					//So.. in case some behaviors were needed for this classEditor and were not added in the level (already happens with the Scene Physics behavior,because reasons)
+					//we will do some defensive programming here and add them now
+					var l_unloadedBehaviorDBAs = [];
+					
+					for (f_unloadedBehavior of l_unloadedBehaviors)
+					{
+						if (e('Project Editor').s('Assets_Hash').get(f_unloadedBehavior)!=null)
+							l_unloadedBehaviorDBAs.push(e('Project Editor').s('Assets_Hash').get(f_unloadedBehavior));
+						else
+							Display.warn("Probs.. Behavior [" + f_unloadedBehavior + "] was not even hashed! Giving up on that behavior..");
+					}
+					
+					if (l_unloadedBehaviorDBAs.length>0)
+						me.fa('Add Behavior Complete', { behavior_asset_DBA_array: l_unloadedBehaviorDBAs} );
 				</Script>
 			</_Scripts>
 		</_Action>
 			
 		<Action>
+			<!-- I should make this (private) and change the name. it should be called from the new Add Behavior Below -->
 			<Id>Add Behavior</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
@@ -152,7 +193,7 @@
 						me.s('projectChild').fa('Add Child', { childId:l_DBA.name, childTitle:l_DBA.title, childType:"Behavior", child_DBA:l_DBA, treeChildUrl:'SparkEditor.levels.projectEditor.tabs.project.projectTree.BehaviorChild' } );
 						
 						//Update Explorer
-						//..
+						me.s('classExplorer').fa('Refresh Class Explorer');
 					}
 					else
 					{
@@ -162,6 +203,74 @@
 			</Scripts>
 			<States>
 				<State><Id>behaviorEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<!-- By complete, I mean, this handles everything, from loading the behavior, adding assets to modules, etc
+				This baby now supports adding multiple behaviors at once-->
+			<Id>Add Behavior Complete</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					var l_behavior_asset_DBA_array = it.s('behavior_asset_DBA_array');
+					
+					//var l_behavior_asset_DBA = it.s('behavior_asset_DBA');
+					//alert('Adding behavior: ' + l_behavior_asset_DBA.name);
+					var l_moduleUsed=null; //any of the modules that uses this class. doesn't matter which
+					//Things to do now:
+					//a) Find in which modules this class is being used
+					
+					//Get updated target_DBA
+					e('Project Editor').s('Assets_DB').findOne({ name: me.s('target_DBA').name }, function (err, doc) {
+						var l_updatedTarget_DBA=doc;
+						
+						for (f_moduleName of l_updatedTarget_DBA._inModules)
+						{
+							console.log('used in module: ' + f_moduleName);
+							//b) for each module that uses this class, we need to make sure this behavior is added in it
+							
+							//and do this for each behavior we need to add
+							//hopefully this action can be run a lot of times (not too much async shit happens there.. hopefully)
+							for (f_behavior_asset_DBA of l_behavior_asset_DBA_array)
+								e('Project Editor').fa('Add Asset To Module', { Asset_DBA: f_behavior_asset_DBA, ModuleName: f_moduleName, insertDBA: false } );
+							
+							l_moduleUsed = f_moduleName;
+						}
+						
+							//Reload Module
+							ModuleManager.successSignal.connect(function () {
+								//Proceed
+								
+									//This happens later. We wait for behavior editor to be created in Create Dependancies
+									var _onCreateDependancies = function ()
+									{
+										//at this point, our new behavior is added to the module (if nesseccery), save command has been issued.. we're all good
+										
+										//Get newly Created Behavior Editor (or even old created behavior editor.. i guess, if it was already in the level..)
+										
+										for (f_behavior_asset_DBA of l_behavior_asset_DBA_array)
+										{
+											var l_behaviorEditor = e('Project Editor').s('behaviorEditors').get(f_behavior_asset_DBA.name);
+											
+											//So now we just add behaviorEditor
+											me.fa('Add Behavior', {behaviorEditor: l_behaviorEditor} );
+											//alert('Added behavior: ' + f_behavior_asset_DBA.name);
+										}
+									}
+								
+								
+								//Create Behavior Editor for that module
+								e('Project Editor').fa('Create Dependancies For',{ moduleName:l_moduleUsed, DBA:null, createClassObjects:true, jsCb:_onCreateDependancies } );
+							}).once();
+						//Reload a module that uses this class (to load our behavior asset and create our BehaviorEditor)
+						ModuleManager.loadModule(l_moduleUsed);
+					});
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>behavior_asset_DBA_array</Id><Type>Dynamic</Type><Value>null</Value></State>
 			</States>
 		</Action>
 		
@@ -293,6 +402,9 @@
 			<Scripts>
 				<Script>
 					//forced
+					
+					//This is a pure js thing to focus the convas (so it's ready to accept keyboard input when the preview game plays)
+					document.getElementById("content-canvas").focus();
 					
 					//So.. I haven't linked the classEditor to its runTab at all.. we might wanna do that (not for caching, but for other purposes..)
 					
@@ -435,7 +547,6 @@
 								else
 									Logic.xml_entity_addState(l_xml, f_state, true);
 							}
-							
 							
 							//Ready.. Cache it (save command happens in here as well)
 							e('Project Editor').fa('Update Asset Content', { DBA:me.s('target_DBA'), content:Logic.xmlToString(l_target_XML)} );

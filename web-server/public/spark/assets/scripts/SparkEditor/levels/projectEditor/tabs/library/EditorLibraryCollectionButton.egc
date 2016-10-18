@@ -7,15 +7,15 @@
 		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>100%</Value></_State> <!--100%-->
 		<_State id="gap"><Value>4</Value></_State>
-		<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>
+		<!--<_State id="backgroundColor"><Value>rgb(33,48,61)</Value></_State>-->
 		<_State id="border"><Value>0px</Value></_State>
 		<State><Id>buttonText</Id><Type>Text</Type><Value>Untitled</Value></State>
 		<State><Id>imageName</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>normalTextColor</Id><Type>Text</Type><Value>white</Value></State>
 		<State><Id>selectedTextColor</Id><Type>Text</Type><Value>red</Value></State>
 		<State><Id>selectedImageSuffix</Id><Type>Text</Type><Value>_selected</Value></State>
-		<State><Id>imageWidth</Id><Type>Text</Type><Value>50</Value></State>
-		<State><Id>imageHeight</Id><Type>Text</Type><Value>50</Value></State>
+		<State><Id>imageWidth</Id><Type>Text</Type><Value>63</Value></State>
+		<State><Id>imageHeight</Id><Type>Text</Type><Value>63</Value></State>
 		<State><Id>imageObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>textObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
@@ -35,9 +35,9 @@
 				<!-- Text -->
 				<Entity extends="std.display.Text"><_States>
 					<_State id="width"><Value>100%</Value></_State>
-					<_State id="height"><Value>15</Value></_State>
+					<_State id="height"><Value>18</Value></_State>
 					<_State id="fontFamily"><Value>'Ubuntu', sans-serif</Value></_State>
-					<_State id="fontSize"><Value>14px</Value></_State>
+					<_State id="fontSize"><Value>17px</Value></_State>
 					<_State id="fontWeight"><Value>300</Value></_State>
 					<_State id="textAlign"><Value>center</Value></_State>
 					</_States><_Actions><_Action id="Constructor"><_Scripts><Script>

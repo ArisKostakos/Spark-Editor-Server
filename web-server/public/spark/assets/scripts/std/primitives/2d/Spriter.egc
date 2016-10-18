@@ -5,7 +5,7 @@
 		<_State id="2DmeshType"><Value>Spriter</Value></_State>
 		<State><Id>2DMeshSpriterForm</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>Atlas Folder</Id><Type>Text</Type><Value>Undefined</Value></State>
-		<State><Id>Init Animation</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Animation</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>Animation Speed</Id><Type>Decimal</Type><Value>1</Value></State>
 		<State><Id>obj_player</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>

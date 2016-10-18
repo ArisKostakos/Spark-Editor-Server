@@ -6,8 +6,10 @@
 				<Script>
 					if (me.s('isPreview')==false) //If in release mode, create the active space
 					{
-						for (child of me.getChildren())
+						//for (child of me.getChildren()) DOES NOT WORK ON IE
+						for (child in me.getChildren()) //WORKS ON IE BUT I DONT LIKE IT
 						{
+							child = me.getChildren()[child]; //WORKS ON IE BUT I DONT LIKE IT
 							if (child.getState('name')==me.getState('initSpaceName'))
 							{
 								if (child.getState('displayType') == "Space")
@@ -161,6 +163,30 @@
 					Logic.levelManager.currentLevel.get(l_runSlot).fa('Refresh Cameras');
 				</Script>
 			</Scripts>
+		</Action>
+		
+		<Action>
+			<!-- Gets Current Level Game Entity for this Project. Untested-->
+			<Id>Get Current Level</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Get Running Level
+					var l_runSlot;
+					
+					if (me.s('isPreview')==false)
+						l_runSlot="Main";
+					else
+						l_runSlot=me.s('previewRunSlot');
+						
+					it.set('cb_currentLevel', Logic.levelManager.currentLevel.get(l_runSlot) );
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>cb_currentLevel</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
 		</Action>
 	</_Actions>
 		

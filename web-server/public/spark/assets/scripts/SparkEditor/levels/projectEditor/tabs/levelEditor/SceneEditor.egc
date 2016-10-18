@@ -12,15 +12,18 @@
 		<State><Id>sceneBoundsObject</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>transformations</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>LevelEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>ClassEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<Form><Space><Entities>
 		<!--Scene Bounds Object-->
 		<Entity extends="std.display.Div">
 			<_States>
-				<_State id="pointerEvents"><Value>none</Value></_State>
+				<_State id="pointerEvents"><Value>auto</Value></_State>
+				<_State id="touchable"><Value>true</Value></_State>
 				<!--<_State id="backgroundColor"><Value>green</Value></_State>
 				<_State id="opacity"><Value>0.5</Value></_State>-->
+				<_State id="border"><Value>1px dashed black</Value></_State>
 			</_States>
 				
 			<_Actions>
@@ -32,6 +35,32 @@
 					</_Scripts>
 				</_Action>
 			</_Actions>
+			
+			<_Triggers>
+				<Trigger>
+					<Event>MouseLeftClick</Event>
+					<Scripts>
+						<Script>
+							//Clicked Scene
+							
+							//Deselect Everything
+							parent.s('LevelEditor').fa('Deselect All');
+							
+							//Get my explorer Area
+							var l_explorerArea = parent.s('LevelEditor').s('parentTab').s('Explorer Area');
+							
+							if (l_explorerArea!=null)
+							{
+								parent.s('ClassEditor').fa('Open Explorer Tab', { explorerContainer: l_explorerArea } );
+							}
+							else
+							{
+								Display.error("Explorer is null. Edit Tab does not have one.. weird!");
+							}
+						</Script>
+					</Scripts>
+				</Trigger>
+			</_Triggers>
 		</Entity>
 	</Entities></Space></Form>
 		
@@ -74,17 +103,19 @@
 					
 					
 					//Hating this.. figure it out..
-					var l_target_XML_editor = Logic.xml_clone(l_target_XML);
+					//var l_target_XML_editor = Logic.xml_clone(l_target_XML);
 					
 					//not thought this a lot. its to now have behaviors in scene on EDIT
-					Logic.xml_entity_removeNode(l_target_XML_editor, "Extends");
+					//I need to remove scene behaviors on edit because of stupid lib.behaviors.ScenePhysics not being on a module on project creation..
+					Logic.xml_entity_removeNode(l_target_XML, "Extends");
 					
 					//Add camera sync behavior
-					Logic.xml_entity_addExtend(l_target_XML_editor, {ext: 'SparkEditor.levels.projectEditor.tabs.levelEditor.behaviors.SceneCameraSync'});
-					
+					//Logic.xml_entity_addExtend(l_target_XML_editor, {ext: 'SparkEditor.levels.projectEditor.tabs.levelEditor.behaviors.SceneCameraSync'});
+					//Add camera sync behavior
+					Logic.xml_entity_addExtend(l_target_XML, {ext: 'SparkEditor.levels.projectEditor.tabs.levelEditor.behaviors.SceneCameraSync'});
 					
 					//Create the Scene (without its children)
-					var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML_editor));
+					var l_target_GameObject = me.set('target_GameObject',Logic.createFromXml(l_target_XML));
 					l_target_GameObject.set('editorMode', true); //hackity hack
 					l_target_GameObject.set('SceneEditor',me);
 					
@@ -119,6 +150,7 @@
 					}
 					
 					me.sa('Initialize');
+					me.sa('Get Class Editor');
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -158,6 +190,22 @@
 			</Scripts>
 		</Action>
 		
+		<Action>
+			<Id>Get Class Editor</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					var l_classEditor = e('Project Editor').s('classEditors').get(me.s('target_AssetName'));
+					if (l_classEditor!=null)
+					{
+						//Class Editor is available! Save It, keep going, and stop this action
+						it.stop();
+						me.set('ClassEditor', l_classEditor);
+					}
+				</Script>
+			</Scripts>
+		</Action>
+		
 		<_Action id="Export XML"> <!-- Consider leaving Export XML to Base Editor.egc and use sub actions like Export XML:Create This and Export XML:Create Children to make these actions here lighter on code-->
 			<_Scripts>
 				<Script>
@@ -177,8 +225,12 @@
 							//then call a save command
 							
 							
-							//SO, i DONT WORRY about anything other than children for now.. and when complete solution for states/other bheaviors/etc comes, implement it here as well
-							var l_target_XML = me.s('target_XML');
+							//SO, i DONT WORRY about anything other than children here..
+							
+							//So.. Funny thing.. This editor shares the xml with its class editor. This guy updates form, classEditor updates states and behaviors
+							//When we export this, we pick up classEditors XML, then at the end update it back. This way they are both sychronized
+							
+							var l_target_XML = me.set('target_XML', me.s('ClassEditor').s('target_XML'));
 							
 							//Make sure there's no Form
 							Logic.xml_entity_removeNode(l_target_XML, "Form");
@@ -195,6 +247,9 @@
 							
 							//Update it (save command happens inside this function, in case you're wondering)
 							e('Project Editor').fa('Update Asset Content', { DBA:me.s('target_DBA'), content:Logic.xmlToString(l_target_XML)} );
+							
+							//Update Class Editor's XML
+							me.s('ClassEditor').set('target_XML', l_target_XML);
 							
 							//Reset Flag
 							me.set('exportThis', false);

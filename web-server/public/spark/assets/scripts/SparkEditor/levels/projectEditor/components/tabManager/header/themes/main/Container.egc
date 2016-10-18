@@ -4,6 +4,8 @@
 		<_State id="height"><Value>30</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(32,48,61)</Value></_State>
 		<_State id="headerTheme"><Value>main</Value></_State>
+		<_State id="borderBottom"><Value>1px solid rgb(239,130,67)</Value></_State>
+		<_State id="zIndex"><Value>1</Value></_State>
 	</_States>
 	
 	<_Actions>

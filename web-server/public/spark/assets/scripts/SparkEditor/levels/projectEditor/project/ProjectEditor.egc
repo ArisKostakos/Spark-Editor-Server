@@ -722,6 +722,9 @@
 				<Script>
 					Display.log('END!');
 					
+					//Temp output
+					e('Save Label').set('text','Project loaded!');
+					
 					me.forceAction('Next');
 				</Script>
 			</Scripts>
@@ -1195,6 +1198,9 @@
 				<Script>
 					//forced
 					
+					//Temp output
+					e('Save Label').set('text','Exporting Project...');
+					
 					var exportProject = new Project();
 					exportProject.name = me.s('Project_DBO').name;
 					exportProject.version = "1.0";
@@ -1281,6 +1287,9 @@
 						//Open New Tab
 						Display.error('Project Export Success!');
 						//Logic.getEntityByName('Editor Output').setState('text','Project Export Success!');
+						
+						//Temp output
+						e('Save Label').set('text','Project Exported!');
 						
 						var username = me.s('User_DBO').name;
 						var projectname = me.s('Project_DBO').name;
@@ -1469,6 +1478,7 @@
 						var libraryCollectionButtonsContainer = e('Editor Library Collections Buttons Container');
 						var libraryCollectionPanelsContainer = e('Editor Library Collections Panels Container');
 						
+						
 						var libraryCollectionsHash = new ObjectMap();
 						var libraryCollectionsHash2 = new StringMap();
 						var selectedAtFirst = null;
@@ -1478,6 +1488,16 @@
 						{
 							//Get AssetDb
 							var libraryCollection = data.libraryCollections[i];
+							
+							//Divider
+							if (i>0)
+							{
+								var l_divider = Logic.create('std.display.Div');
+								l_divider.set('width', '70%');
+								l_divider.set('height', '1px');
+								l_divider.set('backgroundColor', 'rgb(19,28,37)');
+								libraryCollectionButtonsContainer.addChild(l_divider);
+							}
 							
 							//Create Button
 							var libraryCollectionButton = Logic.gameFactory.createGameEntity('SparkEditor.levels.projectEditor.tabs.library.EditorLibraryCollectionButton');

@@ -2,14 +2,14 @@
 <Entity extends="std.display.Div">
 	<_States>
 		<_State id="width"><Value>100%</Value></_State>
-		<_State id="height"><Value>67</Value></_State>
+		<_State id="height"><Value>0</Value></_State> <!-- 1,67 -->
 		<_State id="backgroundColor"><Value>rgb(56, 192, 182)</Value></_State>
 	</_States>
 	
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Search -->
+				<!-- Search 
 				<Entity extends="std.display.HGroup">
 					<_States>
 						<_State id="width"><Value>85%</Value></_State>
@@ -20,10 +20,10 @@
 					</_States>
 					
 					<Form><Space><Entities>
-						<!-- Search Input -->
+						<!-- Search Input 
 						<Entity extends="std.display.Input">
 							<_States>
-								<_State id="name"><Value>Spark Editor: Project Search Input</Value></_State> <!-- oh god remove me.. -->
+								<_State id="name"><Value>Spark Editor: Project Search Input</Value></_State> <!-- oh god remove me.. 
 								<_State id="width"><Value>100%</Value></_State>
 								<_State id="height"><Value>30</Value></_State>
 								<_State id="backgroundColor"><Value>white</Value></_State>
@@ -51,7 +51,7 @@
 							</_Triggers>
 						</Entity>
 						
-						<!--Search Icon -->
+						<!--Search Icon 
 						<Entity extends="std.display.Div">
 							<_States>
 								<_State id="borderRadius"><Value>0px 9px 9px 0px</Value></_State>
@@ -74,16 +74,16 @@
 						</Entity>
 					</Entities></Space></Form>
 				</Entity>
-				
+				-->
 				<!-- Arrow -->
 				<Entity extends="std.display.Div">
 					<_States>
 						<_State id="bottom"><Value>0</Value></_State>
-						<_State id="left"><Value>25</Value></_State>
+						<_State id="right"><Value>30</Value></_State> <!--left: 25 -->
 						<_State id="width"><Value>0</Value></_State>
 						<_State id="height"><Value>0</Value></_State>
 						<_State id="borderStyle"><Value>solid</Value></_State>
-						<_State id="borderWidth"><Value>14px 14px 0 14px</Value></_State>
+						<_State id="borderWidth"><Value>9px 9px 0 9px</Value></_State>
 					</_States>
 					<_Actions>
 						<_Action id="Constructor">

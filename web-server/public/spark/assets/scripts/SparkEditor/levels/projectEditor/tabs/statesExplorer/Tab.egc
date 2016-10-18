@@ -7,6 +7,7 @@
 		<_State id="gap"><Value>0</Value></_State>
 		<State><Id>statesExplorer</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>openedFromEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>openedFromInstanceEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<Form>
@@ -58,11 +59,17 @@
 					
 					var l_editor = me.s('editor');
 					var l_openedFromEditor = me.s('openedFromEditor');
+					var l_openedFromInstanceEditor = me.s('openedFromInstanceEditor');
 					
 					if (l_editor==l_openedFromEditor)
-						me.s('statesExplorer').fa("Update States", {statesFirstPass: l_editor.s('states'), statesSecondPass:null});
-					else 
-						me.s('statesExplorer').fa("Update States", {statesFirstPass: l_editor.s('states'), statesSecondPass:l_openedFromEditor.s('states')});
+						me.s('statesExplorer').fa("Update States", {statesFirstPass: l_editor.s('states'), statesSecondPass:null, statesThirdPass:null});
+					else
+					{
+						if (l_openedFromInstanceEditor==null)
+							me.s('statesExplorer').fa("Update States", {statesFirstPass: l_editor.s('states'), statesSecondPass:l_openedFromEditor.s('states'), statesThirdPass:null});
+						else
+							me.s('statesExplorer').fa("Update States", {statesFirstPass: l_editor.s('states'), statesSecondPass:l_openedFromEditor.s('states'), statesThirdPass:l_openedFromInstanceEditor.s('states')});
+					}
 				</Script>
 			</Scripts>
 		</Action>

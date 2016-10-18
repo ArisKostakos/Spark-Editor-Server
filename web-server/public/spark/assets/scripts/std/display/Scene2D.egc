@@ -44,6 +44,9 @@
 			<Type>Boolean</Type>
 			<Value>false</Value>
 		</State>
+	
+		<State><Id>parentProject</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- not setting this yet -->
+		<State><Id>parentLevel</Id><Type>Dynamic</Type><Value>null</Value></State> <!-- if this works, do it for all elements (view,cameras,..)-->
 	</_States>
 		
 	<_Actions>

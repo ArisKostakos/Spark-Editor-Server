@@ -6,6 +6,7 @@
 		<State><Id>saveInProgress</Id><Type>Boolean</Type><Value>false</Value></State>
 		<State><Id>filesToBeUploaded</Id><Type>Integer</Type><Value>0</Value></State>
 		<State><Id>saveInProgressCommands</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>exportAfterSaving</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -143,6 +144,9 @@
 				<Script><![CDATA[
 					//forced
 					
+					me.set('exportAfterSaving', it.s('exportAfterSaving'));
+					it.set('exportAfterSaving',false);
+					
 					//Make sure we are not already in the middle of a save
 					if (me.s('saveInProgress')==false)
 					{
@@ -156,6 +160,9 @@
 						{
 							//Save
 							console.log("Saving...", l_saveCommands);
+							
+							//Temp output
+							e('Save Label').set('text','Saving Project...');
 							
 							//Saving In Progress...
 							me.set('saveInProgress', true);
@@ -172,6 +179,12 @@
 						{
 							//Nothing to Save
 							Display.log("Nothing to Save. Ignoring...");
+							
+							//Show Output
+							e('Save Label').set('text','Project Up to Date!');
+							
+							if (me.s('exportAfterSaving'))
+								e('Project Manager').fa('Export Project');
 						}
 					}
 					else
@@ -181,6 +194,9 @@
 					}
 				]]></Script>
 			</Scripts>
+			<States>
+				<State><Id>exportAfterSaving</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
 		</Action>
 	
 		<Action>
@@ -323,7 +339,12 @@
 						*/
 						
 						Display.error('[On Save Complete] SUCCESS!!');
-						alert('Save Successful!');
+						//alert('Save Successful!');
+						//Temp output
+						e('Save Label').set('text','Project Saved!');
+						
+						if (me.s('exportAfterSaving'))
+							e('Project Manager').fa('Export Project');
 					}
 					else
 					{

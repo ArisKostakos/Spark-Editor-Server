@@ -54,5 +54,11 @@
 			<Type>Dynamic</Type>
 			<Value>null</Value>
 		</State>
+	
+		<State>
+			<Id>displayObject</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
 	</_States>
 </Entity>

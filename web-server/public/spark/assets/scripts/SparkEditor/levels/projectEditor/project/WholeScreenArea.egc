@@ -1,4 +1,4 @@
-<Entity extends="std.display.VGroup">
+<Entity extends="std.display.Group">
 	<_States>
 		<_State id="name"><Value>Spark Editor:Screen</Value></_State>
 		<_State id="width"><Value>100%</Value></_State>
