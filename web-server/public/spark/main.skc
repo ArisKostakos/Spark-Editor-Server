@@ -369,7 +369,13 @@
 			
 			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
-			
+
+			<Asset type="data" location="local" bytes='35672' id="customFont1.fnt">std/customFont1.fnt</Asset>
+            <Asset type="data" location="local" bytes='35672' id="customFont1">std/customFont1.png</Asset>
+
+            <Asset type="data" location="local" bytes='35672' id="customFont2.fnt">std/customFont2.fnt</Asset>
+            <Asset type="data" location="local" bytes='35672' id="customFont2">std/customFont2.png</Asset>
+
 			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound.mp3</Asset>
 			
 			<!-- Extremely Temp Particles -->
