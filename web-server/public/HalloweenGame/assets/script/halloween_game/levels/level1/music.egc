@@ -1,0 +1,4 @@
+<Entity extends="std.primitives.2d.Image">
+    
+	
+<Extends><Entity extends="lib.behaviors.2d.Sprite"/><Entity extends="lib.behaviors.2d.Physics"><_States><_State id="physicsEntity"><Value><![CDATA[false]]></Value></_State></_States></Entity><Entity extends="halloween_game.mylib.behaviors.AudioButton"><_States><_State id="Normal Image"><Value><![CDATA[image:halloween_game.music]]></Value></_State><_State id="Toggled Image"><Value><![CDATA[image:halloween_game.music_off]]></Value></_State></_States></Entity></Extends><_States><_State id="name"><Value><![CDATA[Audio Button]]></Value></_State><_State id="2DMeshImageForm"><Value><![CDATA[image:halloween_game.music]]></Value></_State></_States></Entity>

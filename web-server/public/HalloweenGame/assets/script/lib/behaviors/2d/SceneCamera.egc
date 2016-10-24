@@ -1,0 +1,73 @@
+<Entity>
+	<_States>
+	    <State><Id>Follow Player</Id><Type>Boolean</Type><Value>false</Value></State>
+	    <State><Id>Follow Offset</Id><Type>Integer</Type><Value>500</Value></State>
+	    <State><Id>Auto Scroll Speed</Id><Type>Decimal</Type><Value>0</Value></State>
+	    <State visibleOnEditor="false"><Id>player</Id><Type>Dynamic</Type><Value>null</Value></State>
+	    <State visibleOnEditor="false"><Id>scene_camera</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+	
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+				    //Assume exactly one camera for this level
+				    me.set('scene_camera', me.s('parentLevel').s('cameras')[0] );
+				    
+					if (me.s('Follow Player'))
+					{
+					    //for (child of me.getChildren()) DOES NOT WORK ON IE
+						for (child in me.getChildren()) //WORKS ON IE BUT I DONT LIKE IT
+						{
+							child = me.getChildren()[child]; //WORKS ON IE BUT I DONT LIKE IT
+							if (child.s('isPlayer')==true)
+							{
+								me.set('player', child);
+								me.startAction('Follow Player');
+								break;
+							}
+						}
+					}
+				    else if (me.s('Auto Scroll Speed')!=0)
+				    {
+				       me.startAction('Auto Scroll');
+				    }
+				</Script>
+			</_Scripts>
+		</_Action>
+	
+		<Action>
+			<Id>Follow Player</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					Display.de('Following Player...');
+					me.s('scene_camera').set('x', query(me.s('player'),'x')-me.s('Follow Offset') );
+				    me.s('scene_camera').set('command_updateCamera', true);
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Auto Scroll</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+				    me.s('scene_camera').addToState('x', me.s('Auto Scroll Speed'));
+				    me.s('scene_camera').set('command_updateCamera', true);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+	
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					//code here
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

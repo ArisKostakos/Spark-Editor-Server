@@ -1,0 +1,85 @@
+<Entity extends="std.primitives.2d.Spriter">
+
+
+	<Extends>
+		<Entity extends="lib.behaviors.2d.Sprite"/>
+		<Entity extends="lib.behaviors.2d.Physics">
+			<_States>
+				<_State id="physicsEntity">
+					<Value><![CDATA[false]]></Value>
+				</_State>
+			</_States>
+		</Entity>
+		<Entity extends="halloween_game.mylib.behaviors.AnimateMovement">
+			<_States>
+				<_State id="From/By Y">
+					<Value><![CDATA[0]]></Value>
+				</_State>
+				<_State id="From/By X">
+					<Value><![CDATA[400]]></Value>
+				</_State>
+				<_State id="duration">
+					<Value><![CDATA[4]]></Value>
+				</_State>
+			</_States>
+		</Entity>
+	</Extends>
+	<_States>
+		<_State id="name">
+			<Value><![CDATA[The Witch]]></Value>
+		</_State>
+		<_State id="2DMeshSpriterForm">
+			<Value><![CDATA[data:halloween_game.witch_2.witch_2]]></Value>
+		</_State>
+		<_State id="Atlas Folder">
+			<Value><![CDATA[image:halloween_game.witch_2]]></Value>
+		</_State>
+		<_State id="Animation" live="true">
+			<Value><![CDATA[NewAnimation_004]]></Value>
+		</_State>
+		<_State id="Animation Speed" live="true">
+			<Value><![CDATA[0.8]]></Value>
+		</_State>
+	</_States>
+		
+	<_Actions>
+		<Action>
+			<Id>Speak</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					me.set('Animation', 'NewAnimation_008');
+					me.set('Animation Speed', 1);
+					me.sa('WaitFor',{delay:it.s('duration'), delayCurrent:0});
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>duration</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
+	
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    it.setState('delayCurrent',0);
+					    me.set('Animation', 'NewAnimation_004');
+						me.set('Animation Speed', 0.8);
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

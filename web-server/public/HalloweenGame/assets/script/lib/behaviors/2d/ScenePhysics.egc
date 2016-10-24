@@ -1,0 +1,8 @@
+<Entity>
+	<_States>
+	    <State><Id>physicsScene</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State><Id>gravityX</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>gravityY</Id><Type>Decimal</Type><Value>200</Value></State>
+		<State visibleOnEditor="false"><Id>physicsPaused</Id><Type>Boolean</Type><Value>false</Value></State>
+	</_States>
+</Entity>

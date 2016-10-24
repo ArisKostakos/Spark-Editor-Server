@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Group">
+	<_States>
+		<_State id="layout">
+			<Value>Vertical</Value>
+		</_State>
+	</_States>
+</Entity>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<_States>
+		<_State id="displayType"><Value>Entity</Value></_State>
+		<_State id="2DmeshType"><Value>AdobeAnimation</Value></_State>
+		<State><Id>2DMeshAdobeAnimationForm</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Atlas Folder</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Animation</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Animation Loop</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State><Id>obj_player</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+</Entity>

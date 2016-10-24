@@ -1,0 +1,85 @@
+<Entity>
+	<_States>
+		<State><Id>enabledOnStart</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State><Id>From/By X</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>To X</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>From/By Y</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>To Y</Id><Type>Integer</Type><Value>0</Value></State>
+		<State><Id>duration</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>easing</Id><Type>Dynamic</Type><Value>Ease.quadInOut</Value></State>
+		<State><Id>callAction</Id><Type>Text</Type><Value>No</Value></State>
+	</_States>
+	
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+				    if (me.s('enabledOnStart'))
+					    me.fa('AnimateMovement');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>AnimateMovement</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//Fail, if duration is 0
+					if (me.s('duration')==0)
+					    return;
+					
+					//Animate X
+					if (me.s('From/By X')!=0 && me.s('To X')!=0)
+					    me.setState('animate_x',{type:"normal", from:me.s('From/By X'), to:me.s('To X'), seconds:me.s('duration'), easing:me.s('easing')});
+					else if (me.s('To X')!=0)
+					    me.setState('animate_x',{type:"to", to:me.s('To X'), seconds:me.s('duration'), easing:me.s('easing')});
+					else if (me.s('From/By X')!=0)
+					    me.setState('animate_x',{type:"by", by:me.s('From/By X'), seconds:me.s('duration'), easing:me.s('easing')});
+					    
+					//Animate Y
+					if (me.s('From/By Y')!=0 && me.s('To Y')!=0)
+					    me.setState('animate_y',{type:"normal", from:me.s('From/By Y'), to:me.s('To Y'), seconds:me.s('duration'), easing:me.s('easing')});
+					else if (me.s('To Y')!=0)
+					    me.setState('animate_y',{type:"to", to:me.s('To Y'), seconds:me.s('duration'), easing:me.s('easing')});
+					else if (me.s('From/By Y')!=0)
+					    me.setState('animate_y',{type:"by", by:me.s('From/By Y'), seconds:me.s('duration'), easing:me.s('easing')});
+					
+					if (me.s('callAction')!="No")
+					    me.sa('WaitFor_AnimateMovement',{delay:me.s('duration'), delayCurrent:0, cbEntity:me, cbAction:me.s('callAction')});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>WaitFor_AnimateMovement</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    
+					    //Callback (Action finished)
+						it.setState('delayCurrent',0);
+						it.s('cbEntity').fa(it.s('cbAction'));
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

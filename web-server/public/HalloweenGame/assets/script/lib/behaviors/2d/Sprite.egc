@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity meta_enabledInEditor="true">
+	<_States>
+	    <_State id="coordinateSystem" visibleOnEditor="false"><Value>2D</Value></_State>
+        <State objectSpecific="true" live="true"><Id>spaceX</Id><Type>Integer</Type><Value>0</Value></State>
+		<State objectSpecific="true" live="true"><Id>spaceY</Id><Type>Integer</Type><Value>0</Value></State>
+		<State objectSpecific="true" live="true"><Id>scaleX</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State objectSpecific="true" live="true"><Id>scaleY</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State objectSpecific="true" live="true"><Id>rotation</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State visibleOnEditor="false"><Id>command_zOrder</Id><Type>Integer</Type><Value>0</Value></State>
+		
+		<State objectSpecific="true" live="true"><Id>visible</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State visibleOnEditor="false"><Id>boundsRect</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>blendMode</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State visibleOnEditor="false"><Id>scissorRect</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State objectSpecific="true" live="true"><Id>opacity</Id><Type>Decimal</Type><Value>1</Value></State>
+		
+		<State visibleOnEditor="false"><Id>animate_x</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>animate_y</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>animate_scaleX</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>animate_scaleY</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>animate_rotation</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>animate_opacity</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State visibleOnEditor="false"><Id>feedback_touchEvent</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+</Entity>

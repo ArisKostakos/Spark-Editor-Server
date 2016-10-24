@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r9">
+    <folder id="0">
+        <file id="0" name="ghost_11.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="1" name="ghost_12.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="2" name="ghost_13.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="3" name="ghost_14.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="4" name="ghost_15.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="5" name="ghost_16.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="6" name="ghost_17.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="7" name="ghost_18.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="8" name="ghost_19.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="9" name="ghost_20.png" width="191" height="191" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="10" name="ghost_21.png" width="270" height="270" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="11" name="ghost_A.png" width="47" height="91" pivot_x="0.5" pivot_y="0"/>
+        <file id="12" name="ghost_B.png" width="47" height="91" pivot_x="0.5" pivot_y="0"/>
+        <file id="13" name="ghost_C.png" width="47" height="91" pivot_x="0.5" pivot_y="0"/>
+        <file id="14" name="ghost_D.png" width="48" height="91" pivot_x="0.5" pivot_y="0"/>
+        <file id="15" name="ghost_E.png" width="47" height="91" pivot_x="0.5" pivot_y="0"/>
+        <file id="16" name="EYES.png" width="24" height="22" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="17" name="GHOST3.png" width="19" height="16" pivot_x="0.260504" pivot_y="0.259136"/>
+        <file id="18" name="HAND1.png" width="27" height="25" pivot_x="0.743802" pivot_y="0.246291"/>
+        <file id="19" name="ghostaki_1.png" width="87" height="79" pivot_x="0.5" pivot_y="0"/>
+        <file id="20" name="ghostaki_2.png" width="87" height="79" pivot_x="0.5" pivot_y="0"/>
+        <file id="21" name="ghostaki_3.png" width="87" height="79" pivot_x="0.5" pivot_y="0"/>
+        <file id="22" name="ghostaki_4.png" width="87" height="79" pivot_x="0.5" pivot_y="0"/>
+        <file id="23" name="ghostaki_5.png" width="87" height="79" pivot_x="0.5" pivot_y="0"/>
+    </folder>
+    <entity id="0" name="entity_002">
+        <animation id="0" name="NewAnimation" length="1500" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="187">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+                <key id="2" time="372">
+                    <object_ref id="0" timeline="0" key="2" z_index="0"/>
+                </key>
+                <key id="3" time="560">
+                    <object_ref id="0" timeline="0" key="3" z_index="0"/>
+                </key>
+                <key id="4" time="750">
+                    <object_ref id="0" timeline="0" key="4" z_index="0"/>
+                </key>
+                <key id="5" time="938">
+                    <object_ref id="0" timeline="0" key="5" z_index="0"/>
+                </key>
+                <key id="6" time="1125">
+                    <object_ref id="0" timeline="0" key="6" z_index="0"/>
+                </key>
+                <key id="7" time="1310">
+                    <object_ref id="0" timeline="0" key="7" z_index="0"/>
+                </key>
+                <key id="8" time="1500">
+                    <object_ref id="0" timeline="0" key="8" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="ghostaki_1">
+                <key id="0" spin="0">
+                    <object folder="0" file="19" angle="0"/>
+                </key>
+                <key id="1" time="187" spin="0">
+                    <object folder="0" file="20" angle="0"/>
+                </key>
+                <key id="2" time="372" spin="0">
+                    <object folder="0" file="21" angle="0"/>
+                </key>
+                <key id="3" time="560" spin="0">
+                    <object folder="0" file="22" angle="0"/>
+                </key>
+                <key id="4" time="750" spin="0">
+                    <object folder="0" file="23" angle="0"/>
+                </key>
+                <key id="5" time="938" spin="0">
+                    <object folder="0" file="22" angle="0"/>
+                </key>
+                <key id="6" time="1125" spin="0">
+                    <object folder="0" file="21" angle="0"/>
+                </key>
+                <key id="7" time="1310" spin="0">
+                    <object folder="0" file="20" angle="0"/>
+                </key>
+                <key id="8" time="1500" spin="0">
+                    <object folder="0" file="19" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

@@ -1,0 +1,133 @@
+<Entity>
+	<_States>
+		<State><Id>minX</Id><Type>Integer</Type><Value>96</Value></State>
+		<State><Id>minY</Id><Type>Integer</Type><Value>218</Value></State>
+		<State><Id>maxX</Id><Type>Integer</Type><Value>786</Value></State>
+		<State><Id>maxY</Id><Type>Integer</Type><Value>812</Value></State>
+	</_States>
+	
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.set('Animation Speed', Logic.random(150,200)/100);
+				
+					if (e('Halloween Scene').s('LevelId')==1) //easy
+					{
+						me.set('spaceX',1370);
+						me.set('spaceY',600);
+						me.set('minX', 978);
+						me.set('minY', 249);
+						me.set('maxX', 1759);
+						me.set('maxY', 763);
+					}
+					else if (e('Halloween Scene').s('LevelId')==3) //hard
+					{
+						me.set('spaceX',633);
+						me.set('spaceY',725);
+						me.set('minX', 373);
+						me.set('minY', 361);
+						me.set('maxX', 900);
+						me.set('maxY', 752);
+					}
+					
+					
+				
+				    var scale = Logic.random(40,60)/100;
+				    me.set('scaleX', scale);
+				    me.set('scaleY', scale);
+				    
+				    me.set('velocityX', Logic.random(-200,200) );
+				    me.set('velocityY', Logic.random(-200,200) );
+				    
+				    me.fa('Change Direction', {left:false,right:false,top:false,bottom:false});
+				    
+					me.sa('Bat Move');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Bat Move</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+					if (query(me,'x')>me.s('maxX'))
+					    me.fa('Change Direction', {left:true,right:false,top:false,bottom:false});
+					else if (query(me,'x')<me.s('minX'))
+					    me.fa('Change Direction', {left:false,right:true,top:false,bottom:false});
+					else if (query(me,'y')>me.s('maxY'))
+					    me.fa('Change Direction', {left:false,right:false,top:true,bottom:false});
+					else if (query(me,'y')<me.s('minY'))
+					    me.fa('Change Direction', {left:false,right:false,top:false,bottom:true});
+						
+						
+					var l_physicsBody = me.s('physicsBody');
+					var l_maxSpeed = 300;
+					if (l_physicsBody!=null)
+					{
+						if (l_physicsBody.zpp_inner.velx<-l_maxSpeed)
+							l_physicsBody.zpp_inner.velx=-l_maxSpeed;
+						else if (l_physicsBody.zpp_inner.velx>l_maxSpeed)
+							l_physicsBody.zpp_inner.velx=l_maxSpeed;
+							
+						if (l_physicsBody.zpp_inner.vely<-l_maxSpeed)
+							l_physicsBody.zpp_inner.vely=-l_maxSpeed;
+						else if (l_physicsBody.zpp_inner.vely>l_maxSpeed)
+							l_physicsBody.zpp_inner.vely=l_maxSpeed;
+					}
+				]]></Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Change Direction</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+				    var speedBig=400;
+				    var speedSmall=100;
+				    
+				    
+					//For X
+					if (it.s('left')==true)
+					{
+					    me.set('applyImpulseX', Logic.random(-speedBig,-speedSmall)*me.s('scaleX')*me.s('scaleX') );
+					}
+					else if (it.s('right')==true)
+					{
+					    me.set('applyImpulseX', Logic.random(speedBig,speedSmall)*me.s('scaleX')*me.s('scaleX') );
+					}
+					else
+					{
+					    me.set('applyImpulseX', Logic.random(-speedBig,speedBig)*me.s('scaleX')*me.s('scaleX') );
+					}
+					
+					//For Y
+					if (it.s('top')==true)
+					{
+					    me.set('applyImpulseY', Logic.random(-speedBig,-speedSmall)*me.s('scaleX')*me.s('scaleX') );
+					}
+					else if (it.s('bottom')==true)
+					{
+					    me.set('applyImpulseY', Logic.random(speedBig,speedSmall)*me.s('scaleX')*me.s('scaleX') );
+					}
+					else
+					{
+					    me.set('applyImpulseY', Logic.random(-speedBig,speedBig)*me.s('scaleX')*me.s('scaleX') );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>left</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>right</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>top</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>bottom</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

@@ -1,0 +1,20 @@
+<Entity>
+	<_States>
+		<State><Id>physicsEntity</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State><Id>physicsSensorFlag</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>physicsType</Id><Type>Text</Type><Value>Kinematic</Value></State>
+		<State><Id>physicsShape</Id><Type>Text</Type><Value>Polygon</Value></State>
+		<State><Id>physicsMaterial</Id><Type>Text</Type><Value>Wood</Value></State>
+		<State visibleOnEditor="false"><Id>physicsCbType</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State visibleOnEditor="false"><Id>inertia</Id><Type>Decimal</Type><Value>12345</Value></State>
+		<State visibleOnEditor="false"><Id>applyImpulseX</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State visibleOnEditor="false"><Id>applyImpulseY</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State visibleOnEditor="false"><Id>applyImpulseAngle</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>velocityX</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>velocityY</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>velocityAng</Id><Type>Decimal</Type><Value>0</Value></State>
+		<State><Id>allowRotation</Id><Type>Boolean</Type><Value>true</Value></State>
+		<State visibleOnEditor="false"><Id>physicsBody</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State visibleOnEditor="false"><Id>collidedWith</Id><Type>Dynamic</Type><Value>null</Value></State>
+	</_States>
+</Entity>

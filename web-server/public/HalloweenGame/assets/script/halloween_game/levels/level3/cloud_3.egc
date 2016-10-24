@@ -1,0 +1,4 @@
+<Entity extends="std.primitives.2d.Image">
+    
+	
+<Extends><Entity extends="lib.behaviors.2d.Sprite"/><Entity extends="lib.behaviors.2d.Physics"><_States><_State id="physicsEntity"><Value><![CDATA[false]]></Value></_State></_States></Entity><Entity extends="halloween_game.mylib.behaviors.Cloud"/></Extends><_States><_State id="name"><Value><![CDATA[Malakia]]></Value></_State><_State id="2DMeshImageForm"><Value><![CDATA[image:halloween_game.cloud_3]]></Value></_State></_States></Entity>

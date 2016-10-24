@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity>
+	<_States>
+		<_State id="touchable"><Value>true</Value></_State>
+		
+		<State><Id>Normal Image</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>Toggled Image</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State visibleOnEditor="false"><Id>Toggled</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>VolumeVoice</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeFX</Id><Type>Decimal</Type><Value>1</Value></State>
+		<State><Id>VolumeMusic</Id><Type>Decimal</Type><Value>0.3</Value></State>
+	
+		<State visibleOnEditor="false"><Id>lastVoiceName</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State visibleOnEditor="false"><Id>lastMusicName</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					if (me.s('Toggled')==false)
+					{
+						me.setState("2DMeshImageForm", me.s('Toggled Image'));
+						
+						var l_lastMusicName = me.s('lastMusicName');
+						Sound.stopSound(l_lastMusicName,0.4);
+						
+						me.setState('Toggled',true);
+					}
+					else
+					{
+						me.setState("2DMeshImageForm",me.s('Normal Image'));
+						
+						//Play Music
+						e('Audio Button').fa('Play Music', { name:"sound:halloween_game.music" } );
+						
+						
+						me.setState('Toggled',false);
+					}
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<!-- IE fix change -->
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					function GetIEVersion() {
+					  var sAgent = window.navigator.userAgent;
+					  var Idx = sAgent.indexOf("MSIE");
+
+					  // If IE, return version number.
+					  if (Idx > 0) 
+						return parseInt(sAgent.substring(Idx+ 5, sAgent.indexOf(".", Idx)));
+
+					  // If IE 11 then look for Updated user agent string.
+					  else if (!!navigator.userAgent.match(/Trident\/7\./)) 
+						return 11;
+
+					  else
+						return 0; //It is not IE
+					}
+					
+					if (GetIEVersion() > 0) 
+					   me.set('VolumeVoice', 1);
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Play Music</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					Sound.loopSound( it.s('name'), me.s('VolumeMusic') );
+					me.set('lastMusicName', it.s('name'));
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+		
+		<Action>
+			<Id>Play Voice</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					var l_lastVoiceName = me.s('lastVoiceName');
+					
+					var l_playing = Sound.isPlaying(l_lastVoiceName);
+					
+					if (it.s('important')==true || l_playing==false)
+					{
+						if (l_lastVoiceName!="Undefined")
+						{
+							Sound.stopSound(l_lastVoiceName,0.1);
+						}
+						
+						Sound.playSound( it.s('name'), me.s('VolumeVoice') );
+						me.set('lastVoiceName', it.s('name'));
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>important</Id><Type>Boolean</Type><Value>false</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Play FX</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('Toggled')==false)
+					{
+						if (it.s('weak'))
+						{
+							if (Sound.isPlaying( it.s('name'))==false)
+								Sound.playSound( it.s('name'), it.s('volume') );
+						}
+						else
+							Sound.playSound( it.s('name'), it.s('volume') );
+					}
+					
+					it.set('weak',false);
+					it.set('volume',1);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>weak</Id><Type>Boolean</Type><Value>false</Value></State>
+				<State><Id>volume</Id><Type>Decimal</Type><Value>1</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Loop FX</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					if (me.s('Toggled')==false)
+					{
+						Sound.loopSound( it.s('name'), me.s('VolumeFX') );
+					}
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

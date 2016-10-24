@@ -1,0 +1,49 @@
+<Entity>
+	<_States>
+		<State><Id>cloudDurationMin</Id><Type>Integer</Type><Value>370</Value></State>
+		<State><Id>cloudDurationMax</Id><Type>Integer</Type><Value>440</Value></State>
+	</_States>
+	
+	<_Triggers>
+
+	</_Triggers>
+
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.sa('Check if Finished');
+					me.fa('Float');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Float</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+				    //forced
+				    
+				    //Somehow calculate Y into this
+				    
+					me.setState('animate_x',{type:"by", by:-5000, seconds:Logic.random(me.s('cloudDurationMin'),me.s('cloudDurationMax')), easing:Ease.linear});
+				</Script>
+			</Scripts>
+		</Action>
+		
+		<Action>
+			<Id>Check if Finished</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (-310>query(me,'x'))
+					{
+					    me.set('spaceX', 2673);
+					    me.fa('Float');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

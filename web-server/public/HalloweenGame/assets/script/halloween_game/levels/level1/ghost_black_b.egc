@@ -1,0 +1,13 @@
+<Entity extends="std.primitives.2d.Spriter">
+    <Extends>
+        <Entity extends="lib.behaviors.2d.Sprite"/>
+        <Entity extends="lib.behaviors.2d.Physics"/>
+    </Extends>
+	<_States>
+	    <_State id="name"><Value><![CDATA[Untitled Object]]></Value></_State>
+		<_State id="2DMeshSpriterForm"><Value><![CDATA[data:halloween_game.ghost_black_b.ghost_black_b]]></Value></_State>
+		<_State id="Atlas Folder"><Value><![CDATA[image:halloween_game.ghost_black_b]]></Value></_State>
+		<_State id="Animation" live="true"><Value><![CDATA[idle]]></Value></_State>
+		<_State id="Animation Speed" live="true"><Value>1</Value></_State>
+	</_States>
+</Entity>

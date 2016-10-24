@@ -1,0 +1,780 @@
+<Client>
+	<Project>
+		<Name>halloween_game</Name>
+		<Version>1.0</Version>
+		<ExecuteAtLaunch>
+			<ExecuteModule>Main</ExecuteModule>
+		</ExecuteAtLaunch>
+	</Project>
+	<Sliced>
+		<Sound>tools.spark.sliced.services.std.sound.core.Sound</Sound>
+		<Logic>tools.spark.sliced.services.std.logic.core.Logic</Logic>
+		<Input>tools.spark.sliced.services.std.input.core.Input</Input>
+		<Comms>tools.spark.sliced.services.std.comms.core.Comms</Comms>
+		<Event>tools.spark.sliced.services.std.event.core.Event</Event>
+		<Display>tools.spark.sliced.services.std.display.core.Display</Display>
+	</Sliced>
+	<Paths>
+		<Path location="local" type="script">assets/script</Path>
+		<Path location="local" type="image">assets/image</Path>
+		<Path location="local" type="model">assets/model</Path>
+		<Path location="local" type="sound">assets/sound</Path>
+		<Path location="local" type="data">assets/data</Path>
+	</Paths>
+	<Assets>
+		<Module id="Std:Base" executeEntity="none">
+			<Asset id="script:std.core.Base" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/core/Base.egc</Asset>
+			<Asset id="script:std.primitives.core.Project" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/core/Project.egc</Asset>
+			<Asset id="script:std.primitives.core.Level" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/core/Level.egc</Asset>
+			<Asset id="script:std.core.LevelReference" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/core/LevelReference.egc</Asset>
+			<Asset id="script:std.display.Base" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Base.egc</Asset>
+			<Asset id="script:std.primitives.core.Space" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/core/Space.egc</Asset>
+			<Asset id="script:std.primitives.core.Stage" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/core/Stage.egc</Asset>
+			<Asset id="script:std.display.StageArea" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/StageArea.egc</Asset>
+			<Asset id="script:std.primitives.core.Scene" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/core/Scene.egc</Asset>
+			<Asset id="script:std.behaviors.display.Layoutable" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/Layoutable.egc</Asset>
+			<Asset id="script:std.behaviors.core.Constructor" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/core/Constructor.egc</Asset>
+		</Module>
+		<Module id="Std:Loader" executeEntity="none">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+			</Requires>
+			<Asset id="script:std.display.View" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/View.egc</Asset>
+			<Asset id="script:std.display.Scene2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Scene2D.egc</Asset>
+			<Asset id="script:std.primitives.2d.Camera" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/2d/Camera.egc</Asset>
+			<Asset id="script:std.display.Camera2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Camera2D.egc</Asset>
+			<Asset id="script:std.display.Gui2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Gui2D.egc</Asset>
+			<Asset id="script:std.display.Group" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Group.egc</Asset>
+			<Asset id="script:std.display.VGroup" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/VGroup.egc</Asset>
+			<Asset id="script:std.display.HGroup" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/HGroup.egc</Asset>
+			<Asset id="script:std.display.Div" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Div.egc</Asset>
+			<Asset id="script:std.display.Entity2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Entity2D.egc</Asset>
+			<Asset id="script:std.display.Text" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Text.egc</Asset>
+			<Asset id="script:std.behaviors.display.Positionable2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/Positionable2D.egc</Asset>
+			<Asset id="script:std.behaviors.display.Renderable2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/Renderable2D.egc</Asset>
+			<Asset id="script:std.behaviors.display.NativeComponent" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/NativeComponent.egc</Asset>
+			<Asset id="script:std.behaviors.display.StyleableNC" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/StyleableNC.egc</Asset>
+		</Module>
+		<Module id="Std:BasicNC" executeEntity="none">
+			<Asset id="script:std.display.Image" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Image.egc</Asset>
+			<Asset id="script:std.display.Input" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Input.egc</Asset>
+			<Asset id="script:std.display.FileInput" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/FileInput.egc</Asset>
+			<Asset id="script:std.display.Button" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Button.egc</Asset>
+			<Asset id="script:std.display.Scroller" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Scroller.egc</Asset>
+		</Module>
+		<Module id="Std:Ace" executeEntity="none">
+			<Asset id="script:std.ace.EventCollection" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/ace/EventCollection.egc</Asset>
+			<Asset id="script:std.ace.Event" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/ace/Event.egc</Asset>
+			<Asset id="script:std.ace.Condition" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/ace/Condition.egc</Asset>
+			<Asset id="script:std.ace.Action" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/ace/Action.egc</Asset>
+			<Asset id="script:std.ace.TriggerBase" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/ace/TriggerBase.tgc</Asset>
+		</Module>
+		<Module id="Std:Rest" executeEntity="none">
+			<Asset id="script:std.primitives.2d.Image" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/2d/Image.egc</Asset>
+			<Asset id="script:std.primitives.2d.AdobeAnimation" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/2d/AdobeAnimation.egc</Asset>
+			<Asset id="script:std.primitives.2d.Spritesheet" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/2d/Spritesheet.egc</Asset>
+			<Asset id="script:std.primitives.2d.Spriter" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/2d/Spriter.egc</Asset>
+			<Asset id="script:std.primitives.nc.Video" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/primitives/nc/Video.egc</Asset>
+			<Asset id="script:std.display.Image2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Image2D.egc</Asset>
+			<Asset id="script:std.display.Scene2DPhysics" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Scene2DPhysics.egc</Asset>
+			<Asset id="script:std.display.Camera2DStandard" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Camera2DStandard.egc</Asset>
+			<Asset id="script:std.behaviors.display.PhysicsEntity2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/PhysicsEntity2D.egc</Asset>
+			<Asset id="script:std.display.Scene3D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Scene3D.egc</Asset>
+			<Asset id="script:std.display.Camera3D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Camera3D.egc</Asset>
+			<Asset id="script:std.display.Entity3D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Entity3D.egc</Asset>
+			<Asset id="script:std.display.TreeView" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/TreeView.egc</Asset>
+			<Asset id="script:std.display.CodeEditor" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/CodeEditor.egc</Asset>
+			<Asset id="script:std.display.Button2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Button2D.egc</Asset>
+			<Asset id="script:std.display.Spriter2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Spriter2D.egc</Asset>
+			<Asset id="script:std.display.Spritesheet2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Spritesheet2D.egc</Asset>
+			<Asset id="script:std.display.FillRect2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/FillRect2D.egc</Asset>
+			<Asset id="script:std.display.Text2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Text2D.egc</Asset>
+			<Asset id="script:std.display.Sprite2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Sprite2D.egc</Asset>
+			<Asset id="script:std.display.Line2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Line2D.egc</Asset>
+			<Asset id="script:std.display.Rectangle2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Rectangle2D.egc</Asset>
+			<Asset id="script:std.display.Layer2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/Layer2D.egc</Asset>
+			<Asset id="script:std.display.LayerScreen2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/LayerScreen2D.egc</Asset>
+			<Asset id="script:std.display.ParticleEmitter2D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/display/ParticleEmitter2D.egc</Asset>
+			<Asset id="script:std.behaviors.core.ShowFPS" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/core/ShowFPS.egc</Asset>
+			<Asset id="script:std.behaviors.display.Positionable3D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/Positionable3D.egc</Asset>
+			<Asset id="script:std.behaviors.display.Renderable3D" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/display/Renderable3D.egc</Asset>
+			<Asset id="script:std.behaviors.input.KeyboardInput" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/input/KeyboardInput.egc</Asset>
+			<Asset id="script:std.behaviors.input.KeyboardInputHorizontal" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/input/KeyboardInputHorizontal.egc</Asset>
+			<Asset id="script:std.behaviors.movement.InputMove" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/movement/InputMove.egc</Asset>
+			<Asset id="script:std.behaviors.movement.InputMoveHorizontal" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/behaviors/movement/InputMoveHorizontal.egc</Asset>
+			<Asset id="defaultFont.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/defaultFont.fnt</Asset>
+			<Asset id="defaultFont" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/defaultFont.png</Asset>
+			<Asset id="fontRed.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/fontRed.fnt</Asset>
+			<Asset id="fontRed" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/fontRed.png</Asset>
+			<Asset id="fontGreen.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/fontGreen.fnt</Asset>
+			<Asset id="fontGreen" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/fontGreen.png</Asset>
+			<Asset id="fontBlack.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/fontBlack.fnt</Asset>
+			<Asset id="fontBlack" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/fontBlack.png</Asset>
+			<Asset id="customFont1.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/customFont1.fnt</Asset>
+			<Asset id="customFont1" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/customFont1.png</Asset>
+			<Asset id="customFont2.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/customFont2.fnt</Asset>
+			<Asset id="customFont2" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/customFont2.png</Asset>
+			<Asset id="customFont3.fnt" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/customFont3.fnt</Asset>
+			<Asset id="customFont3" type="data" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/customFont3.png</Asset>
+			<Asset id="_blankSound" type="sound" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">std/blankSound.mp3</Asset>
+			<Asset id="script:temp.Particle" type="script" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">temp/Particle.egc</Asset>
+			
+			<Asset id="snow.pex" type="image" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">temp/snow.pex</Asset>
+			<Asset id="snow" type="image" subtype="none" location="local" bytes="10000" condition="always" forceLoadAsData="false">temp/snow.png</Asset>
+			
+			<Asset id="bubble.pex" type="image" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">temp/bubble.pex</Asset>
+			<Asset id="bubble" type="image" subtype="none" location="local" bytes="10000" condition="always" forceLoadAsData="false">temp/bubble.png</Asset>
+			
+			<Asset id="stars1.pex" type="image" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">temp/stars1.pex</Asset>
+			<Asset id="stars1" type="image" subtype="none" location="local" bytes="10000" condition="always" forceLoadAsData="false">temp/stars1.png</Asset>
+			
+			<Asset id="stars2.pex" type="image" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">temp/stars2.pex</Asset>
+			<Asset id="stars2" type="image" subtype="none" location="local" bytes="10000" condition="always" forceLoadAsData="false">temp/stars2.png</Asset>
+			
+			<Asset id="stars3.pex" type="image" subtype="none" location="local" bytes="35672" condition="always" forceLoadAsData="false">temp/stars3.pex</Asset>
+			<Asset id="stars3" type="image" subtype="none" location="local" bytes="10000" condition="always" forceLoadAsData="false">temp/stars3.png</Asset>
+		</Module>
+		<Module id="Main" executeEntity="halloween_game.Project">
+			<Requires>
+				<RequiresModule>Levels</RequiresModule>
+				<RequiresModule>Std:Base</RequiresModule>
+			</Requires>
+			<Asset id="script:halloween_game.Project" type="script" location="local" bytes="613">halloween_game/Project.egc</Asset>
+			<Asset id="script:halloween_game.Space" type="script" location="local" bytes="396">halloween_game/Space.egc</Asset>
+			<Asset id="script:halloween_game.Stage" type="script" location="local" bytes="259">halloween_game/Stage.egc</Asset>
+		</Module>
+		<Module id="Loader" executeEntity="none">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
+			</Requires>
+			<Asset id="script:halloween_game.levels.loader.View" type="script" location="local" bytes="634">halloween_game/levels/loader/View.egc</Asset>
+			<Asset id="script:halloween_game.levels.loader.Scene" type="script" location="local" bytes="4172">halloween_game/levels/loader/Scene.egc</Asset>
+			<Asset id="script:halloween_game.levels.loader.Camera" type="script" location="local" bytes="117">halloween_game/levels/loader/Camera.egc</Asset>
+			
+			<Asset type="image" location="local" bytes='57200' id="loadingBanner">halloween_game/loading_logo.png</Asset>
+			
+			<Asset type="data" location="local" bytes='35672' id="defaultFont.fnt">std/defaultFont.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="defaultFont">std/defaultFont.png</Asset>
+			
+		</Module>
+		<Module id="Levels" executeEntity="none">
+			<Asset id="script:halloween_game.levels.loader.Level" type="script" location="local" bytes="838">halloween_game/levels/loader/Level.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.Level" type="script" location="local" bytes="838">halloween_game/levels/level1/Level.egc</Asset>
+			<Asset id="script:halloween_game.levels.level2.Level" type="script" location="local" bytes="838">halloween_game/levels/level2/Level.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.Level" type="script" location="local" bytes="838">halloween_game/levels/level3/Level.egc</Asset>
+		</Module>
+		<Module id="Common" executeEntity="none">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Ace</RequiresModule>
+			</Requires>
+			<Asset id="script:halloween_game.levels.common.CommonSpace" type="script" location="local" bytes="224">halloween_game/levels/common/CommonSpace.egc</Asset>
+		</Module>
+		
+		<!-- Normal -->
+		<Module id="Level1" executeEntity="none">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Ace</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
+				<RequiresModule>Common</RequiresModule>
+			</Requires>
+			<Asset id="script:lib.behaviors.2d.Sprite" type="script" location="local" bytes="583">lib/behaviors/2d/Sprite.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.Physics" type="script" location="local" bytes="1351">lib/behaviors/2d/Physics.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.ScenePhysics" type="script" location="local" bytes="466">lib/behaviors/2d/ScenePhysics.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.SceneCamera" type="script" location="local" bytes="755">lib/behaviors/2d/SceneCamera.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.View" type="script" location="local" bytes="622">halloween_game/levels/level1/View.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.Scene" type="script" location="local" bytes="115">halloween_game/levels/level1/Scene.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.Camera" type="script" location="local" bytes="117">halloween_game/levels/level1/Camera.egc</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_back-01" type="image" location="local" bytes="296903">halloween_game/PurpleHouse_back-01.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_back-01" type="script" location="local" bytes="393">halloween_game/levels/level1/PurpleHouse_back-01.egc</Asset>
+			<Asset id="image:halloween_game.cloud_1" type="image" location="local" bytes="9361">halloween_game/cloud_1.png</Asset>
+			<Asset id="image:halloween_game.cloud_2" type="image" location="local" bytes="7479">halloween_game/cloud_2.png</Asset>
+			<Asset id="image:halloween_game.cloud_3" type="image" location="local" bytes="7019">halloween_game/cloud_3.png</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_front-01-02" type="image" location="local" bytes="272763">halloween_game/PurpleHouse_front-01-02.png</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_front-03" type="image" location="local" bytes="21859">halloween_game/PurpleHouse_front-03.png</Asset>
+			<Asset id="image:halloween_game.border" type="image" location="local" bytes="39929">halloween_game/border.png</Asset>
+			<Asset id="image:halloween_game.logo" type="image" location="local" bytes="6325">halloween_game/logo.png</Asset>
+			<Asset id="image:halloween_game.pump_down" type="image" location="local" bytes="5932">halloween_game/pump_down.png</Asset>
+			<Asset id="image:halloween_game.pump_midle" type="image" location="local" bytes="5067">halloween_game/pump_midle.png</Asset>
+			<Asset id="image:halloween_game.pump_up" type="image" location="local" bytes="6116">halloween_game/pump_up.png</Asset>
+			<Asset id="image:halloween_game.window_1" type="image" location="local" bytes="3255">halloween_game/window_1.png</Asset>
+			<Asset id="image:halloween_game.window_2" type="image" location="local" bytes="1825">halloween_game/window_2.png</Asset>
+			<Asset id="image:halloween_game.window_3" type="image" location="local" bytes="4063">halloween_game/window_3.png</Asset>
+			<Asset id="image:halloween_game.window_4" type="image" location="local" bytes="3737">halloween_game/window_4.png</Asset>
+			<Asset id="image:halloween_game.window_5" type="image" location="local" bytes="2228">halloween_game/window_5.png</Asset>
+			<Asset id="image:halloween_game.window_6" type="image" location="local" bytes="2224">halloween_game/window_6.png</Asset>
+			<Asset id="image:halloween_game.window_7" type="image" location="local" bytes="2769">halloween_game/window_7.png</Asset>
+			<Asset id="image:halloween_game.window_8" type="image" location="local" bytes="4420">halloween_game/window_8.png</Asset>
+			<Asset id="image:halloween_game.window_9" type="image" location="local" bytes="1438">halloween_game/window_9.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_1" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_1.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_2" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_3" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_3.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_front-01-02" type="script" location="local" bytes="397">halloween_game/levels/level1/PurpleHouse_front-01-02.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_front-03" type="script" location="local" bytes="394">halloween_game/levels/level1/PurpleHouse_front-03.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.logo" type="script" location="local" bytes="378">halloween_game/levels/level1/logo.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.pump_down" type="script" location="local" bytes="383">halloween_game/levels/level1/pump_down.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.pump_midle" type="script" location="local" bytes="384">halloween_game/levels/level1/pump_midle.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.pump_up" type="script" location="local" bytes="381">halloween_game/levels/level1/pump_up.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_1" type="script" location="local" bytes="382">halloween_game/levels/level1/window_1.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_2" type="script" location="local" bytes="382">halloween_game/levels/level1/window_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_3" type="script" location="local" bytes="382">halloween_game/levels/level1/window_3.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_4" type="script" location="local" bytes="382">halloween_game/levels/level1/window_4.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_5" type="script" location="local" bytes="382">halloween_game/levels/level1/window_5.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_6" type="script" location="local" bytes="382">halloween_game/levels/level1/window_6.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_7" type="script" location="local" bytes="382">halloween_game/levels/level1/window_7.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_8" type="script" location="local" bytes="382">halloween_game/levels/level1/window_8.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_9" type="script" location="local" bytes="382">halloween_game/levels/level1/window_9.egc</Asset>
+			<Asset id="image:halloween_game.purple_play" type="image" location="local" bytes="56569">halloween_game/purple_play.png</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.AnimateMovement" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/AnimateMovement.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.purple_play" type="script" location="local" bytes="385">halloween_game/levels/level1/purple_play.egc</Asset>
+			<Asset id="image:halloween_game.witch_2.stick" type="image" location="local" bytes="5600">halloween_game/witch_2/stick.png</Asset>
+			<Asset id="image:halloween_game.witch_2.skirt" type="image" location="local" bytes="4571">halloween_game/witch_2/skirt.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth8" type="image" location="local" bytes="1527">halloween_game/witch_2/mouth8.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth7" type="image" location="local" bytes="1358">halloween_game/witch_2/mouth7.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth6" type="image" location="local" bytes="1430">halloween_game/witch_2/mouth6.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth5" type="image" location="local" bytes="1431">halloween_game/witch_2/mouth5.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth4" type="image" location="local" bytes="1198">halloween_game/witch_2/mouth4.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth3" type="image" location="local" bytes="1178">halloween_game/witch_2/mouth3.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth2" type="image" location="local" bytes="1296">halloween_game/witch_2/mouth2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth1" type="image" location="local" bytes="1504">halloween_game/witch_2/mouth1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.legb2" type="image" location="local" bytes="2984">halloween_game/witch_2/legb2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.legb1" type="image" location="local" bytes="2548">halloween_game/witch_2/legb1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.lega2" type="image" location="local" bytes="4006">halloween_game/witch_2/lega2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.lega1" type="image" location="local" bytes="2594">halloween_game/witch_2/lega1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.hat2" type="image" location="local" bytes="5006">halloween_game/witch_2/hat2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.hat1" type="image" location="local" bytes="5273">halloween_game/witch_2/hat1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.face" type="image" location="local" bytes="5717">halloween_game/witch_2/face.png</Asset>
+			<Asset id="image:halloween_game.witch_2.broom" type="image" location="local" bytes="5920">halloween_game/witch_2/broom.png</Asset>
+			<Asset id="image:halloween_game.witch_2.arm2" type="image" location="local" bytes="2861">halloween_game/witch_2/arm2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.arm1" type="image" location="local" bytes="3323">halloween_game/witch_2/arm1.png</Asset>
+			<Asset id="data:halloween_game.witch_2.witch_2" type="data" location="local" bytes="151892">halloween_game/witch_2/witch_2.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.witch_2" type="script" location="local" bytes="643">halloween_game/levels/level1/witch_2.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.LightsFlicker" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/LightsFlicker.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Cloud" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Cloud.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.HalloweenScene" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/HalloweenScene.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.PlayButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/PlayButton.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.GameManager" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/GameManager.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.border" type="script" location="local" bytes="380">halloween_game/levels/level1/border.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Banner" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Banner.egc</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_21" type="image" location="local" bytes="4912">halloween_game/ghost_black_a/ghost_21.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_20" type="image" location="local" bytes="4992">halloween_game/ghost_black_a/ghost_20.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_19" type="image" location="local" bytes="5054">halloween_game/ghost_black_a/ghost_19.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_18" type="image" location="local" bytes="4988">halloween_game/ghost_black_a/ghost_18.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_17" type="image" location="local" bytes="4872">halloween_game/ghost_black_a/ghost_17.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_16" type="image" location="local" bytes="4917">halloween_game/ghost_black_a/ghost_16.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_15" type="image" location="local" bytes="4933">halloween_game/ghost_black_a/ghost_15.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_14" type="image" location="local" bytes="5027">halloween_game/ghost_black_a/ghost_14.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_13" type="image" location="local" bytes="5060">halloween_game/ghost_black_a/ghost_13.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_12" type="image" location="local" bytes="5013">halloween_game/ghost_black_a/ghost_12.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_11" type="image" location="local" bytes="4894">halloween_game/ghost_black_a/ghost_11.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_a.ghost_black_a" type="data" location="local" bytes="5788">halloween_game/ghost_black_a/ghost_black_a.scml</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_B" type="image" location="local" bytes="2022">halloween_game/ghost_black_b/ghost_B.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_A" type="image" location="local" bytes="2070">halloween_game/ghost_black_b/ghost_A.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.EYES" type="image" location="local" bytes="1495">halloween_game/ghost_black_b/EYES.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.HAND1" type="image" location="local" bytes="1247">halloween_game/ghost_black_b/HAND1.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.GHOST3" type="image" location="local" bytes="1166">halloween_game/ghost_black_b/GHOST3.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_E" type="image" location="local" bytes="2092">halloween_game/ghost_black_b/ghost_E.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_D" type="image" location="local" bytes="2017">halloween_game/ghost_black_b/ghost_D.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_C" type="image" location="local" bytes="1991">halloween_game/ghost_black_b/ghost_C.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_b.ghost_black_b" type="data" location="local" bytes="11750">halloween_game/ghost_black_b/ghost_black_b.scml</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_5" type="image" location="local" bytes="2707">halloween_game/ghost_black_c/ghostaki_5.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_4" type="image" location="local" bytes="2742">halloween_game/ghost_black_c/ghostaki_4.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_3" type="image" location="local" bytes="2751">halloween_game/ghost_black_c/ghostaki_3.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_2" type="image" location="local" bytes="2807">halloween_game/ghost_black_c/ghostaki_2.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_1" type="image" location="local" bytes="2837">halloween_game/ghost_black_c/ghostaki_1.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_c.ghost_black_c" type="data" location="local" bytes="5239">halloween_game/ghost_black_c/ghost_black_c.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_a" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_a.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_b" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_b.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_c" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_c.egc</Asset>
+			<Asset id="image:halloween_game.shadow_blue" type="image" location="local" bytes="6451">halloween_game/shadow_blue.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.shadow_blue" type="script" location="local" bytes="385">halloween_game/levels/level1/shadow_blue.egc</Asset>
+			<Asset id="image:halloween_game.redSquare" type="image" location="local" bytes="199">halloween_game/redSquare.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.redSquare" type="script" location="local" bytes="383">halloween_game/levels/level1/redSquare.egc</Asset>
+			<Asset id="image:halloween_game.greenSquare" type="image" location="local" bytes="198">halloween_game/greenSquare.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.greenSquare" type="script" location="local" bytes="385">halloween_game/levels/level1/greenSquare.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Item" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Item.egc</Asset>
+			<Asset id="image:halloween_game.purple_bravo" type="image" location="local" bytes="157603">halloween_game/purple_bravo.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.purple_bravo" type="script" location="local" bytes="386">halloween_game/levels/level1/purple_bravo.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.WinScreen" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/WinScreen.egc</Asset>
+			<Asset id="sound:halloween_game.music" type="sound" location="local" bytes="1636370">halloween_game/music.mp3</Asset>
+			<Asset id="image:halloween_game.music" type="image" location="local" bytes="6213">halloween_game/music.png</Asset>
+			<Asset id="image:halloween_game.music_off" type="image" location="local" bytes="7425">halloween_game/music_off.png</Asset>
+			<Asset id="image:halloween_game.sound" type="image" location="local" bytes="6901">halloween_game/sound.png</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.AudioButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/AudioButton.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.VoiceButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/VoiceButton.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.music" type="script" location="local" bytes="379">halloween_game/levels/level1/music.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.sound" type="script" location="local" bytes="379">halloween_game/levels/level1/sound.egc</Asset>
+			<Asset id="sound:halloween_game.correct1" type="sound" location="local" bytes="34876">halloween_game/correct1.mp3</Asset>
+			<Asset id="sound:halloween_game.correct2" type="sound" location="local" bytes="15090">halloween_game/correct2.mp3</Asset>
+			<Asset id="sound:halloween_game.wrong" type="sound" location="local" bytes="16459">halloween_game/wrong.mp3</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_7" type="image" location="local" bytes="6306">halloween_game/bat_blue/bat_7.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_6" type="image" location="local" bytes="6355">halloween_game/bat_blue/bat_6.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_5" type="image" location="local" bytes="5528">halloween_game/bat_blue/bat_5.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_4" type="image" location="local" bytes="4615">halloween_game/bat_blue/bat_4.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_3" type="image" location="local" bytes="5410">halloween_game/bat_blue/bat_3.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_2" type="image" location="local" bytes="5753">halloween_game/bat_blue/bat_2.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_1" type="image" location="local" bytes="8553">halloween_game/bat_blue/bat_1.png</Asset>
+			<Asset id="data:halloween_game.bat_blue.bat_blue" type="data" location="local" bytes="4625">halloween_game/bat_blue/bat_blue.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.bat_blue" type="script" location="local" bytes="646">halloween_game/levels/level1/bat_blue.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.PolishController" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/PolishController.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.BatBehavior" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/BatBehavior.egc</Asset>
+			
+			<Asset id="image:halloween_game.cat2_black.cat_1" type="image" location="local" bytes="4006">halloween_game/cat2_blue/cat_1.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_2" type="image" location="local" bytes="2594">halloween_game/cat2_blue/cat_2.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_3" type="image" location="local" bytes="5006">halloween_game/cat2_blue/cat_3.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_4" type="image" location="local" bytes="5273">halloween_game/cat2_blue/cat_4.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_5" type="image" location="local" bytes="5717">halloween_game/cat2_blue/cat_5.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_6" type="image" location="local" bytes="5920">halloween_game/cat2_blue/cat_6.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_7" type="image" location="local" bytes="2861">halloween_game/cat2_blue/cat_7.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_8" type="image" location="local" bytes="3323">halloween_game/cat2_blue/cat_8.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_9" type="image" location="local" bytes="3323">halloween_game/cat2_blue/cat_9.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_10" type="image" location="local" bytes="3323">halloween_game/cat2_blue/cat_10.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_11" type="image" location="local" bytes="3323">halloween_game/cat2_blue/cat_11.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_body" type="image" location="local" bytes="3323">halloween_game/cat2_blue/cat_body.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_1" type="image" location="local" bytes="3323">halloween_game/cat2_blue/eyes_1.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_2" type="image" location="local" bytes="3323">halloween_game/cat2_blue/eyes_2.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_3" type="image" location="local" bytes="3323">halloween_game/cat2_blue/eyes_3.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_4" type="image" location="local" bytes="3323">halloween_game/cat2_blue/eyes_4.png</Asset>
+			
+			<Asset id="data:halloween_game.cat2_black.cat_2" type="data" location="local" bytes="151892">halloween_game/cat2_black/cat_2.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.Cat" type="script" location="local" bytes="643">halloween_game/levels/level1/Cat.egc</Asset>
+			
+			<Asset id="sound:halloween_game.thunder" type="sound" location="local" bytes="16459">halloween_game/thunder.mp3</Asset>
+			<Asset id="sound:halloween_game.witchLaugh" type="sound" location="local" bytes="16459">halloween_game/witchLaugh.mp3</Asset>
+			<Asset id="sound:halloween_game.whoosh" type="sound" location="local" bytes="16459">halloween_game/whoosh.mp3</Asset>
+			<Asset id="sound:halloween_game.winSound" type="sound" location="local" bytes="16459">halloween_game/winSound.mp3</Asset>
+			<Asset id="sound:halloween_game.collectPop" type="sound" location="local" bytes="16459">halloween_game/collectPop.mp3</Asset>
+			
+			<Asset id="sound:halloween_game.random1" type="sound" location="local" bytes="16459">halloween_game/random1.mp3</Asset>
+			<Asset id="sound:halloween_game.random2" type="sound" location="local" bytes="16459">halloween_game/random2.mp3</Asset>
+			<Asset id="sound:halloween_game.random3" type="sound" location="local" bytes="16459">halloween_game/random3.mp3</Asset>
+			<Asset id="sound:halloween_game.random4" type="sound" location="local" bytes="16459">halloween_game/random4.mp3</Asset>
+			<Asset id="sound:halloween_game.random5" type="sound" location="local" bytes="16459">halloween_game/random5.mp3</Asset>
+			<Asset id="sound:halloween_game.random6" type="sound" location="local" bytes="16459">halloween_game/random6.mp3</Asset>
+			<Asset id="sound:halloween_game.random7" type="sound" location="local" bytes="16459">halloween_game/random7.mp3</Asset>
+			<Asset id="sound:halloween_game.random8" type="sound" location="local" bytes="16459">halloween_game/random8.mp3</Asset>
+			<Asset id="sound:halloween_game.random9" type="sound" location="local" bytes="16459">halloween_game/random9.mp3</Asset>
+			
+			
+			<Asset id="sound:halloween_game.vres" type="sound" location="local" bytes="16459">halloween_game/vres_5.mp3</Asset>
+			<Asset id="sound:halloween_game.win_high" type="sound" location="local" bytes="16459">halloween_game/win_high.mp3</Asset>
+			<Asset id="sound:halloween_game.win_medium" type="sound" location="local" bytes="16459">halloween_game/win_medium.mp3</Asset>
+			<Asset id="sound:halloween_game.win_low" type="sound" location="local" bytes="16459">halloween_game/win_low.mp3</Asset>
+			<Asset id="sound:halloween_game.den_exeis_vrei" type="sound" location="local" bytes="16459">halloween_game/den_exeis_vrei.mp3</Asset>
+		</Module>
+		
+		<!-- Easy -->
+		<Module id="Level2" executeEntity="none">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Ace</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
+				<RequiresModule>Common</RequiresModule>
+			</Requires>
+			<Asset id="script:lib.behaviors.2d.Sprite" type="script" location="local" bytes="583">lib/behaviors/2d/Sprite.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.Physics" type="script" location="local" bytes="1351">lib/behaviors/2d/Physics.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.ScenePhysics" type="script" location="local" bytes="466">lib/behaviors/2d/ScenePhysics.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.SceneCamera" type="script" location="local" bytes="755">lib/behaviors/2d/SceneCamera.egc</Asset>
+			<Asset id="script:halloween_game.levels.level2.View" type="script" location="local" bytes="622">halloween_game/levels/level2/View.egc</Asset>
+			<Asset id="script:halloween_game.levels.level2.Scene" type="script" location="local" bytes="115">halloween_game/levels/level2/Scene.egc</Asset>
+			<Asset id="script:halloween_game.levels.level2.Camera" type="script" location="local" bytes="117">halloween_game/levels/level2/Camera.egc</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_back-01" type="image" location="local" bytes="296903">halloween_game/orange/OrangeHouse_back-01.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_back-01" type="script" location="local" bytes="393">halloween_game/levels/level1/PurpleHouse_back-01.egc</Asset>
+			<Asset id="image:halloween_game.cloud_1" type="image" location="local" bytes="9361">halloween_game/orange/cloudo_1.png</Asset>
+			<Asset id="image:halloween_game.cloud_2" type="image" location="local" bytes="7479">halloween_game/orange/cloudo_2.png</Asset>
+			<Asset id="image:halloween_game.cloud_3" type="image" location="local" bytes="7019">halloween_game/orange/cloudo_3.png</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_front-01-02" type="image" location="local" bytes="272763">halloween_game/orange/OrangeHouse_front-01.png</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_front-03" type="image" location="local" bytes="21859">halloween_game/orange/OrangeHouse_front-02.png</Asset>
+			<Asset id="image:halloween_game.border" type="image" location="local" bytes="39929">halloween_game/orange/border_orange.png</Asset>
+			<Asset id="image:halloween_game.logo" type="image" location="local" bytes="6325">halloween_game/logo.png</Asset>
+			<Asset id="image:halloween_game.pump_down" type="image" location="local" bytes="5932">halloween_game/orange/pumpk_left.png</Asset>
+			<Asset id="image:halloween_game.pump_midle" type="image" location="local" bytes="5067">halloween_game/orange/pumpk_midle.png</Asset>
+			<Asset id="image:halloween_game.pump_up" type="image" location="local" bytes="6116">halloween_game/orange/pumpk_right.png</Asset>
+			<Asset id="image:halloween_game.window_1" type="image" location="local" bytes="3255">halloween_game/orange/wind_1.png</Asset>
+			<Asset id="image:halloween_game.window_2" type="image" location="local" bytes="1825">halloween_game/orange/wind_2.png</Asset>
+			<Asset id="image:halloween_game.window_3" type="image" location="local" bytes="4063">halloween_game/orange/wind_3.png</Asset>
+			<Asset id="image:halloween_game.window_4" type="image" location="local" bytes="3737">halloween_game/orange/wind_4.png</Asset>
+			<Asset id="image:halloween_game.window_5" type="image" location="local" bytes="2228">halloween_game/orange/wind_5.png</Asset>
+			<Asset id="image:halloween_game.window_6" type="image" location="local" bytes="2228">halloween_game/orange/wind_6.png</Asset>
+			<Asset id="image:halloween_game.door_2" type="image" location="local" bytes="2228">halloween_game/orange/door_2.png</Asset>
+			<Asset id="image:halloween_game.door_3" type="image" location="local" bytes="2228">halloween_game/orange/door_3.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_1" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_1.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_2" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_3" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_3.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_front-01-02" type="script" location="local" bytes="397">halloween_game/levels/level1/PurpleHouse_front-01-02.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_front-03" type="script" location="local" bytes="394">halloween_game/levels/level1/PurpleHouse_front-03.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.logo" type="script" location="local" bytes="378">halloween_game/levels/level1/logo.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.pump_down" type="script" location="local" bytes="383">halloween_game/levels/level1/pump_down.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.pump_midle" type="script" location="local" bytes="384">halloween_game/levels/level1/pump_midle.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.pump_up" type="script" location="local" bytes="381">halloween_game/levels/level1/pump_up.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_1" type="script" location="local" bytes="382">halloween_game/levels/level1/window_1.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_2" type="script" location="local" bytes="382">halloween_game/levels/level1/window_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_3" type="script" location="local" bytes="382">halloween_game/levels/level1/window_3.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_4" type="script" location="local" bytes="382">halloween_game/levels/level1/window_4.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_5" type="script" location="local" bytes="382">halloween_game/levels/level1/window_5.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_6" type="script" location="local" bytes="382">halloween_game/levels/level1/window_6.egc</Asset>
+			<Asset id="script:halloween_game.levels.level2.door_2" type="script" location="local" bytes="382">halloween_game/levels/level2/door_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level2.door_3" type="script" location="local" bytes="382">halloween_game/levels/level2/door_3.egc</Asset>
+			<Asset id="image:halloween_game.purple_play" type="image" location="local" bytes="56569">halloween_game/orange/o_play_button.png</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.AnimateMovement" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/AnimateMovement.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.purple_play" type="script" location="local" bytes="385">halloween_game/levels/level1/purple_play.egc</Asset>
+			<Asset id="image:halloween_game.witch_2.stick" type="image" location="local" bytes="5600">halloween_game/witch_2/stick.png</Asset>
+			<Asset id="image:halloween_game.witch_2.skirt" type="image" location="local" bytes="4571">halloween_game/witch_2/skirt.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth8" type="image" location="local" bytes="1527">halloween_game/witch_2/mouth8.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth7" type="image" location="local" bytes="1358">halloween_game/witch_2/mouth7.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth6" type="image" location="local" bytes="1430">halloween_game/witch_2/mouth6.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth5" type="image" location="local" bytes="1431">halloween_game/witch_2/mouth5.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth4" type="image" location="local" bytes="1198">halloween_game/witch_2/mouth4.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth3" type="image" location="local" bytes="1178">halloween_game/witch_2/mouth3.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth2" type="image" location="local" bytes="1296">halloween_game/witch_2/mouth2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth1" type="image" location="local" bytes="1504">halloween_game/witch_2/mouth1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.legb2" type="image" location="local" bytes="2984">halloween_game/witch_2/legb2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.legb1" type="image" location="local" bytes="2548">halloween_game/witch_2/legb1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.lega2" type="image" location="local" bytes="4006">halloween_game/witch_2/lega2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.lega1" type="image" location="local" bytes="2594">halloween_game/witch_2/lega1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.hat2" type="image" location="local" bytes="5006">halloween_game/witch_2/hat2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.hat1" type="image" location="local" bytes="5273">halloween_game/witch_2/hat1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.face" type="image" location="local" bytes="5717">halloween_game/witch_2/face.png</Asset>
+			<Asset id="image:halloween_game.witch_2.broom" type="image" location="local" bytes="5920">halloween_game/witch_2/broom.png</Asset>
+			<Asset id="image:halloween_game.witch_2.arm2" type="image" location="local" bytes="2861">halloween_game/witch_2/arm2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.arm1" type="image" location="local" bytes="3323">halloween_game/witch_2/arm1.png</Asset>
+			<Asset id="data:halloween_game.witch_2.witch_2" type="data" location="local" bytes="151892">halloween_game/witch_2/witch_2.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.witch_2" type="script" location="local" bytes="643">halloween_game/levels/level1/witch_2.egc</Asset>
+			
+			<Asset id="image:halloween_game.spider.body" type="image" location="local" bytes="4006">halloween_game/spider/body.png</Asset>
+			<Asset id="image:halloween_game.spider.eye1" type="image" location="local" bytes="2594">halloween_game/spider/eye1.png</Asset>
+			<Asset id="image:halloween_game.spider.eye2" type="image" location="local" bytes="5006">halloween_game/spider/eye2.png</Asset>
+			<Asset id="image:halloween_game.spider.leg1" type="image" location="local" bytes="5273">halloween_game/spider/leg1.png</Asset>
+			<Asset id="image:halloween_game.spider.leg2" type="image" location="local" bytes="5717">halloween_game/spider/leg2.png</Asset>
+			<Asset id="image:halloween_game.spider.leg3" type="image" location="local" bytes="5920">halloween_game/spider/leg3.png</Asset>
+			<Asset id="image:halloween_game.spider.spider" type="image" location="local" bytes="2861">halloween_game/spider/spider.png</Asset>
+			<Asset id="image:halloween_game.spider.web" type="image" location="local" bytes="3323">halloween_game/spider/web.png</Asset>
+			<Asset id="data:halloween_game.spider.spider" type="data" location="local" bytes="151892">halloween_game/spider/spider.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.Spider" type="script" location="local" bytes="643">halloween_game/levels/level1/Spider.egc</Asset>
+			
+			<Asset id="script:halloween_game.mylib.behaviors.LightsFlicker" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/LightsFlicker.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Cloud" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Cloud.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.HalloweenScene" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/HalloweenScene.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.PlayButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/PlayButton.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.GameManager" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/GameManager.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.border" type="script" location="local" bytes="380">halloween_game/levels/level1/border.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Banner" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Banner.egc</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_21" type="image" location="local" bytes="4912">halloween_game/ghost_black_a/ghost_21.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_20" type="image" location="local" bytes="4992">halloween_game/ghost_black_a/ghost_20.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_19" type="image" location="local" bytes="5054">halloween_game/ghost_black_a/ghost_19.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_18" type="image" location="local" bytes="4988">halloween_game/ghost_black_a/ghost_18.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_17" type="image" location="local" bytes="4872">halloween_game/ghost_black_a/ghost_17.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_16" type="image" location="local" bytes="4917">halloween_game/ghost_black_a/ghost_16.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_15" type="image" location="local" bytes="4933">halloween_game/ghost_black_a/ghost_15.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_14" type="image" location="local" bytes="5027">halloween_game/ghost_black_a/ghost_14.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_13" type="image" location="local" bytes="5060">halloween_game/ghost_black_a/ghost_13.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_12" type="image" location="local" bytes="5013">halloween_game/ghost_black_a/ghost_12.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_11" type="image" location="local" bytes="4894">halloween_game/ghost_black_a/ghost_11.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_a.ghost_black_a" type="data" location="local" bytes="5788">halloween_game/ghost_black_a/ghost_black_a.scml</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_B" type="image" location="local" bytes="2022">halloween_game/ghost_black_b/ghost_B.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_A" type="image" location="local" bytes="2070">halloween_game/ghost_black_b/ghost_A.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.EYES" type="image" location="local" bytes="1495">halloween_game/ghost_black_b/EYES.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.HAND1" type="image" location="local" bytes="1247">halloween_game/ghost_black_b/HAND1.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.GHOST3" type="image" location="local" bytes="1166">halloween_game/ghost_black_b/GHOST3.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_E" type="image" location="local" bytes="2092">halloween_game/ghost_black_b/ghost_E.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_D" type="image" location="local" bytes="2017">halloween_game/ghost_black_b/ghost_D.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_C" type="image" location="local" bytes="1991">halloween_game/ghost_black_b/ghost_C.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_b.ghost_black_b" type="data" location="local" bytes="11750">halloween_game/ghost_black_b/ghost_black_b.scml</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_5" type="image" location="local" bytes="2707">halloween_game/ghost_black_c/ghostaki_5.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_4" type="image" location="local" bytes="2742">halloween_game/ghost_black_c/ghostaki_4.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_3" type="image" location="local" bytes="2751">halloween_game/ghost_black_c/ghostaki_3.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_2" type="image" location="local" bytes="2807">halloween_game/ghost_black_c/ghostaki_2.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_1" type="image" location="local" bytes="2837">halloween_game/ghost_black_c/ghostaki_1.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_c.ghost_black_c" type="data" location="local" bytes="5239">halloween_game/ghost_black_c/ghost_black_c.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_a" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_a.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_b" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_b.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_c" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_c.egc</Asset>
+			<Asset id="image:halloween_game.shadow_blue" type="image" location="local" bytes="6451">halloween_game/shadow_black.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.shadow_blue" type="script" location="local" bytes="385">halloween_game/levels/level1/shadow_blue.egc</Asset>
+			<Asset id="image:halloween_game.redSquare" type="image" location="local" bytes="199">halloween_game/redSquare.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.redSquare" type="script" location="local" bytes="383">halloween_game/levels/level1/redSquare.egc</Asset>
+			<Asset id="image:halloween_game.greenSquare" type="image" location="local" bytes="198">halloween_game/greenSquare.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.greenSquare" type="script" location="local" bytes="385">halloween_game/levels/level1/greenSquare.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Item" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Item.egc</Asset>
+			<Asset id="image:halloween_game.purple_bravo" type="image" location="local" bytes="157603">halloween_game/purple_bravo.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.purple_bravo" type="script" location="local" bytes="386">halloween_game/levels/level1/purple_bravo.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.WinScreen" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/WinScreen.egc</Asset>
+			<Asset id="sound:halloween_game.music" type="sound" location="local" bytes="1636370">halloween_game/music.mp3</Asset>
+			<Asset id="image:halloween_game.music" type="image" location="local" bytes="6213">halloween_game/orange/o_music.png</Asset>
+			<Asset id="image:halloween_game.music_off" type="image" location="local" bytes="7425">halloween_game/orange/o_music_off.png</Asset>
+			<Asset id="image:halloween_game.sound" type="image" location="local" bytes="6901">halloween_game/orange/o_sound.png</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.AudioButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/AudioButton.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.VoiceButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/VoiceButton.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.music" type="script" location="local" bytes="379">halloween_game/levels/level1/music.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.sound" type="script" location="local" bytes="379">halloween_game/levels/level1/sound.egc</Asset>
+			<Asset id="sound:halloween_game.correct1" type="sound" location="local" bytes="34876">halloween_game/correct1.mp3</Asset>
+			<Asset id="sound:halloween_game.correct2" type="sound" location="local" bytes="15090">halloween_game/correct2.mp3</Asset>
+			<Asset id="sound:halloween_game.wrong" type="sound" location="local" bytes="16459">halloween_game/wrong.mp3</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_7" type="image" location="local" bytes="6306">halloween_game/bat_black/bat_7.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_6" type="image" location="local" bytes="6355">halloween_game/bat_black/bat_6.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_5" type="image" location="local" bytes="5528">halloween_game/bat_black/bat_5.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_4" type="image" location="local" bytes="4615">halloween_game/bat_black/bat_4.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_3" type="image" location="local" bytes="5410">halloween_game/bat_black/bat_3.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_2" type="image" location="local" bytes="5753">halloween_game/bat_black/bat_2.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_1" type="image" location="local" bytes="8553">halloween_game/bat_black/bat_1.png</Asset>
+			<Asset id="data:halloween_game.bat_blue.bat_blue" type="data" location="local" bytes="4625">halloween_game/bat_blue/bat_blue.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.bat_blue" type="script" location="local" bytes="646">halloween_game/levels/level1/bat_blue.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.PolishController" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/PolishController.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.BatBehavior" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/BatBehavior.egc</Asset>
+			
+			<Asset id="image:halloween_game.cat2_black.cat_1" type="image" location="local" bytes="4006">halloween_game/cat2_black/cat_1.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_2" type="image" location="local" bytes="2594">halloween_game/cat2_black/cat_2.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_3" type="image" location="local" bytes="5006">halloween_game/cat2_black/cat_3.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_4" type="image" location="local" bytes="5273">halloween_game/cat2_black/cat_4.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_5" type="image" location="local" bytes="5717">halloween_game/cat2_black/cat_5.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_6" type="image" location="local" bytes="5920">halloween_game/cat2_black/cat_6.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_7" type="image" location="local" bytes="2861">halloween_game/cat2_black/cat_7.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_8" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_8.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_9" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_9.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_10" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_10.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_11" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_11.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_body" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_body.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_1" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_1.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_2" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_2.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_3" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_3.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_4" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_4.png</Asset>
+			<Asset id="data:halloween_game.cat2_black.cat_2" type="data" location="local" bytes="151892">halloween_game/cat2_black/cat_2.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.Cat" type="script" location="local" bytes="643">halloween_game/levels/level1/Cat.egc</Asset>
+			
+			<Asset id="sound:halloween_game.thunder" type="sound" location="local" bytes="16459">halloween_game/thunder.mp3</Asset>
+			<Asset id="sound:halloween_game.witchLaugh" type="sound" location="local" bytes="16459">halloween_game/witchLaugh.mp3</Asset>
+			<Asset id="sound:halloween_game.whoosh" type="sound" location="local" bytes="16459">halloween_game/whoosh.mp3</Asset>
+			<Asset id="sound:halloween_game.winSound" type="sound" location="local" bytes="16459">halloween_game/winSound.mp3</Asset>
+			<Asset id="sound:halloween_game.collectPop" type="sound" location="local" bytes="16459">halloween_game/collectPop.mp3</Asset>
+			
+			<Asset id="sound:halloween_game.random1" type="sound" location="local" bytes="16459">halloween_game/random1.mp3</Asset>
+			<Asset id="sound:halloween_game.random2" type="sound" location="local" bytes="16459">halloween_game/random2.mp3</Asset>
+			<Asset id="sound:halloween_game.random3" type="sound" location="local" bytes="16459">halloween_game/random3.mp3</Asset>
+			<Asset id="sound:halloween_game.random4" type="sound" location="local" bytes="16459">halloween_game/random4.mp3</Asset>
+			<Asset id="sound:halloween_game.random5" type="sound" location="local" bytes="16459">halloween_game/random5.mp3</Asset>
+			<Asset id="sound:halloween_game.random6" type="sound" location="local" bytes="16459">halloween_game/random6.mp3</Asset>
+			<Asset id="sound:halloween_game.random7" type="sound" location="local" bytes="16459">halloween_game/random7.mp3</Asset>
+			<Asset id="sound:halloween_game.random8" type="sound" location="local" bytes="16459">halloween_game/random8.mp3</Asset>
+			<Asset id="sound:halloween_game.random9" type="sound" location="local" bytes="16459">halloween_game/random9.mp3</Asset>
+			
+			
+			<Asset id="sound:halloween_game.vres" type="sound" location="local" bytes="16459">halloween_game/vres_3.mp3</Asset>
+			<Asset id="sound:halloween_game.win_high" type="sound" location="local" bytes="16459">halloween_game/win_high.mp3</Asset>
+			<Asset id="sound:halloween_game.win_medium" type="sound" location="local" bytes="16459">halloween_game/win_medium.mp3</Asset>
+			<Asset id="sound:halloween_game.win_low" type="sound" location="local" bytes="16459">halloween_game/win_low.mp3</Asset>
+			<Asset id="sound:halloween_game.den_exeis_vrei" type="sound" location="local" bytes="16459">halloween_game/den_exeis_vrei.mp3</Asset>
+		</Module>
+		
+		<!-- Hard -->
+		<Module id="Level3" executeEntity="none">
+			<Requires>
+				<RequiresModule>Std:Base</RequiresModule>
+				<RequiresModule>Std:Loader</RequiresModule>
+				<RequiresModule>Std:Ace</RequiresModule>
+				<RequiresModule>Std:Rest</RequiresModule>
+				<RequiresModule>Common</RequiresModule>
+			</Requires>
+			<Asset id="script:lib.behaviors.2d.Sprite" type="script" location="local" bytes="583">lib/behaviors/2d/Sprite.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.Physics" type="script" location="local" bytes="1351">lib/behaviors/2d/Physics.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.ScenePhysics" type="script" location="local" bytes="466">lib/behaviors/2d/ScenePhysics.egc</Asset>
+			<Asset id="script:lib.behaviors.2d.SceneCamera" type="script" location="local" bytes="755">lib/behaviors/2d/SceneCamera.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.View" type="script" location="local" bytes="622">halloween_game/levels/level3/View.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.Scene" type="script" location="local" bytes="115">halloween_game/levels/level3/Scene.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.Camera" type="script" location="local" bytes="117">halloween_game/levels/level3/Camera.egc</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_back-01" type="image" location="local" bytes="296903">halloween_game/green/GreenHouse_back.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_back-01" type="script" location="local" bytes="393">halloween_game/levels/level1/PurpleHouse_back-01.egc</Asset>
+			<Asset id="image:halloween_game.cloud_1" type="image" location="local" bytes="9361">halloween_game/green/cloudi_1.png</Asset>
+			<Asset id="image:halloween_game.cloud_2" type="image" location="local" bytes="7479">halloween_game/green/cloudi_2.png</Asset>
+			<Asset id="image:halloween_game.cloud_3" type="image" location="local" bytes="7019">halloween_game/green/cloudi_3.png</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_front-01-02" type="image" location="local" bytes="272763">halloween_game/green/GreenHouse_front.png</Asset>
+			<Asset id="image:halloween_game.PurpleHouse_front-03" type="image" location="local" bytes="21859">halloween_game/green/GreenHouse_front-02.png</Asset>
+			<Asset id="image:halloween_game.border" type="image" location="local" bytes="39929">halloween_game/green/border_green.png</Asset>
+			<Asset id="image:halloween_game.logo" type="image" location="local" bytes="6325">halloween_game/logo.png</Asset>
+			<Asset id="image:halloween_game.window_1" type="image" location="local" bytes="3255">halloween_game/green/windo_1.png</Asset>
+			<Asset id="image:halloween_game.window_2" type="image" location="local" bytes="1825">halloween_game/green/windo_2.png</Asset>
+			<Asset id="image:halloween_game.window_3" type="image" location="local" bytes="4063">halloween_game/green/windo_3.png</Asset>
+			<Asset id="image:halloween_game.window_4" type="image" location="local" bytes="3737">halloween_game/green/windo_4.png</Asset>
+			<Asset id="image:halloween_game.window_5" type="image" location="local" bytes="2228">halloween_game/green/windo_5.png</Asset>
+			<Asset id="image:halloween_game.window_6" type="image" location="local" bytes="2224">halloween_game/green/windo_6.png</Asset>
+			<Asset id="image:halloween_game.window_7" type="image" location="local" bytes="2769">halloween_game/green/windo_7.png</Asset>
+			<Asset id="image:halloween_game.window_8" type="image" location="local" bytes="4420">halloween_game/green/windo_8.png</Asset>
+			<Asset id="image:halloween_game.window_9" type="image" location="local" bytes="1438">halloween_game/green/windo_9.png</Asset>
+			<Asset id="image:halloween_game.window_10" type="image" location="local" bytes="1438">halloween_game/green/windo_10.png</Asset>
+			<Asset id="image:halloween_game.window_11" type="image" location="local" bytes="1438">halloween_game/green/windo_11.png</Asset>
+			<Asset id="image:halloween_game.window_12" type="image" location="local" bytes="1438">halloween_game/green/windo_12.png</Asset>
+			<Asset id="image:halloween_game.window_13" type="image" location="local" bytes="1438">halloween_game/green/windo_13.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_1" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_1.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_2" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.cloud_3" type="script" location="local" bytes="381">halloween_game/levels/level1/cloud_3.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_front-01-02" type="script" location="local" bytes="397">halloween_game/levels/level1/PurpleHouse_front-01-02.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.PurpleHouse_front-03" type="script" location="local" bytes="394">halloween_game/levels/level1/PurpleHouse_front-03.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.logo" type="script" location="local" bytes="378">halloween_game/levels/level1/logo.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_1" type="script" location="local" bytes="382">halloween_game/levels/level1/window_1.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_2" type="script" location="local" bytes="382">halloween_game/levels/level1/window_2.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_3" type="script" location="local" bytes="382">halloween_game/levels/level1/window_3.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_4" type="script" location="local" bytes="382">halloween_game/levels/level1/window_4.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_5" type="script" location="local" bytes="382">halloween_game/levels/level1/window_5.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_6" type="script" location="local" bytes="382">halloween_game/levels/level1/window_6.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_7" type="script" location="local" bytes="382">halloween_game/levels/level1/window_7.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_8" type="script" location="local" bytes="382">halloween_game/levels/level1/window_8.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.window_9" type="script" location="local" bytes="382">halloween_game/levels/level1/window_9.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.window_10" type="script" location="local" bytes="382">halloween_game/levels/level3/window_10.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.window_11" type="script" location="local" bytes="382">halloween_game/levels/level3/window_11.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.window_12" type="script" location="local" bytes="382">halloween_game/levels/level3/window_12.egc</Asset>
+			<Asset id="script:halloween_game.levels.level3.window_13" type="script" location="local" bytes="382">halloween_game/levels/level3/window_13.egc</Asset>
+			<Asset id="image:halloween_game.purple_play" type="image" location="local" bytes="56569">halloween_game/green/green_play.png</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.AnimateMovement" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/AnimateMovement.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.purple_play" type="script" location="local" bytes="385">halloween_game/levels/level1/purple_play.egc</Asset>
+			<Asset id="image:halloween_game.witch_2.stick" type="image" location="local" bytes="5600">halloween_game/witch_2/stick.png</Asset>
+			<Asset id="image:halloween_game.witch_2.skirt" type="image" location="local" bytes="4571">halloween_game/witch_2/skirt.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth8" type="image" location="local" bytes="1527">halloween_game/witch_2/mouth8.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth7" type="image" location="local" bytes="1358">halloween_game/witch_2/mouth7.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth6" type="image" location="local" bytes="1430">halloween_game/witch_2/mouth6.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth5" type="image" location="local" bytes="1431">halloween_game/witch_2/mouth5.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth4" type="image" location="local" bytes="1198">halloween_game/witch_2/mouth4.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth3" type="image" location="local" bytes="1178">halloween_game/witch_2/mouth3.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth2" type="image" location="local" bytes="1296">halloween_game/witch_2/mouth2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.mouth1" type="image" location="local" bytes="1504">halloween_game/witch_2/mouth1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.legb2" type="image" location="local" bytes="2984">halloween_game/witch_2/legb2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.legb1" type="image" location="local" bytes="2548">halloween_game/witch_2/legb1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.lega2" type="image" location="local" bytes="4006">halloween_game/witch_2/lega2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.lega1" type="image" location="local" bytes="2594">halloween_game/witch_2/lega1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.hat2" type="image" location="local" bytes="5006">halloween_game/witch_2/hat2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.hat1" type="image" location="local" bytes="5273">halloween_game/witch_2/hat1.png</Asset>
+			<Asset id="image:halloween_game.witch_2.face" type="image" location="local" bytes="5717">halloween_game/witch_2/face.png</Asset>
+			<Asset id="image:halloween_game.witch_2.broom" type="image" location="local" bytes="5920">halloween_game/witch_2/broom.png</Asset>
+			<Asset id="image:halloween_game.witch_2.arm2" type="image" location="local" bytes="2861">halloween_game/witch_2/arm2.png</Asset>
+			<Asset id="image:halloween_game.witch_2.arm1" type="image" location="local" bytes="3323">halloween_game/witch_2/arm1.png</Asset>
+			<Asset id="data:halloween_game.witch_2.witch_2" type="data" location="local" bytes="151892">halloween_game/witch_2/witch_2.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.witch_2" type="script" location="local" bytes="643">halloween_game/levels/level1/witch_2.egc</Asset>
+			
+			<Asset id="image:halloween_game.spider.body" type="image" location="local" bytes="4006">halloween_game/spider/body.png</Asset>
+			<Asset id="image:halloween_game.spider.eye1" type="image" location="local" bytes="2594">halloween_game/spider/eye1.png</Asset>
+			<Asset id="image:halloween_game.spider.eye2" type="image" location="local" bytes="5006">halloween_game/spider/eye2.png</Asset>
+			<Asset id="image:halloween_game.spider.leg1" type="image" location="local" bytes="5273">halloween_game/spider/leg1.png</Asset>
+			<Asset id="image:halloween_game.spider.leg2" type="image" location="local" bytes="5717">halloween_game/spider/leg2.png</Asset>
+			<Asset id="image:halloween_game.spider.leg3" type="image" location="local" bytes="5920">halloween_game/spider/leg3.png</Asset>
+			<Asset id="image:halloween_game.spider.spider" type="image" location="local" bytes="2861">halloween_game/spider/spider.png</Asset>
+			<Asset id="image:halloween_game.spider.web" type="image" location="local" bytes="3323">halloween_game/spider/web.png</Asset>
+			<Asset id="data:halloween_game.spider.spider" type="data" location="local" bytes="151892">halloween_game/spider/spider.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.Spider" type="script" location="local" bytes="643">halloween_game/levels/level1/Spider.egc</Asset>
+			
+			<Asset id="script:halloween_game.mylib.behaviors.LightsFlicker" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/LightsFlicker.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Cloud" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Cloud.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.HalloweenScene" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/HalloweenScene.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.PlayButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/PlayButton.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.GameManager" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/GameManager.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.border" type="script" location="local" bytes="380">halloween_game/levels/level1/border.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Banner" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Banner.egc</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_21" type="image" location="local" bytes="4912">halloween_game/ghost_black_a/ghost_21.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_20" type="image" location="local" bytes="4992">halloween_game/ghost_black_a/ghost_20.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_19" type="image" location="local" bytes="5054">halloween_game/ghost_black_a/ghost_19.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_18" type="image" location="local" bytes="4988">halloween_game/ghost_black_a/ghost_18.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_17" type="image" location="local" bytes="4872">halloween_game/ghost_black_a/ghost_17.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_16" type="image" location="local" bytes="4917">halloween_game/ghost_black_a/ghost_16.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_15" type="image" location="local" bytes="4933">halloween_game/ghost_black_a/ghost_15.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_14" type="image" location="local" bytes="5027">halloween_game/ghost_black_a/ghost_14.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_13" type="image" location="local" bytes="5060">halloween_game/ghost_black_a/ghost_13.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_12" type="image" location="local" bytes="5013">halloween_game/ghost_black_a/ghost_12.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_a.ghost_11" type="image" location="local" bytes="4894">halloween_game/ghost_black_a/ghost_11.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_a.ghost_black_a" type="data" location="local" bytes="5788">halloween_game/ghost_black_a/ghost_black_a.scml</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_B" type="image" location="local" bytes="2022">halloween_game/ghost_black_b/ghost_B.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_A" type="image" location="local" bytes="2070">halloween_game/ghost_black_b/ghost_A.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.EYES" type="image" location="local" bytes="1495">halloween_game/ghost_black_b/EYES.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.HAND1" type="image" location="local" bytes="1247">halloween_game/ghost_black_b/HAND1.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.GHOST3" type="image" location="local" bytes="1166">halloween_game/ghost_black_b/GHOST3.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_E" type="image" location="local" bytes="2092">halloween_game/ghost_black_b/ghost_E.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_D" type="image" location="local" bytes="2017">halloween_game/ghost_black_b/ghost_D.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_b.ghost_C" type="image" location="local" bytes="1991">halloween_game/ghost_black_b/ghost_C.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_b.ghost_black_b" type="data" location="local" bytes="11750">halloween_game/ghost_black_b/ghost_black_b.scml</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_5" type="image" location="local" bytes="2707">halloween_game/ghost_black_c/ghostaki_5.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_4" type="image" location="local" bytes="2742">halloween_game/ghost_black_c/ghostaki_4.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_3" type="image" location="local" bytes="2751">halloween_game/ghost_black_c/ghostaki_3.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_2" type="image" location="local" bytes="2807">halloween_game/ghost_black_c/ghostaki_2.png</Asset>
+			<Asset id="image:halloween_game.ghost_black_c.ghostaki_1" type="image" location="local" bytes="2837">halloween_game/ghost_black_c/ghostaki_1.png</Asset>
+			<Asset id="data:halloween_game.ghost_black_c.ghost_black_c" type="data" location="local" bytes="5239">halloween_game/ghost_black_c/ghost_black_c.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_a" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_a.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_b" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_b.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.ghost_black_c" type="script" location="local" bytes="661">halloween_game/levels/level1/ghost_black_c.egc</Asset>
+			<Asset id="image:halloween_game.shadow_blue" type="image" location="local" bytes="6451">halloween_game/shadow_black.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.shadow_blue" type="script" location="local" bytes="385">halloween_game/levels/level1/shadow_blue.egc</Asset>
+			<Asset id="image:halloween_game.redSquare" type="image" location="local" bytes="199">halloween_game/redSquare.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.redSquare" type="script" location="local" bytes="383">halloween_game/levels/level1/redSquare.egc</Asset>
+			<Asset id="image:halloween_game.greenSquare" type="image" location="local" bytes="198">halloween_game/greenSquare.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.greenSquare" type="script" location="local" bytes="385">halloween_game/levels/level1/greenSquare.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.Item" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Item.egc</Asset>
+			<Asset id="image:halloween_game.purple_bravo" type="image" location="local" bytes="157603">halloween_game/purple_bravo.png</Asset>
+			<Asset id="script:halloween_game.levels.level1.purple_bravo" type="script" location="local" bytes="386">halloween_game/levels/level1/purple_bravo.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.WinScreen" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/WinScreen.egc</Asset>
+			<Asset id="sound:halloween_game.music" type="sound" location="local" bytes="1636370">halloween_game/music.mp3</Asset>
+			<Asset id="image:halloween_game.music" type="image" location="local" bytes="6213">halloween_game/green/g_music.png</Asset>
+			<Asset id="image:halloween_game.music_off" type="image" location="local" bytes="7425">halloween_game/green/g_music_off.png</Asset>
+			<Asset id="image:halloween_game.sound" type="image" location="local" bytes="6901">halloween_game/green/g_sound.png</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.AudioButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/AudioButton.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.VoiceButton" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/VoiceButton.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.music" type="script" location="local" bytes="379">halloween_game/levels/level1/music.egc</Asset>
+			<Asset id="script:halloween_game.levels.level1.sound" type="script" location="local" bytes="379">halloween_game/levels/level1/sound.egc</Asset>
+			<Asset id="sound:halloween_game.correct1" type="sound" location="local" bytes="34876">halloween_game/correct1.mp3</Asset>
+			<Asset id="sound:halloween_game.correct2" type="sound" location="local" bytes="15090">halloween_game/correct2.mp3</Asset>
+			<Asset id="sound:halloween_game.wrong" type="sound" location="local" bytes="16459">halloween_game/wrong.mp3</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_7" type="image" location="local" bytes="6306">halloween_game/bat_black/bat_7.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_6" type="image" location="local" bytes="6355">halloween_game/bat_black/bat_6.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_5" type="image" location="local" bytes="5528">halloween_game/bat_black/bat_5.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_4" type="image" location="local" bytes="4615">halloween_game/bat_black/bat_4.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_3" type="image" location="local" bytes="5410">halloween_game/bat_black/bat_3.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_2" type="image" location="local" bytes="5753">halloween_game/bat_black/bat_2.png</Asset>
+			<Asset id="image:halloween_game.bat_blue.bat_1" type="image" location="local" bytes="8553">halloween_game/bat_black/bat_1.png</Asset>
+			<Asset id="data:halloween_game.bat_blue.bat_blue" type="data" location="local" bytes="4625">halloween_game/bat_blue/bat_blue.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.bat_blue" type="script" location="local" bytes="646">halloween_game/levels/level1/bat_blue.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.PolishController" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/PolishController.egc</Asset>
+			<Asset id="script:halloween_game.mylib.behaviors.BatBehavior" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/BatBehavior.egc</Asset>
+			
+			<Asset id="image:halloween_game.cat2_black.cat_1" type="image" location="local" bytes="4006">halloween_game/cat2_black/cat_1.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_2" type="image" location="local" bytes="2594">halloween_game/cat2_black/cat_2.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_3" type="image" location="local" bytes="5006">halloween_game/cat2_black/cat_3.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_4" type="image" location="local" bytes="5273">halloween_game/cat2_black/cat_4.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_5" type="image" location="local" bytes="5717">halloween_game/cat2_black/cat_5.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_6" type="image" location="local" bytes="5920">halloween_game/cat2_black/cat_6.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_7" type="image" location="local" bytes="2861">halloween_game/cat2_black/cat_7.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_8" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_8.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_9" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_9.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_10" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_10.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_11" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_11.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.cat_body" type="image" location="local" bytes="3323">halloween_game/cat2_black/cat_body.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_1" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_1.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_2" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_2.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_3" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_3.png</Asset>
+			<Asset id="image:halloween_game.cat2_black.eyes_4" type="image" location="local" bytes="3323">halloween_game/cat2_black/eyes_4.png</Asset>
+			<Asset id="data:halloween_game.cat2_black.cat_2" type="data" location="local" bytes="151892">halloween_game/cat2_black/cat_2.scml</Asset>
+			<Asset id="script:halloween_game.levels.level1.Cat" type="script" location="local" bytes="643">halloween_game/levels/level1/Cat.egc</Asset>
+			
+			<Asset id="sound:halloween_game.thunder" type="sound" location="local" bytes="16459">halloween_game/thunder.mp3</Asset>
+			<Asset id="sound:halloween_game.witchLaugh" type="sound" location="local" bytes="16459">halloween_game/witchLaugh.mp3</Asset>
+			<Asset id="sound:halloween_game.whoosh" type="sound" location="local" bytes="16459">halloween_game/whoosh.mp3</Asset>
+			<Asset id="sound:halloween_game.winSound" type="sound" location="local" bytes="16459">halloween_game/winSound.mp3</Asset>
+			<Asset id="sound:halloween_game.collectPop" type="sound" location="local" bytes="16459">halloween_game/collectPop.mp3</Asset>
+			
+			<Asset id="sound:halloween_game.random1" type="sound" location="local" bytes="16459">halloween_game/random1.mp3</Asset>
+			<Asset id="sound:halloween_game.random2" type="sound" location="local" bytes="16459">halloween_game/random2.mp3</Asset>
+			<Asset id="sound:halloween_game.random3" type="sound" location="local" bytes="16459">halloween_game/random3.mp3</Asset>
+			<Asset id="sound:halloween_game.random4" type="sound" location="local" bytes="16459">halloween_game/random4.mp3</Asset>
+			<Asset id="sound:halloween_game.random5" type="sound" location="local" bytes="16459">halloween_game/random5.mp3</Asset>
+			<Asset id="sound:halloween_game.random6" type="sound" location="local" bytes="16459">halloween_game/random6.mp3</Asset>
+			<Asset id="sound:halloween_game.random7" type="sound" location="local" bytes="16459">halloween_game/random7.mp3</Asset>
+			<Asset id="sound:halloween_game.random8" type="sound" location="local" bytes="16459">halloween_game/random8.mp3</Asset>
+			<Asset id="sound:halloween_game.random9" type="sound" location="local" bytes="16459">halloween_game/random9.mp3</Asset>
+			
+			
+			<Asset id="sound:halloween_game.vres" type="sound" location="local" bytes="16459">halloween_game/vres_7.mp3</Asset>
+			<Asset id="sound:halloween_game.win_high" type="sound" location="local" bytes="16459">halloween_game/win_high.mp3</Asset>
+			<Asset id="sound:halloween_game.win_medium" type="sound" location="local" bytes="16459">halloween_game/win_medium.mp3</Asset>
+			<Asset id="sound:halloween_game.win_low" type="sound" location="local" bytes="16459">halloween_game/win_low.mp3</Asset>
+			<Asset id="sound:halloween_game.den_exeis_vrei" type="sound" location="local" bytes="16459">halloween_game/den_exeis_vrei.mp3</Asset>
+		</Module>
+	</Assets>
+</Client>

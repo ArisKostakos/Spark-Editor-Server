@@ -1,0 +1,44 @@
+<Entity>
+	<_States>
+		<_State id="touchable"><Value>true</Value></_State>
+	</_States>
+	
+	<_Triggers>
+        <Trigger>
+        	<Event>MouseLeftClick</Event>
+        	<Scripts>
+        		<Script>
+        			me.setState('animate_opacity',{type:"to", to:0, seconds:1, easing:Ease.quadInOut});
+        			me.set('touchable', false);
+					e('Audio Button').fa('Play FX', { name:"sound:halloween_game.thunder", weak:true, volume:0.5  } );
+					me.sa('WaitFor',{delay:3});
+        		</Script>
+        	</Scripts>
+        </Trigger>
+	</_Triggers>
+		
+	<_Actions>
+		<Action>
+			<Id>WaitFor</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    it.setState('delayCurrent',0);
+					    e('Halloween Scene').fa('Get Next Match');
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
+				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+	</_Actions>
+</Entity>

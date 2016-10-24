@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Base">
+	<_States>
+		<_State id="displayType"><Value>Entity</Value></_State>
+		<_State id="2DmeshType"><Value>Image</Value></_State>
+		<State><Id>2DMeshImageForm</Id><Type>Text</Type><Value>Undefined</Value></State>
+	</_States>
+</Entity>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Gui2D">
+	<Extends>
+		<Entity extends="std.behaviors.display.NativeComponent"/>
+		<Entity extends="std.behaviors.display.StyleableNC"/>
+	</Extends>
+	
+	<_States>
+		<_State id="NCmeshType">
+			<Value>Scroller</Value>
+		</_State>
+			
+		<State>
+			<Id>scrollerObject</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+		
+		<State>
+			<!-- only using this for debugging -->
+			<Id>scrollerId</Id>
+			<Type>Text</Type>
+			<Value>Undefined</Value>
+		</State>
+	
+		<State>
+			<Id>scrollerContainerObject</Id>
+			<Type>Dynamic</Type>
+			<Value>null</Value>
+		</State>
+	</_States>
+		
+	<_Actions>
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.startAction('Wait For Init');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>Wait For Init</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('scrollerContainerObject')!=null)
+					{
+						me.forceAction('Refresh');
+						
+						me.stopAction('Wait For Init');
+					}
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<!-- This thing gets called WAYY too often.. which I think cripples Firefox.. -->
+			<Id>Refresh</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//forced
+					
+					//I don't think this needs to happen on every layout update
+					//what it does is tells the scroller the height of it's container stuff
+					//meaning, if scroller is 500px but has stuff that are 2000px, it will say, your stuff are 2000px
+					//and peculiarly, setting the height of the scroller container to 2000px, will do that.
+					
+					var group = me.getChildren()[0]; //get first and only child
+					var groupEntity = query(group,'groupObject'); //get its group object
+					
+					me.s('scrollerContainerObject').style.height=Std.string(groupEntity.measuredHeight)+"px"; //update height
+					//Display.de("#"+me.s('scrollerId')+" Scroller Height: " + me.s('scrollerContainerObject').style.height);
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+		
+	<_Triggers>
+		<Trigger>
+			<Event>LayoutInvalidated</Event>
+			<Target>TargetNone</Target>
+			<Scripts>
+				<Script>
+					//So, this trigger will stay long after scrollerContainerObject has been removed from stage, after we load a whole different level...
+					if (me.s('scrollerContainerObject')!=null)
+						me.forceAction('Refresh');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+</Entity>

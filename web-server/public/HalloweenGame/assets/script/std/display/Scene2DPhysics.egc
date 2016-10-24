@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity extends="std.display.Scene2D">
+	<_States>
+		<State>
+			<Id>physicsScene</Id>
+			<Type>Boolean</Type>
+			<Value>true</Value>
+		</State>
+		<State>
+			<Id>gravityX</Id>
+			<Type>Decimal</Type>
+			<Value>0</Value>
+		</State>
+		<State>
+			<Id>gravityY</Id>
+			<Type>Decimal</Type>
+			<Value>200</Value>
+		</State>
+		<State>
+			<Id>physicsPaused</Id>
+			<Type>Boolean</Type>
+			<Value>false</Value>
+		</State>
+	</_States>
+</Entity>

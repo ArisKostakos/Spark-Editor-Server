@@ -1,0 +1,4 @@
+<Entity extends="std.primitives.2d.Image">
+    
+	
+<Extends><Entity extends="lib.behaviors.2d.Sprite"/><Entity extends="lib.behaviors.2d.Physics"><_States><_State id="physicsEntity"><Value><![CDATA[false]]></Value></_State></_States></Entity><Entity extends="halloween_game.mylib.behaviors.AnimateMovement"><_States><_State id="duration"><Value><![CDATA[2]]></Value></_State><_State id="From/By X"><Value><![CDATA[0]]></Value></_State><_State id="From/By Y"><Value><![CDATA[-400]]></Value></_State></_States></Entity><Entity extends="halloween_game.mylib.behaviors.PlayButton"/></Extends><_States><_State id="name"><Value><![CDATA[Malakia]]></Value></_State><_State id="2DMeshImageForm"><Value><![CDATA[image:halloween_game.purple_play]]></Value></_State></_States></Entity>

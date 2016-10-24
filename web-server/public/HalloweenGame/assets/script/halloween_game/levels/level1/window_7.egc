@@ -1,0 +1,4 @@
+<Entity extends="std.primitives.2d.Image">
+    
+	
+<Extends><Entity extends="lib.behaviors.2d.Sprite"/><Entity extends="lib.behaviors.2d.Physics"><_States><_State id="physicsEntity"><Value><![CDATA[false]]></Value></_State></_States></Entity><Entity extends="halloween_game.mylib.behaviors.LightsFlicker"><_States><_State id="light_waitMin"><Value><![CDATA[3]]></Value></_State><_State id="light_waitMax"><Value><![CDATA[10]]></Value></_State></_States></Entity></Extends><_States><_State id="name"><Value><![CDATA[Malakia]]></Value></_State><_State id="2DMeshImageForm"><Value><![CDATA[image:halloween_game.window_7]]></Value></_State></_States></Entity>
