@@ -125,7 +125,7 @@
 					httpGetAsync(l_urlRequest, function (xmlHttp, response) {
 						var items = JSON.parse(response);
 						Display.de("I GOT:");
-						console.log(items);
+						//console.log(items);
 						me.setState('requestObj',items);
 						me.forceAction('Load Assets');
 					});

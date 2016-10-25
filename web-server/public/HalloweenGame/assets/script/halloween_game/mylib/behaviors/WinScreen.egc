@@ -43,21 +43,27 @@
 				    var l_ItemsToFind = e('Halloween Scene').s('ItemsToFind');
 				    var l_scorePoints = e('Halloween Scene').s('scorePoints');
 				    var l_score = e('Halloween Scene').s('score');
+					
+					
+					
 				    
 				    if (l_score>l_ItemsToFind*l_scorePoints*0.8)
 				    {
+						me.set('2DMeshImageForm', 'image:halloween_game.purple_bravo2');
 				        e('WinText1').set('text', '  Τα βρήκες όλα!');
 						e('Audio Button').fa('Play Voice', { name:"sound:halloween_game.win_high", important:true } );
 						e('The Witch').fa('Speak', { duration:4 } );
 				    }
 				    else if (l_score>l_ItemsToFind*l_scorePoints*0.4)
 				    {
+						me.set('2DMeshImageForm', 'image:halloween_game.purple_bravo');
 				        e('WinText1').set('text', '   Τα πας καλά!');
 						e('Audio Button').fa('Play Voice', { name:"sound:halloween_game.win_medium", important:true } );
 						e('The Witch').fa('Speak', { duration:4 } );
 				    }
 				    else
 				    {
+						me.set('2DMeshImageForm', 'image:halloween_game.purple_bravo');
 				        e('WinText1').set('text', 'Ξαναπροσπάθησε');
 						e('Audio Button').fa('Play Voice', { name:"sound:halloween_game.win_low", important:true } );
 						e('The Witch').fa('Speak', { duration:4 } );

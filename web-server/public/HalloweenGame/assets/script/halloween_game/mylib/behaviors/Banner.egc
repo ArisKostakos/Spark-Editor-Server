@@ -94,8 +94,7 @@
 				    {
 					    it.stop();
 					    it.setState('delayCurrent',0);
-					    e('Audio Button').fa('Play Voice', { name:"sound:halloween_game.vres", important:true } );
-						e('The Witch').fa('Speak', { duration:4 } );
+					    me.fa('Say Instructions');
 					}
 				]]></Script>
 			</Scripts>
@@ -104,6 +103,41 @@
 				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
 				<State><Id>cbEntity</Id><Type>Dynamic</Type><Value>null</Value></State>
 				<State><Id>cbAction</Id><Type>Text</Type><Value>Undefined</Value></State>
+			</States>
+		</Action>
+				
+		<Action>
+			<Id>Say Instructions</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					e('Audio Button').fa('Play Voice', { name:"sound:halloween_game.vres", important:true } );
+					e('The Witch').fa('Speak', { duration:4 } );
+					me.sa('WaitFor_VO',{delay:3.8});
+				</Script>
+			</Scripts>
+		</Action>
+				
+		<Action>
+			<Id>WaitFor_VO</Id>
+			<Concurrency>Transient</Concurrency>
+			<Scripts>
+				<Script><![CDATA[
+				    it.addToState('delayCurrent',Logic.getDt());
+				    
+				    if (it.getState('delayCurrent')>it.getState('delay'))
+				    {
+					    it.stop();
+					    it.setState('delayCurrent',0);
+						
+						var l_selectedItem = e('Halloween Scene').s('selectedItem');
+						e('Audio Button').fa('Play Voice', { name:"audio_"+l_selectedItem.text, important:true } );
+					}
+				]]></Script>
+			</Scripts>
+			<States>
+				<State><Id>delayCurrent</Id><Type>Decimal</Type><Value>0</Value></State>
+				<State><Id>delay</Id><Type>Decimal</Type><Value>0</Value></State>
 			</States>
 		</Action>
 	</_Actions>

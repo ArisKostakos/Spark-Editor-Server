@@ -16,6 +16,8 @@
 		<State visibleOnEditor="false"><Id>itemRange</Id><Type>Dynamic</Type><Value>{minX:240, minY:433, maxX:2034, maxY:1083 }</Value></State>
 		<State visibleOnEditor="false"><Id>sceneItems</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State visibleOnEditor="false"><Id>score</Id><Type>Integer</Type><Value>0</Value></State>
+		
+		<State visibleOnEditor="false"><Id>sayItem</Id><Type>Boolean</Type><Value>false</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -54,7 +56,7 @@
 					me.setState('sceneItems',[]);
 					
 					
-					console.log('matchObj',it.s('matchObj'));
+					//console.log('matchObj',it.s('matchObj'));
 					var items = it.s('matchObj');
 					items = shuffle(items);
 					
@@ -330,7 +332,7 @@
 						var collectItem = Logic.create('halloween_game.levels.level1.greenSquare');
 						
 						collectItem.setState('2DMeshImageForm','image_'+itemName);
-						collectItem.setState('opacity',0.4);
+						collectItem.setState('opacity',0.5);
 						collectItem.setState('rotation',Logic.random(-40,40));
 						collectItem.setState('correct',correct);
 						

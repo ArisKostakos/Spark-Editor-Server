@@ -26,6 +26,18 @@
             			e('Audio Button').fa('Play FX', { name:"sound:halloween_game.collectPop", weak:true, volume:1  } );
             			//me.sa('WaitFor',{delay:1, cbEntity:me, cbAction:"Play Second Sound"});
             			me.sa('WaitFor_Sparkle',{delay:1});
+						
+						//VO
+						if (e('Halloween Scene').s('sayItem')==true)
+						{
+							var l_selectedItem = e('Halloween Scene').s('selectedItem');
+							e('Audio Button').fa('Play Voice', { name:"audio_"+l_selectedItem.text, important:true } );
+							e('Halloween Scene').set('sayItem', false);
+						}
+						else
+						{
+							e('Halloween Scene').set('sayItem', true);
+						}
         			}
         			else
         			{

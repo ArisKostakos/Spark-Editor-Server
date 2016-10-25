@@ -9,8 +9,7 @@
         	<Event>MouseLeftClick</Event>
         	<Scripts>
         		<Script>
-					e('Audio Button').fa('Play Voice', { name:"sound:halloween_game.vres", important:true } );
-					e('The Witch').fa('Speak', { duration:4 } );
+					e('Banner').fa('Say Instructions');
         		</Script>
         	</Scripts>
         </Trigger>

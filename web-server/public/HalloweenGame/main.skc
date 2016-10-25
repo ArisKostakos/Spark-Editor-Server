@@ -298,6 +298,7 @@
 			<Asset id="script:halloween_game.levels.level1.greenSquare" type="script" location="local" bytes="385">halloween_game/levels/level1/greenSquare.egc</Asset>
 			<Asset id="script:halloween_game.mylib.behaviors.Item" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Item.egc</Asset>
 			<Asset id="image:halloween_game.purple_bravo" type="image" location="local" bytes="157603">halloween_game/purple_bravo.png</Asset>
+			<Asset id="image:halloween_game.purple_bravo2" type="image" location="local" bytes="157603">halloween_game/purple_bravo2.png</Asset>
 			<Asset id="script:halloween_game.levels.level1.purple_bravo" type="script" location="local" bytes="386">halloween_game/levels/level1/purple_bravo.egc</Asset>
 			<Asset id="script:halloween_game.mylib.behaviors.WinScreen" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/WinScreen.egc</Asset>
 			<Asset id="sound:halloween_game.music" type="sound" location="local" bytes="1636370">halloween_game/music.mp3</Asset>
@@ -502,6 +503,7 @@
 			<Asset id="script:halloween_game.levels.level1.greenSquare" type="script" location="local" bytes="385">halloween_game/levels/level1/greenSquare.egc</Asset>
 			<Asset id="script:halloween_game.mylib.behaviors.Item" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Item.egc</Asset>
 			<Asset id="image:halloween_game.purple_bravo" type="image" location="local" bytes="157603">halloween_game/purple_bravo.png</Asset>
+			<Asset id="image:halloween_game.purple_bravo2" type="image" location="local" bytes="157603">halloween_game/purple_bravo2.png</Asset>
 			<Asset id="script:halloween_game.levels.level1.purple_bravo" type="script" location="local" bytes="386">halloween_game/levels/level1/purple_bravo.egc</Asset>
 			<Asset id="script:halloween_game.mylib.behaviors.WinScreen" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/WinScreen.egc</Asset>
 			<Asset id="sound:halloween_game.music" type="sound" location="local" bytes="1636370">halloween_game/music.mp3</Asset>
@@ -709,6 +711,7 @@
 			<Asset id="script:halloween_game.levels.level1.greenSquare" type="script" location="local" bytes="385">halloween_game/levels/level1/greenSquare.egc</Asset>
 			<Asset id="script:halloween_game.mylib.behaviors.Item" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/Item.egc</Asset>
 			<Asset id="image:halloween_game.purple_bravo" type="image" location="local" bytes="157603">halloween_game/purple_bravo.png</Asset>
+			<Asset id="image:halloween_game.purple_bravo2" type="image" location="local" bytes="157603">halloween_game/purple_bravo2.png</Asset>
 			<Asset id="script:halloween_game.levels.level1.purple_bravo" type="script" location="local" bytes="386">halloween_game/levels/level1/purple_bravo.egc</Asset>
 			<Asset id="script:halloween_game.mylib.behaviors.WinScreen" type="script" location="local" bytes="9">halloween_game/mylib/behaviors/WinScreen.egc</Asset>
 			<Asset id="sound:halloween_game.music" type="sound" location="local" bytes="1636370">halloween_game/music.mp3</Asset>
