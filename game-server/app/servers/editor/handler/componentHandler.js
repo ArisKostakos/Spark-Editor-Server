@@ -138,7 +138,7 @@ function createThumbnail(srcImageUrl, targetUrl, size, cb)
 
         // define a batch of manipulations and save to disk
         image.batch()
-            .resize(size)
+            .contain(size,size)
             .writeFile(targetUrl, function(err){
                 if (err) {cb(err); return;}
 
