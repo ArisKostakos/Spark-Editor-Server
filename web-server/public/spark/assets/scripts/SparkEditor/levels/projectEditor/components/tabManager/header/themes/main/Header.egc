@@ -1,21 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="SparkEditor.levels.projectEditor.components.tabManager.header.ATabHeader">
 	<_States>
-		<_State id="width"><Value>100</Value></_State>
-		<_State id="backgroundColor"><Value>rgb(54,81,103)</Value></_State>
 		<_State id="headerTheme"><Value>main</Value></_State>
+		<_State id="layout"><Value>Horizontal</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="paddingLeft"><Value>10</Value></_State>
+		<_State id="paddingRight"><Value>10</Value></_State>
+		<_State id="cursor"><Value>default</Value></_State>
+		<State><Id>obj_icon</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>obj_text</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>obj_closeButton</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 
-	<_Form>
-		<_Space>
-			<_Entities>
+	<Form>
+		<Space>
+			<Entities>
+				<!-- Icon -->
 				<Entity extends="std.display.Image">
 					<_States>
-						<_State id="width"><Value>20</Value></_State>
-						<_State id="height"><Value>20</Value></_State>
-						<_State id="verticalCenter"><Value>0</Value></_State>
-						<_State id="right"><Value>5</Value></_State>
-						<_State id="src"><Value>toolbarIcon_Header_Close</Value></_State>
+						<_State id="name"><Value>i am level icon</Value></_State>
+						<_State id="src"><Value>mainBar_Level</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('obj_icon', me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Text -->
+				<Entity extends="std.display.Text">
+					<_States>
+						<_State id="height"><Value>Implicit</Value></_State>
+						<_State id="fontSize"><Value>18px</Value></_State>
+						<_State id="fontWeight"><Value>400</Value></_State>
+						<_State id="fontColor"><Value>white</Value></_State>
+						<_State id="text"><Value>Header</Value></_State>
+						<_State id="whiteSpace"><Value>nowrap</Value></_State>
+					</_States>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									me.setState('text',parent.s('headerTitle'));
+									parent.set('obj_text', me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
+				</Entity>
+				
+				<!-- Close Button -->
+				<Entity extends="std.display.Image">
+					<_States>
+						<_State id="name"><Value>i am close icon</Value></_State>
+						<!--<_State id="width"><Value>20</Value></_State>
+						<_State id="height"><Value>20</Value></_State>-->
+						<_State id="src"><Value>mainBar_Close</Value></_State>
 						<_State id="touchable"><Value>true</Value></_State>
 						<_State id="cursor"><Value>pointer</Value></_State>
 					</_States>
@@ -29,8 +74,17 @@
 							</Scripts>
 						</Trigger>
 					</_Triggers>
+					<_Actions>
+						<_Action id="Constructor">
+							<_Scripts>
+								<Script>
+									parent.set('obj_closeButton', me);
+								</Script>
+							</_Scripts>
+						</_Action>
+					</_Actions>
 				</Entity>
-			</_Entities>
-		</_Space>
-	</_Form>
+			</Entities>
+		</Space>
+	</Form>
 </Entity>

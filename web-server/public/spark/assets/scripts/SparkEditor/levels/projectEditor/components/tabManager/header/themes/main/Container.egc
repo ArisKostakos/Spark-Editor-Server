@@ -6,13 +6,23 @@
 		<_State id="headerTheme"><Value>main</Value></_State>
 		<_State id="borderBottom"><Value>1px solid rgb(239,130,67)</Value></_State>
 		<_State id="zIndex"><Value>1</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<!--<_State id="hasDividers"><Value>true</Value></_State>
+		<_State id="dividerColor"><Value>black</Value></_State>-->
 	</_States>
 	
 	<_Actions>
 		<_Action id="Show Header">
 			<_Scripts>
 				<Script>
-					me.s('headers').get(it.s('name')).set('backgroundColor','rgb(239,130,67)');
+					var l_header = me.s('headers').get(it.s('name'));
+					l_header.set('backgroundColor','rgb(239,130,67)');
+					if (l_header.s('obj_icon')!=null) //not enough time to create obj stuff. but it's ok if u dont do this the first time, they are already set to it on creation
+					{
+						l_header.s('obj_icon').set('src','mainBar_Level');
+						l_header.s('obj_text').set('fontColor','white');
+						l_header.s('obj_closeButton').set('src','mainBar_Close');
+					}
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -20,7 +30,11 @@
 		<_Action id="Hide Header">
 			<_Scripts>
 				<Script>
-					me.s('headers').get(it.s('name')).set('backgroundColor', 'rgb(54,81,103)');
+					var l_header = me.s('headers').get(it.s('name'));
+					l_header.set('backgroundColor', 'rgb(38,56,72)');
+					l_header.s('obj_icon').set('src','mainBar_Level_grey');
+					l_header.s('obj_text').set('fontColor','rgb(73,101,129)');
+					l_header.s('obj_closeButton').set('src','mainBar_Close_grey');
 				</Script>
 			</_Scripts>
 		</_Action>

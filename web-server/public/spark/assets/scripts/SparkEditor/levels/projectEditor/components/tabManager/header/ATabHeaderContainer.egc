@@ -7,7 +7,12 @@
 		<_State id="gap"><Value>0</Value></_State>
 		<State><Id>headerTheme</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>headers</Id><Type>Dynamic</Type><Value>null</Value></State>
+		<State><Id>headersArray</Id><Type>Dynamic</Type><Value>null</Value></State>
 		<State><Id>TabManager</Id><Type>Dynamic</Type><Value>null</Value></State>
+		
+		<State><Id>hasDividers</Id><Type>Boolean</Type><Value>false</Value></State>
+		<State><Id>dividerColor</Id><Type>Text</Type><Value>Undefined</Value></State>
+		<State><Id>dividersArray</Id><Type>Dynamic</Type><Value>null</Value></State>
 	</_States>
 	
 	<_Actions>
@@ -19,6 +24,9 @@
 					//forced
 					
 					me.set('headers', new StringMap()); //So the cache thing is preventing us from doing this directly in the states, for objects instantiated more than 2 times
+					me.set('headersArray', [] ); //mainly for diviers, but may have other uses later on (ordering..)
+					if (me.s('hasDividers'))
+						me.set('dividersArray', [] );
 				</Script>
 			</Scripts>
 		</Action>
@@ -30,6 +38,22 @@
 				<Script>
 					//forced
 					
+					//Divider
+					if (me.s('hasDividers'))
+					{
+						//Don't create divider for first header
+						if (me.s('headersArray').length>0)
+						{
+							var l_divider = Logic.create('std.display.Div');
+							l_divider.set('width', '1'); //1px, 2
+							l_divider.set('height', '65%');
+							l_divider.set('backgroundColor', me.s('dividerColor'));
+							
+							me.addChild(l_divider);
+							me.s('dividersArray').push(l_divider);
+						}
+					}
+					
 					//Create the Tab Header
 					var l_header = Logic.create('SparkEditor.levels.projectEditor.components.tabManager.header.themes.'+me.s('headerTheme')+'.Header');
 					l_header.setState('headerName',it.s('name'));
@@ -40,6 +64,7 @@
 					
 					//Add to collection
 					me.s('headers').set(it.s('name'),l_header);
+					me.s('headersArray').push(l_header);
 				</Script>
 			</Scripts>
 			<States>
@@ -67,8 +92,33 @@
 					//Destroy it?
 					//..
 					
+					//Remove divider
+					if (me.s('hasDividers'))
+					{
+						var l_index = me.s('headersArray').indexOf(l_header);
+						
+						//If There's 2 or more headers (before the remove)
+						if (me.s('headersArray').length>1)
+						{
+							//If index is the last one in the array
+							if (l_index==me.s('headersArray').length-1)
+							{
+								var l_dividerIndex = l_index-1; //remove the one on the left (if more than 1 items, and this is last one, this is guaranteed to exist)
+							}
+							else
+							{
+								var l_dividerIndex = l_index; //remove the one on the right
+							}
+							
+							var l_divider = me.s('dividersArray')[l_dividerIndex];
+							me.removeChild(l_divider);
+							me.s('dividersArray').splice( l_dividerIndex , 1);
+						}
+					}
+					
 					//Remove it from the collection
 					me.s('headers').remove(it.s('name'));
+					me.s('headersArray').splice( me.s('headersArray').indexOf(l_header) , 1);
 				</Script>
 			</Scripts>
 			<States>
@@ -80,7 +130,7 @@
 			<Id>Show Header</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
-				<Script>
+				<Script><![CDATA[
 					//forced
 					
 					
@@ -89,7 +139,21 @@
 					
 					//Show Me
 					l_header.fa('Show Me');
-				</Script>
+					
+					//Make Dividers Invisible
+					if (me.s('hasDividers'))
+					{
+						var l_index = me.s('headersArray').indexOf(l_header);
+						
+						//Left Divider
+						if (l_index>0) //if it's not the first one
+							me.s('dividersArray')[l_index-1].set('visibility', 'hidden');
+						
+						//Right Divider
+						if (l_index<me.s('headersArray').length-1) //if it's not the last one
+							me.s('dividersArray')[l_index].set('visibility', 'hidden');
+					}
+				]]></Script>
 			</Scripts>
 			<States>
 				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>
@@ -100,7 +164,7 @@
 			<Id>Hide Header</Id>
 			<Concurrency>Persistent</Concurrency>
 			<Scripts>
-				<Script>
+				<Script><![CDATA[
 					//forced
 					
 					
@@ -109,7 +173,21 @@
 					
 					//Hide Me
 					l_header.fa('Hide Me');
-				</Script>
+					
+					//Make Dividers Visible
+					if (me.s('hasDividers'))
+					{
+						var l_index = me.s('headersArray').indexOf(l_header);
+						
+						//Left Divider
+						if (l_index>0) //if it's not the first one
+							me.s('dividersArray')[l_index-1].set('visibility', 'visible');
+						
+						//Right Divider
+						if (l_index<me.s('headersArray').length-1) //if it's not the last one
+							me.s('dividersArray')[l_index].set('visibility', 'visible');
+					}
+				]]></Script>
 			</Scripts>
 			<States>
 				<State><Id>name</Id><Type>Text</Type><Value>Undefined</Value></State>

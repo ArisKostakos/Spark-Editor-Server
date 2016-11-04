@@ -30,7 +30,7 @@
 					if (it.s('createDivider'))
 					{
 						var l_divider = Logic.create('std.display.Div');
-						l_divider.set('width', '1px'); //2
+						l_divider.set('width', '1'); //1px, 2
 						l_divider.set('height', '65%');
 						l_divider.set('backgroundColor', 'rgb(23,41,56)');
 						
@@ -39,7 +39,7 @@
 					
 					//Container
 					var l_stateContainer = Logic.create('std.display.VGroup');
-					l_stateContainer.set('width', '100');
+					//l_stateContainer.set('width', '100');
 					l_stateContainer.set('height', '100%');
 					l_stateContainer.set('paddingTop', 4);
 					l_stateContainer.set('paddingLeft', 4);
@@ -57,9 +57,10 @@
 					
 					//Label
 					var l_text = Logic.create('std.display.Text');
-					l_text.set('width','100%');
-					l_text.set('height','25');
+					//l_text.set('width','100%');
+					//l_text.set('height','25');
 					l_text.set('textAlign','center');
+					l_text.set('whiteSpace','nowrap');
 					l_text.set('text',l_stateObject.id);
 					
 					if (l_stateObject.live=="true")
@@ -70,12 +71,20 @@
 					l_stateContainer.addChild(l_text);
 					
 					//Input
-					var l_input = Logic.create('SparkEditor.levels.projectEditor.components.explorers.StateExplorerInput');
-					l_input.set('statesExplorer', me.s('statesExplorer'));
-					l_input.set('stateExplorer', me);
-					l_input.set('text',l_stateObject.value);
-					me.set('inputObject', l_input);
-					l_stateContainer.addChild(l_input);
+					if (l_stateObject.id=='visible')
+					{
+						var controller = Logic.create('SparkEditor.levels.projectEditor.components.controls.ToggleButton');
+						l_stateContainer.addChild(controller);
+					}
+					else
+					{
+						var l_input = Logic.create('SparkEditor.levels.projectEditor.components.explorers.StateExplorerInput');
+						l_input.set('statesExplorer', me.s('statesExplorer'));
+						l_input.set('stateExplorer', me);
+						l_input.set('text',l_stateObject.value);
+						me.set('inputObject', l_input);
+						l_stateContainer.addChild(l_input);
+					}
 					
 					//Store stateObject for reference
 					me.set('stateObject', l_stateObject);

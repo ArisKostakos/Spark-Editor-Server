@@ -306,7 +306,9 @@
 						{
 							if (me.s('moduleName')=="Loader") //hack, to determine easily that this level is DOM based, so we cannot edit it yet
 							{
+								//Open Info Popup
 								alert("This Level is created with the Native Components Renderer. The Level Editor For Native Components is not done yet! Maybe in the next version...");
+								//e('PopUp Manager').fa('Open PopUp', {popupName:"SparkEditor.entities.popups.items.InfoPopUp", argA:"This Level is created with the Native Components Renderer. The Level Editor For Native Components is not done yet! Maybe in the next version...", argB:"Ooops!", cb_caller:me, cb_actionName:'Undefined' });
 							}
 							else
 							{
@@ -562,5 +564,50 @@
 				</Script>
 			</_Scripts>
 		</_Action>
+		
+		<Action>
+			<Id>Create Thumbnail</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					//Make me a universal action somewhere
+					var l_thumbnailSrc="Undefined";
+					if (me.s('target_DBA').meta.thumbnail.objectId!=null) //deprecate objectId links, in favor of name links?
+					{
+						var l_thumbnailAsset = e('Project Editor').s('Assets_IdHash').get(me.s('target_DBA').meta.thumbnail.objectId);
+						
+						var l_thumbnailOwner = e('Project Editor').s('Developers_Hash').get(l_thumbnailAsset.owner).name;
+						l_thumbnailSrc='/assets/' + l_thumbnailOwner + '/thumbnail/' + l_thumbnailAsset.dir + '/' + l_thumbnailAsset.fileName + '.' + l_thumbnailAsset.fileExtension;
+					}
+					else if (me.s('target_DBA').meta.thumbnail.embeddedUrl!=null)
+					{
+						l_thumbnailSrc=me.s('target_DBA').meta.thumbnail.embeddedUrl;
+					}
+					else if (me.s('target_DBA').meta.thumbnail.externalUrl!=null)
+					{
+						l_thumbnailSrc=me.s('target_DBA').meta.thumbnail.externalUrl;
+					}
+					
+					//Class Thumbnail
+					if (it.s('width')!='0')
+					{
+						var l_thumb = Logic.create('std.display.Image');
+						l_thumb.set('src',l_thumbnailSrc);
+						l_thumb.set('width', it.s('width'));
+						l_thumb.set('height', it.s('height'));
+						
+						it.s('feedbackObject').image = l_thumb;
+					}
+					
+					it.s('feedbackObject').src = l_thumbnailSrc;
+					//me.addChild(l_thumb);
+				</Script>
+			</Scripts>
+			<States>
+				<State><Id>width</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>height</Id><Type>Text</Type><Value>Undefined</Value></State>
+				<State><Id>feedbackObject</Id><Type>Dynamic</Type><Value>null</Value></State>
+			</States>
+		</Action>
 	</_Actions>
 </Entity>

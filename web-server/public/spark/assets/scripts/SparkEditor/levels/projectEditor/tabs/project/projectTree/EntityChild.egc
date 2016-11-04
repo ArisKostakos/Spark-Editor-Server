@@ -61,6 +61,33 @@
 							</_Triggers>
 						</Entity>
 						
+						<!-- Thumbnail -->
+						<Entity extends="std.display.Image">
+							<_States>
+								<_State id="width"><Value>13</Value></_State>
+								<_State id="height"><Value>13</Value></_State>
+								<_State id="src"><Value>projectTree_expand</Value></_State>
+								<_State id="left"><Value>90</Value></_State>
+								<_State id="verticalCenter"><Value>0</Value></_State>
+							</_States>
+								
+							<_Actions>
+								<_Action id="Constructor">
+									<_Scripts>
+										<Script>
+											var l_child = parent.parentEntity;
+											
+											//Class Thumbnail
+											var l_feedbackObject = {};
+											l_child.s('editor').fa('Create Thumbnail', {width:'0', height:'0', feedbackObject:l_feedbackObject} );
+											//me.addChild(l_feedbackObject.image);
+											me.set('src', l_feedbackObject.src);
+										</Script>
+									</_Scripts>
+								</_Action>
+							</_Actions>
+						</Entity>
+						
 						<!-- Text -->
 						<Entity extends="std.display.Text">
 							<_States>
@@ -68,7 +95,7 @@
 								<_State id="height"><Value>15</Value></_State>
 								<_State id="fontSize"><Value>14px</Value></_State>
 								<_State id="fontColor"><Value>white</Value></_State>
-								<_State id="left"><Value>90</Value></_State>
+								<_State id="left"><Value>107</Value></_State>
 								<_State id="textAlign"><Value>left</Value></_State>
 								<_State id="fontColor"><Value>rgb(210,210,210)</Value></_State>
 								<_State id="pointerEvents"><Value>none</Value></_State>

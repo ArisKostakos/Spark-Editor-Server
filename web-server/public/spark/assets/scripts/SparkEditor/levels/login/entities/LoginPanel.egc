@@ -217,7 +217,7 @@
 								<Script>
 									var eventObjectKeyPress = me.getState('eventObjectKeyPress');
 									
-									if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10)
+									if (eventObjectKeyPress.keyCode==13 || eventObjectKeyPress.keyCode==10) //both are ENTER key
 									{
 										//Get Login Panel
 										var loginPanel = e('Spark Editor:Login Panel');

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Entity extends="std.display.Button">
 	<_States>
-		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>100%</Value></_State>
 		<State><Id>headerTheme</Id><Type>Text</Type><Value>Undefined</Value></State>
 		<State><Id>headerName</Id><Type>Text</Type><Value>Undefined</Value></State>

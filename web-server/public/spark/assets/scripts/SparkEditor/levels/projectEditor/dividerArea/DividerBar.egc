@@ -11,7 +11,7 @@
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Mouse Coordinates -->
+				<!-- ... Text -->
 				<Entity extends="std.display.Text"><_States>
 					<_State id="width"><Value>100%</Value></_State>
 					<_State id="height"><Value>15</Value></_State>

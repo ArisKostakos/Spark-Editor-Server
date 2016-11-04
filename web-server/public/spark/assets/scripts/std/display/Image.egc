@@ -17,4 +17,36 @@
 		</_State>
 		
 	</_States>
+		
+	<_Actions>
+		<!-- These two actions set correct size for the image, if it was implicit -->
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					me.sa('_Set Implicit Size');
+				</Script>
+			</_Scripts>
+		</_Action>
+			
+		<Action>
+			<Id>_Set Implicit Size</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('displayObject')!=null)
+					{
+						//Width
+						if (me.s('width') == 'Implicit')
+							me.set('width', Std.string( me.s('displayObject').naturalWidth ) );
+						
+						//Height
+						if (me.s('height') == 'Implicit')
+							me.set('height', Std.string( me.s('displayObject').naturalHeight ) );
+							
+						it.stop();
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
 </Entity>

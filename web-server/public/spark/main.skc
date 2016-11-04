@@ -148,6 +148,9 @@
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/components/explorers/StateExplorer.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/components/explorers/StateExplorerInput.egc</Asset>
 			
+				<!-- Controls -->
+				<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/components/controls/ToggleButton.egc</Asset>
+			
 			<!-- Behaviors -->
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/behaviors/JobScheduler.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/behaviors/ModuleManager.egc</Asset>
@@ -168,6 +171,7 @@
 				<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/tabs/library/EditorLibraryItemUpload.egc</Asset>
 				<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/tabs/library/EditorLibraryItemMultiUpload.egc</Asset>
 				<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/tabs/library/EditorAssetImportButton.egc</Asset>
+				<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/tabs/library/CreateBehaviorButton.egc</Asset>
 			
 				<!-- Project -->
 				<Asset type="script" location="local" bytes='35672'>SparkEditor/levels/projectEditor/tabs/project/Tab.egc</Asset>
@@ -328,10 +332,6 @@
 			<Asset type="script" location="local" bytes='35672'>std/display/Entity3D.egc</Asset>
 			
 			
-			
-			
-			
-			
 			<Asset type="script" location="local" bytes='35672'>std/display/TreeView.egc</Asset>
 			<Asset type="script" location="local" bytes='35672'>std/display/CodeEditor.egc</Asset>
 			
@@ -369,13 +369,13 @@
 			
 			<Asset type="data" location="local" bytes='35672' id="fontBlack.fnt">std/fontBlack.fnt</Asset>
 			<Asset type="data" location="local" bytes='35672' id="fontBlack">std/fontBlack.png</Asset>
-
+			
 			<Asset type="data" location="local" bytes='35672' id="customFont1.fnt">std/customFont1.fnt</Asset>
-            <Asset type="data" location="local" bytes='35672' id="customFont1">std/customFont1.png</Asset>
-
-            <Asset type="data" location="local" bytes='35672' id="customFont2.fnt">std/customFont2.fnt</Asset>
-            <Asset type="data" location="local" bytes='35672' id="customFont2">std/customFont2.png</Asset>
-
+			<Asset type="data" location="local" bytes='35672' id="customFont1">std/customFont1.png</Asset>
+			
+			<Asset type="data" location="local" bytes='35672' id="customFont2.fnt">std/customFont2.fnt</Asset>
+			<Asset type="data" location="local" bytes='35672' id="customFont2">std/customFont2.png</Asset>
+			
 			<Asset type="sound" location="local" bytes='35672' id="_blankSound">std/blankSound.mp3</Asset>
 			
 			<!-- Extremely Temp Particles -->
@@ -637,12 +637,23 @@
 			
 			<Asset type="image" subtype="2D" location="local" id="leftTab_searchIcon" bytes='35672' forceLoadAsData='true'>editor/leftbar/Magnifying_Glass-80.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_import_new_asset" bytes='35672' forceLoadAsData='true'>editor/leftbar/import_new_asset.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="libsubcat_create" bytes='35672' forceLoadAsData='true'>editor/leftbar/create.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_2d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_2d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="libsubcat_shapes_3d" bytes='35672' forceLoadAsData='true'>editor/leftbar/shapes_3d.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="events_addbutton" bytes='35672' forceLoadAsData='true'>editor/events/AddButton.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="events_tempThumb" bytes='35672' forceLoadAsData='true'>editor/events/tempEventThumb.png</Asset>
 			
-
+			<!-- Main Bar -->
+			<Asset type="image" subtype="2D" location="local" id="mainBar_Level" bytes='35672' forceLoadAsData='true'>editor/mainbar/level_tab.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="mainBar_Close" bytes='35672' forceLoadAsData='true'>editor/mainbar/level_x.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="mainBar_Level_grey" bytes='35672' forceLoadAsData='true'>editor/mainbar/level_tab_grey.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="mainBar_Close_grey" bytes='35672' forceLoadAsData='true'>editor/mainbar/level_x_grey.png</Asset>
+			
+			<!-- State Controlers -->
+				<!-- Boolean -->
+				<Asset type="image" subtype="2D" location="local" id="controller_boolean_on" bytes='35672' forceLoadAsData='true'>editor/stateControllers/boolean/on.png</Asset>
+				<Asset type="image" subtype="2D" location="local" id="controller_boolean_off" bytes='35672' forceLoadAsData='true'>editor/stateControllers/boolean/off.png</Asset>
+			
 			<!-- Lobby, Projects -->
 			<Asset type="image" subtype="2D" location="local" id="lobbyProjectTemplate_Platform_Thumb" bytes='35672' forceLoadAsData='true'>editor/lobby/projects/templates/TemplateTilePlatform_Thumb.png</Asset>
 			
@@ -669,6 +680,9 @@
 			
 			<!-- Thumbnails by componentType -->
 			<Asset type="image" subtype="2D" location="local" id="thumb_Project" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Space" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Stage" bytes='35672' forceLoadAsData='true'>editor/thumbs/Project.png</Asset>
+			<Asset type="image" subtype="2D" location="local" id="thumb_Level" bytes='35672' forceLoadAsData='true'>editor/thumbs/Scene.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Scene" bytes='35672' forceLoadAsData='true'>editor/thumbs/Scene.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_Camera" bytes='35672' forceLoadAsData='true'>editor/thumbs/Camera.png</Asset>
 			<Asset type="image" subtype="2D" location="local" id="thumb_View" bytes='35672' forceLoadAsData='true'>editor/thumbs/View.png</Asset>

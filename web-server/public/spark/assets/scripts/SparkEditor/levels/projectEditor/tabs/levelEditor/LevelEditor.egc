@@ -7,7 +7,7 @@
 	<_States>
 		<_State id="width"><Value>100%</Value></_State>
 		<_State id="height"><Value>100%</Value></_State>
-		<_State id="pointerEvents"><Value>none</Value></_State>
+		<_State id="pointerEvents"><Value>auto</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
 		<_State id="acceptsKeyboardInput"><Value>true</Value></_State>
 		<_State id="preventDefaultEvents"><Value>true</Value></_State>

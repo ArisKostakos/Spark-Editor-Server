@@ -5,7 +5,7 @@
 	</Extends>
 	
 	<_States>
-		<_State id="pointerEvents"><Value>auto</Value></_State>
+		<_State id="pointerEvents"><Value>none</Value></_State>
 		<_State id="dropTarget"><Value>true</Value></_State>
 		<_State id="touchable"><Value>true</Value></_State>
 		<State><Id>SceneEditor</Id><Type>Dynamic</Type><Value>null</Value></State>
@@ -258,7 +258,7 @@
 						var l_newXml =  Logic.xml_from_file( Assets.getScript(classToFork.name) );
 						
 						//Figure out Name for our new Class
-						var newClassName="Malakia";
+						var newClassName=asset.title;
 						
 						//Do Generic changes to our new Class
 						Logic.xml_entity_updateMState(l_newXml, { id:"name", value: newClassName }, true); //Change Name
@@ -570,7 +570,7 @@
 					var l_newXml =  Logic.xml_from_file( Assets.getScript(classToFork.name) );
 					
 					//Figure out Name for our new Class
-					var newClassName="Untitled Object";
+					var newClassName=asset.title;
 					
 					//Do Generic changes to our new Class
 					Logic.xml_entity_updateMState(l_newXml, { id:"name", value: newClassName }, true); //Change Name

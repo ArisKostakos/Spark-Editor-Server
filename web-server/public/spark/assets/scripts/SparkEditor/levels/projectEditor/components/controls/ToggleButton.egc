@@ -1,0 +1,62 @@
+<Entity extends="std.display.Image">
+	<_States>
+		<_State id="src"><Value>controller_boolean_on</Value></_State>
+		<_State id="touchable"><Value>true</Value></_State>
+		<_State id="cursor"><Value>pointer</Value></_State>
+		<State><Id>toggled</Id><Type>Boolean</Type><Value>true</Value></State>
+	</_States>
+
+	<_Triggers>
+		<Trigger>
+			<Event>MouseLeftClick</Event>
+			<Scripts>
+				<Script>
+					me.fa('Toggle');
+				</Script>
+			</Scripts>
+		</Trigger>
+	</_Triggers>
+
+	<_Actions>
+		<Action>
+			<Id>Turn On</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('toggled')==false)
+						me.fa('Toggle');
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Turn Off</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('toggled')==true)
+						me.fa('Toggle');
+				</Script>
+			</Scripts>
+		</Action>
+	
+		<Action>
+			<Id>Toggle</Id>
+			<Concurrency>Persistent</Concurrency>
+			<Scripts>
+				<Script>
+					if (me.s('toggled')==true)
+					{
+						me.set('src', 'controller_boolean_off');
+						me.set('toggled', false);
+					}
+					else
+					{
+						me.set('src', 'controller_boolean_on');
+						me.set('toggled', true);
+					}
+				</Script>
+			</Scripts>
+		</Action>
+	</_Actions>
+</Entity>

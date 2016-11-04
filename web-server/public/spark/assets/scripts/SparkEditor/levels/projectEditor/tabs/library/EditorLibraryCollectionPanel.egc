@@ -230,13 +230,25 @@
 				<State><Id>uploadId</Id><Type>Text</Type><Value>Undefined</Value></State>
 			</States>
 		</Action>
+				
+		<_Action id="Constructor">
+			<_Scripts>
+				<Script>
+					//Decide whether to add
+					if (me.s('name')=='Behaviors')
+						me.addChild( Logic.gameFactory.createGameEntity('SparkEditor.levels.projectEditor.tabs.library.CreateBehaviorButton') );
+					else
+						me.addChild( Logic.gameFactory.createGameEntity('SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton') );
+				</Script>
+			</_Scripts>
+		</_Action>
 	</_Actions>
 	
 	<Form>
 		<Space>
 			<Entities>
-				<!-- Upload Icon  -->
-				<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton"/>
+				<!-- Upload Icon  
+				<Entity extends="SparkEditor.levels.projectEditor.tabs.library.EditorAssetImportButton"/>-->
 				
 				<Entity extends="std.display.Scroller">
 					<_States>

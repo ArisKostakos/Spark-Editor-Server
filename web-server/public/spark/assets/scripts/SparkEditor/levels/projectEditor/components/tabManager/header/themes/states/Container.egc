@@ -4,6 +4,9 @@
 		<_State id="height"><Value>28</Value></_State>
 		<_State id="backgroundColor"><Value>rgb(38,56,72)</Value></_State>
 		<_State id="headerTheme"><Value>states</Value></_State>
+		<_State id="verticalAlign"><Value>middle</Value></_State>
+		<_State id="hasDividers"><Value>true</Value></_State>
+		<_State id="dividerColor"><Value>rgb(52,76,96)</Value></_State>
 	</_States>
 	
 	<_Actions>
@@ -12,7 +15,7 @@
 				<Script>
 					var l_header = me.s('headers').get(it.s('name'));
 					l_header.set('backgroundColor','rgb(45,67,85)');
-					l_header.s('headerLabel').set('fontColor','white');
+					l_header.s('obj_text').set('fontColor','white');
 				</Script>
 			</_Scripts>
 		</_Action>
@@ -22,7 +25,7 @@
 				<Script>
 					var l_header = me.s('headers').get(it.s('name'));
 					l_header.set('backgroundColor', 'rgb(38,56,72)');
-					l_header.s('headerLabel').set('fontColor','rgb(54,77,99)');
+					l_header.s('obj_text').set('fontColor','rgb(54,77,99)');
 				</Script>
 			</_Scripts>
 		</_Action>
